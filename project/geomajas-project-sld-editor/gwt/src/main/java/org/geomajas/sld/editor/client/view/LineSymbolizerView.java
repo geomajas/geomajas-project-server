@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.client.view;
 
 import java.util.List;
@@ -27,11 +37,17 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+/**
+ * Default implementation of {@link LineSymbolizerPresenter.MyView}.
+ * 
+ * @author Jan De Moerloose
+ *
+ */
 public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresenter.MyView {
-	
+
 	/** private members for line symbolizer **/
 	private VLayout lineSymbolizerPane;
-	
+
 	private DynamicForm lineSymbolizerForm;
 
 	// lineSymbolizerForm form items
@@ -44,7 +60,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 	private SpinnerItem strokeOpacityItem;
 
 	protected FillInfo prevFillInfo;
-	
+
 	private final EventBus eventBus;
 
 	private final ViewUtil viewUtil;
@@ -52,7 +68,8 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 	private final SldEditorMessages sldEditorMessages;
 
 	@Inject
-	public LineSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public LineSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil,
+			final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
@@ -60,7 +77,6 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 		hide();
 	}
 
-	
 	public void modelToView(LineSymbolizerInfo lineSymbolizerInfo) {
 		currentLineSymbolizerInfo = lineSymbolizerInfo;
 		lineSymbolizerForm.clearValues();
@@ -77,7 +93,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 				if (SldConstant.STROKE.equals(cssParameterInfo.getName())) {
 					lineStrokeColorPicker.setValue(cssParameterInfo.getValue());
 				} else if (SldConstant.STROKE_WIDTH.equals(cssParameterInfo.getName())) {
-					strokeWidthItem.setValue(Float.parseFloat(cssParameterInfo.getValue()));
+					strokeWidthItem.setValue(viewUtil.numericalToInteger(cssParameterInfo.getValue()));
 				} else if (SldConstant.STROKE_OPACITY.equals(cssParameterInfo.getName())) {
 					strokeOpacityItem.setValue(viewUtil.factorToPercentage(cssParameterInfo.getValue()));
 				} else if ("stroke-dasharray".equals(cssParameterInfo.getName())) {
@@ -129,7 +145,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 					newValue = SldConstant.DEFAULT_STROKE_WIDTH_FOR_LINE;
 				}
 
-				currentLineSymbolizerInfo.getStroke().setStrokeWidth(newValue/100f);
+				currentLineSymbolizerInfo.getStroke().setStrokeWidth(newValue);
 
 				fireSldContentChanged();
 
@@ -161,7 +177,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 					newValue = SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE;
 				}
 
-				currentLineSymbolizerInfo.getStroke().setStrokeOpacity(newValue/100f);
+				currentLineSymbolizerInfo.getStroke().setStrokeOpacity(newValue / 100f);
 				fireSldContentChanged();
 
 			}
@@ -182,16 +198,13 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 		SldContentChangedEvent.fire(this);
 	}
 
-
 	public Widget asWidget() {
 		return lineSymbolizerPane;
 	}
 
-
 	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
 		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
 	}
-
 
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);

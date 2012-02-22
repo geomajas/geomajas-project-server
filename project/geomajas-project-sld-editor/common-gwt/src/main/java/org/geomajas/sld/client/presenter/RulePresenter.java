@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.RuleModel;
@@ -22,6 +32,12 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
+/**
+ * MVP Presenter class for {@link RuleModel}.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter.MyProxy> implements
 		RuleSelectedHandler, InitSldLayoutHandler, SldChangedHandler {
 
@@ -47,12 +63,15 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 
 	private RuleModel currentModel;
 
+	/**
+	 * {@link RulePresenter}'s proxy.
+	 */
 	@ProxyStandard
 	public interface MyProxy extends Proxy<RulePresenter> {
 	}
 
 	/**
-	 * {@link RuleSelectorPresenter}'s view.
+	 * {@link RulePresenter}'s view.
 	 */
 	public interface MyView extends View {
 

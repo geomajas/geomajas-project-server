@@ -1,8 +1,23 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.view;
 
-
+/**
+ * View independent base class for utility functions.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public abstract class BaseViewUtil implements ViewUtil {
-	
+
 	public String numericalToString(Object value, String defaultStringValue) {
 		String stringValue = defaultStringValue;
 
@@ -66,6 +81,15 @@ public abstract class BaseViewUtil implements ViewUtil {
 			return "0." + Integer.toString(percentageRounded);
 		} else { /* 0 to 9 -> 0.00 to 0.09 */
 			return "0.0" + Integer.toString(percentageRounded);
+		}
+	}
+
+	public int numericalToInteger(String numerical) {
+		try {
+			double d = Double.parseDouble(numerical);
+			return (int) d;
+		} catch (Exception e) {
+			return 0;
 		}
 	}
 

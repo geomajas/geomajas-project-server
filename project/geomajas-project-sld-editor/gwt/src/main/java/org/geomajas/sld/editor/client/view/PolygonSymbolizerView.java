@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.client.view;
 
 import java.util.List;
@@ -28,6 +38,13 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+/**
+ * Default implementation of {@link PolygonSymbolizerPresenter.MyView}.
+ * 
+ * @author Jan De Moerloose
+ * @author An Buyle
+ *
+ */
 public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizerPresenter.MyView {
 
 	/** private members for polygon symbolizer **/
@@ -60,7 +77,8 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	private final SldEditorMessages sldEditorMessages;
 
 	@Inject
-	public PolygonSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public PolygonSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil,
+			final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
@@ -120,7 +138,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 					if (cssParameterInfo.getName().equals(SldConstant.STROKE)) {
 						polygonStrokeColorPicker.setValue(cssParameterInfo.getValue());
 					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_WIDTH)) {
-						polygonStrokeWidthItem.setValue(Float.parseFloat(cssParameterInfo.getValue()));
+						polygonStrokeWidthItem.setValue(viewUtil.numericalToInteger(cssParameterInfo.getValue()));
 					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_OPACITY)) {
 						polygonStrokeOpacityItem.setValue(viewUtil.factorToPercentage(cssParameterInfo.getValue()));
 					} else if ("stroke-dasharray".equals(cssParameterInfo.getName())) {
@@ -221,7 +239,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 				if (null == currentPolygonSymbolizerInfo.getFill()) {
 					currentPolygonSymbolizerInfo.setFill(new FillInfo());
 				}
-				currentPolygonSymbolizerInfo.getFill().setFillOpacity(newValue/100f);
+				currentPolygonSymbolizerInfo.getFill().setFillOpacity(newValue / 100f);
 				fireSldContentChanged();
 			}
 		});
@@ -320,18 +338,19 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		polygonStrokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		polygonStrokeOpacityItem.setMin(0);
 		polygonStrokeOpacityItem.setMax(100);
-		polygonStrokeOpacityItem.setStep(10.0f);
+		polygonStrokeOpacityItem.setStep(10);
 		polygonStrokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
 
-				float newValue = viewUtil.numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
+				float newValue = viewUtil.numericalToFloat(event.getValue(),
+						SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 
 				if (null == currentPolygonSymbolizerInfo.getStroke()) {
 					currentPolygonSymbolizerInfo.setStroke(new StrokeInfo());
 				}
 
-				currentPolygonSymbolizerInfo.getStroke().setStrokeOpacity(newValue/100f);
+				currentPolygonSymbolizerInfo.getStroke().setStrokeOpacity(newValue / 100f);
 
 				fireSldContentChanged();
 			}
@@ -353,31 +372,29 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		polygonSymbolizerForm.hideItem("borderWidth");
 		polygonSymbolizerPane.addMember(polygonSymbolizerForm);
 	}
-	
+
 	private void fireSldContentChanged() {
 		SldContentChangedEvent.fire(this);
 	}
-
 
 	public Widget asWidget() {
 		return polygonSymbolizerPane;
 	}
 
-
 	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
 		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
 	}
 
-
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
 	}
+
 	public void hide() {
 		polygonSymbolizerPane.hide();
 	}
 
 	public void show() {
-		if(!polygonSymbolizerPane.isDrawn()){
+		if (!polygonSymbolizerPane.isDrawn()) {
 			System.out.println();
 		}
 		polygonSymbolizerPane.show();

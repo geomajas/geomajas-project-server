@@ -1,6 +1,15 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.client.view;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -11,7 +20,6 @@ import org.geomajas.sld.FormatInfo;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.MarkInfo;
 import org.geomajas.sld.OnlineResourceInfo;
-import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.RotationInfo;
 import org.geomajas.sld.SizeInfo;
 import org.geomajas.sld.SldConstant;
@@ -42,6 +50,13 @@ import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+/**
+ * Default implementation of {@link PointSymbolizerPresenter.MyView}.
+ * 
+ * @author Jan De Moerloose
+ * @author An Buyle
+ *
+ */
 public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPresenter.MyView {
 
 	private DynamicForm typeOfGraphicForm;
@@ -98,6 +113,12 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 	private final SldEditorMessages sldEditorMessages;
 
+	/**
+	 * Type of {@link GraphicInfo}.
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
 	private enum GraphicType {
 		MARKER_TYPE, EXTERNAL_GRAPHICS_TYPE
 	}
@@ -149,6 +170,9 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 			public void onChanged(ChangedEvent event) {
 				GraphicType type = GraphicType.valueOf(typeOfGraphicItem.getValueAsString());
+				// clear existing !!!
+				currentGraphicInfo.setRotation(null);
+				currentGraphicInfo.setSize(null);
 				GraphicInfo.ChoiceInfo choiceInfoGraphic = currentGraphicInfo.getChoiceList().get(0);
 				choiceInfoGraphic.clearChoiceListSelect();
 				switch (type) {
@@ -182,7 +206,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		if (null != currentGraphicInfo.getSize()) {
 			String size = currentGraphicInfo.getSize().getValue();
 			if (null != size) {
-				markerSizeItem.setValue(Float.parseFloat(size));
+				markerSizeItem.setValue(viewUtil.numericalToInteger(size));
 			}
 		}
 
@@ -268,7 +292,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 					if (cssParameterInfo.getName().equals(SldConstant.STROKE)) {
 						markerStrokeColorPicker.setValue(cssParameterInfo.getValue());
 					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_WIDTH)) {
-						markerStrokeWidthItem.setValue(Float.parseFloat(cssParameterInfo.getValue()));
+						markerStrokeWidthItem.setValue(viewUtil.numericalToInteger(cssParameterInfo.getValue()));
 					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_OPACITY)) {
 						markerStrokeOpacityItem.setValue(viewUtil.factorToPercentage(cssParameterInfo.getValue()));
 					} else if ("stroke-dasharray".equals(cssParameterInfo.getName())) {
@@ -316,7 +340,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerSizeItem.setDefaultValue(SldConstant.DEFAULT_SIZE_MARKER);
 		markerSizeItem.setMin(0);
 		markerSizeItem.setMax(200);
-		markerSizeItem.setStep(1.0f);
+		markerSizeItem.setStep(1);
 		markerSizeItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -344,7 +368,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerRotationItem.setDefaultValue(SldConstant.DEFAULT_ROTATION_MARKER);
 		markerRotationItem.setMin(-360);
 		markerRotationItem.setMax(360);
-		markerRotationItem.setStep(15.0f);
+		markerRotationItem.setStep(15);
 		markerRotationItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -447,7 +471,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 			public void onChanged(ChangedEvent event) {
 
-
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_MARKER;
@@ -469,7 +492,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerFillOpacityItem.setDefaultValue(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
 		markerFillOpacityItem.setMin(0);
 		markerFillOpacityItem.setMax(100);
-		markerFillOpacityItem.setStep(10.0f);
+		markerFillOpacityItem.setStep(10);
 		markerFillOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -556,7 +579,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerStrokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH);
 		markerStrokeWidthItem.setMin(0);
 		markerStrokeWidthItem.setMax(100);
-		markerStrokeWidthItem.setStep(1.0f);
+		markerStrokeWidthItem.setStep(1);
 		markerStrokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -624,7 +647,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		externalGraphicSizeItem.setDefaultValue(12);
 		externalGraphicSizeItem.setMin(0);
 		externalGraphicSizeItem.setMax(200);
-		externalGraphicSizeItem.setStep(1.0f);
+		externalGraphicSizeItem.setStep(1);
 
 		externalGraphicSizeItem.addChangedHandler(new ChangedHandler() {
 

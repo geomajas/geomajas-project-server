@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -18,7 +18,6 @@ import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContent
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -38,9 +37,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * SmartGwt implementation of {@link StyledLayerDescriptorPresenter.MyView}.
  * 
  * @author An Buyle
+ * @author Jan De Moerloose
  */
-public class StyledLayerDescriptorView extends ViewImpl
-				implements StyledLayerDescriptorPresenter.MyView {
+public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDescriptorPresenter.MyView {
 
 	private VLayout layoutContainer;
 
@@ -57,11 +56,12 @@ public class StyledLayerDescriptorView extends ViewImpl
 	private SldGeneralInfo model;
 
 	private EventBus eventBus;
-	
+
 	private final SldEditorMessages messages;
 
 	@Inject
-	public StyledLayerDescriptorView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages messages) {
+	public StyledLayerDescriptorView(final EventBus eventBus, final ViewUtil viewUtil,
+			final SldEditorMessages messages) {
 		this.eventBus = eventBus;
 		this.messages = messages;
 		topLevelAttributesForm = new DynamicForm();
@@ -76,7 +76,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 					return;
 				}
 				model.setNameOfLayer(nameOfLayerItem.getValueAsString());
-				//Inform observer(s) of change of SLD data
+				// Inform observer(s) of change of SLD data
 				SldContentChangedEvent.fire(StyledLayerDescriptorView.this);
 
 			}
@@ -102,7 +102,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 				model.setNameOfLayer(styleTitleItem.getValueAsString());
 
-				//Inform observer(s) of change of SLD data
+				// Inform observer(s) of change of SLD data
 				SldContentChangedEvent.fire(StyledLayerDescriptorView.this);
 
 			}
@@ -117,11 +117,11 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 		topLevelAttributesForm.setItems(nameOfLayerItem, geomTypeItem, styleTitleItem);
 
-		errorMessage = new Label("<i>"+messages.noSldMessage()+"</i>");
+		errorMessage = new Label("<i>" + messages.noSldMessage() + "</i>");
 		errorMessage.setAlign(Alignment.CENTER);
-		//errorMessage.hide();
+		// errorMessage.hide();
 		layoutContainer = new VLayout(5);
-//		layoutContainer.setMinHeight(100); // TODO: was 200
+		// layoutContainer.setMinHeight(100); // TODO: was 200
 
 		layoutContainer.setLayoutBottomMargin(5);
 
@@ -151,7 +151,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 			errorMessage.show();
 		}
 		errorMessage.setContents(null == errorText ? "" : errorText);
-		//errorMessage.markForRedraw();
+		// errorMessage.markForRedraw();
 	}
 
 	// @Override
@@ -172,10 +172,10 @@ public class StyledLayerDescriptorView extends ViewImpl
 			copyToView(model);
 		}
 	}
-	
+
 	public void clear() {
 		topLevelAttributesForm.clearValues();
-		errorMessage.setContents("<i>"+messages.noSldMessage()+"</i>");
+		errorMessage.setContents("<i>" + messages.noSldMessage() + "</i>");
 		errorMessage.markForRedraw();
 	}
 

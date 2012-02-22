@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -61,29 +61,29 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(StyledLayerDescriptorPresenter.class, StyledLayerDescriptorPresenter.MyView.class,
 				StyledLayerDescriptorView.class, StyledLayerDescriptorPresenter.MyProxy.class);
 
-		bindPresenter(RuleSelectorPresenter.class, RuleSelectorPresenter.MyView.class,
-				RuleSelectorView.class, RuleSelectorPresenter.MyProxy.class);
+		bindPresenter(RuleSelectorPresenter.class, RuleSelectorPresenter.MyView.class, RuleSelectorView.class,
+				RuleSelectorPresenter.MyProxy.class);
 
-		bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class,
-				CreateSldDialogPresenterWidget.MyView.class, CreateSldDialogView.class);
-		
+		bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class, CreateSldDialogPresenterWidget.MyView.class,
+				CreateSldDialogView.class);
+
 		bindPresenter(StyledLayerDescriptorLayoutPresenter.class, StyledLayerDescriptorLayoutPresenter.MyView.class,
-				StyledLayerDescriptorLayoutView.class,
-				StyledLayerDescriptorLayoutPresenter.MyProxy.class);
+				StyledLayerDescriptorLayoutView.class, StyledLayerDescriptorLayoutPresenter.MyProxy.class);
 
 		bindPresenter(RulePresenter.class, RulePresenter.MyView.class, RuleView.class, RulePresenter.MyProxy.class);
 
-		bindPresenter(FilterPresenter.class, FilterPresenter.MyView.class, FilterView.class, FilterPresenter.MyProxy.class);
+		bindPresenter(FilterPresenter.class, FilterPresenter.MyView.class, FilterView.class,
+				FilterPresenter.MyProxy.class);
 
 		bindPresenter(PointSymbolizerPresenter.class, PointSymbolizerPresenter.MyView.class, PointSymbolizerView.class,
 				PointSymbolizerPresenter.MyProxy.class);
 
-		bindPresenter(PolygonSymbolizerPresenter.class, PolygonSymbolizerPresenter.MyView.class, PolygonSymbolizerView.class,
-				PolygonSymbolizerPresenter.MyProxy.class);
-		
+		bindPresenter(PolygonSymbolizerPresenter.class, PolygonSymbolizerPresenter.MyView.class,
+				PolygonSymbolizerView.class, PolygonSymbolizerPresenter.MyProxy.class);
+
 		bindPresenter(LineSymbolizerPresenter.class, LineSymbolizerPresenter.MyView.class, LineSymbolizerView.class,
 				LineSymbolizerPresenter.MyProxy.class);
-		
+
 		bindPresenter(SldActionPresenter.class, SldActionPresenter.MyView.class, SldActionView.class,
 				SldActionPresenter.MyProxy.class);
 	}

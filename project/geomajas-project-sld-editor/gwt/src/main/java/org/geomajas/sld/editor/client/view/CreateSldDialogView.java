@@ -1,17 +1,12 @@
-/**
- * Copyright 2011 ArcBees Inc.
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
  */
 
 package org.geomajas.sld.editor.client.view;
@@ -46,7 +41,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 
-
 /**
  * The view implementation for
  * {@link com.gwtplatform.CreateSldDialogPresenterWidget.tab.client.presenter.GlobalDialogPresenterWidget}.
@@ -54,17 +48,17 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * @author Jan De Moerloose
  */
 public class CreateSldDialogView extends PopupViewImpl implements MyView {
-	
+
 	private Logger log = Logger.getLogger(CreateSldDialogView.class.getName());
 
 	private SldEditorMessages editorMessages;
 
 	private Window winModal;
-	
-	private  SelectItem typeOfGeomItem;
-	
+
+	private SelectItem typeOfGeomItem;
+
 	private TextItem nameOfSldItem;
-	
+
 	private EventBus eventBus;
 
 	@Inject
@@ -138,7 +132,6 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 
 		});
 
-
 		final IButton cancelButton = new IButton();
 		// @todo FIX cancelButton.setIcon(WidgetLayout.iconCancel);
 		cancelButton.setShowDisabledIcon(false);
@@ -159,35 +152,26 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 		winModal.addItem(toolStrip);
 	}
 
-
 	public HandlerRegistration addCreateSldDialogCreateHandler(CreateSldDialogCreateHandler handler) {
 		return eventBus.addHandler(CreateSldDialogCreateEvent.getType(), handler);
 	}
-
-
 
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
 	}
 
-
-
 	public GeometryType getGeometryType() {
 		return GeometryType.fromValue(typeOfGeomItem.getValueAsString());
 	}
-
-
 
 	public String getName() {
 		return nameOfSldItem.getValueAsString();
 	}
 
-
-
 	@Override
 	public void setCloseHandler(final PopupViewCloseHandler popupViewCloseHandler) {
 		winModal.addCloseClickHandler(new CloseClickHandler() {
-			
+
 			public void onCloseClick(CloseClientEvent event) {
 				popupViewCloseHandler.onClose();
 				winModal.removeFromParent();
@@ -195,20 +179,15 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 		});
 	}
 
-
 	@Override
 	public void center() {
 		winModal.centerInPage();
 	}
 
-
-
 	@Override
 	public void hide() {
 		winModal.hide();
 	}
-
-
 
 	@Override
 	public void setPosition(int left, int top) {
@@ -216,26 +195,20 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 		winModal.setTop(top);
 	}
 
-
-
 	@Override
 	public void addToSlot(Object slot, Widget content) {
 		super.addToSlot(slot, content);
 	}
-
 
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		super.setInSlot(slot, content);
 	}
 
-
 	@Override
 	public void show() {
 		winModal.show();
 	}
-
-
 
 	public Widget asWidget() {
 		return winModal;

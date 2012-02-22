@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -14,12 +14,12 @@ package org.geomajas.sld.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.xalan.xsltc.compiler.sym;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.LineSymbolizerInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.RuleInfo.ChoiceInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.client.model.FilterModel.FilterModelState;
 import org.geomajas.sld.editor.client.GeometryType;
@@ -27,7 +27,6 @@ import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.util.tools.shared.StringUtils;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -50,6 +49,7 @@ public class RuleModelImpl implements RuleModel {
 	private GeometryType geometryType;
 
 	private RuleGroup ruleGroup;
+
 	// TODO: 2 creators with @AssistedInject
 	/**
 	 * Constructor for a) creating a default rule model for the specified geometry type. b) for specified RuleInfo (e.g.
@@ -58,7 +58,8 @@ public class RuleModelImpl implements RuleModel {
 	 * @param geometryType
 	 */
 	@Inject
-	public RuleModelImpl(@Assisted RuleGroup ruleGroup, @Assisted RuleInfo ruleInfo, @Assisted GeometryType geometryType, SldEditorMessages messages) {
+	public RuleModelImpl(@Assisted RuleGroup ruleGroup, @Assisted RuleInfo ruleInfo,
+			@Assisted GeometryType geometryType, SldEditorMessages messages) {
 		this.ruleGroup = ruleGroup;
 		if (null == ruleInfo) {
 
@@ -80,9 +81,9 @@ public class RuleModelImpl implements RuleModel {
 					symbolizer = new PointSymbolizerInfo();
 
 					((PointSymbolizerInfo) symbolizer).setGraphic(new GraphicInfo());
-					List<org.geomajas.sld.GraphicInfo.ChoiceInfo> list = new ArrayList<org.geomajas.sld.GraphicInfo.ChoiceInfo>();
+					List<GraphicInfo.ChoiceInfo> list = new ArrayList<GraphicInfo.ChoiceInfo>();
 
-					org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = new org.geomajas.sld.GraphicInfo.ChoiceInfo();
+					GraphicInfo.ChoiceInfo choiceInfoGraphic = new GraphicInfo.ChoiceInfo();
 					list.add(choiceInfoGraphic);
 					((PointSymbolizerInfo) symbolizer).getGraphic().setChoiceList(list);
 
@@ -108,13 +109,13 @@ public class RuleModelImpl implements RuleModel {
 		} else {
 
 			this.ruleInfo = ruleInfo;
-			this.geometryType = SldUtils.GetGeometryType(ruleInfo);
+			this.geometryType = SldUtils.getGeometryType(ruleInfo);
 			this.symbolizerTypeInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer
 																			// specification
 			if (null != ruleInfo.getChoice() && ruleInfo.getChoice().ifFilter()) {
-				this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter());
+				this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter(), messages);
 			} else {
-				this.filterModel = new FilterModelImpl();
+				this.filterModel = new FilterModelImpl(messages);
 			}
 			this.name = ruleInfo.getName();
 			if (null == ruleInfo.getTitle() || ruleInfo.getTitle().length() == 0) {
@@ -190,7 +191,7 @@ public class RuleModelImpl implements RuleModel {
 							return false;
 						}
 					} else if (choice.ifMark()) {
-							// TODO ?
+						// TODO ?
 					}
 				}
 			}
@@ -222,8 +223,15 @@ public class RuleModelImpl implements RuleModel {
 		this.symbolizerTypeInfo = symbolizerTypeInfo;
 	}
 
-	public void checkState() {
+	public void synchronize() {
 		ruleInfo.setTitle(getTitle());
+		getFilterModel().synchronize();
+		if(getFilterModel().getFilterTypeInfo() == null) {
+			ruleInfo.setChoice(null);
+		} else {
+			ruleInfo.setChoice(new ChoiceInfo());
+			ruleInfo.getChoice().setFilter(getFilterModel().getFilterTypeInfo());
+		}
 	}
 
 	public RuleReference getReference() {

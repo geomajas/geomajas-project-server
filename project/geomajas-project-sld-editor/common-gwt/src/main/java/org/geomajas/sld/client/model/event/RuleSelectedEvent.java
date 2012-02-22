@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -17,20 +17,26 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+/**
+ * Event fired when a rule has been selected.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class RuleSelectedEvent extends GwtEvent<RuleSelectedEvent.RuleSelectedHandler> {
 
 	private RuleModel ruleModel;
-	
+
 	private boolean clearAll;
 
 	public RuleSelectedEvent() {
 		this.clearAll = true;
 	}
-	
+
 	public RuleSelectedEvent(RuleModel ruleModel) {
 		this.ruleModel = ruleModel;
 	}
-	
+
 	public boolean isClearAll() {
 		return clearAll;
 	}
@@ -39,7 +45,7 @@ public class RuleSelectedEvent extends GwtEvent<RuleSelectedEvent.RuleSelectedHa
 		RuleSelectedEvent eventInstance = new RuleSelectedEvent(ruleModel);
 		source.fireEvent(eventInstance);
 	}
-	
+
 	public static void fireClearAll(HasHandlers source) {
 		RuleSelectedEvent eventInstance = new RuleSelectedEvent();
 		source.fireEvent(eventInstance);

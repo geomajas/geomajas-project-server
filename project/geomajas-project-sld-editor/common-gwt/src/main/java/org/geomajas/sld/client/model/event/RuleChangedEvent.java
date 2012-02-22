@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -31,7 +31,7 @@ public class RuleChangedEvent extends GwtEvent<RuleChangedEvent.RuleChangedHandl
 	public RuleChangedEvent(RuleModel ruleModel) {
 		this.ruleModel = ruleModel;
 	}
-	
+
 	public RuleModel getRuleModel() {
 		return ruleModel;
 	}
@@ -47,7 +47,6 @@ public class RuleChangedEvent extends GwtEvent<RuleChangedEvent.RuleChangedHandl
 		RuleChangedEvent eventInstance = new RuleChangedEvent(ruleModel);
 		source.fireEvent(eventInstance);
 	}
-		
 
 	/**
 	 * {@link HasHandlers} indicator for this event.
@@ -74,7 +73,7 @@ public class RuleChangedEvent extends GwtEvent<RuleChangedEvent.RuleChangedHandl
 		 * @param event the event
 		 */
 		void onChanged(RuleChangedEvent event);
-		
+
 	}
 
 	/**
@@ -83,11 +82,11 @@ public class RuleChangedEvent extends GwtEvent<RuleChangedEvent.RuleChangedHandl
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public static abstract class RuleChangedAdapter implements RuleChangedHandler {
+	public static class RuleChangedAdapter implements RuleChangedHandler {
 
 		public void onChanged(RuleChangedEvent event) {
 		}
-		
+
 	}
 
 	private static final Type<RuleChangedHandler> TYPE = new Type<RuleChangedHandler>();
@@ -103,7 +102,7 @@ public class RuleChangedEvent extends GwtEvent<RuleChangedEvent.RuleChangedHandl
 
 	@Override
 	protected void dispatch(RuleChangedHandler handler) {
-			handler.onChanged(this);
+		handler.onChanged(this);
 	}
 
 	@Override

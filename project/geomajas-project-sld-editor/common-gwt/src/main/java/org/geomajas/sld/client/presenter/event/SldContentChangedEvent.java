@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -26,7 +26,6 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 
 	public SldContentChangedEvent() {
 	}
-	
 
 	/**
 	 * @param source
@@ -39,7 +38,6 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 		SldContentChangedEvent eventInstance = new SldContentChangedEvent();
 		source.fireEvent(eventInstance);
 	}
-		
 
 	/**
 	 * {@link HasHandlers} indicator for this event.
@@ -66,7 +64,7 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 		 * @param event the event
 		 */
 		void onChanged(SldContentChangedEvent event);
-		
+
 	}
 
 	/**
@@ -75,11 +73,11 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public static abstract class SldContentChangedAdapter implements SldContentChangedHandler {
+	public abstract static class SldContentChangedAdapter implements SldContentChangedHandler {
 
 		public void onChanged(SldContentChangedEvent event) {
 		}
-		
+
 	}
 
 	private static final Type<SldContentChangedHandler> TYPE = new Type<SldContentChangedHandler>();
@@ -95,7 +93,7 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 
 	@Override
 	protected void dispatch(SldContentChangedHandler handler) {
-			handler.onChanged(this);
+		handler.onChanged(this);
 	}
 
 	@Override

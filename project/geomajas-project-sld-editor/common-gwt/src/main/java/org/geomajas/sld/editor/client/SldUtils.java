@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -23,16 +23,16 @@ import org.geomajas.sld.SymbolizerTypeInfo;
 
 import com.google.gwt.core.client.GWT;
 
-
 /**
  * SLD utilities.
- *
+ * 
  * @author An Buyle
- *
+ * 
  */
 public final class SldUtils {
-	public final static String DEFAULT_STYLE_NAME = "Standaard stijl"; // TODO i18n
-	
+
+	public static final String DEFAULT_STYLE_NAME = "Standaard stijl"; // TODO i18n
+
 	private SldUtils() {
 	}
 
@@ -49,11 +49,9 @@ public final class SldUtils {
 				symbolizer = new PointSymbolizerInfo();
 
 				((PointSymbolizerInfo) symbolizer).setGraphic(new GraphicInfo());
-				List<org.geomajas.sld.GraphicInfo.ChoiceInfo> list = 
-					new ArrayList<org.geomajas.sld.GraphicInfo.ChoiceInfo>();
+				List<GraphicInfo.ChoiceInfo> list = new ArrayList<GraphicInfo.ChoiceInfo>();
 
-				org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = 
-					new org.geomajas.sld.GraphicInfo.ChoiceInfo();
+				GraphicInfo.ChoiceInfo choiceInfoGraphic = new GraphicInfo.ChoiceInfo();
 				list.add(choiceInfoGraphic);
 				((PointSymbolizerInfo) symbolizer).getGraphic().setChoiceList(list);
 
@@ -75,7 +73,7 @@ public final class SldUtils {
 		return defaultRule;
 	}
 
-	public static GeometryType GetGeometryType(RuleInfo rule) {
+	public static GeometryType getGeometryType(RuleInfo rule) {
 		GeometryType geomType = GeometryType.UNSPECIFIED;
 
 		if (null == rule || null == rule.getSymbolizerList() || 0 == rule.getSymbolizerList().size()) {
@@ -95,20 +93,20 @@ public final class SldUtils {
 
 	}
 
-	public static GeometryType GetGeometryType(List<FeatureTypeStyleInfo> featureTypeStyleList) {
-		
+	public static GeometryType getGeometryType(List<FeatureTypeStyleInfo> featureTypeStyleList) {
+
 		GeometryType geometryType = GeometryType.UNSPECIFIED;
-		
+
 		if (null == featureTypeStyleList || featureTypeStyleList.size() == 0) {
 			return GeometryType.UNSPECIFIED; // ABORT
 		}
 
-		FeatureTypeStyleInfo featureTypeStyle = featureTypeStyleList.iterator().next(); //retrieve the first
-				// <FeatureTypeStyle> element (which contains 1 list of rules)
+		FeatureTypeStyleInfo featureTypeStyle = featureTypeStyleList.iterator().next(); // retrieve the first
+		// <FeatureTypeStyle> element (which contains 1 list of rules)
 
 		if (null != featureTypeStyle && featureTypeStyle.getRuleList().size() >= 1) {
-			RuleInfo rule = featureTypeStyle.getRuleList().iterator().next(); //retrieve the first rule
-			geometryType = GetGeometryType(rule);
+			RuleInfo rule = featureTypeStyle.getRuleList().iterator().next(); // retrieve the first rule
+			geometryType = getGeometryType(rule);
 		}
 		return geometryType;
 	}

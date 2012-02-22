@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.presenter;
 
 import java.util.logging.Logger;
@@ -23,12 +33,18 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+/**
+ * MVP Presenter class for {@link PolygonSymbolizerInfo}.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class PolygonSymbolizerPresenter
 	extends Presenter<PolygonSymbolizerPresenter.MyView, PolygonSymbolizerPresenter.MyProxy> implements
 		RuleSelectedHandler, InitSldLayoutHandler, RuleChangedHandler {
 
 	private Logger logger = Logger.getLogger(PolygonSymbolizerPresenter.class.getName());
-	
+
 	private PolygonSymbolizerInfo currentModel;
 
 	private SldManager manager;
@@ -41,7 +57,7 @@ public class PolygonSymbolizerPresenter
 	}
 
 	/**
-	 * {@link StyledLayerDescriptorPresenter}'s view.
+	 * {@link PolygonSymbolizerPresenter}'s view.
 	 */
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
@@ -62,7 +78,8 @@ public class PolygonSymbolizerPresenter
 	 * @param proxy
 	 */
 	@Inject
-	public PolygonSymbolizerPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final SldManager manager) {
+	public PolygonSymbolizerPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+			final SldManager manager) {
 		super(eventBus, view, proxy);
 		this.manager = manager;
 	}
@@ -95,12 +112,13 @@ public class PolygonSymbolizerPresenter
 	}
 
 	public void onChanged(RuleChangedEvent event) {
-		if(event.getRuleModel() == null) {
+		if (event.getRuleModel() == null) {
 			clearModelAndView();
 		} else {
 			setRule(event.getRuleModel());
 		}
 	}
+
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
 			clearModelAndView();
@@ -109,11 +127,10 @@ public class PolygonSymbolizerPresenter
 		}
 	}
 
-
 	public void setRule(RuleModel rule) {
 		if (rule.getGeometryType().equals(GeometryType.POLYGON)) {
 			forceReveal();
-			currentModel = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+			currentModel = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo();
 			getView().modelToView(currentModel);
 			getView().show();
 		} else {

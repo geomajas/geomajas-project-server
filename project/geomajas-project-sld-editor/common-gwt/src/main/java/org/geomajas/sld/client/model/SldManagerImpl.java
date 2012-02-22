@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -263,6 +263,13 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 		return eventBus.addHandler(SldChangedEvent.getType(), handler);
 	}
 
+	/**
+	 * {@link SldContentChangedHandler} that sets the model to dirty and propagates the dirty state to
+	 * {@link SldChangedEvent} listeners.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
 	public class ContentChangedHandler implements SldContentChangedHandler {
 
 		public void onChanged(SldContentChangedEvent event) {
@@ -281,18 +288,24 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 		new DeselectHandler();
 		saveCurrent();
 	}
-	
+
+	/**
+	 * One-time {@link SldChangedHandler} that deselects the current SLD after it has been saved.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
 	class DeselectHandler implements SldChangedHandler {
-		HandlerRegistration registration;
-		
-		
+
+		private HandlerRegistration registration;
+
 		public DeselectHandler() {
 			registration = addSldChangedHandler(this);
 		}
-		
+
 		public void onChanged(SldChangedEvent event) {
 			deselectAll();
-			if(registration != null) {
+			if (registration != null) {
 				registration.removeHandler();
 			}
 		}

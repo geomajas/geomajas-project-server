@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.client.view;
 
 import java.util.LinkedHashMap;
@@ -26,6 +36,13 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+/**
+ * Default implementation of {@link FilterPresenter.MyView}.
+ * 
+ * @author Jan De Moerloose
+ * @author An Buyle
+ *
+ */
 public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	// TODO: also for other operators
@@ -195,7 +212,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 			public void onChanged(ChangedEvent event) {
 				String propertyName = filterAttributeName.getValueAsString();
 				filterModel.setPropertyName(propertyName);
-				if(propertyName != null && ! propertyName.isEmpty()) {
+				if (propertyName != null && !propertyName.isEmpty()) {
 					filterOperatorSelect.enable();
 				}
 				filterHasChanged();
@@ -217,7 +234,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 					filterModel.setOperatorType(OperatorType.fromValue(operator));
 					filterHasChanged();
-				} 
+				}
 			}
 		});
 
@@ -257,7 +274,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	private void filterHasChanged() {
-		filterModel.checkState();
+		filterModel.synchronize();
 		modelToView(filterModel);
 		SldContentChangedEvent.fire(this);
 	}

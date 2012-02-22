@@ -1,11 +1,21 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.client.view;
 
 import org.geomajas.sld.client.presenter.SldActionPresenter;
 import org.geomajas.sld.client.presenter.event.SldCloseEvent;
 import org.geomajas.sld.client.presenter.event.SldRefreshEvent;
+import org.geomajas.sld.client.presenter.event.SldRefreshEvent.HasSldRefreshHandlers;
 import org.geomajas.sld.client.presenter.event.SldRefreshEvent.SldRefreshHandler;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent;
-import org.geomajas.sld.client.presenter.event.SldRefreshEvent.HasSldRefreshHandlers;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.client.view.ViewUtil.YesNoCallback;
@@ -24,6 +34,12 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 
+/**
+ * Default implementation of {@link SldActionPresenter.MyView}.
+ * 
+ * @author Jan De Moerloose
+ *
+ */
 public class SldActionView extends ViewImpl implements SldActionPresenter.MyView, HasSldRefreshHandlers {
 
 	// Panel for SLD Action buttons (Save/Close/Cancel)
@@ -176,7 +192,6 @@ public class SldActionView extends ViewImpl implements SldActionPresenter.MyView
 		eventBus.fireEvent(event);
 	}
 
-	
 	public HandlerRegistration addSldSaveHandler(SldSaveHandler handler) {
 		return eventBus.addHandler(SldSaveEvent.getType(), handler);
 	}
@@ -184,7 +199,5 @@ public class SldActionView extends ViewImpl implements SldActionPresenter.MyView
 	public HandlerRegistration addSldRefreshHandler(SldRefreshHandler handler) {
 		return eventBus.addHandler(SldRefreshEvent.getType(), handler);
 	}
-
-
 
 }

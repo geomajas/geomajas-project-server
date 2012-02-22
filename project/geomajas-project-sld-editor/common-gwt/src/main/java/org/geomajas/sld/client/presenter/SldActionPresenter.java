@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.SldManager;
@@ -24,23 +34,34 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+/**
+ * MVP presenter class for main actions at SLD level (save/cancel/close).
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, SldActionPresenter.MyProxy> implements
-		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler, SldRefreshHandler, SldCloseHandler {
+		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler, SldRefreshHandler,
+		SldCloseHandler {
 
 	private final SldManager manager;
 
 	@Inject
-	public SldActionPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final SldManager manager) {
+	public SldActionPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+			final SldManager manager) {
 		super(eventBus, view, proxy);
 		this.manager = manager;
 	}
 
+	/**
+	 * {@link SldActionPresenter}'s proxy.
+	 */
 	@ProxyStandard
 	public interface MyProxy extends Proxy<SldActionPresenter> {
 	}
 
 	/**
-	 * {@link RuleSelectorPresenter}'s view.
+	 * {@link SldActionPresenter}'s view.
 	 */
 	public interface MyView extends View, HasSldSaveHandlers {
 
@@ -102,7 +123,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 	}
 
 	public void onSldClose(SldCloseEvent event) {
-		if(event.isSave()) {
+		if (event.isSave()) {
 			manager.saveAndDeselectAll();
 		} else {
 			manager.deselectAll();

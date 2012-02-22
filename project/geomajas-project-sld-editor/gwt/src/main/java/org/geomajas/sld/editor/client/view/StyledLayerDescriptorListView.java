@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -23,7 +23,6 @@ import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.client.view.ViewUtil.YesNoCallback;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -35,8 +34,6 @@ import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.util.BooleanCallback;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -52,6 +49,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * List view of SLD's.
  * 
+ * @author An Buyle
  * @author Jan De Moerloose
  * 
  */
@@ -80,7 +78,8 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 	private final EventBus eventBus;
 
 	@Inject
-	public StyledLayerDescriptorListView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public StyledLayerDescriptorListView(final EventBus eventBus, final ViewUtil viewUtil,
+			final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
 		this.sldEditorMessages = sldEditorMessages;
 		vLayout = new VLayout(10);
@@ -109,8 +108,8 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 				ListGridRecord record = event.getSelectedRecord();
 				enableRemoveButton(record != null);
 				if (null == record) {
-					//Deselect
-					SldListSelectEvent.fire(StyledLayerDescriptorListView.this, (String)null);
+					// Deselect
+					SldListSelectEvent.fire(StyledLayerDescriptorListView.this, (String) null);
 				} else {
 					SldListSelectEvent.fire(StyledLayerDescriptorListView.this, record.getAttribute("SLDName"));
 				}

@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.client.view;
 
 import org.geomajas.sld.RuleInfo;
@@ -19,6 +29,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
+/**
+ * Default implementation of {@link RulePresenter.MyView}.
+ * 
+ * @author An Buyle
+ * @author Jan De Moerloose
+ *
+ */
 public class RuleView extends ViewImpl implements RulePresenter.MyView {
 
 	private VLayout ruleDetailContainer;
@@ -79,28 +96,25 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 		topTabSet.setWidth100();
 		topTabSet.setHeight100();
 		topTabSet.setOverflow(Overflow.VISIBLE);
-		topTabSet.setPaneContainerOverflow(Overflow.VISIBLE); 
+		topTabSet.setPaneContainerOverflow(Overflow.VISIBLE);
 		ruleDetailContainer.addMember(topTabSet);
 	}
-	
-
 
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == RulePresenter.TYPE_SYMBOL_CONTENT) {
-			setContent(symbolPane, (Canvas)content);
+			setContent(symbolPane, (Canvas) content);
 		} else if (slot == RulePresenter.TYPE_FILTER_CONTENT) {
-			setContent(filterPane, (Canvas)content);
+			setContent(filterPane, (Canvas) content);
 		} else {
 			super.setInSlot(slot, content);
 		}
 	}
 
-	public void reset(){
+	public void reset() {
 		hideContent(filterPane);
 		hideContent(symbolPane);
 	}
-
 
 	private void hideContent(Layout layout) {
 		for (Canvas canvas : layout.getMembers()) {
@@ -108,20 +122,18 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 		}
 	}
 
-
-
 	private void setContent(Layout layout, Canvas content) {
 		if (content != null) {
 			content.setWidth100();
 			content.setHeight100();
-			if(layout.hasMember(content)) {
+			if (layout.hasMember(content)) {
 				content.setVisible(true);
 			} else {
 				layout.addMember(content);
 			}
 		}
 	}
-	
+
 	public Widget asWidget() {
 		return ruleDetailContainer;
 	}

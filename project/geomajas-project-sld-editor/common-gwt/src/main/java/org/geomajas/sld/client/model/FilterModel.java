@@ -1,22 +1,45 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.model;
 
 import org.geomajas.sld.filter.FilterTypeInfo;
 
+/**
+ * Model for SLD rule filter.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public interface FilterModel {
 
+	/**
+	 * Supported operator types.
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
 	public enum OperatorType {
-		PROPERTY_IS_EQUAL_TO("PROPERTY_IS_EQUAL_TO"),
-		PROPERTY_IS_GREATER_THAN("PROPERTY_IS_GREATER_THAN"), 
-		PROPERTY_IS_GREATER_THAN_OR_EQUAL("PROPERTY_IS_GREATER_THAN_OR_EQUAL"), 
-		PROPERTY_IS_LESS_THAN("PROPERTY_IS_LESS_THAN"), 
-		PROPERTY_IS_LESS_THAN_OR_EQUAL("PROPERTY_IS_LESS_THAN_OR_EQUAL"), 
-		PROPERTY_IS_NOT_EQUAL_TO("PROPERTY_IS_NOT_EQUAL_TO"), 
-		PROPERTY_IS_BETWEEN("PROPERTY_IS_BETWEEN"), PROPERTY_IS_LIKE("PROPERTY_IS_LIKE"), 
-		PROPERTY_IS_NULL("PROPERTY_IS_NULL"), 
-		PROPERTY_IS_NOT_BETWEEN("PROPERTY_IS_NOT_BETWEEN"), 
+		PROPERTY_IS_EQUAL_TO("PROPERTY_IS_EQUAL_TO"), 
+		PROPERTY_IS_GREATER_THAN("PROPERTY_IS_GREATER_THAN"),
+		PROPERTY_IS_GREATER_THAN_OR_EQUAL("PROPERTY_IS_GREATER_THAN_OR_EQUAL"),
+		PROPERTY_IS_LESS_THAN("PROPERTY_IS_LESS_THAN"),
+		PROPERTY_IS_LESS_THAN_OR_EQUAL("PROPERTY_IS_LESS_THAN_OR_EQUAL"),
+		PROPERTY_IS_NOT_EQUAL_TO("PROPERTY_IS_NOT_EQUAL_TO"),
+		PROPERTY_IS_BETWEEN("PROPERTY_IS_BETWEEN"),
+		PROPERTY_IS_LIKE("PROPERTY_IS_LIKE"),
+		PROPERTY_IS_NULL("PROPERTY_IS_NULL"),
+		PROPERTY_IS_NOT_BETWEEN("PROPERTY_IS_NOT_BETWEEN"),
 		PROPERTY_IS_NOT_LIKE("PROPERTY_IS_NOT_LIKE"),
 		PROPERTY_IS_NOT_NULL("PROPERTY_IS_NOT_NULL");
-		
+
 		private final String value;
 
 		OperatorType(String v) {
@@ -83,6 +106,8 @@ public interface FilterModel {
 	void setPatternMatchingEscape(String patternMatchingEscape);
 
 	FilterModelState getState();
+
+	void synchronize();
 	
-	void checkState();
+	String getSupportedWarning();
 }

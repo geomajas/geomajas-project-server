@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.presenter;
 
 import java.util.logging.Logger;
@@ -22,11 +32,17 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+/**
+ * MVP Presenter class for {@link LineSymbolizerInfo}.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.MyView, LineSymbolizerPresenter.MyProxy>
 		implements RuleSelectedHandler, InitSldLayoutHandler, RuleChangedHandler {
 
 	private Logger logger = Logger.getLogger(LineSymbolizerPresenter.class.getName());
-	
+
 	private LineSymbolizerInfo currentModel;
 
 	/**
@@ -37,7 +53,7 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 	}
 
 	/**
-	 * {@link StyledLayerDescriptorPresenter}'s view.
+	 * {@link LineSymbolizerPresenter}'s view.
 	 */
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
@@ -90,12 +106,13 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 	}
 
 	public void onChanged(RuleChangedEvent event) {
-		if(event.getRuleModel() == null) {
+		if (event.getRuleModel() == null) {
 			clearModelAndView();
 		} else {
 			setRule(event.getRuleModel());
 		}
 	}
+
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
 			clearModelAndView();
@@ -104,11 +121,10 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 		}
 	}
 
-
 	public void setRule(RuleModel rule) {
 		if (rule.getGeometryType().equals(GeometryType.LINE)) {
 			forceReveal();
-			currentModel = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+			currentModel = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo();
 			getView().modelToView(currentModel);
 			getView().show();
 		} else {
@@ -123,11 +139,9 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 		getView().hide();
 	}
 
-
 	@ProxyEvent
 	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
 	}
-
 
 }

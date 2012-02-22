@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -41,17 +41,17 @@ public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDia
 	public interface MyView extends PopupView, HasCreateSldDialogCreateHandlers {
 
 		GeometryType getGeometryType();
-		
+
 		String getName();
 	}
 
 	private SldManager manager;
-	
+
 	private ViewUtil viewUtil;
 
 	@Inject
-	public CreateSldDialogPresenterWidget(final EventBus eventBus, final MyView view,
-			final SldManager manager, final ViewUtil viewUtil) {
+	public CreateSldDialogPresenterWidget(final EventBus eventBus, final MyView view, final SldManager manager,
+			final ViewUtil viewUtil) {
 		super(eventBus, view);
 		this.manager = manager;
 		this.viewUtil = viewUtil;
@@ -81,7 +81,7 @@ public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDia
 	}
 
 	public void onSldAdded(SldAddedEvent event) {
-		viewUtil.showMessage("De SLD met standaard inhoud is succesvol gecre&euml;erd.");		
+		viewUtil.showMessage("De SLD met standaard inhoud is succesvol gecre&euml;erd.");
 	}
 
 }

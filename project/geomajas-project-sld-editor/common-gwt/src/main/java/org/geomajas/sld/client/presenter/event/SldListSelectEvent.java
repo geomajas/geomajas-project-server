@@ -3,8 +3,8 @@
  *
  * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
@@ -15,6 +15,12 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+/**
+ * Event fired when the user wants to select an SLD.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class SldListSelectEvent extends GwtEvent<SldListSelectEvent.SldListSelectHandler> {
 
 	private String name;
@@ -22,7 +28,7 @@ public class SldListSelectEvent extends GwtEvent<SldListSelectEvent.SldListSelec
 	public SldListSelectEvent(String name) {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

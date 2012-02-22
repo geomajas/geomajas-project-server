@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.client.model;
 
 import java.util.ArrayList;
@@ -19,6 +29,12 @@ import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Default implementation of {@link SldModel}.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class SldModelImpl implements SldModel {
 
 	private static Logger logger = Logger.getLogger("SldModelImpl");
@@ -91,7 +107,8 @@ public class SldModelImpl implements SldModel {
 					UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
 					this.styleTitle = userStyle.getTitle();
 
-					if (null == userStyle.getFeatureTypeStyleList() || userStyle.getFeatureTypeStyleList().size() == 0) {
+					if (null == userStyle.getFeatureTypeStyleList() || 
+							userStyle.getFeatureTypeStyleList().size() == 0) {
 						setUnsupported(messages.unsupportedNoFeatureTypeStyle());
 					}
 					if (userStyle.getFeatureTypeStyleList().size() > 1) {
@@ -101,7 +118,7 @@ public class SldModelImpl implements SldModel {
 					FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
 
 					// Geometry Type can only be determined from the rule data (deeper level)
-					geomType = SldUtils.GetGeometryType(userStyle.getFeatureTypeStyleList());
+					geomType = SldUtils.getGeometryType(userStyle.getFeatureTypeStyleList());
 
 					ruleGroup = new RuleGroupImpl();
 					ruleGroup.setTitle(featureTypeStyle.getTitle());
@@ -122,28 +139,28 @@ public class SldModelImpl implements SldModel {
 		}
 
 	}
-	
+
 	public boolean isComplete() {
-		if(!isSupported()) {
+		if (!isSupported()) {
 			return false;
 		} else {
 			for (RuleModel rule : getRuleGroup().getRuleModelList()) {
-				if(rule.getState() == RuleModelState.INCOMPLETE) {
+				if (rule.getState() == RuleModelState.INCOMPLETE) {
 					return false;
 				}
 			}
 			return true;
 		}
 	}
-	
+
 	public boolean isDirty() {
 		return dirty;
 	}
-	
+
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
-	
+
 	public String getSupportedWarning() {
 		return supportedWarning;
 	}
@@ -154,7 +171,10 @@ public class SldModelImpl implements SldModel {
 	}
 
 	public void synchronize() {
-		if(isSupported() && isComplete()) {
+		for (RuleModel model : ruleGroup.getRuleModelList()) {
+			model.synchronize();
+		}
+		if (isSupported() && isComplete()) {
 			// retrieve the first choice
 			StyledLayerDescriptorInfo.ChoiceInfo info = sld.getChoiceList().iterator().next();
 
