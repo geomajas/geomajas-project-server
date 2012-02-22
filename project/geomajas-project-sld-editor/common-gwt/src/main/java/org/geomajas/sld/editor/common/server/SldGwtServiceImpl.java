@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.server;
+package org.geomajas.sld.editor.common.server;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.sld.StyledLayerDescriptorInfo;
-import org.geomajas.sld.client.model.SldGwtService;
+import org.geomajas.sld.editor.common.client.model.SldGwtService;
 import org.geomajas.sld.service.SldException;
 import org.geomajas.sld.service.SldService;
 import org.springframework.beans.factory.annotation.Autowired;
