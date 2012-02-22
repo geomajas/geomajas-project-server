@@ -4,12 +4,8 @@
 	<inherits name="com.google.gwt.user.User" />
 	
 	
-	<source path="sld/client">
+	<source path="client">
 		<exclude name="*Test*.java"/>
 	</source>
-	
-	<source path="sld/editor/client/">
-		<exclude name="*Test*.java"/>
-	</source>
-	
+		
 </module>
