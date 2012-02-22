@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.geomajas.sld.NamedLayerInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
-import org.geomajas.sld.client.model.SldGwtService;
-import org.geomajas.sld.client.model.SldGwtServiceAsync;
+import org.geomajas.sld.editor.common.client.model.SldGwtService;
+import org.geomajas.sld.editor.common.client.model.SldGwtServiceAsync;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

@@ -8,11 +8,9 @@
 	<inherits name="com.gwtplatform.mvp.Mvp" />
 
 	<inherits name='com.smartgwt.SmartGwt'/>
-	<inherits name="org.geomajas.GeomajasSldSmartGwt"/>  <!-- using SmartGwt -->
-	<inherits name="org.geomajas.GeomajasSldApi"/>
-	<inherits name="org.geomajas.GeomajasSldCommonGwt"/>
-
 	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
+
+	<inherits name="org.geomajas.sld.editor.GeomajasSldSmartGwt"/>  <!-- using SmartGwt -->
 
 	<extend-property name="locale" values="nl" />
 	<extend-property name="locale" values="en"/>

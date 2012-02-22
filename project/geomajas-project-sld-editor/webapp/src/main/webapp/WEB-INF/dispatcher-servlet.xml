@@ -29,6 +29,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean id="sldGwtService" class="org.geomajas.sld.server.SldGwtServiceImpl" />
+	<bean id="sldGwtService" class="org.geomajas.sld.editor.common.server.SldGwtServiceImpl" />
 
 </beans>
