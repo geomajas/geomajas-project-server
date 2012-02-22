@@ -16,8 +16,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Provides call-back to be called when an attribute (or a group of attributes) of the SLD has been changed, usually as
- * a result of user editing of a form item in one of the SLD editor widgets.
+ * Fired when the SLD has been changed.
  * 
  * @author An Buyle
  * 
@@ -29,9 +28,6 @@ public class SldChangedEvent extends GwtEvent<SldChangedEvent.SldChangedHandler>
 
 	/**
 	 * @param source
-	 * @param isComplete if true, the attribute/attributes that have changed do NOT result in an incomplete SLD (example
-	 *        of isComplete false is when only the attribute of a rule filter has been specified and not yet the
-	 *        operation)
 	 * 
 	 */
 	public static void fire(HasHandlers source) {

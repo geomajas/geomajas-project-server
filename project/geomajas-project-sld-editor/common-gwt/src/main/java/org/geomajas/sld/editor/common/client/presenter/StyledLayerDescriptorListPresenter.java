@@ -13,6 +13,7 @@ package org.geomajas.sld.editor.common.client.presenter;
 import java.util.List;
 
 import org.geomajas.sld.editor.common.client.NameTokens;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.common.client.model.SldListChangedEvent;
 import org.geomajas.sld.editor.common.client.model.SldManager;
 import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent;
@@ -21,6 +22,7 @@ import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent;
 import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent.SldLoadedHandler;
 import org.geomajas.sld.editor.common.client.presenter.event.InitMainLayoutEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.InitMainLayoutEvent.InitMainLayoutHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent.HasSldListPopupNewHandlers;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
@@ -31,6 +33,7 @@ import org.geomajas.sld.editor.common.client.presenter.event.SldListSelectEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListSelectEvent.HasSldListSelectHandlers;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListSelectEvent.SldListSelectHandler;
 import org.geomajas.sld.editor.common.client.view.ViewUtil;
+import org.geomajas.sld.editor.common.client.view.ViewUtil.YesNoCallback;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -76,12 +79,16 @@ public class StyledLayerDescriptorListPresenter
 	private SldManager manager;
 
 	private ViewUtil viewUtil;
+	
+	private SldEditorMessages messages;
 
 	@Inject
 	public StyledLayerDescriptorListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
-			final ViewUtil viewUtil, final SldManager manager, final CreateSldDialogPresenterWidget createDialog) {
+			final ViewUtil viewUtil, final SldManager manager, final SldEditorMessages messages,
+			final CreateSldDialogPresenterWidget createDialog) {
 		super(eventBus, view, proxy);
 		this.manager = manager;
+		this.messages = messages;
 		this.createDialog = createDialog;
 		this.viewUtil = viewUtil;
 	}
@@ -103,8 +110,24 @@ public class StyledLayerDescriptorListPresenter
 		}));
 		registerHandler(getView().addSldListSelectHandler(new SldListSelectHandler() {
 
-			public void onSldListSelect(SldListSelectEvent event) {
-				manager.select(event.getName());
+			public void onSldListSelect(final SldListSelectEvent event) {
+				if (manager.getCurrentSld() != null && manager.getCurrentSld().isDirty()) {
+					viewUtil.showYesNoMessage(messages.confirmSavingChangesBeforeUnloadingSld(), new YesNoCallback() {
+
+						public void onYes() {
+							manager.saveAndSelect(event.getName());
+						}
+
+						public void onNo() {
+							manager.select(event.getName());
+						}
+
+						public void onCancel() {
+						}
+					});
+				} else {
+					manager.select(event.getName());
+				}
 			}
 		}));
 		addRegisteredHandler(SldLoadedEvent.getType(), this);

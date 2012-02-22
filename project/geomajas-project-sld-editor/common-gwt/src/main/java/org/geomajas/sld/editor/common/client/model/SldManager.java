@@ -88,4 +88,6 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	void deselectAll();
 
 	void saveAndDeselectAll();
+
+	void saveAndSelect(String name);
 }

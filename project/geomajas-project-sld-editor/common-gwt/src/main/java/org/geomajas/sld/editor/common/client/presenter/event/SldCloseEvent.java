@@ -16,10 +16,11 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Event fired when the user wants to close or deselect the current SLD.
+ * Event fired when the user wants to close the current SLD. It has an additional option to save the current
+ * SLD before closing {@link #fireSave(HasHandlers)}.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
 public class SldCloseEvent extends GwtEvent<SldCloseEvent.SldCloseHandler> {
 
@@ -32,12 +33,25 @@ public class SldCloseEvent extends GwtEvent<SldCloseEvent.SldCloseHandler> {
 	public boolean isSave() {
 		return save;
 	}
-
+	
+	/**
+	 * Fires a {@link SldCloseEvent} that will save the current SLD and close it. If not successful, the current SLD
+	 * remains open.
+	 * 
+	 * @param source
+	 * @param name
+	 */
 	public static void fireSave(HasHandlers source) {
 		SldCloseEvent eventInstance = new SldCloseEvent(true);
 		source.fireEvent(eventInstance);
 	}
 
+	/**
+	 * Fires a {@link SldCloseEvent} that will close the current SLD regardless of changes.
+	 * 
+	 * @param source
+	 * @param name
+	 */
 	public static void fire(HasHandlers source) {
 		SldCloseEvent eventInstance = new SldCloseEvent(false);
 		source.fireEvent(eventInstance);
@@ -104,4 +118,5 @@ public class SldCloseEvent extends GwtEvent<SldCloseEvent.SldCloseHandler> {
 	public String toString() {
 		return "SldCloseEvent[" + "]";
 	}
+
 }

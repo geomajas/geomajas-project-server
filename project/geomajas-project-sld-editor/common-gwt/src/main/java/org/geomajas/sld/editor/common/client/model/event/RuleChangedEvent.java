@@ -18,10 +18,10 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Provides call-back to be called when an attribute (or a group of attributes) of the SLD has been changed, usually as
- * a result of user editing of a form item in one of the SLD editor widgets.
+ * Fired when the selected rule model has been changed. This is more specific event for presenters that are only aware
+ * of the selected {@link RuleModel}.
  * 
- * @author An Buyle
+ * @author Jan De Moerloose
  * 
  */
 public class RuleChangedEvent extends GwtEvent<RuleChangedEvent.RuleChangedHandler> {

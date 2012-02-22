@@ -285,7 +285,12 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 	}
 
 	public void saveAndDeselectAll() {
-		new DeselectHandler();
+		new OneTimeDeselector();
+		saveCurrent();
+	}
+
+	public void saveAndSelect(String name) {
+		new OneTimeSelector(name);
 		saveCurrent();
 	}
 
@@ -295,16 +300,41 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	class DeselectHandler implements SldChangedHandler {
+	class OneTimeDeselector implements SldChangedHandler {
 
 		private HandlerRegistration registration;
 
-		public DeselectHandler() {
+		public OneTimeDeselector() {
 			registration = addSldChangedHandler(this);
 		}
 
 		public void onChanged(SldChangedEvent event) {
 			deselectAll();
+			if (registration != null) {
+				registration.removeHandler();
+			}
+		}
+	}
+
+	/**
+	 * One-time {@link SldChangedHandler} that selects a new SLD after the current has been saved.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class OneTimeSelector implements SldChangedHandler {
+
+		private HandlerRegistration registration;
+		
+		private String name;
+
+		public OneTimeSelector(String name) {
+			this.name = name;
+			registration = addSldChangedHandler(this);
+		}
+
+		public void onChanged(SldChangedEvent event) {
+			select(name);
 			if (registration != null) {
 				registration.removeHandler();
 			}
