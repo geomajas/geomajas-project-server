@@ -76,6 +76,7 @@ public class SelectionSearch extends AbstractGeometricSearchMethod implements Fe
 	public void initialize(MapWidget mapWidget, GeometryUpdateHandler handler) {
 		super.initialize(mapWidget, handler);
 		mapWidget.getMapModel().addFeatureSelectionHandler(this);
+		updateState();
 	}
 		
 	public Canvas getSearchCanvas() {
