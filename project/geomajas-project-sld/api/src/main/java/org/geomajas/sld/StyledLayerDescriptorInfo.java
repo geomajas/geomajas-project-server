@@ -189,6 +189,8 @@ public class StyledLayerDescriptorInfo implements Serializable {
 		 */
 		public void clearChoiceListSelect() {
 			choiceListSelect = -1;
+			namedLayer = null;
+			userLayer = null;
 		}
 
 		/**

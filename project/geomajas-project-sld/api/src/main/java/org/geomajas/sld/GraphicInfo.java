@@ -169,6 +169,8 @@ public class GraphicInfo implements Serializable {
 		 */
 		public void clearChoiceListSelect() {
 			choiceListSelect = -1;
+			mark = null;
+			externalGraphic = null;
 		}
 
 		/**

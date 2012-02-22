@@ -105,6 +105,9 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 		 */
 		public void clearChoiceListSelect() {
 			choiceListSelect = -1;
+			comparisonOps = null;
+			spatialOps = null;
+			logicOps = null;
 		}
 
 		/**

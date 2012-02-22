@@ -146,6 +146,8 @@ public class NamedLayerInfo implements Serializable {
 		 */
 		public void clearChoiceListSelect() {
 			choiceListSelect = -1;
+			namedStyle = null;
+			userStyle = null;
 		}
 
 		/**
