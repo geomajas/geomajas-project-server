@@ -29,13 +29,5 @@
 		<module>geomajas-face-rest</module>
 		<module>geomajas-face-pure-gwt</module>
 	</modules>
-
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
 	
 </project>

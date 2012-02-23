@@ -41,21 +41,6 @@
 		</developer>
 	</developers>
 
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

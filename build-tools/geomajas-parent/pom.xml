@@ -75,31 +75,6 @@
 		</notifiers>
 	</ciManagement>
 
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-		<!-- @todo needs to be commented for release, needed for snapshots
-		<pluginRepository>
-			<id>Geomajas snapshots</id>
-			<name>Geomajas snapshot repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		-->
-	</pluginRepositories>
-
 	<developers>
 		<developer>
 			<id>pieterdg</id>

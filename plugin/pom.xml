@@ -45,13 +45,5 @@
 		<module>geomajas-widget-searchandfilter</module>
 		<module>geomajas-widget-utility</module>
 	</modules>
-
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
 	
 </project>
