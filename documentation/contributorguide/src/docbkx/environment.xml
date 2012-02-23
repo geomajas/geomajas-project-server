@@ -32,6 +32,47 @@
       </ulink></para>
     </section>
 
+    <section>
+      <title>Maven repository configuration</title>
+
+      <para>You should configure the following repositories in your maven
+      settings.xml file:</para>
+
+      <para><programlisting>&lt;repositories&gt;
+ &lt;repository&gt;
+  &lt;id&gt;Geomajas&lt;/id&gt;
+  &lt;name&gt;Geomajas repository&lt;/name&gt;
+  &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+ &lt;/repository&gt;
+
+ &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster builds --&gt;
+ &lt;!--
+ &lt;repository&gt;
+  &lt;id&gt;Geomajas-latest&lt;/id&gt;
+  &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
+  &lt;url&gt;http://apps.geomajas.org/nexus/content/groups/latest&lt;/url&gt;
+  &lt;snapshots&gt;
+   &lt;enabled&gt;true&lt;/enabled&gt;
+  &lt;/snapshots&gt;
+ &lt;/repository&gt;
+ --&gt;
+&lt;/repositories&gt;
+&lt;pluginRepositories&gt;
+ &lt;pluginRepository&gt;
+  &lt;id&gt;Geomajas&lt;/id&gt;
+  &lt;name&gt;Geomajas repository&lt;/name&gt;
+  &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+ &lt;/pluginRepository&gt;
+&lt;/pluginRepositories&gt;
+</programlisting></para>
+
+      <para>The repositories are not configured in the pom.xml to allow us
+      maximum freedom in changing these in the future. Ideally, Geomajas
+      releases should be completely downloadable from the maven central
+      repository, but some patched library versions force us to maintain our
+      own repository at the moment.</para>
+    </section>
+
     <section id="install-svn">
       <title>Subversion</title>
 
@@ -150,8 +191,8 @@
         </listitem>
 
         <listitem>
-          <para>Set "src/main/webapp" as webapp directory in the War tab
-          </para>
+          <para>Set "src/main/webapp" as webapp directory in the War
+          tab</para>
         </listitem>
 
         <listitem>
@@ -172,9 +213,9 @@
       <para>Eclipse project configurations can be alternatively be generated
       using the maven Eclipse plug-in. Running eclipse:eclipse fails on trunk
       because of an issue with maven filtering: <ulink
-      url="http://jira.codehaus.org/browse/MECLIPSE-576">http://jira.codehaus.org/browse/MECLIPSE-576</ulink>. This
-      will be fixed in the upcoming 2.9 release of the plugin, in the meantime
-      you can back up to 2.6: </para>
+      url="http://jira.codehaus.org/browse/MECLIPSE-576">http://jira.codehaus.org/browse/MECLIPSE-576</ulink>.
+      This will be fixed in the upcoming 2.9 release of the plugin, in the
+      meantime you can back up to 2.6:</para>
 
       <programlisting>mvn -P noshrink eclipse:clean org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse </programlisting>
 
