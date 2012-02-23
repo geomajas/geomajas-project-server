@@ -232,6 +232,17 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 			t++;
 		}
 		Assert.assertEquals(4, t);
+		// test case-insensitive (http://jira.geomajas.org/browse/HIB-33)
+		filter = filterCreator.createLikeFilter(PARAM_TEXT_ATTR, "*NAME-_");
+		it = layer.getElements(filter, 0, 0);
+
+		t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue("Returned object must be a HibernateTestFeature",
+					it.next() instanceof HibernateTestFeature);
+			t++;
+		}
+		Assert.assertEquals(4, t);
 	}
 
 	@Test
