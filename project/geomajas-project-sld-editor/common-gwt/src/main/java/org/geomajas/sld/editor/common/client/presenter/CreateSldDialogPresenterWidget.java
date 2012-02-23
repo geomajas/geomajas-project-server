@@ -18,7 +18,8 @@ import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent;
 import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent.SldAddedHandler;
 import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
-import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent.HasCreateSldDialogCreateHandlers;
+import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent.
+HasCreateSldDialogCreateHandlers;
 import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.inject.Inject;

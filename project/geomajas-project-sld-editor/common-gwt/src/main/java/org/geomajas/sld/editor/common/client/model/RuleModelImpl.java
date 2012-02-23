@@ -226,7 +226,7 @@ public class RuleModelImpl implements RuleModel {
 	public void synchronize() {
 		ruleInfo.setTitle(getTitle());
 		getFilterModel().synchronize();
-		if(getFilterModel().getFilterTypeInfo() == null) {
+		if (getFilterModel().getFilterTypeInfo() == null) {
 			ruleInfo.setChoice(null);
 		} else {
 			ruleInfo.setChoice(new ChoiceInfo());

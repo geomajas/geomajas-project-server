@@ -22,7 +22,6 @@ import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent;
 import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent.SldLoadedHandler;
 import org.geomajas.sld.editor.common.client.presenter.event.InitMainLayoutEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.InitMainLayoutEvent.InitMainLayoutHandler;
-import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent.HasSldListPopupNewHandlers;
 import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
