@@ -20,7 +20,6 @@ import java.util.List;
 import org.geomajas.layer.LayerException;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernatespatial.criterion.SpatialRestrictions;
 import org.opengis.filter.And;
@@ -226,7 +225,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		String value = filter.getLiteral();
 		value = value.replaceAll("\\*", "%");
 		value = value.replaceAll("\\?", "_");
-		if(filter.isMatchingCase()) {
+		if (filter.isMatchingCase()) {
 			return Restrictions.like(finalName, value);
 		} else {
 			return Restrictions.ilike(finalName, value);
