@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TileMap version="version" tilemapservice="tilemapservice">
+	<Title>title</Title>
+	<Abstract>abstract</Abstract>
+	<SRS>srs</SRS>
+	<BoundingBox minx="1" miny="2" maxx="3" maxy="4" />
+	<Origin x="5" y="6" />
+	<TileFormat width="7" height="8" mime-type="mimetype" extension="extension" />
+	<TileSets profile="profile">
+		<TileSet href="href1" units-per-pixel="9" order="0" />
+		<TileSet href="href2" units-per-pixel="10" order="1" />
+	</TileSets>
+</TileMap>
