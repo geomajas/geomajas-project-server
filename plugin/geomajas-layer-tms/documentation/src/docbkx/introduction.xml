@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>This plug-in contains a raster layer definition for accessing raster
+  data from TMS servers as specified by OSGeo. See the <ulink
+  url="http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">Specification</ulink>.
+  Although not an official OGC specification, the TMS is easy to understand
+  and has the advantage of being very performing. </para>
+
+  <para>This plug-in does not support the entire TileMapService capabilities,
+  it does support a single TileMap configuration, as such a TileMap represents
+  a single Layer. The supported TMS version is 1.0.0.</para>
+</chapter>

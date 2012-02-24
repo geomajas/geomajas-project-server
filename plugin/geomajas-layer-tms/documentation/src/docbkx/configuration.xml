@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <para>This chapter describes the perils of configuring a TMS layer for your
+  Geomajas application. Basically there are 2 obstacles to conquer: Getting
+  the TMS plug-in jar on your classpath, and configuring a TMS layer using the
+  Geomajas configuration.</para>
+
+  <sect1>
+    <title>Java dependencies</title>
+
+    <para>If you are using Maven, you're in luck. All you have to do is add
+    the following dependency to your configuration:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-tms&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+
+    <para>If you are not a Maven user, make sure that there is a recent
+    version of JaxB (2.x) on your classpath. Normally the Geomajas server has
+    already required this, but we're mentioning it just in case.</para>
+
+    <sect2>
+      <title>Configuring a TMS layer</title>
+
+      <para>When configuring a TMS layer, there are 2 basic options to chose
+      from: either configure your own RasterLayerInfo object (as with all
+      other Geomajas raster layers), or you let the TMS plug-in configure the
+      layer automatically, based upon the TMS layer description (see the
+      TileMap resource in the <ulink
+      url="http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS
+      specification</ulink>).</para>
+    </sect2>
+
+    <sect2>
+      <title>Option1: using the TMS layer description (TileMap)</title>
+
+      <para>This option is the easiest one, but only works if your TMS
+      actually has a TileMap description. If no such description is available,
+      you need to configure a RasterLayerInfo yourself.</para>
+
+      <para>This options requires you to specify the TMS layer description
+      URL, upon which the TMS plug-in will retrieve the description and build
+      a <code>RasterLayerInfo</code> automatically. The SRS, bounding box,
+      resolutions, etc will be taken from the TileMap description. Below is an
+      example of such a configuration:</para>
+
+      <programlisting>&lt;bean name="tms" class="org.geomajas.layer.tms.TmsLayer" &gt;
+    &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
+&lt;/bean&gt;</programlisting>
+    </sect2>
+
+    <sect2>
+      <title>Option2: configuring a RasterLayerInfo</title>
+
+      <para>This option would can be used in case there is no TMS description
+      available, or in case you wish to use different configuration options.
+      You would still need to specify the "baseTmsUrl" and a
+      <code>RasterLayerInfo</code> object:</para>
+
+      <programlisting>&lt;bean name="tms" class="org.geomajas.layer.tms.TmsLayer" &gt;
+    &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
+    &lt;property name="extension" value="jpg" /&gt;
+    &lt;property name="layerInfo" ref="<emphasis role="bold">layerTms</emphasis>" /&gt;
+&lt;/bean&gt;
+
+&lt;bean name="<emphasis role="bold">layerTms</emphasis>" class="org.geomajas.configuration.RasterLayerInfo"&gt;
+    &lt;property name="crs" value="EPSG:4326"/&gt;
+    &lt;property name="maxExtent"&gt;
+        &lt;bean class="org.geomajas.geometry.Bbox"&gt;
+            &lt;property name="x" value="-180"/&gt;
+            &lt;property name="y" value="-90"/&gt;
+            &lt;property name="width" value="360"/&gt;
+            &lt;property name="height" value="180"/&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="resolutions"&gt;
+        &lt;list&gt;
+            &lt;value&gt;0.5&lt;/value&gt;
+            &lt;value&gt;0.25&lt;/value&gt;
+            &lt;value&gt;0.125&lt;/value&gt;
+            &lt;value&gt;0.0625&lt;/value&gt;
+            &lt;value&gt;0.03125&lt;/value&gt;
+            &lt;value&gt;0.015625&lt;/value&gt;
+            &lt;value&gt;0.0078125&lt;/value&gt;
+            &lt;value&gt;0.00390625&lt;/value&gt;
+            &lt;value&gt;0.001953125&lt;/value&gt;
+            &lt;value&gt;0.0009765625&lt;/value&gt;
+            &lt;value&gt;0.00048828125&lt;/value&gt;
+            &lt;value&gt;0.000244140625&lt;/value&gt;
+            &lt;value&gt;0.000122070312&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="dataSourceName" value="landsat" /&gt;
+    &lt;property name="tileWidth" value="512"/&gt;
+    &lt;property name="tileHeight" value="512"/&gt;
+&lt;/bean&gt;</programlisting>
+
+      <para>Note that this time, an extension and a link to a
+      <code>RasterLayerInfo</code> have been added. The above configuration
+      will generate tiles like:</para>
+
+      <programlisting>http://tms.osgeo.org/1.0.0/landsat/0/0/0.jpg</programlisting>
+    </sect2>
+  </sect1>
+</chapter>
