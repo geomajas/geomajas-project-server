@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-howto">
+  <title>Development guidelines</title>
+
+  <para>This chapter holds some general principles for extending the current
+  code base. Most of it can be found in the GWTP documentation, some of it is
+  added by ourselves.</para>
+
+  <section>
+    <title>Project layout</title>
+
+    <para>The project consists of 5 subprojects:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>geomajas-project-sld-editor-common-gwt: the common part of the
+        code, containing the model, the presenters and the view
+        interfaces</para>
+      </listitem>
+
+      <listitem>
+        <para>geomajas-project-sld-editor-puregwt: the plain GWT
+        implementation of the view classes</para>
+      </listitem>
+
+      <listitem>
+        <para>geomajas-project-sld-editor-gwt: the SmartGWT implementation of
+        the view classes</para>
+      </listitem>
+
+      <listitem>
+        <para>geomajas-project-sld-editor-documentation: the
+        documentation</para>
+      </listitem>
+
+      <listitem>
+        <para>geomajas-project-sld-editor-webapp: the web application (war
+        project)</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>How to add model classes</title>
+
+    <para>Changing the model should follow the following principles: </para>
+
+    <itemizedlist>
+      <listitem>
+        <para>start by adding the interfaces and/or events that you need in
+        the common GWT model packages:
+        <code>org.geomajas.sld.editor.common.client.model</code> and
+        <code>org.geomajas.sld.editor.common.client.model.event</code> </para>
+      </listitem>
+
+      <listitem>
+        <para>events should follow our practice of defining the event in a
+        single class (copy/paste + rename an existing event), declare the
+        model as HasHandlers for your event and fire the event through the
+        event bus:<programlisting>public class MyModelImpl implements MyModel, HasXxxHandlers {
+ private final EventBus eventBus;
+
+ @Inject
+ public MyModelImpl(final EventBus eventBus){
+  this.eventBus = eventBus;
+ }
+
+ public void fireEvent(GwtEvent&lt;?&gt; event) {
+  eventBus.fireEvent(event);
+ }
+
+ public HandlerRegistration addXxxHandler(XxxHandler handler) {
+  return eventBus.addHandler(XxxEvent.getType(), handler);
+ }
+
+}</programlisting></para>
+      </listitem>
+
+      <listitem>
+        <para>make the implementations of your interfaces</para>
+      </listitem>
+
+      <listitem>
+        <para>bind your implementations to your interfaces in the GIN module
+        class:
+        <code>org.geomajas.sld.editor.common.client.gin.ClientModule</code></para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>How to bind/autowire model classes</title>
+
+    <para>As all model/presenter and view classes are created by GIN, they can
+    be autowired to each other by declaring them in the constructor and using
+    the <code>@inject</code> annotation. This is nice for singletons, but in
+    some case you want to create multiple instances of a class and still use
+    injection. The most flexible way to do this is to create a factory
+    interface with a <code>create()</code> method. This factory should then be
+    registered in the GIN module class
+    <code>org.geomajas.sld.editor.common.client.gin.ClientModule</code> as
+    follows:<programlisting>install(new GinFactoryModuleBuilder().implement(MyModel.class, MyModelImpl.class).build(MyModelFactory.class));
+</programlisting>The nice thing about this way of working is that you can add
+    extra constructor arguments to your model constructor that are passed to
+    the factory method at runtime instead of being injected. This is simply
+    done by adding an <code>@assisted</code> annotation to these arguments
+    (see <code>RuleModelImpl</code> for an example).</para>
+  </section>
+
+  <section>
+    <title>How to add presenter/view classes</title>
+
+    <para>A presenter/view pair should be created for each part of the model
+    that can be managed as a single unit from a single UI class. There are two
+    types of presenters in the current code base:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>singleton presenters: extensions of the
+        <code>com.gwtplatform.mvp.client.Presenter</code> class that are
+        initialised by the common GWTP lifecycle process. Normally, these
+        presenters are connected with a specific place (think 'page') and
+        revealed when the appropriate URL is called. For the current
+        application we have chosen to force revelation of these presenters by
+        tying them to an event of an ancestor presenter. This is typically
+        done by implementing the handler of the event and annotating the
+        handler method with a <code>@proxyEvent</code>
+        annotation:<programlisting>@ProxyEvent
+public void onInitSldLayout(InitSldLayoutEvent event) {
+ forceReveal();
+}
+</programlisting>In the above case, the InitSldLayout event is fired by the
+        <code>StyleLayerDescriptorLayoutPresenter</code>, which is a parent
+        presenter that is mainly responsible for drawing part of the layout.
+        At the moment we have two such presenters,
+        <code>MainLayoutPresenter</code> being the other one. Singleton
+        presenters should also determine in which part of the layout their
+        view will appear. This is done by firing a
+        <code>RevealContentEvent</code> event in the
+        <code>revealInParent()</code> method:<programlisting>@Override
+protected void revealInParent() {
+ RevealContentEvent.fire(this, MainLayoutPresenter.TYPE_MAIN_CONTENT, this);
+}
+</programlisting>The second argument determines the view slot in which the
+        view's widget should appear. See the implementation of the
+        MainlayoutPresenter in case you need to implement your own layout
+        structure.</para>
+      </listitem>
+
+      <listitem>
+        <para>For separating logic and view with a simple graphical component
+        whose lifecycle should be completely within your control, extending
+        PresenterWidget is the answer. In this case the presenter can simply
+        be injected in its parent presenter. Revealing the presenter can be
+        done whenever you choose to do so. This is a useful strategy for
+        dealing with popup windows, see
+        <code>org.geomajas.sld.editor.common.client.presenter.CreateSldDialogPresenterWidget</code>
+        for an example.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The view interfaces are defined in the presenter classes and should
+    allow the presenter to pass the part of the model that is being edited to
+    the view whenever this is required. We have typically added a
+    <code>modelToView()</code> method to the view interface to achieve this.
+    Internally, view implementations should bind the model to their internal
+    form elements, typically using the getter/setter pairs of the submodel. It
+    could be stated that this way of working violates the classical MVP
+    principle of having a passive view, but this is no problem as we only move
+    the boiler plate code to modify the model via its accessors to the
+    view.</para>
+
+    <para>The view implementations should extend
+    <code>com.gwtplatform.mvp.client.ViewImpl</code> and return the widget
+    class in their asWidget() method. At present all view classes are SmartGwt
+    implementations. User events should be forwarded to the presenters by
+    creating a custom event in the
+    <code>org.geomajas.sld.editor.common.client.presenter.event</code>
+    package. This avoids having to expose SmartGWT specific DOM events to the
+    presenter. In most cases the view can suffice with a generic event that
+    states that the SLD has been changed in some way. The
+    <code>SldContentChanged</code> event was created exactly for this purpose.
+    To fire events and register event handlers, the same practice as for
+    models can be used.</para>
+  </section>
+
+  <section>
+    <title>Internationalization and utility classes</title>
+
+    <para>Classical GWT internationalization techniques are used to localize
+    messages throughout the application. Because of GIN, GWT.create()
+    statements can be avoided altogether, ensuring normal junit testability.
+    The SldEditorMessages class can be injected into each class that needs
+    localization.</para>
+
+    <para>Utility classes should also be defined as singletons, using a clear
+    interface for separation. An example is <code>ViewUtil</code>, which
+    abstracts some basic view functionality such as showing an alert
+    message.</para>
+  </section>
+</chapter>

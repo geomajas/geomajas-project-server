@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Design</title>
+
+  <section id="dependencies">
+    <title>MVP principle</title>
+
+    <para>The editor is designed around the Model-View-Presenter principle and
+    makes use of the GWT Platform framework for its implementation. The
+    general concepts can be found on the GWTP website but we will explain some
+    of the design choices that we made to apply these concepts to the domain
+    of SLD editing. Generally speaking, the problem of editing SLD's can be
+    reduced to the general problem of editing a graph of entities, each entity
+    representing a specific part of the SLD structure. The problem is further
+    simplified by the fact that the SLD structure is a tree-like structure and
+    all entity associations are therefore of the parent-child type.</para>
+
+    <para>The hierarchical nature of the SLD lends itself very nicely to a
+    hierarchical tree of nested presenters. Although GWTP is fairly
+    page-oriented, it is quite easy to map the concept of a nested presenter
+    (which refers to a presenter whose layout is nested inside another
+    presenter's layout) to the parent-child nature of SLD in the case of a
+    desktop-like application such as the SLD editor. </para>
+
+    <para>The question of how to deal with the model-presenter separation is
+    also of some importance. In our view, the model should be unaware of the
+    presenters and model-to-presenter coupling should be done through events
+    in all cases. The presenter can of course hold a reference to the model
+    and call its methods directly. The same holds for the view, which should
+    be passive and unaware while the presenter holds a direct reference to it.
+    We slightly divert from the common practice of a passive view in two
+    ways:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>When the user performs an action, this is usually forwarded to
+        the presenter by directly exposing UI elements such as buttons in the
+        View interface. We have chosen to convert such user actions to
+        intermediate events which are independent of the underlying view
+        technology and forward these events to the presenter through the event
+        bus instead. This saves us from having to create a technology
+        independent layer of abstract buttons, textfields and so on on top of
+        the GWT/SmartGWT UI stacks.</para>
+      </listitem>
+
+      <listitem>
+        <para>Although the view is passive, it has some limited knowledge of
+        the model in the sense that it knows how to bind certain model
+        properties to UI elements and vice-versa. Most of our view therefore
+        implement a <code>ModelToView(SubModel model)</code> method that takes
+        a particular model subset (SubModel) as an argument.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The following figure describes the general communication flow in our
+    MVP architecture:</para>
+
+    <para><figure>
+        <title>MVP architecture</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/MVP.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </section>
+
+  <section>
+    <title>Model</title>
+
+    <para>The model part of the architecture is responsible for communicating
+    with the server and holding an editable representation of the SLDs. We
+    have followed an approach of strictly separating interface and
+    implementation by creating hierarchy of new interfaces to expose certain
+    parts of the SLD tree to their respective views and presenters. The
+    following picture shows the different model interfaces and their
+    respective relationships:<figure>
+        <title>Model part of the architecture</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/model.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>The interfaces (in blue) reflect the parts of the SLD that are
+    currently manageable by the editor. The model is responsible for managing
+    the SLD in terms of CRUD operations. The changes to the SLD model are
+    applied locally and will only be forwarded to the server on request of the
+    user. The model classes are responsible for maintaining the integrity if
+    the model in terms of validation but know how to deal with an incomplete
+    model where necessary. The eventual SLD configuration object is available
+    only after synchronizing the complete model state (see
+    <code>synchronize()</code> method at the various levels).</para>
+  </section>
+
+  <section>
+    <title>View/Presenter</title>
+
+    <para>The presenter and view hierarchy is responsible for visualizing the
+    model and handling the user interaction with the model. Our presenter
+    hierarchy closely mimics the model hierarchy and/or the view layout. Where
+    there is a natural hierarchy between presenters, the nested presenter
+    concept has been used to reflect this in the layout as well. In other
+    cases, a separate layout presenter was needed to nest some presenters that
+    have no logical common parent. The following figure shows the nesting of
+    the various presenters:<figure>
+        <title>Presenter part of the architecture</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/presenter.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </section>
+</chapter>

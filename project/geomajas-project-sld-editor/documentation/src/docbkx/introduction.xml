@@ -14,7 +14,47 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>The Geomajas SLD Project is a stand-alone project under the
-  Geomajas banner. It's goal is to provide a code for handling and manipulating
-  SLD data and files.</para>
+  <para>The Geomajas SLD Project is a stand-alone project under the Geomajas
+  banner. It's goal is to provide a code for handling and manipulating SLD
+  data and files. The initial version of the SLD editor provides a minimal
+  editor and in-memory backend service that supports the following use
+  cases:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Open a list of SLD files and allow the user to select an SLD by
+      name</para>
+    </listitem>
+
+    <listitem>
+      <para>Show general information about the SLD: title and name</para>
+    </listitem>
+
+    <listitem>
+      <para>Show the rules of the single FeatureTypeStyle of the SLD: name and
+      title of the rule</para>
+    </listitem>
+
+    <listitem>
+      <para>Support reordering of the rules</para>
+    </listitem>
+
+    <listitem>
+      <para>Support deletion and addition of a rule</para>
+    </listitem>
+
+    <listitem>
+      <para>Show the single symbolizer and (optional) filter of a rule</para>
+    </listitem>
+
+    <listitem>
+      <para>Support management of fills, strokes and image point
+      symbols</para>
+    </listitem>
+
+    <listitem>
+      <para>Support management of a small set of filters (binary operators
+      combined with a logical NOT-operator)</para>
+    </listitem>
+  </itemizedlist>
 </chapter>
