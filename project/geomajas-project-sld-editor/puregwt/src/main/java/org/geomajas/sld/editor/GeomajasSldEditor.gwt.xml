@@ -5,7 +5,7 @@
 	
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="org.geomajas.GeomajasSldApi"/>
-	<inherits name="org.geomajas.GeomajasSldCommonGwt"/> 
+	<inherits name="org.geomajas.sld.editor.common.GeomajasSldCommonGwt"/>
 	
 	<!-- 
 	<inherits name="net.auroris.ColorPickerSample" />
