@@ -53,8 +53,8 @@
     </listitem>
 
     <listitem>
-      <para>Support management of a small set of filters (binary operators
-      combined with a logical NOT-operator)</para>
+      <para>Support management of a subset of filters (single binary operator
+      combined with an optional NOT-operator)</para>
     </listitem>
   </itemizedlist>
 </chapter>
