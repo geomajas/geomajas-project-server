@@ -11,43 +11,34 @@
 
 package org.geomajas.layer.tms;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.geomajas.layer.tms.configuration.TileFormatInfo;
 import org.geomajas.layer.tms.configuration.TileMapInfo;
 import org.geomajas.layer.tms.configuration.TileSetInfo;
-import org.geomajas.layer.tms.configuration.TileSetsInfo;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Test for the TMS configuration service.
  * 
  * @author Pieter De Graef
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/layer/tms/tmsContext.xml" })
 public class TmsConfigurationTest {
 
 	private static final double DELTA = 0.00001;
 
+	@Autowired
+	private TmsConfigurationService configurationService;
+
 	@Test
-	public void testLayerCapa1Unmarshall() throws JAXBException, IOException {
-		// Create a JaxB unmarshaller:
-		JAXBContext context = JAXBContext.newInstance(TileMapInfo.class);
-		Unmarshaller um = context.createUnmarshaller();
-
-		// Create an input stream that points to a TMS layer configuration (xml):
-		InputStream is = getClass().getResourceAsStream("/org/geomajas/layer/tms/tileMapCapa1.xml");
-
-		// Unmarshall the InputStream into a TileMapInfo object:
-		TileMapInfo tileMap = (TileMapInfo) um.unmarshal(is);
+	public void testParseConfiguration() throws TmsConfigurationException {
+		TileMapInfo tileMap = configurationService
+				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 
 		// Test basic parameters:
 		Assert.assertNotNull(tileMap);
@@ -87,36 +78,5 @@ public class TmsConfigurationTest {
 		Assert.assertEquals(10, tileSet.getUnitsPerPixel(), DELTA);
 		Assert.assertEquals(1, tileSet.getOrder(), DELTA);
 		Assert.assertEquals("href2", tileSet.getHref());
-	}
-
-	public void testMarshall() throws JAXBException {
-		// Create a JaxB unmarshaller:
-		JAXBContext context = JAXBContext.newInstance(TileMapInfo.class);
-		Marshaller marshaller = context.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-		TileMapInfo tileMap = new TileMapInfo();
-		tileMap.setVersion("1.0.0");
-		tileMap.setTitle("tms-vlaanderen");
-
-		TileFormatInfo tileFormat = new TileFormatInfo();
-		tileFormat.setExtension("jpg");
-		tileFormat.setHeight(256);
-		tileFormat.setWidth(256);
-		tileFormat.setMimeType("image/jpeg");
-		tileMap.setTileFormat(tileFormat);
-
-		TileSetsInfo tileSets = new TileSetsInfo();
-		tileSets.setProfile("raster");
-		TileSetInfo tileSet = new TileSetInfo();
-		tileSet.setHref("0");
-		tileSet.setOrder(0);
-		tileSet.setUnitsPerPixel(0.25000000000000);
-		List<TileSetInfo> tileSetList = new ArrayList<TileSetInfo>();
-		tileSetList.add(tileSet);
-		tileMap.setTileSets(tileSets);
-		tileSets.setTileSets(tileSetList);
-
-		marshaller.marshal(tileMap, System.out);
 	}
 }
