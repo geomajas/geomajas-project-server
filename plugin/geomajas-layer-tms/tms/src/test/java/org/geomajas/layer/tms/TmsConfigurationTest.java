@@ -11,6 +11,9 @@
 
 package org.geomajas.layer.tms;
 
+import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.tms.configuration.TileMapInfo;
 import org.geomajas.layer.tms.configuration.TileSetInfo;
 import org.junit.Assert;
@@ -37,46 +40,75 @@ public class TmsConfigurationTest {
 
 	@Test
 	public void testParseConfiguration() throws TmsConfigurationException {
-		TileMapInfo tileMap = configurationService
+		TileMapInfo tileMapInfo = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 
 		// Test basic parameters:
-		Assert.assertNotNull(tileMap);
-		Assert.assertEquals("abstract", tileMap.getAbstractTxt());
-		Assert.assertEquals("srs", tileMap.getSrs());
-		Assert.assertEquals("title", tileMap.getTitle());
-		Assert.assertEquals("version", tileMap.getVersion());
+		Assert.assertNotNull(tileMapInfo);
+		Assert.assertEquals("abstract", tileMapInfo.getAbstractTxt());
+		Assert.assertEquals("srs", tileMapInfo.getSrs());
+		Assert.assertEquals("title", tileMapInfo.getTitle());
+		Assert.assertEquals("version", tileMapInfo.getVersion());
+		Assert.assertEquals("tilemapservice", tileMapInfo.getTileMapService());
 
 		// Test bounding box:
-		Assert.assertEquals(1, tileMap.getBoundingBox().getMinX(), DELTA);
-		Assert.assertEquals(2, tileMap.getBoundingBox().getMinY(), DELTA);
-		Assert.assertEquals(3, tileMap.getBoundingBox().getMaxX(), DELTA);
-		Assert.assertEquals(4, tileMap.getBoundingBox().getMaxY(), DELTA);
+		Assert.assertEquals(1, tileMapInfo.getBoundingBox().getMinX(), DELTA);
+		Assert.assertEquals(2, tileMapInfo.getBoundingBox().getMinY(), DELTA);
+		Assert.assertEquals(3, tileMapInfo.getBoundingBox().getMaxX(), DELTA);
+		Assert.assertEquals(4, tileMapInfo.getBoundingBox().getMaxY(), DELTA);
 
 		// Test origin:
-		Assert.assertEquals(5, tileMap.getOrigin().getX(), DELTA);
-		Assert.assertEquals(6, tileMap.getOrigin().getY(), DELTA);
+		Assert.assertEquals(5, tileMapInfo.getOrigin().getX(), DELTA);
+		Assert.assertEquals(6, tileMapInfo.getOrigin().getY(), DELTA);
 
 		// Test TileFormat:
-		Assert.assertEquals(7, tileMap.getTileFormat().getWidth());
-		Assert.assertEquals(8, tileMap.getTileFormat().getHeight());
-		Assert.assertEquals("extension", tileMap.getTileFormat().getExtension());
-		Assert.assertEquals("mimetype", tileMap.getTileFormat().getMimeType());
+		Assert.assertEquals(7, tileMapInfo.getTileFormat().getWidth());
+		Assert.assertEquals(8, tileMapInfo.getTileFormat().getHeight());
+		Assert.assertEquals("extension", tileMapInfo.getTileFormat().getExtension());
+		Assert.assertEquals("mimetype", tileMapInfo.getTileFormat().getMimeType());
 
 		// Test Tile sets:
-		Assert.assertEquals("profile", tileMap.getTileSets().getProfile());
-		Assert.assertEquals(2, tileMap.getTileSets().getTileSets().size());
+		Assert.assertEquals("profile", tileMapInfo.getTileSets().getProfile());
+		Assert.assertEquals(2, tileMapInfo.getTileSets().getTileSets().size());
 
 		// First TileSet:
-		TileSetInfo tileSet = tileMap.getTileSets().getTileSets().get(0);
+		TileSetInfo tileSet = tileMapInfo.getTileSets().getTileSets().get(0);
 		Assert.assertEquals(9, tileSet.getUnitsPerPixel(), DELTA);
 		Assert.assertEquals(0, tileSet.getOrder(), DELTA);
 		Assert.assertEquals("href1", tileSet.getHref());
 
 		// Second TileSet:
-		tileSet = tileMap.getTileSets().getTileSets().get(1);
+		tileSet = tileMapInfo.getTileSets().getTileSets().get(1);
 		Assert.assertEquals(10, tileSet.getUnitsPerPixel(), DELTA);
 		Assert.assertEquals(1, tileSet.getOrder(), DELTA);
 		Assert.assertEquals("href2", tileSet.getHref());
+	}
+
+	@Test
+	public void testAsLayerInfo() throws TmsConfigurationException {
+		TileMapInfo tileMapInfo = configurationService
+				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
+		RasterLayerInfo layerInfo = configurationService.asLayerInfo(tileMapInfo);
+
+		// Check general parameters:
+		Assert.assertEquals(LayerType.RASTER, layerInfo.getLayerType());
+		Assert.assertEquals(tileMapInfo.getTitle(), layerInfo.getDataSourceName());
+		Assert.assertEquals(tileMapInfo.getSrs(), layerInfo.getCrs());
+		Assert.assertEquals(tileMapInfo.getTileFormat().getWidth(), layerInfo.getTileWidth());
+		Assert.assertEquals(tileMapInfo.getTileFormat().getHeight(), layerInfo.getTileHeight());
+
+		// Check maximum extent:
+		Bbox maxExtent = layerInfo.getMaxExtent();
+		Assert.assertEquals(tileMapInfo.getBoundingBox().getMinX(), maxExtent.getX(), DELTA);
+		Assert.assertEquals(tileMapInfo.getBoundingBox().getMinY(), maxExtent.getY(), DELTA);
+		Assert.assertEquals(tileMapInfo.getBoundingBox().getMaxX(), maxExtent.getMaxX(), DELTA);
+		Assert.assertEquals(tileMapInfo.getBoundingBox().getMaxY(), maxExtent.getMaxY(), DELTA);
+
+		// Check the zoom levels:
+		Assert.assertEquals(tileMapInfo.getTileSets().getTileSets().size(), layerInfo.getZoomLevels().size());
+		for (int i = 0; i < layerInfo.getZoomLevels().size(); i++) {
+			Assert.assertEquals(tileMapInfo.getTileSets().getTileSets().get(i).getUnitsPerPixel(), 1 / layerInfo
+					.getZoomLevels().get(i).getPixelPerUnit(), DELTA);
+		}
 	}
 }

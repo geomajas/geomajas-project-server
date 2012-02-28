@@ -63,10 +63,10 @@ public class TmsTileServiceTest {
 		TileServiceState state = new TileServiceState(geoService, layerInfo);
 
 		// Check tile width:
-		Assert.assertEquals(1.0 * layerInfo.getTileWidth(), tileService.getTileHeight(state, 0), DELTA);
-		Assert.assertEquals(0.5 * layerInfo.getTileWidth(), tileService.getTileHeight(state, 1), DELTA);
-		Assert.assertEquals(0.25 * layerInfo.getTileWidth(), tileService.getTileHeight(state, 2), DELTA);
-		Assert.assertEquals(0.125 * layerInfo.getTileWidth(), tileService.getTileHeight(state, 3), DELTA);
+		Assert.assertEquals(1.0 * layerInfo.getTileWidth(), tileService.getTileWidth(state, 0), DELTA);
+		Assert.assertEquals(0.5 * layerInfo.getTileWidth(), tileService.getTileWidth(state, 1), DELTA);
+		Assert.assertEquals(0.25 * layerInfo.getTileWidth(), tileService.getTileWidth(state, 2), DELTA);
+		Assert.assertEquals(0.125 * layerInfo.getTileWidth(), tileService.getTileWidth(state, 3), DELTA);
 
 		// Check tile height:
 		Assert.assertEquals(1.0 * layerInfo.getTileHeight(), tileService.getTileHeight(state, 0), DELTA);

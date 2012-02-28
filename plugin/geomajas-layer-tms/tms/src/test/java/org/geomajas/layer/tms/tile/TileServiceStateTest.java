@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -33,6 +34,7 @@ import com.vividsolutions.jts.geom.Envelope;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/tms/tmsContext.xml" })
+@DirtiesContext
 public class TileServiceStateTest {
 
 	private static final double DELTA = 0.000001;
@@ -46,6 +48,7 @@ public class TileServiceStateTest {
 
 	@Test
 	public void testState() {
+		layerInfo.setCrs("EPSG:4326");
 		TileServiceState state = new TileServiceState(geoService, layerInfo);
 
 		// Check CRS and tile size:
@@ -69,5 +72,16 @@ public class TileServiceStateTest {
 		Assert.assertEquals(0.5, resolutions.get(1).doubleValue(), DELTA);
 		Assert.assertEquals(0.25, resolutions.get(2).doubleValue(), DELTA);
 		Assert.assertEquals(0.125, resolutions.get(3).doubleValue(), DELTA);
+	}
+
+	@Test
+	public void testFaultyState() {
+		layerInfo.setCrs("EPSG:something");
+		try {
+			new TileServiceState(geoService, layerInfo);
+			Assert.fail();
+		} catch (IllegalStateException e) {
+			// As exptected...
+		}
 	}
 }
