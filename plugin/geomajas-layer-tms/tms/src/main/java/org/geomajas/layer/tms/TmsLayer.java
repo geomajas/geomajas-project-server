@@ -26,7 +26,11 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tms.configuration.TileMapInfo;
-import org.geomajas.layer.tms.configuration.TileSetInfo;
+import org.geomajas.layer.tms.tile.SimpleTmsUrlBuilder;
+import org.geomajas.layer.tms.tile.TileMapUrlBuilder;
+import org.geomajas.layer.tms.tile.TileService;
+import org.geomajas.layer.tms.tile.TileServiceState;
+import org.geomajas.layer.tms.tile.TileUrlBuilder;
 import org.geomajas.service.GeoService;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -75,6 +79,8 @@ public class TmsLayer implements RasterLayer {
 
 	private TileServiceState state;
 
+	private TileUrlBuilder urlBuilder;
+
 	// ------------------------------------------------------------------------
 	// Construction:
 	// ------------------------------------------------------------------------
@@ -106,6 +112,11 @@ public class TmsLayer implements RasterLayer {
 
 		// Finally prepare some often needed values:
 		state = new TileServiceState(geoService, layerInfo);
+		if (tileMapInfo != null) {
+			urlBuilder = new TileMapUrlBuilder(tileMapInfo, baseTmsUrl);
+		} else {
+			urlBuilder = new SimpleTmsUrlBuilder(baseTmsUrl, extension);
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -127,6 +138,7 @@ public class TmsLayer implements RasterLayer {
 		return id;
 	}
 
+	/** {@inheritDoc} */
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		log.debug("Fetching TMS tiles for bounds : {}", bounds.toString());
@@ -157,6 +169,7 @@ public class TmsLayer implements RasterLayer {
 			return new ArrayList<RasterTile>();
 		}
 
+		// Get the tile level and it's size in world space:
 		int tileLevel = tileService.getTileLevel(state, 1 / layerScale);
 		double tileWidth = tileService.getTileWidth(state, tileLevel);
 		double tileHeight = tileService.getTileHeight(state, tileLevel);
@@ -176,67 +189,28 @@ public class TmsLayer implements RasterLayer {
 				double x = lowerLeftX + (i - xmin) * tileWidth;
 				double y = lowerLeftY + (j - ymin) * tileHeight;
 
-				Bbox worldBox;
-				Bbox layerBox;
-
+				// Get the bounding box for each tile:
+				Bbox tileBounds = new Bbox(x, y, tileWidth, tileHeight);
 				if (needTransform) {
-					layerBox = new Bbox(x, y, tileWidth, tileHeight);
 					// Transforming back to map coordinates will only result in a proper grid if the transformation
 					// is nearly affine
-					worldBox = geoService.transform(layerBox, layerToMap);
-				} else {
-					worldBox = new Bbox(x, y, tileWidth, tileHeight);
-					layerBox = worldBox;
+					tileBounds = geoService.transform(tileBounds, layerToMap);
 				}
 				// Rounding to avoid white space between raster tiles lower-left becomes upper-left in inverted y-space
-				Bbox screenBox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale * worldBox.getMaxY()),
-						Math.round(scale * worldBox.getMaxX()) - Math.round(scale * worldBox.getX()), Math.round(scale
-								* worldBox.getMaxY())
-								- Math.round(scale * worldBox.getY()));
+				Bbox screenBox = new Bbox(Math.round(scale * tileBounds.getX()), -Math.round(scale
+						* tileBounds.getMaxY()), Math.round(scale * tileBounds.getMaxX())
+						- Math.round(scale * tileBounds.getX()), Math.round(scale * tileBounds.getMaxY())
+						- Math.round(scale * tileBounds.getY()));
 
 				RasterTile image = new RasterTile(screenBox, getId() + "." + tileLevel + "." + i + "," + j);
 
 				TileCode tileCode = new TileCode(tileLevel, i, j);
 				image.setCode(tileCode);
-				image.setUrl(formatUrl(tileCode));
+				image.setUrl(urlBuilder.buildUrl(tileCode));
 				result.add(image);
 			}
 		}
 		return result;
-	}
-
-	private String formatUrl(TileCode tileCode) {
-//		StringBuilder stringBuilder = new StringBuilder(baseTmsUrl);
-//		if (useVersionInUrl && version != null) {
-//			stringBuilder.append(version);
-//			stringBuilder.append("/");
-//		}
-//		stringBuilder.append(tileCode.getTileLevel());
-//		stringBuilder.append("/");
-		StringBuilder stringBuilder = new StringBuilder(tileTileLevelBaseUrl(tileCode.getTileLevel()));
-		stringBuilder.append(tileCode.getX());
-		stringBuilder.append("/");
-		stringBuilder.append(tileCode.getY());
-		stringBuilder.append(".");
-		stringBuilder.append(extension);
-		return stringBuilder.toString();
-	}
-
-	private String tileTileLevelBaseUrl(int tileLevel) {
-		String tileString = tileLevel + "";
-		if (tileMapInfo != null) {
-			TileSetInfo tileSet = tileMapInfo.getTileSets().getTileSets().get(tileLevel); // assuming they are ordered
-			String href = tileSet.getHref();
-			if (href.startsWith("http://") || href.startsWith("https://")) {
-				return href;
-			}
-			tileString = tileSet.getHref();
-		}
-		String temp = baseTmsUrl;
-		if (tileMapInfo == null && useVersionInUrl && version != null) {
-			temp += version + "/";
-		}
-		return temp + tileString + "/";
 	}
 
 	// ------------------------------------------------------------------------

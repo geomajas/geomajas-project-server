@@ -11,6 +11,7 @@
 
 package org.geomajas.layer.tms;
 
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,10 +56,15 @@ public class TmsConfigurationService {
 			JAXBContext context = JAXBContext.newInstance(TileMapInfo.class);
 			Unmarshaller um = context.createUnmarshaller();
 
-			// Create an input stream that points to a TMS layer configuration (xml):
-			URL url = new URL(layerCapabilitiesUrl);
+			// Find out where to retrieve the capabilities and unmarshall:
+			if (layerCapabilitiesUrl.startsWith("classpath:")) {
+				String location = layerCapabilitiesUrl.substring(10);
+				InputStream is = getClass().getResourceAsStream(location);
+				return (TileMapInfo) um.unmarshal(is);
+			}
 
-			// Unmarshall the InputStream into a TileMapInfo object:
+			// Normal case, find the URL and unmarshal:
+			URL url = new URL(layerCapabilitiesUrl);
 			return (TileMapInfo) um.unmarshal(url);
 		} catch (JAXBException e) {
 			throw new TmsConfigurationException("Could not read the capabilities file.", e);
