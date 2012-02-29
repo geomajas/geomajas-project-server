@@ -11,12 +11,13 @@
 
 package org.geomajas.gwt.client.action.toolbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -43,19 +44,13 @@ public class ZoomToSelectionAction extends ToolbarAction {
 	 * Selected features can belong to multiple layers
 	 */
 	public void onClick(ClickEvent clickEvent) {
-		boolean success = false;
-		Bbox selectionBounds = new Bbox(0, 0, 0, 0);
-		
-		for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
-			for (Feature feature : layer.getSelectedFeatureValues()) {
-				selectionBounds = selectionBounds.union(feature.getGeometry().getBounds());
-				success = true;
-			}
+		List<Feature> features = new ArrayList<Feature>();
+ 		for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
+			features.addAll(layer.getSelectedFeatureValues());
 		}
-		// only zoom when their where really some items selected
-		if (success) {
-			mapWidget.getMapModel().getMapView()
-					.applyBounds(selectionBounds, MapView.ZoomOption.LEVEL_CHANGE);
+		// only zoom when there where really some items selected
+		if (features.size() > 0) {
+			mapWidget.getMapModel().zoomToFeatures(features);
 		}
 
 	}

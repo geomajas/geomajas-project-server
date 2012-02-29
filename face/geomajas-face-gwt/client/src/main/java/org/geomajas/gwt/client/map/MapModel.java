@@ -12,20 +12,24 @@
 package org.geomajas.gwt.client.map;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.configuration.client.BoundsLimitOption;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.annotation.Api;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
@@ -46,6 +50,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureEditor;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -53,11 +58,10 @@ import org.geomajas.gwt.client.service.ClientConfigurationService;
 import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
+import org.geomajas.gwt.client.util.Log;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
-import org.geomajas.gwt.client.util.Log;
-import org.geomajas.configuration.client.BoundsLimitOption;
 
 /**
  * <p>
@@ -664,6 +668,32 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 		return null;
 	}
+	
+	/**
+	 * Zoom to the bounds of the specified features.
+	 * 
+	 * @param features list of features, will be lazy-loaded if necessary
+	 */
+	public void zoomToFeatures(List<Feature> features) {
+		// calculate the point scale as the minimum point scale for all layers (only relevant for zooming to multiple
+		// points at the exact same location)
+		double zoomToPointScale = getMapInfo().getScaleConfiguration().getMaximumScale().getPixelPerUnit();
+		for (Feature feature : features) {
+			double scale = feature.getLayer().getLayerInfo().getZoomToPointScale().getPixelPerUnit();
+			zoomToPointScale = Math.min(zoomToPointScale,  scale);
+		}
+		ZoomToFeaturesLazyLoadCallback callback = new ZoomToFeaturesLazyLoadCallback(features.size(), 
+				zoomToPointScale);
+		for (Feature feature : features) {
+			// no need to fetch if we already have the geometry !
+			if (feature.isGeometryLoaded()) {
+				callback.execute(Arrays.asList(feature));
+			} else {
+				feature.getLayer().getFeatureStore()
+						.getFeature(feature.getId(), GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, callback);			
+			}
+		}
+	}
 
 	/**
 	 * Searches for the selected layer, and returns it.
@@ -1041,4 +1071,44 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			handlerManager.fireEvent(event);
 		}
 	}
+	
+	/**
+	 * Stateful callback that zooms to bounds when all features have been retrieved.
+	 * 
+	 * @author Kristof Heirwegh
+	 * @author Jan De Moerloose
+	 */
+	private class ZoomToFeaturesLazyLoadCallback implements LazyLoadCallback {
+
+		private int featureCount;
+		private Bbox bounds;
+		private double pointScale;
+
+		public ZoomToFeaturesLazyLoadCallback(int featureCount, double pointScale) {
+			this.featureCount = featureCount;
+			this.pointScale  = pointScale;
+		}
+
+		public void execute(List<Feature> response) {
+			if (response != null && response.size() > 0) {
+				if (bounds == null) {
+					bounds = (Bbox) response.get(0).getGeometry().getBounds().clone();
+				} else {
+					bounds = bounds.union(response.get(0).getGeometry().getBounds());
+				}
+			}
+			featureCount--;
+			if (featureCount == 0) {
+				if (bounds != null) {
+					if (bounds.getWidth() > 0 || bounds.getHeight() > 0) {
+						getMapView().applyBounds(bounds, ZoomOption.LEVEL_FIT);
+					} else {
+						getMapView().setCenterPosition(bounds.getCenterPoint());
+						getMapView().setCurrentScale(pointScale, ZoomOption.LEVEL_CLOSEST);
+					}
+				}
+			}
+		}
+	}
+
 }

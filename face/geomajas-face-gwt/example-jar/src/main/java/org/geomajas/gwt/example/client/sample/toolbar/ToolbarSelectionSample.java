@@ -66,7 +66,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 		map.getMapModel().runWhenInitialized(new Runnable() {
 
 			public void run() {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerCountries110mGT"));
+				//map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerCountries110mGT"));
 			}
 		});
 
