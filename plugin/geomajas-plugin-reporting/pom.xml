@@ -145,7 +145,7 @@
 	<properties>
 		<reporting-backend-version>1.10.0</reporting-backend-version>
 		<reporting-gwt-face-version>1.10.0</reporting-gwt-face-version>
-		<reporting-rasterizing-version>1.0.0-SNAPSHOT</reporting-rasterizing-version>
+		<reporting-rasterizing-version>1.0.0</reporting-rasterizing-version>
 		<reporting-gwt-version>2.4.0</reporting-gwt-version>
 		<reporting-spring-version>3.0.5.RELEASE</reporting-spring-version>
 	</properties>
