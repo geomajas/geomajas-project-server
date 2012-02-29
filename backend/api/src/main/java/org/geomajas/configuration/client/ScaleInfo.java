@@ -83,6 +83,18 @@ public class ScaleInfo implements Serializable {
 			throw new IllegalArgumentException("Scale denominator must be positive");
 		}
 	}
+	
+	/**
+	 * Copy constructor. Creates a deep copy of the specified {@link ScaleInfo} object.
+	 * 
+	 * @param other the scale info to copy
+	 * @since 1.11.0
+	 */
+	public ScaleInfo(ScaleInfo other) {
+		setDenominator(other.getDenominator());
+		setNumerator(other.getNumerator());
+		setPixelPerUnit(other.getPixelPerUnit());
+	}
 
 	/**
 	 * Returns the scale value in pixel per map unit.
@@ -146,4 +158,5 @@ public class ScaleInfo implements Serializable {
 	public void setDenominator(double denominator) {
 		this.denominator = denominator;
 	}
+	
 }

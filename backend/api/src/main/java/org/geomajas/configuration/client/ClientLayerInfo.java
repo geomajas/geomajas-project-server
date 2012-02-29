@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
@@ -43,6 +44,8 @@ public abstract class ClientLayerInfo implements Serializable {
 	private ScaleInfo minimumScale = new ScaleInfo(ScaleInfo.MINIMUM_PIXEL_PER_UNIT);
 
 	private ScaleInfo maximumScale = new ScaleInfo(ScaleInfo.MAXIMUM_PIXEL_PER_UNIT);
+
+	private ScaleInfo zoomToPointScale;
 
 	@Null
 	private LayerInfo layerInfo;
@@ -223,6 +226,28 @@ public abstract class ClientLayerInfo implements Serializable {
 	}
 	
 	/**
+	 * Get the scale that should be used when zooming in on a point feature. Defaults to the {@link #maximumScale} of
+	 * the layer.
+	 * 
+	 * @return the scale
+	 * @since 1.11.0
+	 */
+	public ScaleInfo getZoomToPointScale() {
+		return zoomToPointScale;
+	}
+
+	/**
+	 * Set the scale that should be used when zooming in on a point feature. Defaults to the {@link #maximumScale} of
+	 * the layer.
+	 * 
+	 * @param zoomToPointScale the scale
+	 * @since 1.11.0
+	 */
+	public void setZoomToPointScale(ScaleInfo zoomToPointScale) {
+		this.zoomToPointScale = zoomToPointScale;
+	}
+
+	/**
 	 * Get the maximum visible extent of this layer (in map space).
 	 * 
 	 * @return maximum visible extent
@@ -328,6 +353,13 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	public void setUserData(ClientUserDataInfo userData) {
 		this.userData = userData;
+	}
+	
+	@PostConstruct
+	protected void postConstruct() {
+		if (null == zoomToPointScale) {
+			zoomToPointScale = new ScaleInfo(maximumScale);
+		}		
 	}
 
 }
