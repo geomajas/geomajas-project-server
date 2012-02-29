@@ -52,8 +52,7 @@ public class TileMapUrlBuilderTest {
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
 		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap, BASE_TMS_URL);
 		String url = builder.buildUrl(new TileCode(1, 2, 3));
-		Assert.assertEquals("http://tms.osgeo.org/1.0.0/landsat2000/1024/2/3.png", url);
-		System.err.println(url);
+		Assert.assertEquals("http://tms.osgeo.org/1.0.0/landsat2000/512/2/3.png", url);
 	}
 
 	@Test

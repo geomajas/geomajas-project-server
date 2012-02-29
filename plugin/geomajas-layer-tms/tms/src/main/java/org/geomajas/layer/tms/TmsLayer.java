@@ -60,8 +60,6 @@ public class TmsLayer implements RasterLayer {
 
 	private String version = "1.0.0";
 
-	private boolean useVersionInUrl;
-
 	private TileMapInfo tileMapInfo;
 
 	private RasterLayerInfo layerInfo;
@@ -92,7 +90,7 @@ public class TmsLayer implements RasterLayer {
 		}
 
 		// Make sure we have a base URL we can work with:
-		if (!baseTmsUrl.endsWith("/")) {
+		if ((baseTmsUrl.startsWith("http://") || baseTmsUrl.startsWith("https://")) && !baseTmsUrl.endsWith("/")) {
 			baseTmsUrl += "/";
 		}
 
@@ -295,25 +293,5 @@ public class TmsLayer implements RasterLayer {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
-	}
-
-	/**
-	 * Will the version be added in the tile URLs or not?
-	 * 
-	 * @return true or false.
-	 */
-	public boolean isUseVersionInUrl() {
-		return useVersionInUrl;
-	}
-
-	/**
-	 * Determine whether or not to add the version in the URL or not. By default the version is added after the base TMS
-	 * URL, but not all implementation actually do this, so we made it optional.
-	 * 
-	 * @param useVersionInUrl
-	 *            true or false.
-	 */
-	public void setUseVersionInUrl(boolean useVersionInUrl) {
-		this.useVersionInUrl = useVersionInUrl;
 	}
 }

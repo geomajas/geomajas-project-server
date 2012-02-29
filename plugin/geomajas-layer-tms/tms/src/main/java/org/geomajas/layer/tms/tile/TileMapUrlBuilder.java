@@ -43,7 +43,7 @@ public class TileMapUrlBuilder implements TileUrlBuilder {
 		String href = tileSet.getHref();
 		if (href.startsWith("http://") || href.startsWith("https://")) {
 			builder = new StringBuilder(href);
-			if (!baseTmsUrl.endsWith("/")) {
+			if (!href.endsWith("/")) {
 				builder.append("/");
 			}
 		} else {
