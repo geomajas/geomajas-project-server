@@ -14,14 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
-import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -215,24 +213,20 @@ public class SelectionSearch extends AbstractGeometricSearchMethod implements Fe
 	}
 
 	private void onZoomClick() {
-		Bbox bounds = null;
+		List<Feature> features = new ArrayList<Feature>();
 		for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
 			if (layer.isShowing()) {
 				VectorLayerStore store = layer.getFeatureStore();
 				for (String featureId : layer.getSelectedFeatures()) {
 					Feature f = store.getPartialFeature(featureId);
-					if (bounds == null) {
-						bounds = f.getGeometry().getBounds();
-					} else {
-						bounds = bounds.union(f.getGeometry().getBounds());
-					}
+					features.add(f);
 				}
 			}
 		}
-		if (bounds == null) {
+		if (features.size() == 0) {
 			Notify.info(messages.geometricSearchWidgetSelectionSearchNothingSelected());
 		} else {
-			mapWidget.getMapModel().getMapView().applyBounds(bounds, ZoomOption.LEVEL_FIT);
+			mapWidget.getMapModel().zoomToFeatures(features);
 		}
 	}
 
