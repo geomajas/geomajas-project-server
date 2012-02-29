@@ -57,6 +57,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<list>
 				<ref bean="clientLayerWms" />
 				<ref bean="clientLayerCountries110mGT" />
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerEditableAirports">
+					<property name="serverLayerId" value="layerAirports" />
+			        <property name="label" value="Airports (editable - point)"/>
+			        <property name="visible" value="true"/>
+					<property name="maximumScale" value="1:27000" />
+					<property name="minimumScale" value="1:500000000" />
+					<property name="zoomToPointScale" value="1:50000" />
+					<property name="namedStyleInfo" ref="layerAirportsStyleInfo" />
+				</bean>
 			</list>
 		</property>
 		<property name="toolbar">
