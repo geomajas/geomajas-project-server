@@ -38,8 +38,6 @@ import com.vividsolutions.jts.geom.Envelope;
 		"/org/geomajas/layer/tms/tmsContext.xml" })
 public class TmsLayerTest {
 
-	private static final double DELTA = 0.00001;
-
 	@Autowired
 	@Qualifier("tmsLayer")
 	private TmsLayer layer;
@@ -59,6 +57,7 @@ public class TmsLayerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testPaintLevel0() throws LayerException, GeomajasException {
 		Envelope maxBounds = new Envelope(18000.0, 259500.250, 152999.75, 244500.0);
 		List<RasterTile> tiles = layer.paint(geoService.getCrs("EPSG:31370"), maxBounds, 1.0 / 1024.0);
@@ -70,6 +69,7 @@ public class TmsLayerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testPaintLevel1() throws LayerException, GeomajasException {
 		double resolution = 512.0;
 		Envelope maxBounds = new Envelope(18000.0, 259500.250, 152999.75, 244500.0);
