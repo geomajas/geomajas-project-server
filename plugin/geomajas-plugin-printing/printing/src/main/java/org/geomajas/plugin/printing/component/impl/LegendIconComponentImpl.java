@@ -150,7 +150,7 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 			try {
 				Image pointImage = Image.getInstance(symbol.getImage().getHref());
 				context.drawImage(pointImage, iconRect, iconRect);
-			} catch (Exception ex) {
+			} catch (Exception ex) { // NOSONAR
 				log.error("Not able to create image for POINT Symbol", ex);
 			}
 		} else if (symbol.getRect() != null) {

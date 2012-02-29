@@ -310,7 +310,7 @@ public class PdfContext {
 				dasharr[i] = Float.parseFloat(res[i]);
 			}
 			return dasharr;
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.warn("Error in dashArrayString: " + dashArrayString);
 			return null;
 		}
@@ -323,7 +323,7 @@ public class PdfContext {
 				url = Utilities.toURL(path);
 			}
 			return Image.getInstance(url);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.warn("could not fetch image", e);
 			return null;
 		}
@@ -502,7 +502,7 @@ public class PdfContext {
 				//template.addImage(image, width, 0, 0, height, x, y)
 				template.addImage(pointImage, symbol.getImage().getWidth(), 0, 0, symbol.getImage().getHeight()
 						, origX + (float) coord.x, origY + (float) coord.y);
-			} catch (Exception ex) {
+			} catch (Exception ex) { // NOSONAR
 				log.error("Not able to create POINT image for rendering", ex);
 			}
 		} else if (symbol.getCircle() != null) {

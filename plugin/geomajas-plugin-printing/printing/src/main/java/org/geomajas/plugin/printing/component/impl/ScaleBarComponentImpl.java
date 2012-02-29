@@ -174,7 +174,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 
 
 				}
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR
 				log.error("could not calculate map unit", e);
 			}
 		}

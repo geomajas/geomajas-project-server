@@ -85,7 +85,7 @@ public class NavigationOptionPanel extends ContentPanel {
 				int time = defaultMillis;
 				try {
 					time = Integer.parseInt(txt);
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					Window.alert("Could not parse milliseconds... Default value of " + defaultMillis + " is taken");
 				}
 
@@ -104,7 +104,7 @@ public class NavigationOptionPanel extends ContentPanel {
 				int time = defaultMillis;
 				try {
 					time = Integer.parseInt(txt);
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					Window.alert("Could not parse milliseconds... Default value of " + defaultMillis + " is taken");
 				}
 
@@ -122,7 +122,7 @@ public class NavigationOptionPanel extends ContentPanel {
 				int count = 1;
 				try {
 					count = Integer.parseInt(txt);
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					Window.alert("Could not parse number of layers... Default value of 1 is taken");
 				}
 

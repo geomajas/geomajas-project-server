@@ -207,7 +207,7 @@ public final class GeoServiceImpl implements GeoService {
 			MathTransform transform;
 			try {
 				transform = CRS.findMathTransform(sourceCrs, targetCrs);
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR GeoTools can throw unexpected exceptions
 				transform = CRS.findMathTransform(sourceCrs, targetCrs, true);
 			}
 			return transform;
@@ -295,7 +295,7 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
+		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
 					+ "transformation. Object replaced by empty Envelope.", e);
@@ -367,7 +367,7 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
+		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
 					+ "transformation. Object replaced by empty Bbox.", e);
@@ -415,7 +415,7 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
+		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
 					+ "transformation. Object replaced by empty Envelope.", e);
@@ -457,7 +457,7 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
+		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
 					+ "transformation. Object replaced by empty Envelope.", e);

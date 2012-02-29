@@ -27,7 +27,7 @@ public class HSQLSpatialDialect extends HSQLDialect implements SpatialDialect {
 	}
 
 	public UserType getGeometryUserType() {
-		return new HSQLGeometryUserType();
+		return new HsqlGeometryUserType();
 	}
 
 	public String getSpatialAggregateSQL(String columnName, int aggregation) {

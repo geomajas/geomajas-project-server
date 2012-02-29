@@ -470,10 +470,10 @@ public class MapWidget extends VLayout {
 		try {
 			Cursor c = Cursor.valueOf(cursor.toUpperCase());
 			setCursor(c);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			// Let us assume the cursor points to an image:
 			this.cursor = cursor;
-			if (cursor.indexOf("url") < 0) {
+			if (!cursor.contains("url")) {
 				this.cursor = "url('" + cursor + "'),auto";
 			}
 			graphics.getRasterContext().setCursor(null, this.cursor);

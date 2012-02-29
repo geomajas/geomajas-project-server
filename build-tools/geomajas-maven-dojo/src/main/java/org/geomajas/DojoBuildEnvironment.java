@@ -177,7 +177,7 @@ public class DojoBuildEnvironment {
 			archiver.addDirectory(releaseDirectory, new String[]{"*/**"}, new String[]{});
 			archiver.setDestFile(new File(dojoDirectory, RELEASE_DIR + ".jar"));
 			archiver.createArchive();
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.error("Failed to archive dojo build", e);
 			throw new MojoExecutionException("Failed to archive dojo build");
 		}
@@ -266,7 +266,7 @@ public class DojoBuildEnvironment {
 			unArchiver.setOverwrite(false);
 			unArchiver.extract();
 			log.info("Unpacked artifact archive " + archive.getName());
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.error("Failed to unpack artifact archive " + archive.getName(), e);
 			throw new MojoExecutionException("Failed to unpack artifact archive " + archive.getName());
 		}

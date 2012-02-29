@@ -984,7 +984,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			try {
 				Resource resource = resourceService.find(uri);
 				url = resource.getURL();
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR
 				log.warn(MISSING_RESOURCE, uri);
 			}
 			return url;

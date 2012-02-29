@@ -253,8 +253,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				features.add(toDto(it.next()));
 			}
 		} catch (LayerException le) {
-			throw le;
-		} catch (Exception e) {
+			throw le; // NOSONAR
+		} catch (Exception e) { // NOSONAR
 			throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
 		} finally {
 			if (null != stream) {

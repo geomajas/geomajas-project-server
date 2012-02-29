@@ -108,7 +108,7 @@ public class PrintServiceImpl implements PrintService {
 				try {
 					Object o = unMarshaller.unmarshal(new StreamSource(new StringReader(printTemplate.getPageXml())));
 					printTemplate.setPage((PageComponentImpl) o);
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					badTemplates.add(printTemplate);
 				}
 			}

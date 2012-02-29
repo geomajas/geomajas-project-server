@@ -68,7 +68,7 @@ public class BeanEntityMapper implements  EntityMapper {
 						}
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR
 				throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Could not instantiate entity");
 			}
 		}

@@ -156,7 +156,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 				features = layerService.getFeatures(getLayerId(), geoService.getCrs2(map.getCrs()), filter, styleInfo,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR
 				log.error("Error getting features", e);
 			}
 			

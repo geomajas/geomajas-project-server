@@ -76,7 +76,7 @@ public class DeleteSearchFavouriteCommand implements Command<DeleteSearchFavouri
 					response.setSuccess(true);
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			response.setSuccess(false);
 			response.getErrorMessages().add(
 					"Failed deleting SearchFavourite with id: " + request.getSearchFavouriteId());

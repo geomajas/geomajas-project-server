@@ -135,7 +135,7 @@ public final class WktService {
 				}
 				try {
 					coordinates[i] = new Coordinate(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					throw new WktException(ERR_MSG + "could not parse X and Y values (" + token + ")");
 				}
 			}

@@ -24,7 +24,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  *  
  * @author Jan De Moerloose
  */
-public class HSQLGeometryUserType extends AbstractDBGeometryType {
+public class HsqlGeometryUserType extends AbstractDBGeometryType {
 
 	private static final long serialVersionUID = 180L;
 
@@ -54,7 +54,7 @@ public class HSQLGeometryUserType extends AbstractDBGeometryType {
 		try {
 			WKTReader reader = new WKTReader();
 			geom = reader.read(data.substring(SRID_LENGTH + 1));
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new RuntimeException("Couldn't parse incoming wkt geometry.", e);
 		}
 		geom.setSRID(srid);

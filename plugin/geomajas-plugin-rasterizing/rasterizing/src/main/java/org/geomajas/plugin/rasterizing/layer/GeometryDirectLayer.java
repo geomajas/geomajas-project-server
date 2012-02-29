@@ -77,7 +77,7 @@ public class GeometryDirectLayer extends DirectLayer {
 				Style2D style2D = styleFactory.createStyle(null, style.featureTypeStyles().get(0).rules().get(0)
 						.symbolizers().get(0), range);
 				painter.paint(graphics, shape, style2D, 1d);
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR
 				log.error("could not draw " + getTitle(), e);
 			}
 		}

@@ -771,7 +771,7 @@ public class GeometryIndexService {
 				return Integer.parseInt(identifier.substring(0, position));
 			}
 			return Integer.parseInt(identifier);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			return -1;
 		}
 	}

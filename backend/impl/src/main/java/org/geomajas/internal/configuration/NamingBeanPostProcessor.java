@@ -43,11 +43,11 @@ public class NamingBeanPostProcessor implements BeanPostProcessor {
 		try {
 			PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(bean.getClass(), "id");
 			if (descriptor != null) {
-				if (override || (descriptor.getReadMethod().invoke(bean, null) == null)) {
+				if (override || (descriptor.getReadMethod().invoke(bean) == null)) {
 					descriptor.getWriteMethod().invoke(bean, beanName);
 				}
 			}
-		} catch (Exception be) {
+		} catch (Exception be) { // NOSONAR
 			// ignore if no id property
 		}
 		try {
@@ -57,7 +57,7 @@ public class NamingBeanPostProcessor implements BeanPostProcessor {
 					descriptor.getWriteMethod().invoke(bean, beanName);
 				}
 			}
-		} catch (Exception be) {
+		} catch (Exception be) { // NOSONAR
 			// ignore if no name property
 		}
 	}

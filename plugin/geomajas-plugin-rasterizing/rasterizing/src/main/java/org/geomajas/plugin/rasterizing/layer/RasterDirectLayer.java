@@ -431,7 +431,7 @@ public class RasterDirectLayer extends DirectLayer {
 					response.getEntity().writeTo(outputStream);
 					result.setImage(outputStream.toByteArray());
 					return result;
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					if (log.isDebugEnabled()) {
 						log.error("Fetching image: error loading " + result.getRasterImage().getUrl(), e);
 					}

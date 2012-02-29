@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
@@ -113,8 +114,8 @@ public final class FeatureDetailWidgetFactory {
 					}
 				}
 			}
-		} catch (Exception e) {
-			GWT.log("Error getting custom detail widget: " + e.getMessage());
+		} catch (Exception e) { // NOSONAR
+			Log.logError("Error getting custom detail widget: " + e.getMessage());
 		}
 		return b;
 	}

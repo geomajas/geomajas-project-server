@@ -91,7 +91,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				}
 			}
 			return attribs;
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new LayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_ALL_GET_FAILED, feature);
 		}
 	}
@@ -132,7 +132,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	public Object newInstance() throws LayerException {
 		try {
 			return getEntityMetadata().instantiate(null, (SessionImplementor) getSessionFactory().getCurrentSession());
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO, getFeatureInfo()
 					.getDataSourceName());
 		}
@@ -144,7 +144,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			Serializable ser = (Serializable) ConvertUtils.convert(id, getEntityMetadata().getIdentifierType()
 					.getReturnedClass());
 			return getEntityMetadata().instantiate(ser, (SessionImplementor) getSessionFactory().getCurrentSession());
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO, getFeatureInfo()
 					.getDataSourceName());
 		}

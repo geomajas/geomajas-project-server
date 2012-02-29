@@ -119,7 +119,7 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 				}
 			}
 			return simplify(name);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.error(e.getMessage(), e);
 		}
 		return super.generateBeanName(definition, registry);

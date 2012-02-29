@@ -47,10 +47,9 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * A simple layeractions window.
+ * A simple layer actions window.
  * 
  * @author Kristof Heirwegh
- * 
  */
 public class LayerActions extends Window {
 
@@ -62,7 +61,6 @@ public class LayerActions extends Window {
 
 	private Img layerImg;
 	private Img layerLabelOverlay;
-	private Img layerTransparencyUnderlay;
 	private Slider transparencySlider;
 	private CheckboxItem layerlabels;
 	private CheckboxItem layerShow;
@@ -147,7 +145,7 @@ public class LayerActions extends Window {
 			if (raw != null && !"".equals(raw)) {
 				try {
 					opacity = Double.parseDouble(raw);
-				} catch (Exception e) {
+				} catch (NumberFormatException e) {
 					// ignore
 				}
 			}
@@ -215,7 +213,7 @@ public class LayerActions extends Window {
 			sampleMap.addChild(layerImg);
 			sampleMap.addChild(layerLabelOverlay);
 		} else {
-			layerTransparencyUnderlay = LayerIconUtil.getTransparencyUnderlayImg();
+			Img layerTransparencyUnderlay = LayerIconUtil.getTransparencyUnderlayImg();
 			layerTransparencyUnderlay.setImageType(ImageStyle.NORMAL);
 			layerImg.setUseOpacityFilter(true);
 			sampleMap.addChild(layerTransparencyUnderlay);

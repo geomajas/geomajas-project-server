@@ -134,7 +134,7 @@ public class WmsController {
 				}
 			}
 			
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.error("Cannot get original WMS image", e);
 			// Create an error image to make the reason for the error visible:
 			byte[] b = createErrorImage(layerInfo.getTileWidth(), layerInfo.getTileHeight(), e);

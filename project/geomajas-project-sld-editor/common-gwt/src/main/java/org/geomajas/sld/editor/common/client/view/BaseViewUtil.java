@@ -85,10 +85,13 @@ public abstract class BaseViewUtil implements ViewUtil {
 	}
 
 	public int numericalToInteger(String numerical) {
+		if (null == numerical) {
+			return 0;
+		}
 		try {
 			double d = Double.parseDouble(numerical);
 			return (int) d;
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			return 0;
 		}
 	}

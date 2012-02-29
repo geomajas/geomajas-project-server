@@ -148,7 +148,7 @@ class HibernateLayerUtil {
 			if (null != layerInfo) {
 				entityMetadata = sessionFactory.getClassMetadata(layerInfo.getFeatureInfo().getDataSourceName());
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_NO_SESSION_FACTORY);
 		}
 	}

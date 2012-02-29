@@ -145,7 +145,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 			String query = splitCommaReverseService.combine(location);
 			List<GetLocationResult> locations = search(query, maxAlternatives, locale);
 			return locations.toArray(new GetLocationResult[locations.size()]);
-		} catch (Exception ex) {
+		} catch (Exception ex) { // NOSONAR
 			log.error("Search failed", ex);
 			return null;
 		}

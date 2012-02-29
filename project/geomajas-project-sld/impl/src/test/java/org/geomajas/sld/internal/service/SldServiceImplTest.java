@@ -58,7 +58,7 @@ public class SldServiceImplTest {
 		try {
 			sldService.saveOrUpdate(sld);
 			Assert.fail("invalid sld saved");
-		} catch (Exception e) {
+		} catch (SldException e) {
 		}
 		sld.setVersion("1.0.0");
 		sldService.saveOrUpdate(sld);
@@ -76,14 +76,14 @@ public class SldServiceImplTest {
 		try {
 			sldService.create(sld);
 			Assert.fail("Creating an already existing sld should fail");
-		} catch (Exception e) {
+		} catch (SldException e) {
 		}
 
 		int prevNumOfSlds = sldService.findAll().size();
 		sld.setName("testCreate");
 		try {
 			sldService.create(sld);
-		} catch (Exception e) {
+		} catch (SldException e) {
 			Assert.fail("Creating failed");
 		}
 		Assert.assertEquals(sldService.findAll().size(), prevNumOfSlds+1);

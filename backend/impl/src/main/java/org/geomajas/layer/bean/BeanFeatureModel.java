@@ -129,7 +129,7 @@ public class BeanFeatureModel implements FeatureModel {
 				}
 			}
 			return attribs;
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
 	}

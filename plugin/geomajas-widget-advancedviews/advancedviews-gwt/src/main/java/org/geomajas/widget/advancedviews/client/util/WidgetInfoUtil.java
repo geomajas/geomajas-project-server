@@ -43,7 +43,7 @@ public final class WidgetInfoUtil {
 				try {
 					// cannot check because of erasure
 					return (T) cli;
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					GWT.log("ClientWidgetInfo is not of expected type: " + id + " (layer: " + layer.getId());
 				}
 			}
@@ -62,7 +62,7 @@ public final class WidgetInfoUtil {
 				try {
 					// cannot check because of type erasure
 					return (T) cli;
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					GWT.log("ClientWidgetInfo is not of expected type: " + id + " (map: " + mapWidget.getMapModel().
 							getId());
 				}

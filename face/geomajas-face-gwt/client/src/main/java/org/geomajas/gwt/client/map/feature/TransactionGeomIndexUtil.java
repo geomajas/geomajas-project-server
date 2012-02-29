@@ -30,7 +30,7 @@ public final class TransactionGeomIndexUtil {
 	}
 
 	public static boolean isDraggable(String identifier) {
-		if (identifier == null || identifier.indexOf("featureTransaction.feature") < 0) {
+		if (identifier == null || !identifier.contains("featureTransaction.feature")) {
 			return false;
 		}
 		int position = identifier.indexOf("edge");
@@ -38,32 +38,23 @@ public final class TransactionGeomIndexUtil {
 			return true;
 		}
 		position = identifier.indexOf("coordinate");
-		if (position > 0) {
-			return true;
-		}
-		return false;
+		return position > 0;
 	}
 
 	public static boolean isEdge(String identifier) {
-		if (identifier == null || identifier.indexOf("featureTransaction.feature") < 0) {
+		if (identifier == null || !identifier.contains("featureTransaction.feature")) {
 			return false;
 		}
 		int position = identifier.indexOf("edge");
-		if (position > 0) {
-			return true;
-		}
-		return false;
+		return position > 0;
 	}
 
 	public static boolean isVertex(String identifier) {
-		if (identifier == null || identifier.indexOf("featureTransaction.feature") < 0) {
+		if (identifier == null || !identifier.contains("featureTransaction.feature")) {
 			return false;
 		}
 		int position = identifier.indexOf("coordinate");
-		if (position > 0) {
-			return true;
-		}
-		return false;
+		return position > 0;
 	}
 
 	public static boolean isInteriorRing(String identifier, boolean areaOnly) {
@@ -285,7 +276,7 @@ public final class TransactionGeomIndexUtil {
 				return Integer.parseInt(identifier.substring(0, position));
 			}
 			return Integer.parseInt(identifier);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			return -1;
 		}
 	}

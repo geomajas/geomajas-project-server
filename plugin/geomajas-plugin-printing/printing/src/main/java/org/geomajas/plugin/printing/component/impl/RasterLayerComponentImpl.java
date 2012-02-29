@@ -509,7 +509,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 					outputStream.close();
 					result.setImage(outputStream.toByteArray());
 					return result;
-				} catch (Exception e) {
+				} catch (Exception e) { // NOSONAR
 					triesLeft--;
 					if (triesLeft == 0) {
 						throw new ImageException(result.getRasterImage(), e);

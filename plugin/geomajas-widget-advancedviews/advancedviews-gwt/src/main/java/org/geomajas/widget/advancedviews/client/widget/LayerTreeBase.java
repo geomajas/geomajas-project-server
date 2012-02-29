@@ -23,6 +23,7 @@ import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend.LayerTreeLegendNode;
 
@@ -174,8 +175,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 					mapModel.selectLayer(null);
 				}
 			}
-		} catch (Exception e) {
-			GWT.log(e.getMessage());
+		} catch (Exception e) { // NOSONAR
+			Log.logError(e.getMessage());
 			// some other unusable element
 		}
 	}
@@ -194,8 +195,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 				LayerTreeTreeNode layerTreeNode = (LayerTreeTreeNode) event.getLeaf();
 				mapModel.selectLayer(layerTreeNode.getLayer());
 			}
-		} catch (Exception e) {
-			GWT.log(e.getMessage());
+		} catch (Exception e) { // NOSONAR
+			Log.logError(e.getMessage());
 			// some other unusable element
 		}
 	}

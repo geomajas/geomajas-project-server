@@ -78,7 +78,7 @@ public class SinglePageDocument extends AbstractDocument {
 	public void render(OutputStream outputStream, Format format) throws PrintingException {
 		try {
 			doRender(outputStream, format);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
 		}
 	}
@@ -93,7 +93,7 @@ public class SinglePageDocument extends AbstractDocument {
 	public void layout(Format format) throws PrintingException {
 		try {
 			doRender(null, format);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new PrintingException(e, PrintingException.DOCUMENT_LAYOUT_PROBLEM);
 		}
 	}

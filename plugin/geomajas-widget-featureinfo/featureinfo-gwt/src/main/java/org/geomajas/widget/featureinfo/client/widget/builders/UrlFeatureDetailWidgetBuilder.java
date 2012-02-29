@@ -12,6 +12,7 @@ package org.geomajas.widget.featureinfo.client.widget.builders;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetBuilder;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
@@ -94,8 +95,8 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 			} else if ("showDefaultIfNull".equalsIgnoreCase(key)) {
 				showDefaultIfNull = Boolean.parseBoolean(value);
 			}
-		} catch (Exception e) {
-			SC.logWarn("Error parsing parameters for " + IDENTIFIER + " - " + e.getMessage());
+		} catch (Exception e) { // NOSONAR
+			Log.logWarn("Error parsing parameters for " + IDENTIFIER + " - " + e.getMessage());
 		}
 	}
 

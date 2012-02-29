@@ -132,7 +132,7 @@ public class RasterizingController {
 			CacheFilter.configureNoCaching(response);
 			response.setContentType("image/png");
 			response.getOutputStream().write(rasterizeContainer.getImage());
-		} catch (Exception e) {
+		} catch (Throwable e) { // NOSONAR need to log all problems
 			log.error("Could not rasterize image " + key, e);
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
@@ -147,7 +147,7 @@ public class RasterizingController {
 			CacheFilter.configureNoCaching(response);
 			response.setContentType("image/png");
 			response.getOutputStream().write(rasterizeContainer.getImage());
-		} catch (Exception e) {
+		} catch (Throwable e) { // NOSONAR need to log all problems
 			log.error("Could not rasterize image " + key, e);
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}

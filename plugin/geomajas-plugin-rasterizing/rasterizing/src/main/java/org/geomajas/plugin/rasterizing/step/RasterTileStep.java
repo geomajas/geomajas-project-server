@@ -83,7 +83,7 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		try {
 			imageService.writeMap(imageStream, mapInfo);
 			recorder.record(CacheCategory.RASTER, "Rasterization success");
-		} catch (Exception ex) {
+		} catch (Exception ex) { // NOSONAR
 			recorder.record(CacheCategory.RASTER, "Rasterization failed");
 			log.error("Problem while rasterizing tile, image will be zero-length.", ex);
 		}

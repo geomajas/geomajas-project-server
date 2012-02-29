@@ -158,7 +158,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			throw new LayerException(e, ExceptionCode.FILTER_EVALUATION_PROBLEM, filter, getId());
 		}
 		// Sorting of elements.

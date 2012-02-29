@@ -276,7 +276,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 			} else {
 				return null;
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			// should not happen
 			log.warn("Could not create sample shapes", e);
 			return null;

@@ -171,7 +171,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 				result[i] = one;
 			}
 			return result;
-		} catch (Exception ex) {
+		} catch (Exception ex) { // NOSONAR
 			log.error("Search failed", ex);
 			return null;
 		}

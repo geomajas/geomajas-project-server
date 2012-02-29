@@ -70,8 +70,6 @@ public class CsvDownloadController {
 			try {
 				in.transferTo(0, in.size(), out);
 				service.removeFile(id);
-			} catch (Exception e) {
-				throw e;
 			} finally {
 				in.close();
 				// make sure servlet doesn't append anything unnecessary:
@@ -81,7 +79,7 @@ public class CsvDownloadController {
 			log.warn("Error retrieving file: " + e.getMessage());
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-		} catch (Exception e) {
+		} catch (Exception e) { // NOSONAR
 			log.warn("Error retrieving file: " + e.getMessage());
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}

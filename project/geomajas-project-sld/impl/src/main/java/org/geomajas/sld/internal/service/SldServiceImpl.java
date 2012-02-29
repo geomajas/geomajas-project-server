@@ -117,7 +117,7 @@ public class SldServiceImpl implements SldService {
 						}
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e) { // NOSONAR
 				throw new SldException("Could not initialize SLD service", e);
 			}
 		}

@@ -932,7 +932,8 @@ public class DomHelper {
 			Dom.setEventListener(element, null);
 			Dom.removeChild(parent, element);
 		} catch (Exception e) {
-			// do something...
+			Log.logError("Problem during recursive delete of " + element.getId() + " from " + parent.getId() + ", " +
+					e.getMessage());
 		}
 	}
 

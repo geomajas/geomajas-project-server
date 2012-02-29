@@ -139,7 +139,7 @@ public class ResourceServlet extends HttpServlet {
 					in.close();
 					try {
 						resourceConn.getOutputStream().close();
-					} catch (Exception e) {
+					} catch (IOException e) {
 						/*ignore, just trying to free resources*/
 					}
 				}
@@ -199,12 +199,12 @@ public class ResourceServlet extends HttpServlet {
 			contentLength += resourceConn.getContentLength();
 			try {
 				resourceConn.getInputStream().close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				/*ignore, just trying to free resources*/
 			}
 			try {
 				resourceConn.getOutputStream().close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				/*ignore, just trying to free resources*/
 			}
 		}
@@ -242,12 +242,12 @@ public class ResourceServlet extends HttpServlet {
 			}
 			try {
 				resourceConn.getInputStream().close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				/*ignore, just trying to free resources*/
 			}
 			try {
 				resourceConn.getOutputStream().close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				/*ignore, just trying to free resources*/
 			}
 		}
