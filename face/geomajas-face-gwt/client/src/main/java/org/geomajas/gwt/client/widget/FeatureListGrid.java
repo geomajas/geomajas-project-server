@@ -735,12 +735,13 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		public void onTransactionSuccess(FeatureTransactionEvent event) {
 			List<ListGridRecord> updates = new ArrayList<ListGridRecord>();
 			for (ListGridRecord record : getRecords()) {
+				// update record if we can (feature in store) or leave as-is if we can't
 				String featureId = record.getAttribute(FIELD_NAME_FEATURE_ID);
 				Feature feature = layer.getFeatureStore().getPartialFeature(featureId);
 				if (feature != null && feature.isAttributesLoaded()) {
 					copyToRecord(feature, record);
-					updates.add(record);
 				}
+				updates.add(record);
 			}
 			setData(updates.toArray(new Record[updates.size()]));
 		}
