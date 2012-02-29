@@ -423,8 +423,11 @@ public class ConfigurationDtoPostProcessor {
 				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layerInfo.getMaxExtent(), layerId));
 				completeScale(layer.getMaximumScale(), pixPerUnit);
 				completeScale(layer.getMinimumScale(), pixPerUnit);
+				completeScale(layer.getZoomToPointScale(), pixPerUnit);
 				log.debug("Layer " + layer.getId() + " has scale range : " + layer.getMinimumScale().getPixelPerUnit()
 						+ "," + layer.getMaximumScale().getPixelPerUnit());
+				log.debug("Layer " + layer.getId() + " has zoom-to-point scale : "
+						+ layer.getZoomToPointScale().getPixelPerUnit());
 				if (layer instanceof ClientVectorLayerInfo) {
 					postProcess((ClientVectorLayerInfo) layer);
 				}
