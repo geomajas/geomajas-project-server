@@ -355,6 +355,7 @@ public abstract class ClientLayerInfo implements Serializable {
 		this.userData = userData;
 	}
 	
+	/** Finish configuration. */
 	@PostConstruct
 	protected void postConstruct() {
 		if (null == zoomToPointScale) {
