@@ -41,7 +41,6 @@
 		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-widget-advancedviews</module>
 		<module>geomajas-widget-featureinfo</module>
-		<module>geomajas-widget-reports</module>
 		<module>geomajas-widget-searchandfilter</module>
 		<module>geomajas-widget-utility</module>
 	</modules>
