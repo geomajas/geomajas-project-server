@@ -490,7 +490,7 @@ public class FilterModelImpl implements FilterModel {
 	}
 
 	public String getSupportedWarning() {
-		return null;
+		return supportedWarning;
 	}
 
 }
