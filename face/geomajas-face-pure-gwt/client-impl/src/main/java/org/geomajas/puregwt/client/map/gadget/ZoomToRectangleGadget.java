@@ -30,6 +30,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -37,10 +38,15 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 
 /**
- * Map gadget that displays four panning arrows at the top-left of the map.
+ * Map gadget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
+ * rectangle after hitting this button.
  * 
  * @author Pieter De Graef
  */
@@ -53,6 +59,8 @@ public class ZoomToRectangleGadget implements MapGadget {
 	private VectorContainer container;
 
 	private ZoomToRectGroup zoomToRectangleGroup;
+
+	private HandlerRegistration escapeHandler;
 
 	private String zoomToRectangleImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoom_rectangle.png";
 
@@ -79,6 +87,17 @@ public class ZoomToRectangleGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				zoomToRectangleGroup = new ZoomToRectGroup(viewPort);
+				escapeHandler = Event.addNativePreviewHandler(new NativePreviewHandler() {
+
+					public void onPreviewNativeEvent(NativePreviewEvent event) {
+						if (event.getTypeInt() == Event.ONKEYDOWN || event.getTypeInt() == Event.ONKEYPRESS) {
+							if (KeyCodes.KEY_ESCAPE == event.getNativeEvent().getKeyCode()) {
+								onScale();
+							}
+						}
+					}
+				});
+
 				container.add(zoomToRectangleGroup);
 				event.stopPropagation();
 			}
@@ -90,6 +109,7 @@ public class ZoomToRectangleGadget implements MapGadget {
 		zoomToRectangle.addDoubleClickHandler(handler);
 
 		container.add(zoomToRectangle);
+
 	}
 
 	public void onTranslate() {
@@ -101,6 +121,10 @@ public class ZoomToRectangleGadget implements MapGadget {
 			container.remove(zoomToRectangleGroup);
 			zoomToRectangleGroup = null;
 		}
+		if (escapeHandler != null) {
+			escapeHandler.removeHandler();
+			escapeHandler = null;
+		}
 	}
 
 	public void onResize() {
@@ -110,6 +134,10 @@ public class ZoomToRectangleGadget implements MapGadget {
 	public void onDestroy() {
 		if (container != null) {
 			container.clear();
+		}
+		if (escapeHandler != null) {
+			escapeHandler.removeHandler();
+			escapeHandler = null;
 		}
 	}
 
