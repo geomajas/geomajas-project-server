@@ -127,7 +127,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 		String newStyle;
 		String style = record.getCustomStyle(); /* returns groupNode if group row, else e.g. null */
 
-		if ("label".equals(getFieldName(colNum)) && (null == style || !style.equalsIgnoreCase("groupNode"))) {
+		if ("label".equals(getFieldName(colNum)) && (null == style || !"groupNode".equalsIgnoreCase(style))) {
 			newStyle = "padding-left: 40px;";
 		} else { /* groupCell */
 			newStyle = "padding-left: 5px;";

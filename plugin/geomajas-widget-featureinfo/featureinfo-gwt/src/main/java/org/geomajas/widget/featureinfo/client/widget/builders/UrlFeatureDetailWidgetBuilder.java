@@ -21,7 +21,6 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ContentsType;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Label;
@@ -42,7 +41,7 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 	private static final String ATTRIBUTE_KEY = "${attributeValue}";
 	private static final String ATTRIBUTE_KEY_REGEX = "\\$\\{attributeValue\\}";
 
-	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 
 	private String windowWidth = "75%";
 	private String windowHeight = "75%";
@@ -57,7 +56,7 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 				return FeatureDetailWidgetFactory.createDefaultFeatureDetailWindow(feature, feature.getLayer(),
 						editingAllowed);
 			} else {
-				Label l = new Label(messages.urlFeatureDetailWidgetBuilderNoValue());
+				Label l = new Label(MESSAGES.urlFeatureDetailWidgetBuilderNoValue());
 				l.setWidth100();
 				l.setHeight100();
 				l.setValign(VerticalAlignment.CENTER);
