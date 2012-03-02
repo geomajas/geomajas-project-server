@@ -345,7 +345,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 
 		public void setSearchWidget(String name, Criterion criterion) {
 			this.critter = criterion;
-			setAttribute(NAME_FIELD, name + ", " + criterion.toString());
+			setAttribute(NAME_FIELD, name + ", " + criterion.getDisplayText());
 			setAttribute(REMOVE_FIELD, WidgetLayout.iconRemove);
 		}
 

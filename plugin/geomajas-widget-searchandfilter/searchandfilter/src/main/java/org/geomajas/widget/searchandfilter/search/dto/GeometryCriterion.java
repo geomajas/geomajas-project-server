@@ -111,8 +111,7 @@ public class GeometryCriterion implements Criterion {
 		return new ArrayList<Criterion>();
 	}
 
-	@Override
-	public String toString() {
+	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		switch (operator) {
 			case INTERSECTS:
