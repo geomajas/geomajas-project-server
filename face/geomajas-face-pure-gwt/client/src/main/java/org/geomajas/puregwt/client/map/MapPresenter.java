@@ -18,7 +18,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapController;
-import org.geomajas.puregwt.client.controller.MapListener;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
@@ -203,36 +202,37 @@ public interface MapPresenter extends IsWidget {
 
 	/**
 	 * Add a new listener to the map. These listeners passively listen to mouse events on the map, without actually
-	 * interfering with these events. The difference with a {@link MapController} is that controllers can do whatever
-	 * they want, while a listener is not allowed to interfere with the mouse events in any way.
+	 * interfering with these events. It is up to the developer to make sure these listeners do not interfere with the
+	 * primary controller on the map. In this regard it is considered bad practice to let these listeners interfere with
+	 * the mouse events.
 	 * 
 	 * @param mapListener
 	 *            The listener to try and remove again.
 	 * @return Returns true of removal was successful, false otherwise (i.e. if the listener could not be found).
 	 */
-	boolean addMapListener(MapListener mapListener);
+	boolean addMapListener(MapController mapListener);
 
 	/**
 	 * Remove one of the currently active listeners on the map. These listeners passively listen to mouse events on the
-	 * map, without actually interfering with these events. The difference with a {@link MapController} is that
-	 * controllers can do whatever they want, while a listener is not allowed to interfere with the mouse events in any
-	 * way.
+	 * map, without actually interfering with these events. It is up to the developer to make sure these listeners do
+	 * not interfere with the primary controller on the map. In this regard it is considered bad practice to let these
+	 * listeners interfere with the mouse events.
 	 * 
 	 * @param mapListener
 	 *            The listener to try and remove again.
 	 * @return Returns true of removal was successful, false otherwise (i.e. if the listener could not be found).
 	 */
-	boolean removeMapListener(MapListener mapListener);
+	boolean removeMapListener(MapController mapListener);
 
 	/**
 	 * Get the currently active set of listeners on the map. These listeners passively listen to mouse events on the
-	 * map, without actually interfering with these events. The difference with a {@link MapController} is that
-	 * controllers can do whatever they want, while a listener is not allowed to interfere with the mouse events in any
-	 * way.
+	 * map, without actually interfering with these events. It is up to the developer to make sure these listeners do
+	 * not interfere with the primary controller on the map. In this regard it is considered bad practice to let these
+	 * listeners interfere with the mouse events.
 	 * 
 	 * @return Returns the full collection of currently active listeners.
 	 */
-	Collection<MapListener> getMapListeners();
+	Collection<MapController> getMapListeners();
 
 	/**
 	 * Apply a new mouse cursor when hovering above the map.
@@ -261,7 +261,9 @@ public interface MapPresenter extends IsWidget {
 	 * Get the server-side configuration object associated with this map. This configuration only becomes available
 	 * after the map has been successfully initialized, as this object first needs to be fetched from the server.
 	 * </p>
-	 * <p>Never change the values within this object!</p>
+	 * <p>
+	 * Never change the values within this object!
+	 * </p>
 	 * 
 	 * @return The server-side configuration object associated with this map.
 	 */

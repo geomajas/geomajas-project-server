@@ -30,10 +30,8 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.controller.ListenerController;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapEventParserImpl;
-import org.geomajas.puregwt.client.controller.MapListener;
 import org.geomajas.puregwt.client.controller.NavigationController;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
@@ -177,7 +175,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private List<HandlerRegistration> handlers;
 
-	private Map<MapListener, List<HandlerRegistration>> listeners;
+	private final Map<MapController, List<HandlerRegistration>> listeners;
 
 	private MapController mapController;
 
@@ -209,7 +207,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	private MapPresenterImpl() {
 		eventBus = new SimpleEventBus();
 		handlers = new ArrayList<HandlerRegistration>();
-		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
+		listeners = new HashMap<MapController, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, VectorContainer>();
 		featureService = new FeatureServiceImpl(this);
 		mapEventParser = new MapEventParserImpl(this);
@@ -406,17 +404,16 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	/** {@inheritDoc} */
-	public boolean addMapListener(MapListener mapListener) {
+	public boolean addMapListener(MapController mapListener) {
 		if (mapListener != null && !listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
-			ListenerController listenerController = new ListenerController(mapListener);
-			registrations.add(display.addMouseDownHandler(listenerController));
-			registrations.add(display.addMouseMoveHandler(listenerController));
-			registrations.add(display.addMouseOutHandler(listenerController));
-			registrations.add(display.addMouseOverHandler(listenerController));
-			registrations.add(display.addMouseUpHandler(listenerController));
-			registrations.add(display.addMouseWheelHandler(listenerController));
-			listenerController.onActivate(this);
+			registrations.add(display.addMouseDownHandler(mapListener));
+			registrations.add(display.addMouseMoveHandler(mapListener));
+			registrations.add(display.addMouseOutHandler(mapListener));
+			registrations.add(display.addMouseOverHandler(mapListener));
+			registrations.add(display.addMouseUpHandler(mapListener));
+			registrations.add(display.addMouseWheelHandler(mapListener));
+			mapListener.onActivate(this);
 			listeners.put(mapListener, registrations);
 			return true;
 		}
@@ -424,21 +421,21 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	/** {@inheritDoc} */
-	public boolean removeMapListener(MapListener mapListener) {
+	public boolean removeMapListener(MapController mapListener) {
 		if (mapListener != null && listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = listeners.get(mapListener);
 			for (HandlerRegistration registration : registrations) {
 				registration.removeHandler();
 			}
 			listeners.remove(mapListener);
-			// deactivate not necessary, because the ListenerController does nothing when deactiving the listener.
+			mapListener.onDeactivate(this);
 			return true;
 		}
 		return false;
 	}
 
 	/** {@inheritDoc} */
-	public Collection<MapListener> getMapListeners() {
+	public Collection<MapController> getMapListeners() {
 		return listeners.keySet();
 	}
 
