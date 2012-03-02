@@ -30,6 +30,7 @@ import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -118,6 +119,24 @@ public class EntityAttributeServiceTest {
 		Assert.assertNotNull(bean.getManyToOneAttr());
 		Assert.assertNull(bean.getManyToOneAttr().getStringAttr());
 		Assert.assertNull(bean.getStringAttr());
+	}
+	
+	@Test
+	public void testGetters() throws LayerException {
+		Iterator it = layerBeans.getElements(Filter.INCLUDE, 0, 0);
+		while(it.hasNext()){
+			FeatureBean bean = (FeatureBean)it.next();
+			Assert.assertEquals(bean.getStringAttr(), service.getAttribute(bean, layerBeans.getLayerInfo()
+					.getFeatureInfo(), new DummyMapper(), "stringAttr").getValue());
+			Assert.assertEquals(bean.getCurrencyAttr(), service.getAttribute(bean, layerBeans.getLayerInfo()
+					.getFeatureInfo(), new DummyMapper(), "currencyAttr").getValue());
+			Assert.assertEquals(bean.getImageUrlAttr(), service.getAttribute(bean, layerBeans.getLayerInfo()
+					.getFeatureInfo(), new DummyMapper(), "imageUrlAttr").getValue());
+			if(bean.getManyToOneAttr() != null) {
+				Assert.assertEquals(bean.getManyToOneAttr().getId(), service.getAttribute(bean, layerBeans.getLayerInfo()
+						.getFeatureInfo(), new DummyMapper(), "manyToOneAttr/@id").getValue());
+			}
+		}
 	}
 	
 	

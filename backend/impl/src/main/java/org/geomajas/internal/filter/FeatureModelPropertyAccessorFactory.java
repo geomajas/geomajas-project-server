@@ -46,9 +46,9 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 	 */
 	static class FeatureModelPropertyAccessor implements PropertyAccessor {
 
-		private static final Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
+		static final Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
 
-		static final Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*(\\w+)"); // package private for test
+		static final Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*((\\w+)|(@(\\w+:)?id))");
 
 		public boolean canHandle(Object object, String xpath, Class target) {
 			// there is no need to check against the schema at this point, we will fail later

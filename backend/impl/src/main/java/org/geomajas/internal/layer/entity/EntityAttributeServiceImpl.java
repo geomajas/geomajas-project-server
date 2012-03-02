@@ -51,6 +51,8 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 
 	public static final String ATTRIBUTE_SEPARATOR = "[/.]+";
 
+	public static final String ID = "@id";
+
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
@@ -75,11 +77,12 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		AssociationAttributeInfo associationAttributeInfo = null;
 		// check attribute type
 		Set<String> names = new HashSet<String>();
-		// check for id (support for backwards compatibility)
-		if (featureInfo.getIdentifier().getName().equals(name)) {
+		// check for id
+		PrimitiveAttributeInfo identifier = featureInfo.getIdentifier();
+		if (identifier.getName().equals(name) || ID.equalsIgnoreCase(name)) {
 			try {
-				return dtoConverterService.toDto(entity == null ? null : entity.getAttribute(name),
-						featureInfo.getIdentifier());
+				return dtoConverterService
+						.toDto(entity == null ? null : entity.getId(identifier.getName()), identifier);
 			} catch (GeomajasException e) {
 				throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM);
 			}

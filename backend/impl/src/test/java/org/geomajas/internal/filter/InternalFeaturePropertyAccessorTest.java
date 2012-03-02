@@ -1,6 +1,7 @@
 package org.geomajas.internal.filter;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -80,7 +81,7 @@ public class InternalFeaturePropertyAccessorTest {
 			Assert.assertTrue(filter.evaluate(internalFeature));
 		}
 	}
-
+	
 	@Test
 	public void testManyToOne() throws GeomajasException {
 		List<InternalFeature> features = layerService.getFeatures(layerBeans.getId(), null,
@@ -89,6 +90,10 @@ public class InternalFeaturePropertyAccessorTest {
 			Filter filter = filterService.createCompareFilter("manyToOneAttr/stringAttr", "=",
 					((ManyToOneAttribute) internalFeature.getAttributes().get("manyToOneAttr")).getValue()
 							.getAttributeValue("stringAttr").toString());
+			Assert.assertTrue(filter.evaluate(internalFeature));
+		}
+		for (InternalFeature internalFeature : features) {
+			Filter filter = filterService.parseFilter("IN( 1 )");
 			Assert.assertTrue(filter.evaluate(internalFeature));
 		}
 	}

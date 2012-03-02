@@ -46,11 +46,19 @@ public class PropertyAccessorTest {
 
 		private static String ID = "myId";
 
+		private static String NESTED_ID = "nestedId";
+
+		private static StringAttribute ID_ATTRIBUTE = new StringAttribute(NESTED_ID);
+
 		public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		}
 
 		public Attribute getAttribute(Object feature, String name) throws LayerException {
-			return ATTRIBUTE;
+			if(name.endsWith("@id")) {
+				return ID_ATTRIBUTE;
+			} else {
+				return ATTRIBUTE;
+			}
 		}
 
 		public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
@@ -108,7 +116,10 @@ public class PropertyAccessorTest {
 		Assert.assertFalse(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa\bb").matches());
 		Assert.assertFalse(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa\\bb").matches());
 		Assert.assertFalse(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa+bb").matches());
-	}
+
+		Assert.assertTrue(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa.bb.@id").matches());
+		Assert.assertTrue(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa/bb/@id").matches());
+}
 
 	@Test
 	public void testAccess() {
@@ -123,5 +134,8 @@ public class PropertyAccessorTest {
 		// id
 		Assert.assertTrue(fmpa.canHandle(TestFeatureModel.SINGLE_FEATURE, "@id", Object.class));
 		Assert.assertEquals(TestFeatureModel.ID,fmpa.get(TestFeatureModel.SINGLE_FEATURE, "@id", Object.class));
+		// nested id
+		Assert.assertTrue(fmpa.canHandle(TestFeatureModel.SINGLE_FEATURE, "name/@id", Object.class));
+		Assert.assertEquals(TestFeatureModel.NESTED_ID, fmpa.get(TestFeatureModel.SINGLE_FEATURE, "name/@id", Object.class));
 	}
 }
