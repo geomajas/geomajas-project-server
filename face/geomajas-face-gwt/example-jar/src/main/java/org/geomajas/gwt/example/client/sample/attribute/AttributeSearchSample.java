@@ -52,7 +52,7 @@ public class AttributeSearchSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID beansMap is defined in the XML configuration. (contains any type of attribute)
-		final MapWidget map = new MapWidget("mapBeans", "gwtExample");
+		final MapWidget map = new MapWidget("mapBeansAssociation", "gwtExample");
 		map.setVisible(false);
 		layout.addMember(map);
 		map.init();
