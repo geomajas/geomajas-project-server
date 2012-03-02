@@ -161,7 +161,7 @@
 	</profiles>
 
 	<properties>
-		<hibernate-layer-backend-version>1.10.0</hibernate-layer-backend-version>
+		<hibernate-layer-backend-version>1.11.0-SNAPSHOT</hibernate-layer-backend-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 	

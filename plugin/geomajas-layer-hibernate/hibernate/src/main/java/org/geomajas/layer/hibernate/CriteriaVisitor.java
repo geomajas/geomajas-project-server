@@ -70,6 +70,10 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class CriteriaVisitor implements FilterVisitor {
 
+	private static final String HIBERNATE_ID = "id";
+
+	private static final String FILTER_ID = "@id";
+
 	private final Logger log = LoggerFactory.getLogger(CriteriaVisitor.class);
 
 	/**
@@ -317,7 +321,7 @@ public class CriteriaVisitor implements FilterVisitor {
 			idName = featureModel.getEntityMetadata().getIdentifierPropertyName();
 		} catch (LayerException e) {
 			log.warn("Cannot read idName, defaulting to 'id'", e);
-			idName = "id";
+			idName = HIBERNATE_ID;
 		}
 		Collection<?> c = (Collection<?>) castLiteral(filter.getIdentifiers(), idName);
 		return Restrictions.in(idName, c);
@@ -343,8 +347,9 @@ public class CriteriaVisitor implements FilterVisitor {
 			throw new IllegalArgumentException("Expression " + expression + " is not a PropertyName.");
 		}
 		String name = ((PropertyName) expression).getPropertyName();
-		if ("@id".equals(name)) {
-			name = "id"; // replace by Hibernate id property, always refers to the id, even if named differently
+		if (name.endsWith(FILTER_ID)) {
+			// replace by Hibernate id property, always refers to the id, even if named differently
+			name = name.substring(0, name.length() - FILTER_ID.length()) + HIBERNATE_ID;
 		}
 		return name;
 	}

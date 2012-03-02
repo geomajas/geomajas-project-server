@@ -37,6 +37,11 @@ public abstract class AbstractHibernateAssociationTest {
 
 	public static final String OTM = "oneToMany";
 
+	public static final String ID = "@id";
+
+	/** Filter: manyToOne.textAttr */
+	public static final String MTO_ID = MTO + HibernateLayerUtil.SEPARATOR + ID;
+
 	/** Filter: manyToOne.textAttr */
 	public static final String MTO_TEXT = MTO + HibernateLayerUtil.SEPARATOR + ManyToOneProperty.PARAM_TEXT_ATTR;
 

@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
 public abstract class AbstractHibernateLayerModelTest {
 
+	public static final String PARAM_AT_ID_ATTR = "@id";
 	public static final String PARAM_ID_ATTR = "id";
 	public static final String PARAM_TEXT_ATTR = "textAttr";
 	public static final String PARAM_INT_ATTR = "intAttr";
@@ -44,6 +45,11 @@ public abstract class AbstractHibernateLayerModelTest {
 	public static final String PARAM_MANY_TO_ONE = "manyToOne";
 	public static final String PARAM_ONE_TO_MANY = "oneToMany";
 	public static final String PARAM_GEOMETRY_ATTR = "geometry";
+
+	/** Filter: manyToOne.@id */
+	public static final String ATTR__MANY_TO_ONE__DOT__ID = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
+			+ PARAM_AT_ID_ATTR;
 
 	/** Filter: manyToOne.textAttr */
 	public static final String ATTR__MANY_TO_ONE__DOT__TEXT = PARAM_MANY_TO_ONE

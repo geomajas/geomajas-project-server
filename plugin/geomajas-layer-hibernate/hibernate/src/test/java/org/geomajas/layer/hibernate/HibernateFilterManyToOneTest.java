@@ -32,21 +32,39 @@ import org.opengis.filter.Filter;
 public class HibernateFilterManyToOneTest extends AbstractHibernateLayerModelTest {
 
 	static boolean initialised = false;
+	
+	private HibernateTestFeature f1;
+	private HibernateTestFeature f2;
+	private HibernateTestFeature f3;
+	private HibernateTestFeature f4;
 
 	@Before
 	public void setUpTestDataWithinTransaction() throws LayerException {
-		HibernateTestFeature f1 = HibernateTestFeature.getDefaultInstance1(null);
+		f1 = HibernateTestFeature.getDefaultInstance1(null);
 		f1.setManyToOne(HibernateTestManyToOne.getDefaultInstance1(null));
 		layer.create(f1);
-		HibernateTestFeature f2 = HibernateTestFeature.getDefaultInstance2(null);
+		f2 = HibernateTestFeature.getDefaultInstance2(null);
 		f2.setManyToOne(HibernateTestManyToOne.getDefaultInstance2(null));
 		layer.create(f2);
-		HibernateTestFeature f3 = HibernateTestFeature.getDefaultInstance3(null);
+		f3 = HibernateTestFeature.getDefaultInstance3(null);
 		f3.setManyToOne(HibernateTestManyToOne.getDefaultInstance3(null));
 		layer.create(f3);
-		HibernateTestFeature f4 = HibernateTestFeature.getDefaultInstance4(null);
+		f4 = HibernateTestFeature.getDefaultInstance4(null);
 		f4.setManyToOne(HibernateTestManyToOne.getDefaultInstance4(null));
 		layer.create(f4);
+	}
+
+	@Test
+	public void filterOnId() throws Exception {
+		Filter filter = filterCreator.parseFilter(ATTR__MANY_TO_ONE__DOT__ID + "= " + f1.getManyToOne().getId());
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue("Returned object must be a HibernateTestFeature",
+					it.next() instanceof HibernateTestFeature);
+			t++;
+		}
+		Assert.assertEquals(1, t);
 	}
 
 	@Test

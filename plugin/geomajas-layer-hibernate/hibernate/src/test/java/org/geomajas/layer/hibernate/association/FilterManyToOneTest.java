@@ -32,13 +32,31 @@ import org.opengis.filter.Filter;
 public class FilterManyToOneTest extends AbstractHibernateAssociationTest {
 
 	static boolean initialised = false;
+	
+	private AssociationFeature f1;
+	private AssociationFeature f2;
+	private AssociationFeature f3;
+	private AssociationFeature f4;
+	
 
 	@Before
 	public void setUpTestDataWithinTransaction() throws LayerException {
-		layer.create(AssociationFeature.getDefaultInstance1(null));
-		layer.create(AssociationFeature.getDefaultInstance2(null));
-		layer.create(AssociationFeature.getDefaultInstance3(null));
-		layer.create(AssociationFeature.getDefaultInstance4(null));
+		f1 = (AssociationFeature)layer.create(AssociationFeature.getDefaultInstance1(null));
+		f2 = (AssociationFeature)layer.create(AssociationFeature.getDefaultInstance2(null));
+		f3 = (AssociationFeature)layer.create(AssociationFeature.getDefaultInstance3(null));
+		f4 = (AssociationFeature)layer.create(AssociationFeature.getDefaultInstance4(null));
+	}
+	
+	@Test
+	public void eqFilterOnId() throws Exception {
+		Filter filter = filterCreator.parseFilter(MTO_ID + "= " + f1.getManyToOne().getId());
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue("Returned object must be a AssociationFeature", it.next() instanceof AssociationFeature);
+			t++;
+		}
+		Assert.assertEquals(1, t);
 	}
 
 	@Test
@@ -492,4 +510,6 @@ public class FilterManyToOneTest extends AbstractHibernateAssociationTest {
 		}
 		Assert.assertEquals(3, t);
 	}
+	
+	
 }
