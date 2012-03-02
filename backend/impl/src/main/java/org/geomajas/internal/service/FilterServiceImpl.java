@@ -27,6 +27,7 @@ import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -54,6 +55,8 @@ import com.vividsolutions.jts.geom.Geometry;
 public final class FilterServiceImpl implements FilterService {
 
 	private final Logger log = LoggerFactory.getLogger(FilterServiceImpl.class);
+	
+	private IdReplacingVisitor idReplacer = new IdReplacingVisitor();
 
 	private static final FilterFactory2 FF;
 	static {
@@ -230,7 +233,11 @@ public final class FilterServiceImpl implements FilterService {
 			return createTrueFilter();
 		}
 		try {
-			return ECQL.toFilter(filter, FF);
+			if (idReplacer.shouldParse(filter)) {
+				return idReplacer.parse(filter);
+			} else {
+				return ECQL.toFilter(filter, FF);
+			}
 		} catch (CQLException e) {
 			// ECQL should be a superset of CQL, but there are apparently extra key words like "id"
 			// fall back to CQL for backwards compatibility
@@ -241,6 +248,41 @@ public final class FilterServiceImpl implements FilterService {
 				throw new GeomajasException(ce, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
 			}
 		}
+	}
+
+
+	/**
+	 * {@link DuplicatingFilterVisitor} class that replaces the '@id' keyword by an ECQL compatible alternative for
+	 * parsing.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class IdReplacingVisitor extends DuplicatingFilterVisitor {
+
+		private static final String FAKE_ID = "__id__";
+
+		private static final String ID_IN_ATTRIBUTE_PATH = "@id";
+
+		public Filter parse(String filter) throws GeomajasException {
+			filter =  filter.replace(ID_IN_ATTRIBUTE_PATH, FAKE_ID);
+			return (Filter) parseFilter(filter).accept(this, null);
+		}
+
+		public boolean shouldParse(String filter) {
+			return filter.contains(ID_IN_ATTRIBUTE_PATH);
+		}
+
+		@Override
+		public Object visit(PropertyName expression, Object extraData) {
+			return getFactory(extraData).property(replaceId(expression.getPropertyName()),
+					expression.getNamespaceContext());
+		}
+
+		private String replaceId(String propertyName) {
+			return propertyName.replace(FAKE_ID, ID_IN_ATTRIBUTE_PATH);
+		}
+
 	}
 
 }

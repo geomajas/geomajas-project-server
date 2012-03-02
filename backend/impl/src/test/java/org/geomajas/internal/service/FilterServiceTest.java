@@ -9,6 +9,9 @@ import org.geomajas.service.FilterService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.PropertyName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -320,6 +323,18 @@ public class FilterServiceTest {
 	public void testParseFilter() throws GeomajasException {
 		Filter filter = filterService.parseFilter("a.b = 1 or a.b = 2 or a.b = 2");
 		Filter exclude = filterService.parseFilter("EXCLUDE");
+	}
+
+	@Test
+	public void testParseFidFilter() throws GeomajasException {
+		Filter f1 = filterService.parseFilter("IN( 1 )");
+		Filter f2 = filterService.parseFilter("a.@id = 1");
+		Assert.assertTrue(f1 instanceof Id);
+		Assert.assertTrue(f2 instanceof PropertyIsEqualTo);
+		PropertyIsEqualTo piet = (PropertyIsEqualTo)f2;
+		Assert.assertTrue(piet.getExpression1() instanceof PropertyName);
+		Assert.assertEquals("a/@id",((PropertyName)piet.getExpression1()).getPropertyName());
+		
 	}
 
 	/**
