@@ -11,11 +11,16 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerLabelHideEvent;
@@ -46,6 +51,32 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public VectorLayer(ClientVectorLayerInfo layerInfo, ViewPort viewPort, EventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
 		selection = new HashMap<String, Feature>();
+	}
+
+	// ------------------------------------------------------------------------
+	// Layer implementation:
+	// ------------------------------------------------------------------------
+
+	/** {@inheritDoc} */
+	public List<LayerStylePresenter> getStylePresenters() {
+		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
+
+		NamedStyleInfo styleInfo = layerInfo.getNamedStyleInfo();
+		for (int i = 0; i < styleInfo.getFeatureStyles().size(); i++) {
+			FeatureStyleInfo sfi = styleInfo.getFeatureStyles().get(i);
+			UrlBuilder url = new UrlBuilder(getLegendServiceUrl());
+			//url.addPath(LEGEND_ICONS_PATH);
+			url.addPath(getServerLayerId());
+			url.addPath(styleInfo.getName());
+			url.addPath(i + LEGEND_ICONS_TYPE);
+			stylePresenters.add(new LayerStylePresenter(i, url.toString(), sfi.getName()));
+		}
+
+//		UrlBuilder url = new UrlBuilder(getDispatcherUrl());
+//		url.addPath(LEGEND_ICONS_PATH);
+//		url.addPath(getServerLayerId() + LEGEND_ICONS_TYPE);
+//		stylePresenters.add(new LayerStylePresenter(0, url.toString(), getTitle()));
+		return stylePresenters;
 	}
 
 	// ------------------------------------------------------------------------

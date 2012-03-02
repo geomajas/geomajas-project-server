@@ -10,7 +10,11 @@
  */
 package org.geomajas.puregwt.client.map.layer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
 
@@ -31,6 +35,16 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements
 	 */
 	public RasterLayer(ClientRasterLayerInfo layerInfo, ViewPort viewPort, EventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
+	}
+
+	/** {@inheritDoc} */
+	public List<LayerStylePresenter> getStylePresenters() {
+		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
+		UrlBuilder url = new UrlBuilder(getLegendServiceUrl());
+		//url.addPath(LEGEND_ICONS_PATH);
+		url.addPath(getServerLayerId() + LEGEND_ICONS_TYPE);
+		stylePresenters.add(new LayerStylePresenter(0, url.toString(), getTitle()));
+		return stylePresenters;
 	}
 
 	/**

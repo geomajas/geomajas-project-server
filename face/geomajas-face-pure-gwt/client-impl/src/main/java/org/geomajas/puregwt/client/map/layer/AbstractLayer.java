@@ -24,6 +24,7 @@ import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 
 /**
@@ -34,6 +35,10 @@ import com.google.gwt.event.shared.EventBus;
  * @author Pieter De Graef
  */
 public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<T> {
+
+	protected static final String LEGEND_ICONS_PATH = "legendgraphic/";
+
+	protected static final String LEGEND_ICONS_TYPE = ".png";
 
 	protected ViewPort viewPort;
 
@@ -140,6 +145,24 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	/** {@inheritDoc} */
 	public void refresh() {
 		eventBus.fireEvent(new LayerRefreshedEvent(this));
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	protected static String getLegendServiceUrl() {
+		String moduleBaseUrl = GWT.getModuleBaseURL();
+		// remove last slash
+		moduleBaseUrl = moduleBaseUrl.substring(0, moduleBaseUrl.length() - 1);
+		// replace module part by /d
+		int contextEndIndex = moduleBaseUrl.lastIndexOf("/");
+		if (contextEndIndex > 6) {
+			return moduleBaseUrl.substring(0, contextEndIndex) + "/d/" + LEGEND_ICONS_PATH;
+		} else {
+			// fall back to module base URL
+			return GWT.getModuleBaseURL() + LEGEND_ICONS_PATH;
+		}
 	}
 
 	// ------------------------------------------------------------------------
