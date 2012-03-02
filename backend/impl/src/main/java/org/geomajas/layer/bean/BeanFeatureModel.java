@@ -107,7 +107,12 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public boolean canHandle(Object feature) {
-		return beanClass.isInstance(feature);
+		if (feature instanceof FeatureModelAware) {
+			FeatureModelAware fma = (FeatureModelAware) feature;
+			return (fma.getFeatureModel() == this);
+		} else {
+			return beanClass.isInstance(feature);
+		}
 	}
 
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
@@ -168,7 +173,11 @@ public class BeanFeatureModel implements FeatureModel {
 
 	public Object newInstance() throws LayerException {
 		try {
-			return beanClass.newInstance();
+			Object o = beanClass.newInstance();
+			if (o instanceof FeatureModelAware) {
+				((FeatureModelAware) o).setFeatureModel(this);
+			}
+			return o;
 		} catch (Throwable t) {
 			throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
@@ -176,7 +185,7 @@ public class BeanFeatureModel implements FeatureModel {
 
 	public Object newInstance(String id) throws LayerException {
 		try {
-			Object instance = beanClass.newInstance();
+			Object instance = newInstance();
 			setId(instance, id);
 			return instance;
 		} catch (Throwable t) {

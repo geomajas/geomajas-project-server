@@ -263,6 +263,11 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 
 	public synchronized void setFeatures(List<Object> features) throws LayerException {
 		if (null != features) {
+			for (Object feature : features) {
+				if (feature instanceof FeatureModelAware) {
+					((FeatureModelAware) feature).setFeatureModel(featureModel);
+				}
+			}
 			this.features.addAll(features);
 			if (null != featureModel) {
 				synchronized (featuresById) {
@@ -326,6 +331,9 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 		filterService.registerFeatureModel(featureModel);
 		synchronized (featuresById) {
 			for (Object f : features) {
+				if (f instanceof FeatureModelAware) {
+					((FeatureModelAware) f).setFeatureModel(featureModel);
+				}
 				featuresById.put(featureModel.getId(f), f);
 			}
 		}

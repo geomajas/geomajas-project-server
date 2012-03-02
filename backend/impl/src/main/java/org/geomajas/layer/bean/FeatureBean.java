@@ -13,6 +13,7 @@ package org.geomajas.layer.bean;
 import java.util.Date;
 import java.util.List;
 
+import org.geomajas.layer.feature.FeatureModel;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -33,7 +34,7 @@ MULTIPOLYGON EMPTY
  * 
  * @author Jan De Moerloose
  */
-public class FeatureBean {
+public class FeatureBean implements FeatureModelAware {
 
 	private static final int PRIME = 31;
 
@@ -66,6 +67,16 @@ public class FeatureBean {
 	private List<OneToManyAttributeBean> oneToManyAttr;
 
 	private String geometry;
+	
+	private FeatureModel featureModel;
+	
+	public FeatureModel getFeatureModel() {
+		return featureModel;
+	}
+	
+	public void setFeatureModel(FeatureModel featureModel) {
+		this.featureModel = featureModel;
+	}
 
 	public Long getId() {
 		return id;
