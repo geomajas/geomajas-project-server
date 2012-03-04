@@ -15,9 +15,12 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.smartgwt.client.widgets.Canvas;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -26,6 +29,7 @@ import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.Sav
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestHandler;
 import org.geomajas.widget.searchandfilter.search.dto.AndCriterion;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.GeometryCriterion;
 import org.geomajas.widget.searchandfilter.search.dto.OrCriterion;
 
 import com.google.gwt.core.client.GWT;
@@ -33,6 +37,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
@@ -58,6 +63,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 @Api
 public class CombinedSearchPanel extends AbstractSearchPanel {
 
+	private static final String GEOMETRY_IDENTIFIER = "CombinedSearchPanelGeometry";
+
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private DynamicForm operatorForm;
@@ -67,6 +74,8 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	private List<SearchWidget> searchWidgets = new ArrayList<SearchWidget>();
 	private boolean alwaysShowElements = true;
 	private boolean hideButtonsWhenAdding;
+	private List<GfxGeometry> geometries = new ArrayList<GfxGeometry>();
+	private final ShapeStyle selectionStyle;
 
 	/**
 	 * Create a combined search panel for a specific map widget.
@@ -76,6 +85,13 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	@Api
 	public CombinedSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
+		selectionStyle = new ShapeStyle();
+		selectionStyle.setFillColor("#FFFF00");
+		selectionStyle.setFillOpacity(0.3f);
+		selectionStyle.setStrokeColor("#B45F04");
+		selectionStyle.setStrokeOpacity(0.9f);
+		selectionStyle.setStrokeWidth(2f);
+
 		VLayout layout = new VLayout(10);
 		layout.setWidth(GsfLayout.combinedSearchPanelWidth);
 		layout.setHeight(1);
@@ -223,6 +239,37 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		} else {
 			operatorForm.hide();
 		}
+		updateGeometriesOnMap();
+	}
+
+	private void updateGeometriesOnMap() {
+		// make list of geometries from search items
+		List<Geometry> searchGeoms = new ArrayList<Geometry>();
+		for (ListGridRecord record : searchItems.getRecords()) {
+			SearchListRecord slr = (SearchListRecord) record;
+			if (slr.getCritter() instanceof GeometryCriterion) {
+				Geometry geometry = GeometryConverter.toGwt(((GeometryCriterion) slr.getCritter()).getGeometry());
+				searchGeoms.add(geometry);
+			}
+		}
+		// (re)draw the geometries
+		for (int i = 0; i < searchGeoms.size(); i++) {
+			GfxGeometry worldPaintable = null;
+			if (i < geometries.size()) {
+				worldPaintable = geometries.get(i);
+				mapWidget.unregisterWorldPaintable(worldPaintable);
+			} else {
+				worldPaintable = new GfxGeometry(GEOMETRY_IDENTIFIER + "_" + (i + 1));
+				worldPaintable.setStyle(selectionStyle);
+				geometries.add(worldPaintable);
+			}
+			worldPaintable.setGeometry(searchGeoms.get(i));
+			mapWidget.registerWorldPaintable(worldPaintable);
+		}
+		// unregister superfluous geometries
+		for (int i = searchGeoms.size(); i < geometries.size(); i++) {
+			mapWidget.unregisterWorldPaintable(geometries.get(i));
+		}
 	}
 
 	private SearchWidget getSearchWidget(String value) {
@@ -271,6 +318,11 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		operatorForm.reset();
 		searchItems.getDataAsRecordList().removeList(searchItems.getRecords());
 		updateDisplay();
+	}
+	
+	public void onDestroy() {
+		searchItems.clear();
+		updateGeometriesOnMap();
 	}
 
 	/**
