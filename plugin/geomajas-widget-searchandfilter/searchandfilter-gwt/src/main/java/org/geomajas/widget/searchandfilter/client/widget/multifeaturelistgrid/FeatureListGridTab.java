@@ -15,9 +15,11 @@ import java.util.List;
 
 import org.geomajas.configuration.SortType;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -265,12 +267,43 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		ListGridRecord[] selection = getSelection();
 		int count = selection.length;
 		if (count > 0) {
-			List<Feature> features = new ArrayList<Feature>();
+			LazyLoadCallback llc = new ZoomToBoundsFeatureLazyLoadCallback(count);
 			for (ListGridRecord lgr : selection) {
-				features.add(new Feature(lgr.getAttribute(FeatureListGrid.FIELD_NAME_FEATURE_ID), featureListGrid
-						.getLayer()));
+				featureListGrid.getLayer().getFeatureStore().getFeature(
+						lgr.getAttribute(FeatureListGrid.FIELD_NAME_FEATURE_ID),
+						GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, llc);
 			}
-			mapWidget.getMapModel().zoomToFeatures(features);
+		}
+	}
+
+	/**
+	 * Stateful callback that zooms to bounds when all features have been retrieved.
+	 * 
+	 * @author Kristof Heirwegh
+	 */
+	private class ZoomToBoundsFeatureLazyLoadCallback implements LazyLoadCallback {
+
+		private int featureCount;
+		private Bbox bounds;
+
+		public ZoomToBoundsFeatureLazyLoadCallback(int featureCount) {
+			this.featureCount = featureCount;
+		}
+
+		public void execute(List<Feature> response) {
+			if (response != null && response.size() > 0) {
+				if (bounds == null) {
+					bounds = (Bbox) response.get(0).getGeometry().getBounds().clone();
+				} else {
+					bounds = bounds.union(response.get(0).getGeometry().getBounds());
+				}
+			}
+			featureCount--;
+			if (featureCount == 0) {
+				if (bounds != null) {
+					mapWidget.getMapModel().getMapView().applyBounds(bounds, ZoomOption.LEVEL_FIT);
+				}
+			}
 		}
 	}
 

@@ -50,6 +50,21 @@
 		</developer>
 	</developers>
 
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -118,8 +133,8 @@
 
 	<properties>
 		<geomajas-widget-featureinfo-version>1.0.0-SNAPSHOT</geomajas-widget-featureinfo-version>
-		<geomajas-widget-searchandfilter-backend-version>1.11.0-SNAPSHOT</geomajas-widget-searchandfilter-backend-version>
-		<geomajas-widget-searchandfilter-gwt-face-version>1.11.0-SNAPSHOT</geomajas-widget-searchandfilter-gwt-face-version>
+		<geomajas-widget-searchandfilter-backend-version>1.10.0</geomajas-widget-searchandfilter-backend-version>
+		<geomajas-widget-searchandfilter-gwt-face-version>1.10.0</geomajas-widget-searchandfilter-gwt-face-version>
 		<geomajas-widget-searchandfilter-gwt-version>2.4.0</geomajas-widget-searchandfilter-gwt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>	

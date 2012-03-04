@@ -95,7 +95,7 @@ public class SaveSearchFavouriteCommand implements Command<SaveSearchFavouriteRe
 			searchFavouritesService.saveOrUpdateSearchFavourite(sf);
 			response.setSearchFavourite(sf);
 
-		} catch (Exception e) { // NOSONAR
+		} catch (Exception e) {
 			response.getErrorMessages().add("Failed saving SearchFavourite! " + e.getMessage());
 		}
 	}

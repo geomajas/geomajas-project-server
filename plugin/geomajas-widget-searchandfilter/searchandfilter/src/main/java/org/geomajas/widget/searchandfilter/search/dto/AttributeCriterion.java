@@ -27,8 +27,6 @@ public class AttributeCriterion implements Criterion {
 
 	private String attributeName;
 
-	private String displayText;
-
 	public AttributeCriterion() {}
 
 	public AttributeCriterion(String serverLayerId, String attributeName, String operator, String value) {
@@ -70,14 +68,6 @@ public class AttributeCriterion implements Criterion {
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-	
-	public String getDisplayText() {
-		return displayText;
-	}
-	
-	public void setDisplayText(String displayText) {
-		this.displayText = displayText;
 	}
 
 	public String getServerLayerId() {
