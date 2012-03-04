@@ -32,8 +32,8 @@ public class ParentDrawController extends AbstractFreeDrawingController {
 	/** The real controller responsible for drawing. */
 	private AbstractFreeDrawingController controller;
 
-	protected ParentDrawController(MapWidget mapWidget) {
-		super(mapWidget, null);
+	protected ParentDrawController(MapWidget mapWidget, GeometryDrawHandler handler) {
+		super(mapWidget, null, handler);
 	}
 
 	@Override

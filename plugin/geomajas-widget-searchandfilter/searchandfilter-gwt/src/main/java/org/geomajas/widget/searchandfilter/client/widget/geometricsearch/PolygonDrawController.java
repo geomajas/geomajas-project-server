@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -49,8 +50,9 @@ public class PolygonDrawController extends AbstractFreeDrawingController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public PolygonDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
-		super(mapWidget, parent);
+	public PolygonDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent, 
+			GeometryDrawHandler handler) {
+		super(mapWidget, parent, handler);
 		factory = new GeometryFactory(mapWidget.getMapModel().getSrid(), mapWidget.getMapModel().getPrecision());
 		geometry = factory.createPolygon(null, null);
 	}
@@ -132,6 +134,13 @@ public class PolygonDrawController extends AbstractFreeDrawingController {
 			tempLineEnd.setGeometry(polygon);
 			mapWidget.render(tempLineEnd, RenderGroup.VECTOR, RenderStatus.ALL);
 			removeTempLines();
+		}
+	}
+
+	@Override
+	public void onDoubleClick(DoubleClickEvent event) {
+		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
+			handler.onDraw(geometry);
 		}
 	}
 

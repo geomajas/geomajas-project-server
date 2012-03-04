@@ -21,6 +21,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -44,8 +45,9 @@ public class LineStringDrawController extends AbstractFreeDrawingController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public LineStringDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
-		super(mapWidget, parent);
+	public LineStringDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent,
+			GeometryDrawHandler handler) {
+	super(mapWidget, parent, handler);
 		geometry = factory.createLineString(new Coordinate[0]);
 	}
 
@@ -92,6 +94,13 @@ public class LineStringDrawController extends AbstractFreeDrawingController {
 	}
 
 	// Getters and setters:
+
+	@Override
+	public void onDoubleClick(DoubleClickEvent event) {
+		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
+			handler.onDraw(geometry);
+		}
+	}
 
 	public void setEditMode(EditMode editMode) {
 		super.setEditMode(editMode);

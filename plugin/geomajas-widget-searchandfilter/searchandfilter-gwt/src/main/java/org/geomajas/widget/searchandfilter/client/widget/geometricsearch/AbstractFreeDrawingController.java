@@ -32,6 +32,8 @@ public abstract class AbstractFreeDrawingController extends AbstractSnappingCont
 	protected Geometry geometry;
 
 	protected GeometryFactory factory;
+	
+	protected GeometryDrawHandler handler;
 
 	/** The currently active editing modus. */
 	private EditMode editMode;
@@ -46,14 +48,15 @@ public abstract class AbstractFreeDrawingController extends AbstractSnappingCont
 	/**
 	 * Protected and only constructor. Extending classes must use this constructor.
 	 * 
-	 * @param mapWidget
-	 *            Reference to the map widget on which drawing is in progress.
-	 * @param parent
-	 *            The parent drawing controller, or null if there is none.
+	 * @param mapWidget Reference to the map widget on which drawing is in progress.
+	 * @param parent The parent drawing controller, or null if there is none.
+	 * @param handler called when a geometry is drawn.
 	 */
-	protected AbstractFreeDrawingController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
+	protected AbstractFreeDrawingController(MapWidget mapWidget, AbstractFreeDrawingController parent,
+			GeometryDrawHandler handler) {
 		super(mapWidget);
 		this.parent = parent;
+		this.handler = handler;
 		factory = new GeometryFactory(mapWidget.getMapModel().getSrid(), mapWidget.getMapModel().getPrecision());
 		geometry = null;
 		// TODO Auto-generated constructor stub

@@ -48,8 +48,8 @@ public class PointDrawController extends AbstractFreeDrawingController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public PointDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
-		super(mapWidget, parent);
+	public PointDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent, GeometryDrawHandler handler) {
+		super(mapWidget, parent, handler);
 		factory = new GeometryFactory(mapWidget.getMapModel().getSrid(), mapWidget.getMapModel().getPrecision());
 		geometry = factory.createPoint(new Coordinate());
 		drawStyle = new ShapeStyle("#FF7F00", 0.3f, "#FF7F00", 1, 2);
@@ -85,6 +85,7 @@ public class PointDrawController extends AbstractFreeDrawingController {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
 			removeTempPoint();
 			createTempPoint();
+			handler.onDraw(getGeometry());
 		}
 	}
 

@@ -40,7 +40,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  * @author Bruce Palmkoeck
  */
-public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
+public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements GeometryDrawHandler {
 
 	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 
@@ -63,7 +63,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	public void initialize(MapWidget map, GeometryUpdateHandler handler) {
 		super.initialize(map, handler);
 		geometries.clear();
-		drawController = new ParentDrawController(mapWidget);
+		drawController = new ParentDrawController(mapWidget, this);
 		drawController.setEditMode(EditMode.INSERT_MODE);
 		drawController.setMaxBoundsDisplayed(false);
 	}
@@ -134,15 +134,6 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		IButton btnAdd = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingAdd());
-		btnAdd.setIcon(WidgetLayout.iconSelectedAdd);
-		btnAdd.setAutoFit(true);
-		btnAdd.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				onAdd();
-			}
-		});
-
 		btnUndo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingUndo());
 		btnUndo.setIcon(WidgetLayout.iconUndo);
 		btnUndo.setAutoFit(true);
@@ -185,14 +176,13 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		geomsButtonBar.addMember(btnLine);
 		geomsButtonBar.addMember(btnPolygon);
 
-		actionsButtonBar.addMember(btnAdd);
 		actionsButtonBar.addMember(btnUndo);
 		actionsButtonBar.addMember(btnRedo);
 
 		mainLayout.addMember(titleBar);
 		mainLayout.addMember(geomsButtonBar);
-		mainLayout.addMember(frmBuffer);
 		mainLayout.addMember(actionsButtonBar);
+		mainLayout.addMember(frmBuffer);
 
 		return mainLayout;
 	}
@@ -207,30 +197,23 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	
 	private void onDrawPoint() {
 		if (drawController.getController() != null) {
-			addNewGeometry();
 			btnPoint.select();
 		}
-		startDrawing(new PointDrawController(mapWidget, drawController));
+		startDrawing(new PointDrawController(mapWidget, drawController, this));
 	}
 
 	private void onDrawLine() {
 		if (drawController.getController() != null) {
-			addNewGeometry();
 			btnLine.select();
 		}
-		startDrawing(new LineStringDrawController(mapWidget, drawController));
+		startDrawing(new LineStringDrawController(mapWidget, drawController, this));
 	}
 
 	private void onDrawPolygon() {
 		if (drawController.getController() != null) {
-			addNewGeometry();
 			btnPolygon.select();
 		}
-		startDrawing(new PolygonDrawController(mapWidget, drawController));
-	}
-
-	private void onAdd() {
-		addNewGeometry();
+		startDrawing(new PolygonDrawController(mapWidget, drawController, this));
 	}
 
 	private void onUndo() {
@@ -274,9 +257,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		resetButtonState();
 	}
 
-	private void addNewGeometry() {
+	private void addNewGeometry(Geometry geom) {
 		if (drawController.getController() != null) {
-			Geometry geom = drawController.getController().getGeometry();
 			if (!geom.isEmpty()
 					&& geom.isValid()
 					&& !geometries.contains(geom)) {
@@ -318,5 +300,9 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			updateGeometry(mergedGeom, null);
 			mergedGeom = null;
 		}
+	}
+
+	public void onDraw(Geometry geometry) {
+		addNewGeometry(geometry);
 	}
 }
