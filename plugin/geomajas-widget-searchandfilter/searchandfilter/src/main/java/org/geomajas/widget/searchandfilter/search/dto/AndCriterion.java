@@ -60,15 +60,14 @@ public class AndCriterion implements Criterion {
 		}
 	}
 
-	@Override
-	public String toString() {
+	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (Criterion criterion : criteria) {
 			if (!first) {
 				sb.append(" AND ");
 			}
-			sb.append(criterion.toString());
+			sb.append(criterion.getDisplayText());
 			first = false;
 		}
 		return sb.toString();

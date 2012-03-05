@@ -16,12 +16,13 @@ import java.util.List;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
+import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
-import org.geomajas.gwt.client.widget.attribute.DefaultAttributeProvider;
 import org.geomajas.widget.searchandfilter.search.dto.AttributeCriterion;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -44,6 +45,7 @@ public class AttributeCriterionPane extends Canvas {
 
 	private static final String CQL_WILDCARD = "*";
 	private static final String CQL_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	private static final String ID_SUFFIX = ".@id";
 
 	private SelectItem attributeSelect;
 
@@ -121,6 +123,8 @@ public class AttributeCriterionPane extends Canvas {
 		if (selectedAttribute != null && operator != null) {
 			String operatorString = getOperatorCodeFromLabel(operator.toString());
 			String valueString = "";
+			String nameString = selectedAttribute.getName();
+			String displayText = nameString + " " + operatorString + " " + valueItem.getDisplayValue();
 			if (value != null) {
 				valueString = value.toString();
 			}
@@ -162,14 +166,20 @@ public class AttributeCriterionPane extends Canvas {
 						}
 					}
 				}
+			} else if (selectedAttribute instanceof AssociationAttributeInfo) {
+				AssociationAttributeInfo assInfo = (AssociationAttributeInfo) selectedAttribute;
+				if (AssociationType.MANY_TO_ONE == assInfo.getType()) {
+					nameString = nameString + ID_SUFFIX;
+				}
 			}
 
 			// Now create the criterion:
 			AttributeCriterion criterion = new AttributeCriterion();
 			criterion.setServerLayerId(layer.getServerLayerId());
-			criterion.setAttributeName(selectedAttribute.getName());
+			criterion.setAttributeName(nameString);
 			criterion.setOperator(operatorString);
 			criterion.setValue(valueString);
+			criterion.setDisplayText(displayText);
 			return criterion;
 		}
 		return null;
@@ -416,8 +426,7 @@ public class AttributeCriterionPane extends Canvas {
 		 * @param attributeInfo The new attribute definition for which to display the correct <code>FormItem</code>.
 		 */
 		public void setAttributeInfo(AbstractReadOnlyAttributeInfo attributeInfo) {
-			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, new DefaultAttributeProvider(layer
-					.getLayerInfo().getServerLayerId()));
+			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, layer);
 			if (formItem != null) {
 				formItem.setDisabled(false);
 				formItem.setShowTitle(false);
@@ -456,6 +465,18 @@ public class AttributeCriterionPane extends Canvas {
 			if (formItem != null) {
 				formItem.setValue(value);
 			}
+		}
+
+		/**
+		 * Get the display value form the internal <code>FormItem</code>.
+		 *
+		 * @return value
+		 */
+		public String getDisplayValue() {
+			if (formItem != null) {
+				return formItem.getDisplayValue();
+			}
+			return null;
 		}
 
 		/**

@@ -48,5 +48,11 @@ public interface Criterion extends Serializable {
 	 * @return list of criteria 
 	 */
 	List<Criterion> getCriteria();
-
+	
+	/**
+	 * Return a text version of this {@link Criterion} that is suitable to display to end users.
+	 * 
+	 * @return display text 
+	 */
+	String getDisplayText();
 }
