@@ -82,7 +82,7 @@ public class FeatureSelectionPanel extends ContentPanel {
 		verticalPanel.add(clickAndDrag);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter().get();
+		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
 

@@ -54,7 +54,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 
 	public Widget getContentWidget() {
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter().get();
+		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
 

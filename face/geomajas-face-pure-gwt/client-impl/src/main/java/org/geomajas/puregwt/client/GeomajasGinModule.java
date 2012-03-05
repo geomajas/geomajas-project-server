@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
@@ -20,12 +19,9 @@ import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
-import org.geomajas.puregwt.client.map.feature.FeatureService;
-import org.geomajas.puregwt.client.map.feature.FeatureServiceImpl;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 
 /**
  * Gin binding module. All bindings defined in here are used by the GeomajasGinjector.
@@ -41,9 +37,8 @@ public class GeomajasGinModule extends AbstractGinModule {
 		bind(LayersModel.class).to(LayersModelImpl.class);
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(MapWidget.class).to(MapWidgetImpl.class);
-		bind(FeatureService.class).to(FeatureServiceImpl.class).in(Singleton.class);
 
 		// Other:
-		bind(GfxUtil.class).to(GfxUtilImpl.class).in(Singleton.class);
+		bind(GfxUtil.class);
 	}
 }

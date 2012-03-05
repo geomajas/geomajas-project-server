@@ -74,7 +74,7 @@ public class ResizeMapPanel extends ContentPanel {
 		leftLayout.add(shrinkBtn);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter().get();
+		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
 

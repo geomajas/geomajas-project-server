@@ -48,7 +48,7 @@ public class MapFillPanel extends ContentPanel {
 		layout.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = getInjector().getMapPresenter().get();
+		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
 		layout.add(mapPresenter.asWidget());
 
