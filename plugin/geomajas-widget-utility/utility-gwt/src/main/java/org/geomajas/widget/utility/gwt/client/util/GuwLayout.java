@@ -42,8 +42,8 @@ public final class GuwLayout {
 	
 	/** Overflow of the ribbon bar */
 	public static Overflow ribbonBarOverflow = Overflow.AUTO;
-	/** Overflow of the ribbon group */
-	public static Overflow ribbonGroupOverflow = Overflow.AUTO;
+	/** Overflow of the ribbon tabs */
+	public static Overflow ribbonTabOverflow = Overflow.AUTO;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 	/**
