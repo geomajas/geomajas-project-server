@@ -261,7 +261,7 @@ public final class MapPresenterImpl implements MapPresenter {
 						&& r.getMapInfo().getScaleConfiguration().getZoomLevels().size() > 0) {
 					// Zoom steps...
 					addMapGadget(new ZoomToRectangleGadget());
-					addMapGadget(new ZoomStepGadget(60, 20));
+					addMapGadget(new ZoomStepGadget(60, 18));
 				} else {
 					// Simple zooming:
 					addMapGadget(new ZoomToRectangleGadget(125, 20));

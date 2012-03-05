@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt.client.util.UrlBuilder;
+import org.geomajas.puregwt.client.Geomajas;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
 
@@ -40,9 +41,8 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements
 	/** {@inheritDoc} */
 	public List<LayerStylePresenter> getStylePresenters() {
 		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
-		UrlBuilder url = new UrlBuilder(getLegendServiceUrl());
-		//url.addPath(LEGEND_ICONS_PATH);
-		url.addPath(getServerLayerId() + LEGEND_ICONS_TYPE);
+		UrlBuilder url = new UrlBuilder(Geomajas.getLegendServiceUrl());
+		url.addPath(getServerLayerId() + LEGEND_ICON_EXTENSION);
 		stylePresenters.add(new LayerStylePresenter(0, url.toString(), getTitle()));
 		return stylePresenters;
 	}

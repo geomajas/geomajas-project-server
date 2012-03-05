@@ -21,6 +21,7 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.util.UrlBuilder;
+import org.geomajas.puregwt.client.Geomajas;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerLabelHideEvent;
@@ -64,18 +65,12 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		NamedStyleInfo styleInfo = layerInfo.getNamedStyleInfo();
 		for (int i = 0; i < styleInfo.getFeatureStyles().size(); i++) {
 			FeatureStyleInfo sfi = styleInfo.getFeatureStyles().get(i);
-			UrlBuilder url = new UrlBuilder(getLegendServiceUrl());
-			//url.addPath(LEGEND_ICONS_PATH);
+			UrlBuilder url = new UrlBuilder(Geomajas.getLegendServiceUrl());
 			url.addPath(getServerLayerId());
 			url.addPath(styleInfo.getName());
-			url.addPath(i + LEGEND_ICONS_TYPE);
+			url.addPath(i + LEGEND_ICON_EXTENSION);
 			stylePresenters.add(new LayerStylePresenter(i, url.toString(), sfi.getName()));
 		}
-
-//		UrlBuilder url = new UrlBuilder(getDispatcherUrl());
-//		url.addPath(LEGEND_ICONS_PATH);
-//		url.addPath(getServerLayerId() + LEGEND_ICONS_TYPE);
-//		stylePresenters.add(new LayerStylePresenter(0, url.toString(), getTitle()));
 		return stylePresenters;
 	}
 
