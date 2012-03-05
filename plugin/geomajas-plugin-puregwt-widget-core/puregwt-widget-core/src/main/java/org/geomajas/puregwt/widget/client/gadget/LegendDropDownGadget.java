@@ -18,7 +18,16 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.widget.client.map.LegendDropDown;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.layout.client.Layout.Alignment;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -33,6 +42,10 @@ public class LegendDropDownGadget implements MapGadget {
 
 	private LegendDropDown layout;
 
+	private int closeDelay = 3000;
+
+	private Timer timer;
+
 	public Widget asWidget() {
 		if (layout == null) {
 			layout = new LegendDropDown(mapPresenter);
@@ -46,6 +59,44 @@ public class LegendDropDownGadget implements MapGadget {
 			} else {
 				addAllLayers();
 			}
+
+			// Stop propagation of mouse events to the map:
+			layout.addDomHandler(new MouseDownHandler() {
+
+				public void onMouseDown(MouseDownEvent event) {
+					event.stopPropagation();
+				}
+			}, MouseDownEvent.getType());
+			layout.addDomHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					event.stopPropagation();
+				}
+			}, ClickEvent.getType());
+
+			// Install a timer for automatic closing when the mouse leaves us:
+			layout.addDomHandler(new MouseOutHandler() {
+
+				public void onMouseOut(MouseOutEvent event) {
+					if (layout.isOpen() && closeDelay > 0) {
+						timer = new Timer() {
+
+							public void run() {
+								layout.setOpen(false);
+							}
+						};
+						timer.schedule(closeDelay);
+					}
+				}
+			}, MouseOutEvent.getType());
+			layout.addDomHandler(new MouseOverHandler() {
+
+				public void onMouseOver(MouseOverEvent event) {
+					if (timer != null) {
+						timer.cancel();
+					}
+				}
+			}, MouseOverEvent.getType());
 		}
 		return layout;
 	}
@@ -68,6 +119,31 @@ public class LegendDropDownGadget implements MapGadget {
 
 	public int getVerticalMargin() {
 		return 5;
+	}
+
+	// ------------------------------------------------------------------------
+	// Getters and setters:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the number of milliseconds this drop down will wait before automatically closing when the mouse moves out of
+	 * view. If the mouse comes back within the delay time, the drop down will stay open.
+	 * 
+	 * @return The number of milliseconds this drop down will wait before automatically closing.
+	 */
+	public int getCloseDelay() {
+		return closeDelay;
+	}
+
+	/**
+	 * Set the number of milliseconds this drop down will wait before automatically closing when the mouse moves out of
+	 * view. If the mouse comes back within the delay time, the drop down will stay open.
+	 * 
+	 * @param closeDelay
+	 *            The automatic closing delay, expressed in milliseconds.
+	 */
+	public void setCloseDelay(int closeDelay) {
+		this.closeDelay = closeDelay;
 	}
 
 	// ------------------------------------------------------------------------
