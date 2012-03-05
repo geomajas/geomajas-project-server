@@ -69,7 +69,7 @@ public class LayerOrderPanel extends ContentPanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
+		mapPresenter = getInjector().getMapPresenter().get();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
 

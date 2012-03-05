@@ -16,6 +16,7 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.inject.Provider;
 
 /**
  * Ginjector specific for the Geomajas pure GWT client.
@@ -25,7 +26,7 @@ import com.google.gwt.inject.client.Ginjector;
 @GinModules(GeomajasGinModule.class)
 public interface GeomajasGinjector extends Ginjector {
 
-	MapPresenter getMapPresenter();
+	Provider<MapPresenter> getMapPresenter();
 
 	GfxUtil getGfxUtil();
 }

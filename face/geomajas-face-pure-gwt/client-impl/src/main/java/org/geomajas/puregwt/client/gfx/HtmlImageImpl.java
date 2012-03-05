@@ -97,7 +97,6 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone,
 			int nrRetries) {
 		super("img", width, height, top, left);
-
 		DOM.setStyleAttribute(getElement(), "border", "none");
 		DOM.setElementProperty(getElement(), "src", src);
 
