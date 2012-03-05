@@ -74,6 +74,8 @@ import com.google.gwt.event.dom.client.HasMouseOutHandlers;
 import com.google.gwt.event.dom.client.HasMouseOverHandlers;
 import com.google.gwt.event.dom.client.HasMouseUpHandlers;
 import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -584,6 +586,14 @@ public final class MapPresenterImpl implements MapPresenter {
 			this.mapGadget = mapGadget;
 			calculatePosition();
 			eventBus.addHandler(MapResizedEvent.TYPE, this);
+			mapGadget.asWidget().addHandler(new ResizeHandler() {
+
+				public void onResize(final ResizeEvent event) {
+					calculatePosition();
+					calculateSize();
+				}
+
+			}, ResizeEvent.getType());
 		}
 
 		public void onMapResized(MapResizedEvent event) {
