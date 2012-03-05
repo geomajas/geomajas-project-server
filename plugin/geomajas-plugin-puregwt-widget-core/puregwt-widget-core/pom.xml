@@ -16,13 +16,13 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-puregwt-widget-all</artifactId>
+		<artifactId>geomajas-plugin-puregwt-widget-core-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-puregwt-widget</artifactId>
-	<name>geomajas-puregwt-widget</name>
-	<description>geomajas-puregwt-widget</description>
+	<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
+	<name>geomajas-plugin-puregwt-widget-core</name>
+	<description>geomajas-plugin-puregwt-widget-core</description>
 
 	<dependencies>
 		<dependency>

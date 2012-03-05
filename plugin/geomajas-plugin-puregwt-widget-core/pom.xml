@@ -21,17 +21,17 @@
 	</parent>
 
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-puregwt-widget-all</artifactId>
+	<artifactId>geomajas-plugin-puregwt-widget-core-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>geomajas-puregwt-widget plug-in parent</name>
-	<description>geomajas-puregwt-widget plug-in grouping module</description>
+	<name>geomajas-puregwt-widget-core plug-in parent</name>
+	<description>geomajas-puregwt-widget-core plug-in grouping module</description>
 
 	<!-- SCM information -->
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geomajas-puregwt-widget</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geomajas-puregwt-widget</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-geomajas-puregwt-widget</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-puregwt-widget-core</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-puregwt-widget-core</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-puregwt-widget-core</url>
 	</scm>
 
 	<developers>
@@ -45,7 +45,7 @@
 	</developers>
 
 	<modules>
-		<module>geomajas-puregwt-widget</module>
+		<module>puregwt-widget-core</module>
 		<module>documentation</module>
 	</modules>
 
