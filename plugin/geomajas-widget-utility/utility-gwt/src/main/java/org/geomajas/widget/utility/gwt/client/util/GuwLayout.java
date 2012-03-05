@@ -40,9 +40,9 @@ public final class GuwLayout {
 	/** Member margin between components in a ribbon group. */
 	public static int ribbonGroupInternalMargin = 10;
 	
-	/** Overflow of the ribbon bar */
+	/** Overflow of the ribbon bar. */
 	public static Overflow ribbonBarOverflow = Overflow.AUTO;
-	/** Overflow of the ribbon tabs */
+	/** Overflow of the ribbon tabs. */
 	public static Overflow ribbonTabOverflow = Overflow.AUTO;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
