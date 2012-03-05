@@ -1,0 +1,113 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="mapLegend" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1:100" />
+			</bean>
+		</property>
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-128.5"/>
+				<property name="y" value="16"/>
+				<property name="width" value="64.5"/>
+				<property name="height" value="35"/>
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="clientLayerWms" />
+				<ref bean="clientLayerCountries110m" />
+				<ref bean="clientLayerRivers50m" />
+				<ref bean="clientLayerPopulatedPlaces110m" />
+			</list>
+		</property>
+		<property name="layerTree">
+			<bean name="legendMapTree"
+				class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+						<ref bean="LayerRefreshAction" />
+					</list>
+				</property>
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="clientLayerWms" />
+								<ref bean="clientLayerCountries110m" />
+								<ref bean="clientLayerRivers50m" />
+								<ref bean="clientLayerPopulatedPlaces110m" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerRivers50m">
+		<property name="serverLayerId" value="layerRivers50m" />
+		<property name="label" value="Rivers (linestring)" />
+		<property name="visible" value="true" />
+		<property name="maximumScale" value="1:100000" />
+		<property name="minimumScale" value="1:500000000" />
+		<property name="namedStyleInfo" ref="layerRivers50mStyleInfo" />
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerCountries110m">
+		<property name="serverLayerId" value="layerCountries110m2" />
+		<property name="label" value="Countries (polygon)" />
+		<property name="visible" value="true" />
+		<property name="maximumScale" value="1:100000" />
+		<property name="minimumScale" value="1:500000000" />
+		<property name="namedStyleInfo" ref="layerCountries110m2StyleInfo" />
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerPopulatedPlaces110m">
+		<property name="serverLayerId" value="layerPopulatedPlaces110m" />
+		<property name="label" value="Populated places (point)" />
+		<property name="visible" value="true" />
+		<property name="maximumScale" value="1:100000" />
+		<property name="minimumScale" value="1:500000000" />
+		<property name="namedStyleInfo" ref="layerPopulatedPlaces110mStyleInfo" />
+	</bean>
+
+</beans>

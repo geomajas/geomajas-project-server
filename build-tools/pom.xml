@@ -36,6 +36,7 @@
 		<module>geomajas-maven-plugin</module>
 		<module>geomajas-parent</module>
 		<module>geomajas-plugin-archetype</module>
+		<module>geomajas-pure-gwt-archetype</module>
 	</modules>
 
 </project>
