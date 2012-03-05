@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.6</version>
+	</parent>
+
+	<groupId>org.geomajas.plugin</groupId>
+	<artifactId>geomajas-plugin-puregwt-widget-all</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>geomajas-puregwt-widget plug-in parent</name>
+	<description>geomajas-puregwt-widget plug-in grouping module</description>
+
+	<!-- SCM information -->
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geomajas-puregwt-widget</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geomajas-puregwt-widget</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-geomajas-puregwt-widget</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<modules>
+		<module>geomajas-puregwt-widget</module>
+		<module>documentation</module>
+	</modules>
+
+	<properties>
+		<geomajas-puregwt-widget-backend-version>1.10.0</geomajas-puregwt-widget-backend-version>
+		<geomajas-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-puregwt-face-version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${geomajas-puregwt-widget-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-pure-gwt</artifactId>
+				<version>${geomajas-puregwt-face-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+</project>
