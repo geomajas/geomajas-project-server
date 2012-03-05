@@ -11,12 +11,25 @@
   -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<g:HorizontalPanel styleName="gm-LayerLegendPanel">
-		<g:CheckBox ui:field="visibilityToggle" styleName="gwt-CheckBox" />
-		<g:VerticalPanel>
-			<g:Label styleName="gm-LayerLegendPanel-title" ui:field="title" />
-			<g:FlexTable ui:field="legendTable" />
-		</g:VerticalPanel>
-	</g:HorizontalPanel>
+	<ui:style>
+		.broad {
+			width: 100%;
+		}
+		.right {
+			float: right;
+		}
+	</ui:style>
+
+	<g:HTMLPanel styleName="gm-LegendDisclosurePanel">
+		<g:FlowPanel>
+	  		<g:HTML ui:field="title" styleName="gm-LegendDisclosurePanel-title">
+				<span ui:field="titleElement" class="gm-LegendDisclosurePanel-titleLabel">Legend</span>
+			</g:HTML>
+		</g:FlowPanel>
+	
+		<g:ScrollPanel styleName="gm-LegendDisclosurePanel-content">
+			<g:VerticalPanel ui:field="contentPanel" visible="false" styleName="gm-LegendDisclosurePanel-legend"></g:VerticalPanel>
+		</g:ScrollPanel>
+	</g:HTMLPanel>
 
 </ui:UiBinder> 
