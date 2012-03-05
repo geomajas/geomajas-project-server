@@ -47,6 +47,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	public RibbonBarLayout() {
 		setMembersMargin(GuwLayout.ribbonBarInternalMargin);
 		setStyleName("ribbon");
+		setOverflow(GuwLayout.ribbonBarOverflow);
 	}
 
 	/**

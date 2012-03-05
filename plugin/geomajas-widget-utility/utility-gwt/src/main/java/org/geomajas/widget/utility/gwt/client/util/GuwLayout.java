@@ -12,6 +12,8 @@ package org.geomajas.widget.utility.gwt.client.util;
 
 import org.geomajas.annotation.Api;
 
+import com.smartgwt.client.types.Overflow;
+
 
 /**
  * Class which helps to provide consistent sizes and names for layout purposes, see
@@ -37,6 +39,11 @@ public final class GuwLayout {
 	public static int ribbonBarInternalMargin = 2;
 	/** Member margin between components in a ribbon group. */
 	public static int ribbonGroupInternalMargin = 10;
+	
+	/** Overflow of the ribbon bar */
+	public static Overflow ribbonBarOverflow = Overflow.AUTO;
+	/** Overflow of the ribbon group */
+	public static Overflow ribbonGroupOverflow = Overflow.AUTO;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 	/**

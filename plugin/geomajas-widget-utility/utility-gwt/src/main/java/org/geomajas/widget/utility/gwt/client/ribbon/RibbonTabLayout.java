@@ -53,6 +53,8 @@ public class RibbonTabLayout extends VLayout {
 		tabs.setPaneMargin(0);
 		addMember(tabs);
 
+		setOverflow(GuwLayout.ribbonBarOverflow);
+
 		ClientConfigurationService.getApplicationWidgetInfo(application, beanId,
 			new WidgetConfigurationCallback<RibbonInfo>() {
 
