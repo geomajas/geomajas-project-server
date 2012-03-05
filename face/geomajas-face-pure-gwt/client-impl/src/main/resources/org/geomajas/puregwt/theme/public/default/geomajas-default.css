@@ -160,6 +160,15 @@
 	cursor: pointer;
 }
 
+.gm-ZoomStepGadget-handle {
+	border: 0px;
+	background: url(images/zoomstep/zoom-step-handle.png) 0 0 no-repeat;
+	width: 24px;
+	height: 9px;
+	position: absolute;
+	cursor: pointer;
+}
+
 /*===========================================================================*/
 /*====                         Scalebar Gadget                           ====*/
 /*===========================================================================*/
