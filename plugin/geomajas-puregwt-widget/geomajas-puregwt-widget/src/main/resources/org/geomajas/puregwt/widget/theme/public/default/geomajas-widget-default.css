@@ -1,0 +1,23 @@
+/*===========================================================================*/
+/*====                        LayerLegendPanel                           ====*/
+/*===========================================================================*/
+
+.gm-LayerLegendPanel{
+	padding: 3px 5px;
+}
+
+.gm-LayerLegendPanel-title {
+	font-weight: bold;
+	padding: 2px;
+	vertical-align: center;
+}
+
+.gm-LayerLegendPanel-StyleImg {
+	border: 0;
+}
+
+.gm-LayerLegendPanel-StyleLabel {
+	font-weight: normal;
+	padding-left: 5px;
+	vertical-align: center;
+}
