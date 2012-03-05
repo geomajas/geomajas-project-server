@@ -11,13 +11,16 @@
 
 package org.geomajas.puregwt.client.map.gadget;
 
-import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.MapGadget;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.vaadin.gwtgraphics.client.Image;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -30,136 +33,136 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.layout.client.Layout.Alignment;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Map gadget that displays four panning arrows at the top-left of the map.
+ * Map gadget that displays a butten for each zoom step on the map. Also displays a zoom in and zoom out button.
  * 
  * @author Pieter De Graef
  */
-public class ZoomStepGadget implements MapGadget {
+public class ZoomStepGadget extends AbstractMapGadget {
 
-	private final int top, left;
+	/**
+	 * UI binder definition for the {@link ZoomStepGadget} widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface ZoomStepGadgetUiBinder extends UiBinder<Widget, ZoomStepGadget> {
+	}
 
-	private int y;
+	private static final ZoomStepGadgetUiBinder UI_BINDER = GWT.create(ZoomStepGadgetUiBinder.class);
 
-	private VectorContainer container;
+	private static final int ZOOMSTEP_HEIGHT = 10;
+
+	private static final int ZOOMBUTTON_HEIGHT = 20;
+
+	private int gadgetTop;
+
+	private int gadgetLeft;
 
 	private ViewPort viewPort;
 
-	private Image zoomStepHandleImg;
+	private Widget layout;
 
-	private Rectangle zoomHandlerBg;
+	private boolean stretched;
 
-	private ZoomStephandler zoomHandler;
+	@UiField
+	protected SimplePanel zoomInElement;
 
-	// Zooming:
-	private String zoomIn = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoomstep/zoom-in.png";
+	@UiField
+	protected SimplePanel zoomOutElement;
 
-	private String zoomOut = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoomstep/zoom-out.png";
+	@UiField
+	protected AbsolutePanel zoomStepsPanel;
 
-	private String zoomStep = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoomstep/zoom-step.png";
-
-	private String zoomStepHandle = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoomstep/zoom-step-handle.png";
+	@UiField
+	protected SimplePanel zoomHandle;
 
 	// ------------------------------------------------------------------------
-	// Constructor:
+	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ZoomStepGadget(int top, int left) {
-		this.top = top;
-		this.left = left;
+	public ZoomStepGadget(int gadgetTop, int gadgetLeft) {
+		this.gadgetTop = gadgetTop;
+		this.gadgetLeft = gadgetLeft;
+		setHorizontalMargin(gadgetLeft);
+		setVerticalMargin(gadgetTop);
+		setHorizontalAlignment(Alignment.BEGIN);
+		setVerticalAlignment(Alignment.BEGIN);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
-	public void onDraw(final ViewPort viewPort, final VectorContainer container) {
-		this.viewPort = viewPort;
-		this.container = container;
-		render();
-	}
-
-	/** Does nothing. */
-	public void onTranslate() {
-		// Do nothing.
-	}
-
-	/** Scaling: sets the zoom step handle at the right position. */
-	public void onScale() {
-		if (container != null) {
-			renderHandler(false);
+	public Widget asWidget() {
+		if (layout == null) {
+			buildGui();
 		}
+		return layout;
 	}
 
-	/** Resizing the map might change the total number of zoom levels. */
-	public void onResize() {
-		if (container != null) {
-			container.clear();
-			render();
-		}
-	}
+	public void beforeDraw(MapPresenter mapPresenter) {
+		super.beforeDraw(mapPresenter);
+		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, new ViewPortChangedHandler() {
 
-	/** Clear everything. */
-	public void onDestroy() {
-		if (container != null) {
-			container.clear();
-		}
+			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			}
+
+			public void onViewPortScaled(ViewPortScaledEvent event) {
+				positionZoomHandle();
+			}
+
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				positionZoomHandle();
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private void renderHandler(boolean add) {
-		if (container != null && viewPort != null) {
-			int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-			int handleY = top + 21 + (index * 10);
-			if (zoomStepHandleImg == null) {
-				StopPropagationHandler handler = new StopPropagationHandler();
+	private void buildGui() {
+		viewPort = mapPresenter.getViewPort();
+		layout = UI_BINDER.createAndBindUi(this);
+		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 
-				zoomHandler = new ZoomStephandler();
-				zoomHandler.setMinY(top + 21);
-				zoomHandler.setMaxY(top + 21 + (viewPort.getZoomStrategy().getZoomStepCount() - 1) * 10);
+		// Calculate height:
+		int y = 0;
+		for (int i = 0; i < viewPort.getZoomStrategy().getZoomStepCount(); i++) {
+			final int count = i;
 
-				zoomStepHandleImg = new Image(left - 2, handleY, 24, 9, zoomStepHandle);
-				DOM.setStyleAttribute(zoomStepHandleImg.getElement(), "cursor", "pointer");
-				zoomStepHandleImg.addMouseDownHandler(zoomHandler);
-				zoomStepHandleImg.addClickHandler(handler);
-				zoomStepHandleImg.addDoubleClickHandler(handler);
+			SimplePanel zoomStep = new SimplePanel();
+			zoomStep.setSize(ZOOMBUTTON_HEIGHT + "px", (ZOOMSTEP_HEIGHT + 1) + "px");
+			zoomStep.setStyleName("gm-ZoomStepGadget-step");
+			zoomStep.addDomHandler(new ClickHandler() {
 
-				container.add(zoomStepHandleImg);
-
-				zoomHandlerBg = new Rectangle(0, 0, 0, 0);
-				zoomHandlerBg.setFillOpacity(0);
-				zoomHandlerBg.setStrokeOpacity(0);
-
-				zoomHandlerBg.addMouseMoveHandler(zoomHandler);
-				zoomHandlerBg.addMouseUpHandler(zoomHandler);
-				zoomHandlerBg.addMouseOutHandler(zoomHandler);
-
-				container.add(zoomHandlerBg);
-			} else {
-				zoomHandler.setMinY(top + 21);
-				zoomHandler.setMaxY(top + 21 + (viewPort.getZoomStrategy().getZoomStepCount() - 1) * 10);
-				zoomStepHandleImg.setY(handleY);
-				if (add) {
-					container.add(zoomStepHandleImg);
-					container.add(zoomHandlerBg);
+				public void onClick(ClickEvent event) {
+					double scale = viewPort.getZoomStrategy().getZoomStepScale(count);
+					viewPort.applyScale(scale);
+					event.stopPropagation();
 				}
-			}
+			}, ClickEvent.getType());
+			zoomStep.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+			zoomStep.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+			zoomStep.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
+			zoomStepsPanel.add(zoomStep, 0, y);
+			y += ZOOMSTEP_HEIGHT;
 		}
-	}
+		zoomStepsPanel.setSize("24px", (y + 1) + "px");
+		layout.setSize("24px", (y + 41) + "px");
 
-	private void render() {
-		y = top;
-		Image zoomInImg = new Image(left, y, 20, 20, zoomIn);
-		y += 20;
-		DOM.setStyleAttribute(zoomInImg.getElement(), "cursor", "pointer");
-		zoomInImg.addMouseUpHandler(new MouseUpHandler() {
+		// Zoom in button:
+		zoomInElement.addDomHandler(new ClickHandler() {
 
-			public void onMouseUp(MouseUpEvent event) {
+			public void onClick(ClickEvent event) {
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
 				try {
 					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
@@ -167,40 +170,15 @@ public class ZoomStepGadget implements MapGadget {
 				}
 				event.stopPropagation();
 			}
-		});
+		}, ClickEvent.getType());
+		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
-		StopPropagationHandler handler = new StopPropagationHandler();
-		zoomInImg.addMouseDownHandler(handler);
-		zoomInImg.addClickHandler(handler);
-		zoomInImg.addDoubleClickHandler(handler);
-		container.add(zoomInImg);
+		// Zoom out button:
+		zoomOutElement.addDomHandler(new ClickHandler() {
 
-		// Zoom steps:
-		for (int i = 0; i < viewPort.getZoomStrategy().getZoomStepCount(); i++) {
-			final int count = i;
-			Image zoomStepImg = new Image(left, y, 20, 11, zoomStep);
-			DOM.setStyleAttribute(zoomStepImg.getElement(), "cursor", "pointer");
-			zoomStepImg.addClickHandler(new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					double scale = viewPort.getZoomStrategy().getZoomStepScale(count);
-					viewPort.applyScale(scale);
-					event.stopPropagation();
-				}
-			});
-			zoomStepImg.addMouseDownHandler(handler);
-			zoomStepImg.addDoubleClickHandler(handler);
-			zoomStepImg.addMouseUpHandler(handler);
-			y += 10;
-			container.add(zoomStepImg);
-		}
-
-		// Zoom out:
-		Image zoomOutImg = new Image(left, y + 1, 20, 20, zoomOut);
-		DOM.setStyleAttribute(zoomOutImg.getElement(), "cursor", "pointer");
-		zoomOutImg.addMouseUpHandler(new MouseUpHandler() {
-
-			public void onMouseUp(MouseUpEvent event) {
+			public void onClick(ClickEvent event) {
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
 				try {
 					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
@@ -208,20 +186,83 @@ public class ZoomStepGadget implements MapGadget {
 				}
 				event.stopPropagation();
 			}
-		});
-		zoomOutImg.addMouseDownHandler(handler);
-		zoomOutImg.addClickHandler(handler);
-		zoomOutImg.addDoubleClickHandler(handler);
-		container.add(zoomOutImg);
+		}, ClickEvent.getType());
+		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
-		// Zoom step handler:
-		renderHandler(true);
+		// Add the zoom handle:
+		ZoomStephandler zoomStepHandler = new ZoomStephandler();
+		zoomStepHandler.setMinY(gadgetTop + ZOOMBUTTON_HEIGHT);
+		zoomStepHandler.setMaxY(gadgetTop + ZOOMBUTTON_HEIGHT + (viewPort.getZoomStrategy().getZoomStepCount() - 1)
+				* ZOOMSTEP_HEIGHT);
+		zoomHandle.addDomHandler(zoomStepHandler, MouseDownEvent.getType());
+		layout.addDomHandler(zoomStepHandler, MouseUpEvent.getType());
+		layout.addDomHandler(zoomStepHandler, MouseMoveEvent.getType());
+		layout.addDomHandler(zoomStepHandler, MouseOutEvent.getType());
+
+		// Apply correct positions for all widgets:
+		applyPositions();
+	}
+
+	private void stretchLayout() {
+		setHorizontalMargin(0);
+		setVerticalMargin(0);
+		layout.getElement().getStyle().setTop(0, Unit.PX);
+		layout.getElement().getStyle().setLeft(0, Unit.PX);
+		layout.setSize(viewPort.getMapWidth() + "px", viewPort.getMapHeight() + "px");
+		stretched = true;
+		setHorizontalAlignment(Alignment.STRETCH);
+		setVerticalAlignment(Alignment.STRETCH);
+		applyPositions();
+	}
+
+	private void shrinkLayout() {
+		setHorizontalMargin(gadgetLeft);
+		setVerticalMargin(gadgetTop);
+		setHorizontalAlignment(Alignment.BEGIN);
+		setVerticalAlignment(Alignment.BEGIN);
+		stretched = false;
+		layout.getElement().getStyle().setTop(gadgetTop, Unit.PX);
+		layout.getElement().getStyle().setLeft(gadgetLeft, Unit.PX);
+		int y = viewPort.getZoomStrategy().getZoomStepCount() * ZOOMSTEP_HEIGHT;
+		layout.setSize("24px", (y + 1 + (ZOOMBUTTON_HEIGHT * 2)) + "px");
+		applyPositions();
+	}
+
+	private void positionZoomHandle() {
+		int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+		int handleY = getBaseTop() + 21 + (index * 10);
+		int handleX = getBaseLeft();
+		zoomHandle.getElement().getStyle().setLeft(handleX, Unit.PX);
+		zoomHandle.getElement().getStyle().setTop(handleY, Unit.PX);
+	}
+
+	private void applyPositions() {
+		int top = getBaseTop();
+		int left = getBaseLeft();
+		zoomInElement.getElement().getStyle().setTop(top, Unit.PX);
+		zoomInElement.getElement().getStyle().setLeft(left + 2, Unit.PX);
+		zoomStepsPanel.getElement().getStyle().setTop(top + ZOOMBUTTON_HEIGHT, Unit.PX);
+		zoomStepsPanel.getElement().getStyle().setLeft(left + 2, Unit.PX);
+
+		int y = viewPort.getZoomStrategy().getZoomStepCount() * ZOOMSTEP_HEIGHT;
+		zoomOutElement.getElement().getStyle().setTop(top + ZOOMBUTTON_HEIGHT + y + 1, Unit.PX);
+		zoomOutElement.getElement().getStyle().setLeft(left + 2, Unit.PX);
+		positionZoomHandle();
+	}
+
+	private int getBaseTop() {
+		return stretched ? gadgetTop : 0;
+	}
+
+	private int getBaseLeft() {
+		return stretched ? gadgetLeft : 0;
 	}
 
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
-
 	/**
 	 * Handler for dragging the zoom step handle. The mouse down goes onto the handle, the rest onto a large rectangle.
 	 * 
@@ -238,8 +279,7 @@ public class ZoomStepGadget implements MapGadget {
 		public void onMouseUp(MouseUpEvent event) {
 			if (dragging) {
 				dragging = false;
-				zoomHandlerBg.setWidth(0);
-				zoomHandlerBg.setHeight(0);
+				shrinkLayout();
 				int index = Math.round((currentY - minY) / 10);
 				double scale = viewPort.getZoomStrategy().getZoomStepScale(index);
 				viewPort.applyScale(scale);
@@ -248,8 +288,7 @@ public class ZoomStepGadget implements MapGadget {
 
 		public void onMouseDown(MouseDownEvent event) {
 			dragging = true;
-			zoomHandlerBg.setWidth(viewPort.getMapWidth());
-			zoomHandlerBg.setHeight(viewPort.getMapHeight());
+			stretchLayout();
 			event.stopPropagation();
 			event.preventDefault();
 		}
@@ -263,7 +302,7 @@ public class ZoomStepGadget implements MapGadget {
 				if (y > maxY) {
 					y = maxY;
 				}
-				zoomStepHandleImg.setY(y);
+				zoomHandle.getElement().getStyle().setTop(y, Unit.PX);
 				currentY = y;
 				event.stopPropagation();
 			}
@@ -272,11 +311,10 @@ public class ZoomStepGadget implements MapGadget {
 		public void onMouseOut(MouseOutEvent event) {
 			if (dragging) {
 				dragging = false;
-				zoomHandlerBg.setWidth(0);
-				zoomHandlerBg.setHeight(0);
+				shrinkLayout();
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				int handleY = top + 21 + (index * 10);
-				zoomStepHandleImg.setY(handleY);
+				int handleY = getBaseTop() + ZOOMBUTTON_HEIGHT + 1 + (index * ZOOMSTEP_HEIGHT);
+				zoomHandle.getElement().getStyle().setTop(handleY, Unit.PX);
 			}
 		}
 
@@ -294,24 +332,17 @@ public class ZoomStepGadget implements MapGadget {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class StopPropagationHandler implements MouseDownHandler, ClickHandler, DoubleClickHandler, MouseUpHandler {
+	private class StopPropagationHandler implements MouseDownHandler, ClickHandler, DoubleClickHandler {
 
 		public void onDoubleClick(DoubleClickEvent event) {
 			event.stopPropagation();
-			event.preventDefault();
 		}
 
 		public void onClick(ClickEvent event) {
 			event.stopPropagation();
-			event.preventDefault();
 		}
 
 		public void onMouseDown(MouseDownEvent event) {
-			event.stopPropagation();
-			event.preventDefault();
-		}
-
-		public void onMouseUp(MouseUpEvent event) {
 			event.stopPropagation();
 			event.preventDefault();
 		}

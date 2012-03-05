@@ -13,18 +13,20 @@ package org.geomajas.puregwt.client.map.gadget;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapGadget;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Path;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -43,6 +45,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Map gadget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
@@ -50,11 +54,11 @@ import com.google.gwt.user.client.Event.NativePreviewHandler;
  * 
  * @author Pieter De Graef
  */
-public class ZoomToRectangleGadget implements MapGadget {
+public class ZoomToRectangleGadget extends AbstractMapGadget {
 
-	private int top;
+	private static final int DEFAULT_LEFT = 60;
 
-	private int left;
+	private static final int DEFAULT_TOP = 5;
 
 	private VectorContainer container;
 
@@ -62,62 +66,58 @@ public class ZoomToRectangleGadget implements MapGadget {
 
 	private HandlerRegistration escapeHandler;
 
-	private String zoomToRectangleImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoom_rectangle.png";
+	private SimplePanel layout;
 
 	// ------------------------------------------------------------------------
-	// Constructor:
+	// Constructors:
 	// ------------------------------------------------------------------------
+
+	public ZoomToRectangleGadget() {
+		setHorizontalMargin(DEFAULT_LEFT);
+		setVerticalMargin(DEFAULT_TOP);
+	}
 
 	public ZoomToRectangleGadget(int top, int left) {
-		this.top = top;
-		this.left = left;
+		setHorizontalMargin(left);
+		setVerticalMargin(top);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
-	public void onDraw(final ViewPort viewPort, final VectorContainer container) {
-		this.container = container;
+	public Widget asWidget() {
+		if (layout == null) {
+			buildGui();
+		}
+		return layout;
+	}
 
-		Image zoomToRectangle = new Image(left, top, 20, 20, zoomToRectangleImage);
-		zoomToRectangle.setTitle("Zoom to rectangle by dragging the mouse on the map.");
-		DOM.setStyleAttribute(zoomToRectangle.getElement(), "cursor", "pointer");
-		zoomToRectangle.addMouseUpHandler(new MouseUpHandler() {
+	public void beforeDraw(MapPresenter mapPresenter) {
+		super.beforeDraw(mapPresenter);
+		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, new ViewPortChangedHandler() {
 
-			public void onMouseUp(MouseUpEvent event) {
-				zoomToRectangleGroup = new ZoomToRectGroup(viewPort);
-				escapeHandler = Event.addNativePreviewHandler(new NativePreviewHandler() {
+			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			}
 
-					public void onPreviewNativeEvent(NativePreviewEvent event) {
-						if (event.getTypeInt() == Event.ONKEYDOWN || event.getTypeInt() == Event.ONKEYPRESS) {
-							if (KeyCodes.KEY_ESCAPE == event.getNativeEvent().getKeyCode()) {
-								onScale();
-							}
-						}
-					}
-				});
+			public void onViewPortScaled(ViewPortScaledEvent event) {
+				cleanup();
+			}
 
-				container.add(zoomToRectangleGroup);
-				event.stopPropagation();
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				cleanup();
 			}
 		});
-
-		StopPropagationHandler handler = new StopPropagationHandler();
-		zoomToRectangle.addMouseDownHandler(handler);
-		zoomToRectangle.addClickHandler(handler);
-		zoomToRectangle.addDoubleClickHandler(handler);
-
-		container.add(zoomToRectangle);
-
 	}
 
-	public void onTranslate() {
-		// Do nothing.
-	}
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
-	public void onScale() {
+	private void cleanup() {
 		if (zoomToRectangleGroup != null) {
+			MapGadget mapGadget = zoomToRectangleGroup.getEventCatcher();
+			mapPresenter.removeMapGadget(mapGadget);
 			container.remove(zoomToRectangleGroup);
 			zoomToRectangleGroup = null;
 		}
@@ -125,20 +125,39 @@ public class ZoomToRectangleGadget implements MapGadget {
 			escapeHandler.removeHandler();
 			escapeHandler = null;
 		}
+		mapPresenter.removeVectorContainer(container);
 	}
 
-	public void onResize() {
-		// Do nothing.
-	}
+	private void buildGui() {
+		layout = new SimplePanel();
+		layout.setStyleName("gm-ZoomToRectangleGadget");
+		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
+		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
-	public void onDestroy() {
-		if (container != null) {
-			container.clear();
-		}
-		if (escapeHandler != null) {
-			escapeHandler.removeHandler();
-			escapeHandler = null;
-		}
+		// Create TOP button:
+		layout.addDomHandler(new MouseUpHandler() {
+
+			public void onMouseUp(MouseUpEvent event) {
+				cleanup();
+				container = mapPresenter.addScreenContainer();
+				zoomToRectangleGroup = new ZoomToRectGroup(mapPresenter.getViewPort());
+				escapeHandler = Event.addNativePreviewHandler(new NativePreviewHandler() {
+
+					public void onPreviewNativeEvent(NativePreviewEvent event) {
+						if (event.getTypeInt() == Event.ONKEYDOWN || event.getTypeInt() == Event.ONKEYPRESS) {
+							if (KeyCodes.KEY_ESCAPE == event.getNativeEvent().getKeyCode()) {
+								cleanup();
+							}
+						}
+					}
+				});
+
+				container.add(zoomToRectangleGroup);
+			}
+		}, MouseUpEvent.getType());
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -162,6 +181,7 @@ public class ZoomToRectangleGadget implements MapGadget {
 
 		public void onMouseDown(MouseDownEvent event) {
 			event.stopPropagation();
+			event.preventDefault();
 		}
 	}
 
@@ -172,9 +192,7 @@ public class ZoomToRectangleGadget implements MapGadget {
 	 */
 	private class ZoomToRectGroup extends Group {
 
-		private int offset;
-
-		private Rectangle eventCatcher;
+		private AbstractMapGadget eventCatcher;
 
 		private Path zoomInRect;
 
@@ -187,9 +205,19 @@ public class ZoomToRectangleGadget implements MapGadget {
 		private Bbox screenBounds;
 
 		public ZoomToRectGroup(final ViewPort viewPort) {
-			eventCatcher = new Rectangle(0, 0, viewPort.getMapWidth(), viewPort.getMapHeight());
-			eventCatcher.setFillOpacity(0);
-			eventCatcher.setStrokeOpacity(0);
+			eventCatcher = new AbstractMapGadget() {
+
+				private SimplePanel rectangle;
+
+				public Widget asWidget() {
+					if (rectangle == null) {
+						rectangle = new SimplePanel();
+						rectangle.setSize(mapPresenter.getViewPort().getMapWidth() + "px", mapPresenter.getViewPort()
+								.getMapHeight() + "px");
+					}
+					return rectangle;
+				}
+			};
 
 			zoomInRect = new Path(0, 0);
 			zoomInRect.setFillColor("#000000");
@@ -209,22 +237,23 @@ public class ZoomToRectangleGadget implements MapGadget {
 			zoomInRect.close();
 
 			add(zoomInRect);
-			add(eventCatcher);
+			mapPresenter.addMapGadget(eventCatcher);
 
-			eventCatcher.addMouseDownHandler(new MouseDownHandler() {
+			eventCatcher.asWidget().addDomHandler(new MouseDownHandler() {
 
 				public void onMouseDown(MouseDownEvent event) {
 					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 						dragging = true;
-						x = event.getX() - offset;
-						y = event.getY() - offset;
+						x = event.getRelativeX(mapPresenter.asWidget().getElement());
+						y = event.getRelativeY(mapPresenter.asWidget().getElement());
 						updateRectangle(event);
 					}
 					event.stopPropagation();
 					event.preventDefault();
 				}
-			});
-			eventCatcher.addMouseUpHandler(new MouseUpHandler() {
+			}, MouseDownEvent.getType());
+
+			eventCatcher.asWidget().addDomHandler(new MouseUpHandler() {
 
 				public void onMouseUp(MouseUpEvent event) {
 					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT && dragging) {
@@ -236,8 +265,9 @@ public class ZoomToRectangleGadget implements MapGadget {
 					}
 					event.stopPropagation();
 				}
-			});
-			eventCatcher.addMouseMoveHandler(new MouseMoveHandler() {
+			}, MouseUpEvent.getType());
+
+			eventCatcher.asWidget().addDomHandler(new MouseMoveHandler() {
 
 				public void onMouseMove(MouseMoveEvent event) {
 					if (dragging) {
@@ -245,26 +275,32 @@ public class ZoomToRectangleGadget implements MapGadget {
 					}
 					event.stopPropagation();
 				}
-			});
-			eventCatcher.addClickHandler(new ClickHandler() {
+			}, MouseMoveEvent.getType());
+
+			eventCatcher.asWidget().addDomHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
 					event.stopPropagation();
 				}
-			});
-			eventCatcher.addDoubleClickHandler(new DoubleClickHandler() {
+			}, ClickEvent.getType());
+
+			eventCatcher.asWidget().addDomHandler(new DoubleClickHandler() {
 
 				public void onDoubleClick(DoubleClickEvent event) {
 					event.stopPropagation();
 				}
-			});
+			}, DoubleClickEvent.getType());
+		}
+
+		public MapGadget getEventCatcher() {
+			return eventCatcher;
 		}
 
 		private void updateRectangle(MouseEvent<?> event) {
 			int beginX = x;
 			int beginY = y;
-			int endX = event.getX() - offset;
-			int endY = event.getY() - offset;
+			int endX = event.getRelativeX(mapPresenter.asWidget().getElement());
+			int endY = event.getRelativeY(mapPresenter.asWidget().getElement());
 
 			// Check if begin and end need to be reversed:
 			if (beginX > endX) {

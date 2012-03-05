@@ -11,53 +11,41 @@
 
 package org.geomajas.puregwt.client.map.gadget;
 
-import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.MapGadget;
-import org.geomajas.puregwt.client.map.ViewPort;
-import org.vaadin.gwtgraphics.client.Image;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
-
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.layout.client.Layout.Alignment;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Geomajas logo that's automatically displayed in the bottom right corner of each map.
  * 
  * @author Pieter De Graef
  */
-public class WatermarkGadget implements MapGadget {
-
-	private ViewPort viewPort;
-
-	private Rectangle background;
+public class WatermarkGadget extends AbstractMapGadget {
 
 	private Image image;
 
-	public void onDraw(ViewPort viewPort, VectorContainer container) {
-		this.viewPort = viewPort;
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
 
-		background = new Rectangle(viewPort.getMapWidth() - 125, viewPort.getMapHeight() - 12, 125, 12);
-		background.setStrokeOpacity(0);
-		background.setFillOpacity(0.65);
-		container.add(background);
-
-		image = new Image(viewPort.getMapWidth() - 125, viewPort.getMapHeight() - 12, 125, 12, GWT.getModuleBaseURL()
-				+ "geomajas/images/mapgadget/powered_by_geomajas.gif");
-		container.add(image);
+	public WatermarkGadget() {
+		setHorizontalAlignment(Alignment.END);
+		setVerticalAlignment(Alignment.END);
 	}
 
-	public void onTranslate() {
-	}
+	// ------------------------------------------------------------------------
+	// MapGadget implementation:
+	// ------------------------------------------------------------------------
 
-	public void onScale() {
-	}
-
-	public void onResize() {
-		background.setX(viewPort.getMapWidth() - 125);
-		background.setY(viewPort.getMapHeight() - 12);
-		image.setX(viewPort.getMapWidth() - 125);
-		image.setY(viewPort.getMapHeight() - 12);
-	}
-
-	public void onDestroy() {
+	public Widget asWidget() {
+		if (image == null) {
+			image = new Image(GWT.getModuleBaseURL() + "geomajas/images/mapgadget/powered_by_geomajas.gif");
+			image.getElement().getStyle().setBackgroundColor("#FFFFFF");
+			image.getElement().getStyle().setPosition(Position.ABSOLUTE);
+			image.setSize("125px", "12px");
+		}
+		return image;
 	}
 }

@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.geomajas.command.dto.GetMapConfigurationRequest;
@@ -67,6 +66,7 @@ import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererImpl;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
@@ -77,7 +77,9 @@ import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
@@ -154,19 +156,11 @@ public final class MapPresenterImpl implements MapPresenter {
 		boolean bringToFront(VectorContainer container);
 
 		/**
-		 * Returns a new user-defined container of map gadgets (screen space).
+		 * Returns a new user-defined container of map gadgets.
 		 * 
 		 * @return the container
 		 */
-		VectorContainer getMapGadgetContainer();
-
-		/**
-		 * Removes a user-defined container of map gadgets.
-		 * 
-		 * @param mapGadgetContainer
-		 * @return true if successful
-		 */
-		boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer);
+		AbsolutePanel getMapGadgetContainer();
 	}
 
 	private final EventBus eventBus;
@@ -191,7 +185,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private WorldContainerRenderer worldContainerRenderer;
 
-	private Map<MapGadget, VectorContainer> gadgets;
+	private Map<MapGadget, MapGadgetPositioner> gadgets;
 
 	@Inject
 	private MapWidget display;
@@ -208,7 +202,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		eventBus = new SimpleEventBus();
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapController, List<HandlerRegistration>>();
-		gadgets = new HashMap<MapGadget, VectorContainer>();
+		gadgets = new HashMap<MapGadget, MapGadgetPositioner>();
 		featureService = new FeatureServiceImpl(this);
 		mapEventParser = new MapEventParserImpl(this);
 	}
@@ -235,10 +229,6 @@ public final class MapPresenterImpl implements MapPresenter {
 		worldContainerRenderer = new WorldContainerRenderer();
 		eventBus.addHandler(ViewPortChangedHandler.TYPE, worldContainerRenderer);
 
-		MapGadgetRenderer mapGadgetRenderer = new MapGadgetRenderer();
-		eventBus.addHandler(ViewPortChangedHandler.TYPE, mapGadgetRenderer);
-		eventBus.addHandler(MapResizedEvent.TYPE, mapGadgetRenderer);
-
 		setFallbackController(new NavigationController());
 
 		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
@@ -259,28 +249,27 @@ public final class MapPresenterImpl implements MapPresenter {
 				// Immediately zoom to the initial bounds as configured:
 				viewPort.applyBounds(r.getMapInfo().getInitialBounds());
 
-				// If there are already some MapGadgets registered, draw them now:
-				for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
-					entry.getKey().onDraw(viewPort, entry.getValue());
-				}
-
 				// Initialize the FeatureSelectionRenderer:
 				selectionRenderer.initialize(r.getMapInfo());
 
-				addMapGadget(new ScalebarGadget(r.getMapInfo()));
 				addMapGadget(new WatermarkGadget());
-				// addMapGadget(new ZoomStepGadget());
-				addMapGadget(new PanningGadget(5, 5));
+				addMapGadget(new ScalebarGadget(r.getMapInfo()));
+				addMapGadget(new PanningGadget());
 				if (r.getMapInfo().getScaleConfiguration().getZoomLevels() != null
 						&& r.getMapInfo().getScaleConfiguration().getZoomLevels().size() > 0) {
 					// Zoom steps...
-					addMapGadget(new ZoomToRectangleGadget(5, 60));
+					addMapGadget(new ZoomToRectangleGadget());
 					addMapGadget(new ZoomStepGadget(60, 20));
 				} else {
 					// Simple zooming:
-					addMapGadget(new SimpleZoomGadget(60, 20));
 					addMapGadget(new ZoomToRectangleGadget(125, 20));
+					addMapGadget(new SimpleZoomGadget(60, 20));
 				}
+
+				// If there are already some MapGadgets registered, draw them now:
+				// for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
+				// entry.getKey().onDraw(viewPort, entry.getValue());
+				// }
 
 				// Fire initialization event:
 				eventBus.fireEvent(new MapInitializationEvent());
@@ -446,18 +435,20 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	/** {@inheritDoc} */
 	public void addMapGadget(MapGadget mapGadget) {
-		VectorContainer container = addScreenContainer();
-		gadgets.put(mapGadget, container);
-		if (layersModel != null && viewPort != null) {
-			mapGadget.onDraw(viewPort, container);
+		if (!gadgets.containsKey(mapGadget)) {
+			mapGadget.beforeDraw(this);
+			MapGadgetPositioner positioner = new MapGadgetPositioner(mapGadget);
+			display.getMapGadgetContainer().add(mapGadget);
+			gadgets.put(mapGadget, positioner);
+			positioner.calculatePosition();
+			positioner.calculateSize();
 		}
 	}
 
 	/** {@inheritDoc} */
 	public boolean removeMapGadget(MapGadget mapGadget) {
 		if (gadgets.containsKey(mapGadget)) {
-			mapGadget.onDestroy();
-			display.removeVectorContainer(gadgets.get(mapGadget));
+			display.getMapGadgetContainer().remove(mapGadget);
 			gadgets.remove(mapGadget);
 			return true;
 		}
@@ -477,39 +468,6 @@ public final class MapPresenterImpl implements MapPresenter {
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
-
-	/**
-	 * ViewPortChangedHandler implementation that renders all the MapGadgets on the view port events.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class MapGadgetRenderer implements ViewPortChangedHandler, MapResizedHandler {
-
-		public void onMapResized(MapResizedEvent event) {
-			for (MapGadget mapGadget : gadgets.keySet()) {
-				mapGadget.onResize();
-			}
-		}
-
-		public void onViewPortChanged(ViewPortChangedEvent event) {
-			for (MapGadget mapGadget : gadgets.keySet()) {
-				mapGadget.onScale();
-				mapGadget.onTranslate();
-			}
-		}
-
-		public void onViewPortScaled(ViewPortScaledEvent event) {
-			for (MapGadget mapGadget : gadgets.keySet()) {
-				mapGadget.onScale();
-			}
-		}
-
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			for (MapGadget mapGadget : gadgets.keySet()) {
-				mapGadget.onTranslate();
-			}
-		}
-	}
 
 	/**
 	 * Class that updates all the world containers when the view on the map changes.
@@ -609,6 +567,64 @@ public final class MapPresenterImpl implements MapPresenter {
 			if (path != null) {
 				container.remove(path);
 				paths.remove(feature.getId());
+			}
+		}
+	}
+
+	/**
+	 * Handler that positions the {@link MapGadget}s on the map.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class MapGadgetPositioner implements MapResizedHandler {
+
+		private final MapGadget mapGadget;
+
+		public MapGadgetPositioner(MapGadget mapGadget) {
+			this.mapGadget = mapGadget;
+			calculatePosition();
+			eventBus.addHandler(MapResizedEvent.TYPE, this);
+		}
+
+		public void onMapResized(MapResizedEvent event) {
+			calculatePosition();
+			calculateSize();
+		}
+
+		public void calculatePosition() {
+			int top, left;
+			switch (mapGadget.getHorizontalAlignment()) {
+				case BEGIN:
+					left = mapGadget.getHorizontalMargin();
+					break;
+				case END:
+					left = viewPort.getMapWidth() - mapGadget.asWidget().getOffsetWidth()
+							- mapGadget.getHorizontalMargin();
+					break;
+				default:
+					left = 0;
+			}
+			switch (mapGadget.getVerticalAlignment()) {
+				case BEGIN:
+					top = mapGadget.getVerticalMargin();
+					break;
+				case END:
+					top = viewPort.getMapHeight() - mapGadget.asWidget().getOffsetHeight()
+							- mapGadget.getVerticalMargin();
+					break;
+				default:
+					top = 0;
+			}
+			mapGadget.asWidget().getElement().getStyle().setTop(top, Unit.PX);
+			mapGadget.asWidget().getElement().getStyle().setLeft(left, Unit.PX);
+		}
+
+		public void calculateSize() {
+			if (mapGadget.getHorizontalAlignment() == Alignment.STRETCH) {
+				mapGadget.asWidget().setWidth(viewPort.getMapWidth() + "px");
+			}
+			if (mapGadget.getVerticalAlignment() == Alignment.STRETCH) {
+				mapGadget.asWidget().setHeight(viewPort.getMapHeight() + "px");
 			}
 		}
 	}

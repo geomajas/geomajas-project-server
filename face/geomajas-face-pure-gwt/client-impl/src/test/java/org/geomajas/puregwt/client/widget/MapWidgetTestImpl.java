@@ -26,6 +26,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -99,14 +100,11 @@ public class MapWidgetTestImpl implements MapWidget {
 		return false;
 	}
 
-	public VectorContainer getMapGadgetContainer() {
-		return null;
-	}
-
-	public boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer) {
-		return false;
-	}
-
 	public void onResize() {
+	}
+
+	public AbsolutePanel getMapGadgetContainer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

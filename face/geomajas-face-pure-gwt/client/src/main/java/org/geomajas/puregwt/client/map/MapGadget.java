@@ -13,41 +13,63 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
-import org.geomajas.puregwt.client.gfx.VectorContainer;
+
+import com.google.gwt.layout.client.Layout.Alignment;
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Definition for an autonomous gadget which can be displayed on the map. These gadgets receive some events from the map
- * and should take care of there own rendering and cleanup.<br/>
- * Examples are the scale bar, a north arrow, the panning and zooming buttons, ...
+ * <p>
+ * Definition for an autonomous widgets which can be displayed on the map. Examples are the scale bar, a north arrow,
+ * the panning and zooming buttons, ...
+ * </p>
+ * <p>
+ * The goal of this interface is to provide an easy way to have the gadget positioned.
+ * </p>
  * 
  * @author Pieter De Graef
- * @author Jan De Moerloose
  * @since 1.0.0
  */
 @UserImplemented
 @Api(allMethods = true)
-public interface MapGadget {
+public interface MapGadget extends IsWidget {
 
 	/**
-	 * The initial drawing method, which is called when the gadget is initialized on the map. In this method, the gadget
-	 * should draw and initialize itself.
+	 * Method executed before the gadget is actually attached to the map's DOM tree.
 	 * 
-	 * @param viewPort
-	 *            The view port of the map.
-	 * @param container
-	 *            A vector container in screen space into which this gadget can draw itself.
+	 * @param mapPresenter
+	 *            The map upon which this gadget is to be attached.
 	 */
-	void onDraw(ViewPort viewPort, VectorContainer container);
+	void beforeDraw(MapPresenter mapPresenter);
 
-	/** This method is automatically called when the map was translated (not panned). */
-	void onTranslate();
+	/**
+	 * Should the gadget be left or right aligned, or should it fill the map area? This value is read upon attaching the
+	 * gadget to the map.
+	 * 
+	 * @return The horizontal alignment (begin=left, end=right, or stretch=fill).
+	 */
+	Alignment getHorizontalAlignment();
 
-	/** This method is automatically called when scaling has occurred on the map. */
-	void onScale();
+	/**
+	 * Should the gadget be top or bottom aligned, or should it fill the map area? This value is read upon attaching the
+	 * gadget to the map.
+	 * 
+	 * @return The horizontal alignment (begin=top, end=bottom, or stretch=fill).
+	 */
+	Alignment getVerticalAlignment();
 
-	/** This method is automatically called when the map has been resized. */
-	void onResize();
+	/**
+	 * What's the horizontal margin? How much space should be kept between the gadget and the map edge (left or right)?
+	 * This value is ignored in case of stretch alignment.
+	 * 
+	 * @return The number of pixels to keep between the gadget and the map edge.
+	 */
+	int getHorizontalMargin();
 
-	/** Called when the gadget is removed from the map. In this method, the gadget should clean itself up. */
-	void onDestroy();
+	/**
+	 * What's the vertical margin? How much space should be kept between the gadget and the map edge (top or bottom)?
+	 * This value is ignored in case of stretch alignment.
+	 * 
+	 * @return The number of pixels to keep between the gadget and the map edge.
+	 */
+	int getVerticalMargin();
 }

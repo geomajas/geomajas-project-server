@@ -11,74 +11,87 @@
 
 package org.geomajas.puregwt.client.map.gadget;
 
-import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.vaadin.gwtgraphics.client.Image;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Map gadget that displays zoom in, zoom out and zoom to maximum extent buttons.
  * 
  * @author Pieter De Graef
  */
-public class SimpleZoomGadget implements MapGadget {
+public class SimpleZoomGadget extends AbstractMapGadget {
 
-	private final int top, left;
+	/**
+	 * UI binder definition for the {@link SimpleZoomGadget} widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface SimpleZoomGadgetUiBinder extends UiBinder<Widget, SimpleZoomGadget> {
+	}
 
-	private VectorContainer container;
+	private static final SimpleZoomGadgetUiBinder UI_BINDER = GWT.create(SimpleZoomGadgetUiBinder.class);
 
-	// Zooming:
-	private String zoomBackgroundImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoombg.png";
+	private Widget layout;
 
-	private String zoomInImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoomPlus.png";
+	@UiField
+	protected SimplePanel zoomInElement;
 
-	private String zoomOutImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoomMinus.png";
+	@UiField
+	protected SimplePanel zoomOutElement;
 
-	private String zoomExtentImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/maxextent.png";
+	@UiField
+	protected SimplePanel extentElement;
 
 	// ------------------------------------------------------------------------
-	// Constructor:
+	// Constructors:
 	// ------------------------------------------------------------------------
 
 	public SimpleZoomGadget(int top, int left) {
-		this.top = top;
-		this.left = left;
+		setHorizontalMargin(left);
+		setVerticalMargin(top);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
-	public void onDraw(final ViewPort viewPort, final VectorContainer container) {
-		this.container = container;
+	public Widget asWidget() {
+		if (layout == null) {
+			buildGui();
+		}
+		return layout;
+	}
 
-		StopPropagationHandler handler = new StopPropagationHandler();
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
-		// Zooming buttons:
+	private void buildGui() {
+		layout = UI_BINDER.createAndBindUi(this);
+		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
+		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
-		Image zoomBg = new Image(left, top, 20, 60, zoomBackgroundImage);
-		Image zoomIn = new Image(left, top, 20, 20, zoomInImage);
-		Image zoomExtent = new Image(left, top + 20, 20, 20, zoomExtentImage);
-		Image zoomOut = new Image(left, top + 40, 20, 20, zoomOutImage);
+		final ViewPort viewPort = mapPresenter.getViewPort();
 
-		DOM.setStyleAttribute(zoomIn.getElement(), "cursor", "pointer");
-		DOM.setStyleAttribute(zoomOut.getElement(), "cursor", "pointer");
-		DOM.setStyleAttribute(zoomExtent.getElement(), "cursor", "pointer");
+		// Zoom in button:
+		zoomInElement.addDomHandler(new ClickHandler() {
 
-		zoomIn.addMouseUpHandler(new MouseUpHandler() {
-
-			public void onMouseUp(MouseUpEvent event) {
+			public void onClick(ClickEvent event) {
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
 				try {
 					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
@@ -86,25 +99,12 @@ public class SimpleZoomGadget implements MapGadget {
 				}
 				event.stopPropagation();
 			}
-		});
-		zoomIn.addMouseDownHandler(handler);
-		zoomIn.addClickHandler(handler);
-		zoomIn.addDoubleClickHandler(handler);
+		}, ClickEvent.getType());
 
-		zoomExtent.addMouseUpHandler(new MouseUpHandler() {
+		// Zoom out button:
+		zoomOutElement.addDomHandler(new ClickHandler() {
 
-			public void onMouseUp(MouseUpEvent event) {
-				viewPort.applyBounds(viewPort.getMaximumBounds());
-				event.stopPropagation();
-			}
-		});
-		zoomExtent.addMouseDownHandler(handler);
-		zoomExtent.addClickHandler(handler);
-		zoomExtent.addDoubleClickHandler(handler);
-
-		zoomOut.addMouseUpHandler(new MouseUpHandler() {
-
-			public void onMouseUp(MouseUpEvent event) {
+			public void onClick(ClickEvent event) {
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
 				try {
 					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
@@ -112,33 +112,16 @@ public class SimpleZoomGadget implements MapGadget {
 				}
 				event.stopPropagation();
 			}
-		});
-		zoomOut.addMouseDownHandler(handler);
-		zoomOut.addClickHandler(handler);
-		zoomOut.addDoubleClickHandler(handler);
+		}, ClickEvent.getType());
 
-		container.add(zoomBg);
-		container.add(zoomIn);
-		container.add(zoomExtent);
-		container.add(zoomOut);
-	}
+		// Zoom to maximum extent button:
+		extentElement.addDomHandler(new ClickHandler() {
 
-	public void onTranslate() {
-		// Do nothing.
-	}
-
-	public void onScale() {
-		// Do nothing.
-	}
-
-	public void onResize() {
-		// Do nothing.
-	}
-
-	public void onDestroy() {
-		if (container != null) {
-			container.clear();
-		}
+			public void onClick(ClickEvent event) {
+				viewPort.applyBounds(viewPort.getMaximumBounds());
+				event.stopPropagation();
+			}
+		}, ClickEvent.getType());
 	}
 
 	// ------------------------------------------------------------------------
@@ -162,6 +145,7 @@ public class SimpleZoomGadget implements MapGadget {
 
 		public void onMouseDown(MouseDownEvent event) {
 			event.stopPropagation();
+			event.preventDefault();
 		}
 	}
 }

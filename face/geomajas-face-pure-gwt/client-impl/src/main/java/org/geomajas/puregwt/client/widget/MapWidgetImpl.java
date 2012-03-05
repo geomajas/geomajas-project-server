@@ -69,9 +69,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// Container for vector layers (SVG/VML):
 	private VectorGroup layerVectorContainer;
 
-	// Container for map gadgets:
-	private VectorGroup gadgetVectorContainer;
-
 	// Parent container for all SVG/VML:
 	private DrawingArea drawingArea;
 
@@ -80,6 +77,10 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// List of all screen containers and world containers:
 	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
+
+	// Absolute panel wherein all MapGadgets are rendered:
+	private AbsolutePanel gadgetContainer;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -100,9 +101,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerVectorContainer = new VectorGroup();
 		drawingArea.add(layerVectorContainer);
 
-		// Third child within the vector drawing area is a group for map gadget containers:
-		gadgetVectorContainer = new VectorGroup();
-		drawingArea.add(gadgetVectorContainer);
+		// On top we render all MapGadgets:
+		gadgetContainer = new AbsolutePanel();
+		add(gadgetContainer, 0, 0);
 
 		// Firefox and Chrome allow for DnD of images. This default behavior is not wanted.
 		addMouseDownHandler(new MouseDownHandler() {
@@ -128,22 +129,27 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		});
 	}
 
+	/** {@inheritDoc} */
 	public Widget asWidget() {
 		return this;
 	}
 
+	/** {@inheritDoc} */
 	public HtmlContainer getMapHtmlContainer() {
 		return layerHtmlContainer;
 	}
 
+	/** {@inheritDoc} */
 	public VectorContainer getMapVectorContainer() {
 		return layerVectorContainer;
 	}
 
+	/** {@inheritDoc} */
 	public List<VectorContainer> getWorldVectorContainers() {
 		return worldContainers;
 	}
 
+	/** {@inheritDoc} */
 	public VectorContainer getNewScreenContainer() {
 		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
@@ -151,6 +157,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	public VectorContainer getNewWorldContainer() {
 		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
@@ -158,6 +165,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	public boolean removeVectorContainer(VectorContainer container) {
 		if (container instanceof Group) {
 			if (worldContainers.contains(container)) {
@@ -173,6 +181,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public boolean bringToFront(VectorContainer container) {
 		if (container instanceof Group) {
 			if (worldContainers.contains(container)) {
@@ -186,20 +195,12 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return false;
 	}
 
-	public VectorContainer getMapGadgetContainer() {
-		VectorGroup container = new VectorGroup();
-		gadgetVectorContainer.add(container);
-		return container;
+	/** {@inheritDoc} */
+	public AbsolutePanel getMapGadgetContainer() {
+		return gadgetContainer;
 	}
 
-	public boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer) {
-		if (mapGadgetContainer instanceof Group) {
-			gadgetVectorContainer.remove((Group) mapGadgetContainer);
-			return true;
-		}
-		return false;
-	}
-
+	/** {@inheritDoc} */
 	public void onResize() {
 		for (Widget child : getChildren()) {
 			if (child instanceof RequiresResize) {
@@ -216,6 +217,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setPixelSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
+		gadgetContainer.setSize(width + "px", height + "px");
 		super.setPixelSize(width, height);
 	}
 
@@ -223,18 +225,21 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
+		gadgetContainer.setSize(width, height);
 		super.setSize(width, height);
 	}
 
 	public void setWidth(String width) {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
+		gadgetContainer.setWidth(width);
 		super.setWidth(width);
 	}
 
 	public void setHeight(String height) {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);
+		gadgetContainer.setHeight(height);
 		super.setHeight(height);
 	}
 
