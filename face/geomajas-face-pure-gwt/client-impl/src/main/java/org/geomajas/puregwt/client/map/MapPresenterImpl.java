@@ -30,7 +30,7 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.controller.MapController;
-import org.geomajas.puregwt.client.controller.MapEventParserImpl;
+import org.geomajas.puregwt.client.controller.MapEventParserFactory;
 import org.geomajas.puregwt.client.controller.NavigationController;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
@@ -55,7 +55,7 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
-import org.geomajas.puregwt.client.map.feature.FeatureServiceImpl;
+import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.gadget.PanningGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.SimpleZoomGadget;
@@ -63,7 +63,7 @@ import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
 import org.geomajas.puregwt.client.map.gadget.ZoomStepGadget;
 import org.geomajas.puregwt.client.map.gadget.ZoomToRectangleGadget;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
-import org.geomajas.puregwt.client.map.render.MapRendererImpl;
+import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -76,9 +76,7 @@ import com.google.gwt.event.dom.client.HasMouseUpHandlers;
 import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -86,6 +84,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
@@ -165,7 +164,8 @@ public final class MapPresenterImpl implements MapPresenter {
 		AbsolutePanel getMapGadgetContainer();
 	}
 
-	private final EventBus eventBus;
+	@Inject
+	private EventBus eventBus;
 
 	private final MapEventParser mapEventParser;
 
@@ -195,18 +195,22 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Inject
 	private GfxUtil gfxUtil;
 
+	private final MapRendererFactory mapRendererFactory;
+
 	private FeatureService featureService;
 
 	private ClientMapInfo configuration;
 
 	@Inject
-	private MapPresenterImpl() {
-		eventBus = new SimpleEventBus();
+	private MapPresenterImpl(final FeatureServiceFactory featureServiceFactory,
+			final MapEventParserFactory mapEventParserFactory,
+			final MapRendererFactory mapRendererFactory) {
+		this.mapRendererFactory = mapRendererFactory;
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapController, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, MapGadgetPositioner>();
-		featureService = new FeatureServiceImpl(this);
-		mapEventParser = new MapEventParserImpl(this);
+		featureService = featureServiceFactory.create(this);
+		mapEventParser = mapEventParserFactory.create(this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -215,7 +219,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	/** {@inheritDoc} */
 	public void initialize(String applicationId, String id) {
-		mapRenderer = new MapRendererImpl(layersModel, viewPort, display.getMapHtmlContainer());
+		mapRenderer = mapRendererFactory.create(layersModel, viewPort, display.getMapHtmlContainer());
 
 		eventBus.addHandler(ViewPortChangedHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);

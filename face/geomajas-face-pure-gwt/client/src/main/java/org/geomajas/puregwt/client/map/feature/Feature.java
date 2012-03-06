@@ -28,6 +28,7 @@ import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
  */
 @Api(allMethods = true)
 public interface Feature {
+	
 
 	/**
 	 * Return the features unique identifier.

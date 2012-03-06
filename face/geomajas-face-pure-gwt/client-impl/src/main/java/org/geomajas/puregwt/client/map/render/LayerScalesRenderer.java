@@ -27,9 +27,10 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * <p>
@@ -46,7 +47,8 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	private static final int SCALE_CACHE_SIZE = 3; // Let's keep the last 3 scales.
 
-	private final EventBus eventBus;
+	@Inject
+	private EventBus eventBus;
 
 	private final ViewPort viewPort;
 
@@ -74,13 +76,14 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	 * @param htmlContainer
 	 *            The container wherein to render all scales.
 	 */
-	public LayerScalesRenderer(ViewPort viewPort, Layer<?> layer, HtmlContainer htmlContainer) {
+	@Inject
+	public LayerScalesRenderer(@Assisted ViewPort viewPort, @Assisted Layer<?> layer,
+			@Assisted HtmlContainer htmlContainer) {
 		this.viewPort = viewPort;
 		this.layer = layer;
 		this.htmlContainer = htmlContainer;
 		tiledScaleRenderers = new HashMap<Double, TiledScaleRenderer>();
 		scales = new ArrayList<Double>(SCALE_CACHE_SIZE + 2);
-		eventBus = new SimpleEventBus();
 
 		visibleScale = viewPort.getScale();
 	}

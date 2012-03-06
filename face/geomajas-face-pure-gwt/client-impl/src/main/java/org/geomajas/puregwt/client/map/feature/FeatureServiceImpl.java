@@ -30,6 +30,9 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 /**
  * <p>
  * Service for feature retrieval and manipulation. This service is map specific, and so the methods may assume the
@@ -41,6 +44,8 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 public class FeatureServiceImpl implements FeatureService {
 
 	private final MapPresenter mapPresenter;
+	
+	private final FeatureFactory featureFactory;
 
 	/**
 	 * Initialize this feature service for the given map.
@@ -48,8 +53,10 @@ public class FeatureServiceImpl implements FeatureService {
 	 * @param mapPresenter
 	 *            The map presenter.
 	 */
-	public FeatureServiceImpl(MapPresenter mapPresenter) {
+	@Inject
+	public FeatureServiceImpl(@Assisted MapPresenter mapPresenter, FeatureFactory featureFactory) {
 		this.mapPresenter = mapPresenter;
+		this.featureFactory = featureFactory;
 	}
 
 	// ------------------------------------------------------------------------
@@ -75,7 +82,7 @@ public class FeatureServiceImpl implements FeatureService {
 			public void execute(SearchFeatureResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
-					features.add(new FeatureImpl(feature, layer));
+					features.add(featureFactory.create(feature, layer));
 				}
 				Map<FeaturesSupported<?>, List<Feature>> mapping = new HashMap<FeaturesSupported<?>, List<Feature>>();
 				mapping.put(layer, features);
@@ -107,7 +114,7 @@ public class FeatureServiceImpl implements FeatureService {
 				for (List<org.geomajas.layer.feature.Feature> dtos : response.getFeatureMap().values()) {
 					List<Feature> features = new ArrayList<Feature>(dtos.size());
 					for (org.geomajas.layer.feature.Feature feature : dtos) {
-						features.add(new FeatureImpl(feature, layer));
+						features.add(featureFactory.create(feature, layer));
 					}
 					Map<FeaturesSupported<?>, List<Feature>> map = new HashMap<FeaturesSupported<?>, List<Feature>>();
 					map.put(layer, features);
@@ -163,7 +170,7 @@ public class FeatureServiceImpl implements FeatureService {
 					FeaturesSupported<?> layer = searchLayer(entry.getKey());
 					List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
 					for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
-						features.add(new FeatureImpl(feature, layer));
+						features.add(featureFactory.create(feature, layer));
 					}
 					mapping.put(layer, features);
 				}

@@ -33,21 +33,12 @@ import com.google.inject.Inject;
  * 
  * @author Pieter De Graef
  */
-public final class GfxUtil {
+public final class GfxUtilImpl implements GfxUtil {
 
 	@Inject
-	private GfxUtil() {
+	private GfxUtilImpl() {
 	}
 
-	/**
-	 * Apply the main elements of the given style onto the shape.
-	 * 
-	 * @param shape
-	 *            The shape in need of styling.
-	 * @param style
-	 *            The style to apply. Only the following elements are applied: fill color, fill opacity, stroke color,
-	 *            stroke opacity and stroke width.
-	 */
 	public void applyStyle(Shape shape, FeatureStyleInfo style) {
 		if (style.getFillColor() != null) {
 			shape.setFillColor(style.getFillColor());
@@ -66,15 +57,6 @@ public final class GfxUtil {
 		}
 	}
 
-	/**
-	 * Apply the given controller onto the given shape.
-	 * 
-	 * @param shape
-	 *            The shape in need of a controller.
-	 * @param mapController
-	 *            The controller to apply onto the shape.
-	 * @return The list of registrations that allows for removing the controller again.
-	 */
 	public List<HandlerRegistration> applyController(Shape shape, MapController mapController) {
 		List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 		registrations.add(shape.addMouseDownHandler(mapController));
@@ -91,13 +73,6 @@ public final class GfxUtil {
 		return registrations;
 	}
 
-	/**
-	 * Transform the given geometry into a path object that can be drawn on the map.
-	 * 
-	 * @param geometry
-	 *            The geometry to transform.
-	 * @return The quivalent path object.
-	 */
 	public Path toPath(Geometry geometry) {
 		if (geometry != null) {
 			if (Geometry.POINT.equals(geometry.getGeometryType())) {

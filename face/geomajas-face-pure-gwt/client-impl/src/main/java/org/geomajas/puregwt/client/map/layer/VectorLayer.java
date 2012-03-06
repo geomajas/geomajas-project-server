@@ -29,7 +29,8 @@ import org.geomajas.puregwt.client.event.LayerLabelShowEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.feature.Feature;
 
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
+
 
 /**
  * Vector layer representation.

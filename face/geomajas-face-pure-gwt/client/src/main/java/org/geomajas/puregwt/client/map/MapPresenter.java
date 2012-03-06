@@ -22,9 +22,9 @@ import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Central map definition.

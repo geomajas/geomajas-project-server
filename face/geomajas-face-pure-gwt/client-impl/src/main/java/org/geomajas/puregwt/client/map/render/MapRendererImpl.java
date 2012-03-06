@@ -44,6 +44,8 @@ import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
 import com.google.gwt.user.client.Timer;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * Generic map renderer implementation. Has support for animated navigation through the {@link MapNavigationAnimation}.
@@ -81,12 +83,16 @@ public class MapRendererImpl implements MapRenderer {
 	private Coordinate previousTranslation;
 
 	private boolean navigationBusy;
+	
+	@Inject
+	private MapScalesRendererFactory mapScalesRendererFactory;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
-
-	public MapRendererImpl(LayersModel layersModel, final ViewPort viewPort, HtmlContainer htmlContainer) {
+	@Inject
+	public MapRendererImpl(@Assisted LayersModel layersModel, @Assisted final ViewPort viewPort,
+			@Assisted HtmlContainer htmlContainer) {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
 		this.htmlContainer = htmlContainer;
@@ -117,7 +123,7 @@ public class MapRendererImpl implements MapRenderer {
 		layerContainer.setVisible(layer.getLayerInfo().isVisible());
 		htmlContainer.add(layerContainer);
 
-		MapScalesRenderer layerRenderer = new LayerScalesRenderer(viewPort, layer, layerContainer);
+		MapScalesRenderer layerRenderer = mapScalesRendererFactory.create(viewPort, layer, layerContainer);
 		if (layerRenderers.size() == 0) {
 			layerRenderer.addScaleLevelRenderedHandler(new ScaleLevelRenderedHandler() {
 

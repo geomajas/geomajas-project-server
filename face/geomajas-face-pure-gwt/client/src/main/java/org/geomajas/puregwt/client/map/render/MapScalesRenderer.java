@@ -17,7 +17,8 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+
 
 /**
  * Scale based renderer for the map. It provides the rendering through specific renderers for each required scale.

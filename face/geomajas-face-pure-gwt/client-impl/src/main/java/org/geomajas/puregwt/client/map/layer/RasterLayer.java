@@ -19,7 +19,8 @@ import org.geomajas.puregwt.client.Geomajas;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
 
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
+
 
 /**
  * <p>

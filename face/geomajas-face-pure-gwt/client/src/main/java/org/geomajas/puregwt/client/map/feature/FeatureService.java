@@ -115,6 +115,7 @@ public interface FeatureService {
 			return value;
 		}
 	}
+	
 
 	// ------------------------------------------------------------------------
 	// Searching features by attributes:

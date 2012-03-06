@@ -21,6 +21,8 @@ import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.TouchEvent;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * Utility methods for acquiring information out of events that come from the map.
@@ -36,7 +38,8 @@ public class MapEventParserImpl implements MapEventParser {
 	 * 
 	 * @param mapPresenter
 	 */
-	public MapEventParserImpl(MapPresenter mapPresenter) {
+	@Inject
+	public MapEventParserImpl(@Assisted MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 

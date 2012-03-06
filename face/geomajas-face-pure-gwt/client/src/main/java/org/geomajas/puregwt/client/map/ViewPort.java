@@ -19,7 +19,8 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
+
 
 /**
  * <p>
