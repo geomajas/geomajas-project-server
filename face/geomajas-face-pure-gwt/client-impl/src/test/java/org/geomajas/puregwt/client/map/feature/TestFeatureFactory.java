@@ -8,16 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.map.feature;
 
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
-
+/**
+ * Test implementation of the {@link FeatureFactory}.
+ * 
+ * @author Jan De Moerloose
+ */
 public class TestFeatureFactory implements FeatureFactory {
 
-	@Override
 	public Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported<?> layer) {
 		return new FeatureImpl(feature, layer);
 	}
-
 }

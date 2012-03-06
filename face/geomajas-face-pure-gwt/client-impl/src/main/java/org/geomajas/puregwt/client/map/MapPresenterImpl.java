@@ -264,18 +264,13 @@ public final class MapPresenterImpl implements MapPresenter {
 				if (r.getMapInfo().getScaleConfiguration().getZoomLevels() != null
 						&& r.getMapInfo().getScaleConfiguration().getZoomLevels().size() > 0) {
 					// Zoom steps...
-					addMapGadget(new ZoomToRectangleGadget());
+					addMapGadget(new ZoomToRectangleGadget(5, 60));
 					addMapGadget(new ZoomStepGadget(60, 18));
 				} else {
 					// Simple zooming:
 					addMapGadget(new ZoomToRectangleGadget(125, 20));
 					addMapGadget(new SimpleZoomGadget(60, 20));
 				}
-
-				// If there are already some MapGadgets registered, draw them now:
-				// for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
-				// entry.getKey().onDraw(viewPort, entry.getValue());
-				// }
 
 				// Fire initialization event:
 				eventBus.fireEvent(new MapInitializationEvent());

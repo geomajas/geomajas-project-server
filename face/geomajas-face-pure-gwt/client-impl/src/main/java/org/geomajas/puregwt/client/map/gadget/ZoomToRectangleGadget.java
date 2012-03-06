@@ -18,11 +18,11 @@ import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
@@ -56,10 +56,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ZoomToRectangleGadget extends AbstractMapGadget {
 
-	private static final int DEFAULT_LEFT = 60;
-
-	private static final int DEFAULT_TOP = 5;
-
 	private VectorContainer container;
 
 	private ZoomToRectGroup zoomToRectangleGroup;
@@ -71,11 +67,6 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
-
-	public ZoomToRectangleGadget() {
-		setHorizontalMargin(DEFAULT_LEFT);
-		setVerticalMargin(DEFAULT_TOP);
-	}
 
 	public ZoomToRectangleGadget(int top, int left) {
 		setHorizontalMargin(left);
@@ -98,6 +89,7 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, new ViewPortChangedHandler() {
 
 			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+				cleanup();
 			}
 
 			public void onViewPortScaled(ViewPortScaledEvent event) {
@@ -116,8 +108,6 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 
 	private void cleanup() {
 		if (zoomToRectangleGroup != null) {
-			MapGadget mapGadget = zoomToRectangleGroup.getEventCatcher();
-			mapPresenter.removeMapGadget(mapGadget);
 			container.remove(zoomToRectangleGroup);
 			zoomToRectangleGroup = null;
 		}
@@ -157,7 +147,6 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 				container.add(zoomToRectangleGroup);
 			}
 		}, MouseUpEvent.getType());
-
 	}
 
 	// ------------------------------------------------------------------------
@@ -192,7 +181,7 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 	 */
 	private class ZoomToRectGroup extends Group {
 
-		private AbstractMapGadget eventCatcher;
+		private Rectangle eventCatcher;
 
 		private Path zoomInRect;
 
@@ -205,19 +194,10 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 		private Bbox screenBounds;
 
 		public ZoomToRectGroup(final ViewPort viewPort) {
-			eventCatcher = new AbstractMapGadget() {
-
-				private SimplePanel rectangle;
-
-				public Widget asWidget() {
-					if (rectangle == null) {
-						rectangle = new SimplePanel();
-						rectangle.setSize(mapPresenter.getViewPort().getMapWidth() + "px", mapPresenter.getViewPort()
-								.getMapHeight() + "px");
-					}
-					return rectangle;
-				}
-			};
+			eventCatcher = new Rectangle(0, 0, mapPresenter.getViewPort().getMapWidth(), mapPresenter.getViewPort()
+					.getMapHeight());
+			eventCatcher.setFillOpacity(0);
+			eventCatcher.setStrokeOpacity(0);
 
 			zoomInRect = new Path(0, 0);
 			zoomInRect.setFillColor("#000000");
@@ -237,9 +217,9 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 			zoomInRect.close();
 
 			add(zoomInRect);
-			mapPresenter.addMapGadget(eventCatcher);
+			add(eventCatcher);
 
-			eventCatcher.asWidget().addDomHandler(new MouseDownHandler() {
+			eventCatcher.addMouseDownHandler(new MouseDownHandler() {
 
 				public void onMouseDown(MouseDownEvent event) {
 					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
@@ -251,9 +231,9 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 					event.stopPropagation();
 					event.preventDefault();
 				}
-			}, MouseDownEvent.getType());
+			});
 
-			eventCatcher.asWidget().addDomHandler(new MouseUpHandler() {
+			eventCatcher.addMouseUpHandler(new MouseUpHandler() {
 
 				public void onMouseUp(MouseUpEvent event) {
 					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT && dragging) {
@@ -265,9 +245,9 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 					}
 					event.stopPropagation();
 				}
-			}, MouseUpEvent.getType());
+			});
 
-			eventCatcher.asWidget().addDomHandler(new MouseMoveHandler() {
+			eventCatcher.addMouseMoveHandler(new MouseMoveHandler() {
 
 				public void onMouseMove(MouseMoveEvent event) {
 					if (dragging) {
@@ -275,25 +255,21 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 					}
 					event.stopPropagation();
 				}
-			}, MouseMoveEvent.getType());
+			});
 
-			eventCatcher.asWidget().addDomHandler(new ClickHandler() {
+			eventCatcher.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
 					event.stopPropagation();
 				}
-			}, ClickEvent.getType());
+			});
 
-			eventCatcher.asWidget().addDomHandler(new DoubleClickHandler() {
+			eventCatcher.addDoubleClickHandler(new DoubleClickHandler() {
 
 				public void onDoubleClick(DoubleClickEvent event) {
 					event.stopPropagation();
 				}
-			}, DoubleClickEvent.getType());
-		}
-
-		public MapGadget getEventCatcher() {
-			return eventCatcher;
+			});
 		}
 
 		private void updateRectangle(MouseEvent<?> event) {

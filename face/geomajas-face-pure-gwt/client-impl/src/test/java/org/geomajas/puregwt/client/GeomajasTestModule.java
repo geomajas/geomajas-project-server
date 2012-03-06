@@ -30,7 +30,6 @@ import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.TestMapRendererFactory;
 import org.geomajas.puregwt.client.map.render.TestMapScalesRendererFactory;
-import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 import org.geomajas.puregwt.client.widget.MapWidgetTestImpl;
 
 import com.google.inject.AbstractModule;
@@ -61,6 +60,4 @@ public class GeomajasTestModule extends AbstractModule {
 		bind(GfxUtil.class).to(GfxUtilImpl.class).in(Singleton.class);
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
 	}
-
-
 }

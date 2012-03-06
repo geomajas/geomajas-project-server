@@ -8,21 +8,24 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.map.feature;
 
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.inject.Inject;
 
-
+/**
+ * Test implementation of the {@link FeatureServiceFactory}.
+ * 
+ * @author Jan De Moerloose
+ */
 public class TestFeatureServiceFactory implements FeatureServiceFactory {
-	
+
 	@Inject
 	FeatureFactory featureFactory;
 
-	@Override
 	public FeatureService create(MapPresenter mapPresenter) {
 		return new FeatureServiceImpl(mapPresenter, featureFactory);
 	}
-
 }
