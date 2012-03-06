@@ -21,9 +21,12 @@ import org.geomajas.puregwt.client.general.NavigationOptionPanel;
 import org.geomajas.puregwt.client.general.ResizeMapPanel;
 import org.geomajas.puregwt.client.layer.LayerOrderPanel;
 import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
+import org.geomajas.puregwt.client.layer.TmsLayerPanel;
 import org.geomajas.puregwt.client.rendering.DrawingInteractionPanel;
 import org.geomajas.puregwt.client.rendering.ScreenSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.WorldSpaceRenderingPanel;
+import org.geomajas.puregwt.client.widget.LegendDisclosureGadgetPanel;
+import org.geomajas.puregwt.client.widget.LayerLegendViewPanel;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.prefetch.RunAsyncCode;
@@ -96,6 +99,7 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		// Layer Manipulation:
 		Category catLayerMan = new Category("Layer Manipulation");
 		catList.add(catLayerMan);
+		catLayerMan.addExample(new TmsLayerPanel(), null);
 		catLayerMan.addExample(new LayerVisibilityPanel(), null);
 		catLayerMan.addExample(new LayerOrderPanel(), null);
 
@@ -110,6 +114,12 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catDrawing.addExample(new ScreenSpaceRenderingPanel(), null);
 		catDrawing.addExample(new WorldSpaceRenderingPanel(), null);
 		catDrawing.addExample(new DrawingInteractionPanel(), null);
+
+		// Widget plug-in:
+		Category catWidget = new Category("Widgets");
+		catList.add(catWidget);
+		catWidget.addExample(new LayerLegendViewPanel(), null);
+		catWidget.addExample(new LegendDisclosureGadgetPanel(), null);
 	}
 
 	// ------------------------------------------------------------------------
