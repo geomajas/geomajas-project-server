@@ -162,6 +162,9 @@ public class LegendDropDownGadget implements MapGadget {
 	 *            The title in the form of a trusted HTML string.
 	 */
 	public void setTitle(String safeHtml) {
+		if (layout == null) {
+			asWidget();
+		}
 		layout.setTitle(safeHtml);
 	}
 
