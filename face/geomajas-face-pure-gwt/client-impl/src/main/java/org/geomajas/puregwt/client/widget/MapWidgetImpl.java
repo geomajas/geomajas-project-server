@@ -78,9 +78,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// List of all screen containers and world containers:
 	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
 
-	// Absolute panel wherein all MapGadgets are rendered:
-	private AbsolutePanel gadgetContainer;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -100,10 +97,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
 		drawingArea.add(layerVectorContainer);
-
-		// On top we render all MapGadgets:
-		gadgetContainer = new AbsolutePanel();
-		add(gadgetContainer, 0, 0);
 
 		// Firefox and Chrome allow for DnD of images. This default behavior is not wanted.
 		addMouseDownHandler(new MouseDownHandler() {
@@ -197,7 +190,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	/** {@inheritDoc} */
 	public AbsolutePanel getMapGadgetContainer() {
-		return gadgetContainer;
+		return this;
 	}
 
 	/** {@inheritDoc} */
@@ -217,7 +210,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setPixelSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
-		gadgetContainer.setSize(width + "px", height + "px");
 		super.setPixelSize(width, height);
 	}
 
@@ -225,21 +217,18 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
-		gadgetContainer.setSize(width, height);
 		super.setSize(width, height);
 	}
 
 	public void setWidth(String width) {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
-		gadgetContainer.setWidth(width);
 		super.setWidth(width);
 	}
 
 	public void setHeight(String height) {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);
-		gadgetContainer.setHeight(height);
 		super.setHeight(height);
 	}
 
