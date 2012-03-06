@@ -166,6 +166,16 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 		buildGui();
 	}
 
+	/**
+	 * Apply a new title on the drop down button.
+	 * 
+	 * @param safeHtml
+	 *            The title in the form of a trusted HTML string.
+	 */
+	public void setTitle(String safeHtml) {
+		titleElement.setInnerHTML(safeHtml);
+	}
+
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

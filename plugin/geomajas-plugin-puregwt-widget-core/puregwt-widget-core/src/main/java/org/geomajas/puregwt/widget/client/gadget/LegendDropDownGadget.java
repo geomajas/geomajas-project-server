@@ -46,6 +46,10 @@ public class LegendDropDownGadget implements MapGadget {
 
 	private Timer timer;
 
+	// ------------------------------------------------------------------------
+	// MapGadget implementation:
+	// ------------------------------------------------------------------------
+
 	public Widget asWidget() {
 		if (layout == null) {
 			layout = new LegendDropDown(mapPresenter);
@@ -101,22 +105,27 @@ public class LegendDropDownGadget implements MapGadget {
 		return layout;
 	}
 
+	/** {@inheritDoc} */
 	public void beforeDraw(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 
+	/** {@inheritDoc} */
 	public Alignment getHorizontalAlignment() {
 		return Alignment.END;
 	}
 
+	/** {@inheritDoc} */
 	public Alignment getVerticalAlignment() {
 		return Alignment.BEGIN;
 	}
 
+	/** {@inheritDoc} */
 	public int getHorizontalMargin() {
 		return 5;
 	}
 
+	/** {@inheritDoc} */
 	public int getVerticalMargin() {
 		return 5;
 	}
@@ -144,6 +153,16 @@ public class LegendDropDownGadget implements MapGadget {
 	 */
 	public void setCloseDelay(int closeDelay) {
 		this.closeDelay = closeDelay;
+	}
+
+	/**
+	 * Apply a new title on the drop down button.
+	 * 
+	 * @param safeHtml
+	 *            The title in the form of a trusted HTML string.
+	 */
+	public void setTitle(String safeHtml) {
+		layout.setTitle(safeHtml);
 	}
 
 	// ------------------------------------------------------------------------
