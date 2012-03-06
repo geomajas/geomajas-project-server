@@ -112,7 +112,7 @@ public class ResizableMapLayout implements IsWidget {
 			try {
 				mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getBounds());
 			} catch (Throwable t) {
-				Log.logWarn("Could not center map..." + t.getMessage());
+				Log.logError("ResizableMapLayout.applySize: Could not center map.", t);
 				return false;
 			}
 			return true;

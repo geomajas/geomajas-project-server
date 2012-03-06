@@ -20,12 +20,16 @@ import org.geomajas.puregwt.widget.client.map.LegendDropDown;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,7 +57,7 @@ public class LegendDropDownGadget implements MapGadget {
 	public Widget asWidget() {
 		if (layout == null) {
 			layout = new LegendDropDown(mapPresenter);
-			if (mapPresenter.getLayersModel().getLayerCount() == 0) {
+			if (mapPresenter.getLayersModel() == null || mapPresenter.getLayersModel().getLayerCount() == 0) {
 				mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MapInitializationHandler() {
 
 					public void onMapInitialized(MapInitializationEvent event) {
@@ -77,6 +81,18 @@ public class LegendDropDownGadget implements MapGadget {
 					event.stopPropagation();
 				}
 			}, ClickEvent.getType());
+			layout.addDomHandler(new MouseUpHandler() {
+
+				public void onMouseUp(MouseUpEvent event) {
+					event.stopPropagation();
+				}
+			}, MouseUpEvent.getType());
+			layout.addDomHandler(new DoubleClickHandler() {
+
+				public void onDoubleClick(DoubleClickEvent event) {
+					event.stopPropagation();
+				}
+			}, DoubleClickEvent.getType());
 
 			// Install a timer for automatic closing when the mouse leaves us:
 			layout.addDomHandler(new MouseOutHandler() {
@@ -163,7 +179,8 @@ public class LegendDropDownGadget implements MapGadget {
 	 */
 	public void setTitle(String safeHtml) {
 		if (layout == null) {
-			asWidget();
+			throw new IllegalStateException("Make sure this gadget has been added to the map before calling this"
+					+ " method.");
 		}
 		layout.setTitle(safeHtml);
 	}
