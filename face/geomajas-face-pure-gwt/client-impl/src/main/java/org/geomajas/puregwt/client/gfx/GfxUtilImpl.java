@@ -17,6 +17,7 @@ import java.util.List;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -75,6 +76,9 @@ public final class GfxUtilImpl implements GfxUtil {
 
 	public Path toPath(Geometry geometry) {
 		if (geometry != null) {
+			if (GeometryService.getNumPoints(geometry) == 0) {
+				return null;
+			}
 			if (Geometry.POINT.equals(geometry.getGeometryType())) {
 				return toPathPoint(geometry);
 			} else if (Geometry.LINE_STRING.equals(geometry.getGeometryType())) {
