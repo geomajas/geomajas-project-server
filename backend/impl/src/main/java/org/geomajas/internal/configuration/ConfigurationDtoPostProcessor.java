@@ -164,10 +164,10 @@ public class ConfigurationDtoPostProcessor {
 		if (info != null) {
 			// log warning when allowing empty attributes
 			if (info.isAllowEmptyGeometries()) {
-				log.warn("Empty geometries are allowed for layer " + layer.getId() + ". " +
-						"This disables all security filtering on areas.");
+				log.warn("Empty geometries are allowed for layer {}. This disables all security filtering on areas.",
+						layer.getId());
 			}
-			
+
 			// check for invalid attribute names
 			for (AbstractAttributeInfo attributeInfo : info.getFeatureInfo().getAttributes()) {
 				if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
@@ -380,8 +380,8 @@ public class ConfigurationDtoPostProcessor {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
 			// result should be m = (m/inch) / (number/inch)
 			map.setPixelLength(METER_PER_INCH / client.getScreenDpi());
-			log.debug("Map " + map.getId() + " has unit length : " + map.getUnitLength() + "m, pixel length "
-					+ map.getPixelLength() + "m");
+			log.debug("Map {} has unit length : {}m, pixel length {}m",
+					new Object[] {map.getId(), map.getUnitLength(), map.getPixelLength()});
 			// calculate scales
 			double pixPerUnit = map.getUnitLength() / map.getPixelLength();
 			// if resolutions have been defined the old way, calculate the scale configuration
@@ -424,10 +424,10 @@ public class ConfigurationDtoPostProcessor {
 				completeScale(layer.getMaximumScale(), pixPerUnit);
 				completeScale(layer.getMinimumScale(), pixPerUnit);
 				completeScale(layer.getZoomToPointScale(), pixPerUnit);
-				log.debug("Layer " + layer.getId() + " has scale range : " + layer.getMinimumScale().getPixelPerUnit()
-						+ "," + layer.getMaximumScale().getPixelPerUnit());
-				log.debug("Layer " + layer.getId() + " has zoom-to-point scale : "
-						+ layer.getZoomToPointScale().getPixelPerUnit());
+				log.debug("Layer {} has scale range : {}, {}", new Object[] {layer.getId(),
+						layer.getMinimumScale().getPixelPerUnit(), layer.getMaximumScale().getPixelPerUnit()});
+				log.debug("Layer {} has zoom-to-point scale : {}", layer.getId(),
+						layer.getZoomToPointScale().getPixelPerUnit());
 				if (layer instanceof ClientVectorLayerInfo) {
 					postProcess((ClientVectorLayerInfo) layer);
 				}
