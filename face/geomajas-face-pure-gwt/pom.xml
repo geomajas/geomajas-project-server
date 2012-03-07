@@ -47,7 +47,6 @@
 	<modules>
 		<module>client</module>
 		<module>client-impl</module>
-		<module>pure-gwt-example</module>
 	</modules>
 
 	<dependencyManagement>
