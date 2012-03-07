@@ -60,16 +60,6 @@ public class ToolbarSelectionSample extends SamplePanel {
 		layout.addMember(toolbar);
 		layout.addMember(map);
 
-		// wait for the map to be loaded and select the 1st layer
-		// the map only has one layer so selecting the 1st one is correct
-		// We need to select a layer cause the SelectionMode works on selected layers only
-		map.getMapModel().runWhenInitialized(new Runnable() {
-
-			public void run() {
-				//map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerCountries110mGT"));
-			}
-		});
-
 		return layout;
 	}
 
