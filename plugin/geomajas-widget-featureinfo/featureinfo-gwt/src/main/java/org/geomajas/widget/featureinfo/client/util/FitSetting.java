@@ -27,10 +27,10 @@ public final class FitSetting {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 	
-	/** Weither to show a message when no results are found on the location. */
+	/** Whether to show a message when no results are found on the location. */
 	public static boolean tooltipShowEmptyResultMessage;
 
-	/** Weither to include raster layers when requesting feature info. */
+	/** Whether to include raster layers when requesting feature info. */
 	public static boolean featureinfoIncludeRasterLayer;
 
 	/** Amount of pixels the mouse has to move before a new mouse over request is done. */
