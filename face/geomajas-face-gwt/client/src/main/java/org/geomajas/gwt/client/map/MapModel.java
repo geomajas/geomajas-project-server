@@ -673,7 +673,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * Zoom to the bounds of the specified features.
 	 * 
 	 * @param features list of features, will be lazy-loaded if necessary
+	 * @since 1.11.0
 	 */
+	@Api
 	public void zoomToFeatures(List<Feature> features) {
 		// calculate the point scale as the minimum point scale for all layers (only relevant for zooming to multiple
 		// points at the exact same location)
