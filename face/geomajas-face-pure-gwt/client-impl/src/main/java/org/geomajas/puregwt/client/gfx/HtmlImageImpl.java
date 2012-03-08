@@ -100,7 +100,8 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 		DOM.setStyleAttribute(getElement(), "border", "none");
 		DOM.setElementProperty(getElement(), "src", src);
-
+		// set visible when loaded !
+		setVisible(false);
 		onLoadingDone(onLoadingDone, nrRetries);
 	}
 
@@ -121,12 +122,10 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 *            Total number of retries should loading fail. Default is 0.
 	 */
 	public void onLoadingDone(Callback<String, String> onLoadingDone, int nrRetries) {
-		if (onLoadingDone != null) {
-			DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
-			ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone, nrRetries);
-			addHandler(reloader, LoadEvent.getType());
-			addHandler(reloader, ErrorEvent.getType());
-		}
+		DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
+		ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone, nrRetries);
+		addHandler(reloader, LoadEvent.getType());
+		addHandler(reloader, ErrorEvent.getType());
 	}
 
 	/**
