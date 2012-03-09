@@ -11,7 +11,7 @@
 
 package org.geomajas.sld.editor.client.gin;
 
-import org.geomajas.sld.editor.client.presenter.SldEditorRootPresenter;
+import org.geomajas.sld.editor.client.presenter.SmartGwtRootPresenter;
 
 /**
  * @author An Buyle
@@ -22,6 +22,6 @@ public class SldEditorClientModule extends ClientModule {
 	protected void configure() {
 		super.configure();
 		
-		bind(SldEditorRootPresenter.class).asEagerSingleton();
+		bind(SmartGwtRootPresenter.class).asEagerSingleton();
 	}
 }

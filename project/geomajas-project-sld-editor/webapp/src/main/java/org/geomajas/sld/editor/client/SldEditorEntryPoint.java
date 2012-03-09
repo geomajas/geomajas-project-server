@@ -14,7 +14,6 @@ import org.geomajas.sld.editor.client.gin.SldEditorClientGinjector;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
 import com.smartgwt.client.widgets.Canvas;
 
@@ -29,8 +28,7 @@ public class SldEditorEntryPoint implements EntryPoint {
 	private final SldEditorClientGinjector ginjector = GWT.create(SldEditorClientGinjector.class);
 
 	public void onModuleLoad() {
-		// Add the SLD Editor's main Layout to the SmartGWT root panel.
-		RootPanel.get().add(SmartGwtMainLayoutOfEditor.getLayout());
+		// The SLD Editor's is automatically added to the SmartGWT root panel.
 		
 		// This is required for Gwt-Platform proxy's generator.
 		DelayedBindRegistry.bind(ginjector);
