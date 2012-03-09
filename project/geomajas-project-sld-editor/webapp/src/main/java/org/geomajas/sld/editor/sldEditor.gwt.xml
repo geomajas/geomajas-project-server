@@ -25,6 +25,5 @@
 	
 	<!-- This is required for Gwt-Platform Proxy's generator        -->
 	<define-configuration-property name="gin.ginjector" is-multi-valued="false" />
-	<set-configuration-property name="gin.ginjector" value="org.geomajas.sld.editor.client.gin.ClientGinjector" />
-		
+	<set-configuration-property name="gin.ginjector" value="org.geomajas.sld.editor.client.gin.SldEditorClientGinjector" />		
 </module>
