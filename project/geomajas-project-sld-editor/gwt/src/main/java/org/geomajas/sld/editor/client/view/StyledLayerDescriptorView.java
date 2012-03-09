@@ -157,6 +157,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	// @Override
 	public void copyToView(SldGeneralInfo model) {
 		this.model = model;
+		topLevelAttributesForm.enable();
 		nameOfLayerItem.setValue(model.getNameOfLayer());
 		styleTitleItem.setValue(model.getStyleTitle());
 		geomTypeItem.setValue(model.getGeomType().value());
@@ -175,6 +176,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 	public void clear() {
 		topLevelAttributesForm.clearValues();
+		topLevelAttributesForm.disable();
 		errorMessage.setContents("<i>" + messages.noSldMessage() + "</i>");
 		errorMessage.markForRedraw();
 	}

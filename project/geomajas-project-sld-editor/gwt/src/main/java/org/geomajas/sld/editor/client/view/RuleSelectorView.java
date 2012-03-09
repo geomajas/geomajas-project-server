@@ -434,9 +434,9 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		errorMessage.setContents(NO_RULES_LOADED);
 		errorMessage.markForRedraw();
 
-		// TODO: check
 		makeRuleTreeEmpty();
 		// TODO: ?? treeGrid.hide();
+		disableButtons();
 		// fire deselection event
 		RuleSelectedEvent.fireClearAll(this);
 
@@ -1003,7 +1003,15 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 
 	private void updateButtons() {
-		final RuleTreeNode node = (RuleTreeNode) treeGrid.getSelectedRecord();
+		
+		final RuleTreeNode node;
+		
+		if (null == treeGrid) {
+			node = null;
+		} else {
+			node = (RuleTreeNode) treeGrid.getSelectedRecord();	
+		}
+		
 
 		if (node == null) {
 			removeRuleButton.setDisabled(true);
@@ -1028,8 +1036,15 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		} else {
 			addButton.enable();
 		}
-
 	}
+
+	private void disableButtons() {
+		removeRuleButton.setDisabled(true);
+		upButton.setDisabled(true);
+		downButton.setDisabled(true);
+		addButton.setDisabled(true);
+	}
+
 
 	private void sldHasChanged() {
 		// Inform observer(s) of change of SLD data

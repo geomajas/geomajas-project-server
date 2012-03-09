@@ -10,7 +10,6 @@
  */
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.common.client.presenter.RulePresenter;
 import org.geomajas.sld.editor.common.client.view.ViewUtil;
@@ -43,8 +42,6 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 	private VLayout symbolPane;
 
 	private VLayout filterPane;
-
-	private RuleInfo currentRule;
 
 	private Label noRuleSelectedMessage;
 

@@ -63,7 +63,7 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 
 	private ListGrid listGrid;
 
-	private boolean userFlagDuringSelect;
+	//private boolean userFlagDuringSelect;
 
 	private RecordList recordsSorted;
 
@@ -192,39 +192,40 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 	 * Select a certain SLD in the list (if present).
 	 * 
 	 * @param sldName
-	 * @param userFlagDuringSelect
 	 */
-	public void selectSld(String sldName, boolean userFlagDuringSelect) {
+	public void selectSld(String sldName) {
 		if (null != sldName) {
 			recordsSorted = listGrid.getDataAsRecordList();
 
 			Record record = recordsSorted.find(SLD_NAME_ATTRIBUTE_NAME, sldName);
-			this.userFlagDuringSelect = userFlagDuringSelect; // This flag can be polled during the
+			 // TODO: add mechanism to avoid informing manager of selection changed 
+			//TODO: this.userFlagDuringSelect = userFlagDuringSelect; // This flag can be polled during the
 			// subsequent execution of selectionChangedHandler.
 			listGrid.selectSingleRecord(record);
-			this.userFlagDuringSelect = false;
 		} else {
-			deselectAllSlds(userFlagDuringSelect);
+			deselectAllSlds(/*userFlagDuringSelect*/);
 		}
 	}
 
 	/**
 	 * Do not select any SLD in the list.
 	 */
-	public void deselectAllSlds(boolean userFlagDuringSelect) {
-		this.userFlagDuringSelect = userFlagDuringSelect; // This flag can be polled during the
-		// subsequent execution of selectionChangedHandler.
+	public void deselectAllSlds(/*boolean userFlagDuringSelect*/) {
+//		this.userFlagDuringSelect = userFlagDuringSelect; // This flag can be polled during the
+//		// subsequent execution of selectionChangedHandler.
 		listGrid.deselectAllRecords();
-		this.userFlagDuringSelect = false;
+//		if (null != this.userFlagDuringSelect) {
+//			this.userFlagDuringSelect = false;
+//		}
 	}
 
 	/**
 	 * @return true if inside select()/deselectAll() of list grid record and <code>userFlagDuringSelect</code> argument
 	 *         of triggering <code>selectSld</code> or <code>deselectAll</code> was set to value true, else false.
 	 */
-	public boolean getUserFlagDuringSelect() {
-		return userFlagDuringSelect;
-	}
+//	public boolean getUserFlagDuringSelect() {
+//		return userFlagDuringSelect;
+//	}
 
 	private void enableRemoveButton(boolean enable) {
 		if (enable) {

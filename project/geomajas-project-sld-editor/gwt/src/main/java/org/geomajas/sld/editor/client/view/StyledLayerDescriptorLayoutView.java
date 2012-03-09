@@ -101,6 +101,7 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 				content.setVisible(true);
 			} else {
 				layout.addMember(content);
+				//TODO: needed ?  content.setVisible(true);
 			}
 		}
 	}
@@ -111,6 +112,13 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 	}
 
 	public boolean isLoaded() {
-		return generalContentPanel.getMembers().length > 0;
+		return (generalContentPanel.getMembers().length > 0) &&  rulesContentPanel.getMembers().length > 0
+				&&	ruleContentPanel.getMembers().length > 0 && (actionContentPanel.getMembers().length > 0 
+		);
+	}
+
+	public void redraw() {
+		widget.markForRedraw();
+		
 	}
 }

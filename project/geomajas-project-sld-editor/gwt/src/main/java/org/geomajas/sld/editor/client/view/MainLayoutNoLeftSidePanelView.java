@@ -25,37 +25,38 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * Main view with content slots for child presenters.
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
  * 
  */
-public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyView {
+public class MainLayoutNoLeftSidePanelView extends ViewImpl implements MainLayoutPresenter.MyView {
 
 	private VLayout mainContentPanel;
 
-	private VLayout sideContentPanel;
+//	private VLayout sideContentPanel;
 
-	private HLayout topContentPanel;
+//	private HLayout topContentPanel;
 
 	private VLayout widget;
 
-	public MainLayoutView() {
+	public MainLayoutNoLeftSidePanelView() {
 
-		sideContentPanel = new VLayout();
-		sideContentPanel.setWidth("30%");
-		sideContentPanel.setHeight100();
-		sideContentPanel.setShowResizeBar(true);
+//		sideContentPanel = new VLayout();
+//		sideContentPanel.setWidth("30%");
+//		sideContentPanel.setHeight100();
+//		sideContentPanel.setShowResizeBar(true);
 
-		topContentPanel = new HLayout();
-		Label topLabel = new Label();
-		topLabel.setContents("Loading...");
-		topLabel.setAlign(Alignment.CENTER);
-		topLabel.setOverflow(Overflow.HIDDEN);
-		topContentPanel.addMember(topLabel);
-		topContentPanel.setHeight(100);
-		topContentPanel.setWidth100();
+//		topContentPanel = new HLayout();
+//		Label topLabel = new Label();
+//		topLabel.setContents("TopContent Loading...");
+//		topLabel.setAlign(Alignment.CENTER);
+//		topLabel.setOverflow(Overflow.HIDDEN);
+//		topContentPanel.addMember(topLabel);
+//		topContentPanel.setHeight(100);
+//		topContentPanel.setWidth100();
 
 		mainContentPanel = new VLayout();
-		Label mainLabel = new Label();
-		mainLabel.setContents("Loading...");
+		Label mainLabel = new Label();					// To be filled with e.g. banner
+		mainLabel.setContents("MainContent Loading...");
 		mainLabel.setAlign(Alignment.CENTER);
 		mainLabel.setOverflow(Overflow.HIDDEN);
 		mainContentPanel.addMember(mainLabel);
@@ -63,7 +64,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 		mainContentPanel.setWidth("70%");
 
 		HLayout hLayout = new HLayout();
-		hLayout.addMember(sideContentPanel);
+//		hLayout.addMember(sideContentPanel);
 		hLayout.addMember(mainContentPanel);
 		hLayout.setHeight("*");
 		hLayout.setWidth100();
@@ -73,7 +74,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 		widget.setHeight100();
 		widget.setMargin(5);
 		widget.setMembersMargin(5);
-		widget.addMember(topContentPanel);
+//		widget.addMember(topContentPanel);
 		widget.addMember(hLayout);
 
 	}
@@ -88,10 +89,10 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == MainLayoutPresenter.TYPE_MAIN_CONTENT) {
 			setMainContent(content);
-		} else if (slot == MainLayoutPresenter.TYPE_SIDE_CONTENT) {
-			setSideContent(content);
-		} else if (slot == MainLayoutPresenter.TYPE_TOP_CONTENT) {
-			setTopContent(content);
+//		} else if (slot == MainLayoutPresenter.TYPE_SIDE_CONTENT) {
+//			setSideContent(content);
+//		} else if (slot == MainLayoutPresenter.TYPE_TOP_CONTENT) {
+//			setTopContent(content);
 		} else {
 			super.setInSlot(slot, content);
 		}
@@ -103,25 +104,14 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 		}
 	}
 
-	private void setSideContent(Widget content) {
-		if (content != null) {
-			sideContentPanel.setMembers((Canvas) content);
-		}
-	}
-
-	private void setTopContent(Widget content) {
-		if (content != null) {
-			topContentPanel.setMembers((Canvas) content);
-		}
-	}
 
 	public void showLoading(boolean visibile) {
 		// TODO Auto-generated method stub
 
 	}
 
+
 	public boolean isLoaded() {
-		return (mainContentPanel.getMembers().length > 0 && 
-			sideContentPanel.getMembers().length > 0);
+		return mainContentPanel.getMembers().length > 0;
 	}
 }

@@ -8,7 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.sld.editor.client.presenter;
+
+import org.geomajas.sld.editor.client.SmartGwtMainLayoutOfEditor;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
@@ -19,35 +22,62 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.RootPresenter;
+import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
-import com.smartgwt.client.widgets.BaseWidget;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.Layout;
 
 /**
- * Sub-class of {@link RootPresenter} to accommodate for SmartGwt way of adding panels to root.
+ * Root presenter of SLD editor. 
+ * Sub-class of {@link RootPresenter} to accommodate for SmartGwt way of adding panels to a layout panel.
  * 
- * @author Jan De Moerloose
+ * @author An Buyle
  * 
  */
-public class SmartGwtRootPresenter extends RootPresenter {
+public class SldEditorRootPresenter extends RootPresenter {
+
+	@Inject
+	public SldEditorRootPresenter(EventBus eventBus, StyledLayerDescriptorEditorView view) {
+		super(eventBus, view);
+
+	}
 
 	/**
 	 * {@link RootPresenter}'s view.
 	 */
-	public static class SmartGwtRootView extends RootView {
+	public static class StyledLayerDescriptorEditorView extends RootView {
 
 		/**
 		 * The glass element.
 		 */
 		private Element glass;
 
+		private static Layout viewLayout = SmartGwtMainLayoutOfEditor.getLayout();
+
 		public Widget asWidget() {
-			return null;
+			return viewLayout;
 		}
 
 		@Override
 		public void setInSlot(Object slot, Widget content) {
-			((BaseWidget) content).draw();
+			//Whatever slot
+			if (content == null) {
+				//Assumes the user wants to clear the slot content.
+				if (viewLayout.getMembers().length > 0) {
+					//TODO
+				}
+			} else {
+				((Canvas) content).setWidth100();
+				((Canvas) content).setHeight100();
+
+				if (viewLayout.hasMember((Canvas) content)) {
+					content.setVisible(true);
+				} else {
+					viewLayout.addMember((Canvas) content);
+				}
+			}
 		}
+
 		//Called as a consequence of ginjector.getPlaceManager().revealCurrentPlace();
 		public void lockScreen() {
 			ensureGlass();
@@ -71,18 +101,21 @@ public class SmartGwtRootPresenter extends RootPresenter {
 				style.setZIndex(2147483647); // Maximum z-index
 			}
 		}
-	}
+	} // End View
 
-	@Inject
-	public SmartGwtRootPresenter(EventBus eventBus, SmartGwtRootView view) {
-		super(eventBus, view);
+	
+	public Widget asWidget() {
+		return null;
 	}
 
 	@Override
 	public void onRevealRootPopupContent(final RevealRootPopupContentEvent revealContentEvent) {
-		addToPopupSlot(revealContentEvent.getContent());
-		// always show pop-up !
-		revealContentEvent.getContent().getView().show();
+		assert false : "onRevealRootPopupContent() may NOT be called";
+	}
+
+	@Override
+	public void onRevealRootContent(RevealRootContentEvent event) {
+		super.onRevealRootContent(event);
 	}
 
 }
