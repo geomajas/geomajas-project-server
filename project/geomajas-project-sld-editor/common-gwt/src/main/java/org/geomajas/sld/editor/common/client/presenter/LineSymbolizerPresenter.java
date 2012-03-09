@@ -81,7 +81,7 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		//addRegisteredHandler(RuleSelectedEvent.getType(), this);
 		addRegisteredHandler(RuleChangedEvent.getType(), this);
 	}
 
@@ -112,7 +112,8 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 			setRule(event.getRuleModel());
 		}
 	}
-
+	
+	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
 			clearModelAndView();

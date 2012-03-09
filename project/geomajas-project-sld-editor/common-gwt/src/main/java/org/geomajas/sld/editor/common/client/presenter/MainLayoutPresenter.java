@@ -29,6 +29,7 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
+
 /**
  * This is the top-level presenter of the hierarchy. Other presenters reveal themselves within this presenter.
  * <p />
@@ -54,7 +55,7 @@ public class MainLayoutPresenter extends Presenter<MainLayoutPresenter.MyView, M
 
 		void showLoading(boolean visibile);
 
-		boolean hasSideBarContent();
+		boolean isLoaded();
 	}
 
 	/**
@@ -93,16 +94,24 @@ public class MainLayoutPresenter extends Presenter<MainLayoutPresenter.MyView, M
 
 	@Override
 	protected void revealInParent() {
+		//RevealSldEditorRootContentEvent.fire(this/*source*/, this);
 		RevealRootContentEvent.fire(this, this);
 	}
 
 	protected void onReveal() {
 		super.onReveal();
-		if (!getView().hasSideBarContent()) {
+		if (!getView().isLoaded()) {
 			InitMainLayoutEvent.fire(this);
 		}
 		manager.fetchAll();
 	}
+	
+	public void reveal() {
+		if (!isVisible()) {
+			onReveal();
+		}
+	}
+
 
 	/**
 	 * We display a short lock message whenever navigation is in progress.

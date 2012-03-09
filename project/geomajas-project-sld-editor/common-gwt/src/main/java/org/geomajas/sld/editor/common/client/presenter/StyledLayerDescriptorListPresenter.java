@@ -70,6 +70,7 @@ public class StyledLayerDescriptorListPresenter
 			HasSldListSelectHandlers {
 
 		void setData(List<String> sldList);
+		void selectSld(String sldName/*, boolean userFlagDuringSelect*/);
 
 	}
 
@@ -129,7 +130,7 @@ public class StyledLayerDescriptorListPresenter
 				}
 			}
 		}));
-		addRegisteredHandler(SldLoadedEvent.getType(), this);
+		//addRegisteredHandler(SldLoadedEvent.getType(), this); //better use @ProxyEvent
 		addRegisteredHandler(SldAddedEvent.getType(), this);
 	}
 
@@ -158,8 +159,11 @@ public class StyledLayerDescriptorListPresenter
 	public void onSldAdded(SldAddedEvent event) {
 		getView().setData(manager.getCurrentNames());
 		createDialog.getView().hide();
+		manager.select(event.getSldName());
+		getView().selectSld(event.getSldName());
 	}
 
+	@ProxyEvent
 	public void onSldLoaded(SldLoadedEvent event) {
 		getView().setData(manager.getCurrentNames());
 	}

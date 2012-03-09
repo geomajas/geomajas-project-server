@@ -74,7 +74,7 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		//addRegisteredHandler(RuleSelectedEvent.getType(), this);
 		addRegisteredHandler(RuleChangedEvent.getType(), this);
 	}
 
@@ -88,6 +88,7 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 		super.onReveal();
 	}
 
+	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
 			clearModelAndView();

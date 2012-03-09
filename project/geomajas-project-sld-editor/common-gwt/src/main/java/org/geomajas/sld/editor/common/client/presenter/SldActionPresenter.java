@@ -76,9 +76,9 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(SldSelectedEvent.getType(), this);
+		//addRegisteredHandler(SldSelectedEvent.getType(), this); // Not needed when @ProxyEvent is used
 		addRegisteredHandler(SldChangedEvent.getType(), this);
-		addRegisteredHandler(InitSldLayoutEvent.getType(), this);
+		//addRegisteredHandler(InitSldLayoutEvent.getType(), this); // Not needed when @ProxyEvent is used
 		addRegisteredHandler(SldSaveEvent.getType(), this);
 		addRegisteredHandler(SldCloseEvent.getType(), this);
 		addRegisteredHandler(SldRefreshEvent.getType(), this);
@@ -91,7 +91,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	@ProxyEvent
 	public void onSldSelected(SldSelectedEvent event) {
-		getView().setCloseEnabled(false);
+		getView().setCloseEnabled(null != event.getSld());
 		getView().setResetEnabled(false);
 		getView().setSaveEnabled(false);
 	}
@@ -124,10 +124,11 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	public void onSldClose(SldCloseEvent event) {
 		if (event.isSave()) {
-			manager.saveAndDeselectAll();
+			manager.saveAndDeselectAll();  // manager will fire SldEditSessionClosedEvent after the SLD has been saved
 		} else {
-			manager.deselectAll();
+			manager.deselectAll(); // manager will fire SldEditSessionClosedEvent 
 		}
+		
 	}
 
 }

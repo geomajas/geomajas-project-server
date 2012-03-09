@@ -56,6 +56,8 @@ public class StyledLayerDescriptorLayoutPresenter
 		boolean isLoaded();
 
 		void showLoading(boolean visibile);
+
+		void redraw();
 	}
 
 	/**
@@ -97,6 +99,7 @@ public class StyledLayerDescriptorLayoutPresenter
 
 	@Override
 	protected void revealInParent() {
+		//Called indirectly by onInitMainLayout() (via forceReveal()) if this presenter is not yet visible 
 		RevealContentEvent.fire(this, MainLayoutPresenter.TYPE_MAIN_CONTENT, this);
 	}
 
@@ -105,6 +108,7 @@ public class StyledLayerDescriptorLayoutPresenter
 		if (!getView().isLoaded()) {
 			InitSldLayoutEvent.fire(this);
 		}
+		// getView().redraw(); //TODO: needed?
 	}
 
 	/**

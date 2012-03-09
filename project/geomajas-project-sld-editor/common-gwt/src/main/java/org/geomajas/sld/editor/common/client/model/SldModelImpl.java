@@ -227,6 +227,7 @@ public class SldModelImpl implements SldModel {
 
 	public void setNameOfLayer(String nameOfLayer) {
 		this.nameOfLayer = nameOfLayer;
+		setDirty(true);
 	}
 
 	public String getStyleTitle() {
@@ -235,6 +236,7 @@ public class SldModelImpl implements SldModel {
 
 	public void setStyleTitle(String styleTitle) {
 		this.styleTitle = styleTitle;
+		setDirty(true);
 	}
 
 	public GeometryType getGeomType() {

@@ -90,7 +90,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	 * 
 	 * @param event
 	 */
-	// TODO
+	
 	@ProxyEvent
 	public void onSldSelected(SldSelectedEvent event) {
 		SldModel model = event.getSld();
@@ -106,6 +106,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 				clear();
 			}
 		}
+		forceReveal(); //TODO: needed???
 	}
 
 	private void clear() {

@@ -35,6 +35,8 @@ import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldEditSessionClosedEvent;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
@@ -57,6 +59,7 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 	private List<SldModel> currentList = new ArrayList<SldModel>();
 
 	private final EventBus eventBus;
+	private ViewUtil viewUtil;
 
 	private final Logger logger = Logger.getLogger(SldManagerImpl.class.getName());
 
@@ -64,9 +67,11 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 
 	private final SldModelFactory modelFactory;
 
+
 	@Inject
-	public SldManagerImpl(EventBus eventBus, SldModelFactory modelFactory) {
+	public SldManagerImpl(EventBus eventBus, final ViewUtil viewUtil, SldModelFactory modelFactory) {
 		this.eventBus = eventBus;
+		this.viewUtil = viewUtil;
 		this.modelFactory = modelFactory;
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sld");
@@ -100,6 +105,11 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 	}
 
 	public void saveCurrent() {
+		saveCurrent(null);
+		
+	}
+	
+	private void saveCurrent(final BasicErrorHandler errorHandler) {
 		if (currentSld != null) {
 			if (currentSld.isComplete()) {
 				currentSld.synchronize();
@@ -114,13 +124,16 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 					}
 
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						if (null != errorHandler) {
+							errorHandler.onFailure(caught);
+						}
 
 					}
 				});
 			}
 		}
 	}
+	
 
 	public List<String> getCurrentNames() {
 		List<String> names = new ArrayList<String>();
@@ -130,33 +143,37 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 		return names;
 	}
 
-	public void add(SldModel sld) {
+	public void add(SldModel sld, final BasicErrorHandler errorHandler) {
+		sld.synchronize();
 		service.create(sld.getSld(), new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 			/** call-back for handling saveOrUpdate() success return **/
 
 			public void onSuccess(StyledLayerDescriptorInfo sld) {
+				SldModel sldModel = null;
 				if (null != sld) {
-					currentList.add(modelFactory.create(sld));
+					sldModel = modelFactory.create(sld);
+					currentList.add(sldModel);
 					logger.info("SldManager: new SLD was successfully created. Execute selectSld()");
 					// selectSld(sld.getName(), false);
 				}
-				SldAddedEvent.fire(SldManagerImpl.this);
+				SldAddedEvent.fire(SldManagerImpl.this, null == sldModel ? null : sldModel.getName());
 			}
 
 			public void onFailure(Throwable caught) {
-				// SC.warn("De SLD met standaard inhoud kon niet gecre&euml;erd worden. (Interne fout: "
-				// + caught.getMessage() + ")");
-				//
-				// winModal.destroy();
-
+				if (null != errorHandler) {
+					errorHandler.onFailure(caught);
+				} else {
+					viewUtil.showWarning("De SLD met standaard inhoud kon niet gecre&euml;erd worden. (Interne fout: "
+							 + caught.getMessage() + ")");
+				}
 			}
 		});
 	}
 
-	public SldModel create(GeometryType geomType) {
+	public SldModel create(GeometryType geomType, String sldName) {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
-		sld.setName("NewSLD");
+		sld.setName(sldName);
 		sld.setVersion("1.0.0");
 
 		List<ChoiceInfo> choiceList = new ArrayList<ChoiceInfo>();
@@ -180,6 +197,7 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 		featureTypeStyleList.add(featureTypeStyle);
 
 		namedlayerChoicelist.get(0).getUserStyle().setFeatureTypeStyleList(featureTypeStyleList);
+		namedlayerChoicelist.get(0).getUserStyle().setTitle(sldName);
 		return modelFactory.create(sld);
 	}
 
@@ -195,7 +213,22 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 		return eventBus.addHandler(SldSelectedEvent.getType(), handler);
 	}
 
-	public void select(String name) {
+	public boolean select(final String name) {
+		return select(name, new BasicErrorHandler() {
+			public void onFailure(Throwable caught) {
+				SldEditSessionClosedEvent.fire(SldManagerImpl.this, name);
+			}
+		});
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.editor.common.client.model.SldManager#select(java.lang.String, 
+	 * 	org.geomajas.sld.editor.common.client.model.BasicErrorHandler)
+	 * 
+	 */
+	public boolean select(final String name, final BasicErrorHandler errorHandler) {
+
 		final SldModel selectedSld = findByName(name);
 		if (selectedSld != null) {
 			service.findByName(selectedSld.getName(), new AsyncCallback<StyledLayerDescriptorInfo>() {
@@ -207,14 +240,18 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 				}
 
 				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
+					if (null != errorHandler) {
+						errorHandler.onFailure(caught);
+					}
+					SldEditSessionClosedEvent.fire(SldManagerImpl.this, name);
 
 				}
 
 			});
-
+			return true;
+		} else {
+			return false;
 		}
-
 	}
 
 	public SldModel getCurrentSld() {
@@ -273,27 +310,37 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 	public class ContentChangedHandler implements SldContentChangedHandler {
 
 		public void onChanged(SldContentChangedEvent event) {
-			getCurrentSld().setDirty(true);
-			SldChangedEvent.fire(SldManagerImpl.this);
+			if (null != getCurrentSld()) {
+				getCurrentSld().setDirty(true);
+				SldChangedEvent.fire(SldManagerImpl.this);
+			}
 		}
 
 	}
 
 	public void deselectAll() {
+		String sldName = null == currentSld ? null : currentSld.getName();
 		currentSld = null;
 		SldSelectedEvent.fire(SldManagerImpl.this, null);
+		SldEditSessionClosedEvent.fire(SldManagerImpl.this, sldName);
 	}
 
 	public void saveAndDeselectAll() {
-		new OneTimeDeselector();
-		saveCurrent();
+		new OneTimeDeselector(); // Will fire SldEditSessionClosedEvent when current SLD has been successfully 
+								 // saved.
+		saveCurrent(new BasicErrorHandler() {
+				public void onFailure(Throwable caught) {
+					SldEditSessionClosedEvent.fire(SldManagerImpl.this, (String) null);
+				}
+			});
 	}
 
 	public void saveAndSelect(String name) {
 		new OneTimeSelector(name);
-		saveCurrent();
+		saveCurrent(null);
 	}
-
+	
+	
 	/**
 	 * One-time {@link SldChangedHandler} that deselects the current SLD after it has been saved.
 	 * 
@@ -340,5 +387,6 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 			}
 		}
 	}
+	
 
 }

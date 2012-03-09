@@ -81,7 +81,7 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	@Override
 	protected void onBind() {
 		super.onBind();
-		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		//addRegisteredHandler(RuleSelectedEvent.getType(), this);
 		addRegisteredHandler(SldChangedEvent.getType(), this);
 	}
 
@@ -90,6 +90,7 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 		RevealContentEvent.fire(this, StyledLayerDescriptorLayoutPresenter.TYPE_RULE_CONTENT, this);
 	}
 
+	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
 			getView().reset();

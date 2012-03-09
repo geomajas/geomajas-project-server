@@ -10,35 +10,39 @@
  */
 package org.geomajas.sld.editor.common.client.model.event;
 
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Event fired when an SLD has been added to the server.
+ * Event that indicates that an SLD has been selected.
  * 
- * @author Jan De Moerloose
+ * @author An Buyle
  * 
  */
-public class SldAddedEvent extends GwtEvent<SldAddedEvent.SldAddedHandler> {
-	
+public class SldSelectEvent extends GwtEvent<SldSelectEvent.SldSelectHandler> {
+
 	private String sldName;
 
-	public SldAddedEvent(String sldName) {
+	
+
+	public SldSelectEvent(String sldName) {
 		this.sldName = sldName;
 	}
 
 	public String getSldName() {
-		return this.sldName;
+		return sldName;
 	}
 
+	
 	public static void fire(HasHandlers source, String sldName) {
-		SldAddedEvent eventInstance = new SldAddedEvent(sldName);
+		SldSelectEvent eventInstance = new SldSelectEvent(sldName);
 		source.fireEvent(eventInstance);
 	}
 
-	public static void fire(HasHandlers source, SldAddedEvent eventInstance) {
+	public static void fire(HasHandlers source, SldSelectEvent eventInstance) {
 		source.fireEvent(eventInstance);
 	}
 
@@ -48,9 +52,9 @@ public class SldAddedEvent extends GwtEvent<SldAddedEvent.SldAddedHandler> {
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface HasSldAddedHandlers extends HasHandlers {
+	public interface HasSldSelectHandlers extends HasHandlers {
 
-		HandlerRegistration addSldAddedHandler(SldAddedHandler handler);
+		HandlerRegistration addSldSelectHandler(SldSelectHandler handler);
 	}
 
 	/**
@@ -59,30 +63,30 @@ public class SldAddedEvent extends GwtEvent<SldAddedEvent.SldAddedHandler> {
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface SldAddedHandler extends EventHandler {
+	public interface SldSelectHandler extends EventHandler {
 
 		/**
-		 * Notifies side content child presenter to reveal itself.
+		 * Called when the SLD list has changed.
 		 * 
-		 * @param event the event
+		 * @param event event
 		 */
-		void onSldAdded(SldAddedEvent event);
+		void onSldSelect(SldSelectEvent event);
 	}
 
-	private static final Type<SldAddedHandler> TYPE = new Type<SldAddedHandler>();
+	private static final Type<SldSelectHandler> TYPE = new Type<SldSelectHandler>();
 
-	public static Type<SldAddedHandler> getType() {
+	public static Type<SldSelectHandler> getType() {
 		return TYPE;
 	}
 
 	@Override
-	public Type<SldAddedHandler> getAssociatedType() {
+	public Type<SldSelectHandler> getAssociatedType() {
 		return TYPE;
 	}
 
 	@Override
-	protected void dispatch(SldAddedHandler handler) {
-		handler.onSldAdded(this);
+	protected void dispatch(SldSelectHandler handler) {
+		handler.onSldSelect(this);
 	}
 
 	@Override
@@ -97,6 +101,6 @@ public class SldAddedEvent extends GwtEvent<SldAddedEvent.SldAddedHandler> {
 
 	@Override
 	public String toString() {
-		return "SldAddedEvent[" + "]";
+		return "SldSelectEvent[" + "]";
 	}
 }

@@ -65,8 +65,8 @@ public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDia
 		registerHandler(getView().addCreateSldDialogCreateHandler(new CreateSldDialogCreateHandler() {
 
 			public void onCreateSldPopupCreate(CreateSldDialogCreateEvent event) {
-				SldModel newInfo = manager.create(getView().getGeometryType());
-				manager.add(newInfo);
+				SldModel newInfo = manager.create(getView().getGeometryType(), getView().getName());
+				manager.add(newInfo,  null);
 			}
 		}));
 	}

@@ -121,6 +121,7 @@ public class StyledLayerDescriptorPresenter
 				getView().focus();
 			}
 		}
+		forceReveal(); //TODO: needed if no left side ???
 	}
 
 }

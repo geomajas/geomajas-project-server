@@ -42,9 +42,10 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	 * Creates an instance of the specified type.
 	 * 
 	 * @param type the geometry type
+	 * @param string  name of the SLD
 	 * @return the new SLD instance
 	 */
-	SldModel create(GeometryType type);
+	SldModel create(GeometryType type, String string);
 
 	/**
 	 * Get the currently selected SLD.
@@ -58,7 +59,7 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	 * 
 	 * @param sld the sld to add
 	 */
-	void add(SldModel sld);
+	void add(SldModel sld,  BasicErrorHandler errorHandler);
 
 	/**
 	 * Remove the currently selected SLD from the server list.
@@ -80,11 +81,14 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 
 	/**
 	 * Select an SLD from the list.
+	 * Note: Caller is responsible of state control. E.g. do not call this function when the current 
 	 * 
 	 * @param name name of the SLD
+	 * @return true if the SLD is contained in the SLD list on the client, else false 
 	 */
-	void select(String name);
-
+	boolean select(String name, final BasicErrorHandler errorHandler);
+	boolean select(String name);
+	
 	void deselectAll();
 
 	void saveAndDeselectAll();
