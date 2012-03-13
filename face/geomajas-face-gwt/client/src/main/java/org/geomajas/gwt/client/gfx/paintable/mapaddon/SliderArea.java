@@ -73,8 +73,9 @@ public class SliderArea extends SingleMapAddon {
 		GraphicsContext vectorContext = mapWidget.getVectorContext();
 		vectorContext.drawRectangle(group, MAP_AREA, 
 				applyMargins(new Bbox(0, 0, width, getHeight())), 
+				// IE9 does not draw an empty shapestyle (new ShapeStyle()), but it does draw one with opacity = 0...
+				new ShapeStyle("#FF0000", 0, "#FF0000", 0, 1)); 
 //				new ShapeStyle("#FF0000", 0.1f, "#FF0000", 0.5f, 1));
-				new ShapeStyle());
 		vectorContext.setCursor(group, MAP_AREA, Cursor.POINTER.getValue());
 	}
 
@@ -85,7 +86,8 @@ public class SliderArea extends SingleMapAddon {
 	public void drawMapRectangle() {
 		mapWidget.getVectorContext().drawRectangle(group, MAP_AREA, 
 				new Bbox(0, 0, mapWidget.getWidth(), mapWidget.getHeight()), 
+				// IE9 does not draw an empty shapestyle (new ShapeStyle()), but it does draw one with opacity = 0...
+				new ShapeStyle("#00FF00", 0, "#00FF00", 0, 1));
 //				new ShapeStyle("#00FF00", 0.1f, "#00FF00", 0.5f, 1));
-				new ShapeStyle());
 	}
 }
