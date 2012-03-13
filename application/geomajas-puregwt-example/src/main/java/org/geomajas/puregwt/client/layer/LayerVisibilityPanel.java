@@ -70,8 +70,8 @@ public class LayerVisibilityPanel extends ContentPanel {
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
-		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
-		mapPresenter.getEventBus().addHandler(MyLayerVisibilityHandler.TYPE, new MyLayerVisibilityHandler());
+		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
+		mapPresenter.getEventBus().addLayerVisibilityHandler(new MyLayerVisibilityHandler());
 
 		// Define the whole layout:
 		HorizontalPanel layout = new HorizontalPanel();

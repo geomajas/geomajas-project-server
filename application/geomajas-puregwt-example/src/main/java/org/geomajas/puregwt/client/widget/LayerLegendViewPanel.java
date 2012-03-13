@@ -56,7 +56,7 @@ public class LayerLegendViewPanel extends ContentPanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = getInjector().getMapPresenter();
-		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MapInitializationHandler() {
+		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
 			public void onMapInitialized(MapInitializationEvent event) {
 				for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {

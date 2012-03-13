@@ -84,7 +84,7 @@ public class FeatureSelectionPanel extends ContentPanel {
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
-		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MyMapInitializationHandler());
+		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
 		// Define the whole layout:
 		HorizontalPanel layout = new HorizontalPanel();
