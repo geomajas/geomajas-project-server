@@ -15,6 +15,7 @@ import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
+import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.LayerStylePresenter;
 
@@ -29,7 +30,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * A view that displays the title and styles for a single layer.
@@ -59,7 +59,7 @@ public class LayerLegendPanel extends Composite {
 	@UiField
 	protected FlexTable legendTable;
 
-	public LayerLegendPanel(EventBus eventBus, Layer<?> layer) {
+	public LayerLegendPanel(MapEventBus eventBus, Layer<?> layer) {
 		this.layer = layer;
 		initWidget(UI_BINDER.createAndBindUi(this));
 
@@ -73,7 +73,7 @@ public class LayerLegendPanel extends Composite {
 		}
 
 		// React to layer visibility events:
-		eventBus.addHandler(LayerVisibilityHandler.TYPE, new LayerVisibilityHandler() {
+		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
 
 			public void onShow(LayerShowEvent event) {
 				if (event.getLayer() == LayerLegendPanel.this.layer) {

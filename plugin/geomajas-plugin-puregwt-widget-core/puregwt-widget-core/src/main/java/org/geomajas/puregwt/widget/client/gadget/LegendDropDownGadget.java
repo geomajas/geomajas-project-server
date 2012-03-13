@@ -18,6 +18,7 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.widget.client.map.LegendDropDown;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -30,6 +31,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Widget;
@@ -194,5 +196,33 @@ public class LegendDropDownGadget implements MapGadget {
 			Layer<?> layer = mapPresenter.getLayersModel().getLayer(i);
 			layout.addLayer(layer);
 		}
+	}
+
+	public int getWidth() {
+		return layout.getOffsetWidth();
+	}
+
+	public int getHeight() {
+		return layout.getOffsetHeight();
+	}
+
+	public void setWidth(int width) {
+		layout.setWidth(width + "px");
+	}
+
+	public void setHeight(int height) {
+		layout.setHeight(height + "px");
+	}
+
+	public void setTop(int top) {
+		layout.getElement().getStyle().setTop(top, Unit.PX);
+	}
+
+	public void setLeft(int left) {
+		layout.getElement().getStyle().setLeft(left, Unit.PX);
+	}
+
+	public void addResizeHandler(ResizeHandler resizeHandler) {
+		// TODO fixme.
 	}
 }
