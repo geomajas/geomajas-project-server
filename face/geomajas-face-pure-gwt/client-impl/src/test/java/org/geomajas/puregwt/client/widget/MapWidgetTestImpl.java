@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.widget;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
@@ -27,7 +29,10 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasWidgets.ForIsWidget;
 
 /**
  * Test implementation of a MapWidget. The GIN/Guice module in test is configured to use this implementation instead of
@@ -36,6 +41,36 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Pieter De Graef
  */
 public class MapWidgetTestImpl implements MapWidget {
+
+	public class GadgetContainer implements ForIsWidget {
+
+		private List<IsWidget> children = new ArrayList<IsWidget>();
+
+		public void add(Widget w) {
+		}
+
+		public void clear() {
+		}
+
+		public Iterator<Widget> iterator() {
+			return null;
+		}
+
+		public boolean remove(Widget w) {
+			return false;
+		}
+
+		public void add(IsWidget w) {
+			children.add(w);
+		}
+
+		public boolean remove(IsWidget w) {
+			return children.remove(w);
+		}
+
+	}
+
+	List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
 
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		return null;
@@ -69,7 +104,7 @@ public class MapWidgetTestImpl implements MapWidget {
 	}
 
 	public Widget asWidget() {
-		return new Widget();
+		return null;
 	}
 
 	public HtmlContainer getMapHtmlContainer() {
@@ -81,7 +116,7 @@ public class MapWidgetTestImpl implements MapWidget {
 	}
 
 	public List<VectorContainer> getWorldVectorContainers() {
-		return null;
+		return worldContainers;
 	}
 
 	public VectorContainer getNewScreenContainer() {
@@ -89,7 +124,9 @@ public class MapWidgetTestImpl implements MapWidget {
 	}
 
 	public VectorContainer getNewWorldContainer() {
-		return null;
+		VectorContainer c = new MockVectorContainer();
+		worldContainers.add(c);
+		return c;
 	}
 
 	public boolean removeVectorContainer(VectorContainer container) {
@@ -103,8 +140,21 @@ public class MapWidgetTestImpl implements MapWidget {
 	public void onResize() {
 	}
 
-	public AbsolutePanel getMapGadgetContainer() {
+	public HasWidgets.ForIsWidget getMapGadgetContainer() {
+		return new GadgetContainer();
+	}
+
+	public int getHeight() {
+		return 500;
+	}
+
+	public int getWidth() {
+		return 500;
+	}
+
+
+	public void setPixelSize(int width, int height) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 }

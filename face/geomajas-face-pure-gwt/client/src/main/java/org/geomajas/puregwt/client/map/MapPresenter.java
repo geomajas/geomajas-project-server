@@ -24,7 +24,6 @@ import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Central map definition.
@@ -35,7 +34,7 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 @Api(allMethods = true)
 public interface MapPresenter extends IsWidget {
-
+	
 	/**
 	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
 	 * on return. A special {@link org.geomajas.puregwt.client.event.MapInitializationEvent} will be fired once
@@ -49,7 +48,7 @@ public interface MapPresenter extends IsWidget {
 	 * 
 	 * @return The event bus for this map.
 	 */
-	EventBus getEventBus();
+	MapEventBus getEventBus();
 
 	/**
 	 * Return the widget that displays the map in the HTML page.

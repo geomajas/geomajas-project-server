@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map;
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -36,8 +37,7 @@ public interface MapGadget extends IsWidget {
 	/**
 	 * Method executed before the gadget is actually attached to the map's DOM tree.
 	 * 
-	 * @param mapPresenter
-	 *            The map upon which this gadget is to be attached.
+	 * @param mapPresenter The map upon which this gadget is to be attached.
 	 */
 	void beforeDraw(MapPresenter mapPresenter);
 
@@ -72,4 +72,54 @@ public interface MapGadget extends IsWidget {
 	 * @return The number of pixels to keep between the gadget and the map edge.
 	 */
 	int getVerticalMargin();
+
+	/**
+	 * Get the width of the gadget.
+	 * 
+	 * @return width in pixels
+	 */
+	int getWidth();
+
+	/**
+	 * Get the height of the gadget.
+	 * 
+	 * @return height in pixels
+	 */
+	int getHeight();
+
+	/**
+	 * Set the width of the gadget.
+	 * 
+	 * @param width width in pixels
+	 */
+	void setWidth(int width);
+
+	/**
+	 * Set the height of the gadget.
+	 * 
+	 * @param height height in pixels
+	 */
+	void setHeight(int height);
+
+	/**
+	 * Set the top css property.
+	 * 
+	 * @param top top
+	 */
+	void setTop(int top);
+
+	/**
+	 * Set the left css property.
+	 * 
+	 * @param left left
+	 */
+	void setLeft(int left);
+
+	/**
+	 * Add a handler for resize events.
+	 * 
+	 * @param resizeHandler the handler
+	 */
+	void addResizeHandler(ResizeHandler resizeHandler);
+
 }

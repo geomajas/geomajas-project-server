@@ -23,6 +23,7 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
 
@@ -51,13 +52,16 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 	// private boolean renderingImages;
 	private int nrLoadingTiles;
+	
+	private CommandService commandService;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public VectorLayerScaleRenderer(ViewPort viewPort, VectorLayer vectorLayer, HtmlContainer htmlContainer,
-			double scale) {
+	public VectorLayerScaleRenderer(CommandService commandService, ViewPort viewPort, VectorLayer vectorLayer,
+			HtmlContainer htmlContainer, double scale) {
+		this.commandService = commandService;
 		this.viewPort = viewPort;
 		this.vectorLayer = vectorLayer;
 		this.htmlContainer = htmlContainer;
@@ -115,7 +119,7 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	public VectorTilePresenter addTile(TileCode tileCode) {
 		VectorTilePresenter tilePresenter = tiles.get(tileCode.toString());
 		if (tilePresenter == null) {
-			tilePresenter = new VectorTilePresenter(this, tileCode.clone(), scale, viewPort.getCrs(),
+			tilePresenter = new VectorTilePresenter(commandService, this, tileCode.clone(), scale, viewPort.getCrs(),
 					new TileLoadCallback());
 			nrLoadingTiles++;
 			tiles.put(tileCode.toString(), tilePresenter);

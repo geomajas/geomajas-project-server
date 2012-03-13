@@ -22,9 +22,8 @@ import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
-
-import com.google.web.bindery.event.shared.EventBus;
 
 
 /**
@@ -42,7 +41,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	protected T layerInfo;
 
-	protected EventBus eventBus;
+	protected MapEventBus eventBus;
 
 	private boolean selected;
 
@@ -64,12 +63,12 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * @param eventBus
 	 *            The map centric event bus.
 	 */
-	public AbstractLayer(T layerInfo, ViewPort viewPort, EventBus eventBus) {
+	public AbstractLayer(T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
 		this.layerInfo = layerInfo;
 		this.viewPort = viewPort;
 		this.eventBus = eventBus;
 		markedAsVisible = layerInfo.isVisible();
-		eventBus.addHandler(ViewPortChangedHandler.TYPE, new LayerScaleVisibilityHandler());
+		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
 	}
 
 	// ------------------------------------------------------------------------

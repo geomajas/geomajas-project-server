@@ -13,8 +13,7 @@ package org.geomajas.puregwt.client.event;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.feature.Feature;
-
-import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
  * Event which is passed when a feature is deselected.
@@ -23,11 +22,12 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class FeatureDeselectedEvent extends GwtEvent<FeatureSelectionHandler> {
+public class FeatureDeselectedEvent extends BaseLayerEvent<FeatureSelectionHandler> {
 
 	private Feature feature;
 
-	public FeatureDeselectedEvent(Feature feature) {
+	public FeatureDeselectedEvent(Layer<?> layer, Feature feature) {
+		super(layer);
 		this.feature = feature;
 	}
 

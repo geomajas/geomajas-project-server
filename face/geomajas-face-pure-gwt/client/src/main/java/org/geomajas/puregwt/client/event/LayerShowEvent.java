@@ -13,8 +13,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * Event that reports <code>Layer</code> changes.
  * 
@@ -23,16 +21,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerShowEvent extends GwtEvent<LayerVisibilityHandler> {
-
-	private Layer<?> layer;
+public class LayerShowEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 
 	public LayerShowEvent(Layer<?> layer) {
-		this.layer = layer;
-	}
-
-	public Layer<?> getLayer() {
-		return layer;
+		super(layer);
 	}
 
 	@Override

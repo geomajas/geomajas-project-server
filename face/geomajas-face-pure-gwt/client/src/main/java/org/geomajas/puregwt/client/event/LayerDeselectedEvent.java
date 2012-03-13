@@ -13,8 +13,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * Event that reports the deselection of a layer.
  *
@@ -22,12 +20,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerDeselectedEvent extends GwtEvent<LayerSelectionHandler> {
-
-	private Layer<?> layer;
+public class LayerDeselectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 
 	public LayerDeselectedEvent(Layer<?> layer) {
-		this.layer = layer;
+		super(layer);
 	}
 
 	public Type<LayerSelectionHandler> getAssociatedType() {
@@ -38,7 +34,4 @@ public class LayerDeselectedEvent extends GwtEvent<LayerSelectionHandler> {
 		layerSelectionHandler.onDeselectLayer(this);
 	}
 
-	public Layer<?> getLayer() {
-		return layer;
-	}
 }

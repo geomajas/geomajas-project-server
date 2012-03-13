@@ -30,10 +30,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Unit test that checks if the correct events are fired by the ViewPortImpl.
@@ -58,7 +58,7 @@ public class ViewPortTransformTest {
 	@Qualifier(value = "mapViewPortBeans")
 	private ClientMapInfo mapInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
@@ -66,7 +66,7 @@ public class ViewPortTransformTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new SimpleEventBus();
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(MAP_WIDTH, MAP_HEIGHT);

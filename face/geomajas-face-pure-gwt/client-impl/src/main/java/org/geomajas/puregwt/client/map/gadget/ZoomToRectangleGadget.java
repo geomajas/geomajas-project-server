@@ -86,7 +86,7 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 
 	public void beforeDraw(MapPresenter mapPresenter) {
 		super.beforeDraw(mapPresenter);
-		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, new ViewPortChangedHandler() {
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
 			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 				cleanup();

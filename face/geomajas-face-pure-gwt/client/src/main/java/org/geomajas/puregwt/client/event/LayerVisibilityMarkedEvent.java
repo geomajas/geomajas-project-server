@@ -13,8 +13,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * <p>
  * Called when a layer has been marked as visible or invisible. When a layer has been marked as invisible, expect a
@@ -32,17 +30,12 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerVisibilityMarkedEvent extends GwtEvent<LayerVisibilityHandler> {
-
-	private Layer<?> layer;
+public class LayerVisibilityMarkedEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 
 	public LayerVisibilityMarkedEvent(Layer<?> layer) {
-		this.layer = layer;
+		super(layer);
 	}
 
-	public Layer<?> getLayer() {
-		return layer;
-	}
 
 	@Override
 	public Type<LayerVisibilityHandler> getAssociatedType() {

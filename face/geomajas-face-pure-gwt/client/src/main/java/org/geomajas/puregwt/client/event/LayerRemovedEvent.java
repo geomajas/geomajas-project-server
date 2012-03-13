@@ -14,8 +14,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * Event that is fired when a layer is removed from the map.
  * 
@@ -23,12 +21,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerRemovedEvent extends GwtEvent<MapCompositionHandler> {
-
-	private Layer<?> layer;
+public class LayerRemovedEvent extends BaseLayerEvent<MapCompositionHandler> {
 
 	public LayerRemovedEvent(Layer<?> layer) {
-		this.layer = layer;
+		super(layer);
 	}
 
 	public Type<MapCompositionHandler> getAssociatedType() {
@@ -39,7 +35,4 @@ public class LayerRemovedEvent extends GwtEvent<MapCompositionHandler> {
 		mapCompositionHandler.onLayerRemoved(this);
 	}
 
-	public Layer<?> getLayer() {
-		return layer;
-	}
 }

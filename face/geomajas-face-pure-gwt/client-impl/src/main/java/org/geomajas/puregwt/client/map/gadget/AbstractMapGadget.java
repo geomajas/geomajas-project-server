@@ -14,6 +14,9 @@ package org.geomajas.puregwt.client.map.gadget;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.layout.client.Layout.Alignment;
 
 /**
@@ -72,4 +75,34 @@ public abstract class AbstractMapGadget implements MapGadget {
 	public void setVerticalAlignment(Alignment verticalAlignment) {
 		this.verticalAlignment = verticalAlignment;
 	}
+	
+	public int getWidth() {
+		return asWidget().getOffsetWidth();
+	}
+
+	public int getHeight() {
+		return asWidget().getOffsetHeight();
+	}
+	
+	public void setWidth(int width) {
+		asWidget().setWidth(width + "px");
+	}
+
+	public void setHeight(int height) {
+		asWidget().setHeight(height + "px");
+	}
+
+	public void setTop(int top) {
+		asWidget().getElement().getStyle().setTop(top, Unit.PX);
+	}
+
+	public void setLeft(int left) {
+		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
+	}
+	
+	public void addResizeHandler(ResizeHandler resizeHandler) {
+		asWidget().addHandler(resizeHandler, ResizeEvent.getType());
+	}
+
+
 }

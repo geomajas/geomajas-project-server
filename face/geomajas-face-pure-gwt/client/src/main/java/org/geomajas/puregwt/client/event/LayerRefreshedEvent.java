@@ -13,8 +13,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * Event that reports a layer has been refreshed.
  * 
@@ -22,12 +20,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerRefreshedEvent extends GwtEvent<LayerRefreshedHandler> {
-
-	private Layer<?> layer;
+public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {
 
 	public LayerRefreshedEvent(Layer<?> layer) {
-		this.layer = layer;
+		super(layer);
 	}
 
 	public Type<LayerRefreshedHandler> getAssociatedType() {
@@ -38,12 +34,4 @@ public class LayerRefreshedEvent extends GwtEvent<LayerRefreshedHandler> {
 		handler.onLayerRefreshed(this);
 	}
 
-	/**
-	 * Get the layer that is refreshed.
-	 * 
-	 * @return The layer that is refreshed.
-	 */
-	public Layer<?> getLayer() {
-		return layer;
-	}
 }

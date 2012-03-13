@@ -29,10 +29,10 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.web.bindery.event.shared.EventBus;
 
 @TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
 		ReloadContextTestExecutionListener.class })
@@ -48,13 +48,13 @@ public class ViewPortMaxBoundsTest {
 	@Qualifier(value = "mapViewPortBeans")
 	private ClientMapInfo mapInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new SimpleEventBus();
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);

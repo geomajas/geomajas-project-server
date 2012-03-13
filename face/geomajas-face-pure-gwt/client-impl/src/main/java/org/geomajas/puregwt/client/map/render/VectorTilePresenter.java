@@ -20,12 +20,12 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.puregwt.client.gfx.RasterTileObject;
+import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
 
@@ -72,14 +72,15 @@ public class VectorTilePresenter {
 
 	private Deferred deferred;
 
-	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
+	private CommandService commandService;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public VectorTilePresenter(VectorLayerScaleRenderer renderer, TileCode tileCode, double scale, String crs,
-			Callback<String, String> onRendered) {
+	public VectorTilePresenter(CommandService commandService, VectorLayerScaleRenderer renderer, TileCode tileCode,
+			double scale, String crs, Callback<String, String> onRendered) {
+		this.commandService = commandService;
 		this.renderer = renderer;
 		this.tileCode = tileCode;
 		this.scale = scale;
@@ -164,7 +165,7 @@ public class VectorTilePresenter {
 
 	private void render(final boolean renderSiblings) {
 		GwtCommand command = createCommand();
-		deferred = dispatcher.execute(command, new AbstractCommandCallback<GetVectorTileResponse>() {
+		deferred = commandService.execute(command, new AbstractCommandCallback<GetVectorTileResponse>() {
 
 			public void execute(GetVectorTileResponse response) {
 				if (!(deferred != null && deferred.isCancelled())) {

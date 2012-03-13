@@ -25,7 +25,6 @@ import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 
 /**
@@ -44,7 +43,7 @@ public final class ViewPortImpl implements ViewPort {
 	/** The maximum bounding box available to this MapView. Never go outside it! */
 	private Bbox maxBounds;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private String crs;
 
@@ -69,7 +68,7 @@ public final class ViewPortImpl implements ViewPort {
 	// Configuration stuff:
 	// -------------------------------------------------------------------------
 
-	public void initialize(ClientMapInfo mapInfo, EventBus eventBus) {
+	public void initialize(ClientMapInfo mapInfo, MapEventBus eventBus) {
 		this.eventBus = eventBus;
 		crs = mapInfo.getCrs();
 

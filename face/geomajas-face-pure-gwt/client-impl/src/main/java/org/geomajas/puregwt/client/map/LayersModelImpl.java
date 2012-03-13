@@ -25,10 +25,9 @@ import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.RasterLayerFactory;
+import org.geomajas.puregwt.client.map.layer.VectorLayerFactory;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 
 /**
@@ -42,13 +41,19 @@ public final class LayersModelImpl implements LayersModel {
 
 	private ViewPort viewPort;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	/**
 	 * An ordered list of layers. The drawing order on the map is as follows: the first layer will be placed at the
 	 * bottom, the last layer on top.
 	 */
 	private List<Layer<?>> layers = new ArrayList<Layer<?>>();
+	
+	@Inject
+	private VectorLayerFactory vectorLayerFactory;
+
+	@Inject
+	private RasterLayerFactory rasterLayerFactory;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -72,13 +77,13 @@ public final class LayersModelImpl implements LayersModel {
 	 * @param eventBus
 	 *            Event bus that governs all event related to this layers model.
 	 */
-	public void initialize(ClientMapInfo mapInfo, ViewPort viewPort, EventBus eventBus) {
+	public void initialize(ClientMapInfo mapInfo, ViewPort viewPort, MapEventBus eventBus) {
 		this.mapInfo = mapInfo;
 		this.viewPort = viewPort;
 		this.eventBus = eventBus;
 
 		// Add a layer selection handler that allows only one selected layer at a time:
-		eventBus.addHandler(LayerSelectionHandler.TYPE, new LayerSelectionHandler() {
+		eventBus.addLayerSelectionHandler(new LayerSelectionHandler() {
 
 			public void onSelectLayer(LayerSelectedEvent event) {
 				for (Layer<?> layer : layers) {
@@ -102,12 +107,14 @@ public final class LayersModelImpl implements LayersModel {
 	public void addLayer(ClientLayerInfo layerInfo) {
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				RasterLayer rLayer = new RasterLayer((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
+				Layer<ClientRasterLayerInfo> rLayer = rasterLayerFactory.create((ClientRasterLayerInfo) layerInfo,
+						viewPort, eventBus);
 				layers.add(rLayer);
 				eventBus.fireEvent(new LayerAddedEvent(rLayer));
 				break;
 			default:
-				VectorLayer vLayer = new VectorLayer((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
+				Layer<ClientVectorLayerInfo> vLayer = vectorLayerFactory.create((ClientVectorLayerInfo) layerInfo,
+						viewPort, eventBus);
 				layers.add(vLayer);
 				eventBus.fireEvent(new LayerAddedEvent(vLayer));
 				break;

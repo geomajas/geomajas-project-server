@@ -36,7 +36,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.web.bindery.event.shared.EventBus;
@@ -65,7 +64,7 @@ public class LayersModelEventTest {
 	@Qualifier(value = "mapBeans")
 	private ClientMapInfo mapInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
@@ -81,8 +80,8 @@ public class LayersModelEventTest {
 
 	@Before
 	public void checkLayerOrder() {
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
-		eventBus = new SimpleEventBus();
 
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		for (int i = 1; i < 4; i++) {
@@ -108,7 +107,7 @@ public class LayersModelEventTest {
 				layerCount--;
 			}
 		};
-		eventBus.addHandler(MapCompositionHandler.TYPE, layerCounter);
+		eventBus.addMapCompositionHandler(layerCounter);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
 		Assert.assertEquals(3, layerCount);
 		Assert.assertEquals(3, layersModel.getLayerCount());
@@ -124,7 +123,7 @@ public class LayersModelEventTest {
 		selectId = null;
 		deselectId = null;
 
-		HandlerRegistration reg = eventBus.addHandler(LayerSelectionHandler.TYPE, new LayerSelectionHandler() {
+		HandlerRegistration reg = eventBus.addLayerSelectionHandler(new LayerSelectionHandler() {
 
 			public void onSelectLayer(LayerSelectedEvent event) {
 				selectId = event.getLayer().getId();
@@ -160,7 +159,7 @@ public class LayersModelEventTest {
 		fromIndex = 342;
 		toIndex = 342;
 
-		HandlerRegistration reg = eventBus.addHandler(LayerOrderChangedHandler.TYPE, new LayerOrderChangedHandler() {
+		HandlerRegistration reg = eventBus.addLayerOrderChangedHandler(new LayerOrderChangedHandler() {
 
 			public void onLayerOrderChanged(LayerOrderChangedEvent event) {
 				fromIndex = event.getFromIndex();
@@ -189,7 +188,7 @@ public class LayersModelEventTest {
 		fromIndex = 342;
 		toIndex = 342;
 
-		HandlerRegistration reg = eventBus.addHandler(LayerOrderChangedHandler.TYPE, new LayerOrderChangedHandler() {
+		HandlerRegistration reg = eventBus.addLayerOrderChangedHandler(new LayerOrderChangedHandler() {
 
 			public void onLayerOrderChanged(LayerOrderChangedEvent event) {
 				fromIndex = event.getFromIndex();
@@ -220,7 +219,7 @@ public class LayersModelEventTest {
 		fromIndex = 342;
 		toIndex = 342;
 
-		HandlerRegistration reg = eventBus.addHandler(LayerOrderChangedHandler.TYPE, new LayerOrderChangedHandler() {
+		HandlerRegistration reg = eventBus.addLayerOrderChangedHandler(new LayerOrderChangedHandler() {
 
 			public void onLayerOrderChanged(LayerOrderChangedEvent event) {
 				fromIndex = event.getFromIndex();
@@ -277,7 +276,7 @@ public class LayersModelEventTest {
 				layerCount--;
 			}
 		};
-		HandlerRegistration reg = eventBus.addHandler(MapCompositionHandler.TYPE, layerCounter);
+		HandlerRegistration reg = eventBus.addMapCompositionHandler(layerCounter);
 
 		layersModel.removeLayer(LAYER1);
 		Assert.assertEquals(2, layerCount);

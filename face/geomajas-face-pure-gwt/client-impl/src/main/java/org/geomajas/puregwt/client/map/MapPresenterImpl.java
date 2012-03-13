@@ -26,7 +26,6 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.controller.MapController;
@@ -36,13 +35,9 @@ import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectionHandler;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
-import org.geomajas.puregwt.client.event.LayerOrderChangedHandler;
-import org.geomajas.puregwt.client.event.LayerRefreshedHandler;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
-import org.geomajas.puregwt.client.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
-import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapResizedEvent;
 import org.geomajas.puregwt.client.event.MapResizedHandler;
@@ -53,20 +48,15 @@ import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
+import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory.Type;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
-import org.geomajas.puregwt.client.map.gadget.PanningGadget;
-import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
-import org.geomajas.puregwt.client.map.gadget.SimpleZoomGadget;
-import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
-import org.geomajas.puregwt.client.map.gadget.ZoomStepGadget;
-import org.geomajas.puregwt.client.map.gadget.ZoomToRectangleGadget;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
+import org.geomajas.puregwt.client.service.CommandService;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
@@ -79,7 +69,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
@@ -161,11 +151,35 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * 
 		 * @return the container
 		 */
-		AbsolutePanel getMapGadgetContainer();
+		HasWidgets.ForIsWidget getMapGadgetContainer();
+
+		/**
+		 * Get the total width of the view.
+		 * 
+		 * @return width in pixels
+		 */
+		int getWidth();
+
+		/**
+		 * Get the total height of the view.
+		 * 
+		 * @return height in pixels
+		 */
+		int getHeight();
+		
+		/**
+		 * Set the total size of the view.
+		 * @param width width
+		 * @param height height
+		 */
+		void setPixelSize(int width, int height);
+
 	}
 
+	private final MapEventBus eventBus;
+
 	@Inject
-	private EventBus eventBus;
+	private CommandService commandService;
 
 	private final MapEventParser mapEventParser;
 
@@ -186,6 +200,9 @@ public final class MapPresenterImpl implements MapPresenter {
 	private MapRenderer mapRenderer;
 
 	private WorldContainerRenderer worldContainerRenderer;
+	
+	@Inject
+	private DefaultMapGadgetFactory mapGadgetFactory;
 
 	private Map<MapGadget, MapGadgetPositioner> gadgets;
 
@@ -204,13 +221,14 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Inject
 	private MapPresenterImpl(final FeatureServiceFactory featureServiceFactory,
 			final MapEventParserFactory mapEventParserFactory,
-			final MapRendererFactory mapRendererFactory) {
+			final MapRendererFactory mapRendererFactory, final EventBus eventBus) {
 		this.mapRendererFactory = mapRendererFactory;
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapController, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, MapGadgetPositioner>();
 		featureService = featureServiceFactory.create(this);
 		mapEventParser = mapEventParserFactory.create(this);
+		this.eventBus = new MapEventBusImpl(this, eventBus);
 	}
 
 	// ------------------------------------------------------------------------
@@ -221,26 +239,25 @@ public final class MapPresenterImpl implements MapPresenter {
 	public void initialize(String applicationId, String id) {
 		mapRenderer = mapRendererFactory.create(layersModel, viewPort, display.getMapHtmlContainer());
 
-		eventBus.addHandler(ViewPortChangedHandler.TYPE, mapRenderer);
-		eventBus.addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
-		eventBus.addHandler(MapCompositionHandler.TYPE, mapRenderer);
-		eventBus.addHandler(LayerVisibilityHandler.TYPE, mapRenderer);
-		eventBus.addHandler(LayerStyleChangedHandler.TYPE, mapRenderer);
-		eventBus.addHandler(LayerRefreshedHandler.TYPE, mapRenderer);
+		eventBus.addViewPortChangedHandler(mapRenderer);
+		eventBus.addLayerOrderChangedHandler(mapRenderer);
+		eventBus.addMapCompositionHandler(mapRenderer);
+		eventBus.addLayerVisibilityHandler(mapRenderer);
+		eventBus.addLayerStyleChangedHandler(mapRenderer);
+		eventBus.addLayerRefreshedHandler(mapRenderer);
 
 		final FeatureSelectionRenderer selectionRenderer = new FeatureSelectionRenderer();
-		eventBus.addHandler(LayerVisibilityHandler.TYPE, selectionRenderer);
-		eventBus.addHandler(FeatureSelectionHandler.TYPE, selectionRenderer);
+		eventBus.addLayerVisibilityHandler(selectionRenderer);
+		eventBus.addFeatureSelectionHandler(selectionRenderer);
 
 		worldContainerRenderer = new WorldContainerRenderer();
-		eventBus.addHandler(ViewPortChangedHandler.TYPE, worldContainerRenderer);
+		eventBus.addViewPortChangedHandler(worldContainerRenderer);
 
 		setFallbackController(new NavigationController());
 
 		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
-		GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
-		dispatcher.execute(commandRequest, new AbstractCommandCallback<GetMapConfigurationResponse>() {
+		commandService.execute(commandRequest, new AbstractCommandCallback<GetMapConfigurationResponse>() {
 
 			public void execute(GetMapConfigurationResponse response) {
 				// Initialize the MapModel and ViewPort:
@@ -248,7 +265,7 @@ public final class MapPresenterImpl implements MapPresenter {
 				configuration = r.getMapInfo();
 
 				// Configure the ViewPort. This will immediately zoom to the initial bounds:
-				viewPort.setMapSize(display.asWidget().getOffsetWidth(), display.asWidget().getOffsetHeight());
+				viewPort.setMapSize(display.getWidth(), display.getHeight());
 				layersModel.initialize(r.getMapInfo(), viewPort, eventBus);
 				viewPort.initialize(r.getMapInfo(), eventBus);
 
@@ -258,18 +275,18 @@ public final class MapPresenterImpl implements MapPresenter {
 				// Initialize the FeatureSelectionRenderer:
 				selectionRenderer.initialize(r.getMapInfo());
 
-				addMapGadget(new WatermarkGadget());
-				addMapGadget(new ScalebarGadget(r.getMapInfo()));
-				addMapGadget(new PanningGadget());
+				addMapGadget(mapGadgetFactory.createGadget(Type.WATERMARK, 0, 0, r.getMapInfo()));
+				addMapGadget(mapGadgetFactory.createGadget(Type.SCALEBAR, 0, 0, r.getMapInfo()));
+				addMapGadget(mapGadgetFactory.createGadget(Type.PANNING, 0, 0, r.getMapInfo()));
 				if (r.getMapInfo().getScaleConfiguration().getZoomLevels() != null
 						&& r.getMapInfo().getScaleConfiguration().getZoomLevels().size() > 0) {
 					// Zoom steps...
-					addMapGadget(new ZoomToRectangleGadget(5, 60));
-					addMapGadget(new ZoomStepGadget(60, 18));
+					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_TO_RECTANGLE, 5, 60, r.getMapInfo()));
+					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_STEP, 60, 18, r.getMapInfo()));
 				} else {
 					// Simple zooming:
-					addMapGadget(new ZoomToRectangleGadget(125, 20));
-					addMapGadget(new SimpleZoomGadget(60, 20));
+					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_TO_RECTANGLE, 125, 20, r.getMapInfo()));
+					addMapGadget(mapGadgetFactory.createGadget(Type.SIMPLE_ZOOM, 60, 20, r.getMapInfo()));
 				}
 
 				// Fire initialization event:
@@ -301,7 +318,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	/** {@inheritDoc} */
 	public void setSize(int width, int height) {
-		display.asWidget().setSize(width + "px", height + "px");
+		display.setPixelSize(width, height);
 		if (viewPort != null) {
 			viewPort.setMapSize(width, height);
 		}
@@ -349,7 +366,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	/** {@inheritDoc} */
-	public EventBus getEventBus() {
+	public MapEventBus getEventBus() {
 		return eventBus;
 	}
 
@@ -584,15 +601,15 @@ public final class MapPresenterImpl implements MapPresenter {
 		public MapGadgetPositioner(MapGadget mapGadget) {
 			this.mapGadget = mapGadget;
 			calculatePosition();
-			eventBus.addHandler(MapResizedEvent.TYPE, this);
-			mapGadget.asWidget().addHandler(new ResizeHandler() {
+			eventBus.addMapResizedHandler(this);
+			mapGadget.addResizeHandler(new ResizeHandler() {
 
 				public void onResize(final ResizeEvent event) {
 					calculatePosition();
 					calculateSize();
 				}
 
-			}, ResizeEvent.getType());
+			});
 		}
 
 		public void onMapResized(MapResizedEvent event) {
@@ -607,7 +624,7 @@ public final class MapPresenterImpl implements MapPresenter {
 					left = mapGadget.getHorizontalMargin();
 					break;
 				case END:
-					left = viewPort.getMapWidth() - mapGadget.asWidget().getOffsetWidth()
+					left = viewPort.getMapWidth() - mapGadget.getWidth()
 							- mapGadget.getHorizontalMargin();
 					break;
 				default:
@@ -618,22 +635,22 @@ public final class MapPresenterImpl implements MapPresenter {
 					top = mapGadget.getVerticalMargin();
 					break;
 				case END:
-					top = viewPort.getMapHeight() - mapGadget.asWidget().getOffsetHeight()
+					top = viewPort.getMapHeight() - mapGadget.getHeight()
 							- mapGadget.getVerticalMargin();
 					break;
 				default:
 					top = 0;
 			}
-			mapGadget.asWidget().getElement().getStyle().setTop(top, Unit.PX);
-			mapGadget.asWidget().getElement().getStyle().setLeft(left, Unit.PX);
+			mapGadget.setTop(top);
+			mapGadget.setLeft(left);
 		}
 
 		public void calculateSize() {
 			if (mapGadget.getHorizontalAlignment() == Alignment.STRETCH) {
-				mapGadget.asWidget().setWidth(viewPort.getMapWidth() + "px");
+				mapGadget.setWidth(viewPort.getMapWidth());
 			}
 			if (mapGadget.getVerticalAlignment() == Alignment.STRETCH) {
-				mapGadget.asWidget().setHeight(viewPort.getMapHeight() + "px");
+				mapGadget.setHeight(viewPort.getMapHeight());
 			}
 		}
 	}

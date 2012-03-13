@@ -45,6 +45,7 @@ public class GinjectorTest {
 		Assert.assertNotNull(mapPresenter.getEventBus());
 		Assert.assertNotNull(mapPresenter.getViewPort());
 		Assert.assertNotNull(mapPresenter.getLayersModel());
-		Assert.assertNotNull(mapPresenter.asWidget());
+		// test map widget has no widget
+		Assert.assertNull(mapPresenter.asWidget());
 	}
 }

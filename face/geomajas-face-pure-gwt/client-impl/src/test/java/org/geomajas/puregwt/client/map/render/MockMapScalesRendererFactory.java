@@ -20,7 +20,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * 
  * @author Jan De Moerloose
  */
-public class TestMapScalesRendererFactory implements MapScalesRendererFactory {
+public class MockMapScalesRendererFactory implements MapScalesRendererFactory {
 
 	public MapScalesRenderer create(ViewPort viewPort, Layer<?> layer, HtmlContainer htmlContainer) {
 		return new LayerScalesRenderer(viewPort, layer, htmlContainer);

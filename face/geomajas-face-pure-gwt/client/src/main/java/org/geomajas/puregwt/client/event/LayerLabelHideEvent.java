@@ -13,8 +13,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * Event that is fired when the labels of a layer are made invisible.
  *
@@ -23,16 +21,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerLabelHideEvent extends GwtEvent<LayerLabeledHandler> {
-
-	private Layer<?> layer;
+public class LayerLabelHideEvent extends BaseLayerEvent<LayerLabeledHandler> {
 
 	public LayerLabelHideEvent(Layer<?> layer) {
-		this.layer = layer;
-	}
-
-	public Layer<?> getLayer() {
-		return layer;
+		super(layer);
 	}
 
 	@Override

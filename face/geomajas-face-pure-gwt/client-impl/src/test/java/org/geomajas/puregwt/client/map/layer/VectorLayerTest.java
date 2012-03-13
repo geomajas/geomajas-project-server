@@ -16,7 +16,10 @@ import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.puregwt.client.GeomajasTestModule;
+import org.geomajas.puregwt.client.map.MapEventBus;
+import org.geomajas.puregwt.client.map.MapEventBusImpl;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.service.EndPointService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +28,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Test-cases for the {@link VectorLayer} class.
@@ -47,40 +49,43 @@ public class VectorLayerTest {
 
 	private ClientVectorLayerInfo layerInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
+	
+	private EndPointService endPointService;
 
 	@Before
 	public void checkLayerOrder() {
-		eventBus = new SimpleEventBus();
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);
+		endPointService  = INJECTOR.getInstance(EndPointService.class);
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);
 	}
 
 	@Test
 	public void testServerLayerId() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertEquals(layerInfo.getServerLayerId(), layer.getServerLayerId());
 	}
 
 	@Test
 	public void testTitle() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertEquals(layerInfo.getLabel(), layer.getTitle());
 	}
 
 	@Test
 	public void testLayerInfo() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertEquals(layerInfo, layer.getLayerInfo());
 	}
 
 	@Test
 	public void testSelection() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertFalse(layer.isSelected());
 		layer.setSelected(true);
 		Assert.assertTrue(layer.isSelected());
@@ -90,7 +95,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testMarkedAsVisible() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertTrue(layer.isMarkedAsVisible());
 		layer.setMarkedAsVisible(false);
 		Assert.assertFalse(layer.isMarkedAsVisible());
@@ -100,7 +105,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testShowing() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 
 		// Scale between 6 and 20 is OK:
 		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(0)); // 32 -> NOK
@@ -132,7 +137,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testFilter() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertNull(layer.getFilter());
 		String filter = "Look at me, mom!";
 		layer.setFilter(filter);

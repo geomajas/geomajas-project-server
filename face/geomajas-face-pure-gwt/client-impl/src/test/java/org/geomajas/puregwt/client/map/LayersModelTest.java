@@ -31,10 +31,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Tests for the layersModelImpl class to see if it correctly implements all layersModel methods.
@@ -59,7 +58,7 @@ public class LayersModelTest {
 	@Qualifier(value = "mapBeans")
 	private ClientMapInfo mapInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
@@ -67,7 +66,7 @@ public class LayersModelTest {
 
 	@Before
 	public void checkLayerOrder() {
-		eventBus = new SimpleEventBus();
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
@@ -99,7 +98,7 @@ public class LayersModelTest {
 			public void onLayerRemoved(LayerRemovedEvent event) {
 			}
 		};
-		eventBus.addHandler(MapCompositionHandler.TYPE, layerCounter);
+		eventBus.addMapCompositionHandler( layerCounter);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
 		Assert.assertEquals(3, layerCount);
 		Assert.assertEquals(3, layersModel.getLayerCount());

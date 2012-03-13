@@ -205,4 +205,5 @@ public class PanningGadget extends AbstractMapGadget {
 			previousProgress = progress;
 		}
 	}
+
 }

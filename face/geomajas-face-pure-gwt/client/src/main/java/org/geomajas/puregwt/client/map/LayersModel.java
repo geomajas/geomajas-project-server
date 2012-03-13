@@ -16,8 +16,6 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.web.bindery.event.shared.EventBus;
-
 
 /**
  * <p>
@@ -43,7 +41,7 @@ public interface LayersModel {
 	 * @param eventBus
 	 *            Event bus that governs all event related to this layers model.
 	 */
-	void initialize(ClientMapInfo mapInfo, ViewPort viewPort, EventBus eventBus);
+	void initialize(ClientMapInfo mapInfo, ViewPort viewPort, MapEventBus eventBus);
 
 	/**
 	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the

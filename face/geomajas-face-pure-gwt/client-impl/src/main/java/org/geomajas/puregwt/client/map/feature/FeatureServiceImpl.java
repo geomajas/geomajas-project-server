@@ -24,11 +24,11 @@ import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -46,6 +46,9 @@ public class FeatureServiceImpl implements FeatureService {
 	private final MapPresenter mapPresenter;
 	
 	private final FeatureFactory featureFactory;
+	
+	@Inject
+	private CommandService commandService;
 
 	/**
 	 * Initialize this feature service for the given map.
@@ -77,7 +80,7 @@ public class FeatureServiceImpl implements FeatureService {
 
 		GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
+		commandService.execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
 
 			public void execute(SearchFeatureResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
@@ -108,7 +111,7 @@ public class FeatureServiceImpl implements FeatureService {
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
+		commandService.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
 			public void execute(SearchByLocationResponse response) {
 				for (List<org.geomajas.layer.feature.Feature> dtos : response.getFeatureMap().values()) {
@@ -161,7 +164,7 @@ public class FeatureServiceImpl implements FeatureService {
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
+		commandService.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
 			public void execute(SearchByLocationResponse response) {
 				Map<FeaturesSupported<?>, List<Feature>> mapping = new HashMap<FeaturesSupported<?>, List<Feature>>();

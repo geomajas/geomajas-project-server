@@ -13,8 +13,6 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * <p>
  * Event that is fired when the labels of a layer have been marked as visible or invisible. Note that when labels have
@@ -31,16 +29,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerLabelMarkedEvent extends GwtEvent<LayerLabeledHandler> {
-
-	private Layer<?> layer;
+public class LayerLabelMarkedEvent extends BaseLayerEvent<LayerLabeledHandler> {
 
 	public LayerLabelMarkedEvent(Layer<?> layer) {
-		this.layer = layer;
-	}
-
-	public Layer<?> getLayer() {
-		return layer;
+		super(layer);
 	}
 
 	@Override

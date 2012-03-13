@@ -8,15 +8,24 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.client.controller;
 
-import org.geomajas.gwt.client.controller.MapEventParser;
+package org.geomajas.puregwt.client.map.feature;
+
 import org.geomajas.puregwt.client.map.MapPresenter;
 
-public class TestMapEventParserFactory implements MapEventParserFactory {
+import com.google.inject.Inject;
 
-	public MapEventParser create(MapPresenter mapPresenter) {
-		return new MapEventParserImpl(mapPresenter);
+/**
+ * Test implementation of the {@link FeatureServiceFactory}.
+ * 
+ * @author Jan De Moerloose
+ */
+public class MockFeatureServiceFactory implements FeatureServiceFactory {
+
+	@Inject
+	FeatureFactory featureFactory;
+
+	public FeatureService create(MapPresenter mapPresenter) {
+		return new FeatureServiceImpl(mapPresenter, featureFactory);
 	}
-
 }

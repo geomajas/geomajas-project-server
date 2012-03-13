@@ -22,12 +22,12 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
 
@@ -45,7 +45,7 @@ import com.google.gwt.core.client.Callback;
  */
 public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
-	private final GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
+	private CommandService commandService;
 
 	private final String crs;
 
@@ -73,7 +73,9 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public RasterLayerScaleRenderer(String crs, RasterLayer rasterLayer, HtmlContainer container, double scale) {
+	public RasterLayerScaleRenderer(CommandService commandService, String crs, RasterLayer rasterLayer,
+			HtmlContainer container, double scale) {
+		this.commandService = commandService;
 		this.crs = crs;
 		this.rasterLayer = rasterLayer;
 		this.container = container;
@@ -124,7 +126,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 		command.setCommandRequest(request);
 
 		// Execute the fetch, and render on success:
-		deferred = dispatcher.execute(command, new AbstractCommandCallback<GetRasterTilesResponse>() {
+		deferred = commandService.execute(command, new AbstractCommandCallback<GetRasterTilesResponse>() {
 
 			public void execute(GetRasterTilesResponse response) {
 				addTiles(response.getRasterData());

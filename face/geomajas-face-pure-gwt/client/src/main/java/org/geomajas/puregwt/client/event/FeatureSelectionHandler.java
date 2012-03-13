@@ -42,4 +42,5 @@ public interface FeatureSelectionHandler extends EventHandler {
 	 * @param event {@link FeatureDeselectedEvent}
 	 */
 	void onFeatureDeselected(FeatureDeselectedEvent event);
+	
 }

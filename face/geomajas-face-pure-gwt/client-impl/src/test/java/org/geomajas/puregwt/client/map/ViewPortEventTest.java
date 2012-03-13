@@ -33,8 +33,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -56,7 +56,7 @@ public class ViewPortEventTest {
 	@Qualifier(value = "mapViewPortBeans")
 	private ClientMapInfo mapInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
@@ -64,7 +64,7 @@ public class ViewPortEventTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new SimpleEventBus();
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);
@@ -84,7 +84,7 @@ public class ViewPortEventTest {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
-		HandlerRegistration reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowTranslationHandler());
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowTranslationHandler());
 
 		viewPort.applyPosition(new Coordinate(342, 342));
 		Assert.assertEquals(4.0, viewPort.getScale());
@@ -99,7 +99,7 @@ public class ViewPortEventTest {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
-		HandlerRegistration reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowScalingHandler());
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowScalingHandler());
 
 		viewPort.applyScale(2.0);
 		Assert.assertEquals(2.0, viewPort.getScale());
@@ -114,7 +114,7 @@ public class ViewPortEventTest {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
-		HandlerRegistration reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowChangedHandler());
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		// Now a changed event should occur:
 		viewPort.applyBounds(new Bbox(0, 0, 100, 100));
@@ -123,7 +123,7 @@ public class ViewPortEventTest {
 		Assert.assertTrue(event instanceof ViewPortChangedEvent);
 
 		reg.removeHandler();
-		reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowTranslationHandler());
+		reg = eventBus.addViewPortChangedHandler(new AllowTranslationHandler());
 
 		// Expect to end up at the same scale, so no changed event, but translation only:
 		viewPort.applyBounds(new Bbox(-50, -50, 100, 100));
@@ -139,7 +139,7 @@ public class ViewPortEventTest {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
-		HandlerRegistration reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowNoEventsHandler());
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowNoEventsHandler());
 
 		viewPort.applyBounds(viewPort.getBounds());
 		Assert.assertNull(event);

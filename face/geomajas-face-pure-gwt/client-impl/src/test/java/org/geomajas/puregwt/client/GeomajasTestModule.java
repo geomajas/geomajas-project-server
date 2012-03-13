@@ -12,9 +12,10 @@
 package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.controller.MapEventParserFactory;
-import org.geomajas.puregwt.client.controller.TestMapEventParserFactory;
+import org.geomajas.puregwt.client.controller.MockMapEventParserFactory;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
+import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -24,12 +25,21 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
 import org.geomajas.puregwt.client.map.feature.FeatureFactory;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
-import org.geomajas.puregwt.client.map.feature.TestFeatureFactory;
-import org.geomajas.puregwt.client.map.feature.TestFeatureServiceFactory;
+import org.geomajas.puregwt.client.map.feature.MockFeatureFactory;
+import org.geomajas.puregwt.client.map.feature.MockFeatureServiceFactory;
+import org.geomajas.puregwt.client.map.gadget.MockDefaultMapGadgetFactory;
+import org.geomajas.puregwt.client.map.layer.RasterLayerFactory;
+import org.geomajas.puregwt.client.map.layer.MockRasterLayerFactory;
+import org.geomajas.puregwt.client.map.layer.MockVectorLayerFactory;
+import org.geomajas.puregwt.client.map.layer.VectorLayerFactory;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
-import org.geomajas.puregwt.client.map.render.TestMapRendererFactory;
-import org.geomajas.puregwt.client.map.render.TestMapScalesRendererFactory;
+import org.geomajas.puregwt.client.map.render.MockMapRendererFactory;
+import org.geomajas.puregwt.client.map.render.MockMapScalesRendererFactory;
+import org.geomajas.puregwt.client.service.CommandService;
+import org.geomajas.puregwt.client.service.EndPointService;
+import org.geomajas.puregwt.client.service.EndPointServiceImpl;
+import org.geomajas.puregwt.client.service.MockCommandService;
 import org.geomajas.puregwt.client.widget.MapWidgetTestImpl;
 
 import com.google.inject.AbstractModule;
@@ -50,14 +60,19 @@ public class GeomajasTestModule extends AbstractModule {
 		bind(LayersModel.class).to(LayersModelImpl.class);
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(MapWidget.class).to(MapWidgetTestImpl.class);
-		bind(FeatureFactory.class).to(TestFeatureFactory.class);
-		bind(MapEventParserFactory.class).to(TestMapEventParserFactory.class);
-		bind(FeatureServiceFactory.class).to(TestFeatureServiceFactory.class);
-		bind(MapRendererFactory.class).to(TestMapRendererFactory.class);
-		bind(MapScalesRendererFactory.class).to(TestMapScalesRendererFactory.class);
+		bind(FeatureFactory.class).to(MockFeatureFactory.class);
+		bind(MapEventParserFactory.class).to(MockMapEventParserFactory.class);
+		bind(FeatureServiceFactory.class).to(MockFeatureServiceFactory.class);
+		bind(MapRendererFactory.class).to(MockMapRendererFactory.class);
+		bind(MapScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
+		bind(VectorLayerFactory.class).to(MockVectorLayerFactory.class);
+		bind(RasterLayerFactory.class).to(MockRasterLayerFactory.class);
+		bind(DefaultMapGadgetFactory.class).to(MockDefaultMapGadgetFactory.class);
 
 		// Other:
 		bind(GfxUtil.class).to(GfxUtilImpl.class).in(Singleton.class);
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
+		bind(CommandService.class).to(MockCommandService.class).in(Singleton.class);
+		bind(EndPointService.class).to(EndPointServiceImpl.class).in(Singleton.class);
 	}
 }

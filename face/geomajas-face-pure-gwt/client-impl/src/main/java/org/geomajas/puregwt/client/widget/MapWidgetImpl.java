@@ -219,13 +219,29 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.setHeight(height);
 		super.setSize(width, height);
 	}
+	
+	public int getWidth() {
+		return getOffsetWidth();
+	}
 
+	public void setWidth(int width) {
+		setWidth(width + "px");
+	}
+	
 	public void setWidth(String width) {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
 		super.setWidth(width);
 	}
+	
+	public int getHeight() {
+		return getOffsetHeight();
+	}
 
+	public void setHeight(int height) {
+		setHeight(height + "px");
+	}
+	
 	public void setHeight(String height) {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);

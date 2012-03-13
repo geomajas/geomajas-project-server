@@ -9,23 +9,20 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.feature;
+package org.geomajas.puregwt.client.map.render;
 
-import org.geomajas.puregwt.client.map.MapPresenter;
-
-import com.google.inject.Inject;
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.LayersModel;
+import org.geomajas.puregwt.client.map.ViewPort;
 
 /**
- * Test implementation of the {@link FeatureServiceFactory}.
+ * Test implementation of the {@link MapRendererFactory}.
  * 
  * @author Jan De Moerloose
  */
-public class TestFeatureServiceFactory implements FeatureServiceFactory {
+public class MockMapRendererFactory implements MapRendererFactory {
 
-	@Inject
-	FeatureFactory featureFactory;
-
-	public FeatureService create(MapPresenter mapPresenter) {
-		return new FeatureServiceImpl(mapPresenter, featureFactory);
+	public MapRenderer create(LayersModel layersModel, ViewPort viewPort, HtmlContainer htmlContainer) {
+		return new MockMapRenderer();
 	}
 }

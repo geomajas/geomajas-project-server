@@ -20,7 +20,10 @@ import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
+import org.geomajas.puregwt.client.map.MapEventBus;
+import org.geomajas.puregwt.client.map.MapEventBusImpl;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.service.EndPointService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,10 +32,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Test-cases for the {@link VectorLayer} class.
@@ -51,29 +53,32 @@ public class VectorLayerEventTest {
 
 	private ClientVectorLayerInfo layerInfo;
 
-	private EventBus eventBus;
+	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
 	private int count;
 
 	private boolean isShowing;
+	
+	private EndPointService endPointService;
 
 	@Before
 	public void before() {
-		eventBus = new SimpleEventBus();
+		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);
+		endPointService  = INJECTOR.getInstance(EndPointService.class);
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);
 	}
 
 	@Test
 	public void testMarkedAsVisibleEvents() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 		count = 0;
 
-		eventBus.addHandler(LayerVisibilityHandler.TYPE, new LayerVisibilityHandler() {
+		eventBus.addLayerVisibilityHandler( new LayerVisibilityHandler() {
 
 			public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
 				count++;
@@ -99,9 +104,9 @@ public class VectorLayerEventTest {
 
 	@Test
 	public void testShowHideEvents() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus);
+		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
 
-		eventBus.addHandler(LayerVisibilityHandler.TYPE, new LayerVisibilityHandler() {
+		eventBus.addLayerVisibilityHandler( new LayerVisibilityHandler() {
 
 			public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
 			}

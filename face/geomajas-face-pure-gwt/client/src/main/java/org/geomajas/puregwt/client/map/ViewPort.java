@@ -19,8 +19,6 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 
-import com.google.web.bindery.event.shared.EventBus;
-
 
 /**
  * <p>
@@ -57,7 +55,7 @@ public interface ViewPort {
 	 *            The {@link MapPresenter}s event bus. Events regarding ViewPort changes (zoom, pan, ...) are fired upon
 	 *            this bus.
 	 */
-	void initialize(ClientMapInfo mapInfo, EventBus eventBus);
+	void initialize(ClientMapInfo mapInfo, MapEventBus eventBus);
 
 	/**
 	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map

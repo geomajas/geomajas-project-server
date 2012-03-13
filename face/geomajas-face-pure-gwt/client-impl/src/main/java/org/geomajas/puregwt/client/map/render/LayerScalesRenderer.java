@@ -26,6 +26,7 @@ import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
+import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -49,6 +50,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private CommandService commandService;
 
 	private final ViewPort viewPort;
 
@@ -94,7 +98,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	/** {@inheritDoc} */
 	public HandlerRegistration addScaleLevelRenderedHandler(ScaleLevelRenderedHandler handler) {
-		return eventBus.addHandler(ScaleLevelRenderedHandler.TYPE, handler);
+		return eventBus.addHandlerToSource(ScaleLevelRenderedHandler.TYPE, this, handler);
 	}
 
 	/** {@inheritDoc} */
@@ -205,17 +209,19 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 		TiledScaleRenderer scalePresenter = null;
 		if (layer instanceof RasterLayer) {
-			scalePresenter = new RasterLayerScaleRenderer(viewPort.getCrs(), (RasterLayer) layer, container, scale) {
+			scalePresenter = new RasterLayerScaleRenderer(commandService, viewPort.getCrs(), (RasterLayer) layer,
+					container, scale) {
 
 				public void onTilesRendered(HtmlContainer container, double scale) {
-					eventBus.fireEvent(new ScaleLevelRenderedEvent(scale));
+					eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), this);
 				}
 			};
 		} else {
-			scalePresenter = new VectorLayerScaleRenderer(viewPort, (VectorLayer) layer, container, scale) {
+			scalePresenter = new VectorLayerScaleRenderer(commandService, viewPort, (VectorLayer) layer, container,
+					scale) {
 
 				public void onTilesRendered(HtmlContainer container, double scale) {
-					eventBus.fireEvent(new ScaleLevelRenderedEvent(scale));
+					eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), this);
 				}
 			};
 		}
