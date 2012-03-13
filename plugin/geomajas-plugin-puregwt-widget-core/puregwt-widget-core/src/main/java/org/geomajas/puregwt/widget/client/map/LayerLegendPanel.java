@@ -30,7 +30,6 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * A view that displays the title and styles for a single layer.
@@ -50,10 +49,6 @@ public class LayerLegendPanel extends Composite {
 	private static final LayerLegendPanelUiBinder UI_BINDER = GWT.create(LayerLegendPanelUiBinder.class);
 
 	private final Layer<?> layer;
-
-	private HandlerRegistration layerVisibilityHandler;
-
-	private HandlerRegistration clickHandler;
 
 	@UiField
 	protected CheckBox visibilityToggle;
@@ -78,7 +73,7 @@ public class LayerLegendPanel extends Composite {
 		}
 
 		// React to layer visibility events:
-		layerVisibilityHandler = eventBus.addHandler(LayerVisibilityHandler.TYPE, new LayerVisibilityHandler() {
+		eventBus.addHandler(LayerVisibilityHandler.TYPE, new LayerVisibilityHandler() {
 
 			public void onShow(LayerShowEvent event) {
 				if (event.getLayer() == LayerLegendPanel.this.layer) {
@@ -98,7 +93,7 @@ public class LayerLegendPanel extends Composite {
 				}
 			}
 		});
-		clickHandler = visibilityToggle.addClickHandler(new ClickHandler() {
+		visibilityToggle.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				if (visibilityToggle.isEnabled()) {
@@ -109,14 +104,13 @@ public class LayerLegendPanel extends Composite {
 		});
 	}
 
+	/**
+	 * Return the layer that's being shown in this panel.
+	 * 
+	 * @return The layer who's legend is displayed in this panel.
+	 */
 	public Layer<?> getLayer() {
 		return layer;
-	}
-
-	protected void onDetach() {
-		layerVisibilityHandler.removeHandler();
-		clickHandler.removeHandler();
-		super.onDetach();
 	}
 
 	private void addStyle(String src, String text) {
