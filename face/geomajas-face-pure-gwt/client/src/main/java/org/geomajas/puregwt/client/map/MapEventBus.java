@@ -181,7 +181,7 @@ public interface MapEventBus {
 	HandlerRegistration addViewPortChangedHandler(ViewPortChangedHandler handler);
 	
 	/**
-	 * Add a handler
+	 * Add a handler of this type to the map.
 	 * @param type type of handler
 	 * @param handler handler
 	 * @return the handler registration
