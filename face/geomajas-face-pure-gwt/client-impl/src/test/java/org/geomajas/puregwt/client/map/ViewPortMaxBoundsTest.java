@@ -61,35 +61,38 @@ public class ViewPortMaxBoundsTest {
 	}
 
 	@Test
+	@ReloadContext
 	public void testInitialBounds() {
 		viewPort.initialize(mapInfo, eventBus);
 		Bbox maxBounds = viewPort.getMaximumBounds();
-		Assert.assertEquals(maxBounds.getX(), -100.0);
-		Assert.assertEquals(maxBounds.getY(), -100.0);
-		Assert.assertEquals(maxBounds.getMaxX(), 100.0);
-		Assert.assertEquals(maxBounds.getMaxY(), 100.0);
+		Assert.assertEquals(-100.0, maxBounds.getX());
+		Assert.assertEquals(-100.0, maxBounds.getY());
+		Assert.assertEquals(100.0, maxBounds.getMaxX());
+		Assert.assertEquals(100.0, maxBounds.getMaxY());
 	}
 
 	@Test
+	@ReloadContext
 	public void testSetMaxBounds() {
 		mapInfo.setMaxBounds(new org.geomajas.geometry.Bbox(0, 0, 10, 10));
 		viewPort.initialize(mapInfo, eventBus);
 		Bbox maxBounds = viewPort.getMaximumBounds();
-		Assert.assertEquals(maxBounds.getX(), 0.0);
-		Assert.assertEquals(maxBounds.getY(), 0.0);
-		Assert.assertEquals(maxBounds.getMaxX(), 10.0);
-		Assert.assertEquals(maxBounds.getMaxY(), 10.0);
+		Assert.assertEquals(0.0, maxBounds.getX());
+		Assert.assertEquals(0.0, maxBounds.getY());
+		Assert.assertEquals(10.0, maxBounds.getMaxX());
+		Assert.assertEquals(10.0, maxBounds.getMaxY());
 	}
 
 	@Test
+	@ReloadContext
 	public void testLayerUnion() {
 		mapInfo.setMaxBounds(org.geomajas.geometry.Bbox.ALL);
 		mapInfo.getLayers().get(0).setMaxExtent(new org.geomajas.geometry.Bbox(0, 0, 500, 500));
 		viewPort.initialize(mapInfo, eventBus);
 		Bbox maxBounds = viewPort.getMaximumBounds();
-		Assert.assertEquals(maxBounds.getX(), -100.0);
-		Assert.assertEquals(maxBounds.getY(), -100.0);
-		Assert.assertEquals(maxBounds.getMaxX(), 500.0);
-		Assert.assertEquals(maxBounds.getMaxY(), 500.0);
+		Assert.assertEquals(-100.0, maxBounds.getX());
+		Assert.assertEquals(-100.0, maxBounds.getY());
+		Assert.assertEquals(500.0, maxBounds.getMaxX());
+		Assert.assertEquals(500.0, maxBounds.getMaxY());
 	}
 }
