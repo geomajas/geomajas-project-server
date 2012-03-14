@@ -35,9 +35,11 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class WorldSpaceRenderingPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
-
 	private VectorContainer container;
+
+	public WorldSpaceRenderingPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Drawing in world space";
@@ -93,7 +95,6 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 		leftLayout.add(deleteBtn);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

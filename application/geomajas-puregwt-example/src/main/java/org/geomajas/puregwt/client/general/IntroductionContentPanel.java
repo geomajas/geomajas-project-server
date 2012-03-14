@@ -23,6 +23,10 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class IntroductionContentPanel extends ContentPanel {
 
+	public IntroductionContentPanel() {
+		super(null);
+	}
+
 	public String getTitle() {
 		return "Geomajas Pure GWT face";
 	}

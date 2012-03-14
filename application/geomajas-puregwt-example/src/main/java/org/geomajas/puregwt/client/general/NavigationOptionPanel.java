@@ -38,7 +38,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class NavigationOptionPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
+	public NavigationOptionPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Navigation options";
@@ -131,8 +133,7 @@ public class NavigationOptionPanel extends ContentPanel {
 			}
 		});
 
-		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
+		// Create the mapPresenter and add an InitializationHandler:
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

@@ -38,6 +38,10 @@ public class FeatureSelectionPanel extends ContentPanel {
 
 	private FeatureSelectionController featureSelectionController;
 
+	public FeatureSelectionPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
+
 	public String getTitle() {
 		return "Feature Selection";
 	}
@@ -82,7 +86,6 @@ public class FeatureSelectionPanel extends ContentPanel {
 		verticalPanel.add(clickAndDrag);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

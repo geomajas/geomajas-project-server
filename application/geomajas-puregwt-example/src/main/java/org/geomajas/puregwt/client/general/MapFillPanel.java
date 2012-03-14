@@ -34,6 +34,10 @@ public class MapFillPanel extends ContentPanel {
 
 	private MapPresenter mapPresenter;
 
+	public MapFillPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
+
 	public String getTitle() {
 		return "Full screen map";
 	}
@@ -48,7 +52,6 @@ public class MapFillPanel extends ContentPanel {
 		layout.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		layout.add(mapPresenter.asWidget());
 

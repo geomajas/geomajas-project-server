@@ -48,13 +48,16 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 	private final ContentPanelCell contentPanelCell = new ContentPanelCell();
 
 	private SelectionModel<ContentPanel> selectionModel;
+	
+	private GeomajasGinjector geomajasInjector;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ShowcaseTreeViewModel(SelectionModel<ContentPanel> selectionModel) {
+	public ShowcaseTreeViewModel(SelectionModel<ContentPanel> selectionModel, GeomajasGinjector geomajasInjector) {
 		this.selectionModel = selectionModel;
+		this.geomajasInjector = geomajasInjector;
 		initializeTree();
 	}
 
@@ -92,34 +95,34 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		Category catGeneral = new Category("General");
 		catList.add(catGeneral);
 		catGeneral.addExample(new IntroductionContentPanel(), null);
-		catGeneral.addExample(new NavigationOptionPanel(), null);
-		catGeneral.addExample(new ResizeMapPanel(), null);
-		catGeneral.addExample(new MapFillPanel(), null);
+		catGeneral.addExample(new NavigationOptionPanel(geomajasInjector.getMapPresenter()), null);
+		catGeneral.addExample(new ResizeMapPanel(geomajasInjector.getMapPresenter()), null);
+		catGeneral.addExample(new MapFillPanel(geomajasInjector.getMapPresenter()), null);
 
 		// Layer Manipulation:
 		Category catLayerMan = new Category("Layer Manipulation");
 		catList.add(catLayerMan);
-		catLayerMan.addExample(new TmsLayerPanel(), null);
-		catLayerMan.addExample(new LayerVisibilityPanel(), null);
-		catLayerMan.addExample(new LayerOrderPanel(), null);
+		catLayerMan.addExample(new TmsLayerPanel(geomajasInjector.getMapPresenter()), null);
+		catLayerMan.addExample(new LayerVisibilityPanel(geomajasInjector.getMapPresenter()), null);
+		catLayerMan.addExample(new LayerOrderPanel(geomajasInjector.getMapPresenter()), null);
 
 		// Features:
 		Category catFeature = new Category("Feature Manipulation");
 		catList.add(catFeature);
-		catFeature.addExample(new FeatureSelectionPanel(), null);
+		catFeature.addExample(new FeatureSelectionPanel(geomajasInjector.getMapPresenter()), null);
 
 		// Drawing:
 		Category catDrawing = new Category("Custom Drawing");
 		catList.add(catDrawing);
-		catDrawing.addExample(new ScreenSpaceRenderingPanel(), null);
-		catDrawing.addExample(new WorldSpaceRenderingPanel(), null);
-		catDrawing.addExample(new DrawingInteractionPanel(), null);
+		catDrawing.addExample(new ScreenSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
+		catDrawing.addExample(new WorldSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
+		catDrawing.addExample(new DrawingInteractionPanel(geomajasInjector.getMapPresenter()), null);
 
 		// Widget plug-in:
 		Category catWidget = new Category("Widgets");
 		catList.add(catWidget);
-		catWidget.addExample(new LayerLegendViewPanel(), null);
-		catWidget.addExample(new LegendDisclosureGadgetPanel(), null);
+		catWidget.addExample(new LayerLegendViewPanel(geomajasInjector.getMapPresenter()), null);
+		catWidget.addExample(new LegendDisclosureGadgetPanel(geomajasInjector.getMapPresenter()), null);
 	}
 
 	// ------------------------------------------------------------------------

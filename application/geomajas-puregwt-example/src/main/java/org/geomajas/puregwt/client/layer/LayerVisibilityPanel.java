@@ -38,11 +38,13 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LayerVisibilityPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
-
 	private VerticalPanel layerCheckBoxLayout;
 
 	private VerticalPanel layerEventLayout;
+
+	public LayerVisibilityPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Layer Visibility";
@@ -68,7 +70,6 @@ public class LayerVisibilityPanel extends ContentPanel {
 		leftLayout.add(layerEventLayout);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.getEventBus().addLayerVisibilityHandler(new MyLayerVisibilityHandler());

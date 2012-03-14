@@ -25,7 +25,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TmsLayerPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
+	public TmsLayerPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "TMS layer test";
@@ -39,7 +41,6 @@ public class TmsLayerPanel extends ContentPanel {
 		VerticalPanel layout = new VerticalPanel();
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
 
 		// Define the whole layout:

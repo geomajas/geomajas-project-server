@@ -11,7 +11,8 @@
 
 package org.geomajas.puregwt.client;
 
-import com.google.gwt.core.client.GWT;
+import org.geomajas.puregwt.client.map.MapPresenter;
+
 import com.google.gwt.user.client.ui.LazyPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,8 +23,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class ContentPanel extends LazyPanel {
 
-	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
-
 	private ContentPanelView view;
 
 	public abstract String getTitle();
@@ -31,6 +30,12 @@ public abstract class ContentPanel extends LazyPanel {
 	public abstract String getDescription();
 
 	public abstract Widget getContentWidget();
+	
+	protected MapPresenter mapPresenter;
+	
+	protected ContentPanel(MapPresenter mapPresenter) {
+		this.mapPresenter = mapPresenter;
+	}
 
 	protected Widget createWidget() {
 		view = new ContentPanelView();
@@ -40,7 +45,7 @@ public abstract class ContentPanel extends LazyPanel {
 		return view;
 	}
 
-	public GeomajasGinjector getInjector() {
-		return geomajasInjector;
+	public MapPresenter getMapPresenter() {
+		return mapPresenter;
 	}
 }

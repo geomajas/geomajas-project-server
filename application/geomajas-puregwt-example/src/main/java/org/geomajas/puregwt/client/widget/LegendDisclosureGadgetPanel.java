@@ -25,7 +25,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LegendDisclosureGadgetPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
+	public LegendDisclosureGadgetPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Legend MapGadget";
@@ -37,7 +39,6 @@ public class LegendDisclosureGadgetPanel extends ContentPanel {
 
 	public Widget getContentWidget() {
 		// Create the MapPresenter:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.initialize("pure-gwt-app", "mapLegend");
 		ResizableMapLayout mapLayout = new ResizableMapLayout(mapPresenter);
 

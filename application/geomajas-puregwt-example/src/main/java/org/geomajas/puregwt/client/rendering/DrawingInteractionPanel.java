@@ -37,11 +37,13 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DrawingInteractionPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
-
 	private Rectangle rectangle;
 
 	private Text text;
+
+	public DrawingInteractionPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Drawing interaction";
@@ -54,7 +56,6 @@ public class DrawingInteractionPanel extends ContentPanel {
 
 	public Widget getContentWidget() {
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

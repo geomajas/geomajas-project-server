@@ -32,9 +32,11 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LayerLegendViewPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
-
 	private VerticalPanel layerPanel;
+
+	public LayerLegendViewPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Legend";
@@ -55,7 +57,6 @@ public class LayerLegendViewPanel extends ContentPanel {
 		layout.addWest(scrollPanel, 300);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
 			public void onMapInitialized(MapInitializationEvent event) {

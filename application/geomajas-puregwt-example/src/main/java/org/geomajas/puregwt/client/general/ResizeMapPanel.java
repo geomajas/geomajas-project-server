@@ -32,7 +32,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ResizeMapPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
+	public ResizeMapPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Map resize";
@@ -73,8 +75,7 @@ public class ResizeMapPanel extends ContentPanel {
 		});
 		leftLayout.add(shrinkBtn);
 
-		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
+		// Create the mapPresenter and add an InitializationHandler:
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

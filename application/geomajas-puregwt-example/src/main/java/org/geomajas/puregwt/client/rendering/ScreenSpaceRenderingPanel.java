@@ -43,9 +43,11 @@ public class ScreenSpaceRenderingPanel extends ContentPanel {
 
 	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
 
-	private MapPresenter mapPresenter;
-
 	private VectorContainer container;
+	
+	public ScreenSpaceRenderingPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
 
 	public String getTitle() {
 		return "Drawing in screen space";
@@ -156,7 +158,6 @@ public class ScreenSpaceRenderingPanel extends ContentPanel {
 		leftLayout.add(deleteBtn);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

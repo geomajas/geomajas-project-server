@@ -38,6 +38,10 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LayerOrderPanel extends ContentPanel {
 
+	public LayerOrderPanel(MapPresenter mapPresenter) {
+		super(mapPresenter);
+	}
+
 	private MapPresenter mapPresenter;
 
 	private PickupDragController layerDragController;
@@ -69,7 +73,6 @@ public class LayerOrderPanel extends ContentPanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = getInjector().getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
