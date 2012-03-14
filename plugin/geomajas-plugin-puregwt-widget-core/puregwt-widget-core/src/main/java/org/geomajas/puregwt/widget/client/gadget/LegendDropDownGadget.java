@@ -61,7 +61,7 @@ public class LegendDropDownGadget implements MapGadget {
 		if (layout == null) {
 			layout = new LegendDropDown(mapPresenter);
 			if (mapPresenter.getLayersModel() == null || mapPresenter.getLayersModel().getLayerCount() == 0) {
-				mapPresenter.getEventBus().addMapInitializationHandler( new MapInitializationHandler() {
+				mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
 					public void onMapInitialized(MapInitializationEvent event) {
 						addAllLayers();
@@ -207,12 +207,12 @@ public class LegendDropDownGadget implements MapGadget {
 		return asWidget().getOffsetHeight();
 	}
 
-	public void setWidth(int width){
-		asWidget().setWidth(width+"px");
+	public void setWidth(int width) {
+		asWidget().setWidth(width + "px");
 	}
-	
-	public void setHeight(int height){
-		asWidget().setHeight(height+"px");
+
+	public void setHeight(int height) {
+		asWidget().setHeight(height + "px");
 	}
 
 	public void setTop(int top) {
