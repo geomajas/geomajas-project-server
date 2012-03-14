@@ -52,7 +52,7 @@ public class ResizableMapLayout implements IsWidget {
 	 */
 	public ResizableMapLayout(final MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
-		mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new RedrawMapInitializationHandler());
+		mapPresenter.getEventBus().addMapInitializationHandler(new RedrawMapInitializationHandler());
 
 		layout = new ResizeLayoutPanel();
 		layout.setSize("100%", "100%");

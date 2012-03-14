@@ -31,6 +31,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.Timer;
@@ -60,7 +61,7 @@ public class LegendDropDownGadget implements MapGadget {
 		if (layout == null) {
 			layout = new LegendDropDown(mapPresenter);
 			if (mapPresenter.getLayersModel() == null || mapPresenter.getLayersModel().getLayerCount() == 0) {
-				mapPresenter.getEventBus().addHandler(MapInitializationEvent.TYPE, new MapInitializationHandler() {
+				mapPresenter.getEventBus().addMapInitializationHandler( new MapInitializationHandler() {
 
 					public void onMapInitialized(MapInitializationEvent event) {
 						addAllLayers();
@@ -199,30 +200,31 @@ public class LegendDropDownGadget implements MapGadget {
 	}
 
 	public int getWidth() {
-		return layout.getOffsetWidth();
+		return asWidget().getOffsetWidth();
 	}
 
 	public int getHeight() {
-		return layout.getOffsetHeight();
+		return asWidget().getOffsetHeight();
 	}
 
-	public void setWidth(int width) {
-		layout.setWidth(width + "px");
+	public void setWidth(int width){
+		asWidget().setWidth(width+"px");
 	}
-
-	public void setHeight(int height) {
-		layout.setHeight(height + "px");
+	
+	public void setHeight(int height){
+		asWidget().setHeight(height+"px");
 	}
 
 	public void setTop(int top) {
-		layout.getElement().getStyle().setTop(top, Unit.PX);
+		asWidget().getElement().getStyle().setTop(top, Unit.PX);
 	}
 
 	public void setLeft(int left) {
-		layout.getElement().getStyle().setLeft(left, Unit.PX);
+		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
 	}
 
 	public void addResizeHandler(ResizeHandler resizeHandler) {
-		// TODO fixme.
+		asWidget().addHandler(resizeHandler, ResizeEvent.getType());
 	}
+	
 }
