@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.gfx;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.puregwt.client.controller.MapController;
@@ -25,7 +26,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * Utility class concerning custom graphics rendering on the map.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public interface GfxUtil {
 
 	/**
@@ -58,5 +61,4 @@ public interface GfxUtil {
 	 * @return The quivalent path object.
 	 */
 	Path toPath(Geometry geometry);
-
 }
