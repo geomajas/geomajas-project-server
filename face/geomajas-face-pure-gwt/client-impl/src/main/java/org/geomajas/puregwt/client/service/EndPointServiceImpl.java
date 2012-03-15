@@ -30,11 +30,13 @@ public class EndPointServiceImpl implements EndPointService {
 
 	private String legendServiceUrl;
 
+	private String dispatcherUrl;
+
 	public String getCommandServiceUrl() {
 		if (commandServiceUrl != null) {
 			return commandServiceUrl;
 		}
-		return getGeomajasControllerUrl() + GEOMAJAS_SERVICE_PATH;
+		return getDispatcherUrl() + GEOMAJAS_SERVICE_PATH;
 	}
 
 	public void setCommandServiceUrl(String commandServiceUrl) {
@@ -46,18 +48,17 @@ public class EndPointServiceImpl implements EndPointService {
 		if (legendServiceUrl != null) {
 			return legendServiceUrl;
 		}
-		return getGeomajasControllerUrl() + LEGEND_SERVICE_PATH;
+		return getDispatcherUrl() + LEGEND_SERVICE_PATH;
 	}
 
 	public void setLegendServiceUrl(String legendServiceUrl) {
 		this.legendServiceUrl = legendServiceUrl;
 	}
 
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private static String getGeomajasControllerUrl() {
+	public String getDispatcherUrl() {
+		if (null != dispatcherUrl) {
+			return dispatcherUrl;
+		}
 		String moduleBaseUrl = GWT.getModuleBaseURL();
 		// remove last slash
 		moduleBaseUrl = moduleBaseUrl.substring(0, moduleBaseUrl.length() - 1);
@@ -69,6 +70,10 @@ public class EndPointServiceImpl implements EndPointService {
 			// fall back to module base URL
 			return GWT.getModuleBaseURL();
 		}
+	}
+
+	public void setDispatcherUrl(String dispatcherUrl) {
+		this.dispatcherUrl = dispatcherUrl;
 	}
 
 }
