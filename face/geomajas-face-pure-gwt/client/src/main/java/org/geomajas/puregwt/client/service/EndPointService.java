@@ -56,5 +56,21 @@ public interface EndPointService {
 	 * @since 1.0.0
 	 */
 	void setLegendServiceUrl(String legendServiceUrl);
+	
+	/**
+	 * Return the Spring dispatcher URL for the web application. The URL ends with a slash.
+	 * 
+	 * @return The URL to the Spring Dispatcher.
+	 * @since 1.0.0
+	 */
+	String getDispatcherUrl();
+
+	/**
+	 * Set the Spring dispatcher URL for the web application.
+	 * 
+	 * @param dispatcherUrl The Spring dispatcher URL for the web application.
+	 * @since 1.0.0
+	 */
+	void setDispatcherUrl(String dispatcherUrl);
 
 }
