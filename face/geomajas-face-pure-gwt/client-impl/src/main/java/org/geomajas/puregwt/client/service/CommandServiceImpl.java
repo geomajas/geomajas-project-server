@@ -10,10 +10,14 @@
  */
 package org.geomajas.puregwt.client.service;
 
+import org.geomajas.command.CommandResponse;
+import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.CommandExceptionCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.util.Log;
 
 /**
  * Default implementation of {@link CommandService}.
@@ -23,6 +27,51 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
  */
 
 public class CommandServiceImpl implements CommandService {
+
+	/**
+	 * Simple callback implementation.
+	 * 
+	 * @author Emiel Ackermann
+	 * 
+	 */
+	public class CommandExceptionCallbackImpl implements
+			CommandExceptionCallback {
+
+		public void onCommandException(CommandResponse response) {
+			for (ExceptionDto error : response.getExceptions()) {
+				Log.logError(getDetails(error));
+			}
+		}
+	
+		/**
+		 * Build details message for an exception.
+		 *
+		 * @param error error to build message for
+		 * @return string with details message
+		 */
+		private String getDetails(ExceptionDto error) {
+			if (null == error) {
+				return "";
+			}
+			StringBuilder content = new StringBuilder();
+			String header = error.getClassName();
+			if (error.getExceptionCode() != 0) {
+				header += " (" + error.getExceptionCode() + ")";
+			}
+			content.append(header);
+			for (StackTraceElement el : error.getStackTrace()) {
+				content.append("  " + el.toString() + "\n");
+			}
+			content.append(getDetails(error.getCause()));
+			return content.toString();
+		}
+
+	}
+
+	public CommandServiceImpl() {
+		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(
+				new CommandExceptionCallbackImpl());
+	}
 
 	public Deferred execute(GwtCommand command, CommandCallback... callback) {
 		return GwtCommandDispatcher.getInstance().execute(command, callback);
