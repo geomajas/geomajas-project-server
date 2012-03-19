@@ -24,7 +24,6 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -151,6 +150,7 @@ public class ZoomStepGadget extends AbstractMapGadget {
 				}
 			}, ClickEvent.getType());
 			zoomStep.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+			zoomStep.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
 			zoomStep.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
 			zoomStep.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 			zoomStepsPanel.add(zoomStep, 0, y);
@@ -172,6 +172,7 @@ public class ZoomStepGadget extends AbstractMapGadget {
 			}
 		}, ClickEvent.getType());
 		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
 		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
 		zoomInElement.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
@@ -188,6 +189,7 @@ public class ZoomStepGadget extends AbstractMapGadget {
 			}
 		}, ClickEvent.getType());
 		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
 		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
 		zoomOutElement.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
@@ -324,27 +326,6 @@ public class ZoomStepGadget extends AbstractMapGadget {
 
 		public void setMaxY(int maxY) {
 			this.maxY = maxY;
-		}
-	}
-
-	/**
-	 * Combination of different handlers with a single goal: stop all the events from propagating to the map.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class StopPropagationHandler implements MouseDownHandler, ClickHandler, DoubleClickHandler {
-
-		public void onDoubleClick(DoubleClickEvent event) {
-			event.stopPropagation();
-		}
-
-		public void onClick(ClickEvent event) {
-			event.stopPropagation();
-		}
-
-		public void onMouseDown(MouseDownEvent event) {
-			event.stopPropagation();
-			event.preventDefault();
 		}
 	}
 }

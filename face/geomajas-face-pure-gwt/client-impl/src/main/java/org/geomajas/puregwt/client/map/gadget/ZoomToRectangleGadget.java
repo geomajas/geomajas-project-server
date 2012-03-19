@@ -123,6 +123,7 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 		layout.setStyleName("gm-ZoomToRectangleGadget");
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
 		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
 		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
@@ -152,27 +153,6 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
-
-	/**
-	 * Combination of different handlers with a single goal: stop all the events from propagating to the map.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class StopPropagationHandler implements MouseDownHandler, ClickHandler, DoubleClickHandler {
-
-		public void onDoubleClick(DoubleClickEvent event) {
-			event.stopPropagation();
-		}
-
-		public void onClick(ClickEvent event) {
-			event.stopPropagation();
-		}
-
-		public void onMouseDown(MouseDownEvent event) {
-			event.stopPropagation();
-			event.preventDefault();
-		}
-	}
 
 	/**
 	 * Vector group that lets the user zoom to a rectangle.

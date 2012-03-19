@@ -21,9 +21,8 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -93,6 +92,7 @@ public class PanningGadget extends AbstractMapGadget {
 		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
 		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
 		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
@@ -148,27 +148,6 @@ public class PanningGadget extends AbstractMapGadget {
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
-
-	/**
-	 * Combination of different handlers with a single goal: stop all the events from propagating to the map.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class StopPropagationHandler implements MouseDownHandler, ClickHandler, DoubleClickHandler {
-
-		public void onDoubleClick(DoubleClickEvent event) {
-			event.stopPropagation();
-		}
-
-		public void onClick(ClickEvent event) {
-			event.stopPropagation();
-		}
-
-		public void onMouseDown(MouseDownEvent event) {
-			event.stopPropagation();
-			event.preventDefault();
-		}
-	}
 
 	/**
 	 * Animation for the panning buttons.
