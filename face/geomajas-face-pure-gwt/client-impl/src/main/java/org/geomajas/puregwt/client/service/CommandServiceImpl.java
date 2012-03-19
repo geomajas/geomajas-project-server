@@ -14,6 +14,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.CommandExceptionCallback;
+import org.geomajas.gwt.client.command.CommunicationExceptionCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -35,7 +36,7 @@ public class CommandServiceImpl implements CommandService {
 	 * 
 	 */
 	public class CommandExceptionCallbackImpl implements
-			CommandExceptionCallback {
+			CommandExceptionCallback, CommunicationExceptionCallback {
 
 		public void onCommandException(CommandResponse response) {
 			for (ExceptionDto error : response.getExceptions()) {
@@ -66,11 +67,16 @@ public class CommandServiceImpl implements CommandService {
 			return content.toString();
 		}
 
+		public void onCommunicationException(Throwable error) {
+			Log.logError("Communication exception", error);			
+		}
+
 	}
 
 	public CommandServiceImpl() {
-		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(
-				new CommandExceptionCallbackImpl());
+		CommandExceptionCallbackImpl callback = new CommandExceptionCallbackImpl();
+		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(callback);
+		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(callback);
 	}
 
 	public Deferred execute(GwtCommand command, CommandCallback... callback) {
