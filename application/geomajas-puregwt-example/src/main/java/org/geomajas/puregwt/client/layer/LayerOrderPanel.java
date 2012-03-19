@@ -42,8 +42,6 @@ public class LayerOrderPanel extends ContentPanel {
 		super(mapPresenter);
 	}
 
-	private MapPresenter mapPresenter;
-
 	private PickupDragController layerDragController;
 
 	private VerticalPanel layerPanel;

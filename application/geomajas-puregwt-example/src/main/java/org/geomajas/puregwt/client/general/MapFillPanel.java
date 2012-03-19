@@ -32,8 +32,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MapFillPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
-
 	public MapFillPanel(MapPresenter mapPresenter) {
 		super(mapPresenter);
 	}

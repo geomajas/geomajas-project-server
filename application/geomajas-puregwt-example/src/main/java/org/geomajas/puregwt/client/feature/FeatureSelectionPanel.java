@@ -34,8 +34,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class FeatureSelectionPanel extends ContentPanel {
 
-	private MapPresenter mapPresenter;
-
 	private FeatureSelectionController featureSelectionController;
 
 	public FeatureSelectionPanel(MapPresenter mapPresenter) {
