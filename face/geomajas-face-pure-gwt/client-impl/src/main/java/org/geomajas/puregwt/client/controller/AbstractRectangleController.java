@@ -59,6 +59,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	protected boolean shift;
 
 	protected VectorContainer container;
+	
+	protected boolean dragging;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -79,6 +81,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (!isRightMouseButton(event)) {
+			dragging = true;
 			begin = getLocation(event, RenderSpace.SCREEN);
 			shift = event.isShiftKeyDown();
 			rectangle = new Rectangle((int) begin.getX(), (int) begin.getY(), 0, 0);
@@ -101,6 +104,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 			execute(mapPresenter.getViewPort().transform(bounds, RenderSpace.SCREEN, RenderSpace.WORLD));
 
 			stopDragging();
+			dragging = false;
 		}
 	}
 
@@ -110,6 +114,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	public void onMouseOut(MouseOutEvent event) {
 		stopDragging();
+		dragging = false;
 	}
 
 	/**
