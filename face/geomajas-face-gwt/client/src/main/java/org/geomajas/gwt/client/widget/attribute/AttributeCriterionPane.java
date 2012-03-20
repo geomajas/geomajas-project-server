@@ -21,6 +21,7 @@ import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.configuration.SyntheticAttributeInfo;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.feature.SearchCriterion;
@@ -241,6 +242,17 @@ public class AttributeCriterionPane extends Canvas {
 		}
 		return label;
 	}
+	
+	public static final String[] getSearchableAttributes(VectorLayer layer) {
+		List<String> labels = new ArrayList<String>();
+		for (AbstractAttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+			if (attribute instanceof AbstractReadOnlyAttributeInfo && !(attribute instanceof SyntheticAttributeInfo)) {
+				labels.add(((AbstractReadOnlyAttributeInfo) attribute).getLabel());
+			}
+		}
+		return labels.toArray(new String[labels.size()]);
+		
+	}
 
 	// -------------------------------------------------------------------------
 	// Private methods:
@@ -252,13 +264,7 @@ public class AttributeCriterionPane extends Canvas {
 		attributeSelect = new SelectItem("attributeItem");
 		attributeSelect.setWidth(140);
 		attributeSelect.setShowTitle(false);
-		List<String> labels = new ArrayList<String>();
-		for (AbstractAttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			if (attribute instanceof AbstractReadOnlyAttributeInfo) {
-				labels.add(((AbstractReadOnlyAttributeInfo) attribute).getLabel());
-			}
-		}
-		attributeSelect.setValueMap(labels.toArray(new String[labels.size()]));
+		attributeSelect.setValueMap(getSearchableAttributes(layer));
 		attributeSelect.setHint(I18nProvider.getSearch().gridChooseAttribute());
 		attributeSelect.setShowHintInField(true);
 
