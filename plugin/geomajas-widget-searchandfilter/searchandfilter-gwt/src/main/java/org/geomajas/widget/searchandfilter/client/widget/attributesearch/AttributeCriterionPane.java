@@ -10,9 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.attributesearch;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
@@ -121,7 +119,8 @@ public class AttributeCriterionPane extends Canvas {
 		Object value = valueItem.getValue();
 
 		if (selectedAttribute != null && operator != null) {
-			String operatorString = getOperatorCodeFromLabel(operator.toString());
+			String operatorString = org.geomajas.gwt.client.widget.attribute.AttributeCriterionPane.
+					getOperatorCodeFromLabel(operator.toString());
 			String valueString = "";
 			String nameString = selectedAttribute.getName();
 			String displayText = nameString + " " + operatorString + " " + valueItem.getDisplayValue();
@@ -185,76 +184,6 @@ public class AttributeCriterionPane extends Canvas {
 		return null;
 	}
 
-	/**
-	 * Static method that return an array of available operator labels for the given attribute definition. An operator
-	 * label is something like "is equal to". Don't confuse this with the operator code (something like "=").
-	 *
-	 * @param attributeInfo
-	 *            The attribute definition for which to return possible operators.
-	 * @return operator labels
-	 */
-	public static String[] getOperatorsForAttributeType(AbstractReadOnlyAttributeInfo attributeInfo) {
-		if (attributeInfo != null && attributeInfo instanceof PrimitiveAttributeInfo) {
-			PrimitiveAttributeInfo primitive = (PrimitiveAttributeInfo) attributeInfo;
-			switch (primitive.getType()) {
-				case SHORT:
-				case INTEGER:
-				case LONG:
-				case FLOAT:
-				case DOUBLE:
-				case CURRENCY:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
-				case DATE:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorBefore(), I18nProvider.getSearch().operatorAfter() };
-				case STRING:
-				case URL:
-				case IMGURL:
-					return new String[] { I18nProvider.getSearch().operatorContains(),
-							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
-				case BOOLEAN:
-				default:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals() };
-			}
-		}
-		return new String[] { I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
-	}
-
-	/**
-	 * Return the operator code from an operator label. The difference is this: an operator label is a string like
-	 * "is equal to", while it's code is "=".
-	 *
-	 * @param label The operator label.
-	 * @return operator code
-	 */
-	public static String getOperatorCodeFromLabel(String label) {
-		if (label != null) {
-			if (I18nProvider.getSearch().operatorEquals().equals(label)) {
-				return "=";
-			} else if (I18nProvider.getSearch().operatorNotEquals().equals(label)) {
-				return "<>";
-			} else if (I18nProvider.getSearch().operatorST().equals(label)) {
-				return "<";
-			} else if (I18nProvider.getSearch().operatorSE().equals(label)) {
-				return "<=";
-			} else if (I18nProvider.getSearch().operatorBT().equals(label)) {
-				return ">";
-			} else if (I18nProvider.getSearch().operatorBE().equals(label)) {
-				return ">=";
-			} else if (I18nProvider.getSearch().operatorContains().equals(label)) {
-				return "contains";
-			} else if (I18nProvider.getSearch().operatorBefore().equals(label)) {
-				return "BEFORE";
-			} else if (I18nProvider.getSearch().operatorAfter().equals(label)) {
-				return "AFTER";
-			}
-		}
-		return label;
-	}
 
 	public static String getLabelFromOperatorCode(String operator) {
 		if (operator != null) {
@@ -291,13 +220,8 @@ public class AttributeCriterionPane extends Canvas {
 		attributeSelect = new SelectItem("attributeItem");
 		attributeSelect.setWidth(140);
 		attributeSelect.setShowTitle(false);
-		List<String> labels = new ArrayList<String>();
-		for (AbstractAttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			if (attribute instanceof AbstractReadOnlyAttributeInfo) {
-				labels.add(((AbstractReadOnlyAttributeInfo) attribute).getLabel());
-			}
-		}
-		attributeSelect.setValueMap(labels.toArray(new String[labels.size()]));
+		attributeSelect.setValueMap(org.geomajas.gwt.client.widget.attribute.AttributeCriterionPane.
+				getSearchableAttributes(layer));
 		attributeSelect.setHint(I18nProvider.getSearch().gridChooseAttribute());
 		attributeSelect.setShowHintInField(true);
 
@@ -341,7 +265,8 @@ public class AttributeCriterionPane extends Canvas {
 		if (selectedAttribute != null) {
 			// Adjust operator value map and enabled:
 			operatorSelect.setDisabled(false);
-			String[] operators = getOperatorsForAttributeType(selectedAttribute);
+			String[] operators = org.geomajas.gwt.client.widget.attribute.AttributeCriterionPane.
+					getOperatorsForAttributeType(selectedAttribute);
 			operatorSelect.setValueMap(operators);
 			operatorSelect.setValue(operators[0]);
 
