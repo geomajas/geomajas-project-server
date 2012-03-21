@@ -16,8 +16,11 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Circle;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -63,7 +66,7 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 		circleBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Circle circle = new Circle(0, 0, 5);
+				Circle circle = new Circle(200000, 5000000, 10);
 				circle.setFillColor("#FF0000");
 				circle.setFillOpacity(1);
 				circle.setStrokeOpacity(0);
@@ -71,6 +74,32 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 			}
 		});
 		leftLayout.add(circleBtn);
+
+		Button rectangleBtn = new Button("Draw rectangle");
+		rectangleBtn.setWidth("200");
+		rectangleBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Rectangle rectangle = new Rectangle(-5000000, -2000000, 40, 80);
+				rectangle.setFillColor("#FFFF00");
+				rectangle.setFillOpacity(1);
+				rectangle.setStrokeOpacity(0);
+				container.add(rectangle);
+			}
+		});
+		leftLayout.add(rectangleBtn);
+
+		Button imageBtn = new Button("Draw image");
+		imageBtn.setWidth("200");
+		imageBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Image image = new Image(6000000, -3000000, 24, 24, GWT.getModuleBaseURL()
+						+ "geomajas/images/layer/city1.png");
+				container.add(image);
+			}
+		});
+		leftLayout.add(imageBtn);
 
 		Button deleteBtn = new Button("Delete all drawings");
 		deleteBtn.setWidth("200");
