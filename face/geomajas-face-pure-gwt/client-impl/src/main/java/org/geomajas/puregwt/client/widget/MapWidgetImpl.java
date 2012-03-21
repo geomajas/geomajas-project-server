@@ -293,7 +293,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		}
 		scaler.cancel();
 		scaler.setXx(xx);
-		scaler.setYy(xx);
+		scaler.setYy(yy);
 		scaler.schedule(animationMillis);
 	}
 	
