@@ -83,6 +83,7 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 				container.add(rectangle);
 			}
 		});
+		leftLayout.add(rectangleBtn);
 
 		Button deleteBtn = new Button("Delete all drawings");
 		deleteBtn.setWidth("200");
