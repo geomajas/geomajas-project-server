@@ -155,7 +155,7 @@ include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.10.0-SN
 include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.9.0-SNAPSHOT" \
     "Google layer" \
     "This is a layer which allows accessing Google images as raster layer." \
-    "incubating" "Google_layer.pdf" \
+    "graduated" "Google_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-google" "1.8.0"
 
 include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.10.0-SNAPSHOT" \
@@ -185,7 +185,7 @@ include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.10.0-SNAPSHO
 include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.10.0-SNAPSHOT" \
     "Staticsecurity plug-in" \
     "Geomajas security plug-in which allows all users and policies to be defined as part of spring configuration." \
-    "incubating" "staticsecurity.pdf" \
+    "graduated" "staticsecurity.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.9.0"
 
 include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.3.0-SNAPSHOT" \
@@ -215,7 +215,7 @@ include "org.geomajas.plugin" "geocoder-documentation" "1.3.0-SNAPSHOT" \
 include "org.geomajas.plugin" "rasterizing-documentation" "1.1.0-SNAPSHOT" \
     "Rasterizing plug-in" \
     "Allows tiles to be rasterized server-side." \
-    "incubating" "master.pdf" \
+    "graduated" "master.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-rasterizing" "1.0.0"
 
 include "org.geomajas.widget" "geomajas-widget-advancedviews-documentation" "1.0.0-SNAPSHOT" \
