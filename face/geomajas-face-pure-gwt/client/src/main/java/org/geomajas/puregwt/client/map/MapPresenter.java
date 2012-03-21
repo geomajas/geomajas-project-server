@@ -62,6 +62,15 @@ public interface MapPresenter extends IsWidget {
 	 *            The new map renderer responsible for rendering the map.
 	 */
 	void setMapRenderer(MapRenderer mapRenderer);
+	
+	/**
+	 * Set the number of milliseconds an animated navigation sequence should last.
+	 * 
+	 * @param animationMillis
+	 *            The number of milliseconds an animated navigation sequence should last.
+	 */
+	void setAnimationMillis(int animationMillis);
+
 
 	/**
 	 * Apply a new width and height on the map. Both parameters are expressed in pixels.

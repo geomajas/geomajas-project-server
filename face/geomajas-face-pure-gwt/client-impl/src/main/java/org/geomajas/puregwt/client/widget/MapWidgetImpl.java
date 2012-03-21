@@ -22,6 +22,7 @@ import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 
+import com.google.gwt.animation.client.Animation;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -37,6 +38,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
@@ -63,6 +65,7 @@ import com.google.inject.Inject;
  */
 public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
+
 	// Container for raster layers or rasterized layers:
 	private HtmlGroup layerHtmlContainer;
 
@@ -77,7 +80,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// List of all screen containers and world containers:
 	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
+	
+	private Scaler scaler = new Scaler();
 
+	private Animation fader = new Fader();
+	
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -279,4 +286,63 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
 		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
+
+	public void scheduleScale(double xx, double yy, int animationMillis) {
+		for (VectorContainer vectorContainer : getWorldVectorContainers()) {
+			vectorContainer.setOpacity(0.0);
+		}
+		scaler.cancel();
+		scaler.setXx(xx);
+		scaler.setYy(xx);
+		scaler.schedule(animationMillis);
+	}
+	
+	/**
+	 * Timer for applying the scaling to world containers.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class Scaler extends Timer {
+
+		private double xx = 1.0;
+
+		private double yy = 1.0;
+
+		@Override
+		public void run() {
+			for (VectorContainer vectorContainer : getWorldVectorContainers()) {
+				vectorContainer.setScale(xx, yy);
+			}
+			Fader fader = new Fader();
+			fader.run(400);
+		}
+		
+		public void setXx(double xx) {
+			this.xx = xx;
+		}
+		
+		public void setYy(double yy) {
+			this.yy = yy;
+		}		
+
+	}
+	
+	/**
+	 * Lets the world containers fade in after scaling. Not supported for IE as group opacity is not supported for VML.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class Fader extends Animation {
+
+		@Override
+		protected void onUpdate(double progress) {
+			for (VectorContainer vectorContainer : getWorldVectorContainers()) {
+				vectorContainer.setOpacity(progress);
+			}
+		}
+
+	}
+
 }

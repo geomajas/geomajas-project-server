@@ -174,6 +174,15 @@ public final class MapPresenterImpl implements MapPresenter {
 		 */
 		void setPixelSize(int width, int height);
 
+		/**
+		 * Schedules an animated scaling operation.
+		 * 
+		 * @param xx the new x-axis scale factor
+		 * @param yy the new y-axis scale factor
+		 * @param animationMillis the animation time in millis
+		 */
+		void scheduleScale(double xx, double yy, int animationMillis);
+
 	}
 
 	private final MapEventBus eventBus;
@@ -493,27 +502,34 @@ public final class MapPresenterImpl implements MapPresenter {
 	 * @author Pieter De Graef
 	 */
 	private class WorldContainerRenderer implements ViewPortChangedHandler {
+		
+		private int animationMillis = 400;
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
-				vectorContainer.setScale(matrix.getXx(), matrix.getYy());
 				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
 			}
+			display.scheduleScale(matrix.getXx(), matrix.getYy(), animationMillis);
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
-				vectorContainer.setScale(matrix.getXx(), matrix.getYy());
-				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
-			}
+			display.scheduleScale(matrix.getXx(), matrix.getYy(), animationMillis);
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
 				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
+			}
+		}
+
+		public void setDelayMillis(int animationMillis) {
+			if (animationMillis == 0) {
+				this.animationMillis = 10;
+			} else if (animationMillis > 0) {
+				this.animationMillis = animationMillis;
 			}
 		}
 	}
@@ -654,4 +670,10 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 		}
 	}
+	
+	public void setAnimationMillis(int animationMillis) {
+		mapRenderer.setAnimationMillis(animationMillis);
+		worldContainerRenderer.setDelayMillis(animationMillis);
+	}
+
 }

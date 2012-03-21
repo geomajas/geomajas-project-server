@@ -154,7 +154,10 @@ public class MapWidgetTestImpl implements MapWidget {
 
 
 	public void setPixelSize(int width, int height) {
-		// TODO Auto-generated method stub
+		
+	}
+
+	public void scheduleScale(double xx, double yy, int animationMillis) {
 		
 	}
 }

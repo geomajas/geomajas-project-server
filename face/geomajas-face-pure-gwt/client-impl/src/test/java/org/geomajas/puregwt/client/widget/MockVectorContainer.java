@@ -71,4 +71,7 @@ public class MockVectorContainer implements VectorContainer {
 		return visible;
 	}
 
+	public void setOpacity(double opacity) {
+	}
+
 }

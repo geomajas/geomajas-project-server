@@ -41,4 +41,12 @@ public interface VectorContainer extends VectorObjectContainer, Transformable, I
 	 * @return Whether or not this container and all it's children are visible.
 	 */
 	boolean isVisible();
+	
+	/**
+	 * Set container opacity.
+	 * 
+	 * @param opacity opacity
+	 */
+	void setOpacity(double opacity);
+
 }
