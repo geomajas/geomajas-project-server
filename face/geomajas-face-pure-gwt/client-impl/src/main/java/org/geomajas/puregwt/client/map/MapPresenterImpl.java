@@ -48,6 +48,7 @@ import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
+import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
 import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory.Type;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
@@ -112,7 +113,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * 
 		 * @return the container
 		 */
-		List<VectorContainer> getWorldVectorContainers();
+		List<WorldVectorContainer> getWorldVectorContainers();
 
 		/**
 		 * Returns a new user-defined container for screen space objects.
@@ -126,7 +127,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * 
 		 * @return the container
 		 */
-		VectorContainer getNewWorldContainer();
+		WorldVectorContainer getNewWorldContainer();
 
 		/**
 		 * Removes a user-defined container.
@@ -166,20 +167,26 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * @return height in pixels
 		 */
 		int getHeight();
-		
+
 		/**
 		 * Set the total size of the view.
-		 * @param width width
-		 * @param height height
+		 * 
+		 * @param width
+		 *            width
+		 * @param height
+		 *            height
 		 */
 		void setPixelSize(int width, int height);
 
 		/**
 		 * Schedules an animated scaling operation.
 		 * 
-		 * @param xx the new x-axis scale factor
-		 * @param yy the new y-axis scale factor
-		 * @param animationMillis the animation time in millis
+		 * @param xx
+		 *            the new x-axis scale factor
+		 * @param yy
+		 *            the new y-axis scale factor
+		 * @param animationMillis
+		 *            the animation time in millis
 		 */
 		void scheduleScale(double xx, double yy, int animationMillis);
 
@@ -209,7 +216,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	private MapRenderer mapRenderer;
 
 	private WorldContainerRenderer worldContainerRenderer;
-	
+
 	@Inject
 	private DefaultMapGadgetFactory mapGadgetFactory;
 
@@ -229,8 +236,8 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	@Inject
 	private MapPresenterImpl(final FeatureServiceFactory featureServiceFactory,
-			final MapEventParserFactory mapEventParserFactory,
-			final MapRendererFactory mapRendererFactory, final EventBus eventBus) {
+			final MapEventParserFactory mapEventParserFactory, final MapRendererFactory mapRendererFactory,
+			final EventBus eventBus) {
 		this.mapRendererFactory = mapRendererFactory;
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapController, List<HandlerRegistration>>();
@@ -335,8 +342,8 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	/** {@inheritDoc} */
-	public VectorContainer addWorldContainer() {
-		VectorContainer container = display.getNewWorldContainer();
+	public WorldVectorContainer addWorldContainer() {
+		WorldVectorContainer container = display.getNewWorldContainer();
 		// set transform parameters once, after that all is handled by WorldContainerRenderer
 		Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		container.setScale(matrix.getXx(), matrix.getYy());
@@ -502,7 +509,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	 * @author Pieter De Graef
 	 */
 	private class WorldContainerRenderer implements ViewPortChangedHandler {
-		
+
 		private int animationMillis = 400;
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
@@ -640,8 +647,7 @@ public final class MapPresenterImpl implements MapPresenter {
 					left = mapGadget.getHorizontalMargin();
 					break;
 				case END:
-					left = viewPort.getMapWidth() - mapGadget.getWidth()
-							- mapGadget.getHorizontalMargin();
+					left = viewPort.getMapWidth() - mapGadget.getWidth() - mapGadget.getHorizontalMargin();
 					break;
 				default:
 					left = 0;
@@ -651,8 +657,7 @@ public final class MapPresenterImpl implements MapPresenter {
 					top = mapGadget.getVerticalMargin();
 					break;
 				case END:
-					top = viewPort.getMapHeight() - mapGadget.getHeight()
-							- mapGadget.getVerticalMargin();
+					top = viewPort.getMapHeight() - mapGadget.getHeight() - mapGadget.getVerticalMargin();
 					break;
 				default:
 					top = 0;
@@ -670,7 +675,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 		}
 	}
-	
+
 	public void setAnimationMillis(int animationMillis) {
 		mapRenderer.setAnimationMillis(animationMillis);
 		worldContainerRenderer.setDelayMillis(animationMillis);

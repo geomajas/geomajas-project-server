@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
+import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -28,11 +29,10 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HasWidgets.ForIsWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.HasWidgets.ForIsWidget;
 
 /**
  * Test implementation of a MapWidget. The GIN/Guice module in test is configured to use this implementation instead of
@@ -70,7 +70,7 @@ public class MapWidgetTestImpl implements MapWidget {
 
 	}
 
-	List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
+	List<WorldVectorContainer> worldContainers = new ArrayList<WorldVectorContainer>();
 
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		return null;
@@ -115,7 +115,7 @@ public class MapWidgetTestImpl implements MapWidget {
 		return null;
 	}
 
-	public List<VectorContainer> getWorldVectorContainers() {
+	public List<WorldVectorContainer> getWorldVectorContainers() {
 		return worldContainers;
 	}
 
@@ -123,8 +123,8 @@ public class MapWidgetTestImpl implements MapWidget {
 		return null;
 	}
 
-	public VectorContainer getNewWorldContainer() {
-		VectorContainer c = new MockVectorContainer();
+	public WorldVectorContainer getNewWorldContainer() {
+		MockVectorContainer c = new MockVectorContainer();
 		worldContainers.add(c);
 		return c;
 	}
@@ -152,12 +152,11 @@ public class MapWidgetTestImpl implements MapWidget {
 		return 500;
 	}
 
-
 	public void setPixelSize(int width, int height) {
-		
+
 	}
 
 	public void scheduleScale(double xx, double yy, int animationMillis) {
-		
+
 	}
 }
