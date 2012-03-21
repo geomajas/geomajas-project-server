@@ -102,7 +102,7 @@
 			<dependency>
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
-				<version>0.9.7.TX</version>
+				<version>0.9.7.TX2</version>
 			</dependency>
 
 			<dependency>
