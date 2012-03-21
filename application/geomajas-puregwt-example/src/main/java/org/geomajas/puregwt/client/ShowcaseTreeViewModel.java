@@ -23,10 +23,11 @@ import org.geomajas.puregwt.client.layer.LayerOrderPanel;
 import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
 import org.geomajas.puregwt.client.layer.TmsLayerPanel;
 import org.geomajas.puregwt.client.rendering.DrawingInteractionPanel;
+import org.geomajas.puregwt.client.rendering.FixedSizeWorldSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.ScreenSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.WorldSpaceRenderingPanel;
-import org.geomajas.puregwt.client.widget.LegendDisclosureGadgetPanel;
 import org.geomajas.puregwt.client.widget.LayerLegendViewPanel;
+import org.geomajas.puregwt.client.widget.LegendDisclosureGadgetPanel;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.prefetch.RunAsyncCode;
@@ -48,7 +49,7 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 	private final ContentPanelCell contentPanelCell = new ContentPanelCell();
 
 	private SelectionModel<ContentPanel> selectionModel;
-	
+
 	private GeomajasGinjector geomajasInjector;
 
 	// ------------------------------------------------------------------------
@@ -116,6 +117,7 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catList.add(catDrawing);
 		catDrawing.addExample(new ScreenSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
 		catDrawing.addExample(new WorldSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
+		catDrawing.addExample(new FixedSizeWorldSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
 		catDrawing.addExample(new DrawingInteractionPanel(geomajasInjector.getMapPresenter()), null);
 
 		// Widget plug-in:
