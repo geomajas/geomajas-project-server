@@ -310,11 +310,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		@Override
 		public void run() {
 			for (WorldVectorContainer vectorContainer : getWorldVectorContainers()) {
-				if (vectorContainer.isUseFixedSize()) {
-					vectorContainer.setScale(1, 1);
-				} else {
-					vectorContainer.setScale(xx, yy);					
-				}
+				vectorContainer.setScale(xx, yy);
 			}
 			Fader fader = new Fader();
 			fader.run(250);

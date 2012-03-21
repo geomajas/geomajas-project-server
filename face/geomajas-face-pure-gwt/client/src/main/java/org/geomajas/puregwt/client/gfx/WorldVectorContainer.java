@@ -14,7 +14,8 @@ package org.geomajas.puregwt.client.gfx;
 import org.geomajas.annotation.FutureApi;
 
 /**
- * Container definition for vector objects that should be rendered in world space.
+ * Container definition for vector objects that should be rendered in world space. Note that implementing classes may
+ * choose not to support all types of vector objects.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
