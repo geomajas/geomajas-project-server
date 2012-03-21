@@ -13,7 +13,7 @@
 	<inherits name="org.geomajas.gwt.example.GwtFaceExample"/>
 
 	<!-- uncomment following lines for faster compile during development -->
-	<!-- <set-property name="user.agent" value="gecko1_8" /> -->
+	<set-property name="user.agent" value="gecko1_8" />
 
 	<entry-point class="org.geomajas.gwt.example.client.GwtFaceExampleStandalone"/>
 </module>
