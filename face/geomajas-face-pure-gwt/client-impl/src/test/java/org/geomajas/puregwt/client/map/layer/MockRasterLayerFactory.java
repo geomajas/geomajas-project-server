@@ -16,17 +16,19 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.service.EndPointService;
 
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
-
+/**
+ * Mock implementation of a {@link RasterLayerFactory}.
+ * 
+ * @author Jan De Moerloose
+ */
 public class MockRasterLayerFactory implements RasterLayerFactory {
-	
+
 	@Inject
 	EndPointService endPointService;
-	
 
-	public Layer<ClientRasterLayerInfo> create(ClientRasterLayerInfo clientRasterLayerInfo, ViewPort viewPort, MapEventBus eventBus) {
+	public Layer<ClientRasterLayerInfo> create(ClientRasterLayerInfo clientRasterLayerInfo, ViewPort viewPort,
+			MapEventBus eventBus) {
 		return new RasterLayer(clientRasterLayerInfo, viewPort, eventBus, endPointService);
 	}
-
 }

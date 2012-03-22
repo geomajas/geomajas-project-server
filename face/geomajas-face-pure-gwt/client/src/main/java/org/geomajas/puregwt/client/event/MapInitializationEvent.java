@@ -12,22 +12,21 @@ package org.geomajas.puregwt.client.event;
 
 import org.geomajas.annotation.Api;
 
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.event.shared.Event;
 
 /**
- * Event that reports the initialization of the map.
+ * Event that reports the initialization of the map. This is when the actual configuration has been loaded and when
+ * layers become available.
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class MapInitializationEvent extends GwtEvent<MapInitializationHandler> {
-
-	public static final Type<MapInitializationHandler> TYPE = new Type<MapInitializationHandler>();
+public class MapInitializationEvent extends Event<MapInitializationHandler> {
 
 	@Override
 	public Type<MapInitializationHandler> getAssociatedType() {
-		return TYPE;
+		return MapInitializationHandler.TYPE;
 	}
 
 	@Override

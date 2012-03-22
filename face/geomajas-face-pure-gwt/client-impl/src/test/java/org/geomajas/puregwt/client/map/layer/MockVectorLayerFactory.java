@@ -16,15 +16,19 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.service.EndPointService;
 
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
+/**
+ * Mock implementation of a {@link VectorLayerFactory}.
+ * 
+ * @author Jan De Moerloose
+ */
 public class MockVectorLayerFactory implements VectorLayerFactory {
 
 	@Inject
 	EndPointService endPointService;
 
-	public Layer<ClientVectorLayerInfo> create(ClientVectorLayerInfo clientVectorLayerInfo, ViewPort viewPort,MapEventBus eventBus) {
+	public Layer<ClientVectorLayerInfo> create(ClientVectorLayerInfo clientVectorLayerInfo, ViewPort viewPort,
+			MapEventBus eventBus) {
 		return new VectorLayer(clientVectorLayerInfo, viewPort, eventBus, endPointService);
 	}
-
 }

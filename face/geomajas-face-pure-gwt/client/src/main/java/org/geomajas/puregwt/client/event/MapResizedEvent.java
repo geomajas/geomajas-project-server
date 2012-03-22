@@ -12,7 +12,7 @@ package org.geomajas.puregwt.client.event;
 
 import org.geomajas.annotation.Api;
 
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.event.shared.Event;
 
 /**
  * Event that reports resizing of the map.
@@ -21,13 +21,11 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class MapResizedEvent extends GwtEvent<MapResizedHandler> {
+public class MapResizedEvent extends Event<MapResizedHandler> {
 
-	public static final Type<MapResizedHandler> TYPE = new Type<MapResizedHandler>();
+	private final int mapWidth;
 
-	private int mapWidth;
-
-	private int mapHeight;
+	private final int mapHeight;
 
 	public MapResizedEvent(int mapWidth, int mapHeight) {
 		this.mapWidth = mapWidth;
@@ -36,7 +34,7 @@ public class MapResizedEvent extends GwtEvent<MapResizedHandler> {
 
 	@Override
 	public Type<MapResizedHandler> getAssociatedType() {
-		return TYPE;
+		return MapResizedHandler.TYPE;
 	}
 
 	@Override

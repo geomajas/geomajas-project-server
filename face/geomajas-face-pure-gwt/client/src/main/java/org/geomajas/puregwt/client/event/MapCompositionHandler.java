@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.web.bindery.event.shared.Event.Type;
 
 /**
  * Handler for the addition and removal of layers within a map.

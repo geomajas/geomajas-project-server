@@ -34,5 +34,4 @@ public class LayerRemovedEvent extends BaseLayerEvent<MapCompositionHandler> {
 	protected void dispatch(MapCompositionHandler mapCompositionHandler) {
 		mapCompositionHandler.onLayerRemoved(this);
 	}
-
 }

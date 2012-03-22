@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.event.shared.Event.Type;
 
 /**
  * Interface for event handlers that catch {@link FeatureSelectedEvent}s.
@@ -27,7 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface FeatureSelectionHandler extends EventHandler {
 
-	GwtEvent.Type<FeatureSelectionHandler> TYPE = new GwtEvent.Type<FeatureSelectionHandler>();
+	Type<FeatureSelectionHandler> TYPE = new Type<FeatureSelectionHandler>();
 
 	/**
 	 * Called when feature is selected.
@@ -42,5 +42,4 @@ public interface FeatureSelectionHandler extends EventHandler {
 	 * @param event {@link FeatureDeselectedEvent}
 	 */
 	void onFeatureDeselected(FeatureDeselectedEvent event);
-	
 }

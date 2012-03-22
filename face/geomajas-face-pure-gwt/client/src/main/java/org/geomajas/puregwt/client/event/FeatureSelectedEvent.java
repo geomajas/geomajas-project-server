@@ -24,13 +24,18 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class FeatureSelectedEvent extends BaseLayerEvent<FeatureSelectionHandler> {
 
-	private Feature feature;
+	private final Feature feature;
 
 	public FeatureSelectedEvent(Layer<?> layer, Feature feature) {
 		super(layer);
 		this.feature = feature;
 	}
 
+	/**
+	 * Get the selected feature.
+	 * 
+	 * @return The feature.
+	 */
 	public Feature getFeature() {
 		return feature;
 	}

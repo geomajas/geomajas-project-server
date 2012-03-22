@@ -24,13 +24,18 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class FeatureDeselectedEvent extends BaseLayerEvent<FeatureSelectionHandler> {
 
-	private Feature feature;
+	private final Feature feature;
 
 	public FeatureDeselectedEvent(Layer<?> layer, Feature feature) {
 		super(layer);
 		this.feature = feature;
 	}
 
+	/**
+	 * Get the deselected feature.
+	 * 
+	 * @return The feature.
+	 */
 	public Feature getFeature() {
 		return feature;
 	}

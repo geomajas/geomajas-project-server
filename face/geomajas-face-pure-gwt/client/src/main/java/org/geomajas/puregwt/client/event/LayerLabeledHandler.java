@@ -14,7 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.web.bindery.event.shared.Event.Type;
 
 /**
  * Interface for handling layer visibility events.

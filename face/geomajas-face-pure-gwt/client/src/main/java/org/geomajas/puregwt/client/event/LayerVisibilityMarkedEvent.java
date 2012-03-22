@@ -25,7 +25,6 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * <code>LayerShowEvent</code> shortly.
  * </p>
  * 
- * @author Frank Wynants
  * @author Pieter De Graef
  * @since 1.0.0
  */
@@ -35,7 +34,6 @@ public class LayerVisibilityMarkedEvent extends BaseLayerEvent<LayerVisibilityHa
 	public LayerVisibilityMarkedEvent(Layer<?> layer) {
 		super(layer);
 	}
-
 
 	@Override
 	public Type<LayerVisibilityHandler> getAssociatedType() {

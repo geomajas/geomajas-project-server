@@ -14,9 +14,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that reports <code>Layer</code> changes.
+ * Event that reports {@link Layer} visibility changes.
  * 
- * @author Frank Wynants
  * @author Pieter De Graef
  * @since 1.0.0
  */

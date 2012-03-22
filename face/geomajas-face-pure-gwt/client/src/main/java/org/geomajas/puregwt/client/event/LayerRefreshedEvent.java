@@ -33,5 +33,4 @@ public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {
 	protected void dispatch(LayerRefreshedHandler handler) {
 		handler.onLayerRefreshed(this);
 	}
-
 }

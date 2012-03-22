@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.event;
 
 import org.geomajas.annotation.Api;
 
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.event.shared.Event;
 
 /**
  * Event that is fired when the order of the layers within a map has changed.
@@ -23,11 +23,11 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerOrderChangedEvent extends GwtEvent<LayerOrderChangedHandler> {
+public class LayerOrderChangedEvent extends Event<LayerOrderChangedHandler> {
 
-	private int fromIndex;
+	private final int fromIndex;
 
-	private int toIndex;
+	private final int toIndex;
 
 	public LayerOrderChangedEvent(int fromIndex, int toIndex) {
 		this.fromIndex = fromIndex;

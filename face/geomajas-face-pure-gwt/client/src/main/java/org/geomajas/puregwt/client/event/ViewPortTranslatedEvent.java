@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.event;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.ViewPort;
 
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.event.shared.Event;
 
 /**
  * Event that is fired when a translation on the {@link ViewPort} has occurred, while the scale has remained the same.
@@ -23,9 +23,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class ViewPortTranslatedEvent extends GwtEvent<ViewPortChangedHandler> {
+public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 
-	private ViewPort viewPort;
+	private final ViewPort viewPort;
 
 	// -------------------------------------------------------------------------
 	// Constructor:

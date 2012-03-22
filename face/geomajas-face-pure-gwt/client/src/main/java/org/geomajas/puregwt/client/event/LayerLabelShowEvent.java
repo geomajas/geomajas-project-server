@@ -16,7 +16,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 /**
  * Event that is fired when the labels of a layer are made visible.
  *
- * @author Frank Wynants
+ * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api(allMethods = true)

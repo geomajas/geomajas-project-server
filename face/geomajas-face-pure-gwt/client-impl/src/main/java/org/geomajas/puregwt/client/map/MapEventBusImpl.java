@@ -30,17 +30,15 @@ import org.geomajas.puregwt.client.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
-import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.event.MapResizedEvent;
 import org.geomajas.puregwt.client.event.MapResizedHandler;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.web.bindery.event.shared.Event;
+import com.google.web.bindery.event.shared.Event.Type;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.google.web.bindery.event.shared.Event.Type;
 
 /**
  * Default implementation of {@link MapEventBus}.
@@ -121,11 +119,11 @@ public class MapEventBusImpl implements MapEventBus {
 	}
 
 	public HandlerRegistration addMapInitializationHandler(MapInitializationHandler handler) {
-		return eventBus.addHandlerToSource(MapInitializationEvent.TYPE, source, handler);
+		return eventBus.addHandlerToSource(MapInitializationHandler.TYPE, source, handler);
 	}
 
 	public HandlerRegistration addMapResizedHandler(MapResizedHandler handler) {
-		return eventBus.addHandlerToSource(MapResizedEvent.TYPE, source, handler);
+		return eventBus.addHandlerToSource(MapResizedHandler.TYPE, source, handler);
 	}
 
 	public HandlerRegistration addViewPortChangedHandler(ViewPortChangedHandler handler) {
@@ -135,7 +133,7 @@ public class MapEventBusImpl implements MapEventBus {
 	public <H> void fireEvent(Event<H> event) {
 		eventBus.fireEventFromSource(event, source);
 	}
-	
+
 	public <H> HandlerRegistration addHandler(Type<H> type, H handler) {
 		return eventBus.addHandlerToSource(type, source, handler);
 	}

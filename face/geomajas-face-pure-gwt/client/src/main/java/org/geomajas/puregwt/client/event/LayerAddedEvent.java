@@ -33,5 +33,4 @@ public class LayerAddedEvent extends BaseLayerEvent<MapCompositionHandler> {
 	protected void dispatch(MapCompositionHandler mapCompositionHandler) {
 		mapCompositionHandler.onLayerAdded(this);
 	}
-
 }

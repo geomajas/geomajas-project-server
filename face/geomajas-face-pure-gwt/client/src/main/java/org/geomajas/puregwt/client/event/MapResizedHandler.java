@@ -14,6 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
+import com.google.web.bindery.event.shared.Event.Type;
 
 /**
  * Interface for handling map resize events.
@@ -24,6 +25,8 @@ import com.google.gwt.event.shared.EventHandler;
 @Api(allMethods = true)
 @UserImplemented
 public interface MapResizedHandler extends EventHandler {
+
+	Type<MapResizedHandler> TYPE = new Type<MapResizedHandler>();
 
 	/**
 	 * Called when the map has been resized.

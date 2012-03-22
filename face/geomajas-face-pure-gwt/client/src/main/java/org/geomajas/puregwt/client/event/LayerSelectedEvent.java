@@ -33,5 +33,4 @@ public class LayerSelectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 	protected void dispatch(LayerSelectionHandler selectLayerHandler) {
 		selectLayerHandler.onSelectLayer(this);
 	}
-
 }
