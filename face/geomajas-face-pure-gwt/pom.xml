@@ -47,6 +47,7 @@
 	<modules>
 		<module>client</module>
 		<module>client-impl</module>
+		<module>documentation</module>
 	</modules>
 
 	<dependencyManagement>
@@ -102,7 +103,7 @@
 			<dependency>
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
-				<version>0.9.7.TX2</version>
+				<version>0.9.7.TX3</version>
 			</dependency>
 
 			<dependency>

@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -70,7 +69,7 @@ public class MapWidgetTestImpl implements MapWidget {
 
 	}
 
-	List<WorldVectorContainer> worldContainers = new ArrayList<WorldVectorContainer>();
+	List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
 
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		return null;
@@ -115,7 +114,7 @@ public class MapWidgetTestImpl implements MapWidget {
 		return null;
 	}
 
-	public List<WorldVectorContainer> getWorldVectorContainers() {
+	public List<VectorContainer> getWorldVectorContainers() {
 		return worldContainers;
 	}
 
@@ -123,7 +122,7 @@ public class MapWidgetTestImpl implements MapWidget {
 		return null;
 	}
 
-	public WorldVectorContainer getNewWorldContainer() {
+	public VectorContainer getNewWorldContainer() {
 		MockVectorContainer c = new MockVectorContainer();
 		worldContainers.add(c);
 		return c;
