@@ -14,11 +14,13 @@ package org.geomajas.puregwt.client.rendering;
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Circle;
+import org.vaadin.gwtgraphics.client.shape.Ellipse;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
+import org.vaadin.gwtgraphics.client.shape.Text;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 
-	private WorldVectorContainer container;
+	private VectorContainer container;
 
 	public FixedSizeWorldSpaceRenderingPanel(MapPresenter mapPresenter) {
 		super(mapPresenter);
@@ -75,6 +77,20 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 		});
 		leftLayout.add(circleBtn);
 
+		Button ellipseBtn = new Button("Draw ellipse");
+		ellipseBtn.setWidth("200");
+		ellipseBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Ellipse ellipse = new Ellipse(300000, 2000000, 20, 30);
+				ellipse.setFillColor("#0000FF");
+				ellipse.setFillOpacity(1);
+				ellipse.setStrokeOpacity(0);
+				container.add(ellipse);
+			}
+		});
+		leftLayout.add(ellipseBtn);
+
 		Button rectangleBtn = new Button("Draw rectangle");
 		rectangleBtn.setWidth("200");
 		rectangleBtn.addClickHandler(new ClickHandler() {
@@ -100,6 +116,20 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 			}
 		});
 		leftLayout.add(imageBtn);
+
+		Button textBtn = new Button("Draw text");
+		textBtn.setWidth("200");
+		textBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Text text = new Text(-6000000, 1000000, "Hello World");
+				text.setFillColor("#0066AA");
+				text.setFillOpacity(1);
+				text.setStrokeOpacity(0);
+				container.add(text);
+			}
+		});
+		leftLayout.add(textBtn);
 
 		Button deleteBtn = new Button("Delete all drawings");
 		deleteBtn.setWidth("200");
@@ -137,7 +167,7 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 
 		public void onMapInitialized(MapInitializationEvent event) {
 			container = mapPresenter.addWorldContainer();
-			container.setUseFixedSize(true);
+			container.setFixedSize(true);
 		}
 	}
 }
