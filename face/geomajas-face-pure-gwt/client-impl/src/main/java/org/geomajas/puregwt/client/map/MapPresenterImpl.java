@@ -522,6 +522,11 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+			// We must translate as well because zooming and keeping the same center point
+			// also involves a translation (scale origin != center point) !!!
+			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
+				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
+			}
 			display.scheduleScale(matrix.getXx(), matrix.getYy(), animationMillis);
 		}
 
