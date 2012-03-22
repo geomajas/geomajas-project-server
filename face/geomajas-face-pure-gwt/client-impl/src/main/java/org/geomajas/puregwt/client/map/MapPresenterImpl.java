@@ -48,7 +48,6 @@ import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
 import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory.Type;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
@@ -113,7 +112,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * 
 		 * @return the container
 		 */
-		List<WorldVectorContainer> getWorldVectorContainers();
+		List<VectorContainer> getWorldVectorContainers();
 
 		/**
 		 * Returns a new user-defined container for screen space objects.
@@ -127,7 +126,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * 
 		 * @return the container
 		 */
-		WorldVectorContainer getNewWorldContainer();
+		VectorContainer getNewWorldContainer();
 
 		/**
 		 * Removes a user-defined container.
@@ -342,8 +341,8 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	/** {@inheritDoc} */
-	public WorldVectorContainer addWorldContainer() {
-		WorldVectorContainer container = display.getNewWorldContainer();
+	public VectorContainer addWorldContainer() {
+		VectorContainer container = display.getNewWorldContainer();
 		// set transform parameters once, after that all is handled by WorldContainerRenderer
 		Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		container.setScale(matrix.getXx(), matrix.getYy());

@@ -19,7 +19,6 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
@@ -35,7 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 @Api(allMethods = true)
 public interface MapPresenter extends IsWidget {
-	
+
 	/**
 	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
 	 * on return. A special {@link org.geomajas.puregwt.client.event.MapInitializationEvent} will be fired once
@@ -63,7 +62,7 @@ public interface MapPresenter extends IsWidget {
 	 *            The new map renderer responsible for rendering the map.
 	 */
 	void setMapRenderer(MapRenderer mapRenderer);
-	
+
 	/**
 	 * Set the number of milliseconds an animated navigation sequence should last.
 	 * 
@@ -71,7 +70,6 @@ public interface MapPresenter extends IsWidget {
 	 *            The number of milliseconds an animated navigation sequence should last.
 	 */
 	void setAnimationMillis(int animationMillis);
-
 
 	/**
 	 * Apply a new width and height on the map. Both parameters are expressed in pixels.
@@ -97,7 +95,7 @@ public interface MapPresenter extends IsWidget {
 	 * 
 	 * @return Returns the world vector container.
 	 */
-	WorldVectorContainer addWorldContainer();
+	VectorContainer addWorldContainer();
 
 	/**
 	 * Create a new container in screen space wherein one can render new vector objects and return it. Note that all

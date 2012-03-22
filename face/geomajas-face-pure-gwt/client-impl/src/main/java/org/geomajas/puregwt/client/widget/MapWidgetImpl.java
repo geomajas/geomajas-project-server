@@ -18,8 +18,6 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.gfx.VectorGroup;
-import org.geomajas.puregwt.client.gfx.WorldVectorContainer;
-import org.geomajas.puregwt.client.gfx.WorldVectorGroup;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
@@ -80,7 +78,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	private List<VectorContainer> screenContainers = new ArrayList<VectorContainer>();
 
 	// List of all screen containers and world containers:
-	private List<WorldVectorContainer> worldContainers = new ArrayList<WorldVectorContainer>();
+	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
 
 	private Scaler scaler = new Scaler();
 
@@ -144,7 +142,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	/** {@inheritDoc} */
-	public List<WorldVectorContainer> getWorldVectorContainers() {
+	public List<VectorContainer> getWorldVectorContainers() {
 		return worldContainers;
 	}
 
@@ -157,8 +155,8 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	/** {@inheritDoc} */
-	public WorldVectorContainer getNewWorldContainer() {
-		WorldVectorGroup container = new WorldVectorGroup();
+	public VectorContainer getNewWorldContainer() {
+		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
 		worldContainers.add(container);
 		return container;
@@ -287,7 +285,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	public void scheduleScale(double xx, double yy, int animationMillis) {
-		for (WorldVectorContainer vectorContainer : getWorldVectorContainers()) {
+		for (VectorContainer vectorContainer : getWorldVectorContainers()) {
 			vectorContainer.setOpacity(0.0);
 		}
 		scaler.cancel();
@@ -309,7 +307,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 		@Override
 		public void run() {
-			for (WorldVectorContainer vectorContainer : getWorldVectorContainers()) {
+			for (VectorContainer vectorContainer : getWorldVectorContainers()) {
 				vectorContainer.setScale(xx, yy);
 			}
 			Fader fader = new Fader();
