@@ -178,18 +178,6 @@ public interface MapPresenter extends IsWidget {
 	boolean removeMapGadget(MapGadget mapGadget);
 
 	/**
-	 * An optional fall-back {@link MapController} to return to, when no controller is explicitly set (controller=null).
-	 * If no current controller is active when this setter is called, it is applied immediately. The default fall-back
-	 * controller when a map is initialized, is a controller that allows you to navigate.<br>
-	 * TODO remove this? We could keep this an internal matter. Just set a navigation controller when no other
-	 * controller is set.
-	 * 
-	 * @param fallbackController
-	 *            The new fall-back controller to use.
-	 */
-	void setFallbackController(MapController fallbackController);
-
-	/**
 	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for
 	 * the map. Only one controller can be set at any given time. When a controller is active on the map, using this
 	 * method, any fall-back controller is automatically disabled.

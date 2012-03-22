@@ -268,7 +268,8 @@ public final class MapPresenterImpl implements MapPresenter {
 		worldContainerRenderer = new WorldContainerRenderer();
 		eventBus.addViewPortChangedHandler(worldContainerRenderer);
 
-		setFallbackController(new NavigationController());
+		fallbackController = new NavigationController();
+		setMapController(fallbackController);
 
 		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
@@ -414,15 +415,6 @@ public final class MapPresenterImpl implements MapPresenter {
 	/** {@inheritDoc} */
 	public MapController getMapController() {
 		return mapController;
-	}
-
-	/** {@inheritDoc} */
-	public void setFallbackController(MapController fallbackController) {
-		boolean fallbackActive = (mapController == this.fallbackController);
-		this.fallbackController = fallbackController;
-		if (mapController == null || fallbackActive) {
-			setMapController(fallbackController);
-		}
 	}
 
 	/** {@inheritDoc} */
