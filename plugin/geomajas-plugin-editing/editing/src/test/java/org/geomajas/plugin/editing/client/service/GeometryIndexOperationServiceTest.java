@@ -397,7 +397,11 @@ public class GeometryIndexOperationServiceTest {
 	}
 
 	@Test
-	public void testAddEmptyChild() {
-		// TODO
+	public void testAddEmptyChild() throws GeometryOperationFailedException {
+		service.start(polygon);
+		int originalNumber = polygon.getGeometries().length;
+		service.addEmptyChild(new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 0, null));
+		int afterNumber = polygon.getGeometries().length;
+		Assert.assertTrue(originalNumber + 1 == afterNumber);
 	}
 }
