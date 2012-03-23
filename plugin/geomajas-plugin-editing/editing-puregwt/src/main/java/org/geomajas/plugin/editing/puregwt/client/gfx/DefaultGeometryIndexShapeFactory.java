@@ -17,15 +17,13 @@ import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
-import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * Default implementation of the {@link GeometryIndexShapeFactory}. It will create a path for an edge, a path for a
@@ -39,19 +37,20 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 
 	private static final int VERTEX_HALF_SIZE = 6;
 
-	private static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
-
 	private final MapPresenter mapPresenter;
 
 	private final RenderSpace targetSpace;
+	
+	private GfxUtil gfxUtil;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public DefaultGeometryIndexShapeFactory(MapPresenter mapPresenter, RenderSpace targetSpace) {
+	public DefaultGeometryIndexShapeFactory(MapPresenter mapPresenter, RenderSpace targetSpace, GfxUtil gfxUtil) {
 		this.mapPresenter = mapPresenter;
 		this.targetSpace = targetSpace;
+		this.gfxUtil = gfxUtil;
 	}
 
 	// ------------------------------------------------------------------------
@@ -130,7 +129,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
 		}
 		try {
-			return INJECTOR.getGfxUtil().toPath(g);
+			return gfxUtil.toPath(g);
 		} catch (NullPointerException npe) {
 			return null;
 		}
@@ -183,7 +182,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 			}
 
 			// TODO find a better way. Now, the internal state of the path will be flawed.
-			Path second = INJECTOR.getGfxUtil().toPath(g);
+			Path second = gfxUtil.toPath(g);
 			for (int i = 0; i < path.getStepCount(); i++) {
 				path.setStep(i, second.getStep(i));
 			}

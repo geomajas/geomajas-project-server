@@ -18,12 +18,11 @@ import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
-import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -40,8 +39,6 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  */
 public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, MouseMoveHandler, MapDownHandler {
 
-	private static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
-
 	private static final int MARKER_SIZE = 6;
 
 	private FeatureStyleInfo style;
@@ -51,6 +48,8 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 	private GeometryEditService service;
 
 	private MapEventParser eventParser;
+	
+	private GfxUtil gfxUtil;
 
 	private VectorContainer container;
 
@@ -58,10 +57,12 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public EdgeMarkerHandler(MapPresenter mapPresenter, GeometryEditService service, MapEventParser eventParser) {
+	public EdgeMarkerHandler(MapPresenter mapPresenter, GeometryEditService service, MapEventParser eventParser,
+			GfxUtil gfxUtil) {
 		this.mapPresenter = mapPresenter;
 		this.service = service;
 		this.eventParser = eventParser;
+		this.gfxUtil = gfxUtil;
 		
 		style = new FeatureStyleInfo();
 		style.setFillColor("#444444");
@@ -128,22 +129,22 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 			// Top:
 			Path top = new Path(tl.getX(), tl.getY());
 			top.lineTo(tr.getX(), tr.getY());
-			INJECTOR.getGfxUtil().applyStyle(top, style);
+			gfxUtil.applyStyle(top, style);
 			container.add(top);
 
 			Path right = new Path(tr.getX(), tr.getY());
 			right.lineTo(br.getX(), br.getY());
-			INJECTOR.getGfxUtil().applyStyle(right, style);
+			gfxUtil.applyStyle(right, style);
 			container.add(right);
 
 			Path bottom = new Path(br.getX(), br.getY());
 			bottom.lineTo(bl.getX(), bl.getY());
-			INJECTOR.getGfxUtil().applyStyle(bottom, style);
+			gfxUtil.applyStyle(bottom, style);
 			container.add(bottom);
 
 			Path left = new Path(bl.getX(), bl.getY());
 			left.lineTo(tl.getX(), tl.getY());
-			INJECTOR.getGfxUtil().applyStyle(left, style);
+			gfxUtil.applyStyle(left, style);
 			container.add(left);
 		}
 	}

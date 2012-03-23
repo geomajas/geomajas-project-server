@@ -11,8 +11,6 @@
 
 package org.geomajas.plugin.editing.gwt.example.client;
 
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Canvas;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -20,11 +18,14 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
 import org.geomajas.plugin.editing.gwt.example.client.i18n.EditingMessages;
 import org.geomajas.plugin.editing.gwt.example.client.widget.CancelEditingBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.RedoBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.UndoBtn;
 
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -85,7 +86,7 @@ public class MultiGeometryPanel extends SamplePanel {
 				point4.setCoordinates(new Coordinate[] { c4 });
 
 				mp.setGeometries(new Geometry[] { point1, point2, point3, point4 });
-				editor.getService().start(mp);
+				editor.getEditService().start(mp);
 			}
 		});
 
@@ -111,7 +112,7 @@ public class MultiGeometryPanel extends SamplePanel {
 				line2.setCoordinates(new Coordinate[] { c3, c4 });
 
 				mls.setGeometries(new Geometry[] { line1, line2 });
-				editor.getService().start(mls);
+				editor.getEditService().start(mls);
 			}
 		});
 
@@ -147,7 +148,7 @@ public class MultiGeometryPanel extends SamplePanel {
 				polygon2.setGeometries(new Geometry[] { ring2 });
 
 				mp.setGeometries(new Geometry[] { polygon1, polygon2 });
-				editor.getService().start(mp);
+				editor.getEditService().start(mp);
 			}
 		});
 
@@ -162,7 +163,7 @@ public class MultiGeometryPanel extends SamplePanel {
 	/** {@inheritDoc} */
 	public Canvas getViewPanel() {
 		MapWidget map = new MapWidget("mapGepEditing2", "appEditing");
-		GeometryEditor editor = new GeometryEditor(map);
+		GeometryEditor editor = new GeometryEditorImpl(map);
 
 		VLayout layout = new VLayout();
 		layout.setSize("100%", "100%");
@@ -174,12 +175,12 @@ public class MultiGeometryPanel extends SamplePanel {
 		toolStrip.addSeparator();
 
 		// Add buttons to help the editing process:
-		toolStrip.addButton(new CancelEditingBtn(editor.getService()));
+		toolStrip.addButton(new CancelEditingBtn(editor.getEditService()));
 
-		UndoBtn undoBtn = new UndoBtn(editor.getService());
+		UndoBtn undoBtn = new UndoBtn(editor.getEditService());
 		toolStrip.addButton(undoBtn);
 
-		RedoBtn redoBtn = new RedoBtn(editor.getService());
+		RedoBtn redoBtn = new RedoBtn(editor.getEditService());
 		toolStrip.addButton(redoBtn);
 
 		layout.addMember(toolStrip);

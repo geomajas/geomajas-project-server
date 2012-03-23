@@ -11,17 +11,18 @@
 
 package org.geomajas.plugin.editing.gwt.example.client.split;
 
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Canvas;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.plugin.editing.client.split.GeometrySplitService;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
 import org.geomajas.plugin.editing.gwt.example.client.i18n.EditingMessages;
 import org.geomajas.plugin.editing.gwt.example.client.widget.RedoBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.UndoBtn;
 
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
@@ -46,8 +47,8 @@ public class SplitPanel extends SamplePanel {
 	/** {@inheritDoc} */
 	public Canvas getViewPanel() {
 		MapWidget mapWidget = new MapWidget("mapGepSplitting", "appEditing");
-		GeometryEditor editor = new GeometryEditor(mapWidget);
-		GeometrySplitService service = new GeometrySplitService(editor.getService());
+		GeometryEditor editor = new GeometryEditorImpl(mapWidget);
+		GeometrySplitService service = new GeometrySplitService(editor.getEditService());
 
 		VLayout layout = new VLayout();
 		layout.setSize("100%", "100%");
@@ -63,10 +64,10 @@ public class SplitPanel extends SamplePanel {
 		// Add buttons to help the editing process:
 		toolStrip.addButton(new CancelSplitProcessButton(service));
 
-		UndoBtn undoBtn = new UndoBtn(editor.getService());
+		UndoBtn undoBtn = new UndoBtn(editor.getEditService());
 		toolStrip.addButton(undoBtn);
 
-		RedoBtn redoBtn = new RedoBtn(editor.getService());
+		RedoBtn redoBtn = new RedoBtn(editor.getEditService());
 		toolStrip.addButton(redoBtn);
 
 		layout.addMember(toolStrip);

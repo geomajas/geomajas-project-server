@@ -20,7 +20,6 @@ import org.geomajas.plugin.editing.puregwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.puregwt.example.client.button.CancelButton;
 import org.geomajas.plugin.editing.puregwt.example.client.button.RedoButton;
 import org.geomajas.plugin.editing.puregwt.example.client.button.UndoButton;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -48,7 +47,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class Showcase implements EntryPoint {
 
-	private static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
+	private static final ShowCaseGinjector INJECTOR = GWT.create(ShowCaseGinjector.class);
 
 	private MapPresenter mapPresenter;
 
@@ -56,7 +55,7 @@ public class Showcase implements EntryPoint {
 
 	public void onModuleLoad() {
 		mapPresenter = INJECTOR.getMapPresenter();
-		editor = new GeometryEditor(mapPresenter);
+		editor = INJECTOR.getGeometryEditorFactory().create(mapPresenter);
 
 		DockLayoutPanel layout = new DockLayoutPanel(Unit.PX);
 		layout.setSize("100%", "100%");

@@ -11,15 +11,17 @@
 
 package org.geomajas.plugin.editing.gwt.example.client;
 
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
 import org.geomajas.plugin.editing.gwt.example.client.i18n.EditingMessages;
 import org.geomajas.plugin.editing.gwt.example.client.widget.MenuBar;
+
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
@@ -42,7 +44,7 @@ public class EditingPanel extends SamplePanel {
 	/** {@inheritDoc} */
 	public Canvas getViewPanel() {
 		final MapWidget map = new MapWidget("mapGepEditing", "appEditing");
-		final GeometryEditor editor = new GeometryEditor(map);
+		final GeometryEditor editor = new GeometryEditorImpl(map);
 
 		VLayout layout = new VLayout();
 		MenuBar editingToolStrip = new MenuBar(editor);

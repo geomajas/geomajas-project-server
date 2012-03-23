@@ -8,23 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.puregwt.client;
-
-import org.geomajas.plugin.editing.client.BaseGeometryEditor;
-import org.geomajas.puregwt.client.map.MapPresenter;
+package org.geomajas.plugin.editing.client.gfx;
 
 /**
- * Extends {@link BaseGeometryEditor} to provide access to the {@link MapPresenter}.
+ * The actual renderer for the geometry. TODO: looks empty, is this interface necessary ?
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface GeometryEditor extends BaseGeometryEditor {
+public interface GeometryRenderer {
 
 	/**
-	 * Get the map on which this editor is running.
-	 * 
-	 * @return the map presenter
+	 * Redraw the geometry to apply changes in the editor internal state.
 	 */
-	MapPresenter getMapPresenter();
+	void redraw();
+
 }

@@ -62,22 +62,22 @@ public class MenuBar extends ToolStrip {
 		addSeparator();
 
 		// Add buttons to help the editing process:
-		addButton(new CancelEditingBtn(editor.getService()));
+		addButton(new CancelEditingBtn(editor.getEditService()));
 
-		UndoBtn undoBtn = new UndoBtn(editor.getService());
+		UndoBtn undoBtn = new UndoBtn(editor.getEditService());
 		addGeometryEditSuspensionHandler(undoBtn);
 		addButton(undoBtn);
 
-		RedoBtn redoBtn = new RedoBtn(editor.getService());
+		RedoBtn redoBtn = new RedoBtn(editor.getEditService());
 		addGeometryEditSuspensionHandler(redoBtn);
 		addButton(redoBtn);
 
 		addSeparator();
 
-		AddRingBtn addRingBtn = new AddRingBtn(editor.getService());
+		AddRingBtn addRingBtn = new AddRingBtn(editor.getEditService());
 		addGeometryEditSuspensionHandler(addRingBtn);
 		addButton(addRingBtn);
-		addButton(new DeleteRingBtn(this, editor.getService(), editor.getRenderer()));
+		addButton(new DeleteRingBtn(this, editor.getEditService(), editor.getRenderer()));
 
 		addSeparator();
 		ToolStripButton snappingBtn = new ToolStripButton("Snapping options");
@@ -112,11 +112,12 @@ public class MenuBar extends ToolStrip {
 
 			public void onClick(MenuItemClickEvent event) {
 				Geometry point = new Geometry(Geometry.POINT, 0, 0);
-				GeometryIndex index = editor.getService().getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+				GeometryIndex index = editor.getEditService().getIndexService()
+						.create(GeometryIndexType.TYPE_VERTEX, 0);
 
-				editor.getService().start(point);
-				editor.getService().setInsertIndex(index);
-				editor.getService().setEditingState(GeometryEditState.INSERTING);
+				editor.getEditService().start(point);
+				editor.getEditService().setInsertIndex(index);
+				editor.getEditService().setEditingState(GeometryEditState.INSERTING);
 			}
 		});
 		MenuItem lineItem = new MenuItem("Draw Line", "[ISOMORPHIC]/geomajas/osgeo/line-create.png");
@@ -124,11 +125,12 @@ public class MenuBar extends ToolStrip {
 
 			public void onClick(MenuItemClickEvent event) {
 				Geometry line = new Geometry(Geometry.LINE_STRING, 0, 0);
-				GeometryIndex index = editor.getService().getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+				GeometryIndex index = editor.getEditService().getIndexService()
+						.create(GeometryIndexType.TYPE_VERTEX, 0);
 
-				editor.getService().start(line);
-				editor.getService().setInsertIndex(index);
-				editor.getService().setEditingState(GeometryEditState.INSERTING);
+				editor.getEditService().start(line);
+				editor.getEditService().setInsertIndex(index);
+				editor.getEditService().setEditingState(GeometryEditState.INSERTING);
 			}
 		});
 		MenuItem polyItem = new MenuItem("Draw Polygon", "[ISOMORPHIC]/geomajas/osgeo/polygon-create.png");
@@ -137,14 +139,15 @@ public class MenuBar extends ToolStrip {
 			public void onClick(MenuItemClickEvent event) {
 				Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 
-				editor.getService().start(polygon);
+				editor.getEditService().start(polygon);
 				try {
-					GeometryIndex index = editor.getService().addEmptyChild();
-					editor.getService().setInsertIndex(
-							editor.getService().getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0));
-					editor.getService().setEditingState(GeometryEditState.INSERTING);
+					GeometryIndex index = editor.getEditService().addEmptyChild();
+					editor.getEditService().setInsertIndex(
+							editor.getEditService().getIndexService()
+									.addChildren(index, GeometryIndexType.TYPE_VERTEX, 0));
+					editor.getEditService().setEditingState(GeometryEditState.INSERTING);
 				} catch (GeometryOperationFailedException e) {
-					editor.getService().stop();
+					editor.getEditService().stop();
 					Window.alert("Exception during editing: " + e.getMessage());
 				}
 			}
@@ -169,7 +172,7 @@ public class MenuBar extends ToolStrip {
 			public void onClick(MenuItemClickEvent event) {
 				Geometry point = new Geometry(Geometry.POINT, 0, 0);
 				point.setCoordinates(new Coordinate[] { map.getMapModel().getMapView().getBounds().getCenterPoint() });
-				editor.getService().start(point);
+				editor.getEditService().start(point);
 			}
 		});
 		MenuItem lineItem = new MenuItem("LineString", "[ISOMORPHIC]/geomajas/osgeo/line.png");
@@ -189,7 +192,7 @@ public class MenuBar extends ToolStrip {
 				Coordinate c5 = new Coordinate(center.getX() + deltaX / 2, center.getY() + deltaY / 2);
 
 				line.setCoordinates(new Coordinate[] { c1, c2, c3, c4, c5 });
-				editor.getService().start(line);
+				editor.getEditService().start(line);
 			}
 		});
 		MenuItem rectItem = new MenuItem("Rectangle (polygon)", "[ISOMORPHIC]/geomajas/silk/square.png");
@@ -212,7 +215,7 @@ public class MenuBar extends ToolStrip {
 				shell.setCoordinates(new Coordinate[] { c1, c2, c3, c4, c5 });
 
 				polgon.setGeometries(new Geometry[] { shell });
-				editor.getService().start(polgon);
+				editor.getEditService().start(polgon);
 			}
 		});
 		MenuItem donutItem = new MenuItem("Donut (polygon)", "[ISOMORPHIC]/geomajas/osgeo/ring.png");
@@ -243,7 +246,7 @@ public class MenuBar extends ToolStrip {
 				hole.setCoordinates(new Coordinate[] { c11, c12, c13, c14, c15 });
 
 				polygon.setGeometries(new Geometry[] { shell, hole });
-				editor.getService().start(polygon);
+				editor.getEditService().start(polygon);
 			}
 		});
 

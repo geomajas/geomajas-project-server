@@ -47,17 +47,18 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
+import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Shape;
@@ -65,25 +66,23 @@ import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Renderer for geometries during the editing process.
  * 
  * @author Pieter De Graef
  */
-public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditStopHandler,
+public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStartHandler, GeometryEditStopHandler,
 		GeometryIndexHighlightBeginHandler, GeometryIndexHighlightEndHandler, GeometryEditMoveHandler,
 		GeometryEditShapeChangedHandler, GeometryEditChangeStateHandler, GeometryIndexSelectedHandler,
 		GeometryIndexDeselectedHandler, GeometryIndexDisabledHandler, GeometryIndexEnabledHandler,
 		GeometryIndexMarkForDeletionBeginHandler, GeometryIndexMarkForDeletionEndHandler,
 		GeometryEditTentativeMoveHandler, ViewPortChangedHandler {
 
-	private static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
-
 	private final MapPresenter mapPresenter;
 
 	private final GeometryEditService editService;
+	
+	private GfxUtil gfxUtil;
 
 	private final StyleProvider styleProvider;
 
@@ -113,16 +112,17 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	 * @param editService
 	 *            The geometry editing service to listen to.
 	 */
-	public GeometryRenderer(MapPresenter mapPresenter, GeometryEditService editService) {
+	public GeometryRendererImpl(MapPresenter mapPresenter, GeometryEditService editService, GfxUtil gfxUtil) {
 		this.mapPresenter = mapPresenter;
+		this.gfxUtil = gfxUtil;
 		this.editService = editService;
 		this.styleProvider = new StyleProvider();
 		this.shapes = new HashMap<GeometryIndex, Shape>();
 
 		// Initialize default factories:
-		this.shapeFactory = new DefaultGeometryIndexShapeFactory(mapPresenter, RenderSpace.SCREEN);
+		this.shapeFactory = new DefaultGeometryIndexShapeFactory(mapPresenter, RenderSpace.SCREEN, gfxUtil);
 		this.styleFactory = new DefaultGeometryIndexStyleFactory(styleProvider);
-		this.controllerFactory = new DefaultGeometryIndexControllerFactory(mapPresenter);
+		this.controllerFactory = new DefaultGeometryIndexControllerFactory(mapPresenter, gfxUtil);
 
 		// Add ViewPortChangedHandler:
 		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, this);
@@ -158,7 +158,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			try {
 				tentativeMoveLine = new Path(-5, -5);
 				tentativeMoveLine.lineTo(-5, -5);
-				INJECTOR.getGfxUtil().applyStyle(tentativeMoveLine, styleProvider.getEdgeTentativeMoveStyle());
+				gfxUtil.applyStyle(tentativeMoveLine, styleProvider.getEdgeTentativeMoveStyle());
 				container.add(tentativeMoveLine);
 
 				draw();
@@ -424,7 +424,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			if (shape != null) {
 				// We don't consider position at this point. Just style:
 				FeatureStyleInfo style = styleFactory.create(editService, index);
-				INJECTOR.getGfxUtil().applyStyle(shape, style);
+				gfxUtil.applyStyle(shape, style);
 
 				// Now update the location:
 				shapeFactory.update(shape, editService, index);
@@ -535,13 +535,13 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 		// Apply style:
 		FeatureStyleInfo style = styleFactory.create(editService, index);
-		INJECTOR.getGfxUtil().applyStyle(shape, style);
+		gfxUtil.applyStyle(shape, style);
 
 		// Apply controller:
 		MapController controller = controllerFactory.create(editService, index);
 		if (controller != null) {
 			controller.onActivate(mapPresenter);
-			INJECTOR.getGfxUtil().applyController(shape, controller);
+			gfxUtil.applyController(shape, controller);
 		}
 
 		container.add(shape);

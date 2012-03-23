@@ -69,6 +69,7 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBegin
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler;
+import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -88,7 +89,7 @@ import com.smartgwt.client.types.Cursor;
  * 
  * @author Pieter De Graef
  */
-public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditStopHandler,
+public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStartHandler, GeometryEditStopHandler,
 		GeometryIndexHighlightBeginHandler, GeometryIndexHighlightEndHandler, GeometryEditMoveHandler,
 		GeometryEditShapeChangedHandler, GeometryEditChangeStateHandler, GeometryIndexSelectedHandler,
 		GeometryIndexDeselectedHandler, GeometryIndexDisabledHandler, GeometryIndexEnabledHandler,
@@ -118,7 +119,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private boolean closeRingWhileInserting;
 
-	public GeometryRenderer(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
+	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
 	}

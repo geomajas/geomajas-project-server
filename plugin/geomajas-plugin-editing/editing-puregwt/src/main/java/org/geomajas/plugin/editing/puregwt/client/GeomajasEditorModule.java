@@ -10,21 +10,20 @@
  */
 package org.geomajas.plugin.editing.puregwt.client;
 
-import org.geomajas.plugin.editing.client.BaseGeometryEditor;
-import org.geomajas.puregwt.client.map.MapPresenter;
+import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 
 /**
- * Extends {@link BaseGeometryEditor} to provide access to the {@link MapPresenter}.
+ * Gin module for this plugin.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface GeometryEditor extends BaseGeometryEditor {
+public class GeomajasEditorModule extends AbstractGinModule {
 
-	/**
-	 * Get the map on which this editor is running.
-	 * 
-	 * @return the map presenter
-	 */
-	MapPresenter getMapPresenter();
+	protected void configure() {
+		install(new GinFactoryModuleBuilder().implement(GeometryEditor.class, GeometryEditorImpl.class).build(
+				GeometryEditorFactory.class));
+	}
+
 }

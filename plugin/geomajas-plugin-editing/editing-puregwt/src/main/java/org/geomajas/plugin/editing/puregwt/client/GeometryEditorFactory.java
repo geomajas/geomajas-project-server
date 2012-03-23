@@ -10,21 +10,21 @@
  */
 package org.geomajas.plugin.editing.puregwt.client;
 
-import org.geomajas.plugin.editing.client.BaseGeometryEditor;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 /**
- * Extends {@link BaseGeometryEditor} to provide access to the {@link MapPresenter}.
+ * Gin factory for {@link GeometryEditor} instances.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface GeometryEditor extends BaseGeometryEditor {
+public interface GeometryEditorFactory {
 
 	/**
-	 * Get the map on which this editor is running.
+	 * Create an editor for this map.
 	 * 
-	 * @return the map presenter
+	 * @param mapPresenter the map presenter
+	 * @return the editor
 	 */
-	MapPresenter getMapPresenter();
+	GeometryEditor create(MapPresenter mapPresenter);
 }
