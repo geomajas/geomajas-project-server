@@ -296,6 +296,10 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 	/** {@inheritDoc} */
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
+		return addEmptyChild(null);
+	}
+	
+	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		Geometry geometry = service.getGeometry();
 		OperationSequence seq = null;
 		if (isOperationSequenceActive()) {
@@ -321,11 +325,12 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		}
 		if (operation != null) {
 			// Execute the operation:
-			GeometryIndex index;
-			if (geometry.getGeometries() == null) {
-				index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, 0);
-			} else {
-				index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, geometry.getGeometries().length);
+			if (index == null) {
+				if (geometry.getGeometries() == null) {
+					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, 0);
+				} else {
+					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, geometry.getGeometries().length);
+				}
 			}
 			operation.execute(geometry, index);
 

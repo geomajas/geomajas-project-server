@@ -299,4 +299,9 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
 		return operationService.addEmptyChild();
 	}
+
+	/** {@inheritDoc} */
+	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
+		return operationService.addEmptyChild(index);
+	}
 }

@@ -147,5 +147,14 @@ public interface GeometryIndexOperationService {
 	 * @return The index that points to the empty child within the geometry.
 	 * @throws GeometryOperationFailedException
 	 */
+	//TODO Remove this method in favor of the addEmptyChild(GeometryIndex index)?
 	GeometryIndex addEmptyChild() throws GeometryOperationFailedException;
+	/**
+	 * Add an empty child at the lowest sub-geometry level.
+	 * 
+	 * @param index TODO
+	 * @return The index that points to the empty child within the geometry.
+	 * @throws GeometryOperationFailedException
+	 */
+	GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException;
 }
