@@ -64,7 +64,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	private final GeometryIndexStateService indexStateService;
 
-	private final GeometryIndexOperationService operationService;
+	private GeometryIndexOperationService operationService;
 
 	private Geometry geometry;
 
@@ -149,6 +149,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		}
 		started = true;
 		eventBus.fireEvent(new GeometryEditStartEvent(geometry));
+	}
+	
+	/** {@inheritDoc} */
+	public boolean isStarted() {
+		return started;
 	}
 
 	/** {@inheritDoc} */

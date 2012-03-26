@@ -144,6 +144,13 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 *            The geometry that needs to be edited.
 	 */
 	void start(Geometry geometry);
+	
+	/**
+	 * Get the started state of the editing process.
+	 * 
+	 * @return started state
+	 */
+	boolean isStarted();
 
 	/**
 	 * Stop the geometry editing process.
@@ -206,7 +213,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The end-point for the tentative move event.
 	 */
 	Coordinate getTentativeMoveLocation();
-
+	
 	// ------------------------------------------------------------------------
 	// Getters:
 	// ------------------------------------------------------------------------

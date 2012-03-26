@@ -102,6 +102,14 @@ public class GeometryIndexOperationServiceTest {
 	// ------------------------------------------------------------------------
 
 	@Test
+	public void testIsStarted() throws GeometryOperationFailedException {
+		service.start(polygon);
+		Assert.assertTrue(service.isStarted());
+		service.stop();
+		Assert.assertFalse(service.isStarted());
+	}
+	
+	@Test
 	public void testInsert() throws GeometryOperationFailedException {
 		service.start(polygon);
 		Assert.assertEquals(5, indexService.getSiblingCount(polygon, index));
