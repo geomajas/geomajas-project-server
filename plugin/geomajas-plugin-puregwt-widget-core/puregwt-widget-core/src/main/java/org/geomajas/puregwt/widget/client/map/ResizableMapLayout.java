@@ -40,6 +40,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ResizableMapLayout implements IsWidget {
 
+	private static final int MIN_SIZE = 20;
+
 	private final MapPresenter mapPresenter;
 
 	private final ResizeLayoutPanel layout;
@@ -57,6 +59,8 @@ public class ResizableMapLayout implements IsWidget {
 		layout = new ResizeLayoutPanel();
 		layout.setSize("100%", "100%");
 		layout.add(mapPresenter.asWidget());
+		layout.getElement().getStyle().setProperty("minWidth", MIN_SIZE + "px");
+		layout.getElement().getStyle().setProperty("minHeight", MIN_SIZE + "px");
 
 		// Add an automatic resize handler to set the correct size when the window resizes:
 		Window.addResizeHandler(new ResizeHandler() {
@@ -107,7 +111,7 @@ public class ResizableMapLayout implements IsWidget {
 	private boolean applySize() {
 		int width = layout.getOffsetWidth();
 		int height = layout.getOffsetHeight();
-		if (width > 10 && height > 10) {
+		if (width > MIN_SIZE && height > MIN_SIZE) {
 			mapPresenter.setSize(width, height);
 			try {
 				mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getBounds());
