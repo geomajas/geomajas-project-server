@@ -29,11 +29,10 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class UndoButton extends Button implements GeometryEditStopHandler, GeometryEditShapeChangedHandler {
 
-	private final GeometryEditService editService;
+	private GeometryEditService editService;
 
-	public UndoButton(final GeometryEditService editService) {
+	public UndoButton() {
 		super("Undo");
-		this.editService = editService;
 		this.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -44,9 +43,14 @@ public class UndoButton extends Button implements GeometryEditStopHandler, Geome
 				}
 			}
 		});
+		this.setEnabled(false);
+	}
+	
+	public void setEditService(GeometryEditService editService) {
+		this.editService = editService;
 		editService.addGeometryEditShapeChangedHandler(this);
 		editService.addGeometryEditStopHandler(this);
-		this.setEnabled(false);
+		this.setEnabled(editService.canUndo());
 	}
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {

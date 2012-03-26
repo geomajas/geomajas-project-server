@@ -28,17 +28,24 @@ import com.google.gwt.user.client.ui.Button;
  */
 public class CancelButton extends Button implements GeometryEditStartHandler, GeometryEditStopHandler {
 
-	public CancelButton(final GeometryEditService editService) {
-		super("Cancel");
+	private GeometryEditService editService;
+
+	public CancelButton() {
+		super("Delete");
 		this.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				editService.stop();
 			}
 		});
+		this.setEnabled(false);
+	}
+	
+	public void setEditService(GeometryEditService editService) {
+		this.editService = editService;
 		editService.addGeometryEditStartHandler(this);
 		editService.addGeometryEditStopHandler(this);
-		this.setEnabled(false);
+		this.setEnabled(editService.getGeometry() != null);
 	}
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
