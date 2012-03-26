@@ -79,7 +79,7 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 			// Use EnhancedPrecisionOp to reduce likeliness of robustness problems:
 			temp = EnhancedPrecisionOp.union(temp, bfr);
 		}
-
+		temp = temp.buffer(request.getBuffer());
 		response.setGeometry(converter.toDto(temp));
 	}
 }

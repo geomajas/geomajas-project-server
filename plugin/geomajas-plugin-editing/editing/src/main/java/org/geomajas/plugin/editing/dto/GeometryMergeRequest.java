@@ -34,6 +34,8 @@ public class GeometryMergeRequest implements CommandRequest {
 
 	private int precision;
 
+	private double buffer;
+
 	public GeometryMergeRequest() {
 	}
 
@@ -56,5 +58,18 @@ public class GeometryMergeRequest implements CommandRequest {
 	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
+	}
+	
+	/**
+	 * Optional buffer to extend the merging result.
+	 * 
+	 * @param buffer
+	 */
+	public void setBuffer(double buffer) {
+		this.buffer = buffer;
+	}
+	
+	public double getBuffer() {
+		return buffer;
 	}
 }
