@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
@@ -26,7 +25,6 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
-import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
