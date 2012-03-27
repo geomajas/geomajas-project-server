@@ -25,8 +25,7 @@ import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.RasterLayerFactory;
-import org.geomajas.puregwt.client.map.layer.VectorLayerFactory;
+import org.geomajas.puregwt.client.map.layer.LayerFactory;
 
 import com.google.inject.Inject;
 
@@ -50,10 +49,7 @@ public final class LayersModelImpl implements LayersModel {
 	private List<Layer<?>> layers = new ArrayList<Layer<?>>();
 	
 	@Inject
-	private VectorLayerFactory vectorLayerFactory;
-
-	@Inject
-	private RasterLayerFactory rasterLayerFactory;
+	private LayerFactory layerFactory;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -107,13 +103,13 @@ public final class LayersModelImpl implements LayersModel {
 	public void addLayer(ClientLayerInfo layerInfo) {
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				Layer<ClientRasterLayerInfo> rLayer = rasterLayerFactory.create((ClientRasterLayerInfo) layerInfo,
+				Layer<ClientRasterLayerInfo> rLayer = layerFactory.createRasterLayer((ClientRasterLayerInfo) layerInfo,
 						viewPort, eventBus);
 				layers.add(rLayer);
 				eventBus.fireEvent(new LayerAddedEvent(rLayer));
 				break;
 			default:
-				Layer<ClientVectorLayerInfo> vLayer = vectorLayerFactory.create((ClientVectorLayerInfo) layerInfo,
+				Layer<ClientVectorLayerInfo> vLayer = layerFactory.createVectorLayer((ClientVectorLayerInfo) layerInfo,
 						viewPort, eventBus);
 				layers.add(vLayer);
 				eventBus.fireEvent(new LayerAddedEvent(vLayer));

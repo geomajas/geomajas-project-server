@@ -10,64 +10,14 @@
  */
 package org.geomajas.puregwt.client.map.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.gwt.client.util.UrlBuilder;
-import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
-import org.geomajas.puregwt.client.map.MapEventBus;
-import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.service.EndPointService;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
 
 /**
- * <p>
- * The client side representation of a raster layer.
- * </p>
+ * Default layer for {@link ClientRasterLayerInfo}.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * 
  */
-public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements OpacitySupported {
-	
-	private EndPointService endPointService;
-	
-	/**
-	 * The only constructor! Set the MapModel and the layer info.
-	 * 
-	 */
-	@Inject
-	public RasterLayer(@Assisted ClientRasterLayerInfo layerInfo, @Assisted final ViewPort viewPort,
-			@Assisted final MapEventBus eventBus, final EndPointService endPointService) {
-		super(layerInfo, viewPort, eventBus);
-		this.endPointService = endPointService;
-	}
+public interface RasterLayer extends Layer<ClientRasterLayerInfo>, OpacitySupported {
 
-	/** {@inheritDoc} */
-	public List<LayerStylePresenter> getStylePresenters() {
-		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
-		UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
-		url.addPath(getServerLayerId() + LEGEND_ICON_EXTENSION);
-		stylePresenters.add(new LayerStylePresenter(0, url.toString(), getTitle()));
-		return stylePresenters;
-	}
-
-	/**
-	 * Apply a new opacity on the entire raster layer.
-	 * 
-	 * @param opacity
-	 *            The new opacity value. Must be a value between 0 and 1, where 0 means invisible and 1 is totally
-	 *            visible.
-	 */
-	public void setOpacity(double opacity) {
-		getLayerInfo().setStyle(Double.toString(opacity));
-		eventBus.fireEvent(new LayerStyleChangedEvent(this));
-	}
-
-	public double getOpacity() {
-		return Double.parseDouble(getLayerInfo().getStyle());
-	}
 }

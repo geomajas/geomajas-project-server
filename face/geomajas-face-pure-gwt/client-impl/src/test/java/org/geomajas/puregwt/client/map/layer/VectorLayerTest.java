@@ -33,7 +33,7 @@ import com.google.inject.Injector;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
- * Test-cases for the {@link VectorLayer} class.
+ * Test-cases for the {@link VectorLayerImpl} class.
  * 
  * @author Pieter De Graef
  */
@@ -67,25 +67,25 @@ public class VectorLayerTest {
 
 	@Test
 	public void testServerLayerId() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertEquals(layerInfo.getServerLayerId(), layer.getServerLayerId());
 	}
 
 	@Test
 	public void testTitle() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertEquals(layerInfo.getLabel(), layer.getTitle());
 	}
 
 	@Test
 	public void testLayerInfo() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertEquals(layerInfo, layer.getLayerInfo());
 	}
 
 	@Test
 	public void testSelection() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertFalse(layer.isSelected());
 		layer.setSelected(true);
 		Assert.assertTrue(layer.isSelected());
@@ -95,7 +95,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testMarkedAsVisible() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertTrue(layer.isMarkedAsVisible());
 		layer.setMarkedAsVisible(false);
 		Assert.assertFalse(layer.isMarkedAsVisible());
@@ -105,7 +105,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testShowing() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 
 		// Scale between 6 and 20 is OK:
 		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(0)); // 32 -> NOK
@@ -137,7 +137,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testFilter() {
-		VectorLayer layer = new VectorLayer(layerInfo, viewPort, eventBus, endPointService);
+		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		Assert.assertNull(layer.getFilter());
 		String filter = "Look at me, mom!";
 		layer.setFilter(filter);

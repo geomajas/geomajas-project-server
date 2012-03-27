@@ -21,20 +21,23 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Tiled scale presenter for a vector layer. It displays a single tile level for a single ector layer.
  * 
  * @author Pieter De Graef
  */
-public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
+public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
-	private final ViewPort viewPort;
+	private final String crs;
 
 	private final VectorLayer vectorLayer;
 
@@ -52,17 +55,24 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 	// private boolean renderingImages;
 	private int nrLoadingTiles;
-	
+
 	private CommandService commandService;
+
+	private EventBus eventBus;
+
+	private Object eventSource;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
-
-	public VectorLayerScaleRenderer(CommandService commandService, ViewPort viewPort, VectorLayer vectorLayer,
-			HtmlContainer htmlContainer, double scale) {
+	@Inject
+	public VectorLayerScaleRenderer(EventBus eventBus, CommandService commandService, @Assisted Object eventSource,
+			@Assisted String crs, @Assisted VectorLayer vectorLayer, @Assisted HtmlContainer htmlContainer,
+			@Assisted double scale) {
+		this.eventBus = eventBus;
 		this.commandService = commandService;
-		this.viewPort = viewPort;
+		this.eventSource = eventSource;
+		this.crs = crs;
 		this.vectorLayer = vectorLayer;
 		this.htmlContainer = htmlContainer;
 		this.scale = scale;
@@ -76,7 +86,9 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public abstract void onTilesRendered(HtmlContainer container, double scale);
+	public void onTilesRendered(HtmlContainer container, double scale) {
+		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), eventSource);
+	}
 
 	/** {@inheritDoc} */
 	public double getScale() {
@@ -119,7 +131,7 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	public VectorTilePresenter addTile(TileCode tileCode) {
 		VectorTilePresenter tilePresenter = tiles.get(tileCode.toString());
 		if (tilePresenter == null) {
-			tilePresenter = new VectorTilePresenter(commandService, this, tileCode.clone(), scale, viewPort.getCrs(),
+			tilePresenter = new VectorTilePresenter(commandService, this, tileCode.clone(), scale, crs,
 					new TileLoadCallback());
 			nrLoadingTiles++;
 			tiles.put(tileCode.toString(), tilePresenter);
@@ -173,8 +185,7 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	/**
 	 * Saves the complete array of TileCode objects for the given bounds (and the current scale).
 	 * 
-	 * @param bounds
-	 *            view bounds
+	 * @param bounds view bounds
 	 * @return list of tiles in these bounds
 	 */
 	private List<TileCode> calcCodesForBounds(Bbox bounds) {
@@ -216,8 +227,7 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	/**
 	 * Calculate the best tile level to use for a certain view-bounds.
 	 * 
-	 * @param bounds
-	 *            view bounds
+	 * @param bounds view bounds
 	 * @return best tile level for view bounds
 	 */
 	private int calculateTileLevel(Bbox bounds) {

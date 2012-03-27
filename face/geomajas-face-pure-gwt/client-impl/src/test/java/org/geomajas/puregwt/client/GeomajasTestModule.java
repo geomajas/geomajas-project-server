@@ -28,10 +28,11 @@ import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.feature.MockFeatureFactory;
 import org.geomajas.puregwt.client.map.feature.MockFeatureServiceFactory;
 import org.geomajas.puregwt.client.map.gadget.MockDefaultMapGadgetFactory;
-import org.geomajas.puregwt.client.map.layer.RasterLayerFactory;
-import org.geomajas.puregwt.client.map.layer.MockRasterLayerFactory;
-import org.geomajas.puregwt.client.map.layer.MockVectorLayerFactory;
-import org.geomajas.puregwt.client.map.layer.VectorLayerFactory;
+import org.geomajas.puregwt.client.map.layer.LayerFactory;
+import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.map.layer.RasterLayerImpl;
+import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.VectorLayerImpl;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapRendererFactory;
@@ -44,6 +45,7 @@ import org.geomajas.puregwt.client.widget.MapWidgetTestImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
@@ -58,6 +60,8 @@ public class GeomajasTestModule extends AbstractModule {
 	protected void configure() {
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
 		bind(LayersModel.class).to(LayersModelImpl.class);
+		install(new FactoryModuleBuilder().implement(VectorLayer.class, VectorLayerImpl.class)
+				.implement(RasterLayer.class, RasterLayerImpl.class).build(LayerFactory.class));
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(MapWidget.class).to(MapWidgetTestImpl.class);
 		bind(FeatureFactory.class).to(MockFeatureFactory.class);
@@ -65,8 +69,6 @@ public class GeomajasTestModule extends AbstractModule {
 		bind(FeatureServiceFactory.class).to(MockFeatureServiceFactory.class);
 		bind(MapRendererFactory.class).to(MockMapRendererFactory.class);
 		bind(MapScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
-		bind(VectorLayerFactory.class).to(MockVectorLayerFactory.class);
-		bind(RasterLayerFactory.class).to(MockRasterLayerFactory.class);
 		bind(DefaultMapGadgetFactory.class).to(MockDefaultMapGadgetFactory.class);
 
 		// Other:

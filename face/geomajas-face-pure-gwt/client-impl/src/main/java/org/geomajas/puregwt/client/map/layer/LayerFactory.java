@@ -11,25 +11,37 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 /**
- * Gin factory for layers that are defined by {@link ClientRasterLayerInfo} configurations.
+ * Gin factory for {@link VectorLayer} and {@link RasterLayer} layers.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface RasterLayerFactory {
+public interface LayerFactory {
 
 	/**
-	 * Create a layer for the specified configuration and view port.
+	 * Create a vector layer for the specified configuration and view port.
+	 * 
+	 * @param clientVectorLayerInfo the configuration info
+	 * @param viewPort the view port
+	 * @param eventBus the map event bus
+	 * @return the layer
+	 */
+	VectorLayer createVectorLayer(ClientVectorLayerInfo clientVectorLayerInfo, ViewPort viewPort,
+			MapEventBus eventBus);
+	
+	/**
+	 * Create a raster layer for the specified configuration and view port.
 	 * 
 	 * @param clientRasterLayerInfo the configuration info
 	 * @param viewPort the view port
 	 * @param eventBus the map event bus
 	 * @return the layer
 	 */
-	Layer<ClientRasterLayerInfo> create(ClientRasterLayerInfo clientRasterLayerInfo, ViewPort viewPort,
+	RasterLayer createRasterLayer(ClientRasterLayerInfo clientRasterLayerInfo, ViewPort viewPort,
 			MapEventBus eventBus);
 }

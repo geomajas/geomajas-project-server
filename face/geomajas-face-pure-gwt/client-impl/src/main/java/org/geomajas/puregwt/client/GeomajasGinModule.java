@@ -11,13 +11,14 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapEventParserFactory;
 import org.geomajas.puregwt.client.controller.MapEventParserImpl;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
+import org.geomajas.puregwt.client.gfx.HtmlImage;
+import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
+import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
@@ -33,17 +34,21 @@ import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceImpl;
 import org.geomajas.puregwt.client.map.gadget.DefaultMapGadgetFactoryImpl;
-import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.LayerFactory;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.RasterLayerFactory;
+import org.geomajas.puregwt.client.map.layer.RasterLayerImpl;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayerFactory;
+import org.geomajas.puregwt.client.map.layer.VectorLayerImpl;
 import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapRendererImpl;
 import org.geomajas.puregwt.client.map.render.MapScalesRenderer;
 import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
+import org.geomajas.puregwt.client.map.render.RasterLayerScaleRenderer;
+import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.TiledScaleRendererFactory;
+import org.geomajas.puregwt.client.map.render.VectorLayerScaleRenderer;
 import org.geomajas.puregwt.client.service.CommandService;
 import org.geomajas.puregwt.client.service.CommandServiceImpl;
 import org.geomajas.puregwt.client.service.EndPointService;
@@ -53,7 +58,7 @@ import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
@@ -79,12 +84,18 @@ public class GeomajasGinModule extends AbstractGinModule {
 				FeatureServiceFactory.class));
 		install(new GinFactoryModuleBuilder().implement(MapRenderer.class, MapRendererImpl.class).build(
 				MapRendererFactory.class));
-		install(new GinFactoryModuleBuilder().implement(new TypeLiteral<Layer<ClientVectorLayerInfo>>() {
-		}, VectorLayer.class).build(VectorLayerFactory.class));
-		install(new GinFactoryModuleBuilder().implement(new TypeLiteral<Layer<ClientRasterLayerInfo>>() {
-		}, RasterLayer.class).build(RasterLayerFactory.class));
+		install(new GinFactoryModuleBuilder().implement(VectorLayer.class, VectorLayerImpl.class)
+				.implement(RasterLayer.class, RasterLayerImpl.class).build(LayerFactory.class));
 		install(new GinFactoryModuleBuilder().implement(MapScalesRenderer.class, LayerScalesRenderer.class).build(
 				MapScalesRendererFactory.class));
+		install(new GinFactoryModuleBuilder()
+				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
+						VectorLayerScaleRenderer.class)
+				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
+						RasterLayerScaleRenderer.class).build(TiledScaleRendererFactory.class));
+		install(new GinFactoryModuleBuilder().implement(HtmlImage.class, HtmlImageImpl.class).build(
+				HtmlImageFactory.class));
+		
 
 		// Other:
 		bind(CommandService.class).to(CommandServiceImpl.class).in(Singleton.class);

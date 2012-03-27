@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
@@ -24,7 +25,6 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 import org.geomajas.puregwt.client.service.CommandService;
 
@@ -51,9 +51,6 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	@Inject
 	private EventBus eventBus;
 
-	@Inject
-	private CommandService commandService;
-
 	private final ViewPort viewPort;
 
 	private final Layer<?> layer;
@@ -65,6 +62,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	private final List<Double> scales; // Keeps track of the lastly visited scales.
 
 	private double visibleScale;
+	
+	@Inject
+	private TiledScaleRendererFactory rasterRendererFactory;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -198,6 +198,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	@SuppressWarnings("unchecked")
 	private TiledScaleRenderer getOrCreate(double scale) {
 		if (tiledScaleRenderers.containsKey(scale)) {
 			return tiledScaleRenderers.get(scale);
@@ -209,23 +210,15 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 		TiledScaleRenderer scalePresenter = null;
 		if (layer instanceof RasterLayer) {
-			scalePresenter = new RasterLayerScaleRenderer(commandService, viewPort.getCrs(), (RasterLayer) layer,
-					container, scale) {
-
-				public void onTilesRendered(HtmlContainer container, double scale) {
-					eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), this);
-				}
-			};
-		} else {
-			scalePresenter = new VectorLayerScaleRenderer(commandService, viewPort, (VectorLayer) layer, container,
-					scale) {
-
-				public void onTilesRendered(HtmlContainer container, double scale) {
-					eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), this);
-				}
-			};
+			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (RasterLayer) layer, container,
+					scale);
+		} else if (layer instanceof VectorLayer) {
+			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (VectorLayer) layer, container,
+					scale);
 		}
-		tiledScaleRenderers.put(scale, scalePresenter);
+		if (scalePresenter != null) {
+			tiledScaleRenderers.put(scale, scalePresenter);
+		}
 		return scalePresenter;
 	}
 

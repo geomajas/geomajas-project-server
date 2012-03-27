@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.gfx;
 
+import org.geomajas.geometry.Bbox;
+
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
@@ -18,6 +20,8 @@ import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * <p>
@@ -37,65 +41,90 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
+	/**
+	 * Create an HtmlImage widget that represents an HTML IMG element.
+	 * 
+	 * @param src Pointer to the actual image.
+	 * @param bbox The bounding box of the image.
+	 */
+	@AssistedInject
+	HtmlImageImpl(@Assisted String src, @Assisted Bbox bbox) {
+		this(src, bbox, null);
+	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
 	 * 
-	 * @param src
-	 *            Pointer to the actual image.
-	 * @param width
-	 *            The width for this image, expressed in pixels.
-	 * @param height
-	 *            The height for this image, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param src Pointer to the actual image.
+	 * @param bbox The bounding box of the image.
+	 * @param onLoadingDone Call-back to be executed when the image finished loading, or when an error occurs while
+	 *        loading.
 	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left) {
+	@AssistedInject
+	HtmlImageImpl(@Assisted String src, @Assisted Bbox bbox, @Assisted Callback<String, String> onLoadingDone) {
+		this(src, bbox, onLoadingDone, 0);
+	}
+
+	/**
+	 * Create an HtmlImage widget that represents an HTML IMG element.
+	 * 
+	 * @param src Pointer to the actual image.
+	 * @param bbox The bounding box of the image.
+	 * @param onLoadingDone Call-back to be executed when the image finished loading, or when an error occurs while
+	 *        loading.
+	 * @param nrRetries Total number of retries should loading fail. Default is 0.
+	 */
+	@AssistedInject
+	HtmlImageImpl(@Assisted String src, @Assisted Bbox bbox, @Assisted Callback<String, String> onLoadingDone,
+			@Assisted int nrRetries) {
+		this(src, (int) bbox.getWidth(), (int) bbox.getHeight(), (int) bbox.getY(), (int) bbox.getX(), onLoadingDone,
+				nrRetries);
+	}
+
+	/**
+	 * Create an HtmlImage widget that represents an HTML IMG element.
+	 * 
+	 * @param src Pointer to the actual image.
+	 * @param width The width for this image, expressed in pixels.
+	 * @param height The height for this image, expressed in pixels.
+	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
+	 */
+	public HtmlImageImpl( String src,  int width,  int height,  int top,
+			 int left) {
 		this(src, width, height, top, left, null);
 	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
 	 * 
-	 * @param src
-	 *            Pointer to the actual image.
-	 * @param width
-	 *            The width for this image, expressed in pixels.
-	 * @param height
-	 *            The height for this image, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this image be placed from the left (relative to the parent origin).
-	 * @param onLoadingDone
-	 *            Call-back to be executed when the image finished loading, or when an error occurs while loading.
+	 * @param src Pointer to the actual image.
+	 * @param width The width for this image, expressed in pixels.
+	 * @param height The height for this image, expressed in pixels.
+	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param onLoadingDone Call-back to be executed when the image finished loading, or when an error occurs while
+	 *        loading.
 	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone) {
+	public HtmlImageImpl( String src,  int width,  int height,  int top,
+			 int left,  Callback<String, String> onLoadingDone) {
 		this(src, width, height, top, left, onLoadingDone, 0);
 	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
 	 * 
-	 * @param src
-	 *            Pointer to the actual image.
-	 * @param width
-	 *            The width for this image, expressed in pixels.
-	 * @param height
-	 *            The height for this image, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this image be placed from the left (relative to the parent origin).
-	 * @param onLoadingDone
-	 *            Call-back to be executed when the image finished loading, or when an error occurs while loading.
-	 * @param nrRetries
-	 *            Total number of retries should loading fail. Default is 0.
+	 * @param src Pointer to the actual image.
+	 * @param width The width for this image, expressed in pixels.
+	 * @param height The height for this image, expressed in pixels.
+	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param onLoadingDone Call-back to be executed when the image finished loading, or when an error occurs while
+	 *        loading.
+	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone,
-			int nrRetries) {
+	public HtmlImageImpl( String src,  int width,  int height,  int top,
+			 int left,  Callback<String, String> onLoadingDone,  int nrRetries) {
 		super("img", width, height, top, left);
 
 		DOM.setStyleAttribute(getElement(), "border", "none");
@@ -114,12 +143,10 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * loaded successfully or when 5 attempts have failed. In any case, the callback's execute method will be invoked,
 	 * thereby indicating success or failure.
 	 * 
-	 * @param onLoadingDone
-	 *            The call-back to be executed when loading has finished. The boolean value indicates whether or not it
-	 *            was successful while loading. Both the success and failure type expect a String. This is used to pass
-	 *            along the image URL.
-	 * @param nrRetries
-	 *            Total number of retries should loading fail. Default is 0.
+	 * @param onLoadingDone The call-back to be executed when loading has finished. The boolean value indicates whether
+	 *        or not it was successful while loading. Both the success and failure type expect a String. This is used to
+	 *        pass along the image URL.
+	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
 	public void onLoadingDone(Callback<String, String> onLoadingDone, int nrRetries) {
 		DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
@@ -140,8 +167,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	/**
 	 * Set the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.
 	 * 
-	 * @param src
-	 *            The new image pointer.
+	 * @param src The new image pointer.
 	 */
 	public void setSrc(String src) {
 		DOM.setImgSrc(getElement(), src);

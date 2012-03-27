@@ -25,11 +25,16 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
+import org.geomajas.puregwt.client.gfx.HtmlImage;
+import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * <p>
@@ -43,9 +48,13 @@ import com.google.gwt.core.client.Callback;
  * 
  * @author Pieter De Graef
  */
-public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
+public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	private CommandService commandService;
+	
+	private HtmlImageFactory htmlImageFactory;
+
+	private EventBus eventBus;
 
 	private final String crs;
 
@@ -69,13 +78,20 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	private boolean renderingImages;
 
+	private Object eventSource;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public RasterLayerScaleRenderer(CommandService commandService, String crs, RasterLayer rasterLayer,
-			HtmlContainer container, double scale) {
+	@Inject
+	public RasterLayerScaleRenderer(EventBus eventBus, CommandService commandService,
+			HtmlImageFactory htmlImageFactory, @Assisted Object eventSource, @Assisted String crs,
+			@Assisted RasterLayer rasterLayer, @Assisted HtmlContainer container, @Assisted double scale) {
+		this.eventBus = eventBus;
 		this.commandService = commandService;
+		this.htmlImageFactory = htmlImageFactory;
+		this.eventSource = eventSource;
 		this.crs = crs;
 		this.rasterLayer = rasterLayer;
 		this.container = container;
@@ -88,7 +104,9 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public abstract void onTilesRendered(HtmlContainer container, double scale);
+	public void onTilesRendered(HtmlContainer container, double scale) {
+		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), eventSource);
+	}
 
 	/** {@inheritDoc} */
 	public void cancel() {
@@ -166,7 +184,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	// Private methods and classes:
 	// ------------------------------------------------------------------------
 
-	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles) {
+	protected void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles) {
 		nrLoadingTiles = 0;
 		for (RasterTile tile : rasterTiles) {
 			TileCode code = tile.getCode().clone();
@@ -174,23 +192,21 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 			// Add only new tiles to the list:
 			if (!tiles.containsKey(code)) {
 				nrLoadingTiles++;
-
-				// Give the tile the correct location, keeping panning in mind:
-				tile.getBounds().setX(tile.getBounds().getX());
-				tile.getBounds().setY(tile.getBounds().getY());
-
 				// Add the tile to the list and render it:
 				tiles.put(code, tile);
-				HtmlImageImpl image = new HtmlImageImpl(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
-						(int) Math.round(tile.getBounds().getHeight()), (int) Math.round(tile.getBounds().getY()),
-						(int) Math.round(tile.getBounds().getX()), new ImageCounter());
-				image.setOpacity(rasterLayer.getOpacity());
-				container.add(image);
+				renderTile(tile, new ImageCounter());
 			}
 		}
 		deferred = null;
 		renderingImages = true;
 	}
+
+	protected void renderTile(RasterTile tile, Callback<String, String> callback) {
+		HtmlImage image = htmlImageFactory.create(tile.getUrl(), tile.getBounds(), callback);
+		image.setOpacity(rasterLayer.getOpacity());
+		container.add(image);
+	}
+
 
 	/**
 	 * Counts the number of images that are still inbound. If all images are effectively rendered, we call
