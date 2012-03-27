@@ -48,7 +48,10 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 		if (request.getGeometries() == null || request.getGeometries().size() == 0) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "request");
 		}
-		if (request.getGeometries().size() == 1 && request.getBuffer() == 0d) {
+		double buffer = request.getBuffer();
+		double boundaries = 0.0000001d;
+		boolean bufferIsZero = buffer < boundaries && buffer > 0 - boundaries;
+		if (request.getGeometries().size() == 1 && bufferIsZero) {
 			response.setGeometry(request.getGeometries().get(0));
 			return;
 		}
@@ -70,16 +73,18 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 
 		// Calculate the union:
 		Geometry temp = factory.createGeometry(geometries[0]);
+		if (bufferIsZero) {
+			buffer = Math.pow(10.0, -(precision - 1));
+		}
+		temp = temp.buffer(buffer);
 		for (int i = 1; i < geometries.length; i++) {
 			Geometry geometry = factory.createGeometry(geometries[i]);
-
 			// Buffer to make sure that after a split, the merging the same geometries would work:
-			Geometry bfr = EnhancedPrecisionOp.buffer(geometry, Math.pow(10.0, -(precision - 1)));
+			geometry = geometry.buffer(buffer);
 
 			// Use EnhancedPrecisionOp to reduce likeliness of robustness problems:
-			temp = EnhancedPrecisionOp.union(temp, bfr);
+			temp = EnhancedPrecisionOp.union(temp, geometry);
 		}
-		temp = temp.buffer(request.getBuffer());
 		response.setGeometry(converter.toDto(temp));
 	}
 }
