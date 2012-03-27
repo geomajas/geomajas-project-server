@@ -21,6 +21,10 @@ import org.geomajas.plugin.editing.client.snap.SnapService;
 import org.geomajas.plugin.editing.puregwt.client.controller.EditGeometryBaseController;
 import org.geomajas.plugin.editing.puregwt.client.gfx.GeometryRendererImpl;
 import org.geomajas.puregwt.client.controller.MapController;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
@@ -63,6 +67,21 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 		snappingService = new SnapService();
 		baseController = new EditGeometryBaseController(editService, snappingService);
 		renderer = new GeometryRendererImpl(mapPresenter, editService, gfxUtil);
+
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+
+			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+				editService.getIndexStateService().highlightEndAll();
+			}
+
+			public void onViewPortScaled(ViewPortScaledEvent event) {
+				editService.getIndexStateService().highlightEndAll();
+			}
+
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				editService.getIndexStateService().highlightEndAll();
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------

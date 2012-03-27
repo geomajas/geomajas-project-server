@@ -96,6 +96,7 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 							.getBounds().getY(), event.getBounds().getWidth(), event.getBounds().getHeight());
 					snappingService.update(bounds);
 				}
+				service.getIndexStateService().highlightEndAll();
 			}
 		});
 	}

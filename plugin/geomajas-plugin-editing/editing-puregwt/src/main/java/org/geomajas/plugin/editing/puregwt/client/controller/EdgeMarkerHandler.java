@@ -18,6 +18,10 @@ import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -48,7 +52,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 	private GeometryEditService service;
 
 	private MapEventParser eventParser;
-	
+
 	private GfxUtil gfxUtil;
 
 	private VectorContainer container;
@@ -63,13 +67,28 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 		this.service = service;
 		this.eventParser = eventParser;
 		this.gfxUtil = gfxUtil;
-		
+
 		style = new FeatureStyleInfo();
 		style.setFillColor("#444444");
 		style.setFillOpacity(0f);
 		style.setStrokeColor("#444444");
 		style.setStrokeOpacity(0.8f);
 		style.setStrokeWidth(1);
+
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+
+			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+				cleanup();
+			}
+
+			public void onViewPortScaled(ViewPortScaledEvent event) {
+				cleanup();
+			}
+
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				cleanup();
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
