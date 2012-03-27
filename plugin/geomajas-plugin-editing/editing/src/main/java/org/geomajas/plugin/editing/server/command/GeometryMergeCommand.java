@@ -48,7 +48,7 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 		if (request.getGeometries() == null || request.getGeometries().size() == 0) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "request");
 		}
-		if (request.getGeometries().size() == 1) {
+		if (request.getGeometries().size() == 1 && request.getBuffer() == 0d) {
 			response.setGeometry(request.getGeometries().get(0));
 			return;
 		}
