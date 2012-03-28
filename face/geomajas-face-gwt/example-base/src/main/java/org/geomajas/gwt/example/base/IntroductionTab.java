@@ -65,6 +65,6 @@ public class IntroductionTab extends SamplePanel {
 	}
 
 	public String ensureUserLoggedIn() {
-		return null;
+		return "luc";
 	}
 }

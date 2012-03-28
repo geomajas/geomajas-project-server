@@ -13,6 +13,7 @@ package org.geomajas.application.gwt.showcase.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Label;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
 import org.geomajas.application.gwt.showcase.client.security.AttributeSecuritySample;
@@ -21,16 +22,13 @@ import org.geomajas.application.gwt.showcase.client.security.FilterSecuritySampl
 import org.geomajas.application.gwt.showcase.client.security.LayerSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.LoginSample;
 import org.geomajas.application.gwt.showcase.client.security.ToolSecuritySample;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.event.TokenChangedEvent;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.example.base.ExampleLayout;
 import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
-import org.geomajas.plugin.staticsecurity.client.Authentication;
-import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
-import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LogoutFailureEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LogoutHandler;
-import org.geomajas.plugin.staticsecurity.client.event.LogoutSuccessEvent;
+import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 
 /**
  * <p>
@@ -69,29 +67,44 @@ public class ShowcaseEntryPoint implements EntryPoint {
 				ToolSecuritySample.FACTORY));
 
 		ExampleLayout exampleLayout = new ExampleLayout();
+		
+		exampleLayout.setAuthenticationHandler(new ShowcaseAuthenticationHandler());
+		
 		exampleLayout.buildUi();
 
 		// security demo
 		final Label userLabel = exampleLayout.getUserLabel();
-		Authentication.getInstance().addLoginHandler(new LoginHandler() {
-
-			public void onLoginFailure(LoginFailureEvent event) {
-			}
-
-			public void onLoginSuccess(LoginSuccessEvent event) {
-				userLabel.setContents("Logged in with: " + Authentication.getInstance().getUserId());
-			}
-		});
-		Authentication.getInstance().addLogoutHandler(new LogoutHandler() {
-
-			public void onLogoutFailure(LogoutFailureEvent event) {
-			}
-
-			public void onLogoutSuccess(LogoutSuccessEvent event) {
-				userLabel.setContents("No user is logged in.");
+		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
+			public void onTokenChanged(TokenChangedEvent event) {
+				String userId = null;
+				if (null != event.getUserDetail()) {
+					userId = event.getUserDetail().getUserId();
+				}
+				if (null == userId) {
+					userLabel.setContents("No user is logged in.");
+				} else {
+					userLabel.setContents("Logged in with: " + userId);
+				}
 			}
 		});
-		Authentication.getInstance().login("luc", "luc", null);
+		SsecAccess.login("luc", "luc", null);
+	}
+	
+	private final class ShowcaseAuthenticationHandler implements ExampleLayout.SimpleAuthenticationHandler {
+
+		public void logout(Runnable callback) {
+			SsecAccess.logout();
+		}
+
+		public void login(String login, String password, final Runnable callback) {
+			SsecAccess.login(login, password, new BooleanCallback() {
+				public void execute(Boolean loginSucceeded) {
+					if (loginSucceeded) {
+						callback.run();
+					}
+				}
+			});
+		}
 	}
 
 }

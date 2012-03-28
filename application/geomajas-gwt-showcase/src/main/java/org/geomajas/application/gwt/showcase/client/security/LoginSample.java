@@ -115,6 +115,6 @@ public class LoginSample extends SamplePanel {
 	}
 
 	public String ensureUserLoggedIn() {
-		return null;
+		return "luc";
 	}
 }
