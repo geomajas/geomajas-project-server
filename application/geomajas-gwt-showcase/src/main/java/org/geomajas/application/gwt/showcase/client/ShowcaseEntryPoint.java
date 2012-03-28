@@ -97,6 +97,10 @@ public class ShowcaseEntryPoint implements EntryPoint {
 		}
 
 		public void login(String login, String password, final Runnable callback) {
+			if (null == login) {
+				login = "luc";
+				password = login;
+			}
 			SsecAccess.login(login, password, new BooleanCallback() {
 				public void execute(Boolean loginSucceeded) {
 					if (loginSucceeded) {

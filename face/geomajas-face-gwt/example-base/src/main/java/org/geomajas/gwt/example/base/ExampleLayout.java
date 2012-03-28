@@ -205,12 +205,6 @@ public class ExampleLayout {
 			if (null == authenticationHandler ||
 					(null != userId && userId.equals(GwtCommandDispatcher.getInstance().getUserDetail().getUserId()))) {
 				showSample(panel, treeNode.getName(), treeNode.getIcon());
-			} else if (userId == null) {
-				authenticationHandler.logout(new Runnable() {
-					public void run() {
-						showSample(panel, name, icon);
-					}
-				});
 			} else {
 				// Switch user, then show sample:
 				authenticationHandler.login(userId, userId, new Runnable() {
