@@ -89,7 +89,12 @@ public class ShowcaseEntryPoint implements EntryPoint {
 		});
 		SsecAccess.login("luc", "luc", null);
 	}
-	
+
+	/**
+	 * Authentication handler to assure panels are running with the requested user.
+	 *
+	 * @author Joachim Van der Auwera
+	 */
 	private final class ShowcaseAuthenticationHandler implements ExampleLayout.SimpleAuthenticationHandler {
 
 		public void logout(Runnable callback) {
