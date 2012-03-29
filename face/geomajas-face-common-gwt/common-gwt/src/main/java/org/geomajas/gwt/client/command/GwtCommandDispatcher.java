@@ -200,7 +200,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 							errorHandled = true;
 						}
 					}
-					if (!errorHandled) {
+					if (!errorHandled && deferred.isLogCommunicationExceptions()) {
 						onCommunicationException(error);
 					}
 				} catch (Throwable t) {
