@@ -10,6 +10,9 @@
  */
 package org.geomajas.plugin.editing.server.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.global.ExceptionCode;
@@ -21,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
 /**
  * <p>
@@ -45,22 +48,21 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 	}
 
 	public void execute(GeometryMergeRequest request, GeometryMergeResponse response) throws Exception {
-		if (request.getGeometries() == null || request.getGeometries().size() == 0) {
+		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
+		if (clientGeometries == null || clientGeometries.size() == 0) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "request");
 		}
-		double buffer = request.getBuffer();
-		double boundaries = 0.0000001d;
-		boolean bufferIsZero = buffer < boundaries && buffer > 0 - boundaries;
-		if (request.getGeometries().size() == 1 && bufferIsZero) {
-			response.setGeometry(request.getGeometries().get(0));
+		if (clientGeometries.size() == 1) {
+			response.setGeometry(clientGeometries.get(0));
 			return;
 		}
 		int precision = request.getPrecision();
 
-		Geometry[] geometries = new Geometry[request.getGeometries().size()];
-		for (int i = 0; i < request.getGeometries().size(); i++) {
-			request.getGeometries().get(i).setPrecision(precision);
-			geometries[i] = converter.toInternal(request.getGeometries().get(i));
+		List<Geometry> geometries = new ArrayList<Geometry>();
+		for (int i = 0; i < clientGeometries.size(); i++) {
+			org.geomajas.geometry.Geometry geometry = clientGeometries.get(i);
+			geometry.setPrecision(precision);
+			geometries.add(converter.toInternal(geometry));
 		}
 		PrecisionModel precisionModel;
 		if (precision == -1) {
@@ -69,22 +71,16 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 		} else {
 			precisionModel = new PrecisionModel(Math.pow(10.0, precision));
 		}
-		GeometryFactory factory = new GeometryFactory(precisionModel, geometries[0].getSRID());
+		GeometryFactory factory = new GeometryFactory(precisionModel, geometries.get(0).getSRID());
 
 		// Calculate the union:
-		Geometry temp = factory.createGeometry(geometries[0]);
-		if (bufferIsZero) {
+		double buffer = 0;
+		if (request.usePrecisionAsBuffer()) {
 			buffer = Math.pow(10.0, -(precision - 1));
 		}
-		temp = temp.buffer(buffer);
-		for (int i = 1; i < geometries.length; i++) {
-			Geometry geometry = factory.createGeometry(geometries[i]);
-			// Buffer to make sure that after a split, the merging the same geometries would work:
-			geometry = geometry.buffer(buffer);
+		GeometryCollection geometryCollection = (GeometryCollection) factory.buildGeometry(geometries);
 
-			// Use EnhancedPrecisionOp to reduce likeliness of robustness problems:
-			temp = EnhancedPrecisionOp.union(temp, geometry);
-		}
-		response.setGeometry(converter.toDto(temp));
+		Geometry union = geometryCollection.buffer(buffer);
+		response.setGeometry(converter.toDto(union));
 	}
 }

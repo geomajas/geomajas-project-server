@@ -52,6 +52,8 @@ public class GeometryMergeService {
 
 	private int precision = -1;
 
+	private boolean usePrecisionAsBuffer;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -252,6 +254,26 @@ public class GeometryMergeService {
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
+	
+	/**
+	 * Set the boolean that triggers the usage of the precision value as buffer.
+	 * <p><b>Default</b> = false<p>
+	 * <p><b>Note</b>: If false all lines and points are ignored during the merging process.<p>
+	 * 
+	 * @param usePrecisionAsBuffer
+	 */
+	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
+		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
+	}
+	
+	/**
+	 * Get the boolean that triggers the usage of the precision value as buffer.
+	 * 
+	 * @return usePrecisionAsBuffer
+	 */
+	public boolean usePrecisionAsBuffer() {
+		return usePrecisionAsBuffer;
+	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
@@ -261,6 +283,7 @@ public class GeometryMergeService {
 		GeometryMergeRequest request = new GeometryMergeRequest();
 		request.setGeometries(geometries);
 		request.setPrecision(precision);
+		request.setUsePrecisionAsBuffer(usePrecisionAsBuffer);
 		GwtCommand command = new GwtCommand(GeometryMergeRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryMergeResponse>() {
