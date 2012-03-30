@@ -17,7 +17,7 @@
   <appendix id="appendix-migrating">
     <title>Migrating between Geomajas versions</title>
 
-    <section>
+    <section id="mig-1110">
       <title>Migrating between Geomajas 1.10.0 and Geomajas (back-end core)
       1.11.0</title>
 
@@ -27,17 +27,17 @@
           changed: before it was keeping the current scale, now it zooms to
           the maximum scale (by default). The zoom scale for zooming to points
           can be changed on a per-layer level by assigning the
-          <code>zoomToPointScale</code> propery in
+          <code>zoomToPointScale</code> property in
           <code>ClientLayerInfo</code>.</para>
         </listitem>
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="mig-1100">
       <title>Migrating between Geomajas 1.9.0 and Geomajas (back-end core)
       1.10.0</title>
 
-      <para>TODO</para>
+      <para>No known issues.</para>
     </section>
 
     <section id="mig-190">
