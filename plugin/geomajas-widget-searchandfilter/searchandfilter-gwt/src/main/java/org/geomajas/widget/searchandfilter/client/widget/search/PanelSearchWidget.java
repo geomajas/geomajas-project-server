@@ -47,8 +47,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	private static final String BTN_FAVOURITES_IMG = "[ISOMORPHIC]/geomajas/osgeo/bookmark_new.png";
 	private static final String BTN_SEARCH_IMG = "[ISOMORPHIC]/geomajas/silk/find.png";
-	private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/gwt/filter.png";
-	private static final String BTN_REMOVEFILTER_IMG = "[ISOMORPHIC]/geomajas/gwt/filter.png";
+	private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
+	private static final String BTN_REMOVEFILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
 
 	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 

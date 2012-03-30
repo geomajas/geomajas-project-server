@@ -208,7 +208,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 		private static final String BTN_DELETE_IMG = "[SKIN]/actions/remove.png";
 		private static final String BTN_SEARCH_IMG = "[ISOMORPHIC]/geomajas/silk/find.png";
-		private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/gwt/filter.png";
+		private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
 
 		private HLayout rollOverTools;
 		private ImgButton filterBtn;
