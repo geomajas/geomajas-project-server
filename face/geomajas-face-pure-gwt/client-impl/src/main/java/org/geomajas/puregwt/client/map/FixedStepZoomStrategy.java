@@ -105,10 +105,14 @@ public class FixedStepZoomStrategy extends FreeForAllZoomStrategy {
 		for (int i = 0; i < scales.size() - 1; i++) {
 			double lower = scales.get(i);
 			double upper = scales.get(i + 1);
-
-			if (allowedScale <= upper && allowedScale > lower) {
+			
+			if (allowedScale == upper) {
+				return upper;
+			} else if (allowedScale == lower) {
+				return lower;
+			} else if (allowedScale < upper && allowedScale > lower) {
 				if (option == ZoomOption.LEVEL_FIT) {
-					return upper;
+					return lower;
 				} else {
 					if (Math.abs(upper - allowedScale) < Math.abs(allowedScale - lower)) {
 						return upper;

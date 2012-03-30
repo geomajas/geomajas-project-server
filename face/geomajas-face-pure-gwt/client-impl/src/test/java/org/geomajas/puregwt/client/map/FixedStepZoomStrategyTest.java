@@ -135,10 +135,16 @@ public class FixedStepZoomStrategyTest {
 	@Test
 	public void testCheckScale() {
 		Assert.assertEquals(SCALES[3], zoomStrategy.checkScale(0, ZoomOption.LEVEL_FIT));
-		Assert.assertEquals(SCALES[2], zoomStrategy.checkScale(SCALES[3] + 0.001, ZoomOption.LEVEL_FIT));
-		Assert.assertEquals(SCALES[1], zoomStrategy.checkScale(SCALES[2] + 0.001, ZoomOption.LEVEL_FIT));
-		Assert.assertEquals(SCALES[0], zoomStrategy.checkScale(SCALES[1] + 0.001, ZoomOption.LEVEL_FIT));
-		Assert.assertEquals(SCALES[0], zoomStrategy.checkScale(SCALES[0] + 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[3], zoomStrategy.checkScale(SCALES[3] - 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[3], zoomStrategy.checkScale(SCALES[2] - 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[2], zoomStrategy.checkScale(SCALES[1] - 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[1], zoomStrategy.checkScale(SCALES[0] - 0.001, ZoomOption.LEVEL_FIT));
+		
+		Assert.assertEquals(SCALES[3], zoomStrategy.checkScale(0, ZoomOption.LEVEL_CLOSEST));
+		Assert.assertEquals(SCALES[3], zoomStrategy.checkScale(SCALES[3] - 0.001, ZoomOption.LEVEL_CLOSEST));
+		Assert.assertEquals(SCALES[2], zoomStrategy.checkScale(SCALES[2] - 0.001, ZoomOption.LEVEL_CLOSEST));
+		Assert.assertEquals(SCALES[1], zoomStrategy.checkScale(SCALES[1] - 0.001, ZoomOption.LEVEL_CLOSEST));
+		Assert.assertEquals(SCALES[0], zoomStrategy.checkScale(SCALES[0] - 0.001, ZoomOption.LEVEL_CLOSEST));
 	}
 
 	@Test
