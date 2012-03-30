@@ -243,13 +243,6 @@ public class ExampleLayout {
 	public interface SimpleAuthenticationHandler {
 
 		/**
-		 * Logout the current user.
-		 *
-		 * @param callback callback which is called when successful
-		 */
-		void logout(Runnable callback);
-
-		/**
 		 * Login using given credentials.
 		 *
 		 * @param login login

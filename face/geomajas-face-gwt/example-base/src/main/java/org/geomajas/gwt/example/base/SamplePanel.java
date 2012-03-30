@@ -136,7 +136,9 @@ public abstract class SamplePanel extends VLayout {
 	 * 
 	 * @return user which needs to be logged in
 	 */
-	public abstract String ensureUserLoggedIn();
+	public String ensureUserLoggedIn() {
+		return null;
+	}
 
 	public String getId() {
 		return id;
