@@ -18,5 +18,25 @@ package org.geomajas.plugin.editing.dto;
  * 
  */
 public class UnionInfo {
+	
+	private int precision = -1;
+
+	private boolean usePrecisionAsBuffer;
+
+	public int getPrecision() {
+		return precision;
+	}
+
+	public void setPrecision(int precision) {
+		this.precision = precision;
+	}
+
+	public boolean isUsePrecisionAsBuffer() {
+		return usePrecisionAsBuffer;
+	}
+
+	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
+		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
+	}
 
 }

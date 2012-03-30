@@ -43,7 +43,7 @@ public interface GeometryOperationService {
 	 * @param bufferInfo info object
 	 * @param callback callback
 	 */
-	void buffer(List<Geometry> geometries, BufferInfo bufferInfo, Callback<Geometry, Throwable> callback);
+	void buffer(List<Geometry> geometries, BufferInfo bufferInfo, Callback<List<Geometry>, Throwable> callback);
 
 	/**
 	 * Compute the union of these geometries.
