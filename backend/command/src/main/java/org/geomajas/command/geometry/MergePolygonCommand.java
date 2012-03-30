@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.command.geometry;
 
 import org.geomajas.command.Command;
@@ -27,8 +28,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * <p>
- * This command splits a polygon or multipolygon by a linestring, and returns an array of resulting
- * polygons/multipolygons.
+ * This command merges an array of polygons.
  * </p>
  * 
  * @author Pieter De Graef
@@ -39,10 +39,12 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 	@Autowired
 	private DtoConverterService converter;
 
+	/** {@inheritDoc} */
 	public MergePolygonResponse getEmptyCommandResponse() {
 		return new MergePolygonResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(MergePolygonRequest request, MergePolygonResponse response) throws Exception {
 		Polygon[] polygons = new Polygon[request.getPolygons().length];
 		for (int i = 0; i < request.getPolygons().length; i++) {
