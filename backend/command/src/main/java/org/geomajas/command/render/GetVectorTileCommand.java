@@ -44,10 +44,12 @@ public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVe
 	@Autowired
 	private VectorLayerService layerService;
 
+	/** {@inheritDoc} */
 	public GetVectorTileResponse getEmptyCommandResponse() {
 		return new GetVectorTileResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GetVectorTileRequest request, GetVectorTileResponse response) throws Exception {
 		String layerId = request.getLayerId();
 		log.debug("request start layer {}, crs {}", layerId, request.getCrs());

@@ -28,10 +28,12 @@ public class LogCommand implements Command<LogRequest, CommandResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(LogCommand.class);
 
+	/** {@inheritDoc} */
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(LogRequest request, CommandResponse response) throws Exception {
 		switch (request.getLevel()) {
 			case LogRequest.LEVEL_DEBUG:
@@ -46,6 +48,8 @@ public class LogCommand implements Command<LogRequest, CommandResponse> {
 			case LogRequest.LEVEL_ERROR:
 				log.error(request.getStatement());
 				break;
+			default:
+				throw new IllegalArgumentException("Unknown log level " + request.getLevel());
 		}
 	}
 

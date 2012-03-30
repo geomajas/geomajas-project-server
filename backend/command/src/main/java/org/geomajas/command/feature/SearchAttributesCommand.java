@@ -30,10 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Search for attribute values of a certain attribute within a certain vector layer. The response holds all possible
  * attribute values.
  * </p>
- * <p>
- * TODO What if the user is not allowed to see the requested attribute?
- * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 @Component()
@@ -46,10 +43,12 @@ public class SearchAttributesCommand implements Command<SearchAttributesRequest,
 	@Autowired
 	private VectorLayerService layerService;
 
+	/** {@inheritDoc} */
 	public SearchAttributesResponse getEmptyCommandResponse() {
 		return new SearchAttributesResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(SearchAttributesRequest request, SearchAttributesResponse response) throws Exception {
 		String layerId = request.getLayerId();
 		if (null == layerId) {

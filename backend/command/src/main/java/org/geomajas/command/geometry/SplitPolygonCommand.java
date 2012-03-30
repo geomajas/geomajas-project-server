@@ -38,10 +38,12 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 	@Autowired
 	private DtoConverterService converter;
 
+	/** {@inheritDoc} */
 	public SplitPolygonResponse getEmptyCommandResponse() {
 		return new SplitPolygonResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(SplitPolygonRequest request, SplitPolygonResponse response) throws Exception {
 		// convert to most accurate precision model
 		com.vividsolutions.jts.geom.Geometry jtsGeometry = converter.toInternal(request.getGeometry());

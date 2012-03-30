@@ -154,6 +154,8 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 						case SearchByLocationRequest.QUERY_WITHIN:
 							f = filterCreator.createWithinFilter(layerGeometry, geomName);
 							break;
+						default:
+							throw new IllegalArgumentException("Unknown query type " + queryType);
 					}
 					//Set the per layer filter
 					if (null != request.getFilter(clientLayerId)) {
@@ -218,6 +220,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		
 	}
 
+	/** {@inheritDoc} */
 	public SearchByLocationResponse getEmptyCommandResponse() {
 		return new SearchByLocationResponse();
 	}

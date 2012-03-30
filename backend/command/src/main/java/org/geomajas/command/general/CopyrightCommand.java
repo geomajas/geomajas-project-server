@@ -46,6 +46,9 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 	@Autowired(required = false)
 	protected Map<String, PluginInfo> declaredPlugins;
 
+	/**
+	 * Build copyright map once.
+	 */
 	@PostConstruct
 	protected void buildCopyrightMap() {
 		if (null == declaredPlugins) {
@@ -68,10 +71,12 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 		}
 	}
 
+	/** {@inheritDoc} */
 	public CopyrightResponse getEmptyCommandResponse() {
 		return new CopyrightResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(EmptyCommandRequest request, CopyrightResponse response) throws Exception {
 		response.setCopyrights(new ArrayList<CopyrightInfo>(copyrightMap.values()));
 	}

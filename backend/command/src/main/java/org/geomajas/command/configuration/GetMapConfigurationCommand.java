@@ -57,10 +57,12 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	@Autowired
 	private SecurityContext securityContext;
 
+	/** {@inheritDoc} */
 	public GetMapConfigurationResponse getEmptyCommandResponse() {
 		return new GetMapConfigurationResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GetMapConfigurationRequest request, GetMapConfigurationResponse response) throws Exception {
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
