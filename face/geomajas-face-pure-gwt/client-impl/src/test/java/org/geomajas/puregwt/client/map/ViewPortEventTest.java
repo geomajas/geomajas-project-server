@@ -23,6 +23,7 @@ import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,13 +72,13 @@ public class ViewPortEventTest {
 
 	@Before
 	public void prepareTest() {
-		viewPort.applyBounds(viewPort.getMaximumBounds());
+		viewPort.applyBounds(viewPort.getMaximumBounds(), ZoomOption.LEVEL_CLOSEST);
 		event = null;
 	}
 
 	@Test
 	public void testApplyPosition() {
-		viewPort.applyBounds(viewPort.getMaximumBounds());
+		viewPort.applyBounds(viewPort.getMaximumBounds(), ZoomOption.LEVEL_CLOSEST);
 		event = null;
 
 		Assert.assertEquals(4.0, viewPort.getScale());

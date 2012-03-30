@@ -200,7 +200,11 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	public void applyBounds(Bbox bounds) {
-		double newScale = getScaleForBounds(bounds);
+		applyBounds(bounds, ZoomOption.LEVEL_FIT);
+	}
+
+	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
+		double newScale = getScaleForBounds(bounds, zoomOption);
 		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), newScale);
 		if (newScale == scale) {
 			if (!position.equals(tempPosition)) {
@@ -336,7 +340,7 @@ public final class ViewPortImpl implements ViewPort {
 	// Private functions:
 	// -------------------------------------------------------------------------
 
-	private double getScaleForBounds(Bbox bounds) {
+	private double getScaleForBounds(Bbox bounds, ZoomOption zoomOption) {
 		double wRatio;
 		double boundsWidth = bounds.getWidth();
 		if (boundsWidth <= 0) {
@@ -352,7 +356,7 @@ public final class ViewPortImpl implements ViewPort {
 			hRatio = mapHeight / boundsHeight;
 		}
 		// Return the checked scale for the minimum to fit inside:
-		return zoomStrategy.checkScale(wRatio < hRatio ? wRatio : hRatio, ZoomOption.LEVEL_CLOSEST);
+		return zoomStrategy.checkScale(wRatio < hRatio ? wRatio : hRatio, zoomOption);
 	}
 
 	private Coordinate checkPosition(final Coordinate newPosition, final double newScale) {

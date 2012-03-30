@@ -18,6 +18,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 
 
 /**
@@ -174,6 +175,21 @@ public interface ViewPort {
 	/**
 	 * <p>
 	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
+	 * bounding box may differ from that of the map, the fit is "as good as possible". This method is equivalent to
+	 * {@link #applyBounds(Bbox, ZoomOption.LEVEL_FIT)}.
+	 * </p>
+	 * <p>
+	 * Also this function will almost certainly change the scale on the map, so if there have been resolutions defined,
+	 * it will snap to them.
+	 * </p>
+	 * 
+	 * @param bounds A bounding box in world coordinates that determines the view from now on.
+	 */
+	void applyBounds(Bbox bounds);
+
+	/**
+	 * <p>
+	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
 	 * bounding box may differ from that of the map, the fit is "as good as possible".
 	 * </p>
 	 * <p>
@@ -181,10 +197,10 @@ public interface ViewPort {
 	 * it will snap to them.
 	 * </p>
 	 * 
-	 * @param bounds
-	 *            A bounding box in world coordinates that determines the view from now on.
+	 * @param bounds A bounding box in world coordinates that determines the view from now on.
+	 * @param zoomOption The way in which to zoom.
 	 */
-	void applyBounds(Bbox bounds);
+	void applyBounds(Bbox bounds, ZoomOption zoomOption);
 
 	/**
 	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
