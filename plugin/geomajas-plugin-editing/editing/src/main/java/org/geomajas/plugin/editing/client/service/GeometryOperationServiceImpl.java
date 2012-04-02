@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -107,8 +108,35 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 	}
 
 	public void bounds(List<Geometry> geometries, Callback<Bbox, Throwable> callback) {
-		// TODO Auto-generated method stub
-
+		try {
+			Bbox result = GeometryService.getBounds(geometries.get(0));
+			double minX = result.getX();
+			double minY = result.getY();
+			double maxX = result.getMaxX();
+			double maxY = result.getMaxY();
+			
+			for (int i = 1 ; i < geometries.size() ; i++) {
+				Bbox bounds = GeometryService.getBounds(geometries.get(i));
+				double boundsX = bounds.getX();
+				minX = boundsX < minX ? boundsX : minX;
+				
+				double boundsY = bounds.getY();
+				minY = boundsY < minY ? boundsY : minY;
+				
+				double boundsMaxX = bounds.getMaxX();
+				maxX = boundsMaxX > maxX ? boundsMaxX : maxX;
+				
+				double boundsMaxY = bounds.getMaxY();
+				maxY = boundsMaxY > maxY ? boundsMaxY : maxY;
+			}
+			result.setX(minX);
+			result.setY(minY);
+			result.setMaxX(maxX);
+			result.setMaxY(maxY);
+			callback.onSuccess(result);
+		} catch (Exception e) {
+			callback.onFailure(e);
+		}
 	}
 
 }
