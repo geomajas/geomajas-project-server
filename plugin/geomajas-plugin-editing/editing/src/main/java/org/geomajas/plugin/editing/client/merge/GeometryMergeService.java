@@ -16,9 +16,6 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.editing.client.GeometryFunction;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler;
@@ -28,9 +25,11 @@ import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler;
-import org.geomajas.plugin.editing.dto.GeometryMergeRequest;
-import org.geomajas.plugin.editing.dto.GeometryMergeResponse;
+import org.geomajas.plugin.editing.client.service.GeometryOperationService;
+import org.geomajas.plugin.editing.client.service.GeometryOperationServiceImpl;
+import org.geomajas.plugin.editing.dto.UnionInfo;
 
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -280,16 +279,18 @@ public class GeometryMergeService {
 	// ------------------------------------------------------------------------
 
 	private void merge(final GeometryFunction callback) {
-		GeometryMergeRequest request = new GeometryMergeRequest();
-		request.setGeometries(geometries);
-		request.setPrecision(precision);
-		request.setUsePrecisionAsBuffer(usePrecisionAsBuffer);
-		GwtCommand command = new GwtCommand(GeometryMergeRequest.COMMAND);
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryMergeResponse>() {
-
-			public void execute(GeometryMergeResponse response) {
-				callback.execute(response.getGeometry());
+		GeometryOperationService operationService = new GeometryOperationServiceImpl();
+		UnionInfo unionInfo = new UnionInfo();
+		unionInfo.setUsePrecisionAsBuffer(true);
+		unionInfo.setPrecision(precision);
+		operationService.union(geometries, unionInfo, new Callback<Geometry, Throwable>() {
+			
+			public void onSuccess(Geometry result) {
+				callback.execute(result);
+			}
+			
+			public void onFailure(Throwable reason) {
+				reason.printStackTrace();
 			}
 		});
 	}
