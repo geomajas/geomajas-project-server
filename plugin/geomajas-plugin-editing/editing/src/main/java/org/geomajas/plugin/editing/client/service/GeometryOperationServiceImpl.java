@@ -22,6 +22,8 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.editing.dto.BufferInfo;
 import org.geomajas.plugin.editing.dto.GeometryBufferRequest;
 import org.geomajas.plugin.editing.dto.GeometryBufferResponse;
+import org.geomajas.plugin.editing.dto.GeometryConvexHullRequest;
+import org.geomajas.plugin.editing.dto.GeometryConvexHullResponse;
 import org.geomajas.plugin.editing.dto.GeometryMergeRequest;
 import org.geomajas.plugin.editing.dto.GeometryMergeResponse;
 import org.geomajas.plugin.editing.dto.UnionInfo;
@@ -56,7 +58,6 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 			}
 			
 		});
-
 	}
 
 	public void buffer(List<Geometry> geometries, BufferInfo bufferInfo, 
@@ -74,7 +75,6 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 					callback.onFailure(throwable);
 				}
 			}
-			
 		});
 	}
 
@@ -94,17 +94,37 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 				}
 			}
 		});
-
 	}
 
-	public void convexHull(Geometry geometry, Callback<Geometry, Throwable> callback) {
-		// TODO Auto-generated method stub
+	public void convexHull(Geometry geometry, final Callback<Geometry, Throwable> callback) {
+		List<Geometry> geometries = new ArrayList<Geometry>();
+		geometries.add(geometry);
+		convexHull(geometries, new Callback<List<Geometry>, Throwable>() {
 
+			public void onFailure(Throwable reason) {
+				callback.onFailure(reason);
+			}
+
+			public void onSuccess(List<Geometry> result) {
+				callback.onSuccess(result.get(0));
+			}
+		});
 	}
 
-	public void convexHull(List<Geometry> geometries, Callback<Geometry, Throwable> callback) {
-		// TODO Auto-generated method stub
+	public void convexHull(List<Geometry> geometries, final Callback<List<Geometry>, Throwable> callback) {
+		GeometryConvexHullRequest request = new GeometryConvexHullRequest();
+		request.setGeometries(geometries);
+		GwtCommand command = new GwtCommand(GeometryConvexHullRequest.COMMAND);
+		command.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryConvexHullResponse>() {
 
+			public void execute(GeometryConvexHullResponse response) {
+				callback.onSuccess(response.getGeometries());
+				for (Throwable throwable : response.getErrors()) {
+					callback.onFailure(throwable);
+				}
+			}
+		});
 	}
 
 	public void bounds(List<Geometry> geometries, Callback<Bbox, Throwable> callback) {

@@ -70,7 +70,7 @@ public interface GeometryOperationService {
 	 * @param bufferInfo info object
 	 * @param callback callback
 	 */
-	void convexHull(List<Geometry> geometries, Callback<Geometry, Throwable> callback);
+	void convexHull(List<Geometry> geometries, Callback<List<Geometry>, Throwable> callback);
 
 	/**
 	 * Compute the bounds of these geometries.
