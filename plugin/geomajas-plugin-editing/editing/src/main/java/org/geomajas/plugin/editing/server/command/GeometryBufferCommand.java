@@ -23,8 +23,6 @@ import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * <p>
  * This command applies a buffer on multiple geometries.
@@ -49,16 +47,13 @@ public class GeometryBufferCommand implements Command<GeometryBufferRequest, Geo
 		if (clientGeometries == null || clientGeometries.size() == 0) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "request");
 		}
-		List<Geometry> geometries = new ArrayList<Geometry>();
-		for (int i = 0; i < clientGeometries.size(); i++) {
-			geometries.add(converter.toInternal(clientGeometries.get(i)));
-		}
 
-		// Apply buffer and convert back to DTO
+		// Convert to internal, apply buffer and convert back to DTO
+		List<org.geomajas.geometry.Geometry> result = new ArrayList<org.geomajas.geometry.Geometry>();
 		double buffer = request.getBufferDistance();
-		for (int i = 0; i < geometries.size(); i++) {
-			clientGeometries.set(i, converter.toDto(geometries.get(i).buffer(buffer)));
+		for (int i = 0; i < clientGeometries.size(); i++) {
+			result.add(converter.toDto(converter.toInternal(clientGeometries.get(i)).buffer(buffer)));
 		}
-		response.setGeometries(clientGeometries);
+		response.setGeometries(result);
 	}
 }
