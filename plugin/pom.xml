@@ -29,6 +29,7 @@
 		<module>geomajas-layer-google</module>
 		<module>geomajas-layer-hibernate</module>
 		<module>geomajas-layer-openstreetmap</module>
+		<module>geomajas-layer-tms</module>
 		<module>geomajas-layer-wms</module>
 		<module>geomajas-plugin-caching</module>
 		<module>geomajas-plugin-editing</module>

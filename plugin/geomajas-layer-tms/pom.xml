@@ -38,32 +38,7 @@
 				<role>Module maintainer</role>
 			</roles>
 		</developer>
-		<developer>
-			<id>jandm</id>
-			<name>Jan De Moerloose</name>
-			<email>jan.demoerloose@geosparc.com</email>
-		</developer>
-		<developer>
-			<id>joachimvda</id>
-			<name>Joachim Van der Auwera</name>
-			<email>joachim@geosparc.com</email>
-		</developer>
 	</developers>
-
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<dependencyManagement>
 		<dependencies>
@@ -71,12 +46,6 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-tms</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-tms</artifactId>
-				<version>${project.version}</version>
-				<classifier>sources</classifier>
 			</dependency>
 
 			<dependency>
