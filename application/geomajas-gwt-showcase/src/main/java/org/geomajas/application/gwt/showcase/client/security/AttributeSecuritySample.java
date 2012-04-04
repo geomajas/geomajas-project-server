@@ -20,10 +20,9 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -33,7 +32,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.plugin.staticsecurity.client.Authentication;
+import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 
 /**
  * <p>
@@ -98,7 +97,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("elvis", "elvis", initMapCallback);
+				SsecAccess.login("elvis", "elvis", initMapCallback);
 				if (null != featureAttributeWindow) {
 					featureAttributeWindow.destroy();
 					featureAttributeWindow = null;
@@ -113,7 +112,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		loginButtonLuc.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("luc", "luc", initMapCallback);
+				SsecAccess.login("luc", "luc", initMapCallback);
 				if (null != featureAttributeWindow) {
 					featureAttributeWindow.destroy();
 					featureAttributeWindow = null;
@@ -140,21 +139,19 @@ public class AttributeSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				layer = (VectorLayer) map.getMapModel().getLayer("clientLayerBeans");
-				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+				GwtCommandDispatcher.getInstance().execute(command,
+						new AbstractCommandCallback<SearchFeatureResponse>() {
 
-					public void execute(CommandResponse response) {
-						if (response instanceof SearchFeatureResponse) {
-							SearchFeatureResponse resp = (SearchFeatureResponse) response;
-							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
-								Feature feature = new Feature(dtoFeature, layer);
-								if (null != featureAttributeWindow) {
-									featureAttributeWindow.destroy();
-									featureAttributeWindow = null;
-								}
-								featureAttributeWindow = new FeatureAttributeWindow(feature, true);
-								featureAttributeWindow.setWidth(400);
-								layout.addMember(featureAttributeWindow);
+					public void execute(SearchFeatureResponse response) {
+						for (org.geomajas.layer.feature.Feature dtoFeature : response.getFeatures()) {
+							Feature feature = new Feature(dtoFeature, layer);
+							if (null != featureAttributeWindow) {
+								featureAttributeWindow.destroy();
+								featureAttributeWindow = null;
 							}
+							featureAttributeWindow = new FeatureAttributeWindow(feature, true);
+							featureAttributeWindow.setWidth(400);
+							layout.addMember(featureAttributeWindow);
 						}
 					}
 				});
