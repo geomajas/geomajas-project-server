@@ -64,6 +64,13 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>1.11.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
 				<version>1.11.0-SNAPSHOT</version>
 				<type>pom</type>
@@ -141,11 +148,13 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+		<!--
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-profiling</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		-->
 
 		<!-- Base application -->
 		<dependency>

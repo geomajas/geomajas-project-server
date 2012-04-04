@@ -97,10 +97,6 @@ public class ShowcaseEntryPoint implements EntryPoint {
 	 */
 	private final class ShowcaseAuthenticationHandler implements ExampleLayout.SimpleAuthenticationHandler {
 
-		public void logout(Runnable callback) {
-			SsecAccess.logout();
-		}
-
 		public void login(String login, String password, final Runnable callback) {
 			if (null == login) {
 				login = "luc";
