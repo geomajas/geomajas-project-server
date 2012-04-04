@@ -43,17 +43,15 @@
 		</developer>
 	</developers>
 
-	<properties>
-		<geomajas-plugin-editing-backend-version>1.11.0-SNAPSHOT</geomajas-plugin-editing-backend-version>
-		<geomajas-plugin-editing-common-gwt-face-version>1.0.0</geomajas-plugin-editing-common-gwt-face-version>
-		<geomajas-plugin-editing-gwt-face-version>1.11.0-SNAPSHOT</geomajas-plugin-editing-gwt-face-version>
-		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
-		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
-		<!--<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>-->
-	</properties>	
-
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${geomajas-plugin-editing-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-common-gwt-all</artifactId>
@@ -72,13 +70,6 @@
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-pure-gwt</artifactId>
 				<version>${geomajas-plugin-editing-puregwt-face-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${geomajas-plugin-editing-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -186,4 +177,14 @@
 			</activation>
 		</profile>
 	</profiles>
+
+	<properties>
+		<geomajas-plugin-editing-backend-version>1.11.0-SNAPSHOT</geomajas-plugin-editing-backend-version>
+		<geomajas-plugin-editing-common-gwt-face-version>1.0.0</geomajas-plugin-editing-common-gwt-face-version>
+		<geomajas-plugin-editing-gwt-face-version>1.11.0-SNAPSHOT</geomajas-plugin-editing-gwt-face-version>
+		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
+		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
+		<!--<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>-->
+	</properties>
+
 </project>
