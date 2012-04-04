@@ -36,6 +36,7 @@ import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
@@ -938,12 +939,15 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	}
 
 	private URL getURL(String resourceLocation) throws LayerException {
+		if (resourceLocation.startsWith(GeomajasConstant.CLASSPATH_URL_PREFIX)) {
+			resourceLocation = resourceLocation.substring(GeomajasConstant.CLASSPATH_URL_PREFIX.length());
+		}
 		Resource resource = applicationContext.getResource(resourceLocation);
 		try {
 			if (resource.exists()) {
 				return resource.getURL();
 			} else {
-				String gwtResource = "classpath:" + resourceLocation;
+				String gwtResource = GeomajasConstant.CLASSPATH_URL_PREFIX + resourceLocation;
 				Resource[] matching = applicationContext.getResources(gwtResource);
 				if (matching.length > 0) {
 					return matching[0].getURL();

@@ -54,6 +54,13 @@ public interface GeomajasConstant {
 			FEATURE_INCLUDE_LABEL;
 
 	/**
+	 * URL prefix for classpath resources.
+	 *
+	 * @since 1.11.0
+	 */
+	String CLASSPATH_URL_PREFIX = "classpath:";
+
+	/**
 	 * Dummy interface implementation to keep GWT happy.
 	 */
 	class GeomajasConstantImpl implements GeomajasConstant {

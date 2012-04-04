@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.ResourceService;
 import org.geomajas.service.resource.ResourceInfo;
@@ -31,8 +32,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ResourceServiceImpl implements ResourceService {
-
-	private static final String CLASSPATH = "classpath:";
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -50,9 +49,9 @@ public class ResourceServiceImpl implements ResourceService {
 		} else {
 			String cpResource = null;
 			if (location.startsWith("/")) {
-				cpResource = CLASSPATH + location.substring(1);
+				cpResource = GeomajasConstant.CLASSPATH_URL_PREFIX + location.substring(1);
 			} else {
-				cpResource = CLASSPATH + location;
+				cpResource = GeomajasConstant.CLASSPATH_URL_PREFIX + location;
 			}
 			resource = applicationContext.getResource(cpResource);
 			if (resource.exists()) {

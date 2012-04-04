@@ -17,6 +17,7 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
+import org.geomajas.global.GeomajasConstant;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
@@ -73,8 +74,8 @@ public class GeomajasContextListener implements ServletContextListener, ServletR
 					configLocation.append(',');
 					int pos = part.indexOf(':');
 					if (pos < 0) {
-						// no protocol specified, use "classpath:"
-						configLocation.append("classpath:");
+						// no protocol specified, use classpath.
+						configLocation.append(GeomajasConstant.CLASSPATH_URL_PREFIX);
 					} else if (0 == pos) {
 						// location starts with colon, use default application context 
 						part = part.substring(1);
