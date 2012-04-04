@@ -15,11 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -75,24 +74,22 @@ public class FeatureInfoController extends AbstractGraphicsController {
 
 		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<SearchByLocationResponse>() {
 
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof SearchByLocationResponse) {
-					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
-					for (String serverLayerId : featureMap.keySet()) {
-						List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
-						for (VectorLayer vectorLayer : layers) {
-							List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(serverLayerId);
-							if (orgFeatures.size() > 0) {
-								Feature feature = new Feature(orgFeatures.get(0), vectorLayer);
-								vectorLayer.getFeatureStore().addFeature(feature);
-								FeatureAttributeWindow window = new FeatureAttributeWindow(feature, false);
-								window.setPageTop(mapWidget.getAbsoluteTop() + 10);
-								window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);
-								window.draw();
-							}
+			public void execute(SearchByLocationResponse response) {
+				Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
+				for (String serverLayerId : featureMap.keySet()) {
+					List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+					for (VectorLayer vectorLayer : layers) {
+						List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(serverLayerId);
+						if (orgFeatures.size() > 0) {
+							Feature feature = new Feature(orgFeatures.get(0), vectorLayer);
+							vectorLayer.getFeatureStore().addFeature(feature);
+							FeatureAttributeWindow window = new FeatureAttributeWindow(feature, false);
+							window.setPageTop(mapWidget.getAbsoluteTop() + 10);
+							window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);
+							window.draw();
 						}
 					}
 				}

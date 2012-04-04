@@ -19,7 +19,7 @@ import java.util.Set;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.listener.AbstractListener;
@@ -56,7 +56,6 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private int minPixelMove = FitSetting.tooltipMinimalPixelMove;
 	private int showDelay = FitSetting.tooltipShowDelay;
-	private int layersToSearch = SearchByLocationRequest.SEARCH_ALL_LAYERS;
 	private int maxLabelCount = FitSetting.tooltipMaxLabelCount;
 	private boolean showEmptyResults = FitSetting.tooltipShowEmptyResultMessage;
 
@@ -235,20 +234,21 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	 * Return the text to add to the tooltip for the given feature.
 	 * <p>Default implementation returns <code>feature.getLabel()</code>
 	 * 
-	 * @param f
-	 * @return
+	 * @param feature feature
+	 * @param layer layer
+	 * @return label
 	 */
-	protected String getLabel(Feature f, VectorLayer layer) {
-		return f.getLabel();
+	protected String getLabel(Feature feature, VectorLayer layer) {
+		return feature.getLabel();
 	}
 	
-	protected int getLabelSize(String lab) {
-		if (lab == null) {
+	protected int getLabelSize(String label) {
+		if (label == null) {
 			return 0;
-		} else if (lab.length() < 20) {
-			return lab.length(); // don't bother
+		} else if (label.length() < 20) {
+			return label.length(); // don't bother
 		} else {
-			String[] subLab = lab.split("<br ?\\/>");
+			String[] subLab = label.split("<br ?/>");
 			if (subLab.length > 1) {
 				int max = 0;
 				for (String sub : subLab) {
@@ -258,7 +258,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 				}
 				return max;
 			} else {
-				return lab.length();
+				return label.length();
 			}
 		}
 	}
@@ -271,6 +271,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		request.setLocation(GeometryConverter.toDto(point));
 		request.setCrs(mapWidget.getMapModel().getCrs());
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
+		int layersToSearch = SearchByLocationRequest.SEARCH_ALL_LAYERS;
 		request.setSearchType(layersToSearch);
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
@@ -285,7 +286,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, 
-					new CommandCallback<SearchByLocationResponse>() {
+					new AbstractCommandCallback<SearchByLocationResponse>() {
 			public void execute(SearchByLocationResponse commandResponse) {
 				setTooltipData(coordUsedForRetrieval, commandResponse.getFeatureMap());
 			}
@@ -349,16 +350,6 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		}
 	}
 	
-	private String[] getServerLayerIds(MapModel mapModel) {
-		Set<String> layerIds = new HashSet<String>();
-		for (VectorLayer layer : mapModel.getVectorLayers()) {
-			if (layer.isShowing()) {
-				layerIds.add(layer.getServerLayerId());
-			}
-		}
-		return layerIds.toArray(new String[layerIds.size()]);
-	}
-
 	private double calculateBufferFromPixelTolerance() {
 		WorldViewTransformer transformer = mapWidget.getMapModel().getMapView().getWorldViewTransformer();
 		Coordinate c1 = transformer.viewToWorld(new Coordinate(0, 0));

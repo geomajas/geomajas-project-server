@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -87,7 +86,8 @@ public class VectorTile extends AbstractVectorTile {
 		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
 		final VectorTile self = this;
-		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetVectorTileResponse>() {
+		deferred = GwtCommandDispatcher.getInstance().execute(command,
+				new AbstractCommandCallback<GetVectorTileResponse>() {
 
 			public void execute(GetVectorTileResponse tileResponse) {
 				if (null == deferred || !deferred.isCancelled()) {
@@ -155,12 +155,10 @@ public class VectorTile extends AbstractVectorTile {
 				break;
 			case LOADING:
 				final VectorTile self = this;
-				deferred.addCallback(new CommandCallback() {
+				deferred.addCallback(new AbstractCommandCallback<GetVectorTileResponse>() {
 
-					public void execute(CommandResponse response) {
-						if (response instanceof GetVectorTileResponse) {
-							callback.execute(self);
-						}
+					public void execute(GetVectorTileResponse response) {
+						callback.execute(self);
 					}
 				});
 				break;
@@ -171,6 +169,9 @@ public class VectorTile extends AbstractVectorTile {
 				} else {
 					callback.execute(this);
 				}
+				break;
+			default:
+				throw new IllegalStateException("Unknown status " + getStatus());
 		}
 	}
 
@@ -181,6 +182,8 @@ public class VectorTile extends AbstractVectorTile {
 	 * <li>STATUS.LOADING</li>
 	 * <li>STATUS.LOADED</li>
 	 * </ul>
+	 *
+	 * @return status
 	 */
 	public STATUS getStatus() {
 		if (featureContent.isLoaded()) {

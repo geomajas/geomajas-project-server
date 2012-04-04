@@ -19,7 +19,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasConstant;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -56,17 +56,17 @@ public class VectorLayerSourceProvider implements SnapSourceProvider {
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<SearchByLocationResponse>() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<SearchByLocationResponse>() {
 
 			public void execute(SearchByLocationResponse response) {
-				for (String serverLayerId : response.getFeatureMap().keySet()) {
-					List<Feature> features = response.getFeatureMap().get(serverLayerId);
+				if (response.getFeatureMap().size() > 0) {
+					List<Feature> features = response.getFeatureMap().values().iterator().next();
 					Geometry[] geometries = new Geometry[features.size()];
 					for (int i = 0; i < features.size(); i++) {
 						geometries[i] = features.get(i).getGeometry();
 					}
 					callback.execute(geometries);
-					break;
 				}
 			}
 		});

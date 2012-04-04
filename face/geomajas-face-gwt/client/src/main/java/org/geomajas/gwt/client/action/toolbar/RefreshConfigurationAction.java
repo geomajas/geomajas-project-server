@@ -17,7 +17,7 @@ import java.util.List;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
 import org.geomajas.command.dto.RefreshConfigurationResponse;
 import org.geomajas.gwt.client.action.ToolbarAction;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -53,7 +53,7 @@ public class RefreshConfigurationAction extends ToolbarAction {
 							GwtCommand command = new GwtCommand(RefreshConfigurationRequest.COMMAND);
 							command.setCommandRequest(request);
 							GwtCommandDispatcher.getInstance().execute(command, 
-									new CommandCallback<RefreshConfigurationResponse>() {
+									new AbstractCommandCallback<RefreshConfigurationResponse>() {
 
 								public void execute(RefreshConfigurationResponse response) {
 									String message = "Reloaded applications : ";

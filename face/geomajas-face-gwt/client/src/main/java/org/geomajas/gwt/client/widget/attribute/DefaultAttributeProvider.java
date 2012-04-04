@@ -10,10 +10,9 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchAttributesRequest;
 import org.geomajas.command.dto.SearchAttributesResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -23,7 +22,6 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  * {@link SearchAttributesRequest} to fetch the possible attribute values.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class DefaultAttributeProvider implements AttributeProvider {
 
@@ -77,14 +75,13 @@ public class DefaultAttributeProvider implements AttributeProvider {
 	public void getAttributes(final AttributeProviderCallBack callBack) {
 		GwtCommand command = new GwtCommand(SearchAttributesRequest.COMMAND);
 		command.setCommandRequest(new SearchAttributesRequest(serverLayerId, attributePath));
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchAttributesResponse>() {
 
-			public void execute(CommandResponse response) {
+			public void execute(SearchAttributesResponse response) {
 				if (response.isError()) {
 					callBack.onError(response.getErrorMessages());
-				} else if (response instanceof SearchAttributesResponse) {
-					SearchAttributesResponse sar = (SearchAttributesResponse) response;
-					callBack.onSuccess(sar.getAttributes());
+				} else {
+					callBack.onSuccess(response.getAttributes());
 				}
 			}
 		});

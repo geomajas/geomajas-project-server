@@ -12,6 +12,7 @@
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Set;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.listener.AbstractListener;
@@ -92,9 +93,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 
 	public void setLayersToExclude(String[] layerIds) {
 		this.layersToExclude.clear();
-		for (String layerId : layerIds) {
-			this.layersToExclude.add(layerId);
-		}
+		Collections.addAll(this.layersToExclude, layerIds);
 	}
 
 	public void onMouseDown(ListenerEvent event) {
@@ -147,13 +146,13 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 			// TODO: commands are now chained. Perhaps we should combine this
 			// into a single command?
 			GwtCommandDispatcher.getInstance().execute(commandRequest, 
-								new CommandCallback<SearchByLocationResponse>() {
+								new AbstractCommandCallback<SearchByLocationResponse>() {
 				public void execute(final SearchByLocationResponse vectorResponse) {
 					if (includeRasterLayers) {
 						GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);
 						commandRequest.setCommandRequest(rasterLayerRequest);
 						GwtCommandDispatcher.getInstance().execute(commandRequest,
-								new CommandCallback<SearchByPointResponse>() {
+								new AbstractCommandCallback<SearchByPointResponse>() {
 									public void execute(final SearchByPointResponse rasterResponse) {
 										Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = 
 											vectorResponse.getFeatureMap();
@@ -181,8 +180,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
 			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
-				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel().
-							getLayer(featureMap.keySet().iterator().next()));
+				Layer<?> layer = mapWidget.getMapModel().getLayer(featureMap.keySet().iterator().next());
 				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
 					Feature feature;
@@ -211,8 +209,10 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	}
 
 	/**
-	 * @param bounds
-	 * @return
+	 * Convert to Bbox DTO.
+	 *
+	 * @param bounds bounds
+	 * @return DTO
 	 */
 	private org.geomajas.geometry.Bbox toBbox(Bbox bounds) {
 		return new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());

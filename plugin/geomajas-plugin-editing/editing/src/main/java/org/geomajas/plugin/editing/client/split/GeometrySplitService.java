@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.split;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.editing.client.GeometryArrayFunction;
@@ -144,7 +144,7 @@ public class GeometrySplitService {
 		GeometrySplitRequest request = new GeometrySplitRequest(geometry, splitLine);
 		GwtCommand command = new GwtCommand(GeometrySplitRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometrySplitResponse>() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometrySplitResponse>() {
 
 			public void execute(GeometrySplitResponse response) {
 				callback.execute(response.getGeometries().toArray(new Geometry[response.getGeometries().size()]));

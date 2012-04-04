@@ -27,8 +27,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
-import org.geomajas.command.CommandResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.Html;
@@ -158,16 +157,13 @@ public abstract class SamplePanel extends VLayout {
 		GetResourceRequest request = new GetResourceRequest(resourceFiles);
 		GwtCommand command = new GwtCommand(GetResourceRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GetResourceResponse>() {
 
-			public void execute(CommandResponse response) {
-				if (response instanceof GetResourceResponse) {
-					GetResourceResponse sourceResponse = (GetResourceResponse) response;
-					if (sourceResponse.getResources() == null) {
-						return;
-					}
-					showFiles(sourceResponse.getResources());
+			public void execute(GetResourceResponse response) {
+				if (response.getResources() == null) {
+					return;
 				}
+				showFiles(response.getResources());
 			}
 		});
 	}

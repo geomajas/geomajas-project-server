@@ -22,6 +22,7 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -277,32 +278,31 @@ public final class MapPresenterImpl implements MapPresenter {
 
 			public void execute(GetMapConfigurationResponse response) {
 				// Initialize the MapModel and ViewPort:
-				GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
-				configuration = r.getMapInfo();
+				configuration = response.getMapInfo();
 
 				// Configure the ViewPort. This will immediately zoom to the initial bounds:
 				viewPort.setMapSize(display.getWidth(), display.getHeight());
-				layersModel.initialize(r.getMapInfo(), viewPort, eventBus);
-				viewPort.initialize(r.getMapInfo(), eventBus);
+				layersModel.initialize(configuration, viewPort, eventBus);
+				viewPort.initialize(configuration, eventBus);
 
 				// Immediately zoom to the initial bounds as configured:
-				viewPort.applyBounds(r.getMapInfo().getInitialBounds());
+				viewPort.applyBounds(configuration.getInitialBounds());
 
 				// Initialize the FeatureSelectionRenderer:
-				selectionRenderer.initialize(r.getMapInfo());
+				selectionRenderer.initialize(configuration);
 
-				addMapGadget(mapGadgetFactory.createGadget(Type.WATERMARK, 0, 0, r.getMapInfo()));
-				addMapGadget(mapGadgetFactory.createGadget(Type.SCALEBAR, 0, 0, r.getMapInfo()));
-				addMapGadget(mapGadgetFactory.createGadget(Type.PANNING, 0, 0, r.getMapInfo()));
-				if (r.getMapInfo().getScaleConfiguration().getZoomLevels() != null
-						&& r.getMapInfo().getScaleConfiguration().getZoomLevels().size() > 0) {
+				addMapGadget(mapGadgetFactory.createGadget(Type.WATERMARK, 0, 0, configuration));
+				addMapGadget(mapGadgetFactory.createGadget(Type.SCALEBAR, 0, 0, configuration));
+				addMapGadget(mapGadgetFactory.createGadget(Type.PANNING, 0, 0, configuration));
+				List<ScaleInfo> zoomLevels = configuration.getScaleConfiguration().getZoomLevels();
+				if (zoomLevels != null && configuration.getScaleConfiguration().getZoomLevels().size() > 0) {
 					// Zoom steps...
-					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_TO_RECTANGLE, 5, 60, r.getMapInfo()));
-					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_STEP, 60, 18, r.getMapInfo()));
+					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_TO_RECTANGLE, 5, 60, configuration));
+					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_STEP, 60, 18, configuration));
 				} else {
 					// Simple zooming:
-					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_TO_RECTANGLE, 125, 20, r.getMapInfo()));
-					addMapGadget(mapGadgetFactory.createGadget(Type.SIMPLE_ZOOM, 60, 20, r.getMapInfo()));
+					addMapGadget(mapGadgetFactory.createGadget(Type.ZOOM_TO_RECTANGLE, 125, 20, configuration));
+					addMapGadget(mapGadgetFactory.createGadget(Type.SIMPLE_ZOOM, 60, 20, configuration));
 				}
 
 				// Fire initialization event:

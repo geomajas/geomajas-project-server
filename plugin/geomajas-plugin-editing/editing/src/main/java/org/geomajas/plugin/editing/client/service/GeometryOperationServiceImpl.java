@@ -16,7 +16,7 @@ import java.util.List;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.editing.dto.BufferInfo;
@@ -67,7 +67,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		request.setBufferDistance(bufferInfo.getDistance());
 		GwtCommand command = new GwtCommand(GeometryBufferRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryBufferResponse>() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryBufferResponse>() {
 
 			public void execute(GeometryBufferResponse response) {
 				callback.onSuccess(response.getGeometries());
@@ -85,7 +85,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		request.setUsePrecisionAsBuffer(unionInfo.isUsePrecisionAsBuffer());
 		GwtCommand command = new GwtCommand(GeometryMergeRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryMergeResponse>() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryMergeResponse>() {
 
 			public void execute(GeometryMergeResponse response) {
 				callback.onSuccess(response.getGeometry());
@@ -116,7 +116,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		request.setGeometries(geometries);
 		GwtCommand command = new GwtCommand(GeometryConvexHullRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryConvexHullResponse>() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryConvexHullResponse>() {
 
 			public void execute(GeometryConvexHullResponse response) {
 				callback.onSuccess(response.getGeometries());

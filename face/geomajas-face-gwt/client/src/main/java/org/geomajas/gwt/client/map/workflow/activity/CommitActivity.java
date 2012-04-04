@@ -11,10 +11,9 @@
 
 package org.geomajas.gwt.client.map.workflow.activity;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -48,14 +47,12 @@ public class CommitActivity implements Activity {
 			GwtCommand command = new GwtCommand(PersistTransactionRequest.COMMAND);
 			command.setCommandRequest(request);
 
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+			GwtCommandDispatcher.getInstance().execute(command,
+					new AbstractCommandCallback<PersistTransactionResponse>() {
 
-				public void execute(CommandResponse response) {
-					if (response instanceof PersistTransactionResponse) {
-						PersistTransactionResponse ptr = (PersistTransactionResponse) response;
-						mapModel.applyFeatureTransaction(new FeatureTransaction(ft.getLayer(), ptr
-								.getFeatureTransaction()));
-					}
+				public void execute(PersistTransactionResponse response) {
+					mapModel.applyFeatureTransaction(new FeatureTransaction(ft.getLayer(),
+							response.getFeatureTransaction()));
 				}
 			});
 		}

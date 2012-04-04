@@ -22,13 +22,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.example.base.command.dto.GetResourceRequest;
-import org.geomajas.plugin.staticsecurity.client.Authentication;
+import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 
 /**
  * <p>
@@ -66,7 +66,7 @@ public class CommandSecuritySample extends SamplePanel {
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("mark", "mark", null);
+				SsecAccess.login("mark", "mark", null);
 			}
 		});
 		buttonLayout.addMember(loginButtonMarino);
@@ -77,7 +77,7 @@ public class CommandSecuritySample extends SamplePanel {
 		loginButtonLuc.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("luc", "luc", null);
+				SsecAccess.login("luc", "luc", null);
 			}
 		});
 		buttonLayout.addMember(loginButtonLuc);
@@ -95,7 +95,7 @@ public class CommandSecuritySample extends SamplePanel {
 			public void onClick(ClickEvent event) {
 				GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
 				commandRequest.setCommandRequest(new GetMapConfigurationRequest("mapOsm", "gwtExample"));
-				GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+				GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback() {
 
 					public void execute(CommandResponse response) {
 						SC.say("Command executed successfully");
@@ -115,7 +115,7 @@ public class CommandSecuritySample extends SamplePanel {
 						new String[] { "WEB-INF/security.xml" });
 				GwtCommand command = new GwtCommand(GetResourceRequest.COMMAND);
 				command.setCommandRequest(request);
-				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+				GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback() {
 
 					public void execute(CommandResponse response) {
 						// User mark should never get here...

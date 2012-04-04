@@ -12,8 +12,7 @@ package org.geomajas.plugin.printing.client.widget;
 
 import java.util.LinkedHashMap;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.WidgetLayout;
@@ -219,30 +218,27 @@ public class PrintPreferencesCanvas extends Canvas {
 		request.setTemplate(template);
 		final GwtCommand command = new GwtCommand(PrintGetTemplateRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<PrintGetTemplateResponse>() {
 
-			public void execute(CommandResponse r) {
+			public void execute(PrintGetTemplateResponse response) {
 				stopProgress();
-				if (r instanceof PrintGetTemplateResponse) {
-					PrintGetTemplateResponse response = (PrintGetTemplateResponse) r;
-					UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
-					url.addPath(URL_PATH);
-					url.addParameter(URL_DOCUMENT_ID, response.getDocumentId());
-					url.addParameter(URL_NAME, (String) fileNameItem.getValue());
-					url.addParameter(URL_TOKEN, command.getUserToken());
-					if (SAVE.equals(downloadTypeGroup.getValue())) {
-						url.addParameter(URL_DOWNLOAD, URL_DOWNLOAD_YES);
-						String encodedUrl = url.toString();
-						// create a hidden iframe to avoid popups ???
-						HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='" + encodedUrl
-								+ "'+style='position:absolute;width:0;height:0;border:0'>");
-						hiddenFrame.setVisible(false);
-						addChild(hiddenFrame);
-					} else {
-						url.addParameter(URL_DOWNLOAD, URL_DOWNLOAD_NO);
-						String encodedUrl = url.toString();
-						com.google.gwt.user.client.Window.open(encodedUrl, "_blank", null);
-					}
+				UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
+				url.addPath(URL_PATH);
+				url.addParameter(URL_DOCUMENT_ID, response.getDocumentId());
+				url.addParameter(URL_NAME, (String) fileNameItem.getValue());
+				url.addParameter(URL_TOKEN, command.getUserToken());
+				if (SAVE.equals(downloadTypeGroup.getValue())) {
+					url.addParameter(URL_DOWNLOAD, URL_DOWNLOAD_YES);
+					String encodedUrl = url.toString();
+					// create a hidden iframe to avoid popups ???
+					HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='" + encodedUrl
+							+ "'+style='position:absolute;width:0;height:0;border:0'>");
+					hiddenFrame.setVisible(false);
+					addChild(hiddenFrame);
+				} else {
+					url.addParameter(URL_DOWNLOAD, URL_DOWNLOAD_NO);
+					String encodedUrl = url.toString();
+					com.google.gwt.user.client.Window.open(encodedUrl, "_blank", null);
 				}
 			}
 		});

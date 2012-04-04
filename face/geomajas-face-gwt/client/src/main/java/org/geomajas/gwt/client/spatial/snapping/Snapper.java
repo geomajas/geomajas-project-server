@@ -17,14 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.configuration.SnappingRuleInfo.SnappingType;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.GeomajasConstant;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -139,9 +138,7 @@ public class Snapper {
 		Coordinate snappedCoordinate = coordinate;
 		double snappedDistance = Double.MAX_VALUE;
 
-		for (int i = 0; i < rules.size(); i++) {
-			SnappingRuleInfo rule = rules.get(i);
-
+		for (SnappingRuleInfo rule : rules) {
 			// Check for supported snapping algorithms: TODO use factory
 			if (rule.getType() != SnappingType.CLOSEST_ENDPOINT && rule.getType() != SnappingType.NEAREST_POINT) {
 				throw new IllegalArgumentException("Unknown snapping rule type was found: " + rule.getType());
@@ -238,19 +235,17 @@ public class Snapper {
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof SearchByLocationResponse) {
-					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
-					featureCache.clear();
-					for (String serverLayerId : featureMap.keySet()) {
-						VectorLayer vl = findLayer(serverLayerId);
-						List<Feature> features = new ArrayList<Feature>();
-						featureCache.put(vl, features);
-						for (org.geomajas.layer.feature.Feature dtoFeat : featureMap.get(serverLayerId)) {
-							features.add(new Feature(dtoFeat, vl));
-						}
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<SearchByLocationResponse>() {
+			public void execute(SearchByLocationResponse response) {
+				Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
+				featureCache.clear();
+				for (String serverLayerId : featureMap.keySet()) {
+					VectorLayer vl = findLayer(serverLayerId);
+					List<Feature> features = new ArrayList<Feature>();
+					featureCache.put(vl, features);
+					for (org.geomajas.layer.feature.Feature dtoFeat : featureMap.get(serverLayerId)) {
+						features.add(new Feature(dtoFeat, vl));
 					}
 				}
 			}

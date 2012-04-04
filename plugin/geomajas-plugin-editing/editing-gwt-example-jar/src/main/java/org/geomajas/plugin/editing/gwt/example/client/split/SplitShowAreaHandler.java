@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
@@ -171,7 +171,7 @@ public class SplitShowAreaHandler implements GeometryEditStartHandler, GeometryE
 			GeometrySplitRequest request = new GeometrySplitRequest(geometry, splitLine);
 			GwtCommand command = new GwtCommand(GeometrySplitRequest.COMMAND);
 			command.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometrySplitResponse>() {
+			GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometrySplitResponse>() {
 
 				public void execute(GeometrySplitResponse response) {
 					showAreas(response.getGeometries());

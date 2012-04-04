@@ -20,7 +20,7 @@ import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasConstant;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -59,12 +59,12 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 	}
 
 	/**
-	 * Search a single feature within a certain layer, using the feature ID.
+	 * Search features within a certain layer, using the feature IDs.
 	 * 
 	 * @param layer
 	 *            The features supported layer wherein to search.
-	 * @param id
-	 *            The unique ID of the feature within the layer.
+	 * @param ids
+	 *            The unique IDs of the feature within the layer.
 	 * @param callback
 	 *            Call-back method executed on return (when the feature has been found).
 	 */
@@ -88,7 +88,7 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 
 			GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 			command.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<SearchFeatureResponse>() {
+			GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
 
 				public void execute(SearchFeatureResponse response) {
 					if (response.getFeatures() != null && response.getFeatures().length > 0) {
@@ -134,7 +134,8 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 
 			GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 			commandRequest.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<SearchByLocationResponse>() {
+			GwtCommandDispatcher.getInstance().execute(commandRequest,
+					new AbstractCommandCallback<SearchByLocationResponse>() {
 
 				public void execute(SearchByLocationResponse response) {
 					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();

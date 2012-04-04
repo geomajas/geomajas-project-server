@@ -121,6 +121,11 @@ public class VectorTilePresenter {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Get tile code.
+	 *
+	 * @return tile code
+	 */
 	public TileCode getTileCode() {
 		return tileCode;
 	}
@@ -132,6 +137,8 @@ public class VectorTilePresenter {
 	 * <li>STATUS.LOADING</li>
 	 * <li>STATUS.LOADED</li>
 	 * </ul>
+	 *
+	 * @return tile status
 	 */
 	public STATUS getStatus() {
 		if (display != null) {
@@ -179,7 +186,7 @@ public class VectorTilePresenter {
 						// display.setContent(tile.getFeatureContent());
 						// renderer.getVectorContainer().add((VectorTileObject) display);
 					} else {
-						Coordinate position = getTilePosition(tile);
+						Coordinate position = getTilePosition();
 						display = new RasterTileObject(tile.getFeatureContent(), tile.getScreenWidth(), tile
 								.getScreenHeight(), (int) Math.round(position.getY()),
 								(int) Math.round(position.getX()), onRendered);
@@ -214,7 +221,7 @@ public class VectorTilePresenter {
 		return command;
 	}
 
-	private Coordinate getTilePosition(VectorTile tile) {
+	private Coordinate getTilePosition() {
 		org.geomajas.geometry.Bbox layerBounds = renderer.getLayer().getLayerInfo().getMaxExtent();
 
 		// Calculate tile width and height for tileLevel=tileCode.getTileLevel(); This is in world space.

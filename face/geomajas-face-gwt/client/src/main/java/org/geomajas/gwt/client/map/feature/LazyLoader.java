@@ -11,11 +11,10 @@
 
 package org.geomajas.gwt.client.map.feature;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.global.GeomajasConstant;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
@@ -74,32 +73,29 @@ public final class LazyLoader {
 
 			GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 			command.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+			GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
 
-				public void execute(CommandResponse response) {
-					if (response instanceof SearchFeatureResponse) {
-						SearchFeatureResponse resp = (SearchFeatureResponse) response;
-						if (null != resp.getFeatures() && resp.getFeatures().length > 0) {
-							// build map of features to allow fast update
-							Map<String, Integer> map = new HashMap<String, Integer>();
-							for (int i = 0 ; i < features.size() ; i++) {
-								Feature feature = features.get(i);
-								map.put(feature.getId(), i);
+				public void execute(SearchFeatureResponse response) {
+					if (null != response.getFeatures() && response.getFeatures().length > 0) {
+						// build map of features to allow fast update
+						Map<String, Integer> map = new HashMap<String, Integer>();
+						for (int i = 0 ; i < features.size() ; i++) {
+							Feature feature = features.get(i);
+							map.put(feature.getId(), i);
+						}
+
+						for (org.geomajas.layer.feature.Feature dto : response.getFeatures()) {
+							Feature feature = features.get(map.get(dto.getId()));
+							if (incAttr) {
+								feature.setAttributes(dto.getAttributes());
 							}
-
-							for (org.geomajas.layer.feature.Feature dto : resp.getFeatures()) {
-								Feature feature = features.get(map.get(dto.getId()));
-								if (incAttr) {
-									feature.setAttributes(dto.getAttributes());
-								}
-								if (incGeom) {
-									Geometry geometry = GeometryConverter.toGwt(dto.getGeometry());
-									feature.setGeometry(geometry);
-								}
+							if (incGeom) {
+								Geometry geometry = GeometryConverter.toGwt(dto.getGeometry());
+								feature.setGeometry(geometry);
 							}
 						}
-						callback.execute(features);
 					}
+					callback.execute(features);
 				}
 			});
 		} else {

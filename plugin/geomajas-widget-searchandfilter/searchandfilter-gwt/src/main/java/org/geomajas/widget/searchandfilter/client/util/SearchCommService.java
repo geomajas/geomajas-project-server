@@ -19,9 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -78,16 +76,13 @@ public final class SearchCommService {
 
 		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-			public void execute(CommandResponse response) {
-				if (response instanceof GeometryUtilsResponse) {
-					GeometryUtilsResponse resp = (GeometryUtilsResponse) response;
-					if (onFinished != null) {
-						Geometry[] geoms = new Geometry[2];
-						geoms[0] = GeometryConverter.toGwt(resp.getGeometries()[0]);
-						geoms[1] = GeometryConverter.toGwt(resp.getGeometries()[1]);
-						onFinished.execute(geoms);
-					}
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryUtilsResponse>() {
+			public void execute(GeometryUtilsResponse response) {
+				if (onFinished != null) {
+					Geometry[] geoms = new Geometry[2];
+					geoms[0] = GeometryConverter.toGwt(response.getGeometries()[0]);
+					geoms[1] = GeometryConverter.toGwt(response.getGeometries()[1]);
+					onFinished.execute(geoms);
 				}
 			}
 		});
@@ -95,8 +90,7 @@ public final class SearchCommService {
 
 	/**
 	 * @param geometries geometries
-	 * @param onFinished
-	 *            callback returns one geometry
+	 * @param onFinished callback returns one geometry
 	 */
 	public static void mergeGeometries(List<Geometry> geometries, final DataCallback<Geometry> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
@@ -105,13 +99,10 @@ public final class SearchCommService {
 
 		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-			public void execute(CommandResponse response) {
-				if (response instanceof GeometryUtilsResponse) {
-					GeometryUtilsResponse resp = (GeometryUtilsResponse) response;
-					if (onFinished != null) {
-						onFinished.execute(GeometryConverter.toGwt(resp.getGeometries()[0]));
-					}
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryUtilsResponse>() {
+			public void execute(GeometryUtilsResponse response) {
+				if (onFinished != null) {
+					onFinished.execute(GeometryConverter.toGwt(response.getGeometries()[0]));
 				}
 			}
 		});
@@ -146,17 +137,14 @@ public final class SearchCommService {
 
 		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-			public void execute(CommandResponse response) {
-				if (response instanceof GeometryUtilsResponse) {
-					GeometryUtilsResponse resp = (GeometryUtilsResponse) response;
-					if (onFinished != null) {
-						Geometry[] geometriesArray = new Geometry[resp.getGeometries().length];
-						for (int i = 0; i < geometriesArray.length; i++) {
-							geometriesArray[i] = GeometryConverter.toGwt(resp.getGeometries()[i]);
-						}
-						onFinished.execute(geometriesArray);
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryUtilsResponse>() {
+			public void execute(GeometryUtilsResponse response) {
+				if (onFinished != null) {
+					Geometry[] geometriesArray = new Geometry[response.getGeometries().length];
+					for (int i = 0; i < geometriesArray.length; i++) {
+						geometriesArray[i] = GeometryConverter.toGwt(response.getGeometries()[i]);
 					}
+					onFinished.execute(geometriesArray);
 				}
 			}
 		});
@@ -173,10 +161,10 @@ public final class SearchCommService {
 	/**
 	 * Build {@link GeometryCriterion} for the map widget, geometry and optional layer.
 	 *
-	 * @param geometry
-	 * @param mapWidget
-	 * @param layer
-	 * @return
+	 * @param geometry geometry
+	 * @param mapWidget map widget
+	 * @param layer layer
+	 * @return geometry criterion
 	 */
 	public static GeometryCriterion buildGeometryCriterion(final Geometry geometry, final MapWidget mapWidget,
 			VectorLayer layer) {
@@ -193,9 +181,9 @@ public final class SearchCommService {
 	/**
 	 * Execute a search by criterion command.
 	 * 
-	 * @param criterion
-	 * @param mapWidget
-	 * @param onFinished
+	 * @param criterion criterion
+	 * @param mapWidget map widget
+	 * @param onFinished callback
 	 * @param onError
 	 *            callback to execute in case of error, optional use null if you
 	 *            don't need it
@@ -211,13 +199,9 @@ public final class SearchCommService {
 
 		GwtCommand commandRequest = new GwtCommand(FeatureSearchRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback() {
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof FeatureSearchResponse) {
-					FeatureSearchResponse response = (FeatureSearchResponse) commandResponse;
-					onFinished.execute(convertFromDto(response.getFeatureMap(),
-							mapWidget.getMapModel()));
-				}
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback<FeatureSearchResponse>() {
+			public void execute(FeatureSearchResponse response) {
+				onFinished.execute(convertFromDto(response.getFeatureMap(), mapWidget.getMapModel()));
 			}
 
 			@Override
@@ -234,9 +218,9 @@ public final class SearchCommService {
 	/**
 	 * Builds a map with the filters for all layers that are used in the given criterion.
 	 *
-	 * @param critter
-	 * @param mapModel
-	 * @return
+	 * @param critter criterion
+	 * @param mapModel map model
+	 * @return filters for all layers
 	 */
 	public static Map<String, String> getLayerFiltersForCriterion(Criterion critter, MapModel mapModel) {
 		Map<String, String> filters = new HashMap<String, String>();
@@ -259,9 +243,9 @@ public final class SearchCommService {
 	 * This also adds the features to their respective layers, so no need to do
 	 * that anymore.
 	 * 
-	 * @param dtoFeatures
-	 * @param model
-	 * @return
+	 * @param dtoFeatures DTOPs for features
+	 * @param model map model
+	 * @return client features
 	 */
 	private static Map<VectorLayer, List<Feature>> convertFromDto(
 			Map<String, List<org.geomajas.layer.feature.Feature>> dtoFeatures, MapModel model) {
@@ -297,8 +281,9 @@ public final class SearchCommService {
 	}
 
 	/**
-	 * Get a list of all visible layers on the given mapmodel.
-	 * @param mapModel
+	 * Get a list of all visible layers on the given {@link MapModel}.
+	 *
+	 * @param mapModel map model
 	 * @return a list of all visible layers.
 	 */
 	public static List<String> getVisibleServerLayerIds(MapModel mapModel) {

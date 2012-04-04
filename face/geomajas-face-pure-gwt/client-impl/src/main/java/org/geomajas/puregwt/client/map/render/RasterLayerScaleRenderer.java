@@ -210,7 +210,7 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	/**
 	 * Counts the number of images that are still inbound. If all images are effectively rendered, we call
-	 * {@link #RasterLayerScaleRenderer.onTilesRendered}.
+	 * {@link #onTilesRendered}.
 	 * 
 	 * @author Pieter De Graef
 	 */

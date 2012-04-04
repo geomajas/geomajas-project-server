@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
@@ -238,7 +238,7 @@ public class ShowSplitAreas {
 			GeometrySplitRequest request = new GeometrySplitRequest(geometry, splitLine);
 			GwtCommand command = new GwtCommand(GeometrySplitRequest.COMMAND);
 			command.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometrySplitResponse>() {
+			GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometrySplitResponse>() {
 
 				public void execute(GeometrySplitResponse response) {
 					//showAreas(response.getGeometries());
@@ -253,7 +253,7 @@ public class ShowSplitAreas {
 		request.setGeometries(geometries);
 		GwtCommand command = new GwtCommand(GetCentroidRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetCentroidResponse>() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GetCentroidResponse>() {
 
 			public void execute(GetCentroidResponse response) {
 				showAreas(response.getCentroids());

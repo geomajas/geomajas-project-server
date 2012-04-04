@@ -14,12 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.action.MenuAction;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -218,17 +217,14 @@ public class ToggleSelectionAction extends MenuAction {
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<CommandResponse>() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback<SearchByLocationResponse>() {
 
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof SearchByLocationResponse) {
-					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-					Map<String, List<Feature>> featureMap = response.getFeatureMap();
-					for (String layerId : featureMap.keySet()) {
-						selectFeatures(layerId, featureMap.get(layerId), singleSelectionId, singleSelection);
-						if (singleSelection) {
-							break;
-						}
+			public void execute(SearchByLocationResponse response) {
+				Map<String, List<Feature>> featureMap = response.getFeatureMap();
+				for (String layerId : featureMap.keySet()) {
+					selectFeatures(layerId, featureMap.get(layerId), singleSelectionId, singleSelection);
+					if (singleSelection) {
+						break;
 					}
 				}
 			}

@@ -42,10 +42,9 @@
 
     GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);
     commandRequest.setCommandRequest(rasterLayerRequest);
-    GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
-        public void execute(CommandResponse commandRasterResponse) {
-            SearchByPointResponse rasterResponse = (SearchByPointResponse)
-                    commandRasterResponse;
+    GwtCommandDispatcher.getInstance().execute(commandRequest, 
+		    new AbstractCommandCallback&lt;SearchByPointResponse&gt;() {
+        public void execute(SearchByPointResponse response) {
             // ... process response<co id="coco3" />
         }
     });

@@ -11,9 +11,8 @@
 
 package org.geomajas.plugin.staticsecurity.client;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.SuccessCommandResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.UserDetail;
@@ -107,19 +106,16 @@ public final class Authentication {
 			return;
 		} else {
 			GwtCommand command = new GwtCommand(logoutCommandName);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+			GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SuccessCommandResponse>() {
 
-				public void execute(CommandResponse response) {
-					if (response instanceof SuccessCommandResponse) {
-						SuccessCommandResponse successResponse = (SuccessCommandResponse) response;
-						if (successResponse.isSuccess()) {
-							userToken = null;
-							Authentication.this.userId = null;
-							manager.fireEvent(new LogoutSuccessEvent());
-							loginUser(userId, password, callback);
-						} else {
-							manager.fireEvent(new LogoutFailureEvent());
-						}
+				public void execute(SuccessCommandResponse response) {
+					if (response.isSuccess()) {
+						userToken = null;
+						Authentication.this.userId = null;
+						manager.fireEvent(new LogoutSuccessEvent());
+						loginUser(userId, password, callback);
+					} else {
+						manager.fireEvent(new LogoutFailureEvent());
 					}
 				}
 			});
@@ -134,25 +130,22 @@ public final class Authentication {
 	 */
 	public void logout(final BooleanCallback callback) {
 		GwtCommand command = new GwtCommand(logoutCommandName);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SuccessCommandResponse>() {
 
-			public void execute(CommandResponse response) {
-				if (response instanceof SuccessCommandResponse) {
-					SuccessCommandResponse successResponse = (SuccessCommandResponse) response;
-					if (successResponse.isSuccess()) {
-						userToken = null;
-						Authentication.this.userId = null;
-						if (callback != null) {
-							callback.execute(true);
-						}
-						GwtCommandDispatcher.getInstance().setUserToken(null);
-						manager.fireEvent(new LogoutSuccessEvent());
-					} else {
-						if (callback != null) {
-							callback.execute(false);
-						}
-						manager.fireEvent(new LogoutFailureEvent());
+			public void execute(SuccessCommandResponse response) {
+				if (response.isSuccess()) {
+					userToken = null;
+					Authentication.this.userId = null;
+					if (callback != null) {
+						callback.execute(true);
 					}
+					GwtCommandDispatcher.getInstance().setUserToken(null);
+					manager.fireEvent(new LogoutSuccessEvent());
+				} else {
+					if (callback != null) {
+						callback.execute(false);
+					}
+					manager.fireEvent(new LogoutFailureEvent());
 				}
 			}
 		});
@@ -217,31 +210,28 @@ public final class Authentication {
 		request.setPassword(password);
 		GwtCommand command = new GwtCommand(loginCommandName);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<LoginResponse>() {
 
-			public void execute(CommandResponse response) {
-				if (response instanceof LoginResponse) {
-					LoginResponse loginResponse = (LoginResponse) response;
-					if (loginResponse.getToken() == null) {
-						if (callback != null) {
-							callback.execute(false);
-						}
-						manager.fireEvent(new LoginFailureEvent(loginResponse.getErrorMessages()));
-					} else {
-						userToken = loginResponse.getToken();
-						Authentication.this.userId = userId;
-						UserDetail userDetail = new UserDetail();
-						userDetail.setUserId(loginResponse.getUserId());
-						userDetail.setUserName(loginResponse.getUserName());
-						userDetail.setUserOrganization(loginResponse.getUserOrganization());
-						userDetail.setUserDivision(loginResponse.getUserDivision());
-						userDetail.setUserLocale(loginResponse.getUserLocale());
-						GwtCommandDispatcher.getInstance().setUserToken(userToken, userDetail);
-						if (callback != null) {
-							callback.execute(true);
-						}
-						manager.fireEvent(new LoginSuccessEvent(userToken));
+			public void execute(LoginResponse loginResponse) {
+				if (loginResponse.getToken() == null) {
+					if (callback != null) {
+						callback.execute(false);
 					}
+					manager.fireEvent(new LoginFailureEvent(loginResponse.getErrorMessages()));
+				} else {
+					userToken = loginResponse.getToken();
+					Authentication.this.userId = userId;
+					UserDetail userDetail = new UserDetail();
+					userDetail.setUserId(loginResponse.getUserId());
+					userDetail.setUserName(loginResponse.getUserName());
+					userDetail.setUserOrganization(loginResponse.getUserOrganization());
+					userDetail.setUserDivision(loginResponse.getUserDivision());
+					userDetail.setUserLocale(loginResponse.getUserLocale());
+					GwtCommandDispatcher.getInstance().setUserToken(userToken, userDetail);
+					if (callback != null) {
+						callback.execute(true);
+					}
+					manager.fireEvent(new LoginSuccessEvent(userToken));
 				}
 			}
 		});

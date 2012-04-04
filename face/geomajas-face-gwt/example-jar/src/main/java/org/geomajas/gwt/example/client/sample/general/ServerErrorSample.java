@@ -14,9 +14,9 @@ package org.geomajas.gwt.example.client.sample.general;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 
@@ -63,7 +63,7 @@ public class ServerErrorSample extends SamplePanel {
 			public void onClick(ClickEvent event) {
 				GwtCommand command = new GwtCommand("example.gwt.server.samples.GetExceptionCommand");
 				command.setCommandRequest(new EmptyCommandRequest());
-				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+				GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback() {
 
 					public void execute(CommandResponse response) {
 						// Do nothing... an error message is shown automatically...

@@ -21,7 +21,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.CloseClientEvent;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapView;
@@ -86,10 +86,11 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 			}
 		}
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command,
+				new AbstractCommandCallback<GetLocationForStringResponse>() {
 
-			public void execute(CommandResponse commandResponse) {
-				goToLocation(commandResponse, location);
+			public void execute(GetLocationForStringResponse response) {
+				goToLocation(response, location);
 			}
 		});
 	}

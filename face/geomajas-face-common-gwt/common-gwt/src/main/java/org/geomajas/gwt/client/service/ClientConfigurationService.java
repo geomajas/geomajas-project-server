@@ -24,6 +24,7 @@ import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -277,7 +278,8 @@ public final class ClientConfigurationService {
 			request.setApplicationId(applicationId);
 			GwtCommand command = new GwtCommand(GetConfigurationRequest.COMMAND);
 			command.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetConfigurationResponse>() {
+			GwtCommandDispatcher.getInstance().execute(command,
+					new AbstractCommandCallback<GetConfigurationResponse>() {
 
 				public void execute(GetConfigurationResponse response) {
 					setter.set(applicationId, response.getApplication());

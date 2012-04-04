@@ -16,12 +16,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.gwt.client.action.menu.DeselectAllAction;
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -237,15 +236,13 @@ public class SelectionController extends AbstractRectangleController {
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<CommandResponse>() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<SearchByLocationResponse>() {
 
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof SearchByLocationResponse) {
-					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
-					for (String layerId : featureMap.keySet()) {
-						selectFeatures(layerId, featureMap.get(layerId));
-					}
+			public void execute(SearchByLocationResponse response) {
+				Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
+				for (String layerId : featureMap.keySet()) {
+					selectFeatures(layerId, featureMap.get(layerId));
 				}
 			}
 		});

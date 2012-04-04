@@ -12,14 +12,13 @@ package org.geomajas.plugin.rasterizing.client.image;
 
 import java.util.Set;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
@@ -58,14 +57,11 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 		request.setClientMapInfo(map.getMapModel().getMapInfo());
 		commandRequest.setCommandRequest(request);
 		final ImageUrlCallback callBack = imageCallBack;
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback<RasterizeMapResponse>() {
 
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof RasterizeMapResponse) {
-					RasterizeMapResponse rasterizeMapResponse = (RasterizeMapResponse) commandResponse;
-					callBack.onImageUrl(rasterizeMapResponse.getMapUrl(),
-							rasterizeMapResponse.getLegendUrl());
-				}
+			public void execute(RasterizeMapResponse response) {
+				callBack.onImageUrl(response.getMapUrl(),
+						response.getLegendUrl());
 			}
 
 		});

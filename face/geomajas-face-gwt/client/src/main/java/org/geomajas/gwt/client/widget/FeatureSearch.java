@@ -14,10 +14,9 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -335,20 +334,18 @@ public class FeatureSearch extends Canvas {
 
 				GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 				command.setCommandRequest(request);
-				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+				GwtCommandDispatcher.getInstance().execute(command,
+						new AbstractCommandCallback<SearchFeatureResponse>() {
 
-					public void execute(CommandResponse response) {
-						if (response instanceof SearchFeatureResponse) {
-							SearchFeatureResponse resp = (SearchFeatureResponse) response;
-							List<Feature> features = new ArrayList<Feature>();
-							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
-								Feature feature = new Feature(dtoFeature, layer);
-								layer.getFeatureStore().addFeature(feature);
-								features.add(feature);
-							}
-							SearchEvent event = new SearchEvent(layer, features);
-							FeatureSearch.this.fireEvent(event);
+					public void execute(SearchFeatureResponse response) {
+						List<Feature> features = new ArrayList<Feature>();
+						for (org.geomajas.layer.feature.Feature dtoFeature : response.getFeatures()) {
+							Feature feature = new Feature(dtoFeature, layer);
+							layer.getFeatureStore().addFeature(feature);
+							features.add(feature);
 						}
+						SearchEvent event = new SearchEvent(layer, features);
+						FeatureSearch.this.fireEvent(event);
 					}
 				});
 			}
