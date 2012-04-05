@@ -16,7 +16,6 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -55,19 +54,6 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	protected CommandRequest request;
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
-
-	/**
-	 * @param model map model
-	 * @param layer layer
-	 * @param searchRequest
-	 *            the search to use to retrieve features.
-	 * @deprecated Use {@link #ExportSearchToCsvHandler(MapModel, VectorLayer, Criterion)}
-	 */
-	@Deprecated
-	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, CommandRequest searchRequest) {
-		this(model, layer);
-		setRequest(searchRequest);
-	}
 
 	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, Criterion criterion) {
 		this(model, layer);

@@ -25,7 +25,6 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 

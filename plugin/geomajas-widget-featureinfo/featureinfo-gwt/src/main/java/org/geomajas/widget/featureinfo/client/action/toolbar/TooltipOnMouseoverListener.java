@@ -11,10 +11,8 @@
 
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
@@ -24,7 +22,6 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.listener.AbstractListener;
 import org.geomajas.gwt.client.controller.listener.ListenerEvent;
-import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Mathlib;

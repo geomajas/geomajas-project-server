@@ -217,7 +217,8 @@ public class ToggleSelectionAction extends MenuAction {
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback<SearchByLocationResponse>() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<SearchByLocationResponse>() {
 
 			public void execute(SearchByLocationResponse response) {
 				Map<String, List<Feature>> featureMap = response.getFeatureMap();
