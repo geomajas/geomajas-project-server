@@ -157,7 +157,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
 		boolean primitiveOnly = true;
-		for (AttributeInfo attributeInfo : associationAttributeInfo.getFeature().getAttributes()) {
+		for (AbstractAttributeInfo attributeInfo : associationAttributeInfo.getFeature().getAttributes()) {
 			Object propertyValue = getBeanProperty(value, attributeInfo.getName());
 			Attribute<?> attrib = toDto(propertyValue, attributeInfo);
 			attributes.put(attributeInfo.getName(), attrib);
@@ -294,7 +294,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private Object toAssociationObject(AssociationAttribute<?> primitiveAttribute) {
 		// TODO: implement
-		return null;
+		throw new UnsupportedOperationException("toAssociationObject() not implemented");
 	}
 
 	private Object toPrimitiveObject(PrimitiveAttribute<?> primitive) {
@@ -601,7 +601,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setContentType(tile.getContentType());
 			return dto;
 		}
-
 		return null;
 	}
 
@@ -654,8 +653,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			case MULTIPOLYGON:
 				return MultiPolygon.class;
 			case RASTER:
-			default:
 				return null;
+			default:
+				throw new IllegalStateException("Don't know how to handle layer type " + layerType);
 		}
 	}
 
