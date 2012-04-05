@@ -199,7 +199,8 @@ public final class SearchCommService {
 
 		GwtCommand commandRequest = new GwtCommand(FeatureSearchRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback<FeatureSearchResponse>() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<FeatureSearchResponse>() {
 			public void execute(FeatureSearchResponse response) {
 				onFinished.execute(convertFromDto(response.getFeatureMap(), mapWidget.getMapModel()));
 			}
