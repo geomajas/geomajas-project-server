@@ -393,12 +393,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public Geometry getVisibleArea(final String layerId) {
-		return areaCombine(layerId, new AreaCombineGetter() {
-
-			public Geometry get(AreaAuthorization auth) {
-				return auth.getVisibleArea(layerId);
-			}
-		});
+		return areaCombine(layerId, new VisibleAreaCombineGetter(layerId));
 	}
 
 	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
@@ -437,12 +432,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isPartlyVisibleSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
-
-			public boolean get(AreaAuthorization auth) {
-				return auth.isPartlyVisibleSufficient(layerId);
-			}
-		});
+		return areaPartlySufficientCombine(new PartlyVisibleAuthorizationGetter(layerId));
 	}
 
 	private boolean areaPartlySufficientCombine(AuthorizationGetter<AreaAuthorization> partlySufficientGetter) {
@@ -467,24 +457,14 @@ public class DefaultSecurityContext implements SecurityContext {
 		if (!isLayerUpdateCapable(layerId)) {
 			return null;
 		}
-		return areaCombine(layerId, new AreaCombineGetter() {
-
-			public Geometry get(AreaAuthorization auth) {
-				return auth.getUpdateAuthorizedArea(layerId);
-			}
-		});
+		return areaCombine(layerId, new UpdateAreaCombineGetter(layerId));
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public boolean isPartlyUpdateAuthorizedSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
-
-			public boolean get(AreaAuthorization auth) {
-				return auth.isPartlyUpdateAuthorizedSufficient(layerId);
-			}
-		});
+		return areaPartlySufficientCombine(new PartlyUpdateAuthorizedAuthorizationGetter(layerId));
 	}
 
 	/**
@@ -494,24 +474,14 @@ public class DefaultSecurityContext implements SecurityContext {
 		if (!isLayerCreateCapable(layerId)) {
 			return null;
 		}
-		return areaCombine(layerId, new AreaCombineGetter() {
-
-			public Geometry get(AreaAuthorization auth) {
-				return auth.getCreateAuthorizedArea(layerId);
-			}
-		});
+		return areaCombine(layerId, new CreateAreaCombineGetter(layerId));
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public boolean isPartlyCreateAuthorizedSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
-
-			public boolean get(AreaAuthorization auth) {
-				return auth.isPartlyCreateAuthorizedSufficient(layerId);
-			}
-		});
+		return areaPartlySufficientCombine(new PartlyCreateAuthorizedAuthorizationGetter(layerId));
 	}
 
 	/**
@@ -521,24 +491,14 @@ public class DefaultSecurityContext implements SecurityContext {
 		if (!isLayerDeleteCapable(layerId)) {
 			return null;
 		}
-		return areaCombine(layerId, new AreaCombineGetter() {
-
-			public Geometry get(AreaAuthorization auth) {
-				return auth.getDeleteAuthorizedArea(layerId);
-			}
-		});
+		return areaCombine(layerId, new DeleteAreaCombineGetter(layerId));
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public boolean isPartlyDeleteAuthorizedSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
-
-			public boolean get(AreaAuthorization auth) {
-				return auth.isPartlyDeleteAuthorizedSufficient(layerId);
-			}
-		});
+		return areaPartlySufficientCombine(new PartlyDeleteAuthorizedAuthorizationGetter(layerId));
 	}
 
 	/**
@@ -737,4 +697,131 @@ public class DefaultSecurityContext implements SecurityContext {
 		boolean get(AUTH auth);
 	}
 
+	/**
+	 * Visible area combine getter for DefaultSecurityContext.
+	 */
+	private final class VisibleAreaCombineGetter implements AreaCombineGetter {
+
+		private String layerId;
+
+		private VisibleAreaCombineGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public Geometry get(AreaAuthorization auth) {
+			return auth.getVisibleArea(layerId);
+		}
+	}
+
+	/**
+	 * Update area combine getter for DefaultSecurityContext.
+	 */
+	private final class UpdateAreaCombineGetter implements AreaCombineGetter {
+
+		private String layerId;
+
+		private UpdateAreaCombineGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public Geometry get(AreaAuthorization auth) {
+			return auth.getUpdateAuthorizedArea(layerId);
+		}
+	}
+
+	/**
+	 * Create area combine getter for DefaultSecurityContext.
+	 */
+	private final class CreateAreaCombineGetter implements AreaCombineGetter {
+
+		private String layerId;
+
+		private CreateAreaCombineGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public Geometry get(AreaAuthorization auth) {
+			return auth.getCreateAuthorizedArea(layerId);
+		}
+	}
+
+	/**
+	 * Delete area combine getter for DefaultSecurityContext.
+	 */
+	private final class DeleteAreaCombineGetter implements AreaCombineGetter {
+
+		private String layerId;
+
+		private DeleteAreaCombineGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public Geometry get(AreaAuthorization auth) {
+			return auth.getDeleteAuthorizedArea(layerId);
+		}
+	}
+
+	/**
+	 * Partly visible authorization getter for DefaultSecurityContext.
+	 */
+	private final class PartlyVisibleAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
+
+		private String layerId;
+
+		private PartlyVisibleAuthorizationGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public boolean get(AreaAuthorization auth) {
+			return auth.isPartlyVisibleSufficient(layerId);
+		}
+	}
+
+	/**
+	 * Partly update authorization getter for DefaultSecurityContext.
+	 */
+	private final class PartlyUpdateAuthorizedAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
+
+		private String layerId;
+
+		private PartlyUpdateAuthorizedAuthorizationGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public boolean get(AreaAuthorization auth) {
+			return auth.isPartlyUpdateAuthorizedSufficient(layerId);
+		}
+	}
+
+	/**
+	 * Partly delete authorization getter for DefaultSecurityContext.
+	 */
+	private final class PartlyDeleteAuthorizedAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
+
+		private String layerId;
+
+		private PartlyDeleteAuthorizedAuthorizationGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public boolean get(AreaAuthorization auth) {
+			return auth.isPartlyDeleteAuthorizedSufficient(layerId);
+		}
+	}
+
+	/**
+	 * Partly create authorization getter for DefaultSecurityContext.
+	 */
+	private final class PartlyCreateAuthorizedAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
+
+		private String layerId;
+
+		private PartlyCreateAuthorizedAuthorizationGetter(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public boolean get(AreaAuthorization auth) {
+			return auth.isPartlyCreateAuthorizedSufficient(layerId);
+		}
+	}
 }
