@@ -121,7 +121,7 @@ public class AuthenticationTokenService {
 	 *
 	 * @author Joachim Van der Auwera
 	 */
-	private class TokenContainer {
+	private final class TokenContainer {
 		private final long validUntil;
 		private final Authentication authentication;
 

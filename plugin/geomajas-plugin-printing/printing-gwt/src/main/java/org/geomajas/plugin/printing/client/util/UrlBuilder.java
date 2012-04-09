@@ -57,7 +57,7 @@ public class UrlBuilder {
 	 * @return this to allow concatenation
 	 */
 	public UrlBuilder addPath(String path) {
-		if (path.startsWith("/") && baseUrl.endsWith("/")) {
+		if (path.charAt(0) == '/' && baseUrl.endsWith("/")) {
 			baseUrl = baseUrl + path.substring(1);
 		} else {
 			baseUrl = baseUrl + path;

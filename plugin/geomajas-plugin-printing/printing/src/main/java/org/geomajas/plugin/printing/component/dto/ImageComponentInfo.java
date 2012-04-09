@@ -10,8 +10,6 @@
  */
 package org.geomajas.plugin.printing.component.dto;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -22,16 +20,26 @@ import org.geomajas.annotation.Api;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public class ImageComponentInfo extends PrintComponentInfo implements Serializable {
+public class ImageComponentInfo extends PrintComponentInfo {
 
 	private static final long serialVersionUID = 200L;
 
 	private String imagePath;
 
+	/**
+	 * Get the image path.
+	 *
+	 * @return image path
+	 */
 	public String getImagePath() {
 		return imagePath;
 	}
 
+	/**
+	 * Set the image path.
+	 *
+	 * @param imagePath image path
+	 */
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}

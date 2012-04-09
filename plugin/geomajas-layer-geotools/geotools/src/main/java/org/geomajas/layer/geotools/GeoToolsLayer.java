@@ -246,7 +246,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 					}
 				}
 				DataStore store = DataStoreFactory.create(params);
-				setDataStore(store);
+				super.setDataStore(store);
 			}
 			if (null == super.getDataStore()) {
 				return;
@@ -417,7 +417,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				transactionManager.addIterator(it);
 			}
 			return fc.getBounds();
-		} catch (Throwable t) {
+		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
 			throw new LayerException(t, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 		}
 	}
@@ -442,7 +442,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				transactionManager.addIterator(it);
 			}
 			return new JavaIterator(it);
-		} catch (Throwable t) {
+		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
 			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}

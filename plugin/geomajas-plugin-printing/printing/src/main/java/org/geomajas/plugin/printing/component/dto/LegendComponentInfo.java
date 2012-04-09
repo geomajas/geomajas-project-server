@@ -10,8 +10,6 @@
  */
 package org.geomajas.plugin.printing.component.dto;
 
-import java.io.Serializable;
-
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.annotation.Api;
 
@@ -24,7 +22,7 @@ import org.geomajas.annotation.Api;
  *
  */
 @Api(allMethods = true)
-public class LegendComponentInfo extends PrintComponentInfo implements Serializable {
+public class LegendComponentInfo extends PrintComponentInfo {
 
 	private static final long serialVersionUID = 200L;
 
@@ -36,6 +34,9 @@ public class LegendComponentInfo extends PrintComponentInfo implements Serializa
 
 	private String title = "Legend";
 
+	/**
+	 * Default contrustor.
+	 */
 	public LegendComponentInfo() {
 		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.RIGHT);
 		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.BOTTOM);
@@ -48,34 +49,74 @@ public class LegendComponentInfo extends PrintComponentInfo implements Serializa
 		font.setSize(12);
 	}
 
+	/**
+	 * Get application id.
+	 *
+	 * @return application id
+	 */
 	public String getApplicationId() {
 		return applicationId;
 	}
 
+	/**
+	 * Set application id.
+	 *
+	 * @param applicationId application id
+	 */
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
 
+	/**
+	 * Get map id.
+	 *
+	 * @return map id
+	 */
 	public String getMapId() {
 		return mapId;
 	}
 
+	/**
+	 * Set map id.
+	 *
+	 * @param mapId map id
+	 */
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
 
+	/**
+	 * Get font style.
+	 *
+	 * @return font style
+	 */
 	public FontStyleInfo getFont() {
 		return font;
 	}
 
+	/**
+	 * Set font style.
+	 *
+	 * @param font font style
+	 */
 	public void setFont(FontStyleInfo font) {
 		this.font = font;
 	}
 
+	/**
+	 * Get title.
+	 *
+	 * @return title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Set title.
+	 *
+	 * @param title title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}

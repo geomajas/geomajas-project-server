@@ -11,10 +11,13 @@
 
 package org.geomajas.plugin.printing.component.dto;
 
-import java.io.Serializable;
+/**
+ * Dummy implementation of {@link PrintComponentInfo}, adding no additional data.
+ *
+ * @author Jan De Moerloose
+ */
+public  class DummyComponentInfo extends PrintComponentInfo {
 
-
-public  class DummyComponentInfo extends PrintComponentInfo implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 }

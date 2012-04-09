@@ -10,22 +10,19 @@
  */
 package org.geomajas.plugin.printing.component.dto;
 
-import java.io.Serializable;
-
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.LayerType;
 
 /**
- * DTO object for LegendIconComponent.
+ * DTO object for {@link org.geomajas.plugin.printing.component.impl.LegendIconComponentImpl}.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.LegendIconComponent
  * @since 2.0.0
  * 
  */
 @Api(allMethods = true)
-public class LegendIconComponentInfo extends PrintComponentInfo implements Serializable {
+public class LegendIconComponentInfo extends PrintComponentInfo {
 
 	private static final long serialVersionUID = 200L;
 
@@ -35,32 +32,56 @@ public class LegendIconComponentInfo extends PrintComponentInfo implements Seria
 
 	private FeatureStyleInfo styleInfo;
 
-	
+	/**
+	 * Get label string.
+	 *
+	 * @return label
+	 */
 	public String getLabel() {
 		return label;
 	}
 
-	
+	/**
+	 * Set label string.
+	 *
+	 * @param label label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	
+	/**
+	 * Get layer type.
+	 *
+	 * @return layer type
+	 */
 	public LayerType getLayerType() {
 		return layerType;
 	}
 
-	
+	/**
+	 * Set layer type.
+	 *
+	 * @param layerType layer type
+	 */
 	public void setLayerType(LayerType layerType) {
 		this.layerType = layerType;
 	}
 
-	
+	/**
+	 * Get feature style info.
+	 *
+	 * @return feature style info
+	 */
 	public FeatureStyleInfo getStyleInfo() {
 		return styleInfo;
 	}
 
-	
+	/**
+	 * Set feature style info.
+	 *
+	 * @param styleInfo style info
+	 */
 	public void setStyleInfo(FeatureStyleInfo styleInfo) {
 		this.styleInfo = styleInfo;
 	}

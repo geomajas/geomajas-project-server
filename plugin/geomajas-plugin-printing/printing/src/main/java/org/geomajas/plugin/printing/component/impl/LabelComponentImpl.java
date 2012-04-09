@@ -38,30 +38,30 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInfo> implements LabelComponent {
 
 	/**
-	 * The font for the text
+	 * The font for the text.
 	 */
 	@XStreamConverter(FontConverter.class)
 	private Font font;
 
 	/**
-	 * Label text
+	 * Label text.
 	 */
 	private String text;
 
 	/**
-	 * Color of the text
+	 * Color of the text.
 	 */
 	@XStreamConverter(ColorConverter.class)
 	private Color fontColor;
 
 	/**
-	 * Background color
+	 * Background color.
 	 */
 	@XStreamConverter(ColorConverter.class)
 	private Color backgroundColor;
 
 	/**
-	 * Line color
+	 * Line color.
 	 */
 	@XStreamConverter(ColorConverter.class)
 	private Color borderColor;
@@ -72,12 +72,12 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	private boolean textOnly;
 
 	/**
-	 * Border line width
+	 * Border line width.
 	 */
 	private float lineWidth;
 
 	/**
-	 * Margin around text
+	 * Margin around text.
 	 */
 	private float margin;
 	
@@ -108,7 +108,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor
+	 * @param visitor visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 		visitor.visit(this);

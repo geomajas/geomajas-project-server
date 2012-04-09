@@ -16,8 +16,6 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -27,12 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class HibernatePrintTemplateDao implements PrintTemplateDao {
 
-	private final Logger log = LoggerFactory.getLogger(PrintTemplateDao.class);
-
 	@Autowired
 	private SessionFactory sessionFactory;
 
-
+	/** {@inheritDoc} */
 	public void merge(PrintTemplate template) throws IOException {
 		sessionFactory.getCurrentSession().save(template);
 	}

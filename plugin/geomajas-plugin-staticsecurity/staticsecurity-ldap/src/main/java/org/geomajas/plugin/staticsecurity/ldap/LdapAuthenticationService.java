@@ -236,7 +236,7 @@ public class LdapAuthenticationService implements AuthenticationService {
 			String name2 = entry.getAttributeValue(surNameAttribute);
 			if (null != name) {
 				if (null != name2) {
-					name += " " + name2;
+					name = name + " " + name2;
 				}
 			} else {
 				name = name2;

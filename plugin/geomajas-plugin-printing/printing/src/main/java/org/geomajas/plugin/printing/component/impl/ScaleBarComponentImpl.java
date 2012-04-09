@@ -50,27 +50,27 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 	private final Logger log = LoggerFactory.getLogger(ScaleBarComponentImpl.class);
 
 	/**
-	 * The unit (meter, mile, degree)
+	 * The unit (meter, mile, degree).
 	 */
 	private String unit = "units";
 
 	/**
-	 * The number of tics for the scalebar
+	 * The number of tics for the scale bar.
 	 */
 	private int ticNumber;
 
 	/**
-	 * The labels on top of the ticks
+	 * The labels on top of the ticks.
 	 */
 	private List<String> tickLabels = new ArrayList<String>();
 
 	/**
-	 * The calculated sizes of the ticks
+	 * The calculated sizes of the ticks.
 	 */
 	private List<Rectangle> tickSizes = new ArrayList<Rectangle>();
 
 	/**
-	 * The label font
+	 * The label font.
 	 */
 	@XStreamConverter(FontConverter.class)
 	private Font font = new Font("Dialog", Font.PLAIN, 12);
@@ -104,18 +104,29 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 	private static final float FEET_PER_METER = 3.2808399f;
 	private static final float FEET_PER_MILE = 5280f;
 
+	/** Default constructor. */
 	public ScaleBarComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.LEFT);
 		getConstraint().setAlignmentY(LayoutConstraint.BOTTOM);
 		getConstraint().setMarginX(20);
 		getConstraint().setMarginY(20);
 		getConstraint().setWidth(200);
-	}	
+	}
 
+	/**
+	 * Get font.
+	 *
+	 * @return font
+	 */
 	public Font getFont() {
 		return font;
 	}
 
+	/**
+	 * Set font.
+	 *
+	 * @param font font
+	 */
 	public void setFont(Font font) {
 		this.font = font;
 	}
@@ -139,30 +150,29 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		float width = getConstraint().getWidth();
 
 		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
-		UnitType dispUnits = map.getDisplayUnitType();
-		float pxPUnit = getMap().getPpUnit();
-		String englishUnit = "ft";
 		boolean isEnglishUnits = false;
 		boolean isEnglishMiles = false;
+		float pxPUnit = getMap().getPpUnit();
+		String englishUnit = "ft";
 		// Calculate the labels
 		if (map != null) {
+			UnitType displayUnitType = map.getDisplayUnitType();
 			log.debug("calculateSize getMap.getId({}), res {}", getMap().getId(), map);
 			Crs crs;
 			try {
 				crs = geoService.getCrs2(map.getCrs());
 				unit = crs.getCoordinateSystem().getAxis(0).getUnit().toString();
-				if (dispUnits.equals(UnitType.ENGLISH) || dispUnits.equals(UnitType.ENGLISH_FOOT)) {
+				if (UnitType.ENGLISH == displayUnitType || UnitType.ENGLISH_FOOT == displayUnitType) {
 					isEnglishUnits = true;
 					if (!unit.toUpperCase().contains("F")) {
 						pxPUnit = pxPUnit / FEET_PER_METER;
 					}
 
 					// check for yards conversion
-					if (dispUnits.equals(UnitType.ENGLISH)) {
-						if ((width / pxPUnit) >= 3 && (width / pxPUnit) < FEET_PER_MILE) {
-							pxPUnit = pxPUnit * 3f;
-							englishUnit = "yd";
-						}
+					if (UnitType.ENGLISH == displayUnitType && (width / pxPUnit) >= 3 &&
+							(width / pxPUnit) < FEET_PER_MILE) {
+						pxPUnit = pxPUnit * 3f;
+						englishUnit = "yd";
 					}
 
 					// check for miles conversion
@@ -171,11 +181,9 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 						englishUnit = "mi";
 						isEnglishMiles = true;
 					}
-
-
 				}
 			} catch (Exception e) { // NOSONAR
-				log.error("could not calculate map unit", e);
+				throw new IllegalStateException("Could not calculate map unit", e);
 			}
 		}
 		// Calculate width in map units and round.
@@ -214,13 +222,13 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		// set the Unit Prefixes
 
 		for (int i = 0; i <= ticCount; i++) {
-			String label = "";
-			String units = "";
+			String label;
+			String units;
 			if (!isEnglishUnits && !isEnglishMiles) {
-				label = "" + (int) (i * ticWidthInUnits / Math.pow(10, 3 * ticLog));
+				label = Double.toString(i * ticWidthInUnits / Math.pow(10, 3 * ticLog));
 				units = ((ticLog >= -2 && ticLog <= 2) ? UNIT_PREFIXES[ticLog + 2] : "*10^" + (ticLog * 3)) + unit;
 			} else {
-				label = "" + i * ticWidthInUnits;
+				label = Double.toString(i * ticWidthInUnits);
 				units = englishUnit;
 			}
 
@@ -297,9 +305,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		return (MapComponentImpl) getParent();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.ScaleBarComponent#getTicNumber()
-	 */
+	/** {@inheritDoc} */
 	public int getTicNumber() {
 		return ticNumber;
 	}
@@ -308,9 +314,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		this.ticNumber = ticNumber;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.ScaleBarComponent#getUnit()
-	 */
+	/** {@inheritDoc} */
 	public String getUnit() {
 		return unit;
 	}
@@ -319,6 +323,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		this.unit = unit;
 	}
 
+	@Override
 	public void fromDto(ScaleBarComponentInfo scaleBarInfo) {
 		super.fromDto(scaleBarInfo);
 		setTicNumber(scaleBarInfo.getTicNumber());
