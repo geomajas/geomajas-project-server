@@ -121,7 +121,7 @@ public final class WktService {
 						+ "\" has no direct coordinates.");
 			}
 			// Format coordinates:
-			String[] coordStrings = scopeWkt.substring(0, scopeWkt.indexOf(")")).split(",");
+			String[] coordStrings = scopeWkt.substring(0, scopeWkt.indexOf(')')).split(",");
 			if (Geometry.POINT.equals(geometry.getGeometryType()) && coordStrings.length > 1) {
 				throw new WktException(ERR_MSG + "a point can have only one coordinate");
 			}
@@ -136,7 +136,7 @@ public final class WktService {
 				try {
 					coordinates[i] = new Coordinate(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
 				} catch (Exception e) { // NOSONAR
-					throw new WktException(ERR_MSG + "could not parse X and Y values (" + token + ")");
+					throw new WktException(ERR_MSG + "could not parse X and Y values (" + token + ")", e);
 				}
 			}
 			geometry.setCoordinates(coordinates);
@@ -148,15 +148,15 @@ public final class WktService {
 	private static String typeWktToGeom(String wktType) {
 		if (Geometry.POINT.toUpperCase().equals(wktType)) {
 			return Geometry.POINT;
-		} else if (Geometry.LINE_STRING.toUpperCase().equals(wktType)) {
+		} else if (Geometry.LINE_STRING.equalsIgnoreCase(wktType)) {
 			return Geometry.LINE_STRING;
-		} else if (Geometry.POLYGON.toUpperCase().equals(wktType)) {
+		} else if (Geometry.POLYGON.equalsIgnoreCase(wktType)) {
 			return Geometry.POLYGON;
-		} else if (Geometry.MULTI_POINT.toUpperCase().equals(wktType)) {
+		} else if (Geometry.MULTI_POINT.equalsIgnoreCase(wktType)) {
 			return Geometry.MULTI_POINT;
-		} else if (Geometry.MULTI_LINE_STRING.toUpperCase().equals(wktType)) {
+		} else if (Geometry.MULTI_LINE_STRING.equalsIgnoreCase(wktType)) {
 			return Geometry.MULTI_LINE_STRING;
-		} else if (Geometry.MULTI_POLYGON.toUpperCase().equals(wktType)) {
+		} else if (Geometry.MULTI_POLYGON.equalsIgnoreCase(wktType)) {
 			return Geometry.MULTI_POLYGON;
 		}
 		return null;

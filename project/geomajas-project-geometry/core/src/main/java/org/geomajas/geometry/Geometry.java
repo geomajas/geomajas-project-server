@@ -122,7 +122,9 @@ public class Geometry implements Serializable {
 	 * @return A clone.
 	 * @since 1.1.0
 	 */
-	public Object clone() {
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() { // NOSONAR
 		return cloneRecursively(this);
 	}
 

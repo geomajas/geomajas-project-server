@@ -33,4 +33,15 @@ public class WktException extends Exception {
 	public WktException(String message) {
 		super(message);
 	}
+
+	/**
+	 * Create WktException with given message and cause.
+	 *
+	 * @param message message
+	 * @param cause cause
+	 * @since 1.1.0
+	 */
+	public WktException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -31,6 +31,11 @@
 			<artifactId>geomajas-project-api-annotation</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>net.sourceforge.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+		</dependency>
+
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

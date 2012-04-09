@@ -60,6 +60,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>net.sourceforge.findbugs</groupId>
+				<artifactId>annotations</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-geometry-core</artifactId>
 				<version>${project.version}</version>
