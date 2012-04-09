@@ -72,7 +72,7 @@ public class GoogleLayer implements RasterLayer {
 	@Autowired
 	private TiledRasterLayerService tileService;
 
-	private TiledRasterLayerServiceState tileServiceState =
+	private final TiledRasterLayerServiceState tileServiceState =
 			new TiledRasterLayerServiceState(NORMAL_URLS, TILE_SIZE, DEFAULT_MAX_ZOOM_LEVEL);
 
 	static {
@@ -105,6 +105,7 @@ public class GoogleLayer implements RasterLayer {
 		tileServiceState.setId(id);
 	}
 
+	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs() {
 		return tileServiceState.getCrs();
 	}
@@ -121,6 +122,7 @@ public class GoogleLayer implements RasterLayer {
 		tileServiceState.setMaxZoomLevel(maxZoomLevel);
 	}
 
+	/** {@inheritDoc} */
 	public RasterLayerInfo getLayerInfo() {
 		return tileServiceState.getLayerInfo();
 	}
@@ -234,6 +236,7 @@ public class GoogleLayer implements RasterLayer {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		return tileService.paint(tileServiceState, boundsCrs, bounds, scale);

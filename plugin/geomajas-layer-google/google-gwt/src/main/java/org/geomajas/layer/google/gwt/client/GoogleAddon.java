@@ -42,16 +42,16 @@ import org.geomajas.gwt.client.widget.MapWidget;
 public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
 	private static final double HALF_CIRCLE = 180.0;
+	private static final double MERCATOR_WIDTH = Math.PI * 6378137.0;
+	private static final int VERTICAL_MARGIN = 20;
 
-	private MapWidget map;
+	private final MapWidget map;
 
 	private JavaScriptObject googleMap;
 
-	private MapType type;
+	private final MapType type;
 
-	private boolean showMap;
-
-	private static final double MERCATOR_WIDTH = Math.PI * 6378137.0;
+	private final boolean showMap;
 
 	/**
 	 * Google map types as defined by the API.
@@ -80,7 +80,7 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
 		// Default placement:
 		setVerticalAlignment(VerticalAlignment.BOTTOM);
-		setVerticalMargin(20);
+		setVerticalMargin(VERTICAL_MARGIN);
 	}
 
 	// MapAddon implementation:
