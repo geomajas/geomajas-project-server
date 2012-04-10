@@ -34,7 +34,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @since 1.0.0
  */
 @Component
-@Api(allMethods = true)
+@Api
 public class GeometrySplitCommand implements Command<GeometrySplitRequest, GeometrySplitResponse> {
 
 	public static final double DELTA = 0.00001;
@@ -42,10 +42,12 @@ public class GeometrySplitCommand implements Command<GeometrySplitRequest, Geome
 	@Autowired
 	private DtoConverterService converter;
 
+	/** {@inheritDoc} */
 	public GeometrySplitResponse getEmptyCommandResponse() {
 		return new GeometrySplitResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GeometrySplitRequest request, GeometrySplitResponse response) throws Exception {
 		// Check the parameters:
 		if (null == request.getGeometry()) {

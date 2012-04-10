@@ -14,16 +14,25 @@ package org.geomajas.plugin.editing.dto;
  * DTO object that holds  additional information needed to perform a buffer operation.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class BufferInfo {
 
 	private double distance;
 
+	/**
+	 * Get distance to buffer.
+	 *
+	 * @return distance
+	 */
 	public double getDistance() {
 		return distance;
 	}
 
+	/**
+	 * Set distance to buffer.
+	 *
+	 * @param distance distance
+	 */
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}

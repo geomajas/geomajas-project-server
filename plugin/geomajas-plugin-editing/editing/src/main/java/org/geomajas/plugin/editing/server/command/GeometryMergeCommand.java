@@ -37,16 +37,18 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @since 1.0.0
  */
 @Component
-@Api(allMethods = true)
+@Api
 public class GeometryMergeCommand implements Command<GeometryMergeRequest, GeometryMergeResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
 
+	/** {@inheritDoc} */
 	public GeometryMergeResponse getEmptyCommandResponse() {
 		return new GeometryMergeResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GeometryMergeRequest request, GeometryMergeResponse response) throws Exception {
 		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
 		if (clientGeometries == null || clientGeometries.size() == 0) {
@@ -59,8 +61,7 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 		int precision = request.getPrecision();
 
 		List<Geometry> geometries = new ArrayList<Geometry>();
-		for (int i = 0; i < clientGeometries.size(); i++) {
-			org.geomajas.geometry.Geometry geometry = clientGeometries.get(i);
+		for (org.geomajas.geometry.Geometry geometry : clientGeometries) {
 			geometry.setPrecision(precision);
 			geometries.add(converter.toInternal(geometry));
 		}

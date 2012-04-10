@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.editing.dto.GeometryConvexHullRequest;
@@ -34,16 +35,18 @@ import com.vividsolutions.jts.algorithm.ConvexHull;
  * @since 1.0.0
  */
 @Component
-@Api(allMethods = true)
+@Api
 public class GeometryConvexHullCommand implements Command<GeometryConvexHullRequest, GeometryConvexHullResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
 
+	/** {@inheritDoc} */
 	public GeometryConvexHullResponse getEmptyCommandResponse() {
 		return new GeometryConvexHullResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GeometryConvexHullRequest request, GeometryConvexHullResponse response) throws Exception {
 		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
 		if (clientGeometries == null || clientGeometries.size() == 0) {
@@ -52,8 +55,8 @@ public class GeometryConvexHullCommand implements Command<GeometryConvexHullRequ
 		
 		// Convert to internal, apply ConvexHull and convert back to DTO
 		List<org.geomajas.geometry.Geometry> result = new ArrayList<org.geomajas.geometry.Geometry>();
-		for (int i = 0; i < clientGeometries.size(); i++) {
-			result.add(converter.toDto(new ConvexHull(converter.toInternal(clientGeometries.get(i))).getConvexHull()));
+		for (Geometry clientGeometry : clientGeometries) {
+			result.add(converter.toDto(new ConvexHull(converter.toInternal(clientGeometry)).getConvexHull()));
 		}
 		response.setGeometries(result);
 	}

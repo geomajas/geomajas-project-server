@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.editing.dto.GeometryBufferRequest;
@@ -32,16 +33,18 @@ import org.springframework.stereotype.Component;
  * @since 1.0.0
  */
 @Component
-@Api(allMethods = true)
+@Api
 public class GeometryBufferCommand implements Command<GeometryBufferRequest, GeometryBufferResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
 
+	/** {@inheritDoc} */
 	public GeometryBufferResponse getEmptyCommandResponse() {
 		return new GeometryBufferResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GeometryBufferRequest request, GeometryBufferResponse response) throws Exception {
 		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
 		if (clientGeometries == null || clientGeometries.size() == 0) {
@@ -51,8 +54,8 @@ public class GeometryBufferCommand implements Command<GeometryBufferRequest, Geo
 		// Convert to internal, apply buffer and convert back to DTO
 		List<org.geomajas.geometry.Geometry> result = new ArrayList<org.geomajas.geometry.Geometry>();
 		double buffer = request.getBufferDistance();
-		for (int i = 0; i < clientGeometries.size(); i++) {
-			result.add(converter.toDto(converter.toInternal(clientGeometries.get(i)).buffer(buffer)));
+		for (Geometry clientGeometry : clientGeometries) {
+			result.add(converter.toDto(converter.toInternal(clientGeometry).buffer(buffer)));
 		}
 		response.setGeometries(result);
 	}
