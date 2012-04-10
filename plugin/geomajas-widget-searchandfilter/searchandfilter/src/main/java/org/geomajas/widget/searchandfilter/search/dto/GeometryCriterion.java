@@ -111,6 +111,7 @@ public class GeometryCriterion implements Criterion {
 		return new ArrayList<Criterion>();
 	}
 
+	/** {@inheritDoc} */
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		switch (operator) {
@@ -133,6 +134,11 @@ public class GeometryCriterion implements Criterion {
 		sb.append(" ");
 		sb.append(geometry.getGeometryType());
 		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return getDisplayText();
 	}
 
 }

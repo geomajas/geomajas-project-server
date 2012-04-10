@@ -108,6 +108,7 @@ public class AttributeCriterion implements Criterion {
 		return new ArrayList<Criterion>();
 	}
 
+	@Override
 	public String toString() {
 		return "(" + attributeName + " " + operator + " " + value + ")";
 	}

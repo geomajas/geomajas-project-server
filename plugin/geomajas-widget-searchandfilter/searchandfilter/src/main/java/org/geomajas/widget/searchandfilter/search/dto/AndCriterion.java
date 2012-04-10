@@ -60,6 +60,7 @@ public class AndCriterion implements Criterion {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -72,4 +73,10 @@ public class AndCriterion implements Criterion {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public String toString() {
+		return getDisplayText();
+	}
+
 }

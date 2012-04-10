@@ -60,6 +60,7 @@ public class OrCriterion implements Criterion {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -71,6 +72,11 @@ public class OrCriterion implements Criterion {
 			first = false;
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return getDisplayText();
 	}
 
 }
