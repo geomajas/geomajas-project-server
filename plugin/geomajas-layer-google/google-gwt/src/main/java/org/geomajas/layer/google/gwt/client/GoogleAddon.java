@@ -85,6 +85,7 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
 	// MapAddon implementation:
 
+	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		if (googleMap == null) {
 			// create as first child of raster group
@@ -97,9 +98,11 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDraw() {
 	}
 
+	/** {@inheritDoc} */
 	public void onRemove() {
 		String id = map.getRasterContext().getId(this);
 
@@ -120,6 +123,7 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		googleMap = null;
 	}
 
+	/** {@inheritDoc} */
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		// assume google coordinates here
 		if (googleMap != null) {
