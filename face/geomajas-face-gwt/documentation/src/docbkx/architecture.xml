@@ -1161,21 +1161,15 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       <para>The creation of a zoom-in <code>SingleMapAddon</code> can be
       achieved like this:</para>
 
-      <programlisting>Image background = ImageUtil.createSquareImage("background", Geomajas.getIsomorphicDir() + "geomajas/mapaddon/panbg.png", 
-0, 0, 36);
-
-int internalMargin = 6;
-Image icon = ImageUtil.createSquareImage("zoomInIcon", Geomajas.getIsomorphicDir() + "geomajas/osgeo/zoom-in.png", 
-internalMargin, internalMargin, 24);
-
-SingleMapAddon zoomIn = new SingleMapAddon("zoomIn", icon, background, mapWidget, new ZoomInAndOutController(mapWidget, 2));
-zoomIn.setHorizontalMargin(25);
-zoomIn.setVerticalMargin(25);
-mapWidget.registerMapAddon(zoomIn);</programlisting>
+      <xi:include href="listing/SingleMapAddon.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>A more complex zoom slider is created like this:</para>
 
-      <programlisting>/*
+      <xi:include href="listing/ZoomSliderMapAddon.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+		<programlisting>/*
  * Slider handler icon
  */
 Image sliderUnit = ImageUtil.createRectangleImage(ZoomSlider.SLIDER_UNIT + "icon", 

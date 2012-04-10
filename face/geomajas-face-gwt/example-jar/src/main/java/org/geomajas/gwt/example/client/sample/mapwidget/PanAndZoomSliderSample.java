@@ -151,24 +151,21 @@ public class PanAndZoomSliderSample extends SamplePanel {
 				mapWidget.registerMapAddon(pan);
 		
 				// START ZOOMSLIDER
-		
-				/*
-				 * Slider handler icon
-				 */
+
+				// @extract-start ZoomSliderMapAddon, ZoomSlider map add-on
+				// Slider handler icon
 				Image sliderUnit = ImageUtil.createRectangleImage(
 						ZoomSlider.SLIDER_UNIT + "icon", Geomajas.getIsomorphicDir()
 								+ EXAMPLE_IMAGE_FOLDER + "sliderUnit.png", 0, 0,
 						SLIDER_UNIT_WIDTH, SLIDER_UNIT_HEIGHT);
-				/*
-				 * Part of the background on which the zoomslider handler can move.
-				 * One zoom level is represented by one image.
-				 */
+
+				// Part of the background on which the zoom slider handler can move.
+				// One zoom level is represented by one image.
 				Image backgroundPart = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
 						+ "Bg", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
 						+ "sliderbg.png", 0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
-				/*
-				 * Zoom in; the top of ZoomSlider
-				 */
+
+				// Zoom in; the top of ZoomSlider
 				Image in = ImageUtil.createSquareImage(ZOOM_IN + ICON,
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomPlus.png",
 						0, 0, SLIDER_WIDTH);
@@ -179,22 +176,18 @@ public class PanAndZoomSliderSample extends SamplePanel {
 				SingleMapAddon zoomIn = new SingleMapAddon(ZOOM_IN, in, sliderTop,
 						mapWidget, new ZoomInAndOutController(mapWidget, 1.01));
 		
-				/*
-				 * Zoom out; the bottom of ZoomSlider
-				 */
+				// Zoom out; the bottom of ZoomSlider
 				Image out = ImageUtil.createRectangleImage(ZOOM_OUT + ICON,
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomMinus.png", 
-						0, 0, SLIDER_WIDTH, SLIDER_WIDTH);
+						0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
 				Image sliderBottom = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
 						+ "Bottom", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
-						+ "sliderbgbottom.png", 0, 0, SLIDER_WIDTH, SLIDER_WIDTH);
+						+ "sliderbgbottom.png", 0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
 				SingleMapAddon zoomOut = new SingleMapAddon(ZOOM_OUT, out,
 						sliderBottom, mapWidget, new ZoomInAndOutController(mapWidget,
 								0.99));
 		
-				/*
-				 * Zoom slider itself
-				 */
+				// Zoom slider itself
 				ZoomSlider slider = new ZoomSlider(ZoomSlider.SLIDER, mapWidget);
 				slider.setZoomIn(zoomIn);
 				slider.setBackgroundPart(backgroundPart);
@@ -204,6 +197,7 @@ public class PanAndZoomSliderSample extends SamplePanel {
 				slider.setVerticalMargin(pan.getVerticalMargin() + PAN_DIA + 2 * MARGIN);
 				mapWidget.registerMapAddon(slider);
 				mapWidget.getMapModel().getMapView().addMapViewChangedHandler(slider);
+				// @extract-end
 			}
 		});
 

@@ -93,7 +93,6 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 		mapLayout.setHeight100();
 
 		// Map with ID mapNoNav is defined in the XML configuration.
-		// (mapNoNav.xml)
 		final MapWidget mapWidget = new MapWidget("mapNoNav", "gwtExample");
 		
 		// Set a panning controller on the map:
@@ -102,9 +101,7 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 		mapWidget.getMapModel().runWhenInitialized(new Runnable() {
 
 			public void run() {
-				/*
-				 * Images of pan controller with internal margins
-				 */
+				// Images of pan controller with internal margins
 				Image panBg = ImageUtil.createSquareImage("panBg",
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/panbg.png", 0,
 						0, PAN_DIA);
@@ -122,9 +119,7 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/pan_left.gif",
 						0, PAN_MARGIN, ARROW_DIA);
 		
-				/*
-				 * SingleMapAddons or arrows of pan controller
-				 */
+				// SingleMapAddons or arrows of pan controller
 				SingleMapAddon north = new SingleMapAddon(NORTH, northImage, mapWidget,
 						new PanArrowController(mapWidget, new Coordinate(0, 1)));
 				SingleMapAddon east = new SingleMapAddon(EAST, eastImage, mapWidget,
@@ -134,9 +129,7 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 				SingleMapAddon west = new SingleMapAddon(WEST, westImage, mapWidget,
 						new PanArrowController(mapWidget, new Coordinate(-1, 0)));
 		
-				/*
-				 * Pan group itself
-				 */
+				// Pan group itself
 				List<MapAddon> panArrows = new ArrayList<MapAddon>();
 				panArrows.add(north);
 				panArrows.add(east);
@@ -148,28 +141,24 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 				pan.setHorizontalMargin(MARGIN * 2);
 				pan.setVerticalMargin(MARGIN * 2);
 				mapWidget.registerMapAddon(pan);
-		
-				/*
-				 * Default background for following add ons.
-				 */
+
+				// @extract-start SingleMapAddon, Create a SingleMapAddon
+				// Default background for following add ons.
 				Image background = ImageUtil.createSquareImage("background",
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/panbg.png", 0,
 						0, BUTTON_DIA);
 		
-				/*
-				 * Zoom in
-				 */
+				// Zoom in
 				Image in = ImageUtil.createSquareImage(ZOOM_IN + ICON,
 						Geomajas.getIsomorphicDir() + "geomajas/osgeo/zoom-in.png",
 						MARGIN, MARGIN, ICON_DIA);
 				SingleMapAddon zoomIn = new SingleMapAddon(ZOOM_IN, in, background,
 						mapWidget, new ZoomInAndOutController(mapWidget, 2));
+				// @extract-end
 				// no (internal) margins needed; this addon receives its margins from
 				// its group
 		
-				/*
-				 * Zoom out
-				 */
+				// Zoom out
 				Image out = ImageUtil.createSquareImage(ZOOM_OUT + ICON,
 						Geomajas.getIsomorphicDir() + "geomajas/osgeo/zoom-out.png",
 						MARGIN, MARGIN, ICON_DIA);
@@ -178,9 +167,7 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 				// only internal horizontal margin needed
 				zoomOut.setHorizontalMargin(BUTTON_DIA + MARGIN);
 		
-				/*
-				 * Zoom in and out group
-				 */
+				// Zoom in and out group
 				MapAddonGroup zoomInAndOut = new MapAddonGroup(ZOOM_IN_AND_OUT,
 						BUTTON_DIA + MARGIN + BUTTON_DIA, BUTTON_DIA, mapWidget);
 				zoomInAndOut.addAddon(zoomIn);
@@ -189,9 +176,7 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 				zoomInAndOut.setVerticalMargin(pan.getVerticalMargin() + PAN_DIA + MARGIN);
 				mapWidget.registerMapAddon(zoomInAndOut);
 		
-				/*
-				 * Zoom out to maximum scale
-				 */
+				// Zoom out to maximum scale
 				Image select = ImageUtil.createSquareImage(ZOOM_TO_MAX + ICON,
 						Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
 								+ "zoomMax.png", MARGIN + 1, MARGIN + 1, ICON_DIA);
@@ -237,9 +222,7 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 						+ BUTTON_DIA + MARGIN);
 				mapWidget.registerMapAddon(zoomToMax);
 		
-				/*
-				 * Zoom to dragged rectangle
-				 */
+				// Zoom to dragged rectangle
 				Image rect = ImageUtil.createSquareImage(ZOOM_TO_RECT + ICON,
 						Geomajas.getIsomorphicDir()
 								+ "geomajas/osgeo/zoom-selection.png", MARGIN + 3,
