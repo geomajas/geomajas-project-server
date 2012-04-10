@@ -62,6 +62,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 
 	protected boolean showDetailsOnSingleResult;
 	
+	protected boolean showCsvExportAction = true;
+	
 	private boolean sortFeatures; 
 	
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
@@ -114,10 +116,16 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		this.showDetailsOnSingleResult = showDetailsOnSingleResult;
 	}
 
+	public boolean isShowCsvExportAction() {
+		return showCsvExportAction;
+	}
 	
+	public void setShowCsvExportAction(boolean showCsvExportAction) {
+		this.showCsvExportAction = showCsvExportAction;
+	}
+
 	public void setSortFeatures(boolean sortFeatures) {
 		this.sortFeatures = sortFeatures;
-	
 	}
 
 	public boolean doSortFeatures() {
@@ -274,7 +282,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		String id = tabset.getID() + "_" + layerId;
 		FeatureListGridTab t = (FeatureListGridTab) tabset.getTab(id);
 		if (t == null) {
-			t = new FeatureListGridTab(map, layer);
+			t = new FeatureListGridTab(map, layer, isShowCsvExportAction());
 			t.setID(id);
 			for (ExtraButton button : extraButtons) {
 				if (layerId.equals(button.getLayerId())) {

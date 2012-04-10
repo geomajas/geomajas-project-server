@@ -73,8 +73,11 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 	
 	public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer) {
+		this(mapWidget, layer, true);
+	}
+
+	public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final boolean showCsvExportAction) {
 		super(layer.getLabel());
-		this.exportCsvHandler = new ExportFeatureListToCsvHandler(mapWidget.getMapModel(), layer);
 		this.mapWidget = mapWidget;
 		this.layer = layer;
 		
@@ -108,30 +111,30 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		});
 		toolStrip.addButton(showButton);
 		
-		exportButton = new ToolStripButton(messages.multiFeatureListGridButtonExportToCSV());
-		exportButton.setIcon(BTN_EXPORT);
-		exportButton.setTooltip(messages.multiFeatureListGridButtonExportToCSVTooltip());
-		exportButton.setShowDisabledIcon(false);
-		if (exportCsvHandler == null) {
-			exportButton.setVisible(false);
-		}
-		exportButton.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				if (exportCsvHandler != null) {
-					exportButton.setDisabled(true);
-					exportButton.setIcon(WidgetLayout.iconAjaxLoading);
-					exportCsvHandler.execute(layer, new Callback() {
-
-						public void execute() {
-							exportButton.setDisabled(false);
-							exportButton.setIcon(BTN_EXPORT);
-						}
-					});
+		if (showCsvExportAction) {
+			exportCsvHandler = new ExportFeatureListToCsvHandler(mapWidget.getMapModel(), layer);
+			exportButton = new ToolStripButton(messages.multiFeatureListGridButtonExportToCSV());
+			exportButton.setIcon(BTN_EXPORT);
+			exportButton.setTooltip(messages.multiFeatureListGridButtonExportToCSVTooltip());
+			exportButton.setShowDisabledIcon(false);
+			exportButton.addClickHandler(new ClickHandler() {
+	
+				public void onClick(ClickEvent event) {
+					if (exportCsvHandler != null) {
+						exportButton.setDisabled(true);
+						exportButton.setIcon(WidgetLayout.iconAjaxLoading);
+						exportCsvHandler.execute(layer, new Callback() {
+	
+							public void execute() {
+								exportButton.setDisabled(false);
+								exportButton.setIcon(BTN_EXPORT);
+							}
+						});
+					}
 				}
-			}
-		});
-		toolStrip.addButton(exportButton);
+			});
+			toolStrip.addButton(exportButton);
+		}
 		
 		featureListGrid = new FeatureListGrid(mapWidget.getMapModel(), new DoubleClickHandler() {
 			public void onDoubleClick(DoubleClickEvent event) {
@@ -254,7 +257,7 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	 * @return selected records
 	 */
 	public ListGridRecord[] getSelection() {
-		return featureListGrid.getSelection();
+		return featureListGrid.getSelectedRecords();
 	}
 
 	// ----------------------------------------------------------
