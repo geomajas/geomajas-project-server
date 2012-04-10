@@ -104,11 +104,10 @@ public class DropDownPanel extends VStack {
 	 * 
 	 * @param action ButtonAction
 	 * @param buttonLayout the layout of the group. Is used if the action does not contain one itself.
-	 * @return columun
-	 * 				RibbonColumn containing the button.
+	 * @return column RibbonColumn containing the button.
 	 */
 	private RibbonColumn getButton(ButtonAction action, String buttonLayout) {
-		RibbonColumn column = null;
+		RibbonColumn column;
 		if (action instanceof ToolbarButtonCanvas) { 
 			column = new RibbonColumnCanvas((ToolbarButtonCanvas) action);
 		} else {
@@ -155,7 +154,7 @@ public class DropDownPanel extends VStack {
 		}
 		for (RibbonColumn button : buttons) {
 			if (button instanceof RibbonButton) {
-				((RibbonColumn) button).setButtonBaseStyle(styleName + "Button");
+				button.setButtonBaseStyle(styleName + "Button");
 			}
 		}
 	}
@@ -174,9 +173,9 @@ public class DropDownPanel extends VStack {
 	 * all mouse events are caught here before they are processed. 
 	 * If the event is of type {@link Event#ONMOUSEUP} and the click was outside 
 	 * the button or this drop-down panel, the panel is closed.
-	 * @return
+	 *
+	 * @return handler registration
 	 */
-	
 	private HandlerRegistration previewMouseUpHandler() {
 		return Event.addNativePreviewHandler(new NativePreviewHandler() {
 			public void onPreviewNativeEvent(NativePreviewEvent preview) {
