@@ -33,10 +33,10 @@ import com.google.gwt.core.client.Callback;
 /**
  * Service for available operations on {@link Geometry} instances. This class contains implementations for;
  * <ul>
- * <li>Applying a buffer distance on a geometry or several geometries<li/>
- * <li>Merging several geometries (or obtaining a union)<li/>
- * <li>Obtaining the convex hull of a geometry or several geometries<li/>
- * <li>Obtaining the bounds between several geometries<li/>
+ * <li>Applying a buffer distance on a geometry or several geometries</li>
+ * <li>Merging several geometries (or obtaining a union)</li>
+ * <li>Obtaining the convex hull of a geometry or several geometries</li>
+ * <li>Obtaining the bounds between several geometries</li>
  * </ul>
  * 
  * @author Emiel Ackermann
