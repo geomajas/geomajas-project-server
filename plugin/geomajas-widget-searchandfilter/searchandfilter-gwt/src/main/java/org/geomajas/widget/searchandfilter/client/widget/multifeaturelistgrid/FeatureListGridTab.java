@@ -190,15 +190,9 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		return sortFeatures;
 	}
 
-
-
 	public void setSortFeatures(boolean sortFeatures) {
 		this.sortFeatures = sortFeatures;
 	}
-
-
-
-
 
 	/**
 	 * Add a button in the tool strip at the requested position.
@@ -299,10 +293,12 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	public void setCriterion(Criterion criterion) {
 		this.criterion = criterion;
 
-		if (exportCsvHandler instanceof ExportSearchToCsvHandler) {
-			((ExportSearchToCsvHandler) exportCsvHandler).setCriterion(criterion);
-		} else {
+		// Replace the handler if it is of type featureList 
+		// (when we have a criterion it is better to use that as it has no limitation on returned items)
+		if (exportCsvHandler == null || exportCsvHandler instanceof ExportFeatureListToCsvHandler) {
 			this.exportCsvHandler = new ExportSearchToCsvHandler(mapWidget.getMapModel(), layer, criterion);
+		} else {
+			((ExportSearchToCsvHandler) exportCsvHandler).setCriterion(criterion);
 		}
 	}
 
@@ -312,5 +308,4 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	public Criterion getCriterion() {
 		return criterion;
 	}
-	
 }
