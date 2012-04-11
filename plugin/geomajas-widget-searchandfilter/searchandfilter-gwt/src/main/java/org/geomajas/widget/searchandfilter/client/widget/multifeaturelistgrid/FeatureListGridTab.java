@@ -297,7 +297,7 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		// (when we have a criterion it is better to use that as it has no limitation on returned items)
 		if (exportCsvHandler == null || exportCsvHandler instanceof ExportFeatureListToCsvHandler) {
 			this.exportCsvHandler = new ExportSearchToCsvHandler(mapWidget.getMapModel(), layer, criterion);
-		} else {
+		} else if (exportCsvHandler instanceof ExportSearchToCsvHandler) {
 			((ExportSearchToCsvHandler) exportCsvHandler).setCriterion(criterion);
 		}
 	}
