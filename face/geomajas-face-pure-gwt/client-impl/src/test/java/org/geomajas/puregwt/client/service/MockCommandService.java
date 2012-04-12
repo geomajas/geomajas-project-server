@@ -23,6 +23,7 @@ import com.smartgwt.client.core.Function;
 public class MockCommandService implements CommandService {
 
 	Stack<CommandResponse> responseStack = new Stack<CommandResponse>();
+	private String authenticationToken;
 
 	public Deferred execute(GwtCommand command, CommandCallback... callback) {
 		if (responseStack.isEmpty()) {
@@ -59,6 +60,14 @@ public class MockCommandService implements CommandService {
 			Assert.fail("Can't add callback to command service !");
 		}
 
+	}
+
+	public void setAuthenticationToken(String authenticationToken) {
+		this.authenticationToken = authenticationToken;
+	}
+
+	public String getAuthenticationToken() {
+		return authenticationToken;
 	}
 
 }
