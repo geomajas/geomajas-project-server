@@ -29,7 +29,7 @@ import org.geomajas.gwt.client.util.Log;
 
 public class CommandServiceImpl implements CommandService {
 
-	private String authenticationToken;
+	private String userToken;
 
 	/**
 	 * Simple callback implementation that writes all exceptions to {@link Log}.
@@ -85,11 +85,17 @@ public class CommandServiceImpl implements CommandService {
 		return GwtCommandDispatcher.getInstance().execute(command, callback);
 	}
 
-	public void setAuthenticationToken(String authenticationToken) {
-		this.authenticationToken = authenticationToken;
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setUserToken(String userToken) {
+		this.userToken = userToken;
 	}
 
-	public String getAuthenticationToken() {
-		return authenticationToken;
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getUserToken() {
+		return userToken;
 	}
 }

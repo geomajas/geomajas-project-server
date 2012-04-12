@@ -39,16 +39,16 @@ public interface CommandService {
 	Deferred execute(final GwtCommand command, final CommandCallback... callback);
 
 	/**
-	 * Set the authentication token.
+	 * Set the user token.
 	 * 
 	 * @param authenticationToken
 	 */
-	void setAuthenticationToken(String authenticationToken);
+	void setUserToken(String userToken);
 	
 	/**
-	 * Get the authentication token.
+	 * Get the user token.
 	 * 
 	 * @return authenticationToken
 	 */
-	String getAuthenticationToken();
+	String getUserToken();
 }
