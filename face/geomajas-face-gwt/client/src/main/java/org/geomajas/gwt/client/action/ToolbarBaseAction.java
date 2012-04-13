@@ -152,6 +152,7 @@ public abstract class ToolbarBaseAction {
 	}
 
 	/**
+	 * @deprecated Replaced by {@link #getLayout()}
 	 * Get the button layout which determines the gui in a RibbonColumn.
 	 * 
 	 * @return The button layout which determines the gui.
@@ -163,7 +164,8 @@ public abstract class ToolbarBaseAction {
 	}
 	
 	/**
-	 * Set the button layout which determines the gui in a RibbonColumn.
+	 * @deprecated Replaced by {@link #setLayout(Layout)}
+	 * <p>Set the button layout which determines the gui in a RibbonColumn.<p>
 	 * 
 	 * @param buttonLayout
 	 *           The button layout which determines the gui.
@@ -175,7 +177,7 @@ public abstract class ToolbarBaseAction {
 	}
 	
 	/**
-	 * Set the button layout which determines the gui in a RibbonColumn. Alternative to {@link #setButtonLayout(String)}.
+	 * Set the button layout which determines the gui in a RibbonColumn. 
 	 * 
 	 * @param layout
 	 *           The {@link Layout} which determines the gui.
@@ -186,7 +188,7 @@ public abstract class ToolbarBaseAction {
 	}
 
 	/**
-	 * Get the button layout which determines the gui in a RibbonColumn. Alternative to {@link #getButtonLayout()}.
+	 * Get the button layout which determines the gui in a RibbonColumn. 
 	 * 
 	 * @return layout
 	 *           The {@link Layout} which determines the gui.
