@@ -82,11 +82,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="description" value="Click this button and draw a rectangle on the map to zoom to" />
 														<property name="parameters">
 															<list>
-																<bean class="org.geomajas.configuration.Parameter">
-																	<property name="name" value="buttonLayout" />
-																	<property name="value">
-																		<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-																	</property>
+																<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+																	<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 																</bean>
 															</list>
 														</property>
@@ -96,11 +93,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="title" value="Basic zoom" />
 														<property name="parameters">
 														<list>
-															<bean class="org.geomajas.configuration.Parameter">
-																<property name="name" value="buttonLayout" />
-																<property name="value">
-																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-																</property>
+															<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+																<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 															</bean>
 														</list>
 														</property>
@@ -208,11 +202,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="description" value="Click this button and draw a rectangle on the map to zoom to" />
 														<property name="parameters">
 															<list>
-																<bean class="org.geomajas.configuration.Parameter">
-																	<property name="name" value="buttonLayout" />
-																	<property name="value">
-																		<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-																	</property>
+																<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+																	<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 																</bean>
 															</list>
 														</property>
@@ -222,11 +213,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="title" value="Basic zoom" />
 														<property name="parameters">
 														<list>
-															<bean class="org.geomajas.configuration.Parameter">
-																<property name="name" value="buttonLayout" />
-																<property name="value">
-																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-																</property>
+															<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+																<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 															</bean>
 														</list>
 														</property>
@@ -256,11 +244,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="description" value="Click this button and draw a rectangle on the map to zoom to" />
 														<property name="parameters">
 															<list>
-																<bean class="org.geomajas.configuration.Parameter">
-																	<property name="name" value="buttonLayout" />
-																	<property name="value">
-																		<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-																	</property>
+																<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+																	<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 																</bean>
 															</list>
 														</property>
@@ -416,11 +401,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											<property name="title" value="Default description" />
 											<property name="parameters">
 											<list>
-												<bean class="org.geomajas.configuration.Parameter">
-													<property name="name" value="buttonLayout" />
-													<property name="value">
-														<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-													</property>
+												<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+													<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 												</bean>
 											</list>
 											</property>
@@ -434,11 +416,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											<property name="title" value="Custom description" />
 											<property name="parameters">
 											<list>
-												<bean class="org.geomajas.configuration.Parameter">
-													<property name="name" value="buttonLayout" />
-													<property name="value">
-														<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-													</property>
+												<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+													<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 												</bean>
 											</list>
 											</property>
@@ -665,11 +644,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="toolId" value="ButtonGroup" />
 														<property name="parameters">
 														<list>
-															<bean class="org.geomajas.configuration.Parameter">
-																<property name="name" value="buttonLayout" />
-																<property name="value">
-																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
-																</property>
+															<bean class="org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter">
+																<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
 															</bean>
 														</list>
 														</property>
