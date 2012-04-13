@@ -15,6 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -41,6 +42,8 @@ public abstract class ToolbarBaseAction {
 	private boolean disabled;
 
 	private HandlerManager handlerManager;
+
+	private Layout layout;
 
 	public ToolbarBaseAction(String icon, String tooltip) {
 		this(icon, tooltip, tooltip);
@@ -154,6 +157,7 @@ public abstract class ToolbarBaseAction {
 	 * @return The button layout which determines the gui.
 	 * @since 1.10.0
 	 */
+	@Deprecated
 	public String getButtonLayout() {
 		return buttonLayout;
 	}
@@ -165,8 +169,31 @@ public abstract class ToolbarBaseAction {
 	 *           The button layout which determines the gui.
 	 * @since 1.10.0
 	 */
+	@Deprecated
 	public void setButtonLayout(String buttonLayout) {
 		this.buttonLayout = buttonLayout;
+	}
+	
+	/**
+	 * Set the button layout which determines the gui in a RibbonColumn. Alternative to {@link #setButtonLayout(String)}.
+	 * 
+	 * @param layout
+	 *           The {@link Layout} which determines the gui.
+	 * @since 1.11.0
+	 */
+	public Layout getLayout() {
+		return layout;
+	}
+
+	/**
+	 * Get the button layout which determines the gui in a RibbonColumn. Alternative to {@link #getButtonLayout()}.
+	 * 
+	 * @return layout
+	 *           The {@link Layout} which determines the gui.
+	 * @since 1.11.0
+	 */
+	public void setLayout(Layout layout) {
+		this.layout = layout;
 	}
 }
 // @extract-end
