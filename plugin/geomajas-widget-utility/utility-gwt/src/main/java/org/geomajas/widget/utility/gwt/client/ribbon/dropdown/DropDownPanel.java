@@ -17,6 +17,7 @@ import java.util.List;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
 import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.gwt.client.action.ButtonAction;
@@ -72,7 +73,7 @@ public class DropDownPanel extends VStack {
 		group.setAutoHeight();
 		group.setWidth100();
 		
-		String buttonLayout = GuwLayout.DropDown.ICON_AND_TITLE;
+		Layout buttonLayout = Layout.ICON_AND_TITLE;
 		if (null != title) {
 			Label groupTitle = new Label(title.getTitle());
 			groupTitle.setOverflow(Overflow.VISIBLE);
@@ -80,8 +81,8 @@ public class DropDownPanel extends VStack {
 			groupTitle.setWidth100();
 			group.addMember(groupTitle);
 			groupTitles.add(groupTitle);
-			buttonLayout = null == title.getButtonLayout() ? 
-					GuwLayout.DropDown.ICON_AND_TITLE : title.getButtonLayout();
+			buttonLayout = (Layout) (null == title.getLayout() ? 
+					Layout.ICON_AND_TITLE : title.getLayout());
 		}
 		VStack body = new VStack();
 		body.setOverflow(Overflow.VISIBLE);
@@ -106,20 +107,20 @@ public class DropDownPanel extends VStack {
 	 * @param buttonLayout the layout of the group. Is used if the action does not contain one itself.
 	 * @return column RibbonColumn containing the button.
 	 */
-	private RibbonColumn getButton(ButtonAction action, String buttonLayout) {
+	private RibbonColumn getButton(ButtonAction action, Layout buttonLayout) {
 		RibbonColumn column;
 		if (action instanceof ToolbarButtonCanvas) { 
 			column = new RibbonColumnCanvas((ToolbarButtonCanvas) action);
 		} else {
 			// if no layout was given, use the one given by the group
-			if (null == action.getButtonLayout()) {
-				action.setButtonLayout(buttonLayout);
+			if (null == action.getLayout()) {
+				action.setLayout(buttonLayout);
 			}
 			RibbonButton button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
-			if (buttonLayout.equals(GuwLayout.DropDown.ICON_AND_TITLE)) {
+			if (buttonLayout.equals(Layout.ICON_AND_TITLE)) {
 				button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonIconSize, 
 						TitleAlignment.RIGHT);
-			} else if (buttonLayout.equals(GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION)) {
+			} else if (buttonLayout.equals(Layout.ICON_TITLE_AND_DESCRIPTION)) {
 				button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonDescriptionIconSize, 
 						TitleAlignment.RIGHT);
 			}

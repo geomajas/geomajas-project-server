@@ -17,6 +17,8 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
@@ -76,8 +78,8 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 			setTooltip(value);
 		} else if ("description".equalsIgnoreCase(key)) {
 			setTooltip(value);
-		} else if ("buttonLayout".equalsIgnoreCase(key)) {
-			setButtonLayout(value);
+		} else if (ButtonLayoutParameter.NAME.equalsIgnoreCase(key)) {
+			setLayout(Layout.valueOf(value));
 		} else if (toolbarAction instanceof ConfigurableAction) {
 			ConfigurableAction ca = (ConfigurableAction) toolbarAction;
 			ca.configure(key, value);
@@ -119,14 +121,13 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 	}
 
 	/** {@inheritDoc} */
-	public String getButtonLayout() {
-		return toolbarAction.getButtonLayout();
+	public Layout getLayout() {
+		return toolbarAction.getLayout();
 	}
 	/** {@inheritDoc} */
-	public void setButtonLayout(String buttonLayout) {
-		toolbarAction.setButtonLayout(buttonLayout);
+	public void setLayout(Layout layout) {
+		toolbarAction.setLayout(layout);
 	}
-
 	
 	/** {@inheritDoc} */
 	public boolean isEnabled() {
@@ -178,4 +179,5 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 			return null;
 		}
 	}
+
 }

@@ -11,6 +11,7 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon;
 
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
@@ -32,6 +33,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VStack;
+
 
 /**
  * Implementation of the RibbonColumn interface that displays a single button. Instances of this class are initialized
@@ -288,10 +290,10 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 * Update the GUI to reflect the settings.
 	 */
 	protected void updateGui() {
-		String buttonLayout = buttonAction.getButtonLayout();
-		if (GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+		ButtonLayoutParameter.Layout buttonLayout = buttonAction.getLayout();
+		if (ButtonLayoutParameter.Layout.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
 			buildGuiWithDescription();
-		} else { // GuwLayout.DropDown.ICON_AND_TITLE || null || ...
+		} else { // LayoutParameter.Layout.ICON_AND_TITLE || null || ...
 			setWidth(50);
 			if (titleAlignment.equals(TitleAlignment.BOTTOM)) {
 				setHeight100();

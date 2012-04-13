@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.utility.gwt.client.action;
 
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 
@@ -26,7 +27,7 @@ public abstract class AbstractButtonAction implements ButtonAction, RibbonColumn
 	private String title;
 	private String tooltip;
 	private String icon;
-	private String buttonLayout;
+	private Layout layout;
 	private RibbonColumn ribbonColumn;
 
 	/**
@@ -81,12 +82,12 @@ public abstract class AbstractButtonAction implements ButtonAction, RibbonColumn
 		this.tooltip = tooltip;
 	}
 
-	public String getButtonLayout() {
-		return buttonLayout;
+	public Layout getLayout() {
+		return layout;
 	}
 
-	public void setButtonLayout(String buttonLayout) {
-		this.buttonLayout = buttonLayout;
+	public void setLayout(Layout layout) {
+		this.layout = layout;
 	}
 
 	public void setRibbonColumn(RibbonColumn column) {
