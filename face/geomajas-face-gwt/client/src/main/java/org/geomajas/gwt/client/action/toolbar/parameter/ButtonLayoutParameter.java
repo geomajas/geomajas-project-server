@@ -55,6 +55,9 @@ public class ButtonLayoutParameter extends Parameter {
 				"Public naming is not allowed for LayoutParameter (its name is always 'buttonLayout')");
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setValue(String value) {
 		this.layout = Layout.valueOf(value);
