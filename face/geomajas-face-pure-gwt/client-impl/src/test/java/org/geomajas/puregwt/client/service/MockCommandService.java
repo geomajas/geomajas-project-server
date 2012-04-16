@@ -16,14 +16,19 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.TokenRequestHandler;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.junit.Assert;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.core.Function;
 
 public class MockCommandService implements CommandService {
 
 	Stack<CommandResponse> responseStack = new Stack<CommandResponse>();
 	private String userToken;
+	private TokenChangedHandler handler;
+	private TokenRequestHandler tokenRequestHandler;
 
 	public Deferred execute(GwtCommand command, CommandCallback... callback) {
 		if (responseStack.isEmpty()) {
@@ -62,17 +67,20 @@ public class MockCommandService implements CommandService {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void setUserToken(String userToken) {
 		this.userToken = userToken;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public String getUserToken() {
 		return userToken;
+	}
+
+	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
+		this.handler = handler;
+		return null;
+	}
+
+	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
+		this.tokenRequestHandler = tokenRequestHandler;
 	}
 }
