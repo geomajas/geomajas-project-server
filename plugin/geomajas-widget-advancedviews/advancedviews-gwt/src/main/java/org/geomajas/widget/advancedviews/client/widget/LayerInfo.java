@@ -46,6 +46,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * A simple layerinfo window.
  * 
  * @author Kristof Heirwegh
+ * @author Wout Swartenbroekx
  * 
  */
 public class LayerInfo extends Window {
@@ -69,12 +70,14 @@ public class LayerInfo extends Window {
 		super();
 		setTitle(messages.layerInfoWindowLegendTitle() + " - " + layer.getLabel());
 		setAutoCenter(true);
-		setAutoSize(true);
+		setWidth(WINDOW_WIDTH);
+		setHeight(WINDOW_HEIGHT);
 		setKeepInParentRect(true);
-
+		setCanDragResize(true); // resize
+		
 		VLayout layout = new VLayout();
-		layout.setWidth(WINDOW_WIDTH);
-		layout.setHeight(WINDOW_HEIGHT);
+		layout.setWidth100();
+		layout.setHeight100();
 		layout.setPadding(5);
 		layout.setMembersMargin(5);
 		layout.setOverflow(Overflow.AUTO);
