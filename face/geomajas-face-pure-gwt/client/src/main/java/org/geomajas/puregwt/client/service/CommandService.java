@@ -14,6 +14,10 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.TokenRequestHandler;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
+
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * The central client side dispatcher service for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
@@ -42,13 +46,34 @@ public interface CommandService {
 	 * Set the user token.
 	 * 
 	 * @param authenticationToken
+	 * @since 1.0.0
 	 */
 	void setUserToken(String userToken);
 	
 	/**
 	 * Get the user token.
 	 * 
-	 * @return authenticationToken
+	 * @return user token
+	 * @since 1.0.0
 	 */
 	String getUserToken();
+	
+	/**
+	 * Add handler which is notified when the user token changes.
+	 * 
+	 * @param handler
+	 *            token changed handler
+	 * @return handler registration
+	 * @since 1.0.0
+	 */
+	HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler);
+
+	/**
+	 * Set the login handler which should be used to request a user token.
+	 * 
+	 * @param tokenRequestHandler
+	 *            login handler
+	 * @since 1.0.0
+	 */
+	void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler);
 }
