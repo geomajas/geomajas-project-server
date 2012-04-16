@@ -155,6 +155,7 @@ public class CommandServiceImpl implements CommandService {
 			details.setHeight("450");
 			
 			DialogBox warning = new DialogBox(true, true, text);
+			warning.center();
 			warning.setHeight("500");
 			warning.setWidth("700");
 			warning.add(details);
