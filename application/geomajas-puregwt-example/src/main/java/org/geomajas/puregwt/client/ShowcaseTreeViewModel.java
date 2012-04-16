@@ -19,6 +19,7 @@ import org.geomajas.puregwt.client.general.IntroductionContentPanel;
 import org.geomajas.puregwt.client.general.MapFillPanel;
 import org.geomajas.puregwt.client.general.NavigationOptionPanel;
 import org.geomajas.puregwt.client.general.ResizeMapPanel;
+import org.geomajas.puregwt.client.general.ServerErrorPanel;
 import org.geomajas.puregwt.client.layer.LayerOrderPanel;
 import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
 import org.geomajas.puregwt.client.layer.TmsLayerPanel;
@@ -99,6 +100,7 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catGeneral.addExample(new NavigationOptionPanel(geomajasInjector.getMapPresenter()), null);
 		catGeneral.addExample(new ResizeMapPanel(geomajasInjector.getMapPresenter()), null);
 		catGeneral.addExample(new MapFillPanel(geomajasInjector.getMapPresenter()), null);
+		catGeneral.addExample(new ServerErrorPanel(geomajasInjector.getMapPresenter()), null);
 
 		// Layer Manipulation:
 		Category catLayerMan = new Category("Layer Manipulation");
