@@ -78,11 +78,13 @@ public abstract class AbstractCircleController extends AbstractMapController {
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void onActivate(MapPresenter mapPresenter) {
 		super.onActivate(mapPresenter);
 		getContainer();
 	}
 
+	/** {@inheritDoc} */
 	public void onDown(HumanInputEvent<?> event) {
 		if (!isRightMouseButton(event)) {
 			dragging = true;
@@ -103,6 +105,7 @@ public abstract class AbstractCircleController extends AbstractMapController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onUp(HumanInputEvent<?> event) {
 		// Assure dragging or clicking started inside this widget
 		if (dragging) {
@@ -122,10 +125,12 @@ public abstract class AbstractCircleController extends AbstractMapController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDrag(HumanInputEvent<?> event) {
 		updateCircle(event);
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseOut(MouseOutEvent event) {
 		stopDragging();
 		dragging = false;
@@ -146,43 +151,93 @@ public abstract class AbstractCircleController extends AbstractMapController {
 	// Getters and setters for the style of the rectangle:
 	// ------------------------------------------------------------------------
 
-	public String getRectangleFillColor() {
+	/**
+	 * Get fill color of circle.
+	 * @return fillColor
+	 * 				fill color of circle.
+	 */
+	public String getCircleFillColor() {
 		return fillColor;
 	}
 
-	public void setRectangleFillColor(String fillColor) {
+	/**
+	 * Set fill color of circle.
+	 * @param fillColor
+	 * 				fill color of circle.
+	 */
+	public void setCircleFillColor(String fillColor) {
 		this.fillColor = fillColor;
 	}
 
-	public float getRectangleFillOpacity() {
+	/**
+	 * Get fill opacity of circle.
+	 * @return fillOpacity
+	 * 				fill opacity of circle
+	 */
+	public float getCircleFillOpacity() {
 		return fillOpacity;
 	}
 
-	public void setRectangleFillOpacity(float fillOpacity) {
+	/**
+	 * Set fill opacity of circle.
+	 * @param fillOpacity
+	 * 				fill opacity of circle
+	 */
+	public void setCircleFillOpacity(float fillOpacity) {
 		this.fillOpacity = fillOpacity;
 	}
 
-	public String getRectangleStrokeColor() {
+	/**
+	 * Get stroke color of circle.
+	 * @return strokeColor
+	 * 				stroke color of circle.
+	 */
+	public String getCircleStrokeColor() {
 		return strokeColor;
 	}
 
-	public void setRectangleStrokeColor(String strokeColor) {
+	/**
+	 * Set stroke color of circle.
+	 * @param strokeColor
+	 * 				stroke color of circle.
+	 */
+	public void setCircleStrokeColor(String strokeColor) {
 		this.strokeColor = strokeColor;
 	}
 
-	public float getRectangleStrokeOpacity() {
+	/**
+	 * Get stroke opacity of circle.
+	 * @return strokeOpacity
+	 *				stroke opacity of circle.
+	 */
+	public float getCircleStrokeOpacity() {
 		return strokeOpacity;
 	}
 
-	public void setRectangleStrokeOpacity(float strokeOpacity) {
+	/**
+	 * Set stroke opacity of circle.
+	 * @param strokeOpacity
+	 *				stroke opacity of circle.
+	 */
+	public void setCircleStrokeOpacity(float strokeOpacity) {
 		this.strokeOpacity = strokeOpacity;
 	}
 
-	public int getRectangleStrokeWidth() {
+	/**
+	 * Get stroke width of circle.
+	 * @return strokeWidth
+	 * 				stroke width of circle.
+	 */
+	public int getCircleStrokeWidth() {
 		return strokeWidth;
 	}
 
-	public void setRectangleStrokeWidth(int strokeWidth) {
+	/**
+	 * Set stroke width of circle.
+	 * @param strokeWidth
+	 * 				stroke width of circle.
+	 */
+	public void setCircleStrokeWidth(int strokeWidth) {
 		this.strokeWidth = strokeWidth;
 	}
 
