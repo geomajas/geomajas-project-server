@@ -28,15 +28,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>1.10.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.11.4</version>
+				<version>1.12.8</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -90,4 +83,13 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.0.4.v20111024</version>
+			</plugin>
+		</plugins>
+	</build>
 </project>
