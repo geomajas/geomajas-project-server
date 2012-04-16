@@ -48,7 +48,7 @@
 	<modules>
 		<module>geomajas-plugin-javascript-api</module>
 		<module>geomajas-plugin-javascript-api-gwt</module>
-	    <module>geomajas-plugin-javascript-api-example</module>
+	    <module>geomajas-plugin-javascript-api-gwt-example</module>
 	</modules>
 
 	<properties>

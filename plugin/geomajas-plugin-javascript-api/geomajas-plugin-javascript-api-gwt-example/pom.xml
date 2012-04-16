@@ -17,7 +17,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-javascript-api-example</artifactId>
+	<artifactId>geomajas-plugin-javascript-api-gwt-example</artifactId>
 	<packaging>war</packaging>
 
 	<name>Geomajas JavaScript API example</name>
