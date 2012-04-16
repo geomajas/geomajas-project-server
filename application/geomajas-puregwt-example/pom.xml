@@ -18,7 +18,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
-	<artifactId>geomajas-pure-gwt-example</artifactId>
+	<artifactId>geomajas-puregwt-example</artifactId>
 	<packaging>war</packaging>
 	<name>Geomajas pure GWT application</name>
 	<description>Geomajas pure GWT application</description>
@@ -43,7 +43,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.4</version>
+				<version>1.12.8</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -189,12 +189,13 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<inplace>true</inplace>
 					<module>org.geomajas.puregwt.Showcase</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<executions>
 					<execution>
@@ -225,26 +226,6 @@
 					</webAppConfig>
 					<reload>manual</reload>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>remove-build-files</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<delete dir="src/main/webapp/WEB-INF/lib" />
-								<delete dir="src/main/webapp/showcase" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 		</plugins>

@@ -145,7 +145,6 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<inplace>true</inplace>
 					<modules>
 						<module>org.geomajas.plugin.jsapi.example.ComplexApp</module>
 						<module>org.geomajas.plugin.jsapi.example.EmptyApp</module>
@@ -155,6 +154,12 @@
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 					<!--style>DETAILED</style-->
+					<!--<logLevel>DEBUG</logLevel>-->
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<executions>
 					<execution>
@@ -174,34 +179,10 @@
 				</executions>
 			</plugin>
 
-			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>remove-build-files</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<delete dir="src/main/webapp/WEB-INF/lib" />
-								<delete dir="src/main/webapp/WEB-INF/deploy" />
-								<delete dir="src/main/webapp/complexApp" />
-								<delete dir="src/main/webapp/emptyApp" />
-								<delete dir="src/main/webapp/showcase" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 		</plugins>
 	</build>
 	
-		<profiles>
+	<profiles>
 		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
@@ -225,23 +206,9 @@
 					<name>skipGwt</name>
 				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>clean</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 	</profiles>
 
