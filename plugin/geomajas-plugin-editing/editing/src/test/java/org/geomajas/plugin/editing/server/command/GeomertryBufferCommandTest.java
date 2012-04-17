@@ -80,4 +80,23 @@ public class GeomertryBufferCommandTest {
 		Assert.assertTrue(buffered.get(2).getGeometryType().equals(Geometry.POLYGON));
 		Assert.assertTrue(buffered.get(2).getCoordinates() == null);
 	}
+	
+	@Test
+	public void quadrantTest() throws GeometryMergeException, GeomajasException {
+		Geometry point = new Geometry(Geometry.POINT, 3, 0);
+		point.setCoordinates(new Coordinate[]{
+				new Coordinate(5000, 5000)				
+		});
+		GeometryBufferRequest request = new GeometryBufferRequest();
+		List<Geometry> g = new ArrayList<Geometry>();
+		g.add(point);
+		request.setGeometries(g);
+		request.setBufferDistance(900);
+		request.setQuadrantSegments(4);
+		GeometryBufferResponse response = (GeometryBufferResponse) dispatcher.execute(
+				GeometryBufferRequest.COMMAND, request, null, "en");
+		g = response.getGeometries();
+		// 4 * 4 lines with 17 coordinates (first is the same as last)
+		Assert.assertTrue(g.get(0).getGeometries()[0].getCoordinates().length == 17);
+	}
 }

@@ -54,8 +54,9 @@ public class GeometryBufferCommand implements Command<GeometryBufferRequest, Geo
 		// Convert to internal, apply buffer and convert back to DTO
 		List<org.geomajas.geometry.Geometry> result = new ArrayList<org.geomajas.geometry.Geometry>();
 		double buffer = request.getBufferDistance();
+		int quadrantSegments = request.getQuadrantSegments();
 		for (Geometry clientGeometry : clientGeometries) {
-			result.add(converter.toDto(converter.toInternal(clientGeometry).buffer(buffer)));
+			result.add(converter.toDto(converter.toInternal(clientGeometry).buffer(buffer, quadrantSegments)));
 		}
 		response.setGeometries(result);
 	}

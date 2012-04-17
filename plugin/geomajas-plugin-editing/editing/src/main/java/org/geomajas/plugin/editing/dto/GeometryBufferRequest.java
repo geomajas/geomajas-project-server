@@ -33,6 +33,8 @@ public class GeometryBufferRequest implements CommandRequest {
 	private List<Geometry> geometries;
 	
 	private double bufferDistance;
+	
+	private int quadrantSegments;
 
 	public GeometryBufferRequest() {
 	}
@@ -51,6 +53,14 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	public void setBufferDistance(double bufferDistance) {
 		this.bufferDistance = bufferDistance;
+	}
+
+	public int getQuadrantSegments() {
+		return quadrantSegments;
+	}
+
+	public void setQuadrantSegments(int quadrantSegments) {
+		this.quadrantSegments = quadrantSegments;
 	}
 
 }

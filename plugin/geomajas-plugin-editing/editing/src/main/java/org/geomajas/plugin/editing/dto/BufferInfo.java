@@ -18,6 +18,7 @@ package org.geomajas.plugin.editing.dto;
 public class BufferInfo {
 
 	private double distance;
+	private int quadrantSegments;
 
 	/**
 	 * Get distance to buffer.
@@ -35,6 +36,24 @@ public class BufferInfo {
 	 */
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+
+	/**
+	 * Get the number of line segments used to represent a quadrant of a circle.
+	 * @return quadrantSegments
+	 * 			the number of line segments used to represent a quadrant of a circle
+	 */
+	public int getQuadrantSegments() {
+		return quadrantSegments;
+	}
+	
+	/**
+	 * Set the number of line segments used to represent a quadrant of a circle.
+	 * @param quadrantSegments
+	 * 			the number of line segments used to represent a quadrant of a circle
+	 */
+	public void setQuadrantSegments(int quadrantSegments) {
+		this.quadrantSegments = quadrantSegments;
 	}
 
 }

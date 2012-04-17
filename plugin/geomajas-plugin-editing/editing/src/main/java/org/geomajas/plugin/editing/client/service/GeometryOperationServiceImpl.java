@@ -65,6 +65,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		GeometryBufferRequest request = new GeometryBufferRequest();
 		request.setGeometries(geometries);
 		request.setBufferDistance(bufferInfo.getDistance());
+		request.setQuadrantSegments(bufferInfo.getQuadrantSegments());
 		GwtCommand command = new GwtCommand(GeometryBufferRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GeometryBufferResponse>() {
