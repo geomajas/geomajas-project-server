@@ -11,6 +11,8 @@
 
 package org.geomajas.widget.featureinfo.client.controller;
 
+import java.util.HashMap;
+
 import org.geomajas.gwt.client.controller.listener.ListenerController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoListener;
@@ -26,6 +28,7 @@ import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureIn
  * @author An Buyle
  * @author Oliver May
  * @author Kristof Heirwegh
+ * @author Wout Swartenbroekx
  */
 public class MultiLayerFeatureInfoController extends ListenerController {
 
@@ -44,5 +47,9 @@ public class MultiLayerFeatureInfoController extends ListenerController {
 	
 	public void setLayersToExclude(String[] layerIds) {
 		((MultiLayerFeatureInfoListener) getListener()).setLayersToExclude(layerIds);
+	}
+
+	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+		((MultiLayerFeatureInfoListener) getListener()).setFeaturesListLabels(featuresListLabels);
 	}
 }

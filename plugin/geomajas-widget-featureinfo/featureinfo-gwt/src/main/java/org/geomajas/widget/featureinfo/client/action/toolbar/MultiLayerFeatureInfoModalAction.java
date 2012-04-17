@@ -10,6 +10,8 @@
  */
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
+import java.util.HashMap;
+
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -25,6 +27,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * 
  * @author An Buyle
  * @author Oliver May
+ * @author Wout Swartenbroekx
  */
 public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction implements ConfigurableAction {
 
@@ -37,7 +40,9 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 */
 	private int pixelTolerance = 10; /* default value */
 	
-	private String [] layersToExclude = new String [0];
+	private String[] layersToExclude = new String[0];
+	
+	private HashMap<String, String> featuresListLabels;
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
@@ -53,6 +58,9 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 		controller = new MultiLayerFeatureInfoController(mapWidget, pixelTolerance);
 		if (null != layersToExclude) {
 			controller.setLayersToExclude(layersToExclude);
+		}
+		if (null != featuresListLabels) {
+			controller.setFeaturesListLabels(featuresListLabels);
 		}
 	}
 
@@ -72,6 +80,15 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 				}
 			}
 			setLayersToExclude(layersToExcl);
+		} else if ("featuresListLabels".equalsIgnoreCase(key)) {
+			if (null != value) {
+				String [] features = value.split(",");
+				for (int i = 0; i < features.length; i++) {
+					if (features[i].indexOf("=") > -1) {
+						featuresListLabels.put(features[i].split("=")[0], features[i].split("=")[1]);
+					}
+				}
+			}
 		}
 	}
 
@@ -108,8 +125,20 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 		return pixelTolerance;
 	}
 	
-	public void setLayersToExclude(String [] layerIds) {
+	/**
+	 * Set the layers that should be excluded from the query.
+	 * @param layerIds list of layerIds
+	 */
+	public void setLayersToExclude(String[] layerIds) {
 		this.layersToExclude = layerIds;
 		controller.setLayersToExclude(layerIds);
+	}
+
+	/**
+	 * @param featuresListLabels the featuresListLabels to set
+	 */
+	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+		this.featuresListLabels = featuresListLabels;
+		controller.setFeaturesListLabels(featuresListLabels);
 	}
 }

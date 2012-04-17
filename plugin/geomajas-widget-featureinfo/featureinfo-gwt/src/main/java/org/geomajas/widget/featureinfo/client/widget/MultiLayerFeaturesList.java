@@ -37,13 +37,16 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 /**
  * <p>
- * The <code>MultiLayerFeaturesList</code> is a class providing a floating window that shows a list of all the features
- * (possibly from different layers) provided to it. Clicking on a feature in the list, results in a call of the provided
+ * The <code>MultiLayerFeaturesList</code> is a class providing a floating
+ * window that shows a list of all the features (possibly from different layers)
+ * provided to it. Clicking on a feature in the list, results in a call of the
+ * provided
  * {@link org.geomajas.widget.featureinfo.client.widget.FeatureClickHandler}.
  * </p>
  * 
  * @author An Buyle
  * @author Oliver May
+ * @author Wout Swartenbroekx
  */
 public class MultiLayerFeaturesList extends ListGrid {
 
@@ -65,6 +68,8 @@ public class MultiLayerFeaturesList extends ListGrid {
 	private FeatureClickHandler featureClickHandler;
 
 	private MapWidget mapWidget;
+
+	private HashMap<String, String> featuresListLabels;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -90,7 +95,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 */
 	public void setFeatures(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		MapModel mapModel = mapWidget.getMapModel();
-		
+
 		for (String clientLayerId : featureMap.keySet()) {
 			Layer<?> layer = mapModel.getLayer(clientLayerId);
 			if (null != layer) {
@@ -132,23 +137,22 @@ public class MultiLayerFeaturesList extends ListGrid {
 		} else { /* groupCell */
 			newStyle = "padding-left: 5px;";
 		}
-		if (null != super.getCellCSSText(record, rowNum, colNum)) {
-			newStyle = super.getCellCSSText(record, rowNum, colNum) + newStyle; /*
-																				 * add padding after original, the
-																				 * latter specified wins.
-																				 */
+		if (null != super.getCellCSSText(record, rowNum, colNum)) { 
+			newStyle = super.getCellCSSText(record, rowNum, colNum) + newStyle; 
+			/* add padding after original, the latter specified wins. */
 		}
 		return newStyle;
 	}
 
 	/**
-	 * Adds a new feature to the grid list. A {@link VectorLayer} must have been set first, and the feature must belong
-	 * to that VectorLayer.
+	 * Adds a new feature to the grid list. A {@link VectorLayer} must have been
+	 * set first, and the feature must belong to that VectorLayer.
 	 * 
 	 * @param feature
 	 *            The feature to be added to the grid list.
-	 * @return Returns true in case of success, and false if the feature is null or if the feature does not belong to
-	 *         the correct layer or if the layer has not yet been set.
+	 * @return Returns true in case of success, and false if the feature is null
+	 *         or if the feature does not belong to the correct layer or if the
+	 *         layer has not yet been set.
 	 */
 	private boolean addFeature(Feature feature, VectorLayer layer) {
 		// Basic checks:
@@ -158,7 +162,8 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 		// Feature checks out, add it to the grid:
 		ListGridRecord record = new ListGridRecord();
-		record.setAttribute("label", feature.getLabel());
+		// record.setAttribute("label", feature.getLabel());
+		record.setAttribute("label", getLabel(feature));
 		record.setAttribute("featureId", getFullFeatureId(feature, layer));
 		record.setAttribute("layerId", layer.getId());
 		record.setAttribute("layerLabel", layer.getLabel());
@@ -166,12 +171,12 @@ public class MultiLayerFeaturesList extends ListGrid {
 		addData(record);
 		return true;
 	}
-	
+
 	private boolean addRasterFeature(Feature feat, RasterLayer layer) {
 		if (feat == null) {
 			return false;
 		}
-		
+
 		// Feature checks out, add it to the grid:
 		ListGridRecord record = new ListGridRecord();
 		record.setAttribute("label", feat.getId());
@@ -180,8 +185,19 @@ public class MultiLayerFeaturesList extends ListGrid {
 		record.setAttribute("layerLabel", layer.getLabel());
 
 		addData(record);
-		
+
 		return true;
+	}
+
+	private String getLabel(Feature f) {
+		if (null != featuresListLabels) {
+			for (Map.Entry<String, String> entry : featuresListLabels.entrySet()) {
+				if (f.getLayer().getId().equalsIgnoreCase(entry.getKey())) {
+					return (String) f.getAttributeValue(entry.getValue());
+				}
+			}
+		}
+		return f.getLabel();
 	}
 
 	private static String getFullFeatureId(Feature feature, Layer layer) {
@@ -193,7 +209,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 * 
 	 */
 	private void buildWidget() {
-//		setTitle(messages.nearbyFeaturesListTooltip());
+		// setTitle(messages.nearbyFeaturesListTooltip());
 		setShowEmptyMessage(true);
 		setWidth100();
 		setHeight100();
@@ -237,18 +253,18 @@ public class MultiLayerFeaturesList extends ListGrid {
 			}
 
 		});
-		
+
 		setShowHover(true);
 		setCanHover(true);
 		setHoverWidth(200);
 		setHoverCustomizer(new HoverCustomizer() {
-			
+
 			public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
 				String featureId = record.getAttribute("featureId");
 				Feature feat = vectorFeatures.get(featureId);
-				
+
 				String tooltip = "";
-				
+
 				if (feat != null) {
 					for (AttributeInfo a : feat.getLayer().getLayerInfo().getFeatureInfo().getAttributes()) {
 						if (a.isIdentifying()) {
@@ -261,5 +277,13 @@ public class MultiLayerFeaturesList extends ListGrid {
 			}
 		});
 
+	}
+
+	/**
+	 * @param featuresListLabels
+	 *            the featuresListLabels to set
+	 */
+	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+		this.featuresListLabels = featuresListLabels;
 	}
 }

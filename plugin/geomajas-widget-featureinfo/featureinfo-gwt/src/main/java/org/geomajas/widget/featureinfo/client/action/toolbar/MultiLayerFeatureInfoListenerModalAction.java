@@ -10,6 +10,8 @@
  */
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
+import java.util.HashMap;
+
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -24,6 +26,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * 
  * @author An Buyle
  * @author Oliver May
+ * @author Wout Swartenbroekx
  */
 public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction implements ConfigurableAction {
 
@@ -35,7 +38,8 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 	 * Number of pixels that describes the tolerance allowed when searching nearby features.
 	 */
 	private int pixelTolerance = 10; /* default value */
-	private String [] layersToExclude = new String [0];
+	private String[] layersToExclude = new String[0];
+	private HashMap<String, String> featuresListLabels;
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
@@ -52,6 +56,9 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 		if (null != layersToExclude) {
 			listener.setLayersToExclude(layersToExclude);
 		}
+		if (null != featuresListLabels) {
+			listener.setFeaturesListLabels(featuresListLabels);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -64,12 +71,20 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 			String[] layersToExcl = new String [0];
 			if (null != value) {
 				layersToExcl = value.split(",");
-	
 				for (int i = 0; i < layersToExcl.length ; i++) {
 					layersToExcl[i] = layersToExcl[i].trim();
 				}
 			}
 			setLayersToExclude(layersToExcl);
+		} else if ("featuresListLabels".equalsIgnoreCase(key)) {
+			if (null != value) {
+				String [] features = value.split(",");
+				for (int i = 0; i < features.length; i++) {
+					if (features[i].indexOf("=") > -1) {
+						featuresListLabels.put(features[i].split("=")[0], features[i].split("=")[1]);
+					}
+				}
+			}
 		}
 	}
 
@@ -106,8 +121,20 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 		return pixelTolerance;
 	}
 	
-	public void setLayersToExclude(String [] layerIds) {
+	/**
+	 * Set the layers that should be excluded from the query.
+	 * @param layerIds list of layerIds
+	 */
+	public void setLayersToExclude(String[] layerIds) {
 		this.layersToExclude = layerIds;
 		listener.setLayersToExclude(layerIds);
+	}
+
+	/**
+	 * @param featuresListLabels the featuresListLabels to set
+	 */
+	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+		this.featuresListLabels = featuresListLabels;
+		listener.setFeaturesListLabels(featuresListLabels);
 	}
 }

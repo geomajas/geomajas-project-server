@@ -12,7 +12,7 @@
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +57,7 @@ import com.smartgwt.client.widgets.Window;
  * @author An Buyle
  * @author Oliver May
  * @author Kristof Heirwegh
+ * @author Wout Swartenbroekx
  */
 public class MultiLayerFeatureInfoListener extends AbstractListener {
 
@@ -72,7 +73,9 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	 */
 	private int pixelTolerance = FitSetting.featureInfoPixelTolerance;
 	
-	private List<String> layersToExclude = (List<String>) new ArrayList<String>();
+	private List<String> layersToExclude = new ArrayList<String>();
+	
+	private HashMap<String, String> featuresListLabels;
 
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
@@ -93,7 +96,9 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 
 	public void setLayersToExclude(String[] layerIds) {
 		this.layersToExclude.clear();
-		Collections.addAll(this.layersToExclude, layerIds);
+		for (String layerId : layerIds) {
+			this.layersToExclude.add(layerId);
+		}
 	}
 
 	public void onMouseDown(ListenerEvent event) {
@@ -180,7 +185,8 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
 			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
-				Layer<?> layer = mapWidget.getMapModel().getLayer(featureMap.keySet().iterator().next());
+				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel().
+							getLayer(featureMap.keySet().iterator().next()));
 				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
 					Feature feature;
@@ -198,7 +204,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 					Notify.error(messages.multiLayerFeatureInfoLayerNotFound());
 				}
 			} else {
-				Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
+				Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap, featuresListLabels);
 				window.setPageTop(mapWidget.getAbsoluteTop() + 10);
 				window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
 				window.draw();
@@ -248,5 +254,12 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	 */
 	public boolean isIncludeRasterLayers() {
 		return includeRasterLayers;
+	}
+
+	/**
+	 * @param featuresListLabels the featuresListLabels to set
+	 */
+	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+		this.featuresListLabels = featuresListLabels;
 	}
 }
