@@ -16,11 +16,6 @@
 	<!-- Inherited GWT modules: -->
 	<inherits name="org.geomajas.widget.utility.gwt.example.WidgetUtilityExample" />
 
-	<!-- Inherited themes: -->
-	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
-	<inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/>
-	<inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources"/>
-
 	<!-- @extract-skip-start -->
 
 	<!-- add required languages

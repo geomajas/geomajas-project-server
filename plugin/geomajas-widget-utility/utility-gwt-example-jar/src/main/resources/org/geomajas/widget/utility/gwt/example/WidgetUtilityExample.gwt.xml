@@ -14,5 +14,10 @@
 	<inherits name="org.geomajas.plugin.geocoder.Geocoder" />
 	<inherits name="org.geomajas.widget.utility.gwt.GwtUtilityWidgets" />
 
+	<!-- Inherited themes: -->
+	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
+	<inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/>
+	<inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources"/>
+
 	<entry-point class="org.geomajas.widget.utility.gwt.example.client.WidgetUtilityExample"/>
 </module>
