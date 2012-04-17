@@ -91,6 +91,7 @@ public final class Log {
 			while (null != cause && ++count <= STACK_TRACE_CAUSE_LIMIT) {
 				sb.append("\ncaused by ");
 				addMessageAndStackTrace(sb, cause);
+				cause = cause.getCause();
 			}
 		}
 		return sb.toString();
