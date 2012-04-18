@@ -54,6 +54,8 @@ public final class ViewPortImpl implements ViewPort {
 	private double scale;
 
 	private Coordinate position;
+	
+	private boolean initialized;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -95,6 +97,7 @@ public final class ViewPortImpl implements ViewPort {
 			zoomStrategy = new FreeForAllZoomStrategy(mapInfo, maxBounds);
 		}
 		zoomStrategy.setMapSize(mapWidth, mapHeight);
+		initialized = true;
 	}
 
 	public Bbox getMaximumBounds() {
@@ -336,6 +339,9 @@ public final class ViewPortImpl implements ViewPort {
 		return null;
 	}
 
+	public boolean isInitialized() {
+		return initialized;
+	}
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------
@@ -492,4 +498,5 @@ public final class ViewPortImpl implements ViewPort {
 		}
 		return null;
 	}
+
 }

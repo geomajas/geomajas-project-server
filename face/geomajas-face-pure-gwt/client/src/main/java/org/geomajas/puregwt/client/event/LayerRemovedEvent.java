@@ -22,13 +22,20 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  */
 @Api(allMethods = true)
 public class LayerRemovedEvent extends BaseLayerEvent<MapCompositionHandler> {
+	
+	private int index;
 
-	public LayerRemovedEvent(Layer<?> layer) {
+	public LayerRemovedEvent(Layer<?> layer, int index) {
 		super(layer);
+		this.index = index;
 	}
 
 	public Type<MapCompositionHandler> getAssociatedType() {
 		return MapCompositionHandler.TYPE;
+	}
+	
+	public int getIndex() {
+		return index;
 	}
 
 	protected void dispatch(MapCompositionHandler mapCompositionHandler) {

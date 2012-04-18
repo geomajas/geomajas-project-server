@@ -281,4 +281,12 @@ public interface ViewPort {
 	 * @return The matrix that describes the requested transformation.
 	 */
 	Matrix getTranslationMatrix(RenderSpace from, RenderSpace to);
+
+	/**
+	 * Returns whether the view port is ready to be used. Mainly for internal use, normal clients should depend on map
+	 * initialization.
+	 * 
+	 * @return true if ready to be used.
+	 */
+	boolean isInitialized();
 }

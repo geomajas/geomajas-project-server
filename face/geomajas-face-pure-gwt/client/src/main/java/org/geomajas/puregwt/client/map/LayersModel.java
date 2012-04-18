@@ -47,10 +47,10 @@ public interface LayersModel {
 	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the
 	 * list is rendered on top).
 	 * 
-	 * @param layerInfo
-	 *            The layer meta-data from which to build the layer.
+	 * @param layerInfo The layer meta-data from which to build the layer.
+	 * @return the new layer.
 	 */
-	void addLayer(ClientLayerInfo layerInfo);
+	Layer<?> addLayer(ClientLayerInfo layerInfo);
 
 	/**
 	 * Remove a layer from this layers model. This will also remove the layer from the map.

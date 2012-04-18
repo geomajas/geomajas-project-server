@@ -100,28 +100,35 @@ public final class LayersModelImpl implements LayersModel {
 		}
 	}
 
-	public void addLayer(ClientLayerInfo layerInfo) {
+	public Layer<?> addLayer(ClientLayerInfo layerInfo) {
+		Layer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				Layer<ClientRasterLayerInfo> rLayer = layerFactory.createRasterLayer((ClientRasterLayerInfo) layerInfo,
+				layer = layerFactory.createRasterLayer((ClientRasterLayerInfo) layerInfo,
 						viewPort, eventBus);
-				layers.add(rLayer);
-				eventBus.fireEvent(new LayerAddedEvent(rLayer));
+				layers.add(layer);
+				eventBus.fireEvent(new LayerAddedEvent(layer));
 				break;
 			default:
-				Layer<ClientVectorLayerInfo> vLayer = layerFactory.createVectorLayer((ClientVectorLayerInfo) layerInfo,
+				layer = layerFactory.createVectorLayer((ClientVectorLayerInfo) layerInfo,
 						viewPort, eventBus);
-				layers.add(vLayer);
-				eventBus.fireEvent(new LayerAddedEvent(vLayer));
+				layers.add(layer);
+				eventBus.fireEvent(new LayerAddedEvent(layer));
 				break;
 		}
+		if (!mapInfo.getLayers().contains(layer.getLayerInfo())) {
+			mapInfo.getLayers().add(layer.getLayerInfo());
+		}
+		return layer;
 	}
 
 	public boolean removeLayer(String id) {
 		Layer<?> layer = getLayer(id);
+		int index = getLayerPosition(layer);
 		if (layer != null) {
 			layers.remove(layer);
-			eventBus.fireEvent(new LayerRemovedEvent(layer));
+			mapInfo.getLayers().remove(layer.getLayerInfo());
+			eventBus.fireEvent(new LayerRemovedEvent(layer, index));
 			return true;
 		}
 		return false;

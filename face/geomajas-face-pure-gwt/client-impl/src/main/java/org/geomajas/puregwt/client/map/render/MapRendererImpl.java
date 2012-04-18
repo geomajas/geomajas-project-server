@@ -133,12 +133,24 @@ public class MapRendererImpl implements MapRenderer {
 			});
 		}
 		layerRenderers.put(layer, layerRenderer);
+		if (viewPort.isInitialized()) {
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
+		}
 	}
 
 	public void onLayerRemoved(LayerRemovedEvent event) {
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
+			MapScalesRenderer layerRenderer = layerRenderers.get(layer);
+			layerRenderer.cancel();
+			layerRenderer.clear();
 			layerRenderers.remove(layer);
+			if (event.getIndex() < htmlContainer.getChildCount()) {
+				HtmlObject layerContainer = htmlContainer.getChild(event.getIndex());				
+				if (layerContainer != null) {
+					htmlContainer.remove(layerContainer);
+				}
+			}
 		}
 	}
 
