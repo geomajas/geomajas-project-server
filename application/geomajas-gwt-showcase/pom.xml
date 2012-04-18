@@ -506,7 +506,6 @@
 
 	<properties>
 		<gwt-version>2.4.0</gwt-version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 

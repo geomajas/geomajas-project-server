@@ -111,7 +111,7 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 
 			public void onClick(ClickEvent event) {
 				Image image = new Image(6000000, -3000000, 24, 24, GWT.getModuleBaseURL()
-						+ "geomajas/images/layer/city1.png");
+						+ "image/layer/city1.png");
 				container.add(image);
 			}
 		});

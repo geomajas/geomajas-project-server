@@ -13,8 +13,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-face-pure-gwt</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.7-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -27,16 +27,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${gwt-pure-face-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.9.0</version>
+				<artifactId>geomajas-plugin-puregwt-widget-core-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -56,29 +49,11 @@
 			<artifactId>xercesImpl</artifactId>
 			<version>2.9.1</version>
 		</dependency>
-	
-		<dependency>
-			<groupId>com.vividsolutions</groupId>
-			<artifactId>jts</artifactId>
-			<version>1.11</version>
-			<exclusions>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-jetty-runner</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -91,7 +66,6 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>1.9.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -109,12 +83,10 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 
@@ -122,13 +94,13 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt-pure-face-gwt-version}</version>
+			<version>${gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt-pure-face-gwt-version}</version>
+			<version>${gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -172,6 +144,23 @@
 	<build>
 		<plugins>
 
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+						<baseResource implementation="org.mortbay.resource.ResourceCollection">
+							<!-- need both the webapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+						</baseResource>
+					</webAppConfig>
+					<reload>manual</reload>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -180,12 +169,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-pure-face-gwt-version}</version>
+						<version>${gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-pure-face-gwt-version}</version>
+						<version>${gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -215,19 +204,6 @@
 				</executions>
 			</plugin>
 
-			<!-- Run the application using "mvn jetty:run" -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.20</version>
-				<configuration>
-					<webAppConfig>
-						<contextPath>/</contextPath>
-					</webAppConfig>
-					<reload>manual</reload>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 
@@ -249,7 +225,7 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt-pure-face-gwt-version}</version>
+					<version>${gwt-version}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -339,5 +315,10 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<properties>
+		<gwt-version>2.4.0</gwt-version>
+		<gwt.compiler.skip>false</gwt.compiler.skip>
+	</properties>
 
 </project>
