@@ -27,7 +27,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${gwt-pure-face-backend-version}" />
+		<property name="backendVersion" value="${puregwt-face-backend-version}"/>
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="common-gwt" />
-					<property name="version" value="${gwt-pure-face-common-gwt-version}" />
+					<property name="version" value="${puregwt-face-common-gwt-version}"/>
 				</bean>
 			</list>
 		</property>

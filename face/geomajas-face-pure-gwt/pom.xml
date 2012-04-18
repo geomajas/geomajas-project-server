@@ -56,14 +56,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${gwt-pure-face-backend-version}</version>
+				<version>${puregwt-face-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-common-gwt-all</artifactId>
-				<version>${gwt-pure-face-common-gwt-version}</version>
+				<version>${puregwt-face-common-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -115,19 +115,19 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${gwt-pure-face-gwt-version}</version>
+				<version>${puregwt-face-gwt-version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${gwt-pure-face-gwt-version}</version>
+				<version>${puregwt-face-gwt-version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${gwt-pure-face-gwt-version}</version>
+				<version>${puregwt-face-gwt-version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -169,8 +169,8 @@
 	</profiles>
 
 	<properties>
-		<gwt-pure-face-backend-version>1.10.0</gwt-pure-face-backend-version>
-		<gwt-pure-face-common-gwt-version>1.0.0</gwt-pure-face-common-gwt-version>
-		<gwt-pure-face-gwt-version>2.4.0</gwt-pure-face-gwt-version>
+		<puregwt-face-backend-version>1.10.0</puregwt-face-backend-version>
+		<puregwt-face-common-gwt-version>1.0.0</puregwt-face-common-gwt-version>
+		<puregwt-face-gwt-version>2.4.0</puregwt-face-gwt-version>
 	</properties>
 </project>
