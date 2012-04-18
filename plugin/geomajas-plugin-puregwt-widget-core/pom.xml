@@ -34,56 +34,38 @@
 		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-puregwt-widget-core</url>
 	</scm>
 
-	<developers>
-		<developer>
-			<id>pieterdg</id>
-			<name>Pieter De Graef</name>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-	</developers>
-
 	<modules>
 		<module>puregwt-widget-core</module>
 		<module>documentation</module>
 	</modules>
-
-	<properties>
-		<geomajas-puregwt-widget-backend-version>1.10.0</geomajas-puregwt-widget-backend-version>
-		<geomajas-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-puregwt-face-version>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${geomajas-puregwt-widget-backend-version}</version>
+				<version>${widget-puregwt-core-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-pure-gwt</artifactId>
-				<version>${geomajas-puregwt-face-version}</version>
+				<version>${widget-puregwt-core-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -115,4 +97,10 @@
 			</activation>
 		</profile>
 	</profiles>
+
+	<properties>
+		<widget-puregwt-core-backend-version>1.10.0</widget-puregwt-core-backend-version>
+		<widget-puregwt-core-puregwt-face-version>1.0.0-SNAPSHOT</widget-puregwt-core-puregwt-face-version>
+	</properties>
+
 </project>
