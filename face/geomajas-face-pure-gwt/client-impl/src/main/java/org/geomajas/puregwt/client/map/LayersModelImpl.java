@@ -124,8 +124,8 @@ public final class LayersModelImpl implements LayersModel {
 
 	public boolean removeLayer(String id) {
 		Layer<?> layer = getLayer(id);
-		int index = getLayerPosition(layer);
 		if (layer != null) {
+			int index = getLayerPosition(layer);
 			layers.remove(layer);
 			mapInfo.getLayers().remove(layer.getLayerInfo());
 			eventBus.fireEvent(new LayerRemovedEvent(layer, index));
