@@ -51,7 +51,7 @@ import com.google.web.bindery.event.shared.EventBus;
 public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	private CommandService commandService;
-	
+
 	private HtmlImageFactory htmlImageFactory;
 
 	private EventBus eventBus;
@@ -206,7 +206,6 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 		image.setOpacity(rasterLayer.getOpacity());
 		container.add(image);
 	}
-
 
 	/**
 	 * Counts the number of images that are still inbound. If all images are effectively rendered, we call
