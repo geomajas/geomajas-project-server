@@ -113,8 +113,8 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 		if (deferred != null) {
 			deferred.cancel();
 			deferred = null;
+			currentTileBounds = null;
 		}
-		currentTileBounds = null;
 	}
 
 	/** {@inheritDoc} */
