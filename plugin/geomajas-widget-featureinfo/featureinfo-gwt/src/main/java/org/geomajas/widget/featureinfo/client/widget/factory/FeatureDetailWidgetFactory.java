@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.util.Log;
@@ -28,11 +29,12 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 /**
- * With FeatureDetailWidgetFactory you can get FeatureDetail widgets in a
- * general manner. The effective type used depends on configuration.
+ * With FeatureDetailWidgetFactory you can get FeatureDetail widgets in a general manner. 
+ * The effective type used depends on configuration.
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
@@ -41,11 +43,14 @@ public final class FeatureDetailWidgetFactory {
 
 	private static boolean selectOnZoom = true;
 
+	private static FeatureDetailWidgetBuilder defaultVectorFeatureDetailWidgetBuilder;
+	private static FeatureDetailWidgetBuilder defaultRasterFeatureDetailWidgetBuilder;
+	
 	private FeatureDetailWidgetFactory() {
 		// utility class, hide constructor
 	}
 
-	public static Window createFeatureDetailWindow(Feature feature, Layer layer, boolean editingAllowed) {
+	public static Window createFeatureDetailWindow(Feature feature, Layer<?> layer, boolean editingAllowed) {
 		FeatureDetailWidgetBuilder customBuilder = getCustomBuilder(layer);
 		if (customBuilder != null) {
 			Window w = customBuilder.createFeatureDetailWindow(feature, editingAllowed);
@@ -69,7 +74,7 @@ public final class FeatureDetailWidgetFactory {
 	 * @param editingAllowed
 	 * @return
 	 */
-	public static Window createDefaultFeatureDetailWindow(Feature feature, Layer layer, boolean editingAllowed) {
+	public static Window createDefaultFeatureDetailWindow(Feature feature, Layer<?> layer, boolean editingAllowed) {
 		if (layer instanceof VectorLayer) {
 			FeatureAttributeWindow w = new FeatureAttributeWindow(feature, editingAllowed);
 			customize(w, feature);
@@ -92,9 +97,49 @@ public final class FeatureDetailWidgetFactory {
 		FeatureDetailWidgetFactory.selectOnZoom = selectOnZoom;
 	}
 
+	/**
+	 * The default VectorFeatureDetailWidgetBuilder.
+	 * 
+	 * @return the default FeatureDetailWidgetBuilder, can be <code>null</code>.
+	 */
+	public static FeatureDetailWidgetBuilder getDefaultVectorFeatureDetailWidgetBuilder() {
+		return defaultVectorFeatureDetailWidgetBuilder;
+	}
+
+	/**
+	 * Set the (custom) default FeatureDetailWidgetBuilder to be used if there is no builder configured in the layer.
+	 * 
+	 * @param defaultFeatureDetailWidgetBuilder can be <code>null</code>, in which case the Geomajas default will be
+	 *        used.
+	 */
+	public static void setDefaultVectorFeatureDetailWidgetBuilder(FeatureDetailWidgetBuilder 
+			defaultFeatureDetailWidgetBuilder) {
+		FeatureDetailWidgetFactory.defaultVectorFeatureDetailWidgetBuilder = defaultFeatureDetailWidgetBuilder;
+	}
+
+	/**
+	 * The default RasterFeatureDetailWidgetBuilder.
+	 * 
+	 * @return the default FeatureDetailWidgetBuilder, can be <code>null</code>.
+	 */
+	public static FeatureDetailWidgetBuilder getDefaultRasterFeatureDetailWidgetBuilder() {
+		return defaultRasterFeatureDetailWidgetBuilder;
+	}
+	
+	/**
+	 * Set the (custom) default FeatureDetailWidgetBuilder to be used if there is no builder configured in the layer.
+	 * 
+	 * @param defaultFeatureDetailWidgetBuilder can be <code>null</code>, in which case the Geomajas default will be
+	 *        used.
+	 */
+	public static void setDefaultRasterFeatureDetailWidgetBuilder(
+			FeatureDetailWidgetBuilder defaultRasterFeatureDetailWidgetBuilder) {
+		FeatureDetailWidgetFactory.defaultRasterFeatureDetailWidgetBuilder = defaultRasterFeatureDetailWidgetBuilder;
+	}
+
 	// ----------------------------------------------------------
 
-	private static FeatureDetailWidgetBuilder getCustomBuilder(Layer layer) {
+	private static FeatureDetailWidgetBuilder getCustomBuilder(Layer<?> layer) {
 		FeatureDetailWidgetBuilder b = null;
 		try {
 			if (layer != null) {
@@ -116,6 +161,13 @@ public final class FeatureDetailWidgetFactory {
 			}
 		} catch (Exception e) { // NOSONAR
 			Log.logError("Error getting custom detail widget: " + e.getMessage());
+		}
+		if (b == null) {
+			if (layer instanceof VectorLayer && defaultVectorFeatureDetailWidgetBuilder != null) {
+				b = defaultVectorFeatureDetailWidgetBuilder;
+			} else if (layer instanceof RasterLayer && defaultRasterFeatureDetailWidgetBuilder != null) {
+				b = defaultRasterFeatureDetailWidgetBuilder;
+			}
 		}
 		return b;
 	}
@@ -143,8 +195,8 @@ public final class FeatureDetailWidgetFactory {
 	}
 
 	/** Definition of the zoom button that zooms to the feature on the map. */
-	private static class SelectingZoomButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler 
-	{
+	private static class SelectingZoomButton extends IButton implements ClickHandler {
+
 		private Feature feature;
 
 		public SelectingZoomButton(Feature feature) {
