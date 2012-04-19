@@ -12,7 +12,6 @@
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	
 	private List<String> layersToExclude = new ArrayList<String>();
 	
-	private HashMap<String, String> featuresListLabels;
+	private Map<String, String> featuresListLabels;
 
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
@@ -259,7 +258,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	/**
 	 * @param featuresListLabels the featuresListLabels to set
 	 */
-	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+	public void setFeaturesListLabels(Map<String, String> featuresListLabels) {
 		this.featuresListLabels = featuresListLabels;
 	}
 }

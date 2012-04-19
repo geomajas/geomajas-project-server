@@ -69,7 +69,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private MapWidget mapWidget;
 
-	private HashMap<String, String> featuresListLabels;
+	private Map<String, String> featuresListLabels;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -283,7 +283,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 * @param featuresListLabels
 	 *            the featuresListLabels to set
 	 */
-	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+	public void setFeaturesListLabels(Map<String, String> featuresListLabels) {
 		this.featuresListLabels = featuresListLabels;
 	}
 }

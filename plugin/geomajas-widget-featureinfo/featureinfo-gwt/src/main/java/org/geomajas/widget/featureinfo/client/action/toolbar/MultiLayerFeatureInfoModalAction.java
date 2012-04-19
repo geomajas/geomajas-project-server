@@ -11,6 +11,7 @@
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
@@ -42,7 +43,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	
 	private String[] layersToExclude = new String[0];
 	
-	private HashMap<String, String> featuresListLabels;
+	private Map<String, String> featuresListLabels = new HashMap<String, String>();
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 

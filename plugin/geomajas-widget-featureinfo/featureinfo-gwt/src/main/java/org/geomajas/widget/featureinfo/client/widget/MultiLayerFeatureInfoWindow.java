@@ -11,7 +11,6 @@
 
 package org.geomajas.widget.featureinfo.client.widget;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +65,7 @@ public class MultiLayerFeatureInfoWindow extends DockableWindow {
 	 * to be used as shown list entry value
 	 */
 	public MultiLayerFeatureInfoWindow(MapWidget mapWidget,	Map<String, 
-			List<org.geomajas.layer.feature.Feature>> featureMap, HashMap<String, String> featuresListLabels) {
+			List<org.geomajas.layer.feature.Feature>> featureMap, Map<String, String> featuresListLabels) {
 		super();
 		this.mapWidget = mapWidget;
 		buildWidget();
@@ -74,7 +73,7 @@ public class MultiLayerFeatureInfoWindow extends DockableWindow {
 		setFeatureMap(featureMap);
 	}
 
-	private void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+	private void setFeaturesListLabels(Map<String, String> featuresListLabels) {
 		featuresList.setFeaturesListLabels(featuresListLabels);
 	}
 	private void setFeatureMap(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
