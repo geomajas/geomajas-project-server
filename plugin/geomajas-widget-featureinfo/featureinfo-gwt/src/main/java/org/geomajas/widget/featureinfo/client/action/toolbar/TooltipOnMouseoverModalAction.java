@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * Show a tooltip with the labels of features under mousepointer.
  * 
  * @author Kristof Heirwegh
- * 
+ * @author Wout Swartenbroekx
  */
 public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements ConfigurableAction {
 
@@ -58,10 +58,26 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 		if ("minimalMoveDistance".equals(key)) {
 			setMinimalMoveDistance(Integer.parseInt(value));
 		}
+		if ("tooltipUseFeatureDetail".equals(key)) {
+			setTooltipUseFeatureDetail(Boolean.parseBoolean(value));
+		}
+		if ("layersToExclude".equals(key)) {
+			String[] layersToExcl = new String [0];
+			if (null != value) {
+				layersToExcl = value.split(",");
+				for (int i = 0; i < layersToExcl.length ; i++) {
+					layersToExcl[i] = layersToExcl[i].trim();
+				}
+			}
+			setLayersToExclude(layersToExcl);
+		}
+		if ("tooltipMaxLabelCount".equals(key)) {
+			setTooltipMaxLabelCount(Integer.parseInt(value));
+		}
 	}
 
 	/**
-	 * Set the minimal distence the mouse must move before a new mouse over request is triggered.
+	 * Set the minimal distance the mouse must move before a new mouse over request is triggered.
 	 * @param distance the minimal distance.
 	 */
 	private void setMinimalMoveDistance(int distance) {
@@ -69,7 +85,7 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 	}
 
 	/**
-	 * Set if emtry results should be displayed as "no results found" or be omitted.
+	 * Set if empty results should be displayed as "no results found" or be omitted.
 	 * @param show true if empty results should be shown.
 	 */
 	private void setShowEmptyResult(boolean show) {
@@ -83,5 +99,29 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 	 */
 	public void setPixelTolerance(int pixelTolerance) {
 		listener.setPixelTolerance(pixelTolerance);
+	}
+	
+	/**
+	 * Set the maximum amount of features for which to draw all attributes
+	 * @param tooltipMaxLabelCount
+	 */
+	private void setTooltipMaxLabelCount(int tooltipMaxLabelCount) {
+		listener.setTooltipMaxLabelCount(tooltipMaxLabelCount);
+	}
+
+	/**
+	 * Set which layers not to be used for composing the tooltip
+	 * @param layerIds
+	 */
+	private void setLayersToExclude(String[] layerIds) {
+		listener.setLayersToExclude(layerIds);
+		
+	}
+	/**
+	 * Set true to compose the tooltip of feature details instead of label
+	 * @param useFeatureDetail
+	 */
+	private void setTooltipUseFeatureDetail(boolean useFeatureDetail) {
+		listener.setTooltipUseFeatureDetail(useFeatureDetail);
 	}
 }

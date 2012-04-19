@@ -11,11 +11,15 @@
 
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -29,6 +33,7 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.util.FitSetting;
@@ -43,7 +48,7 @@ import com.smartgwt.client.widgets.Img;
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
- * 
+ * @author Wout Swartenbroekx
  */
 public class TooltipOnMouseoverListener extends AbstractListener {
 
@@ -62,6 +67,8 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private Timer timer;
 	
 	private MapWidget mapWidget;
+	private List<String> layersToExclude = new ArrayList<String>();
+	private boolean useFeatureDetail;
 
 	private static final String CSS = "<style>.tblcLayerLabel {font-size: 0.9em; font-weight: bold;} "
 			+ ".tblcFeatureLabelList {margin: 0; padding-left: 20px;} "
@@ -168,6 +175,97 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private void setTooltipData(Coordinate coordUsedForRetrieval,
 			Map<String, List<Feature>> featureMap) {
+		if (useFeatureDetail) {
+			setDetailTooltipData(coordUsedForRetrieval, featureMap);
+		} else {
+			setDefaultTooltipData(coordUsedForRetrieval, featureMap);
+		}
+	}
+	
+	private void setDetailTooltipData(Coordinate coordUsedForRetrieval, Map<String, List<Feature>> featureMap) {
+		if (coordUsedForRetrieval.equals(worldPosition) && tooltip != null) {
+			StringBuilderImpl sb = new StringBuilderImpl.ImplStringAppend();
+			sb.append(CSS);
+			int widest = 10;
+			int count = 0;
+
+			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+				if (featureMap.containsKey(layer.getId()) && useLayer(layer.getId())) {
+					List<Feature> features = featureMap.get(layer.getId());
+					if (features.size() > 0) {
+						for (Feature feature : features) {
+							if (count < maxLabelCount) {
+								String featureLabel = layer.getLabel() + " " + feature.getId();
+								widest = updateTooltipSize(widest, featureLabel);
+								writeLayerStart(sb, featureLabel);
+								for (Entry<String, Attribute> entry : feature.getAttributes().entrySet()) {
+									if (isIdentifying(entry.getKey(), layer)) {
+										String label = entry.getKey().toString() + ": " + entry.getValue().toString();
+										writeFeature(sb, label);
+										widest = updateTooltipSize(widest, label);
+									}
+								}
+								writeLayerEnd(sb);
+								count++;
+							}
+						}
+					}
+				}
+			}
+
+			int left = tooltip.getLeft();
+			int top = tooltip.getTop();
+			destroyTooltip();
+
+			if (count > maxLabelCount) {
+				writeTooMany(sb, count - maxLabelCount);
+			} else if (count == 0 && showEmptyResults) {
+				writeNone(sb);
+			} else if (count == 0) {
+				return;
+			}
+
+			Canvas content = new Canvas();
+			content.setContents(sb.toString());
+			int width = (int) (widest * 4.8) + 40;
+			if (width < 150) {
+				width = 150;
+			}
+			content.setWidth(width);
+			content.setAutoHeight();
+			content.setMargin(5);
+			createTooltip(left, top, content);
+		} // else - mouse moved between request and data retrieval
+	}
+	
+	private boolean isIdentifying(String key, Layer layer) {
+		if (layer instanceof VectorLayer) {
+			ClientVectorLayerInfo c = (ClientVectorLayerInfo) layer.getLayerInfo();
+			for (AttributeInfo a : c.getFeatureInfo().getAttributes()) {
+				if (a.getName().equalsIgnoreCase(key)) {
+					return a.isIdentifying();
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean useLayer(String id) {
+		if (layersToExclude.contains(id)) {
+			return false;
+		}
+		return true;
+	}
+
+	protected int updateTooltipSize(int widest, String label) {
+		int size = getLabelSize(label);								
+		if (widest < size) {
+			widest = size;
+		}
+		return widest;
+	}
+	
+	private void setDefaultTooltipData(Coordinate coordUsedForRetrieval, Map<String, List<Feature>> featureMap) {
 		if (coordUsedForRetrieval.equals(worldPosition) && tooltip != null) {
 			StringBuilderImpl sb = new StringBuilderImpl.ImplStringAppend();
 			sb.append(CSS);
@@ -175,7 +273,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			int count = 0;
 			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
-				if (featureMap.containsKey(layer.getId())) {
+				if (featureMap.containsKey(layer.getId()) && useLayer(layer.getId())) {
 					List<Feature> features = featureMap.get(layer.getId());
 					if (features.size() > 0) {
 						if (count < maxLabelCount) {
@@ -380,11 +478,41 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	}
 
 	/**
-	 * Set the minimal distence the mouse must move before a new mouse over request is triggered.
+	 * Set the minimal distance the mouse must move before a new mouse over request is triggered.
 	 * @param distance the minimal distance.
 	 */
 	public void setMinimalMoveDistance(int distance) {
 		this.minPixelMove = distance;
 	}
 	
+	/**
+	 * Set if tooltip should be filled with feature details instead of label.
+	 * @param detailedLayers true to use details of object, false to use default labels
+	 */
+	public void setTooltipUseFeatureDetail(boolean useFeatureDetail) {
+		this.useFeatureDetail = useFeatureDetail;
+	}
+
+	/**
+	 * Set the list of Layer IDs for layers which should not be used to draw the detail tooltip.
+	 * @param layerIds list of Layer IDs
+	 */
+	public void setLayersToExclude(String[] layerIds) {
+		this.layersToExclude.clear();
+		for (String layerId : layerIds) {
+			this.layersToExclude.add(layerId);
+		}
+	}
+
+	/**
+	 * Set the amount of features for which detailed information should be shown.
+	 * @param maxLabelCount the number of features.
+	 */
+	public void setTooltipMaxLabelCount(int maxLabelCount) {
+		this.maxLabelCount = maxLabelCount;
+	}
+	
+	public int getMaxLabelCount() {
+		return this.maxLabelCount;
+	}
 }
