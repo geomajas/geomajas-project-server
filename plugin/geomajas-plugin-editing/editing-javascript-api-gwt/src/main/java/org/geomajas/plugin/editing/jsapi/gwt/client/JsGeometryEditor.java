@@ -15,13 +15,13 @@ import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
 import org.geomajas.plugin.editing.gwt.client.snap.SnapRuleUtil;
 import org.geomajas.plugin.editing.jsapi.client.merge.JsGeometryMergeService;
 import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
 import org.geomajas.plugin.editing.jsapi.client.split.JsGeometrySplitService;
 import org.geomajas.plugin.jsapi.client.map.Map;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -39,7 +39,7 @@ public class JsGeometryEditor implements Exportable {
 
 	private MapImpl map;
 
-	private GeometryEditor delegate;
+	private GeometryEditorImpl delegate;
 
 	private JsGeometryEditService editingService;
 
@@ -54,9 +54,9 @@ public class JsGeometryEditor implements Exportable {
 	public void setMap(Map map) {
 		this.map = (MapImpl) map;
 		mapWidget = this.map.getMapWidget();
-		delegate = new GeometryEditor(mapWidget);
-		editingService = new JsGeometryEditService(delegate.getService());
-		splitService = new JsGeometrySplitService(delegate.getService());
+		delegate = new GeometryEditorImpl(mapWidget);
+		editingService = new JsGeometryEditService(delegate.getEditService());
+		splitService = new JsGeometrySplitService(delegate.getEditService());
 		mergeService = new JsGeometryMergeService();
 	}
 
