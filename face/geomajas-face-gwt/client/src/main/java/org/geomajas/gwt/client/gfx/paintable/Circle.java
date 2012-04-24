@@ -18,7 +18,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
  * <p>
- * A circle that can be drawn onto a <code>GraphicsContext</code>.
+ * A circle that can be drawn onto a {@link org.geomajas.gwt.client.gfx.GraphicsContext}.
  * </p>
  * 
  * @author Pieter De Graef
@@ -32,7 +32,7 @@ public class Circle extends AbstractWorldPaintable {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * constructor setting the id.
+	 * Constructor setting the id.
 	 */
 	public Circle(String id) {
 		super(id);
@@ -44,7 +44,7 @@ public class Circle extends AbstractWorldPaintable {
 
 	/**
 	 * Everything that can be drawn on the map, must be accessible by a PainterVisitor!
-	 * 
+	 *
 	 * @param visitor
 	 *            A PainterVisitor object. Comes from a MapWidget.
 	 * @param bounds
@@ -60,10 +60,20 @@ public class Circle extends AbstractWorldPaintable {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Get circle position in screen space.
+	 *
+	 * @return circle position
+	 */
 	public Coordinate getPosition() {
 		return ((Bbox) getLocation()).getCenterPoint();
 	}
 
+	/**
+	 * Set circle position in world space.
+	 *
+	 * @param position circle center
+	 */
 	public void setPosition(Coordinate position) {
 		if (getOriginalLocation() != null) {
 			Bbox oldBounds = (Bbox) getOriginalLocation();
@@ -75,6 +85,11 @@ public class Circle extends AbstractWorldPaintable {
 		}
 	}
 
+	/**
+	 * Circle radius in pixel coordinates.
+	 *
+	 * @return circle radius in pixels
+	 */
 	public float getRadius() {
 		if (getLocation() != null) {
 			Bbox oldBounds = (Bbox) getLocation();
@@ -84,6 +99,11 @@ public class Circle extends AbstractWorldPaintable {
 		}
 	}
 
+	/**
+	 * Set circle radius in world coordinates.
+	 *
+	 * @param radius circle radius in world units
+	 */
 	public void setRadius(float radius) {
 		if (getOriginalLocation() != null) {
 			Bbox oldBounds = (Bbox) getOriginalLocation();
@@ -97,6 +117,11 @@ public class Circle extends AbstractWorldPaintable {
 		}
 	}
 
+	/**
+	 * Get circle style.
+	 *
+	 * @return circle style
+	 */
 	public ShapeStyle getStyle() {
 		return style;
 	}

@@ -20,11 +20,11 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * A <code>Paintable</code> that contains other <code>Paintables</code>,
- * allowing you to create complex <code>Paintable</code>s (composite like pattern).
+ * A {@link Paintable} that contains other {@link Paintable}s,
+ * allowing you to create complex {@link Paintable}s (composite like pattern).
  *
  * <p>Children are visited (painted) in the order they were added.
- * <p><code>Paintables</code> are not aware of parents, so all positioning is absolute.
+ * <p>{@link Paintable}s are not aware of parents, so all positioning is absolute.
  *
  * @author Kristof Heirwegh
  */
@@ -69,28 +69,34 @@ public class Composite implements PaintableGroup {
 	}
 
 	/**
-	 * Adds a <code>Paintable</code> to this composite.
+	 * Add a {@link Paintable} to this composite.
 	 *
 	 * @param p
 	 *            the <code>Paintable</code> to add to this composite
 	 */
 	public void addChild(Paintable p) {
 		if (null == p) {
-			throw new IllegalArgumentException("Please provide a paintable");
+			throw new IllegalArgumentException("Please provide a paintable.");
 		}
 		if (this.equals(p)) {
-			throw new IllegalArgumentException("Cannot add itself as a child");
+			throw new IllegalArgumentException("Cannot add itself as a child.");
 		}
 		if (children.contains(p)) {
 			return;
 		} // nothing changes, no exception
 		if (p instanceof Composite && ((Composite) p).contains(this)) {
-			throw new IllegalArgumentException("Cannot add this Paintable (circular reference)");
+			throw new IllegalArgumentException("Cannot add this Paintable (circular reference).");
 		}
 
 		children.add(p);
 	}
 
+	/**
+	 * Remove child {@link Paintable} object.
+	 *
+	 * @param p paintable to remove
+	 * @return true when object was removed (false when not found as child)
+	 */
 	public boolean removeChild(Paintable p) {
 		return children.remove(p);
 	}
@@ -100,7 +106,7 @@ public class Composite implements PaintableGroup {
 	 *
 	 * @param p
 	 *            Paintable to search for
-	 * @return
+	 * @return true when the composite contains the passed object
 	 */
 	public boolean contains(Paintable p) {
 		if (children.contains(p)) {

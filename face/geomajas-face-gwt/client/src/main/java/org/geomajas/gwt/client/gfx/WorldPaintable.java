@@ -45,6 +45,12 @@ public interface WorldPaintable extends Paintable {
 	 *            The map's transformer.
 	 */
 	void transform(WorldViewTransformer transformer);
-	
+
+	/**
+	 * Returns a preferably unique ID that identifies the object even after it is painted. This can later be used to
+	 * update or delete it from the {@link GraphicsContext}.
+	 *
+	 * @return object id
+	 */
 	String getId();
 }

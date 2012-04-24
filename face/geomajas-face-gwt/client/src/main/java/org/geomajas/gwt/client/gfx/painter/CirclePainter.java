@@ -49,7 +49,7 @@ public class CirclePainter implements Painter {
 	public void paint(Paintable paintable, Object group, MapContext context) {
 		Circle circle = (Circle) paintable;
 		context.getVectorContext().drawCircle(group, circle.getId(), circle.getPosition(), circle.getRadius(),
-				(ShapeStyle) circle.getStyle());
+				circle.getStyle());
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class CirclePainter implements Painter {
 	 *            The object to be painted.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, Object group,  MapContext context) {

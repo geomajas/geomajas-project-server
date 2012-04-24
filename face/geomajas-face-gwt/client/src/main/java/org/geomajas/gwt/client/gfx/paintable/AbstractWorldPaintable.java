@@ -57,15 +57,12 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 	// WorldPaintable implementation:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Returns a preferably unique ID that identifies the object even after it is painted. This can later be used to
-	 * update or delete it from the <code>GraphicsContext</code>.
-	 */
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 
-	/** Get the object that represents the original location (usually a coordinate, bbox or geometry). */
+	/** {@inheritDoc} */
 	public Object getOriginalLocation() {
 		return original;
 	}
@@ -75,8 +72,7 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 	 * using the pan group. Supports only {@link Coordinate}, {@link Bbox} and {@link Geometry} classes as location
 	 * object.
 	 * 
-	 * @param transformer
-	 *            The map's transformer.
+	 * @param transformer The map's transformer.
 	 */
 	public void transform(WorldViewTransformer transformer) {
 		if (original != null) {
@@ -90,13 +86,21 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 		}
 	}
 
-	/** Set a new original location object. Also resets the transformed location to null. */
+	/**
+	 * Set a new original location object. Also resets the transformed location to null.
+	 *
+	 * @param location location
+	 */
 	protected void setOriginalLocation(Object location) {
 		original = location;
 		transformed = null;
 	}
 
-	/** Return the general location object. Preferably the transformed one, but if that is null, return the original. */
+	/**
+	 * Return the general location object. Preferably the transformed one, but if that is null, return the original.
+	 *
+	 * @return location
+	 */
 	protected Object getLocation() {
 		if (transformed != null) {
 			return transformed;
