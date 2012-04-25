@@ -44,6 +44,10 @@ public interface SampleMessages extends Messages {
 
 	String serverErrorButton();
 
+	String pipelineConfigTitle();
+
+	String pipelineConfigDescription();
+
 	// OpenStreetMap sample:
 
 	String osmTitle();

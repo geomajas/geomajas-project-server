@@ -34,6 +34,7 @@ import org.geomajas.gwt.example.client.sample.editing.EditMultiLineLayerSample;
 import org.geomajas.gwt.example.client.sample.editing.EditMultiPolygonLayerSample;
 import org.geomajas.gwt.example.client.sample.editing.EditPointLayerSample;
 import org.geomajas.gwt.example.client.sample.editing.EditPolygonLayerSample;
+import org.geomajas.gwt.example.client.sample.general.PipelineConfigSample;
 import org.geomajas.gwt.example.client.sample.general.ServerErrorSample;
 import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 import org.geomajas.gwt.example.client.sample.layer.OpenStreetMapSample;
@@ -244,12 +245,15 @@ public class GwtFaceExample implements EntryPoint {
 				WidgetLayout.iconTools, CustomToolbarSample.TITLE, "ToolbarAndControllers",
 				CustomToolbarSample.FACTORY));
 
-		// MapWidget samples:
+		// General samples:
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupGeneral(),
 				"[ISOMORPHIC]/geomajas/osgeo/settings.png", "General", "topLevel"));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.serverErrorTitle(),
 				"[ISOMORPHIC]/geomajas/osgeo/help-contents.png", ServerErrorSample.TITLE, "General",
 				ServerErrorSample.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.pipelineConfigTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/help-contents.png", PipelineConfigSample.TITLE, "General",
+				PipelineConfigSample.FACTORY));
 	}
 
 }
