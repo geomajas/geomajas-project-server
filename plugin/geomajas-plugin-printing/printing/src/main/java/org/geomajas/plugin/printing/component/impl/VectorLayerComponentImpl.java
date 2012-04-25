@@ -130,8 +130,8 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 			bbox = createBbox();
 			Collections.addAll(selectedFeatures, getSelectedFeatureIds());
 			// Fetch features
+			ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 			try {
-				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 
 				// If MapCRS does not equal LayerCRS then instantiate
 				// the CrsTransform which will be used for transforming the bbox
@@ -171,7 +171,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 			}
 
 			for (InternalFeature f : orderedFeatures) {
-				drawFeature(context, f);
+				drawFeature(context, map, f);
 			}
 			if (isLabelsVisible()) {
 				for (InternalFeature f : orderedFeatures) {
@@ -253,7 +253,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		return rect;
 	}
 
-	private void drawFeature(PdfContext context, InternalFeature f) {
+	private void drawFeature(PdfContext context, ClientMapInfo map, InternalFeature f) {
 		FeatureStyleInfo style = f.getStyleInfo();
 
 		// Color, transparency, dash
@@ -262,7 +262,6 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		float[] dashArray = context.getDashArray(style.getDashArray());
 
 		// check if the feature is selected
-		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 		if (selectedFeatures.contains(f.getId())) {
 			if (f.getGeometry() instanceof MultiPolygon || f.getGeometry() instanceof Polygon) {
 				style = mergeStyle(style, map.getPolygonSelectStyle());
