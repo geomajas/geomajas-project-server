@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -70,6 +71,7 @@ public class GetResourceCommand implements Command<GetResourceRequest, GetResour
 				if (process) {
 					content = process(content);
 				}
+				content = Pattern.compile("^.*@extract.*$", Pattern.MULTILINE).matcher(content).replaceAll("");
 			} else {
 				content = "*** File " + url + " not found.";
 			}
