@@ -118,8 +118,6 @@ import com.smartgwt.client.widgets.menu.Menu;
 @Api
 public class MapWidget extends VLayout {
 
-	
-	
 	// Private fields regarding internal workings:
 
 	private MapModel mapModel;
@@ -1342,5 +1340,23 @@ public class MapWidget extends VLayout {
 		public void onFeatureDeselected(FeatureDeselectedEvent event) {
 			mapWidget.render(event.getFeature(), RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
+	}
+
+	/**
+	 * Refresh a layer. This will re-render the layer with freshly fetched data.
+	 *
+	 * @param layer layer
+	 * @since 1.11.0
+	 */
+	@Api
+	public void refreshLayer(Layer<?> layer) {
+		if (layer instanceof VectorLayer) {
+			VectorLayer vLayer = (VectorLayer) layer;
+			vLayer.getFeatureStore().clear();
+		} else if (layer instanceof RasterLayer) {
+			RasterLayer rLayer = (RasterLayer) layer;
+			rLayer.getStore().clear();
+		}
+		render(layer, null, RenderStatus.ALL);
 	}
 }

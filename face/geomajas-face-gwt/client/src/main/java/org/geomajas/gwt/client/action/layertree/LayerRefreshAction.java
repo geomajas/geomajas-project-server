@@ -34,14 +34,7 @@ public class LayerRefreshAction extends LayerTreeAction {
 	}
 
 	public void onClick(Layer<?> layer) {
-		if (layer instanceof VectorLayer) {
-			VectorLayer vLayer = (VectorLayer) layer;
-			vLayer.getFeatureStore().clear();
-		} else if (layer instanceof RasterLayer) {
-			RasterLayer rLayer = (RasterLayer) layer;
-			rLayer.getStore().clear();
-		}
-		map.render(layer, null, RenderStatus.ALL);
+		map.refreshLayer(layer);
 	}
 
 	public boolean isEnabled(Layer<?> layer) {
