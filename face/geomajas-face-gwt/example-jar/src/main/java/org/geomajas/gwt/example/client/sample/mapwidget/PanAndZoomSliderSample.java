@@ -51,8 +51,7 @@ public class PanAndZoomSliderSample extends SamplePanel {
 	private static final Integer ARROW_DIA = MapAddonConstants.PAN_ARROW_DIA;
 	private static final Integer BUTTON_DIA = MapAddonConstants.buttonDia;
 	private static final Integer MARGIN = MapAddonConstants.ADDON_MARGIN;
-	private static final Integer HORIZONTAL_MIDDLE = MARGIN + BUTTON_DIA
-			+ MARGIN / 2 + 1;
+	private static final Integer HORIZONTAL_MIDDLE = MARGIN + BUTTON_DIA + MARGIN / 2 + 1;
 
 	private static final Integer SLIDER_WIDTH = 16;
 	private static final Integer SLIDER_PART_HEIGHT = 10;
@@ -161,18 +160,17 @@ public class PanAndZoomSliderSample extends SamplePanel {
 
 				// Part of the background on which the zoom slider handler can move.
 				// One zoom level is represented by one image.
-				Image backgroundPart = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
-						+ "Bg", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
-						+ "sliderbg.png", 0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
+				Image backgroundPart = ImageUtil.createRectangleImage(ZoomSlider.SLIDER+ "Bg",
+						Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderbg.png", 0, 0,
+						SLIDER_WIDTH, SLIDER_PART_HEIGHT);
 
 				// Zoom in; the top of ZoomSlider
 				Image in = ImageUtil.createSquareImage(ZOOM_IN + ICON,
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomPlus.png",
 						0, 0, SLIDER_WIDTH);
 				Image sliderTop = ImageUtil.createSquareImage(
-						ZoomSlider.SLIDER + "Top", Geomajas.getIsomorphicDir()
-								+ EXAMPLE_IMAGE_FOLDER + "sliderbgtop.png", 0, 0,
-						SLIDER_WIDTH);
+						ZoomSlider.SLIDER + "Top",
+						Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderbgtop.png", 0, 0, SLIDER_WIDTH);
 				SingleMapAddon zoomIn = new SingleMapAddon(ZOOM_IN, in, sliderTop,
 						mapWidget, new ZoomInAndOutController(mapWidget, 1.01));
 		
@@ -180,12 +178,11 @@ public class PanAndZoomSliderSample extends SamplePanel {
 				Image out = ImageUtil.createRectangleImage(ZOOM_OUT + ICON,
 						Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomMinus.png", 
 						0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
-				Image sliderBottom = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
-						+ "Bottom", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
-						+ "sliderbgbottom.png", 0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
+				Image sliderBottom = ImageUtil.createRectangleImage(ZoomSlider.SLIDER + "Bottom",
+						Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderbgbottom.png", 0, 0,
+						SLIDER_WIDTH, SLIDER_PART_HEIGHT);
 				SingleMapAddon zoomOut = new SingleMapAddon(ZOOM_OUT, out,
-						sliderBottom, mapWidget, new ZoomInAndOutController(mapWidget,
-								0.99));
+						sliderBottom, mapWidget, new ZoomInAndOutController(mapWidget, 0.99));
 		
 				// Zoom slider itself
 				ZoomSlider slider = new ZoomSlider(ZoomSlider.SLIDER, mapWidget);
