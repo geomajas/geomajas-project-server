@@ -42,6 +42,15 @@
     security in the GWT face. You should register a TokenRequestHandler to
     handle the login procedure if needed. You can read data about the current
     user when logged in.</para>
+
+    <note>
+      <para>Note that insufficient authorizations can be difficult to debug.
+      When no commands can be executed on the server, the logging on the
+      server also fails. When logging in is done using a command, execution of
+      that command needs to be allowed. Failure the configure the system to
+      have minimal authorizations will likely cause your map to be invisible
+      without any feedback.</para>
+    </note>
   </section>
 
   <section id="mapsmodel">
@@ -361,9 +370,9 @@
       <para>The <code>Geometry</code> implementations themselves do not have
       any setters methods. Instead the editing of geometries is done through a
       series of operations, all implementing the <code>
-          <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
-        </code> interface. This interface consists of only one method,
-      accepting a geometry, and returning the result as a new geometry.</para>
+      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+      </code> interface. This interface consists of only one method, accepting
+      a geometry, and returning the result as a new geometry.</para>
 
       <para>Geometries have no public constructors, so the creation of new
       geometries is done using a factory,
@@ -902,12 +911,11 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       requires your to specify an icon and a tool tip on creation.</para>
 
       <para><code>ToolbarAction</code> classes need to be registered in the
-      <code>
-          <code>ToolbarRegistry</code>
-        </code> class. This allows you to get an instance of the widget to put
-      in the tool bar. The tools which are part of the GWT face are statically
-      defined in the class. Other tools can be added (or overwritten) at
-      runtime before the map is initialised.</para>
+      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
+      get an instance of the widget to put in the tool bar. The tools which
+      are part of the GWT face are statically defined in the class. Other
+      tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable (XML
       configuration), it should implement the <code>ConfigurableAction</code>
@@ -933,12 +941,11 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       buttons.</para>
 
       <para><code>ToolbarModalAction</code> classes need to be registered in
-      the <code>
-          <code>ToolbarRegistry</code>
-        </code> class. This allows you to get an instance of the widget to put
-      in the tool bar. The tools which are always part of the GWT face are
-      statically defined in the class. Other tools can be added (or
-      overwritten) at runtime before the map is initialised.</para>
+      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
+      to get an instance of the widget to put in the tool bar. The tools which
+      are always part of the GWT face are statically defined in the class.
+      Other tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable, it should
       implement the <code>ConfigurableAction</code> interface. This contains a
@@ -1057,16 +1064,14 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
           <itemizedlist>
             <listitem>
-              <para><emphasis>
-                  <code>AbstractRectangleController</code>
-                </emphasis>: abstract controller that handles drawing a
+              <para><emphasis> <code>AbstractRectangleController</code>
+              </emphasis>: abstract controller that handles drawing a
               rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis>
-                  <code>AbstractSnappingController</code>
-                </emphasis>: abstract controller that allows snapping to be
+              <para><emphasis> <code>AbstractSnappingController</code>
+              </emphasis>: abstract controller that allows snapping to be
               enabled and disabled. When enabled, the returned points when
               asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
@@ -1077,9 +1082,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to disable the active controller, set a "null" value as
         controller:</para>
 
-        <para>
-          <programlisting>mapWidget.setController(null);</programlisting>
-        </para>
+        <para><programlisting>mapWidget.setController(null);</programlisting></para>
       </section>
 
       <section id="activeAndFallback">
@@ -1124,12 +1127,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
       <para>Beside these default addons you can create your own addons by
       combining a background image, with an icon and a
-      <code>GraphicsController</code> or a <code>ToolbarAction</code>. </para>
+      <code>GraphicsController</code> or a <code>ToolbarAction</code>.</para>
 
       <para>Before you can add your own addons however, your first need to
       disable the creation of the default addons by setting the property
-      "panButtonsEnabled" of your <code>ClientMapInfo</code> bean to false.
-      </para>
+      "panButtonsEnabled" of your <code>ClientMapInfo</code> bean to
+      false.</para>
 
       <para><programlisting>&lt;bean name="mapNoNav" class="org.geomajas.configuration.client.ClientMapInfo"&gt; 
   &lt;property name="panButtonsEnabled" value="false" /&gt; 
@@ -1169,7 +1172,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       <xi:include href="listing/ZoomSliderMapAddon.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-		<programlisting>/*
+      <programlisting>/*
  * Slider handler icon
  */
 Image sliderUnit = ImageUtil.createRectangleImage(ZoomSlider.SLIDER_UNIT + "icon", 
