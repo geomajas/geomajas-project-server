@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.searchandfilter.client.util;
 
 /**
@@ -18,5 +19,11 @@ package org.geomajas.widget.searchandfilter.client.util;
  * @author Kristof Heirwegh
  */
 public interface DataCallback<T> {
-	void execute(T result);
+
+	/**
+	 * Method to execute.
+	 *
+	 * @param data data
+	 */
+	void execute(T data);
 }

@@ -28,7 +28,6 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.searchandfilter.client.widget.search.ErrorHandler;
 import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchRequest;
 import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchResponse;
 import org.geomajas.widget.searchandfilter.command.dto.GeometryUtilsRequest;
@@ -189,7 +188,7 @@ public final class SearchCommService {
 	 *            don't need it
 	 */
 	public static void searchByCriterion(final Criterion criterion, final MapWidget mapWidget,
-			final DataCallback<Map<VectorLayer, List<Feature>>> onFinished, final ErrorHandler onError) {
+			final DataCallback<Map<VectorLayer, List<Feature>>> onFinished, final Runnable onError) {
 		FeatureSearchRequest request = new FeatureSearchRequest();
 		request.setMapCrs(mapWidget.getMapModel().getCrs());
 		request.setCriterion(criterion);
@@ -208,7 +207,7 @@ public final class SearchCommService {
 			@Override
 			public void onCommunicationException(Throwable error) {
 				if (null != onError) {
-					onError.execute();
+					onError.run();
 				} else {
 					super.onCommunicationException(error);
 				}

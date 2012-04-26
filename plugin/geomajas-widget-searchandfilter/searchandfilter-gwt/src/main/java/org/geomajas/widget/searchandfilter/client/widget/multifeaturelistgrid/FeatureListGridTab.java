@@ -23,7 +23,6 @@ import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.Notify;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.Callback;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
@@ -120,17 +119,15 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 			exportButton.addClickHandler(new ClickHandler() {
 	
 				public void onClick(ClickEvent event) {
-					if (exportCsvHandler != null) {
-						exportButton.setDisabled(true);
-						exportButton.setIcon(WidgetLayout.iconAjaxLoading);
-						exportCsvHandler.execute(layer, new Callback() {
-	
-							public void execute() {
-								exportButton.setDisabled(false);
-								exportButton.setIcon(BTN_EXPORT);
-							}
-						});
-					}
+					exportButton.setDisabled(true);
+					exportButton.setIcon(WidgetLayout.iconAjaxLoading);
+					exportCsvHandler.execute(layer, new Runnable() {
+
+						public void run() {
+							exportButton.setDisabled(false);
+							exportButton.setIcon(BTN_EXPORT);
+						}
+					});
 				}
 			});
 			toolStrip.addButton(exportButton);
@@ -153,19 +150,19 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 					
 		SortType sortType = layer.getLayerInfo().getFeatureInfo().getSortType();
 		
-		com.smartgwt.client.types.SortDirection sortDirGWT = null; 
+		com.smartgwt.client.types.SortDirection sortDirGwt;
 
 		if (SortType.DESC.equals(sortType)) {
-			sortDirGWT = com.smartgwt.client.types.SortDirection.DESCENDING;
+			sortDirGwt = com.smartgwt.client.types.SortDirection.DESCENDING;
 		} else { /* also ascending if sortType == null */
-			sortDirGWT = com.smartgwt.client.types.SortDirection.ASCENDING;					
+			sortDirGwt = com.smartgwt.client.types.SortDirection.ASCENDING;
 		}
-		this.sortDirGWT = sortDirGWT;
+		this.sortDirGWT = sortDirGwt;
 		if (null != sortFieldName) { /* if null and if sortFeatures==true, then sort on first column */
 			featureListGrid.setSortField(sortFieldName);
 			this.sortFieldName = sortFieldName;
 		}
-		featureListGrid.setSortDirection(sortDirGWT);
+		featureListGrid.setSortDirection(sortDirGwt);
 			
 		VLayout pane = new VLayout();
 		pane.setWidth100();

@@ -16,7 +16,6 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
  * Callback handler for handling geometry completion in {@link AbstractFreeDrawingController}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface GeometryDrawHandler {
 

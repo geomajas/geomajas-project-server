@@ -22,7 +22,6 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.Callback;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvRequest;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvResponse;
@@ -78,11 +77,13 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void execute(VectorLayer vlayer) {
 		execute(vlayer, null);
 	}
 
-	public void execute(final VectorLayer vectorLayer, final Callback onFinished) {
+	/** {@inheritDoc} */
+	public void execute(final VectorLayer vectorLayer, final Runnable onFinished) {
 		if (this.layer.equals(vectorLayer)) {
 			ExportToCsvRequest exportRequest = new ExportToCsvRequest();
 			exportRequest.setSearchFeatureRequest(getSearchFeatureRequest());
@@ -143,14 +144,14 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 						window.setKeepInParentRect(true);
 					}
 					if (onFinished != null) {
-						onFinished.execute();
+						onFinished.run();
 					}
 				}
 
 				@Override
 				public void onCommunicationException(Throwable error) {
 					if (onFinished != null) {
-						onFinished.execute();
+						onFinished.run();
 					}
 					super.onCommunicationException(error);
 				}
@@ -158,7 +159,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 				@Override
 				public void onCommandException(CommandResponse response) {
 					if (onFinished != null) {
-						onFinished.execute();
+						onFinished.run();
 					}
 					super.onCommandException(response);
 				}

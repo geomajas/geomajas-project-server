@@ -76,8 +76,8 @@ public class SearchController implements SearchRequestHandler {
 						fireSearchDoneEvent(searchEvent);
 						fireSearchEndEvent(searchEvent);
 					}
-				}, new ErrorHandler() {
-					public void execute() {
+				}, new Runnable() {
+					public void run() {
 						fireSearchEndEvent(searchEvent);
 						destroyWindow();
 						SC.say(messages.searchControllerFailureMessage());

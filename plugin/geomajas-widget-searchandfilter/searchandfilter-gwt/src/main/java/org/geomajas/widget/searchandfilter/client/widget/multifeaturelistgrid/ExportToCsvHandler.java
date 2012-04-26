@@ -11,15 +11,14 @@
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.widget.searchandfilter.client.util.Callback;
 
 /**
  * <p>
- * When the ExportToCsv Button is clicked in the MultiFeatureListGrid this
+ * When the ExportToCsv Button is clicked in the {@link MultiFeatureListGrid} this
  * handler will be called, with the currently active layer.
  * </p>
  * <p>
- * It is up to the handler to do the actual export as the MultiFeatureListGrid
+ * It is up to the handler to do the actual export as the {@link MultiFeatureListGrid}
  * has no knowledge of the filters or even commands that were used to retrieve
  * the features.
  * </p>
@@ -28,7 +27,18 @@ import org.geomajas.widget.searchandfilter.client.util.Callback;
  */
 public interface ExportToCsvHandler {
 
+	/**
+	 * Do export to CSV.
+	 *
+	 * @param layer layer to export
+	 */
 	void execute(VectorLayer layer);
-	void execute(VectorLayer layer, Callback onFinished);
+
+	/**
+	 * Do export to CSV.
+	 *
+	 * @param layer layer to export
+	 */
+	void execute(VectorLayer layer, Runnable onFinished);
 
 }
