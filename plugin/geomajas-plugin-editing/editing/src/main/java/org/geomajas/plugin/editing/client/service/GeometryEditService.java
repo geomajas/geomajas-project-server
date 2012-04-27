@@ -256,4 +256,18 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The geometry-index-state-change service.
 	 */
 	GeometryIndexStateService getIndexStateService();
+	
+	/**
+	 * Set boolean that determines if a user can stop editing by clicking outside the geometry that is being edited.
+	 * 
+	 * @param isClickToStop true to stop, false otherwise.
+	 */
+	void setClickToStop(boolean isClickToStop);
+	
+	/**
+	 * Get boolean that determines if a user can stop editing by clicking outside the geometry that is being edited.
+	 * 
+	 * @return isClickToStop true to stop, false otherwise.
+	 */
+	boolean isClickToStop();
 }

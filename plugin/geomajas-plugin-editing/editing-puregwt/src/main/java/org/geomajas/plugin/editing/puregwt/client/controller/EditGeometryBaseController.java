@@ -121,6 +121,9 @@ public class EditGeometryBaseController extends AbstractMapController {
 
 	public void onUp(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.IDLE) {
+			if (service.isClickToStop() && service.isStarted()) {
+				service.stop();
+			}
 			idleController.onUp(event);
 		} else if (service.getEditingState() == GeometryEditState.DRAGGING) {
 			dragController.onUp(event);
