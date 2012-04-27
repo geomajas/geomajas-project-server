@@ -78,8 +78,6 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	private boolean started;
 
-	private boolean isClickToStop;
-
 	// ------------------------------------------------------------------------
 	// Public constructors:
 	// ------------------------------------------------------------------------
