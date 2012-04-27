@@ -11,6 +11,7 @@
 package org.geomajas.plugin.editing.puregwt.client;
 
 import org.geomajas.plugin.editing.client.BaseGeometryEditor;
+import org.geomajas.plugin.editing.puregwt.client.controller.EditGeometryBaseController;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 /**
@@ -27,4 +28,18 @@ public interface GeometryEditor extends BaseGeometryEditor {
 	 * @return the map presenter
 	 */
 	MapPresenter getMapPresenter();
+
+	/**
+	 * Get the base controller that handles the editing interaction on the map.
+	 * 
+	 * @return base controller
+	 */
+	EditGeometryBaseController getBaseController();
+	
+	/**
+	 * Set the base controller that handles the editing interaction on the map.
+	 * 
+	 * @param base controller
+	 */
+	void getBaseController(EditGeometryBaseController baseController);
 }

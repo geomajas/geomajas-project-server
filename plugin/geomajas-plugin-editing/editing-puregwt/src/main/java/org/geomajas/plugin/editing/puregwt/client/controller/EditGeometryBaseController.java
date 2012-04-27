@@ -43,6 +43,8 @@ public class EditGeometryBaseController extends AbstractMapController {
 
 	private GeometryEditService service;
 
+	private boolean isClickToStop;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -121,7 +123,7 @@ public class EditGeometryBaseController extends AbstractMapController {
 
 	public void onUp(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.IDLE) {
-			if (service.isClickToStop() && service.isStarted()) {
+			if (isClickToStop() && service.isStarted()) {
 				service.stop();
 			}
 			idleController.onUp(event);
@@ -160,5 +162,23 @@ public class EditGeometryBaseController extends AbstractMapController {
 
 	public GeometryIndexInsertController getInsertController() {
 		return insertController;
+	}
+	
+	/**
+	 * Set boolean that determines if a user can stop editing by clicking outside the geometry that is being edited.
+	 * 
+	 * @param isClickToStop true to stop, false otherwise.
+	 */
+	public void setClickToStop(boolean isClickToStop) {
+		this.isClickToStop = isClickToStop;
+	}
+	
+	/**
+	 * Get boolean that determines if a user can stop editing by clicking outside the geometry that is being edited.
+	 * 
+	 * @return isClickToStop true to stop, false otherwise.
+	 */
+	public boolean isClickToStop() {
+		return isClickToStop;
 	}
 }

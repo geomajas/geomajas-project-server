@@ -311,14 +311,4 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}
-
-	/** {@inheritDoc} */
-	public void setClickToStop(boolean isClickToStop) {
-		this.isClickToStop = isClickToStop;
-	}
-
-	/** {@inheritDoc} */
-	public boolean isClickToStop() {
-		return isClickToStop;
-	}
 }

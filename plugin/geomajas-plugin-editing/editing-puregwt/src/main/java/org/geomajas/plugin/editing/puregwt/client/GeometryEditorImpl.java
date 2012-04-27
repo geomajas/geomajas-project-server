@@ -46,7 +46,7 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 
 	private final SnapService snappingService;
 
-	private final EditGeometryBaseController baseController;
+	private EditGeometryBaseController baseController;
 
 	private MapController previousController;
 
@@ -135,5 +135,13 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 	}
 
 	public void setSnapOnInsert(boolean b) {
+	}
+
+	public EditGeometryBaseController getBaseController() {
+		return baseController;
+	}
+
+	public void getBaseController(EditGeometryBaseController baseController) {
+		this.baseController = baseController;
 	}
 }
