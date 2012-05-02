@@ -52,7 +52,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml", "/org/geomajas/testdata/beanContext.xml",
-		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
+		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansSynthetic.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
 		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml",
 		"/org/geomajas/testdata/layerBeansMixedGeometry.xml" })
 public class ImageServiceVectorTileTest {
@@ -76,6 +76,14 @@ public class ImageServiceVectorTileTest {
 	@Autowired
 	@Qualifier("layerBeansMultiPolygonStyleInfo")
 	private NamedStyleInfo layerBeansMultiPolygonStyleInfo;
+
+	@Autowired
+	@Qualifier("layerBeansSynthetic")
+	private VectorLayer layerBeansSynthetic;
+	
+	@Autowired
+	@Qualifier("layerBeansSyntheticStyleInfo")
+	private NamedStyleInfo layerBeansSyntheticStyleInfo;
 
 	@Autowired
 	@Qualifier("layerBeansPoint")
@@ -282,6 +290,9 @@ public class ImageServiceVectorTileTest {
 		getMultiPolygonLabelStyle().getFont().setWeight("bold");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_bold.png", true, true);
 		getMultiPolygonLabelStyle().getFont().setWeight("normal");
+		checkMultiPolygon("multipolygon_black_1_labeled_font_bold.png", true, true);
+		// synthetic
+		checkSynthetic("synthetic_black_1_labeled.png", true, true);
 	}
 	
 	private RuleInfo getFirstRule(UserStyleInfo userStyle){
@@ -301,6 +312,11 @@ public class ImageServiceVectorTileTest {
 
 	private PolygonSymbolizerInfo getMultiPolygonStyle() {
 		RuleInfo rule = getFirstRule(layerBeansMultiPolygonStyleInfo.getUserStyle());
+		return (PolygonSymbolizerInfo) rule.getSymbolizerList().get(0);
+	}
+
+	private PolygonSymbolizerInfo getSyntheticStyle() {
+		RuleInfo rule = getFirstRule(layerBeansSyntheticStyleInfo.getUserStyle());
 		return (PolygonSymbolizerInfo) rule.getSymbolizerList().get(0);
 	}
 
@@ -337,6 +353,10 @@ public class ImageServiceVectorTileTest {
 
 	private void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiPolygon, layerBeansMultiPolygonStyleInfo);
+	}
+
+	private void checkSynthetic(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
+		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansSynthetic, layerBeansSyntheticStyleInfo);
 	}
 
 	private void checkMixedGeometry(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
