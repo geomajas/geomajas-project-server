@@ -10,13 +10,17 @@
  */
 package org.geomajas.command.dto;
 
+import org.geomajas.annotation.Api;
+
 
 /**
  * DTO object that holds additional information needed to perform a union operation.
  * 
  * @author Jan De Moerloose
+ * @since 1.11.0
  * 
  */
+@Api(allMethods = true)
 public class UnionInfo {
 	
 	private int precision = -1;

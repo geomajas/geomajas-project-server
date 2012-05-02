@@ -22,7 +22,7 @@ import org.geomajas.geometry.Geometry;
  * @author Jan De Moerloose
  * @since 1.11.0
  */
-@Api
+@Api(allMethods = true)
 public class GeometryAreaRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 100L;

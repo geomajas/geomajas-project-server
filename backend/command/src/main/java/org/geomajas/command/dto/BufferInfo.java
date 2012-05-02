@@ -10,11 +10,15 @@
  */
 package org.geomajas.command.dto;
 
+import org.geomajas.annotation.Api;
+
 /**
  * DTO object that holds  additional information needed to perform a buffer operation.
  * 
  * @author Jan De Moerloose
+ * @since 1.11.0
  */
+@Api(allMethods = true)
 public class BufferInfo {
 
 	private double distance;

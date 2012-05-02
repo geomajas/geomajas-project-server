@@ -20,9 +20,9 @@ import org.geomajas.geometry.Geometry;
  * Result object for {@link org.geomajas.plugin.editing.server.command.GeometryBufferCommand}.
  * 
  * @author Emiel Ackermann
- * @since 1.0.0
+ * @since 1.11.0
  */
-@Api
+@Api(allMethods = true)
 public class GeometryBufferResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;

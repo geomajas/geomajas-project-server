@@ -21,7 +21,7 @@ import org.geomajas.command.CommandResponse;
  * @author Jan De Moerloose
  * @since 1.11.0
  */
-@Api
+@Api(allMethods = true)
 public class GeometryAreaResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;

@@ -20,9 +20,9 @@ import org.geomajas.geometry.Geometry;
  * Request object for {@link org.geomajas.plugin.editing.server.command.GeometryMergeCommand}.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 1.11.0
  */
-@Api
+@Api(allMethods = true)
 public class GeometryMergeRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 100L;

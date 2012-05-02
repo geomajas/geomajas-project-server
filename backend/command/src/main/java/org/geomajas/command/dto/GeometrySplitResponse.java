@@ -20,7 +20,7 @@ import org.geomajas.geometry.Geometry;
  * Response class for {@link org.geomajas.plugin.editing.server.command.geometry}.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 1.11.0
  */
 @Api(allMethods = true)
 public class GeometrySplitResponse extends CommandResponse {

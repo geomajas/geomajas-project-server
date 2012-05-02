@@ -18,7 +18,7 @@ import org.geomajas.geometry.Geometry;
  * Request for splitting a geometry on the back-end.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 1.11.0
  */
 @Api(allMethods = true)
 public class GeometrySplitRequest extends EmptyCommandRequest {
