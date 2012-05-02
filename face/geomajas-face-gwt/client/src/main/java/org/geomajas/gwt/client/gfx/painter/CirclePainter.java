@@ -15,7 +15,6 @@ import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Circle;
-import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 
 /**
  * <p>

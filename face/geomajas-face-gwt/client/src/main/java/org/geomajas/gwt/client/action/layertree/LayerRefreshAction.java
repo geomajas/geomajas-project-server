@@ -13,11 +13,8 @@ package org.geomajas.gwt.client.action.layertree;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
-import org.geomajas.gwt.client.map.layer.RasterLayer;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 /**
  * Refreshes the currently selected layer on the map.
