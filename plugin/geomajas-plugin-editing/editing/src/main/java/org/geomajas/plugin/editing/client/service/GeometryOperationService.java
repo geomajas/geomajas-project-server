@@ -12,10 +12,10 @@ package org.geomajas.plugin.editing.client.service;
 
 import java.util.List;
 
+import org.geomajas.command.dto.BufferInfo;
+import org.geomajas.command.dto.UnionInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.plugin.editing.dto.BufferInfo;
-import org.geomajas.plugin.editing.dto.UnionInfo;
 
 import com.google.gwt.core.client.Callback;
 

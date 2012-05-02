@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.command.dto.UnionInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.GeometryFunction;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent;
@@ -27,7 +28,6 @@ import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryOperationService;
 import org.geomajas.plugin.editing.client.service.GeometryOperationServiceImpl;
-import org.geomajas.plugin.editing.dto.UnionInfo;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.shared.EventBus;

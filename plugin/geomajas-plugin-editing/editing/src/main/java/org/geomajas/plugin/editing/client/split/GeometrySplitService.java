@@ -12,6 +12,8 @@
 package org.geomajas.plugin.editing.client.split;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.command.dto.GeometrySplitRequest;
+import org.geomajas.command.dto.GeometrySplitResponse;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -27,8 +29,6 @@ import org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStartHandler;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStopHandler;
-import org.geomajas.plugin.editing.dto.GeometrySplitRequest;
-import org.geomajas.plugin.editing.dto.GeometrySplitResponse;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;

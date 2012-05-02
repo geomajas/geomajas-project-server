@@ -13,20 +13,20 @@ package org.geomajas.plugin.editing.client.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.command.dto.BufferInfo;
+import org.geomajas.command.dto.GeometryBufferRequest;
+import org.geomajas.command.dto.GeometryBufferResponse;
+import org.geomajas.command.dto.GeometryConvexHullRequest;
+import org.geomajas.command.dto.GeometryConvexHullResponse;
+import org.geomajas.command.dto.GeometryMergeRequest;
+import org.geomajas.command.dto.GeometryMergeResponse;
+import org.geomajas.command.dto.UnionInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.plugin.editing.dto.BufferInfo;
-import org.geomajas.plugin.editing.dto.GeometryBufferRequest;
-import org.geomajas.plugin.editing.dto.GeometryBufferResponse;
-import org.geomajas.plugin.editing.dto.GeometryConvexHullRequest;
-import org.geomajas.plugin.editing.dto.GeometryConvexHullResponse;
-import org.geomajas.plugin.editing.dto.GeometryMergeRequest;
-import org.geomajas.plugin.editing.dto.GeometryMergeResponse;
-import org.geomajas.plugin.editing.dto.UnionInfo;
 
 import com.google.gwt.core.client.Callback;
 
