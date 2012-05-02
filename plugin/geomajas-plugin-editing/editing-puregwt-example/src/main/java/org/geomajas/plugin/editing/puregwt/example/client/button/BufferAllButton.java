@@ -12,10 +12,10 @@ package org.geomajas.plugin.editing.puregwt.example.client.button;
 
 import java.util.List;
 
+import org.geomajas.command.dto.BufferInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryOperationServiceImpl;
-import org.geomajas.plugin.editing.dto.BufferInfo;
 import org.geomajas.plugin.editing.puregwt.example.client.GeometryToShapeConverter;
 
 import com.google.gwt.core.client.Callback;
