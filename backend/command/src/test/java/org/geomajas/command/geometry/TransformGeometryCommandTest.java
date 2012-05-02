@@ -1,14 +1,13 @@
 package org.geomajas.command.geometry;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.io.WKTReader;
+import java.util.List;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.service.DtoConverterService;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.io.WKTReader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",

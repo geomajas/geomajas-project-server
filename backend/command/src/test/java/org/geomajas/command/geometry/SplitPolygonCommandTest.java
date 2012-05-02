@@ -11,20 +11,20 @@
 
 package org.geomajas.command.geometry;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SplitPolygonRequest;
 import org.geomajas.command.dto.SplitPolygonResponse;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Test for {@link SplitPolygonCommand}.

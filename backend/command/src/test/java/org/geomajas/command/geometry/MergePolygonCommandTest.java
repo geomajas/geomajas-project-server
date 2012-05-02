@@ -11,21 +11,21 @@
 
 package org.geomajas.command.geometry;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.MergePolygonRequest;
 import org.geomajas.command.dto.MergePolygonResponse;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Test for {@link org.geomajas.command.geometry.MergePolygonCommand}.
