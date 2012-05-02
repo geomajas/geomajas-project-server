@@ -307,13 +307,11 @@ public class VectorLayerFactory implements LayerFactory {
 			Object[] values = new Object[type.getAttributeCount()];
 			int i = 0;
 			for (AbstractAttributeInfo attrInfo : featureInfo.getAttributes()) {
-				if (!(attrInfo instanceof SyntheticAttributeInfo)) {
-					String name = attrInfo.getName();
-					if (styleAttributeNames.contains(name)) {
-						values[i++] = internalFeature.getAttributes().get(name).getValue();
-					} else {
-						values[i++] = null;
-					}
+				String name = attrInfo.getName();
+				if (styleAttributeNames.contains(name)) {
+					values[i++] = internalFeature.getAttributes().get(name).getValue();
+				} else {
+					values[i++] = null;
 				}
 			}
 			// normal style rule index attribute (TODO deprecate the whole idea of coupling single rule to feature)
@@ -390,7 +388,11 @@ public class VectorLayerFactory implements LayerFactory {
 					default:
 						throw new IllegalStateException("Unknown association attribute type " + ass.getType());
 				}
-			} else if (!(attrInfo instanceof SyntheticAttributeInfo)) {
+			} else if (attrInfo instanceof SyntheticAttributeInfo) {
+				SyntheticAttributeInfo synth = (SyntheticAttributeInfo) attrInfo;
+				// can't determine type, using object
+				builder.add(synth.getName(), Object.class);
+			} else {
 				throw new IllegalStateException("Unhandled attribute info for attribute " + attrInfo.getName());
 			}
 		}
