@@ -181,7 +181,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 					if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(labelAttr)) {
 						res.setLabel(featureModel.getId(feature));
 					} else {
-						Attribute<?> attribute = featureModel.getAttribute(feature, labelAttr);
+						Attribute<?> attribute = res.getAttributes().get(labelAttr);
 						if (null != attribute && null != attribute.getValue()) {
 							res.setLabel(attribute.getValue().toString());
 						}
