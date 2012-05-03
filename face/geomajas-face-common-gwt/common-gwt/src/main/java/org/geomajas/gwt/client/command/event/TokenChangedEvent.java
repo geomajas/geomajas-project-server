@@ -50,11 +50,13 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	public Type getAssociatedType() {
 		return TokenChangedHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(TokenChangedHandler tokenChangedHandler) {
 		tokenChangedHandler.onTokenChanged(this);
 	}

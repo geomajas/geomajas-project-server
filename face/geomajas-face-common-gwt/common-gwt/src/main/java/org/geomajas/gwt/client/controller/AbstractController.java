@@ -71,10 +71,21 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Constructors:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Construct controller.
+	 *
+	 * @param dragging are we dragging?
+	 */
 	public AbstractController(boolean dragging) {
 		this.dragging = dragging;
 	}
 
+	/**
+	 * Construact controller.
+	 *
+	 * @param eventParser event parser
+	 * @param dragging are we dragging
+	 */
 	public AbstractController(MapEventParser eventParser, boolean dragging) {
 		this.dragging = dragging;
 		this.eventParser = eventParser;

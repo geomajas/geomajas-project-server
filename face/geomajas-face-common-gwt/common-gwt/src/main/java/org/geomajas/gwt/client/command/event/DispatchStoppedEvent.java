@@ -38,10 +38,12 @@ public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 		return DispatchStoppedHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(DispatchStoppedHandler handler) {
 		handler.onDispatchStopped(this);
 	}
 
+	/** {@inheritDoc} */
 	public final Type<DispatchStoppedHandler> getAssociatedType() {
 		return DispatchStoppedHandler.TYPE;
 	}

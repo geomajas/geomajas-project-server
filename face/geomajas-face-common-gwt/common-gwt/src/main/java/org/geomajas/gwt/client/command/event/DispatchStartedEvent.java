@@ -38,6 +38,7 @@ public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 		return DispatchStartedHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(DispatchStartedHandler handler) {
 		handler.onDispatchStarted(this);
 	}

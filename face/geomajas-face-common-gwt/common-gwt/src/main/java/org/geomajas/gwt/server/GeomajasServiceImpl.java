@@ -17,11 +17,11 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.servlet.ApplicationContextUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -47,17 +47,19 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 
 	private CommandDispatcher commandDispatcher;
 
+	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
 		// register the controller object
-		applicationContext = ApplicationContextUtil.getApplicationContext(config);
+		applicationContext = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
 		if (applicationContext instanceof ConfigurableApplicationContext) {
 			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
 		}
 		initDispatcher();
 	}
 
+	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		super.service(req, resp);
 	}
@@ -74,10 +76,14 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		initDispatcher();
 	}
 
+	/**
+	 * Initialize dispatcher.
+	 */
 	protected void initDispatcher() {
 		commandDispatcher = applicationContext.getBean("command.CommandDispatcher", CommandDispatcher.class);
 	}

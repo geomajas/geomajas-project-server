@@ -35,9 +35,13 @@ public final class Log {
 	private static final int STACK_TRACE_LINE_LIMIT = 500; // max # of lines in a stack trace, to prevent OOME
 	private static final int STACK_TRACE_CAUSE_LIMIT = 12; // max # of causes in a stack trace, to prevent OOME
 
+	/** Debug log level. */
 	public static final int LEVEL_DEBUG = LogRequest.LEVEL_DEBUG;
+	/** Info log level. */
 	public static final int LEVEL_INFO = LogRequest.LEVEL_INFO;
+	/** Warnings log level. */
 	public static final int LEVEL_WARN = LogRequest.LEVEL_WARN;
+	/** Errors log level. */
 	public static final int LEVEL_ERROR = LogRequest.LEVEL_ERROR;
 
 	private static final String SEP = ", ";
@@ -46,38 +50,82 @@ public final class Log {
 		// do not allow instantiation.
 	}
 
+	/**
+	 * Log a debug message.
+	 *
+	 * @param message message
+	 */
 	public static void logDebug(String message) {
 		LOG.fine(message);
 	}
 
+	/**
+	 * Log an info message.
+	 *
+	 * @param message message
+	 */
 	public static void logInfo(String message) {
 		LOG.info(message);
 	}
 
+	/**
+	 * Log a warning.
+	 *
+	 * @param message message
+	 */
 	public static void logWarn(String message) {
 		GWT.log("WARNING: " + message);
 		LOG.warning(message);
 		logServer(LEVEL_WARN, message, null);
 	}
 
+	/**
+	 * Log an error.
+	 *
+	 * @param message message
+	 */
 	public static void logError(String message) {
 		GWT.log("ERROR: " + message);
 		LOG.severe(message);
 		logServer(LEVEL_ERROR, message, null);
 	}
 
+	/**
+	 * Debug logging with cause.
+	 *
+	 * @param message message
+	 * @param t cause
+	 */
 	public static void logDebug(String message, Throwable t) {
 		logDebug(message + SEP + getMessage(t));
 	}
 
+	/**
+	 * Info logging with cause.
+	 *
+	 * @param message message
+	 * @param t cause
+	 */
 	public static void logInfo(String message, Throwable t) {
 		logInfo(message + SEP + getMessage(t));
 	}
 
+	/**
+	 * Warning logging with cause.
+	 *
+	 * @param message message
+	 * @param t cause
+	 */
 	public static void logWarn(String message, Throwable t) {
 		logWarn(message + SEP + getMessage(t));
 	}
 
+	/**
+	 * Error logging with cause.
+	 *
+	 * @param message message
+	 * @param t cause
+	 */
 	public static void logError(String message, Throwable t) {
 		logError(message + SEP + getMessage(t));
 	}

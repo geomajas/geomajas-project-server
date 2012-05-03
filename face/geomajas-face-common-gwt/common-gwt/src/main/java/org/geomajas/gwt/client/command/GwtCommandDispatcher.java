@@ -133,10 +133,12 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		return instance;
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler) {
 		return manager.addHandler(DispatchStartedHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler) {
 		return manager.addHandler(DispatchStoppedHandler.TYPE, handler);
 	}

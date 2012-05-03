@@ -40,13 +40,14 @@ public class ResourceSerializationPolicyLocator implements SerializationPolicyLo
 
 	private List<Resource> policyRoots = new ArrayList<Resource>();
 
+	/** {@inheritDoc} */
 	public SerializationPolicy loadPolicy(HttpServletRequest request, String moduleBaseURL, String strongName) {
 
 		SerializationPolicy serializationPolicy = null;
 		String serializationPolicyFilePath = SerializationPolicyLoader.getSerializationPolicyFileName(strongName);
 
 		for (Resource directory : policyRoots) {
-			Resource policy = null;
+			Resource policy;
 			try {
 				policy = directory.createRelative(serializationPolicyFilePath);
 				if (policy.exists()) {

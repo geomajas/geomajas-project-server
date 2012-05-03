@@ -26,6 +26,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface TokenChangedHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<TokenChangedHandler> TYPE = new GwtEvent.Type<TokenChangedHandler>();
 
 	/**
