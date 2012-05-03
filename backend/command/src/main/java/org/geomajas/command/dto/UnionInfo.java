@@ -46,4 +46,11 @@ public class UnionInfo implements Serializable {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
 	}
 
+	@Override
+	public String toString() {
+		return "UnionInfo{" +
+				"precision=" + precision +
+				", usePrecisionAsBuffer=" + usePrecisionAsBuffer +
+				'}';
+	}
 }

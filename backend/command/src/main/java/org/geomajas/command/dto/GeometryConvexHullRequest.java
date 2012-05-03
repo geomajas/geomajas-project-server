@@ -40,4 +40,10 @@ public class GeometryConvexHullRequest implements CommandRequest {
 		this.geometries = geometries;
 	}
 
+	@Override
+	public String toString() {
+		return "GeometryConvexHullRequest{" +
+				"geometries=" + geometries +
+				'}';
+	}
 }

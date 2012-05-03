@@ -60,4 +60,12 @@ public class GeometryBufferRequest implements CommandRequest {
 		this.quadrantSegments = quadrantSegments;
 	}
 
+	@Override
+	public String toString() {
+		return "GeometryBufferRequest{" +
+				"geometries=" + geometries +
+				", bufferDistance=" + bufferDistance +
+				", quadrantSegments=" + quadrantSegments +
+				'}';
+	}
 }

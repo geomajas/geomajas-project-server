@@ -36,4 +36,11 @@ public class GeometryBufferResponse extends CommandResponse {
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
+
+	@Override
+	public String toString() {
+		return "GeometryBufferResponse{" +
+				"geometries=" + geometries +
+				'}';
+	}
 }

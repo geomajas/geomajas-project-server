@@ -50,4 +50,11 @@ public class GeometryAreaRequest implements CommandRequest {
 		this.crs = crs;
 	}
 
+	@Override
+	public String toString() {
+		return "GeometryAreaRequest{" +
+				"geometries=" + geometries +
+				", crs='" + crs + '\'' +
+				'}';
+	}
 }

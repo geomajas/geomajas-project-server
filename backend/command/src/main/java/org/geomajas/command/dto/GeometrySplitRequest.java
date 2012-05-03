@@ -52,4 +52,12 @@ public class GeometrySplitRequest extends EmptyCommandRequest {
 	public void setSplitLine(Geometry splitLine) {
 		this.splitLine = splitLine;
 	}
+
+	@Override
+	public String toString() {
+		return "GeometrySplitRequest{" +
+				"geometry=" + geometry +
+				", splitLine=" + splitLine +
+				'}';
+	}
 }

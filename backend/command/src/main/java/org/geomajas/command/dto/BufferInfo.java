@@ -64,4 +64,11 @@ public class BufferInfo implements Serializable {
 		this.quadrantSegments = quadrantSegments;
 	}
 
+	@Override
+	public String toString() {
+		return "BufferInfo{" +
+				"distance=" + distance +
+				", quadrantSegments=" + quadrantSegments +
+				'}';
+	}
 }

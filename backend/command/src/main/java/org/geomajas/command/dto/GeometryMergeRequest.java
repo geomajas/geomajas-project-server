@@ -60,7 +60,7 @@ public class GeometryMergeRequest implements CommandRequest {
 	/**
 	 * Optional buffer to extend the merging result.
 	 * 
-	 * @param buffer
+	 * @param usePrecisionAsBuffer should precision be used as buffer?
 	 */
 	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
@@ -68,5 +68,14 @@ public class GeometryMergeRequest implements CommandRequest {
 	
 	public boolean usePrecisionAsBuffer() {
 		return usePrecisionAsBuffer;
+	}
+
+	@Override
+	public String toString() {
+		return "GeometryMergeRequest{" +
+				"geometries=" + geometries +
+				", precision=" + precision +
+				", usePrecisionAsBuffer=" + usePrecisionAsBuffer +
+				'}';
 	}
 }

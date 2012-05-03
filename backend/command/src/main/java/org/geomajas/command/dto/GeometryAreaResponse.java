@@ -36,4 +36,10 @@ public class GeometryAreaResponse extends CommandResponse {
 		this.areas = areas;
 	}
 
+	@Override
+	public String toString() {
+		return "GeometryAreaResponse{" +
+				"areas=" + areas +
+				'}';
+	}
 }
