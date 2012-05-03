@@ -17,7 +17,9 @@ import org.geomajas.geometry.Geometry;
  * Result object for {@link org.geomajas.command.geometry.MergePolygonCommand}.
  * 
  * @author Pieter De Graef
+ * @deprecated use {@link org.geomajas.command.geometry.GeometryMergeCommand}
  */
+@Deprecated
 public class MergePolygonResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

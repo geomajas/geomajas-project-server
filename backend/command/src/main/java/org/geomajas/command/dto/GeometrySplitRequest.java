@@ -15,7 +15,7 @@ import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.geometry.Geometry;
 
 /**
- * Request for splitting a geometry on the back-end.
+ * Request object for {@link org.geomajas.command.geometry.GeometrySplitCommand}.
  * 
  * @author Pieter De Graef
  * @since 1.11.0
@@ -23,7 +23,7 @@ import org.geomajas.geometry.Geometry;
 @Api(allMethods = true)
 public class GeometrySplitRequest extends EmptyCommandRequest {
 
-	private static final long serialVersionUID = 100L;
+	private static final long serialVersionUID = 1110L;
 
 	/** Command name for this request. */
 	public static final String COMMAND = "command.geometry.Split";
@@ -31,9 +31,6 @@ public class GeometrySplitRequest extends EmptyCommandRequest {
 	private Geometry geometry;
 
 	private Geometry splitLine;
-
-	public GeometrySplitRequest() {
-	}
 
 	public GeometrySplitRequest(Geometry geometry, Geometry splitLine) {
 		this.geometry = geometry;

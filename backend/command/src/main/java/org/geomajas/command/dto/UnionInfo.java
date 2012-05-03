@@ -12,6 +12,7 @@ package org.geomajas.command.dto;
 
 import org.geomajas.annotation.Api;
 
+import java.io.Serializable;
 
 /**
  * DTO object that holds additional information needed to perform a union operation.
@@ -21,8 +22,10 @@ import org.geomajas.annotation.Api;
  * 
  */
 @Api(allMethods = true)
-public class UnionInfo {
-	
+public class UnionInfo implements Serializable {
+
+	private static final long serialVersionUID = 1110L;
+
 	private int precision = -1;
 
 	private boolean usePrecisionAsBuffer;

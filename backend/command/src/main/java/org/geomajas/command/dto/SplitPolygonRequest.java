@@ -17,7 +17,9 @@ import org.geomajas.geometry.Geometry;
  * Request object for {@link org.geomajas.command.geometry.SplitPolygonCommand}.
  * 
  * @author Joachim Van der Auwera
+ * @deprecated use {@link org.geomajas.command.geometry.GeometrySplitCommand}
  */
+@Deprecated
 public class SplitPolygonRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

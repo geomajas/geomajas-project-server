@@ -15,7 +15,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Geometry;
 
 /**
- * Result object for {@link org.geomajas.command.geometry.MergePolygonCommand}.
+ * Result object for {@link org.geomajas.command.geometry.GeometryMergeCommand}.
  * 
  * @author Pieter De Graef
  * @since 1.11.0
@@ -23,12 +23,9 @@ import org.geomajas.geometry.Geometry;
 @Api(allMethods = true)
 public class GeometryMergeResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 100L;
+	private static final long serialVersionUID = 1110L;
 
 	private Geometry geometry;
-
-	public GeometryMergeResponse() {
-	}
 
 	public Geometry getGeometry() {
 		return geometry;

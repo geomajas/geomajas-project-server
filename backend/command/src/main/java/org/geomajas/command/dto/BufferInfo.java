@@ -12,14 +12,18 @@ package org.geomajas.command.dto;
 
 import org.geomajas.annotation.Api;
 
+import java.io.Serializable;
+
 /**
- * DTO object that holds  additional information needed to perform a buffer operation.
+ * DTO object that holds additional information needed to perform a buffer operation.
  * 
  * @author Jan De Moerloose
  * @since 1.11.0
  */
 @Api(allMethods = true)
-public class BufferInfo {
+public class BufferInfo implements Serializable {
+
+	private static final long serialVersionUID = 1110L;
 
 	private double distance;
 	private int quadrantSegments;

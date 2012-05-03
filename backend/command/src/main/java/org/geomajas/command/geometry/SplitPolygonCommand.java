@@ -31,7 +31,9 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * 
  * @author Pieter De Graef
+ * @deprecated use {@link org.geomajas.command.geometry.GeometrySplitCommand}
  */
+@Deprecated
 @Component()
 public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPolygonResponse> {
 

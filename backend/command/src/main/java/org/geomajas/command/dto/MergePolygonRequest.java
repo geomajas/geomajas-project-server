@@ -19,7 +19,9 @@ import java.util.Arrays;
  * Request object for {@link org.geomajas.command.geometry.MergePolygonCommand}.
  *
  * @author Joachim Van der Auwera
+ * @deprecated use {@link org.geomajas.command.geometry.GeometryMergeCommand}
  */
+@Deprecated
 public class MergePolygonRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

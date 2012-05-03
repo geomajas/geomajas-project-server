@@ -32,7 +32,9 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * </p>
  * 
  * @author Pieter De Graef
+ * @deprecated use {@link org.geomajas.command.geometry.GeometryMergeCommand}
  */
+@Deprecated
 @Component()
 public class MergePolygonCommand implements Command<MergePolygonRequest, MergePolygonResponse> {
 

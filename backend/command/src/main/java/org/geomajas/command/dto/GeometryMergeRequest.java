@@ -17,7 +17,7 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
 
 /**
- * Request object for {@link org.geomajas.plugin.editing.server.command.GeometryMergeCommand}.
+ * Request object for {@link org.geomajas.command.geometry.GeometryMergeCommand}.
  * 
  * @author Pieter De Graef
  * @since 1.11.0
@@ -25,9 +25,9 @@ import org.geomajas.geometry.Geometry;
 @Api(allMethods = true)
 public class GeometryMergeRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 100L;
+	private static final long serialVersionUID = 1110L;
 
-	/** Command name for this request. **/
+	/** Command name for this request. */
 	public static final String COMMAND = "command.geometry.Merge";
 
 	private List<Geometry> geometries;
@@ -35,9 +35,6 @@ public class GeometryMergeRequest implements CommandRequest {
 	private int precision;
 
 	private boolean usePrecisionAsBuffer;
-
-	public GeometryMergeRequest() {
-	}
 
 	public List<Geometry> getGeometries() {
 		return geometries;

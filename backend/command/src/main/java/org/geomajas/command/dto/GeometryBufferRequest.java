@@ -17,7 +17,7 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
 
 /**
- * Request object for {@link org.geomajas.plugin.editing.server.command.GeometryBufferCommand}.
+ * Request object for {@link org.geomajas.command.geometry.GeometryBufferCommand}.
  * 
  * @author Emiel Ackermann
  * @since 1.11.0
@@ -25,7 +25,7 @@ import org.geomajas.geometry.Geometry;
 @Api(allMethods = true)
 public class GeometryBufferRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 100L;
+	private static final long serialVersionUID = 1110L;
 
 	/** Command name for this request. **/
 	public static final String COMMAND = "command.geometry.Buffer";
@@ -35,9 +35,6 @@ public class GeometryBufferRequest implements CommandRequest {
 	private double bufferDistance;
 	
 	private int quadrantSegments;
-
-	public GeometryBufferRequest() {
-	}
 
 	public List<Geometry> getGeometries() {
 		return geometries;

@@ -19,7 +19,9 @@ import java.util.Arrays;
  * Result object for {@link org.geomajas.command.geometry.SplitPolygonCommand}.
  * 
  * @author Pieter De Graef
+ * @deprecated use {@link org.geomajas.command.geometry.GeometrySplitCommand}
  */
+@Deprecated
 public class SplitPolygonResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
