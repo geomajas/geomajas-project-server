@@ -58,6 +58,13 @@ public interface CacheManagerService {
 	 */
 	<TYPE> TYPE get(Layer layer, CacheCategory category, String key, Class<TYPE> type);
 
+	/**
+	 * Remove the cached object with given key for the given layer and cache category.
+	 *
+	 * @param layer layer
+	 * @param category cache category
+	 * @param key cache key
+	 */
 	void remove(Layer layer, CacheCategory category, String key);
 
 	/**

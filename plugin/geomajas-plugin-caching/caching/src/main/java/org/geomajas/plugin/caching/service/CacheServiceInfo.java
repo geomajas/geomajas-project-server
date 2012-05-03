@@ -27,10 +27,20 @@ public class CacheServiceInfo extends LayerCategoryInfo {
 	@NotNull
 	private CacheFactory cacheFactory;
 
+	/**
+	 * Get the factory for creating caches.
+	 *
+	 * @return cache factory
+	 */
 	public CacheFactory getCacheFactory() {
 		return cacheFactory;
 	}
 
+	/**
+	 * Set the factory for creating caches.
+	 *
+	 * @param cacheFactory cache factory
+	 */
 	public void setCacheFactory(CacheFactory cacheFactory) {
 		this.cacheFactory = cacheFactory;
 	}

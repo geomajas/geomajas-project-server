@@ -22,10 +22,15 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class CacheCategory {
 
+	/** Cache for raster images. */
 	public static final CacheCategory RASTER = new CacheCategory("raster");
+	/** Cache for vector tiles. */
 	public static final CacheCategory TILE = new CacheCategory("tile");
+	/** Cache for rebuild data, allowing rebuild of raster data. */
 	public static final CacheCategory REBUILD = new CacheCategory("rebuild");
+	/** Cache for features. */
 	public static final CacheCategory FEATURE = new CacheCategory("feature");
+	/** Cache for layer bounds. */
 	public static final CacheCategory BOUNDS = new CacheCategory("bounds");
 
 	private final String name;
@@ -42,10 +47,16 @@ public class CacheCategory {
 		this.name = name;
 	}
 
+	/**
+	 * Get cache category name.
+	 *
+	 * @return cache category name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/** {@inheritDoc} */
 	public String toString() {
 		return name;
 	}
