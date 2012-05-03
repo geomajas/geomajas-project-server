@@ -33,14 +33,32 @@ public final class ApplicationContextUtil {
 	private ApplicationContextUtil() {
 	}
 
+	/**
+	 * Get the Geomajas application context.
+	 *
+	 * @param servletConfig servlet configuration
+	 * @return application config
+	 */
 	public static ApplicationContext getApplicationContext(ServletConfig servletConfig) {
 		return getApplicationContext(servletConfig.getServletContext());
 	}
 
+	/**
+	 * Get the Geomajas application context.
+	 *
+	 * @param servletContext servlet context
+	 * @return application config
+	 */
 	public static ApplicationContext getApplicationContext(ServletContext servletContext) {
 		return WebApplicationContextUtils.getWebApplicationContext(servletContext);
 	}
 
+	/**
+	 * Set the Geomajas application context.
+	 *
+	 * @param servletContext servlet context
+	 * @param applicationContext application context
+	 */
 	public static void setApplicationContext(ServletContext servletContext, ApplicationContext applicationContext) {
 		servletContext.setAttribute(GEOMAJAS_SPRING_CONTEXT, applicationContext);
 	}
