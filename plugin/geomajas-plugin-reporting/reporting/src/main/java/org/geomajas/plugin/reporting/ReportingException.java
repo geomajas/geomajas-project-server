@@ -28,18 +28,42 @@ public class ReportingException extends GeomajasException {
 
 	private static final String RESOURCE_BUNDLE_NAME = "org.geomajas.plugin.reporting.ReportingException";
 
+	/**
+	 * Construct reporting exception.
+	 *
+	 * @param exceptionCode exception code
+	 * @param parameters parameters
+	 */
 	public ReportingException(int exceptionCode, Object... parameters) {
 		super(exceptionCode, parameters);
 	}
 
+	/**
+	 * Construct reporting exception.
+	 *
+	 * @param exceptionCode exception code
+	 */
 	public ReportingException(int exceptionCode) {
 		super(exceptionCode);
 	}
 
+	/**
+	 * Construct reporting exception.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode exception code
+	 * @param parameters parameters
+	 */
 	public ReportingException(Throwable ex, int exceptionCode, Object... parameters) {
 		super(ex, exceptionCode, parameters);
 	}
 
+	/**
+	 * Construct reporting exception.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode exception code
+	 */
 	public ReportingException(Throwable ex, int exceptionCode) {
 		super(ex, exceptionCode);
 	}
