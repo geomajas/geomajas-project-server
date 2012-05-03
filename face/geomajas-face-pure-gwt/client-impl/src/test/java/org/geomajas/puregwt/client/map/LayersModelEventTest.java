@@ -28,6 +28,7 @@ import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
+import org.geomajas.testdata.ReloadContext.ClassMode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +55,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
 @TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
 		ReloadContextTestExecutionListener.class })
-@ReloadContext
+@ReloadContext(classMode=ClassMode.BEFORE_EACH_TEST_METHOD)
 public class LayersModelEventTest {
 
 	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
