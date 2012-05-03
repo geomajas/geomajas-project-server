@@ -34,6 +34,14 @@ public class LayerAttributeAuthorizationInfo {
 	private List<String> writableIncludes;
 	private List<String> writableExcludes;
 
+	/**
+	 * Set the attributes to include for readable status.
+	 * <p/>
+	 * Regex expressions can be used for the strings. You can make a rule feature specific by including "@" and the
+	 * feature id (converted to a string, using a regex again).
+	 *
+	 * @return readable attributes
+	 */
 	public List<String> getReadableIncludes() {
 		return readableIncludes;
 	}

@@ -30,6 +30,7 @@ import org.geomajas.annotation.UserImplemented;
 @Deprecated
 public interface LoginHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<LoginHandler> TYPE = new GwtEvent.Type<LoginHandler>();
 
 	/**
