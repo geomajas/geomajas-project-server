@@ -15,7 +15,6 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.action.toolbar.CombinedFeatureInfoModalAction;
-import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoListenerModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.ShowCoordinatesModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.TooltipOnMouseoverModalAction;
@@ -29,7 +28,7 @@ import com.google.gwt.core.client.EntryPoint;
  * 
  * @author An Buyle
  * @author Oliver May
- * 
+ * @author Wout Swartenbroekx
  */
 public class FeatureInfoEntryPoint implements EntryPoint {
 
@@ -38,8 +37,6 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 	public static final String SHOW_COMBINEDFEATUREINFOMODE_KEY = "CombinedFeatureInfoMode";
 
 	public static final String SHOW_DEFAULT_MULTILAYERFEATUREINFO_KEY = "MultilayerFeatureInfoMode";
-
-	public static final String SHOW_DEFAULT_MULTILAYERFEATUREINFO_LISTENER_KEY = "MultilayerFeatureInfoListenerMode";
 
 	public static final String SHOW_COORDINATES_MODE_KEY = "ShowCoordinatesMode";
 	
@@ -50,12 +47,6 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFO_KEY, new ToolCreator() {
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new MultiLayerFeatureInfoModalAction(mapWidget);
-			}
-		});
-
-		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFO_LISTENER_KEY, new ToolCreator() {
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new MultiLayerFeatureInfoListenerModalAction(mapWidget);
 			}
 		});
 

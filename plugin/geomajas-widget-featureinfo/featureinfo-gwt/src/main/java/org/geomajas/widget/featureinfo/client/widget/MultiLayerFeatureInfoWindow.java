@@ -37,7 +37,7 @@ public class MultiLayerFeatureInfoWindow extends DockableWindow {
 
 	private MultiLayerFeaturesList featuresList;
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
 	/**
 	 * Construct a MultiLayerFeatureInfoWindow, allowing feature info of multiple features on one location.

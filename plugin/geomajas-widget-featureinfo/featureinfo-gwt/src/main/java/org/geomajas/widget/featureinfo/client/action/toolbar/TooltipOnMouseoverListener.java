@@ -57,7 +57,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private int pixelTolerance = FitSetting.tooltipPixelTolerance;
 
 	private int minPixelMove = FitSetting.tooltipMinimalPixelMove;
-	private int showDelay = FitSetting.tooltipShowDelay;
+	private final int showDelay = FitSetting.tooltipShowDelay;
 	private int maxLabelCount = FitSetting.tooltipMaxLabelCount;
 	private boolean showEmptyResults = FitSetting.tooltipShowEmptyResultMessage;
 
@@ -66,8 +66,8 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private Coordinate worldPosition; // world !!
 	private Timer timer;
 	
-	private MapWidget mapWidget;
-	private List<String> layersToExclude = new ArrayList<String>();
+	private final MapWidget mapWidget;
+	private final List<String> layersToExclude = new ArrayList<String>();
 	private boolean useFeatureDetail;
 
 	private static final String CSS = "<style>.tblcLayerLabel {font-size: 0.9em; font-weight: bold;} "
@@ -76,6 +76,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			+ ".tblcMore {padding-top: 5px; font-size: 0.9em; font-style: italic;}</style>";
 
 	public TooltipOnMouseoverListener(MapWidget mapWidget) {
+		super();
 		this.mapWidget = mapWidget;
 	}
 
@@ -169,20 +170,12 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private void writeTooMany(StringBuilderImpl sb, int tooMany) {
 		sb.append("<span class='tblcMore'>");
-		sb.append("" + tooMany);
+		sb.append(Integer.toString(tooMany));
 		sb.append("</span>");
 	}
 
 	private void setTooltipData(Coordinate coordUsedForRetrieval,
 			Map<String, List<Feature>> featureMap) {
-		if (useFeatureDetail) {
-			setDetailTooltipData(coordUsedForRetrieval, featureMap);
-		} else {
-			setDefaultTooltipData(coordUsedForRetrieval, featureMap);
-		}
-	}
-	
-	private void setDetailTooltipData(Coordinate coordUsedForRetrieval, Map<String, List<Feature>> featureMap) {
 		if (coordUsedForRetrieval.equals(worldPosition) && tooltip != null) {
 			StringBuilderImpl sb = new StringBuilderImpl.ImplStringAppend();
 			sb.append(CSS);
@@ -190,23 +183,43 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			int count = 0;
 
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
-				if (featureMap.containsKey(layer.getId()) && useLayer(layer.getId())) {
+				if (featureMap.containsKey(layer.getId())
+						&& useLayer(layer.getId())) {
 					List<Feature> features = featureMap.get(layer.getId());
 					if (features.size() > 0) {
-						for (Feature feature : features) {
+						if (useFeatureDetail) {
+							for (Feature feature : features) {
+								if (count < maxLabelCount) {
+									String featureLabel = layer.getLabel() + " " + feature.getId();
+									widest = updateTooltipSize(widest, featureLabel);
+									writeLayerStart(sb, featureLabel);
+									for (Entry<String, Attribute> entry : feature .getAttributes().entrySet()) {
+										if (isIdentifying(entry.getKey(), layer)) {
+											String label = entry.getKey() + ": " + entry.getValue().toString();
+											writeFeature(sb, label);
+											widest = updateTooltipSize(widest, label);
+										}
+									}
+									writeLayerEnd(sb);
+									count++;
+								}
+							}
+						} else {
 							if (count < maxLabelCount) {
-								String featureLabel = layer.getLabel() + " " + feature.getId();
-								widest = updateTooltipSize(widest, featureLabel);
-								writeLayerStart(sb, featureLabel);
-								for (Entry<String, Attribute> entry : feature.getAttributes().entrySet()) {
-									if (isIdentifying(entry.getKey(), layer)) {
-										String label = entry.getKey().toString() + ": " + entry.getValue().toString();
+								writeLayerStart(sb, layer.getLabel());
+								widest = updateTooltipSize(widest,
+										layer.getLabel());
+								for (Feature feature : features) {
+									if (count < maxLabelCount) {
+										String label = feature.getLabel();
 										writeFeature(sb, label);
 										widest = updateTooltipSize(widest, label);
 									}
+									count++;
 								}
 								writeLayerEnd(sb);
-								count++;
+							} else {
+								count += features.size();
 							}
 						}
 					}
@@ -263,78 +276,6 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			widest = size;
 		}
 		return widest;
-	}
-	
-	private void setDefaultTooltipData(Coordinate coordUsedForRetrieval, Map<String, List<Feature>> featureMap) {
-		if (coordUsedForRetrieval.equals(worldPosition) && tooltip != null) {
-			StringBuilderImpl sb = new StringBuilderImpl.ImplStringAppend();
-			sb.append(CSS);
-			int widest = 10;
-			int count = 0;
-			
-			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
-				if (featureMap.containsKey(layer.getId()) && useLayer(layer.getId())) {
-					List<Feature> features = featureMap.get(layer.getId());
-					if (features.size() > 0) {
-						if (count < maxLabelCount) {
-							writeLayerStart(sb, layer.getLabel());
-							if (widest < layer.getLabel().length()) {
-								widest = layer.getLabel().length();
-							}
-							for (Feature feature : features) {
-								if (count < maxLabelCount) {
-									String label = getLabel(feature, (VectorLayer) layer);
-									int size = getLabelSize(label);
-									writeFeature(sb, label);
-									if (widest < size) {
-										widest = size;
-									}
-								}
-								count++;
-							}
-							writeLayerEnd(sb);
-						} else {
-							count += features.size();
-						}
-					}
-				}
-			}
-
-			int left = tooltip.getLeft();
-			int top = tooltip.getTop();
-			destroyTooltip();
-
-			if (count > maxLabelCount) {
-				writeTooMany(sb, count - maxLabelCount);
-			} else if (count == 0 && showEmptyResults) {
-				writeNone(sb);
-			} else if (count == 0) {
-				return;
-			}
-
-			Canvas content = new Canvas();
-			content.setContents(sb.toString());
-			int width = (int) (widest * 4.8) + 40;
-			if (width < 150) {
-				width = 150;
-			}
-			content.setWidth(width);
-			content.setAutoHeight();
-			content.setMargin(5);
-			createTooltip(left, top, content);
-		} // else - mouse moved between request and data retrieval
-	}
-
-	/**
-	 * Return the text to add to the tooltip for the given feature.
-	 * <p>Default implementation returns <code>feature.getLabel()</code>
-	 * 
-	 * @param feature feature
-	 * @param layer layer
-	 * @return label
-	 */
-	protected String getLabel(Feature feature, VectorLayer layer) {
-		return feature.getLabel();
 	}
 	
 	protected int getLabelSize(String label) {

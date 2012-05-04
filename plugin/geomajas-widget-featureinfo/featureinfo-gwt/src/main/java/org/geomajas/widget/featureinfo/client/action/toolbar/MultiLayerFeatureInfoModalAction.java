@@ -32,17 +32,15 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction implements ConfigurableAction {
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
-	private MultiLayerFeatureInfoController controller;
+	private final MultiLayerFeatureInfoController controller;
 
 	/**
 	 * Number of pixels that describes the tolerance allowed when searching nearby features.
 	 */
 	private int pixelTolerance = 10; /* default value */
-	
 	private String[] layersToExclude = new String[0];
-	
 	private Map<String, String> featuresListLabels = new HashMap<String, String>();
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
@@ -71,23 +69,18 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	public void configure(String key, String value) {
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
-		} else if ("layersToExclude".equals(key)) {
+		} else if ("layersToExclude".equals(key) && null != value) {
 			String[] layersToExcl = new String [0];
-			if (null != value) {
-				layersToExcl = value.split(",");
-
-				for (int i = 0; i < layersToExcl.length ; i++) {
-					layersToExcl[i] = layersToExcl[i].trim();
-				}
+			layersToExcl = value.split(",");
+			for (int i = 0; i < layersToExcl.length; i++) {
+				layersToExcl[i] = layersToExcl[i].trim();
 			}
 			setLayersToExclude(layersToExcl);
-		} else if ("featuresListLabels".equalsIgnoreCase(key)) {
-			if (null != value) {
-				String [] features = value.split(",");
-				for (int i = 0; i < features.length; i++) {
-					if (features[i].indexOf("=") > -1) {
-						featuresListLabels.put(features[i].split("=")[0], features[i].split("=")[1]);
-					}
+		} else if ("featuresListLabels".equalsIgnoreCase(key) && null != value) {
+			String [] features = value.split(",");
+			for (int i = 0; i < features.length; i++) {
+				if (features[i].indexOf((char) 61) > -1) { //String.indexOf(char) faster than String.indexOf(String)
+					featuresListLabels.put(features[i].split("=")[0], features[i].split("=")[1]);
 				}
 			}
 		}
@@ -138,7 +131,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	/**
 	 * @param featuresListLabels the featuresListLabels to set
 	 */
-	public void setFeaturesListLabels(HashMap<String, String> featuresListLabels) {
+	public void setFeaturesListLabels(Map<String, String> featuresListLabels) {
 		this.featuresListLabels = featuresListLabels;
 		controller.setFeaturesListLabels(featuresListLabels);
 	}

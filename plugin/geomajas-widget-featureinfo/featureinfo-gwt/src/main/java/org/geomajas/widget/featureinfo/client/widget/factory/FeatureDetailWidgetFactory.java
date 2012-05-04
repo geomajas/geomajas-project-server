@@ -80,7 +80,7 @@ public final class FeatureDetailWidgetFactory {
 			customize(w, feature);
 			return w;
 		} else {
-			return new RasterLayerAttributeWindow(feature, layer);
+			return new RasterLayerAttributeWindow(feature);
 		}
 	}
 
@@ -200,6 +200,7 @@ public final class FeatureDetailWidgetFactory {
 		private Feature feature;
 
 		public SelectingZoomButton(Feature feature) {
+			super();
 			setIcon("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png");
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnZoomFeature());

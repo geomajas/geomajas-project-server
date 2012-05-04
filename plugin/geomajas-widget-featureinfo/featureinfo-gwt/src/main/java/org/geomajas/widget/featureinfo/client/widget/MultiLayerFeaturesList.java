@@ -14,7 +14,7 @@ package org.geomajas.widget.featureinfo.client.widget;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Map.Entry;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -54,23 +54,27 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
-	private Map<String, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
+	private final Map<String, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
 
-	private Map<String, RasterLayer> rasterLayers = new HashMap<String, RasterLayer>();
+	private final Map<String, RasterLayer> rasterLayers = new HashMap<String, RasterLayer>();
 
-	private Map<String, Feature> vectorFeatures = new HashMap<String, Feature>();
+	private final Map<String, Feature> vectorFeatures = new HashMap<String, Feature>();
 
-	private Map<String, Feature> rasterFeatures = new HashMap<String, Feature>();
+	private final Map<String, Feature> rasterFeatures = new HashMap<String, Feature>();
 
 	/**
 	 * external handler, called when clicking on a feature in the list
 	 */
-	private FeatureClickHandler featureClickHandler;
+	private final FeatureClickHandler featureClickHandler;
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
 	private Map<String, String> featuresListLabels;
-
+	
+	private final String label = "label";
+	private final String featureId = "featureId";
+	private final String layerId = "layerId";
+	private final String layerLabel = "layerLabel";
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -96,31 +100,34 @@ public class MultiLayerFeaturesList extends ListGrid {
 	public void setFeatures(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		MapModel mapModel = mapWidget.getMapModel();
 
-		for (String clientLayerId : featureMap.keySet()) {
-			Layer<?> layer = mapModel.getLayer(clientLayerId);
+		for (Entry<String, List<org.geomajas.layer.feature.Feature>> clientLayerId : featureMap.entrySet()) {
+			Layer<?> layer = mapModel.getLayer(clientLayerId.getKey());
 			if (null != layer) {
-				List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(clientLayerId);
+				List<org.geomajas.layer.feature.Feature> orgFeatures = clientLayerId.getValue();
 				if (!orgFeatures.isEmpty()) {
-					if (layer instanceof VectorLayer) {
-						VectorLayer vLayer = (VectorLayer) layer;
-						vectorLayers.put(layer.getId(), (VectorLayer) layer);
-						for (org.geomajas.layer.feature.Feature featDTO : orgFeatures) {
-							Feature feat = new Feature(featDTO, vLayer);
-							vLayer.getFeatureStore().addFeature(feat);
-							vectorFeatures.put(getFullFeatureId(feat, vLayer), feat);
-							addFeature(feat, vLayer);
-						}
-
-					} else if (layer instanceof RasterLayer) {
-						RasterLayer rLayer = (RasterLayer) layer;
-						rasterLayers.put(layer.getId(), (RasterLayer) layer);
-						for (org.geomajas.layer.feature.Feature featDTO : orgFeatures) {
-							Feature feat = new Feature(featDTO, null);
-							rasterFeatures.put(getFullFeatureId(feat, layer), feat);
-							addRasterFeature(feat, (RasterLayer) layer);
-						}
-					}
+					addFeatures(layer, orgFeatures);
 				}
+			}
+		}
+	}
+
+	private void addFeatures(Layer<?> layer, List<org.geomajas.layer.feature.Feature> orgFeatures) {
+		if (layer instanceof VectorLayer) {
+			VectorLayer vLayer = (VectorLayer) layer;
+			vectorLayers.put(layer.getId(), vLayer);
+			for (org.geomajas.layer.feature.Feature featDTO : orgFeatures) {
+				Feature feat = new Feature(featDTO, vLayer);
+				vLayer.getFeatureStore().addFeature(feat);
+				vectorFeatures.put(getFullFeatureId(feat, vLayer), feat);
+				addFeature(feat, vLayer);
+			}
+		} else if (layer instanceof RasterLayer) {
+			RasterLayer rLayer = (RasterLayer) layer;
+			rasterLayers.put(layer.getId(), rLayer);
+			for (org.geomajas.layer.feature.Feature featDTO : orgFeatures) {
+				Feature feat = new Feature(featDTO, null);
+				rasterFeatures.put(getFullFeatureId(feat, rLayer), feat);
+				addFeature(feat, rLayer);
 			}
 		}
 	}
@@ -132,7 +139,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 		String newStyle;
 		String style = record.getCustomStyle(); /* returns groupNode if group row, else e.g. null */
 
-		if ("label".equals(getFieldName(colNum)) && (null == style || !"groupNode".equalsIgnoreCase(style))) {
+		if (label.equals(getFieldName(colNum)) && (null == style || !"groupNode".equalsIgnoreCase(style))) {
 			newStyle = "padding-left: 40px;";
 		} else { /* groupCell */
 			newStyle = "padding-left: 5px;";
@@ -154,38 +161,22 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 *         or if the feature does not belong to the correct layer or if the
 	 *         layer has not yet been set.
 	 */
-	private boolean addFeature(Feature feature, VectorLayer layer) {
+	private boolean addFeature(Feature feature, Layer<?> layer) {
 		// Basic checks:
 		if (feature == null || layer == null || !feature.getLayer().getId().equals(layer.getId())) {
 			return false;
 		}
-
 		// Feature checks out, add it to the grid:
 		ListGridRecord record = new ListGridRecord();
-		// record.setAttribute("label", feature.getLabel());
-		record.setAttribute("label", getLabel(feature));
-		record.setAttribute("featureId", getFullFeatureId(feature, layer));
-		record.setAttribute("layerId", layer.getId());
-		record.setAttribute("layerLabel", layer.getLabel());
-
-		addData(record);
-		return true;
-	}
-
-	private boolean addRasterFeature(Feature feat, RasterLayer layer) {
-		if (feat == null) {
-			return false;
+		if (layer instanceof VectorLayer) {
+			record.setAttribute(label, getLabel(feature));
+		} else if (layer instanceof RasterLayer) {
+			record.setAttribute(label, feature.getId());
 		}
-
-		// Feature checks out, add it to the grid:
-		ListGridRecord record = new ListGridRecord();
-		record.setAttribute("label", feat.getId());
-		record.setAttribute("featureId", getFullFeatureId(feat, layer));
-		record.setAttribute("layerId", layer.getId());
-		record.setAttribute("layerLabel", layer.getLabel());
-
+		record.setAttribute(featureId, getFullFeatureId(feature, layer));
+		record.setAttribute(layerId, layer.getId());
+		record.setAttribute(layerLabel, layer.getLabel());
 		addData(record);
-
 		return true;
 	}
 
@@ -200,7 +191,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 		return f.getLabel();
 	}
 
-	private static String getFullFeatureId(Feature feature, Layer layer) {
+	private static String getFullFeatureId(Feature feature, Layer<?> layer) {
 		return layer.getId() + "." + feature.getId();
 	}
 
@@ -224,30 +215,30 @@ public class MultiLayerFeaturesList extends ListGrid {
 		setAutoFitFieldWidths(true);
 		setAutoFitWidthApproach(AutoFitWidthApproach.BOTH);
 
-		ListGridField labelField = new ListGridField("label");
-		ListGridField featIdField = new ListGridField("featureId");
-		ListGridField layerField = new ListGridField("layerId");
-		ListGridField layerLabelField = new ListGridField("layerLabel");
+		ListGridField labelField = new ListGridField(label);
+		ListGridField featIdField = new ListGridField(featureId);
+		ListGridField layerField = new ListGridField(layerId);
+		ListGridField layerLabelField = new ListGridField(layerLabel);
 
-		setGroupByField("layerLabel");
+		setGroupByField(layerLabel);
 
 		setGroupStartOpen(GroupStartOpen.ALL);
 		setFields(/* dummyIndentField, */labelField, layerField, featIdField, layerLabelField);
-		hideField("layerId");
-		hideField("featureId");
-		hideField("layerLabel");
+		hideField(layerId);
+		hideField(featureId);
+		hideField(layerLabel);
 		addRecordClickHandler(new RecordClickHandler() {
 
 			public void onRecordClick(RecordClickEvent event) {
-				String featureId = event.getRecord().getAttribute("featureId");
-				String layerId = event.getRecord().getAttribute("layerId");
-				Feature feat = vectorFeatures.get(featureId);
+				String fId = event.getRecord().getAttribute(featureId);
+				String lId = event.getRecord().getAttribute(layerId);
+				Feature feat = vectorFeatures.get(fId);
 
 				if (feat != null) {
 					featureClickHandler.onClick(feat, feat.getLayer());
 				} else {
-					Layer rasterLayer = rasterLayers.get(layerId);
-					feat = rasterFeatures.get(featureId);
+					Layer<?> rasterLayer = rasterLayers.get(lId);
+					feat = rasterFeatures.get(fId);
 					featureClickHandler.onClick(feat, rasterLayer);
 				}
 			}
@@ -260,23 +251,26 @@ public class MultiLayerFeaturesList extends ListGrid {
 		setHoverCustomizer(new HoverCustomizer() {
 
 			public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
-				String featureId = record.getAttribute("featureId");
-				Feature feat = vectorFeatures.get(featureId);
+				String fId = record.getAttribute(featureId);
+				Feature feat = vectorFeatures.get(fId);
 
-				String tooltip = "";
+				StringBuilder tooltip = new StringBuilder();
 
 				if (feat != null) {
 					for (AttributeInfo a : feat.getLayer().getLayerInfo().getFeatureInfo().getAttributes()) {
 						if (a.isIdentifying()) {
-							tooltip += "<b>" + a.getLabel() + "</b>: " + feat.getAttributeValue(a.getName()) + "<br/>";
+							tooltip.append("<b>");
+							tooltip.append(a.getLabel());
+							tooltip.append("</b>: ");
+							tooltip.append(feat.getAttributeValue(a.getName()));
+							tooltip.append("<br/>");
 						}
 					}
-					tooltip += messages.nearbyFeaturesListTooltip();
+					tooltip.append(messages.nearbyFeaturesListTooltip());
 				}
-				return tooltip;
+				return tooltip.toString();
 			}
 		});
-
 	}
 
 	/**

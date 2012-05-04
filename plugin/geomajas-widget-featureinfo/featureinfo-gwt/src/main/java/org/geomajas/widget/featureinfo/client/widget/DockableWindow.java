@@ -37,6 +37,7 @@ public class DockableWindow extends Window {
 	private static int currentPosition = 5;
 
 	public DockableWindow() {
+		super();
 		mixin(this);
 	}
 
@@ -112,7 +113,7 @@ public class DockableWindow extends Window {
 		private int originalLeft;
 		private int originalTop;
 		private Boolean originalDragRepo;
-		private Window window;
+		private final Window window;
 
 		public Docker(Window window) {
 			this.window = window;

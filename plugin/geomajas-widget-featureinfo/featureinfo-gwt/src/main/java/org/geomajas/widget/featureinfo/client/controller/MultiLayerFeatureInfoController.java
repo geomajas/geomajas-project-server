@@ -38,7 +38,7 @@ public class MultiLayerFeatureInfoController extends ListenerController {
 	
 	public MultiLayerFeatureInfoController(MapWidget mapWidget, int pixelTolerance) {
 		this(mapWidget);
-		setPixelTolerance(pixelTolerance);
+		((MultiLayerFeatureInfoListener) getListener()).setPixelTolerance(pixelTolerance);
 	}
 
 	public void setPixelTolerance(int pixelTolerance) {

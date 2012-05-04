@@ -13,7 +13,6 @@ package org.geomajas.widget.featureinfo.client.widget.factory;
 import java.util.Map.Entry;
 
 import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
@@ -38,9 +37,9 @@ public class RasterLayerAttributeWindow extends DockableWindow {
 
 	/**
 	 * @param rasterFeature
-	 * @param layer 
 	 */
-	public RasterLayerAttributeWindow(Feature rasterFeature, Layer layer) {
+	public RasterLayerAttributeWindow(Feature rasterFeature) {
+		super();
 		setWidth(300);
 		setHeight(200);
 		setCanDragReposition(true);
@@ -58,11 +57,8 @@ public class RasterLayerAttributeWindow extends DockableWindow {
 	 */
 	private class RasterLayerAttributeCanvas extends VLayout {
 		
-		private Feature feature;
-		
 		public RasterLayerAttributeCanvas(final Feature feature) {
-			this.feature = feature;
-
+			super();
 			ListGrid grid = new ListGrid();
 
 			grid.setCanEdit(false);

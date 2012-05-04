@@ -28,9 +28,9 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements ConfigurableAction {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
-
-	private MapWidget mapWidget;
-	private TooltipOnMouseoverListener listener;
+	
+	private final MapWidget mapWidget;
+	private final TooltipOnMouseoverListener listener;
 
 	public TooltipOnMouseoverModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/mouse_tooltip.png", null);
@@ -65,7 +65,7 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 			String[] layersToExcl = new String [0];
 			if (null != value) {
 				layersToExcl = value.split(",");
-				for (int i = 0; i < layersToExcl.length ; i++) {
+				for (int i = 0; i < layersToExcl.length; i++) {
 					layersToExcl[i] = layersToExcl[i].trim();
 				}
 			}
@@ -89,7 +89,7 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 	 * @param show true if empty results should be shown.
 	 */
 	private void setShowEmptyResult(boolean show) {
-		listener.setShowEmptyResult(false);
+		listener.setShowEmptyResult(show);
 	}
 
 	/**

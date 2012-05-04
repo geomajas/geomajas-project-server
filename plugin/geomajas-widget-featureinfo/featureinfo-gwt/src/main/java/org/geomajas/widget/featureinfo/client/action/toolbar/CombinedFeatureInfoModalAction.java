@@ -25,11 +25,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
-	private CombinedFeatureInfoController controller;
+	private final CombinedFeatureInfoController controller;
 
-	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	// Constructor:
 

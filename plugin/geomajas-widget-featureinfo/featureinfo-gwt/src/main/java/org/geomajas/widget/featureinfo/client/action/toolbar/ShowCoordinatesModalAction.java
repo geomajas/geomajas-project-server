@@ -33,7 +33,7 @@ public class ShowCoordinatesModalAction extends ToolbarModalAction implements Co
 	private boolean showViewCoordinates; // = false;
 	private boolean showWorldCoordinates = true;
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
 	public ShowCoordinatesModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/mouse_info_tool.png", null);

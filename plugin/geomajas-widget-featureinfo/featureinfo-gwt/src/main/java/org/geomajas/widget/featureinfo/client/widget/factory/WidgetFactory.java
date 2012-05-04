@@ -51,11 +51,9 @@ public final class WidgetFactory {
 
 	public static WidgetBuilder get(WidgetBuilderInfo info) {
 		WidgetBuilder wb = WIDGETBUILDERS.get(info.getBuilderName());
-		if (wb != null) {
-			if (info.getParameters() != null && info.getParameters().size() > 0) {
-				for (Parameter param : info.getParameters()) {
-					wb.configure(param.getName(), param.getValue());
-				}
+		if (wb != null && info.getParameters() != null && info.getParameters().size() > 0) {
+			for (Parameter param : info.getParameters()) {
+				wb.configure(param.getName(), param.getValue());
 			}
 		}
 		return wb;

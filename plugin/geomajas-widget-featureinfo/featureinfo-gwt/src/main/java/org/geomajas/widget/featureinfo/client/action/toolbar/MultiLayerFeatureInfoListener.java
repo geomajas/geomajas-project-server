@@ -63,7 +63,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private boolean dragging;
 	private boolean clickstart;
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
 	private boolean includeRasterLayers = FitSetting.featureinfoIncludeRasterLayer;
 
@@ -72,11 +72,12 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	 */
 	private int pixelTolerance = FitSetting.featureInfoPixelTolerance;
 	
-	private List<String> layersToExclude = new ArrayList<String>();
+	private final List<String> layersToExclude = new ArrayList<String>();
 	
 	private Map<String, String> featuresListLabels;
 
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
+		super();
 		this.mapWidget = mapWidget;
 	}
 	
@@ -184,16 +185,11 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
 			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
-				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel().
-							getLayer(featureMap.keySet().iterator().next()));
+				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel()
+													.getLayer(featureMap.keySet().iterator().next()));
 				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
-					Feature feature;
-					if (layer instanceof VectorLayer) {
-						feature = new Feature(featDTO, (VectorLayer) layer);
-					} else {
-						feature = new Feature(featDTO, null);
-					}
+					Feature feature = new Feature(featDTO, (VectorLayer) layer);
 					Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, layer, false);
 					window.setPageTop(mapWidget.getAbsoluteTop() + 25);
 					window.setPageLeft(mapWidget.getAbsoluteLeft() + 25);

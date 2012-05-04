@@ -30,7 +30,7 @@ import com.smartgwt.client.widgets.Label;
 public class ShowCoordinatesController extends AbstractGraphicsController {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
-	private boolean showViewCoordinates; // = false;
+	private final boolean showViewCoordinates; // = false;
 	private boolean showWorldCoordinates = true;
 	private CoordinatesLabel label;
 
@@ -71,11 +71,12 @@ public class ShowCoordinatesController extends AbstractGraphicsController {
 	 */
 	private class CoordinatesLabel extends Label {
 
-		private NumberFormat viewformatter = NumberFormat.getFormat("#,##0");
-		private NumberFormat worldformatter = NumberFormat.getFormat("#,##0.000");
-		private boolean showBoth;
+		private final NumberFormat viewformatter = NumberFormat.getFormat("#,##0");
+		private final NumberFormat worldformatter = NumberFormat.getFormat("#,##0.000");
+		private final boolean showBoth;
 
 		public CoordinatesLabel() {
+			super();
 			setParentElement(mapWidget);
 			setValign(VerticalAlignment.TOP);
 			setShowEdges(true);
