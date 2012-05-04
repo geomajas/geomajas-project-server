@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="codingstyle" lang="en">
@@ -157,7 +156,9 @@ References
     </itemizedlist>
 
     <section id="comments">
-      <title>Comment</title>
+       
+
+      <title>Comments</title>
 
        Each file should have the correct copyright notice at the start of the file. 
 
@@ -228,6 +229,59 @@ References
           comment to indicate the version in which the class or method was
           added. This is also the case for methods which are added in classes
           with "<code>@Api(allMethods = true)</code>" annotation.</para>
+        </listitem>
+
+        <listitem>
+          <para>All methods and fields which are not private should have full
+          javadoc or be annotated with @Override or have (for implementing
+          methods) {@inheritDoc} as javadoc. (This is enforced for all api
+          methods and fields).</para>
+        </listitem>
+
+        <listitem>
+          <para>All parameters and the return value need Javadoc. This
+          includes both the parameter name and the value.</para>
+        </listitem>
+
+        <listitem>
+          <para>Please use the following order in the javadoc to keep
+          everything consistent:</para>
+
+          <para>
+            <itemizedlist>
+              <listitem>
+                <para>description</para>
+              </listitem>
+
+              <listitem>
+                <para>@param</para>
+              </listitem>
+
+              <listitem>
+                <para>@return</para>
+              </listitem>
+
+              <listitem>
+                <para>@author</para>
+              </listitem>
+
+              <listitem>
+                <para>@since</para>
+              </listitem>
+
+              <listitem>
+                <para>@see</para>
+              </listitem>
+
+              <listitem>
+                <para>@deprecateted</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </listitem>
+
+        <listitem>
+          <para />
         </listitem>
       </itemizedlist>
 
@@ -362,6 +416,35 @@ public class Foo implements Serializable {
       url="http://files.geomajas.org/geomajas_formatter_intellij.xml">IntelliJ
       IDEA</ulink> formatter which can be used. However, be careful not to
       change the entire formatting of a class.</para>
+    </section>
+
+    <section>
+      <title>Miscellaneous</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>All request and response objects should have a toString()
+            method to aid in debugging (these are used by the debug/trace
+            logging in the command dispatcher).</para>
+          </listitem>
+
+          <listitem>
+            <para>Always provide a default case in switch statements. This can
+            throw an IllegalStateException. This is done to assure that
+            problems are caught easily when adding values in enums etc.</para>
+          </listitem>
+
+          <listitem>
+            <para>Regularly have a look at sonar and try to minimize
+            violations. This is intented to improve our code quality and
+            maintainability.</para>
+          </listitem>
+
+          <listitem>
+            <para>Use a StringBuilder when concatenating strings in a loop.
+            Don't use + to concatenate strings in the append methods.</para>
+          </listitem>
+        </itemizedlist></para>
     </section>
   </section>
 </chapter>
