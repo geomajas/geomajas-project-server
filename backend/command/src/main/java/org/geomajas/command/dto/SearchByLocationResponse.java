@@ -33,9 +33,13 @@ public class SearchByLocationResponse extends CommandResponse {
 
 	private Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>();
 
-	public SearchByLocationResponse() {
-	}
-
+	/**
+	 * Add a features for a layer in the response. Only adds features for a layer once.
+	 *
+	 * @param layerId layer id
+	 * @param features features
+	 * @return true when features were added, false when response already contained features for the layer
+	 */
 	public boolean addLayer(String layerId, List<Feature> features) {
 		if (!featureMap.containsKey(layerId)) {
 			featureMap.put(layerId, features);
@@ -43,10 +47,20 @@ public class SearchByLocationResponse extends CommandResponse {
 		return false;
 	}
 
+	/**
+	 * Get map with features. The map key is the layer id, the value are the found features.
+	 *
+	 * @return features map
+	 */
 	public Map<String, List<Feature>> getFeatureMap() {
 		return featureMap;
 	}
 
+	/**
+	 * Set map with features. The map key is the layer id, the value are the found features.
+	 *
+	 * @param featureMap features map
+	 */
 	public void setFeatureMap(Map<String, List<Feature>> featureMap) {
 		this.featureMap = featureMap;
 	}

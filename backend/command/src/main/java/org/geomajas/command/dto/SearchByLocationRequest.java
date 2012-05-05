@@ -40,10 +40,6 @@ public class SearchByLocationRequest implements CommandRequest {
 	 * */
 	public static final String COMMAND = "command.feature.SearchByLocation";
 
-	// -------------------------------------------------------------------------
-	// Command statics:
-	// -------------------------------------------------------------------------
-
 	/**
 	 * Search type in which the layers are searched from the beginning to the
 	 * end of the array until a result is found. In other words when a layer
@@ -64,15 +60,20 @@ public class SearchByLocationRequest implements CommandRequest {
 	 */
 	public static final int QUERY_INTERSECTS = 1;
 
+	/**
+	 * Use touches query.
+	 */
 	public static final int QUERY_TOUCHES = 2;
 
+	/**
+	 * Use within query.
+	 */
 	public static final int QUERY_WITHIN = 3;
 
+	/**
+	 * Use contains query.
+	 */
 	public static final int QUERY_CONTAINS = 4;
-
-	// -------------------------------------------------------------------------
-	// Command fields:
-	// -------------------------------------------------------------------------
 
 	/**
 	 * The geometric description of the location to search features at.
@@ -123,17 +124,6 @@ public class SearchByLocationRequest implements CommandRequest {
 
 	private int featureIncludes = GeomajasConstant.FEATURE_INCLUDE_ALL;
 
-	// -------------------------------------------------------------------------
-	// Constructors:
-	// -------------------------------------------------------------------------
-
-	public SearchByLocationRequest() {
-	}
-
-	// -------------------------------------------------------------------------
-	// Getters and setters:
-	// -------------------------------------------------------------------------
-
 	/**
 	 * The geometric description of the location to search features at.
 	 * 
@@ -143,6 +133,11 @@ public class SearchByLocationRequest implements CommandRequest {
 		return location;
 	}
 
+	/**
+	 * Set the geometry to use as search location.
+	 *
+	 * @param location location
+	 */
 	public void setLocation(Geometry location) {
 		this.location = location;
 	}

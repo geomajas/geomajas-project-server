@@ -30,13 +30,20 @@ public class GetVectorTileResponse extends CommandResponse {
 
 	private VectorTile tile;
 
-	public GetVectorTileResponse() {
-	}
-
+	/**
+	 * Get response tile.
+	 *
+	 * @return tile
+	 */
 	public VectorTile getTile() {
 		return tile;
 	}
 
+	/**
+	 * Set response tile.
+	 *
+	 * @param tile tile
+	 */
 	public void setTile(VectorTile tile) {
 		this.tile = tile;
 	}

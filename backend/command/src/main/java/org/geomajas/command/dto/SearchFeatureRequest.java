@@ -35,8 +35,10 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	 * */
 	public static final String COMMAND = "command.feature.Search";
 
+	/** Use this number as maximum to indicate that all results should be returned. */
 	public static final int MAX_UNLIMITED = 0;
 
+	/** Field ID to use to always get the id field. */
 	public static final String ID_ATTRIBUTE = "$id";
 	
 	private int max = MAX_UNLIMITED;
@@ -52,9 +54,6 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	private String crs;
 
 	private int featureIncludes = GeomajasConstant.FEATURE_INCLUDE_ALL;
-
-	public SearchFeatureRequest() {
-	}
 
 	/**
 	 * Get the maximum number of features which may be returned.

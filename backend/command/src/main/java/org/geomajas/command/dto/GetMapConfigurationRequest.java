@@ -36,26 +36,53 @@ public class GetMapConfigurationRequest implements CommandRequest {
 
 	private String mapId;
 
+	/** No-arguments constructor. */
 	public GetMapConfigurationRequest() {
 	}
 
+	/**
+	 * Constructor which immediately initializes some fields.
+	 *
+	 * @param mapId map id
+	 * @param applicationId application id
+	 */
 	public GetMapConfigurationRequest(String mapId, String applicationId) {
 		this.mapId = mapId;
 		this.applicationId = applicationId;
 	}
 
+	/**
+	 * Get the application id.
+	 *
+	 * @return application id
+	 */
 	public String getApplicationId() {
 		return applicationId;
 	}
-	
+
+	/**
+	 * Set the application id.
+	 *
+	 * @param applicationId application id
+	 */
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
 
+	/**
+	 * Get the map id.
+	 *
+	 * @return map id
+	 */
 	public String getMapId() {
 		return mapId;
 	}
 
+	/**
+	 * Set the map id.
+	 *
+	 * @param mapId map id
+	 */
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}

@@ -29,10 +29,20 @@ public class GeometryBufferResponse extends CommandResponse {
 
 	private List<Geometry> geometries;
 
+	/**
+	 * Get buffered geometries.
+	 *
+	 * @return buffered geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set buffered geometries.
+	 *
+	 * @param geometries buffered geometries
+	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}

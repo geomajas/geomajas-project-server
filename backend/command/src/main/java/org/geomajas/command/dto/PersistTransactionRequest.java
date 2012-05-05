@@ -37,13 +37,20 @@ public class PersistTransactionRequest implements CommandRequest {
 
 	private String crs;
 
-	public PersistTransactionRequest() {
-	}
-
+	/**
+	 * Get the feature transaction.
+	 *
+	 * @return feature transaction
+	 */
 	public FeatureTransaction getFeatureTransaction() {
 		return featureTransaction;
 	}
 
+	/**
+	 * Set the feature transaction.
+	 *
+	 * @param featureTransaction feature transaction
+	 */
 	public void setFeatureTransaction(FeatureTransaction featureTransaction) {
 		this.featureTransaction = featureTransaction;
 	}

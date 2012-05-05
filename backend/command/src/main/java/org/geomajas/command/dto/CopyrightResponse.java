@@ -29,10 +29,20 @@ public class CopyrightResponse extends CommandResponse {
 
 	private List<CopyrightInfo> copyrights;
 
+	/**
+	 * Get the copyright information.
+	 *
+	 * @return copyrights
+	 */
 	public List<CopyrightInfo> getCopyrights() {
 		return copyrights;
 	}
 
+	/**
+	 * Set the copyright information.
+	 *
+	 * @param copyrights copyrights
+	 */
 	public void setCopyrights(List<CopyrightInfo> copyrights) {
 		this.copyrights = copyrights;
 	}

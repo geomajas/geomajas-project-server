@@ -29,17 +29,29 @@ public class GetMapConfigurationResponse extends CommandResponse {
 
 	private ClientMapInfo mapInfo;
 
+	/** No-arguments constructor. */
 	public GetMapConfigurationResponse() {
 	}
 
+	/** Constructor with map info. */
 	public GetMapConfigurationResponse(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
 	}
 
+	/**
+	 * Get map info.
+	 *
+	 * @return map info
+	 */
 	public ClientMapInfo getMapInfo() {
 		return mapInfo;
 	}
 
+	/**
+	 * Set map info.
+	 *
+	 * @param mapInfo map info
+	 */
 	public void setMapInfo(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
 	}

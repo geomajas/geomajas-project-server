@@ -29,13 +29,20 @@ public class PersistTransactionResponse extends CommandResponse {
 
 	private FeatureTransaction featureTransaction;
 
-	public PersistTransactionResponse() {
-	}
-
+	/**
+	 * Get the feature transaction.
+	 *
+	 * @return feature transaction
+	 */
 	public FeatureTransaction getFeatureTransaction() {
 		return featureTransaction;
 	}
 
+	/**
+	 * Set the feature transaction.
+	 *
+	 * @param featureTransaction feature transaction
+	 */
 	public void setFeatureTransaction(FeatureTransaction featureTransaction) {
 		this.featureTransaction = featureTransaction;
 	}

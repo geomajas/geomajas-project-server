@@ -36,9 +36,6 @@ public class SearchFeatureResponse extends CommandResponse {
 
 	private Feature[] features;
 
-	public SearchFeatureResponse() {
-	}
-
 	/**
 	 * Get the layer id.
 	 *
@@ -48,14 +45,29 @@ public class SearchFeatureResponse extends CommandResponse {
 		return layerId;
 	}
 
+	/**
+	 * Set the id of the layer for the response features.
+	 *
+	 * @param layerId layer id
+	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}
 
+	/**
+	 * Get the result features.
+	 *
+	 * @return result features
+	 */
 	public Feature[] getFeatures() {
 		return features;
 	}
 
+	/**
+	 * Set the result features.
+	 *
+	 * @param features result features
+	 */
 	public void setFeatures(Feature[] features) {
 		this.features = features;
 	}

@@ -27,10 +27,20 @@ public class GeometryMergeResponse extends CommandResponse {
 
 	private Geometry geometry;
 
+	/**
+	 * Get merged geometries.
+	 *
+	 * @return merged geometries
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Set merged geometries.
+	 *
+	 * @param geometry merged geometries
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}

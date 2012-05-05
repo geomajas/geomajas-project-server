@@ -32,9 +32,6 @@ public class GetRasterTilesResponse extends CommandResponse {
 
 	private String nodeId;
 
-	public GetRasterTilesResponse() {
-	}
-
 	/**
 	 * Get list of raster image metadata.
 	 *

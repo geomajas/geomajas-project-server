@@ -39,9 +39,6 @@ public class GetRasterTilesRequest extends LayerIdCommandRequest {
 
 	private double scale;
 
-	public GetRasterTilesRequest() {
-	}
-
 	/**
 	 * Crs which is used for the bounding box coordinates.
 	 *
@@ -69,6 +66,11 @@ public class GetRasterTilesRequest extends LayerIdCommandRequest {
 		return bbox;
 	}
 
+	/**
+	 * Set bounding box for which you need raster data.
+	 *
+	 * @param bbox bounding box
+	 */
 	public void setBbox(Bbox bbox) {
 		this.bbox = bbox;
 	}
@@ -82,6 +84,11 @@ public class GetRasterTilesRequest extends LayerIdCommandRequest {
 		return scale;
 	}
 
+	/**
+	 * Set the view scale in pixels/unit of coordinate system.
+	 *
+	 * @param scale scale
+	 */
 	public void setScale(double scale) {
 		this.scale = scale;
 	}
