@@ -27,7 +27,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements ConfigurableAction {
 
-	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	
 	private final MapWidget mapWidget;
 	private final TooltipOnMouseoverListener listener;

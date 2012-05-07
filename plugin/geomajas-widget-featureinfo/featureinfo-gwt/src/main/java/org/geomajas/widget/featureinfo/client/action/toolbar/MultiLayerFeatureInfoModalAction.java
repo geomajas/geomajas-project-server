@@ -43,7 +43,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	private String[] layersToExclude = new String[0];
 	private Map<String, String> featuresListLabels = new HashMap<String, String>();
 
-	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	/**
 	 * Constructor.
@@ -70,8 +70,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
 		} else if ("layersToExclude".equals(key) && null != value) {
-			String[] layersToExcl = new String [0];
-			layersToExcl = value.split(",");
+			String[] layersToExcl = value.split(",");
 			for (int i = 0; i < layersToExcl.length; i++) {
 				layersToExcl[i] = layersToExcl[i].trim();
 			}

@@ -52,7 +52,7 @@ import com.smartgwt.client.widgets.Img;
  */
 public class TooltipOnMouseoverListener extends AbstractListener {
 
-	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private Canvas tooltip;
 	private int pixelTolerance = FitSetting.tooltipPixelTolerance;
 
@@ -65,6 +65,8 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private Coordinate currentPosition; // screen
 	private Coordinate worldPosition; // world !!
 	private Timer timer;
+	private int widest = 10;
+	private int count = 0;
 	
 	private final MapWidget mapWidget;
 	private final List<String> layersToExclude = new ArrayList<String>();
@@ -174,53 +176,21 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		sb.append("</span>");
 	}
 
-	private void setTooltipData(Coordinate coordUsedForRetrieval,
-			Map<String, List<Feature>> featureMap) {
+	private void setTooltipData(Coordinate coordUsedForRetrieval, Map<String, List<Feature>> featureMap) {
 		if (coordUsedForRetrieval.equals(worldPosition) && tooltip != null) {
 			StringBuilderImpl sb = new StringBuilderImpl.ImplStringAppend();
 			sb.append(CSS);
-			int widest = 10;
-			int count = 0;
-
+			widest = 10;
+			count = 0;
+			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
-				if (featureMap.containsKey(layer.getId())
-						&& useLayer(layer.getId())) {
+				if (featureMap.containsKey(layer.getId()) && useLayer(layer.getId())) {
 					List<Feature> features = featureMap.get(layer.getId());
 					if (features.size() > 0) {
 						if (useFeatureDetail) {
-							for (Feature feature : features) {
-								if (count < maxLabelCount) {
-									String featureLabel = layer.getLabel() + " " + feature.getId();
-									widest = updateTooltipSize(widest, featureLabel);
-									writeLayerStart(sb, featureLabel);
-									for (Entry<String, Attribute> entry : feature .getAttributes().entrySet()) {
-										if (isIdentifying(entry.getKey(), layer)) {
-											String label = entry.getKey() + ": " + entry.getValue().toString();
-											writeFeature(sb, label);
-											widest = updateTooltipSize(widest, label);
-										}
-									}
-									writeLayerEnd(sb);
-									count++;
-								}
-							}
+							setTooltipDetailData(sb, layer, features);
 						} else {
-							if (count < maxLabelCount) {
-								writeLayerStart(sb, layer.getLabel());
-								widest = updateTooltipSize(widest,
-										layer.getLabel());
-								for (Feature feature : features) {
-									if (count < maxLabelCount) {
-										String label = feature.getLabel();
-										writeFeature(sb, label);
-										widest = updateTooltipSize(widest, label);
-									}
-									count++;
-								}
-								writeLayerEnd(sb);
-							} else {
-								count += features.size();
-							}
+							setTooltipDefaultData(sb, layer, features);
 						}
 					}
 				}
@@ -249,6 +219,44 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			content.setMargin(5);
 			createTooltip(left, top, content);
 		} // else - mouse moved between request and data retrieval
+	}
+
+	private void setTooltipDefaultData(StringBuilderImpl sb, Layer<?> layer, List<Feature> features) {
+		if (count < maxLabelCount) {
+			writeLayerStart(sb, layer.getLabel());
+			widest = updateTooltipSize(widest,
+					layer.getLabel());
+			for (Feature feature : features) {
+				if (count < maxLabelCount) {
+					String label = feature.getLabel();
+					writeFeature(sb, label);
+					widest = updateTooltipSize(widest, label);
+				}
+				count++;
+			}
+			writeLayerEnd(sb);
+		} else {
+			count += features.size();
+		}
+	}
+
+	private void setTooltipDetailData(StringBuilderImpl sb, Layer<?> layer, List<Feature> features) {
+		for (Feature feature : features) {
+			if (count < maxLabelCount) {
+				String featureLabel = layer.getLabel() + " " + feature.getId();
+				widest = updateTooltipSize(widest, featureLabel);
+				writeLayerStart(sb, featureLabel);
+				for (Entry<String, Attribute> entry : feature .getAttributes().entrySet()) {
+					if (isIdentifying(entry.getKey(), layer)) {
+						String label = entry.getKey() + ": " + entry.getValue().toString();
+						writeFeature(sb, label);
+						widest = updateTooltipSize(widest, label);
+					}
+				}
+				writeLayerEnd(sb);
+				count++;
+			}
+		}
 	}
 	
 	private boolean isIdentifying(String key, Layer layer) {

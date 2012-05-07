@@ -62,7 +62,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 
 	private boolean dragging;
 	private boolean clickstart;
-	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private final MapWidget mapWidget;
 
 	private boolean includeRasterLayers = FitSetting.featureinfoIncludeRasterLayer;
