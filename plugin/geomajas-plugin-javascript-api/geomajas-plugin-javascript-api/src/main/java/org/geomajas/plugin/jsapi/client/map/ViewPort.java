@@ -26,8 +26,10 @@ import org.timepedia.exporter.client.Exportable;
 @Api(allMethods = true)
 public interface ViewPort extends Exportable {
 
+	/** World render space. */
 	String RENDER_SPACE_WORLD = "world";
 
+	/** Screen render space. */
 	String RENDER_SPACE_SCREEN = "screen";
 
 	/**
@@ -62,7 +64,7 @@ public interface ViewPort extends Exportable {
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
 	 * this.
 	 * 
-	 * @param scale
+	 * @param newScale
 	 *            The preferred new scale.
 	 */
 	void applyScale(double newScale);

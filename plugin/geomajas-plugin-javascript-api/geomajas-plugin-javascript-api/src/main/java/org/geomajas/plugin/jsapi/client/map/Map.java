@@ -73,6 +73,11 @@ public interface Map extends Exportable {
 	 */
 	void setHtmlElementId(String id);
 
+	/**
+	 * Get the id of the HTML element this map is coupled with.
+	 *
+	 * @return element id
+	 */
 	String getHtmlElementId();
 
 	/**

@@ -29,6 +29,15 @@ import org.timepedia.exporter.client.Exportable;
 @Api(allMethods = true)
 public class Bbox implements ExportOverlay<org.geomajas.geometry.Bbox>, Exportable {
 
+	/**
+	 * Bbox constructor.
+	 *
+	 * @param x x origin
+	 * @param y y origin
+	 * @param width width
+	 * @param height height
+	 * @return bbox with requested origin and dimensions
+	 */
 	@ExportConstructor
 	public static org.geomajas.geometry.Bbox constructor(double x, double y, double width, double height) {
 		return new org.geomajas.geometry.Bbox(x, y, width, height);
@@ -150,7 +159,7 @@ public class Bbox implements ExportOverlay<org.geomajas.geometry.Bbox>, Exportab
 
 	/**
 	 * Convert to readable string.
-	 * 
+	 *
 	 * @return readable string for bbox
 	 */
 	public String toString() {

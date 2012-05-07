@@ -26,6 +26,7 @@ import org.geomajas.plugin.jsapi.client.event.JsEventBus;
 import org.geomajas.plugin.jsapi.client.event.JsHandlerRegistration;
 import org.geomajas.plugin.jsapi.client.event.LayersModelChangedEvent;
 import org.geomajas.plugin.jsapi.client.event.LayersModelChangedHandler;
+import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.client.map.feature.Feature;
 import org.geomajas.plugin.jsapi.client.map.layer.FeaturesSupported;
 import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
@@ -47,12 +48,14 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api(allMethods = true)
 public class JsEventBusImpl implements Exportable, JsEventBus {
 
-	private MapImpl map;
+	private Map map;
 
+	/** No-args constructor for GWT. */
 	public JsEventBusImpl() {
 	}
 
-	public JsEventBusImpl(MapImpl map) {
+	/** Construct event bus for specific map */
+	public JsEventBusImpl(Map map) {
 		this.map = map;
 	}
 
@@ -61,7 +64,7 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 	 * map gets it's configuration from the server. Only then can it know what layers it has available.
 	 */
 	public JsHandlerRegistration addLayersModelChangedHandler(final LayersModelChangedHandler handler) {
-		HandlerRegistration registration = map.getMapWidget().getMapModel()
+		HandlerRegistration registration = ((MapImpl) map).getMapWidget().getMapModel()
 				.addMapModelChangedHandler(new MapModelChangedHandler() {
 
 					public void onMapModelChanged(MapModelChangedEvent event) {
@@ -76,11 +79,11 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 	 */
 	public JsHandlerRegistration addFeatureSelectionHandler(final FeatureSelectedHandler selectedHandler,
 			final FeatureDeselectedHandler deselectedHandler) {
-		if (map.getMapWidget().getMapModel().isInitialized()) {
+		if (((MapImpl) map).getMapWidget().getMapModel().isInitialized()) {
 			return addFeatureSelectionHandler2(selectedHandler, deselectedHandler);
 		}
 		final CallbackHandlerRegistration callbackRegistration = new CallbackHandlerRegistration();
-		map.getMapWidget().getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
+		((MapImpl) map).getMapWidget().getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
 
 			public void onMapModelChanged(MapModelChangedEvent event) {
 				JsHandlerRegistration temp = addFeatureSelectionHandler2(selectedHandler, deselectedHandler);
@@ -97,7 +100,7 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 	private JsHandlerRegistration addFeatureSelectionHandler2(final FeatureSelectedHandler selectedHandler,
 			final FeatureDeselectedHandler deselectedHandler) {
 
-		final List<VectorLayer> layers = map.getMapWidget().getMapModel().getVectorLayers();
+		final List<VectorLayer> layers = ((MapImpl) map).getMapWidget().getMapModel().getVectorLayers();
 		final HandlerRegistration[] registrations = new HandlerRegistration[layers.size()];
 
 		for (int i = 0; i < layers.size(); i++) {

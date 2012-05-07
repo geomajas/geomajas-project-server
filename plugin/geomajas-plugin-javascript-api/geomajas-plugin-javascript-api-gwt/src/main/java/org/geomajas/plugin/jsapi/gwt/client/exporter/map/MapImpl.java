@@ -61,7 +61,10 @@ public class MapImpl implements Exportable, Map {
 
 	private String htmlElementId;
 
-	// If this is removed, we get errors from the GWT exporter...
+	/**
+	 * No-arguments constructor.
+	 * If this is removed, we get errors from the GWT exporter...
+	 */
 	public MapImpl() {
 	}
 
@@ -123,7 +126,7 @@ public class MapImpl implements Exportable, Map {
 	 * the map. Only one controller can be set at any given time. When a controller is active on the map, using this
 	 * method, any fall-back controller is automatically disabled.
 	 * 
-	 * @param controller
+	 * @param mapController
 	 *            The new {@link MapController} object. If null is passed, then the active controller is again disabled.
 	 *            At that time the fall-back controller is again activated.
 	 */
