@@ -43,7 +43,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	private String[] layersToExclude = new String[0];
 	private Map<String, String> featuresListLabels = new HashMap<String, String>();
 
-	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	/**
 	 * Constructor.

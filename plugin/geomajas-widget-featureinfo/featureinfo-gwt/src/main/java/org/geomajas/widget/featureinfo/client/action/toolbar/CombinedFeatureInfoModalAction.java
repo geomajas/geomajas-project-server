@@ -29,7 +29,7 @@ public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 
 	private final CombinedFeatureInfoController controller;
 
-	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	// Constructor:
 

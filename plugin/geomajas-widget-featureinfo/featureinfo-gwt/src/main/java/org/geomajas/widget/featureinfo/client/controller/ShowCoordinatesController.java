@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.Label;
  */
 public class ShowCoordinatesController extends AbstractGraphicsController {
 
-	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private final boolean showViewCoordinates; // = false;
 	private boolean showWorldCoordinates = true;
 	private CoordinatesLabel label;

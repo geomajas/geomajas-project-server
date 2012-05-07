@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.Window;
  */
 public class MultiLayerFeatureInfoWindow extends DockableWindow {
 
-	private FeatureInfoMessages featureInfoMessages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages featureInfoMessages = GWT.create(FeatureInfoMessages.class);
 
 	private MultiLayerFeaturesList featuresList;
 

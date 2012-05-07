@@ -52,7 +52,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private static final int MAX_ROWS = 25;
 
-	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	private final Map<String, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
 

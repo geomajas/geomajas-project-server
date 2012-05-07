@@ -52,7 +52,7 @@ import com.smartgwt.client.widgets.Img;
  */
 public class TooltipOnMouseoverListener extends AbstractListener {
 
-	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private Canvas tooltip;
 	private int pixelTolerance = FitSetting.tooltipPixelTolerance;
 

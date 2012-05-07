@@ -28,7 +28,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class ShowCoordinatesModalAction extends ToolbarModalAction implements ConfigurableAction {
 
-	private final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	private boolean showViewCoordinates; // = false;
 	private boolean showWorldCoordinates = true;
