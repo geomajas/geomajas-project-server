@@ -61,21 +61,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-dev</artifactId>
-				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-user</artifactId>
-				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-servlet</artifactId>
-				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
 				<version>${gwt-exporter-version}</version>
@@ -98,6 +83,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-javascript-api</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-javascript-api</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
