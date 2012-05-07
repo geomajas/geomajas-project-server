@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.command.dto.GeometrySplitRequest;
+import org.geomajas.command.dto.GeometrySplitResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -39,8 +41,6 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.split.GeometrySplitService;
-import org.geomajas.plugin.editing.dto.GeometrySplitRequest;
-import org.geomajas.plugin.editing.dto.GeometrySplitResponse;
 import org.geomajas.plugin.editing.jsapi.example.dto.GetCentroidRequest;
 import org.geomajas.plugin.editing.jsapi.example.dto.GetCentroidResponse;
 
