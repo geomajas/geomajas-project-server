@@ -108,7 +108,7 @@
 	<modules>
 		<module>geocoder</module>
 		<module>geocoder-gwt</module>
-		<!--<module>geocoder-puregwt</module>-->
+		<module>geocoder-puregwt</module>
 		<module>geocoder-gwt-example-jar</module>
 		<module>geocoder-gwt-example</module>
   	</modules>
