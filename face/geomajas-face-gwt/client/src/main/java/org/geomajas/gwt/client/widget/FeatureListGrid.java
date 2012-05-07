@@ -12,6 +12,7 @@
 package org.geomajas.gwt.client.widget;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
@@ -218,6 +219,10 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 					if (value != null) {
 						if (value instanceof Boolean) {
 							record.setAttribute(attributeName, (Boolean) value); // "false" != false
+						} else if (value instanceof Number) {
+							record.setAttribute(attributeName, (Number) value); 
+						} else if (value instanceof Date) { // java.util
+							record.setAttribute(attributeName, (Date) value);
 						} else {
 							record.setAttribute(attributeName, value.toString());
 						}
