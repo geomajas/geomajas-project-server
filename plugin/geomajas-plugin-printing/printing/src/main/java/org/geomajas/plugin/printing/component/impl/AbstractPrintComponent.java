@@ -29,14 +29,22 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 @Api(allMethods = true)
 public class AbstractPrintComponent<T extends PrintComponentInfo> extends PrintComponentImpl<T> {
 
+	/** No-arguments constructor. */
 	public AbstractPrintComponent() {
 		super();
 	}
 
+	/** Constructor with component id. */
 	public AbstractPrintComponent(String id) {
 		super(id);
 	}
 
+	/**
+	 * Constructor with component id and layout constraints.
+	 *
+	 * @param id component id
+	 * @param constraint constraints
+	 */
 	public AbstractPrintComponent(String id, LayoutConstraint constraint) {
 		super(id, constraint);
 	}

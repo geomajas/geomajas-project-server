@@ -42,26 +42,56 @@ public class ViewPortComponentInfo extends MapComponentInfo implements Serializa
 	 */
 	private float userY = -1;
 
+	/**
+	 * Get zoom scale.
+	 *
+	 * @return zoom scale
+	 */
 	public float getZoomScale() {
 		return zoomScale;
 	}
 
+	/**
+	 * Set zoom scale.
+	 *
+	 * @param zoomScale zoom scale
+	 */
 	public void setZoomScale(float zoomScale) {
 		this.zoomScale = zoomScale;
 	}
 
+	/**
+	 * Get x user ordinate.
+	 *
+	 * @return user x ordinate
+	 */
 	public float getUserX() {
 		return userX;
 	}
 
+	/**
+	 * Set x user ordinate.
+	 *
+	 * @param userX user x ordinate
+	 */
 	public void setUserX(float userX) {
 		this.userX = userX;
 	}
 
+	/**
+	 * Get user y ordinate.
+	 *
+	 * @return y ordinate
+	 */
 	public float getUserY() {
 		return userY;
 	}
 
+	/**
+	 * Set user y ordinate.
+	 *
+	 * @param userY user y ordinate
+	 */
 	public void setUserY(float userY) {
 		this.userY = userY;
 	}

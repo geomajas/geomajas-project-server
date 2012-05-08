@@ -43,52 +43,108 @@ public abstract class PrintComponentInfo implements Serializable {
 
 	private LayoutConstraintInfo layoutConstraint = new LayoutConstraintInfo();
 
+	/** Get component id. */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set component id.
+	 *
+	 * @param id component id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get tag.
+	 *
+	 * @return tag
+	 */
 	public String getTag() {
 		return tag;
 	}
 
+	/**
+	 * Set tag.
+	 *
+	 * @param tag tag
+	 */
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
 
+	/**
+	 * Get child components.
+	 *
+	 * @return children
+	 */
 	public List<PrintComponentInfo> getChildren() {
 		return children;
 	}
 
+	/**
+	 * Set child components.
+	 *
+	 * @param children child components
+	 */
 	public void setChildren(List<PrintComponentInfo> children) {
 		this.children = children;
 	}
 
+	/**
+	 * Add a child component.
+	 *
+	 * @param child component to add
+	 */
 	public void addChild(PrintComponentInfo child) {
 		if (child != null) {
 			children.add(child);
 		}
 	}
 
+	/**
+	 * Get page bounds for component.
+	 *
+	 * @return page bounds
+	 */
 	public Bbox getBounds() {
 		return bounds;
 	}
 
+	/**
+	 * Set page bounds for component.
+	 *
+	 * @param bounds page bounds
+	 */
 	public void setBounds(Bbox bounds) {
 		this.bounds = bounds;
 	}
 
+	/**
+	 * Get layout constraints.
+	 *
+	 * @return layout constraints
+	 */
 	public LayoutConstraintInfo getLayoutConstraint() {
 		return layoutConstraint;
 	}
 
+	/**
+	 * Set layout constraints.
+	 *
+	 * @param layoutConstraint layout constraints
+	 */
 	public void setLayoutConstraint(LayoutConstraintInfo layoutConstraint) {
 		this.layoutConstraint = layoutConstraint;
 	}
-	
+
+	/**
+	 * Get prototype name.
+	 *
+	 * @return prototype name
+	 */
 	public String getPrototypeName() {
 		String name = getClass().getName();
 		if (name.startsWith(ORG_GEOMAJAS)) {

@@ -40,34 +40,74 @@ public class VectorLayerComponentInfo extends BaseLayerComponentInfo implements 
 	/** True if labels are visible. */
 	private boolean labelsVisible;
 
+	/**
+	 * Get style info.
+	 *
+	 * @return style info
+	 */
 	public NamedStyleInfo getStyleInfo() {
 		return styleInfo;
 	}
 
+	/**
+	 * Set style info.
+	 *
+	 * @param styleInfo style info
+	 */
 	public void setStyleInfo(NamedStyleInfo styleInfo) {
 		this.styleInfo = styleInfo;
 	}
 
+	/**
+	 * Get filter.
+	 *
+	 * @return filter
+	 */
 	public String getFilter() {
 		return filter;
 	}
 
+	/**
+	 * Set filter.
+	 *
+	 * @param filter filter
+	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
 
+	/**
+	 * Get selected feature ids.
+	 *
+	 * @return selected feature ids
+	 */
 	public String[] getSelectedFeatureIds() {
 		return selectedFeatureIds;
 	}
 
+	/**
+	 * Set ids of selected features.
+	 *
+	 * @param selectedFeatureIds ids of selected features
+	 */
 	public void setSelectedFeatureIds(String[] selectedFeatureIds) {
 		this.selectedFeatureIds = selectedFeatureIds;
 	}
 
+	/**
+	 * Should feature labels be displayed?
+	 *
+	 * @return feature labels visible?
+	 */
 	public boolean isLabelsVisible() {
 		return labelsVisible;
 	}
 
+	/**
+	 * Set whether feature labels should be displayed.
+	 *
+	 * @param labelsVisible labels visible?
+	 */
 	public void setLabelsVisible(boolean labelsVisible) {
 		this.labelsVisible = labelsVisible;
 	}

@@ -61,29 +61,42 @@ public class LayoutConstraintInfo implements Serializable {
 	 */
 	private int flowDirection = FLOW_NONE;
 
+	/** Align left. */
 	public static final int LEFT = 0;
-
+	/** Align bottom. */
 	public static final int BOTTOM = 1;
-
+	/** Align center. */
 	public static final int CENTER = 2;
-
+	/** Align right. */
 	public static final int RIGHT = 3;
-
+	/** Align top. */
 	public static final int TOP = 4;
-
+	/** Justified alignation. */
 	public static final int JUSTIFIED = 5;
-
+	/** Absolute alignation. */
 	public static final int ABSOLUTE = 6;
-
+	/** Flow x horizontal. */
 	public static final int FLOW_X = 0;
-
+	/** Flow vertical. */
 	public static final int FLOW_Y = 1;
-
+	/** No flow. */
 	public static final int FLOW_NONE = 2;
 
+	/** No-arguments constructor for GWT. */
 	public LayoutConstraintInfo() {
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param alignmentX x alignment
+	 * @param alignmentY y alignment
+	 * @param flowDirection flow direction
+	 * @param width width
+	 * @param height height
+	 * @param marginX x margin
+	 * @param marginY y margin
+	 */
 	public LayoutConstraintInfo(int alignmentX, int alignmentY, int flowDirection, float width, float height,
 			float marginX, float marginY) {
 		this.alignmentX = alignmentX;
