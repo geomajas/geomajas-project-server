@@ -373,8 +373,10 @@ public class ApiCompatibilityCheck extends Check {
 		DetailAST modifiers = ast.findFirstToken(TokenTypes.MODIFIERS);
 		if (null != modifiers) {
 			DetailAST check = modifiers.getFirstChild();
+			String name = getName(check);
 			while (null != check) {
-				if (TokenTypes.ANNOTATION == check.getType() && "Override".equals(getName(check))) {
+				if (TokenTypes.ANNOTATION == check.getType() &&
+						("Override".equals(name) || "java.lang.Override".equals(name))) {
 					return true;
 				}
 				check = check.getNextSibling();
