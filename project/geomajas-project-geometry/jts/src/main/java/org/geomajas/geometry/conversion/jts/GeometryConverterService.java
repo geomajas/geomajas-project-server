@@ -47,10 +47,13 @@ public final class GeometryConverterService {
 		// Final class should not have a public constructor.
 	}
 
-	// ------------------------------------------------------------------------
-	// Conversion from Geomajas to JTS:
-	// ------------------------------------------------------------------------
-
+	/**
+	 * Convert a Geomajas geometry to a JTS geometry.
+	 *
+	 * @param geometry Geomajas geometry
+	 * @return JTS geometry
+	 * @throws JtsConversionException conversion failed
+	 */
 	public static com.vividsolutions.jts.geom.Geometry toJts(Geometry geometry) throws JtsConversionException {
 		if (geometry == null) {
 			throw new  JtsConversionException("Cannot convert null argument");
@@ -103,6 +106,13 @@ public final class GeometryConverterService {
 		return jts;
 	}
 
+	/**
+	 * Convert a Geomajas bounding box to a JTS envelope.
+	 *
+	 * @param bbox Geomajas bbox
+	 * @return JTS Envelope
+	 * @throws JtsConversionException conversion failed
+	 */
 	public static Envelope toJts(Bbox bbox) throws JtsConversionException {
 		if (bbox == null) {
 			throw new  JtsConversionException("Cannot convert null argument");
@@ -110,6 +120,13 @@ public final class GeometryConverterService {
 		return new Envelope(bbox.getX(), bbox.getMaxX(), bbox.getY(), bbox.getMaxY());
 	}
 
+	/**
+	 * Convert a Geomajas coordinate to a JTS coordinate.
+	 *
+	 * @param coordinate Geomajas coordinate
+	 * @return JTS coordinate
+	 * @throws JtsConversionException
+	 */
 	public static com.vividsolutions.jts.geom.Coordinate toJts(org.geomajas.geometry.Coordinate coordinate)
 			throws JtsConversionException {
 		if (coordinate == null) {
@@ -118,10 +135,12 @@ public final class GeometryConverterService {
 		return new com.vividsolutions.jts.geom.Coordinate(coordinate.getX(), coordinate.getY());
 	}
 
-	// ------------------------------------------------------------------------
-	// Conversion from JTS to Geomajas:
-	// ------------------------------------------------------------------------
-
+	/**
+	 * Convert a JTS geometry to a Geomajas geometry.
+	 * @param geometry JTS geometry
+	 * @return Geomajas geometry
+	 * @throws JtsConversionException conversion failed
+	 */
 	public static Geometry fromJts(com.vividsolutions.jts.geom.Geometry geometry) throws JtsConversionException {
 		if (geometry == null) {
 			throw new  JtsConversionException("Cannot convert null argument");
@@ -165,6 +184,13 @@ public final class GeometryConverterService {
 		return dto;
 	}
 
+	/**
+	 * Convert a JTS envelope to a Geomajas bounding box.
+	 *
+	 * @param envelope JTS envelope
+	 * @return Geomajas bbox
+	 * @throws JtsConversionException conversion failed
+	 */
 	public static Bbox fromJts(Envelope envelope) throws JtsConversionException {
 		if (envelope == null) {
 			throw new  JtsConversionException("Cannot convert null argument");
@@ -172,16 +198,19 @@ public final class GeometryConverterService {
 		return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 	}
 
+	/**
+	 * Convert a GTS coordinate to a Geomajas coordinate.
+	 *
+	 * @param coordinate jTS coordinate
+	 * @return Geomajas coordinate
+	 * @throws JtsConversionException conversion failed
+	 */
 	public static Coordinate fromJts(com.vividsolutions.jts.geom.Coordinate coordinate) throws JtsConversionException {
 		if (coordinate == null) {
 			throw new  JtsConversionException("Cannot convert null argument");
 		}
 		return new Coordinate(coordinate.x, coordinate.y);
 	}
-
-	// -------------------------------------------------------------------------
-	// Private functions converting from JTS to DTO:
-	// -------------------------------------------------------------------------
 
 	private static com.vividsolutions.jts.geom.Geometry createEmpty(GeometryFactory factory, String geometryType)
 			throws JtsConversionException {
@@ -196,9 +225,9 @@ public final class GeometryConverterService {
 		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
 			return factory.createMultiPoint((Point[]) null);
 		} else if (Geometry.MULTI_LINE_STRING.equals(geometryType)) {
-			return factory.createMultiLineString((LineString[]) null);
+			return factory.createMultiLineString(null);
 		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
-			return factory.createMultiPolygon((Polygon[]) null);
+			return factory.createMultiPolygon(null);
 		} else {
 			throw new JtsConversionException("Error while converting to Geomajas: Unknown geometry type.");
 		}
@@ -241,10 +270,6 @@ public final class GeometryConverterService {
 		}
 		return geometries;
 	}
-
-	// -------------------------------------------------------------------------
-	// Private functions converting from DTO to JTS:
-	// -------------------------------------------------------------------------
 
 	private static com.vividsolutions.jts.geom.Coordinate[] convertCoordinates(Geometry geometry) {
 		com.vividsolutions.jts.geom.Coordinate[] coordinates = new com.vividsolutions.jts.geom.Coordinate[geometry
