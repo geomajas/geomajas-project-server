@@ -31,6 +31,15 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 
 	private String selectedTooltip;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param selectedIcon selected icon
+	 * @param deselectedIcon deselected icon
+	 * @param disabledIcon disabled icon
+	 * @param selectedTooltip selected tooltip
+	 * @param deselectedTooltip deselected tooltip
+	 */
 	public LayerTreeModalAction(String selectedIcon, String deselectedIcon, String disabledIcon,
 			String selectedTooltip, String deselectedTooltip) {
 		super(deselectedIcon, deselectedTooltip);
@@ -49,46 +58,98 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 	 */
 	public abstract boolean isSelected(Layer<?> layer);
 
+	/** {@inheritDoc} */
 	public abstract void onDeselect(Layer<?> layer);
 
+	/** {@inheritDoc} */
 	public abstract void onSelect(Layer<?> layer);
 
+	/**
+	 * Get selected icon.
+	 *
+	 * @return selected icon
+	 */
 	public String getSelectedIcon() {
 		return selectedIcon;
 	}
 
+	/**
+	 * Set selected icon.
+	 *
+	 * @param selectedIcon selected icon
+	 */
 	public void setSelectedIcon(String selectedIcon) {
 		this.selectedIcon = selectedIcon;
 	}
 
+	/**
+	 * Get deselected icon.
+	 *
+	 * @return deselected icon
+	 */
 	public String getDeselectedIcon() {
 		return getIcon();
 	}
 
+	/**
+	 * Set deselected icon.
+	 *
+	 * @param deselectedIcon deselected icon
+	 */
 	public void setDeselectedIcon(String deselectedIcon) {
 		setIcon(deselectedIcon);
 	}
 
+	/**
+	 * Get selected tooltip.
+	 *
+	 * @return selected tooltip
+	 */
 	public String getSelectedTooltip() {
 		return selectedTooltip;
 	}
 
+	/**
+	 * Set selected tooltip.
+	 *
+	 * @param selectedTooltip selected tooltip
+	 */
 	public void setSelectedTooltip(String selectedTooltip) {
 		this.selectedTooltip = selectedTooltip;
 	}
 
+	/**
+	 * Get deselected tooltip.
+	 *
+	 * @return deselected tooltip
+	 */
 	public String getDeselectedTooltip() {
 		return getTooltip();
 	}
 
+	/**
+	 * Set deselected tooltip.
+	 *
+	 * @param deselectedTooltip deselected tooltip
+	 */
 	public void setDeselectedTooltip(String deselectedTooltip) {
 		setTooltip(deselectedTooltip);
 	}
 
+	/**
+	 * Get disabled icon.
+	 *
+	 * @return disabled icon
+	 */
 	public String getDisabledIcon() {
 		return disabledIcon;
 	}
 
+	/**
+	 * Set disabled icon.
+	 *
+	 * @param disabledIcon disabled icon
+	 */
 	public void setDisabledIcon(String disabledIcon) {
 		this.disabledIcon = disabledIcon;
 	}

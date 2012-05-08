@@ -42,22 +42,34 @@ public class EditingEvent extends GwtEvent<EditingHandler> {
 		// * This type should be fired when the user switches from drawing points to a normal editing mode.
 		// */
 		// STOP_DRAWING_POINTS
-	};
+	}
 
 	private EditingEventType editingEventType;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param editingEventType editing event type
+	 */
 	public EditingEvent(EditingEventType editingEventType) {
 		this.editingEventType = editingEventType;
 	}
 
+	/** {@inheritDoc} */
 	public Type<EditingHandler> getAssociatedType() {
 		return EditingHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(EditingHandler editingHandler) {
 		editingHandler.onEditingChange(this);
 	}
 
+	/**
+	 * Get editing event type.
+	 *
+	 * @return editing event type
+	 */
 	public EditingEventType getEditingEventType() {
 		return editingEventType;
 	}

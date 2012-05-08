@@ -26,9 +26,20 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface LayerSelectionHandler extends EventHandler {
 
+	/** Event type. */
 	Type<LayerSelectionHandler> TYPE = new Type<LayerSelectionHandler>();
 
+	/**
+	 * Called when layer is selected.
+	 *
+	 * @param event layer selected event
+	 */
 	void onSelectLayer(LayerSelectedEvent event);
 
+	/**
+	 * Called when layer is deselected.
+	 *
+	 * @param event layer deselected event
+	 */
 	void onDeselectLayer(LayerDeselectedEvent event);
 }

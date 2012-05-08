@@ -45,6 +45,12 @@ public abstract class ToolbarBaseAction {
 
 	private Layout layout;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param icon icon
+	 * @param tooltip tooltip
+	 */
 	public ToolbarBaseAction(String icon, String tooltip) {
 		this(icon, tooltip, tooltip);
 	}
@@ -64,6 +70,12 @@ public abstract class ToolbarBaseAction {
 		handlerManager = new HandlerManager(this);
 	}
 
+	/**
+	 * Add toolbar action handler.
+	 *
+	 * @param handler action handler
+	 * @return handler registration
+	 */
 	public HandlerRegistration addToolbarActionHandler(ToolbarActionHandler handler) {
 		return handlerManager.addHandler(ToolbarActionHandler.TYPE, handler);
 	}
@@ -164,12 +176,12 @@ public abstract class ToolbarBaseAction {
 	}
 	
 	/**
-	 * @deprecated Replaced by {@link #setLayout(Layout)}
 	 * <p>Set the button layout which determines the gui in a RibbonColumn.<p>
 	 * 
 	 * @param buttonLayout
 	 *           The button layout which determines the gui.
 	 * @since 1.10.0
+	 * @deprecated Replaced by {@link #setLayout(Layout)}
 	 */
 	@Deprecated
 	public void setButtonLayout(String buttonLayout) {
@@ -177,10 +189,9 @@ public abstract class ToolbarBaseAction {
 	}
 	
 	/**
-	 * Set the button layout which determines the gui in a RibbonColumn. 
+	 * Get the button layout which determines the gui in a RibbonColumn.
 	 * 
-	 * @param layout
-	 *           The {@link Layout} which determines the gui.
+	 * @return The {@link Layout} which determines the gui.
 	 * @since 1.11.0
 	 */
 	public Layout getLayout() {
@@ -190,8 +201,7 @@ public abstract class ToolbarBaseAction {
 	/**
 	 * Get the button layout which determines the gui in a RibbonColumn. 
 	 * 
-	 * @return layout
-	 *           The {@link Layout} which determines the gui.
+	 * @param layout The {@link Layout} which determines the gui.
 	 * @since 1.11.0
 	 */
 	public void setLayout(Layout layout) {

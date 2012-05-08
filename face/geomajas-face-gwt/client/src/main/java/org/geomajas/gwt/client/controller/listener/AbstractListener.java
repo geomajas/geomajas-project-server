@@ -29,21 +29,27 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public abstract class AbstractListener implements Listener {
 
+	/** {@inheritDoc} */
 	public void onMouseDown(ListenerEvent event) {
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseUp(ListenerEvent event) {
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseMove(ListenerEvent event) {
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseOut(ListenerEvent event) {
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseOver(ListenerEvent event) {
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseWheel(ListenerEvent event) {
 	}
 }

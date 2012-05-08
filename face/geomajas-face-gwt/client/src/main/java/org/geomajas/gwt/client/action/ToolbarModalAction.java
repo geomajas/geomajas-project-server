@@ -29,15 +29,22 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 @Api(allMethods = true)
 public abstract class ToolbarModalAction extends ToolbarBaseAction {
 
+	/**
+	 * Constructor.
+	 *
+	 * @param icon icon
+	 * @param tooltip tooltip
+	 */
 	public ToolbarModalAction(String icon, String tooltip) {
 		super(icon, tooltip, tooltip);
 	}
 
 	/**
 	 * Create a new ToolbarModalAction.
-	 * @param icon
-	 * @param title
-	 * @param tooltip
+	 *
+	 * @param icon icon
+	 * @param title title
+	 * @param tooltip tooltip
 	 * @since 1.10.0
 	 */
 	public ToolbarModalAction(String icon, String title, String tooltip) {
@@ -48,11 +55,15 @@ public abstract class ToolbarModalAction extends ToolbarBaseAction {
 
 	/**
 	 * When the tool bar button is selected, this method will be called.
+	 *
+	 * @param event event
 	 */
 	public abstract void onSelect(ClickEvent event);
 
 	/**
 	 * When the tool bar button is deselected, this method will be called.
+	 *
+	 * @param event event
 	 */
 	public abstract void onDeselect(ClickEvent event);
 }

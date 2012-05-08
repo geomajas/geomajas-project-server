@@ -26,9 +26,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface MapModelChangedHandler extends EventHandler {
 
-	/**
-	 * Event type.
-	 */
+	/** Event type. */
 	GwtEvent.Type<MapModelChangedHandler> TYPE = new GwtEvent.Type<MapModelChangedHandler>();
 
 	/**

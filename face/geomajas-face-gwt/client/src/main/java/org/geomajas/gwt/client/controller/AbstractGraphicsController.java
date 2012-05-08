@@ -55,6 +55,11 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 
 	protected MapWidget mapWidget;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	protected AbstractGraphicsController(MapWidget mapWidget) {
 		super(false);
 		this.mapWidget = mapWidget;
@@ -65,9 +70,11 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	// GraphicsController implementation:
 	// -------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void onActivate() {
 	}
 
+	/** {@inheritDoc} */
 	public void onDeactivate() {
 	}
 

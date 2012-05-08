@@ -27,20 +27,30 @@ public class FeatureSelectedEvent extends GwtEvent<FeatureSelectionHandler> {
 
 	private Feature feature;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param feature selected feature
+	 */
 	public FeatureSelectedEvent(Feature feature) {
 		this.feature = feature;
 	}
 
+	/**
+	 * Get selected feature.
+	 *
+	 * @return selected feature
+	 */
 	public Feature getFeature() {
 		return feature;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<FeatureSelectionHandler> getAssociatedType() {
 		return FeatureSelectionHandler.TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	protected void dispatch(FeatureSelectionHandler featureSelectionHandler) {
 		featureSelectionHandler.onFeatureSelected(this);
 	}

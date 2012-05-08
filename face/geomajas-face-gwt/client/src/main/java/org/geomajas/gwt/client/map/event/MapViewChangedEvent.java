@@ -83,10 +83,12 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 		return type;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(MapViewChangedHandler handler) {
 		handler.onMapViewChanged(this);
 	}
 
+	/** {@inheritDoc} */
 	public final Type<MapViewChangedHandler> getAssociatedType() {
 		return type;
 	}
@@ -113,18 +115,38 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 		return scale;
 	}
 
+	/**
+	 * Is the scale level still the same?
+	 *
+	 * @return true when scale level has not changed
+	 */
 	public boolean isSameScaleLevel() {
 		return sameScaleLevel;
 	}
 
+	/**
+	 * Is the user panning or dragging.
+	 *
+	 * @return true when user is panning or dragging
+	 */
 	public boolean isPanDragging() {
 		return panDragging;
 	}
 
+	/**
+	 * Has the map been resized?
+	 *
+	 * @return true when map resized
+	 */
 	public boolean isMapResized() {
 		return mapResized;
 	}
-	
+
+	/**
+	 * Get zoom option.
+	 *
+	 * @return zoom option
+	 */
 	public ZoomOption getZoomOption() {
 		return zoomOption;
 	}

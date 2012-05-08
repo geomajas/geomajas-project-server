@@ -26,18 +26,30 @@ public class LayerDeselectedEvent extends GwtEvent<LayerSelectionHandler> {
 
 	private Layer<?> layer;
 
+	/**
+	 * Create an event for the specified layer.
+	 *
+	 * @param layer the layer that was deselected
+	 */
 	public LayerDeselectedEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
+	/** {@inheritDoc} */
 	public Type<LayerSelectionHandler> getAssociatedType() {
 		return LayerSelectionHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(LayerSelectionHandler layerSelectionHandler) {
 		layerSelectionHandler.onDeselectLayer(this);
 	}
 
+	/**
+	 * Get layer which was deselected.
+	 *
+	 * @return deselected layer
+	 */
 	public Layer<?> getLayer() {
 		return layer;
 	}

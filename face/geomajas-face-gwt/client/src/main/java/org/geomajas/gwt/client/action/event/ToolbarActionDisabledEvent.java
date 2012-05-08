@@ -27,15 +27,21 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class ToolbarActionDisabledEvent extends GwtEvent<ToolbarActionHandler> {
 
+	/** {@inheritDoc} */
 	public Type<ToolbarActionHandler> getAssociatedType() {
 		return ToolbarActionHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(ToolbarActionHandler toolbarActionHandler) {
 		toolbarActionHandler.onToolbarActionDisabled(this);
 	}
 
-	/** Get the {@link ToolbarBaseAction} that is disabled. */
+	/**
+	 * Get the {@link ToolbarBaseAction} that is disabled.
+	 *
+	 * @return action which is disabled
+	 */
 	public ToolbarBaseAction getAction() {
 		return (ToolbarBaseAction) getSource();
 	}

@@ -26,6 +26,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 @UserImplemented
 public interface LayerFilteredHandler extends EventHandler {
 
+	/** Event type. */
 	Type<LayerFilteredHandler> TYPE = new Type<LayerFilteredHandler>();
 
 	/**

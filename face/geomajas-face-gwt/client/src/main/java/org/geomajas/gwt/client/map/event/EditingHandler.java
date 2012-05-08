@@ -27,6 +27,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface EditingHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<EditingHandler> TYPE = new GwtEvent.Type<EditingHandler>();
 
 	/**

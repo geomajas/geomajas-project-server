@@ -26,18 +26,30 @@ public class LayerSelectedEvent extends GwtEvent<LayerSelectionHandler> {
 
 	private Layer<?> layer;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param layer selected layer
+	 */
 	public LayerSelectedEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
+	/** {@inheritDoc} */
 	public Type<LayerSelectionHandler> getAssociatedType() {
 		return LayerSelectionHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(LayerSelectionHandler selectLayerHandler) {
 		selectLayerHandler.onSelectLayer(this);
 	}
 
+	/**
+	 * Get selected layer.
+	 *
+	 * @return selected layer
+	 */
 	public Layer<?> getLayer() {
 		return layer;
 	}

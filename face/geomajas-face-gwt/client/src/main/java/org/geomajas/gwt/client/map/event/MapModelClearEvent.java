@@ -26,6 +26,11 @@ public class MapModelClearEvent extends GwtEvent<MapModelClearHandler> {
 
 	private MapModel mapModel;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapModel map model to clear
+	 */
 	public MapModelClearEvent(MapModel mapModel) {
 		this.mapModel = mapModel;
 	}
@@ -39,12 +44,12 @@ public class MapModelClearEvent extends GwtEvent<MapModelClearHandler> {
 		return mapModel;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<MapModelClearHandler> getAssociatedType() {
 		return MapModelClearHandler.TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	protected void dispatch(MapModelClearHandler mapModelClearHandler) {
 		mapModelClearHandler.onMapModelClear(this);
 	}

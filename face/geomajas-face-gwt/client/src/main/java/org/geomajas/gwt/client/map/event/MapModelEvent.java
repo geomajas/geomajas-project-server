@@ -28,14 +28,15 @@ import com.google.gwt.event.shared.GwtEvent;
 @Deprecated
 public class MapModelEvent extends GwtEvent<MapModelHandler> {
 
+	/** Event type. */
 	public static final Type<MapModelHandler> TYPE = new Type<MapModelHandler>();
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<MapModelHandler> getAssociatedType() {
 		return TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	protected void dispatch(MapModelHandler mapViewHandler) {
 		mapViewHandler.onMapModelChange(this);
 	}

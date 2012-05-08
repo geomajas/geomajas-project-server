@@ -26,6 +26,11 @@ public class MapModelChangedEvent extends GwtEvent<MapModelChangedHandler> {
 
 	private MapModel mapModel;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapModel changed map model
+	 */
 	public MapModelChangedEvent(MapModel mapModel) {
 		this.mapModel = mapModel;
 	}
@@ -39,12 +44,12 @@ public class MapModelChangedEvent extends GwtEvent<MapModelChangedHandler> {
 		return mapModel;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<MapModelChangedHandler> getAssociatedType() {
 		return MapModelChangedHandler.TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	protected void dispatch(MapModelChangedHandler mapModelChangedHandler) {
 		mapModelChangedHandler.onMapModelChanged(this);
 	}

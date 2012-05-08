@@ -26,20 +26,30 @@ public class LayerStyleChangeEvent extends GwtEvent<LayerStyleChangedHandler> {
 
 	private Layer<?> layer;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param layer layer for which the style changed
+	 */
 	public LayerStyleChangeEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
+	/**
+	 * Get layer for which the style was changed.
+	 *
+	 * @return layer for which the style changed
+	 */
 	public Layer<?> getLayer() {
 		return layer;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<LayerStyleChangedHandler> getAssociatedType() {
 		return LayerStyleChangedHandler.TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	protected void dispatch(LayerStyleChangedHandler layerStyleChangedHandler) {
 		layerStyleChangedHandler.onLayerStyleChange(this);
 	}

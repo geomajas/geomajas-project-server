@@ -27,6 +27,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface FeatureTransactionHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<FeatureTransactionHandler> TYPE = new GwtEvent.Type<FeatureTransactionHandler>();
 
 	/**

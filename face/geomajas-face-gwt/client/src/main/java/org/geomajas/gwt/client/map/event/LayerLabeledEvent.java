@@ -26,20 +26,30 @@ public class LayerLabeledEvent extends GwtEvent<LayerChangedHandler> {
 
 	private Layer<?> layer;
 
+	/**
+	 * Contstructor.
+	 *
+	 * @param layer layer which is now labeled
+	 */
 	public LayerLabeledEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
+	/**
+	 * Get layer which is not labeled.
+	 *
+	 * @return labelled layer
+	 */
 	public Layer<?> getLayer() {
 		return layer;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<LayerChangedHandler> getAssociatedType() {
 		return LayerChangedHandler.TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	protected void dispatch(LayerChangedHandler layerChangedHandler) {
 		layerChangedHandler.onLabelChange(this);
 	}

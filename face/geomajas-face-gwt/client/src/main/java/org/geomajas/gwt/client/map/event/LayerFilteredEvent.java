@@ -26,20 +26,31 @@ public class LayerFilteredEvent extends GwtEvent<LayerFilteredHandler> {
 
 	private Layer<?> layer;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param layer layer which is filtered
+	 */
 	public LayerFilteredEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
+	/**
+	 * Get layer.
+	 *
+	 * @return layer
+	 */
 	public Layer<?> getLayer() {
 		return layer;
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Type<LayerFilteredHandler> getAssociatedType() {
 		return LayerFilteredHandler.TYPE;
 	}
 
-	@Override
+	/** {@inheritDoc} */
+
 	protected void dispatch(LayerFilteredHandler layerFilteredHandler) {
 		layerFilteredHandler.onFilterChange(this);
 	}

@@ -29,6 +29,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface ToolbarActionHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<ToolbarActionHandler> TYPE = new GwtEvent.Type<ToolbarActionHandler>();
 
 	/**

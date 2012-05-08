@@ -27,18 +27,26 @@ public class FeatureTransactionEvent extends GwtEvent<FeatureTransactionHandler>
 
 	private FeatureTransaction featureTransaction;
 
+	/**
+	 * Constructor with feature transaction.
+	 *
+	 * @param featureTransaction feature transaction
+	 */
 	public FeatureTransactionEvent(FeatureTransaction featureTransaction) {
 		this.featureTransaction = featureTransaction;
 	}
 
+	/** Constructor. */
 	public FeatureTransaction getFeatureTransaction() {
 		return featureTransaction;
 	}
 
+	/** {@inheritDoc} */
 	public Type<FeatureTransactionHandler> getAssociatedType() {
 		return FeatureTransactionHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(FeatureTransactionHandler featureSelectionHandler) {
 		featureSelectionHandler.onTransactionSuccess(this);
 	}

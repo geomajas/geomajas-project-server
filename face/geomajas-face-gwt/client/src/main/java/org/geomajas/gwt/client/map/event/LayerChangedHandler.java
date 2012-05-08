@@ -26,6 +26,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 @UserImplemented
 public interface LayerChangedHandler extends EventHandler {
 
+	/** Event type. */
 	Type<LayerChangedHandler> TYPE = new Type<LayerChangedHandler>();
 
 	/**

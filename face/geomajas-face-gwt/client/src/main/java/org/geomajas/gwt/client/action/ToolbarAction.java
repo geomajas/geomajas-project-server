@@ -27,15 +27,22 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 @Api(allMethods = true)
 public abstract class ToolbarAction extends ToolbarBaseAction implements ClickHandler {
 
+	/**
+	 * Constructor.
+	 *
+	 * @param icon icon
+	 * @param tooltip tooltip
+	 */
 	public ToolbarAction(String icon, String tooltip) {
 		this(icon, tooltip, tooltip);
 	}
 
 	/**
 	 * Create a new ToolbarAction.
-	 * @param icon
-	 * @param title
-	 * @param tooltip
+	 *
+	 * @param icon icon
+	 * @param title title
+	 * @param tooltip tooltip
 	 * @since 1.10.0
 	 */
 	public ToolbarAction(String icon, String title, String tooltip) {
