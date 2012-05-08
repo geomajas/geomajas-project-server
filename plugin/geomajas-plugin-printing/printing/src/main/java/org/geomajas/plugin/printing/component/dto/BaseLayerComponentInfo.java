@@ -40,34 +40,64 @@ public class BaseLayerComponentInfo extends PrintComponentInfo implements Serial
 	 */
 	private String layerId;
 
+	/** Constructor. */
 	public BaseLayerComponentInfo() {
 		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.JUSTIFIED);
 		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.JUSTIFIED);
 	}
 
+	/**
+	 * Is this component visible?
+	 *
+	 * @return true when component is visible
+	 */
 	public boolean isVisible() {
 		return visible;
 	}
 
+	/**
+	 * Set whether this component is visible.
+	 *
+	 * @param visible visible status
+	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
+	/**
+	 * Is this component selected.
+	 *
+	 * @return true when this component is selected
+	 */
 	public boolean isSelected() {
 		return selected;
 	}
 
+	/**
+	 * Set selected status for this component.
+	 *
+	 * @param selected true when selected
+	 */
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 
+	/**
+	 * Get (server) layer id.
+	 *
+	 * @return layer id
+	 */
 	public String getLayerId() {
 		return layerId;
 	}
 
+	/**
+	 * Set (server) layer id.
+	 *
+	 * @param layerId layer id
+	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}
  
-
 }

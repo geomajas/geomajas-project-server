@@ -28,6 +28,7 @@ public class PrintGetTemplateRequest implements CommandRequest {
 
 	/**
 	 * Command name constant for request object.
+	 *
 	 * @since 2.2.0
 	 */
 	public static final String COMMAND = "command.print.GetTemplate";
@@ -36,6 +37,7 @@ public class PrintGetTemplateRequest implements CommandRequest {
 
 	private String pageSize;
 
+	/** No-arguments constructor for GWT. */
 	public PrintGetTemplateRequest() {
 	}
 
@@ -48,10 +50,14 @@ public class PrintGetTemplateRequest implements CommandRequest {
 		return template;
 	}
 
+	/**
+	 * Set print template to be used.
+	 *
+	 * @param template template
+	 */
 	public void setTemplate(PrintTemplateInfo template) {
 		this.template = template;
 	}
-
 
 	/**
 	 * Get size for the generated document (ISO).

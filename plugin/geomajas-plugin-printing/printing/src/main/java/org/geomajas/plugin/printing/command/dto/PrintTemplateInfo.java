@@ -36,35 +36,78 @@ public class PrintTemplateInfo implements Serializable {
 	
 	private PageComponentInfo page;
 
+	/**
+	 * Get template id.
+	 *
+	 * @return template id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Set template id.
+	 *
+	 * @param id template id
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get template name.
+	 *
+	 * @return template name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Set template name.
+	 *
+	 * @param name template name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Is this a template?
+	 *
+	 * @return true when this is a template
+	 * @deprecated not used
+	 */
+	@Deprecated
 	public boolean isTemplate() {
 		return template;
 	}
 
+	/**
+	 * Set whether this is a template.
+	 *
+	 * @param template true when this is a template
+	 * @deprecated not used
+	 */
+	@Deprecated
 	public void setTemplate(boolean template) {
 		this.template = template;
 	}
 
-	
+	/**
+	 * Get page configuration.
+	 *
+	 * @return page configuration
+	 */
 	public PageComponentInfo getPage() {
 		return page;
 	}
-	
+
+	/**
+	 * Set page configuration.
+	 *
+	 * @param page page configuration
+	 */
 	public void setPage(PageComponentInfo page) {
 		this.page = page;
 	}

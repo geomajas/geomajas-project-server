@@ -26,17 +26,33 @@ public class PrintGetTemplateResponse extends CommandResponse {
 
 	private String documentId;
 
+	/** No-arguments constructor for GWT. */
 	public PrintGetTemplateResponse() {
 	}
 
+	/**
+	 * Construct response for document.
+	 *
+	 * @param documentId document id
+	 */
 	public PrintGetTemplateResponse(String documentId) {
 		this.documentId = documentId;
 	}
 
+	/**
+	 * Get document id.
+	 *
+	 * @return document id.
+	 */
 	public String getDocumentId() {
 		return documentId;
 	}
 
+	/**
+	 * Set document id.
+	 *
+	 * @param documentId document id
+	 */
 	public void setDocumentId(String documentId) {
 		this.documentId = documentId;
 	}

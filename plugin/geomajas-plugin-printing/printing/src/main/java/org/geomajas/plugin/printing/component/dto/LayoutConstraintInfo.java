@@ -95,58 +95,128 @@ public class LayoutConstraintInfo implements Serializable {
 		this.width = width;
 	}
 
+	/**
+	 * Get width.
+	 *
+	 * @return width
+	 */
 	public float getWidth() {
 		return width;
 	}
 
+	/**
+	 * Set width.
+	 *
+	 * @param width width
+	 */
 	public void setWidth(float width) {
 		this.width = width;
 	}
 
+	/**
+	 * Get height.
+	 *
+	 * @return height
+	 */
 	public float getHeight() {
 		return height;
 	}
 
+	/**
+	 * Set height.
+	 *
+	 * @param height height
+	 */
 	public void setHeight(float height) {
 		this.height = height;
 	}
 
+	/**
+	 * Get horizontal margin.
+	 *
+	 * @return x margin
+	 */
 	public float getMarginX() {
 		return marginX;
 	}
 
+	/**
+	 * Set horizontal margin.
+	 *
+	 * @param marginX x margin
+	 */
 	public void setMarginX(float marginX) {
 		this.marginX = marginX;
 	}
 
+	/**
+	 * Get vertical margin.
+	 *
+	 * @return y margin
+	 */
 	public float getMarginY() {
 		return marginY;
 	}
 
+	/**
+	 * Set vertical margin.
+	 *
+	 * @param marginY y margin
+	 */
 	public void setMarginY(float marginY) {
 		this.marginY = marginY;
 	}
 
+	/**
+	 * Get horizontal alignment.
+	 *
+	 * @return x alignment
+	 */
 	public int getAlignmentX() {
 		return alignmentX;
 	}
 
+	/**
+	 * Set horizontal alignment.
+	 *
+	 * @param alignmentX x alignment
+	 */
 	public void setAlignmentX(int alignmentX) {
 		this.alignmentX = alignmentX;
 	}
 
+	/**
+	 * Get vertical alignment.
+	 *
+	 * @return x alignment
+	 */
 	public int getAlignmentY() {
 		return alignmentY;
 	}
 
+	/**
+	 * Set vertical alignment.
+	 *
+	 * @param alignmentY y alignment
+	 */
 	public void setAlignmentY(int alignmentY) {
 		this.alignmentY = alignmentY;
 	}
 
+	/**
+	 * Get flow direction. Possible values are {@link #FLOW_NONE}, {@link #FLOW_X}, {@link #FLOW_Y}.
+	 *
+	 * @return flow direction
+	 */
 	public int getFlowDirection() {
 		return flowDirection;
 	}
 
+	/**
+	 * Set flow direction. Possible values are {@link #FLOW_NONE}, {@link #FLOW_X}, {@link #FLOW_Y}.
+	 *
+	 * @param flowDirection flow direction
+	 */
 	public void setFlowDirection(int flowDirection) {
 		this.flowDirection = flowDirection;
 	}
