@@ -194,6 +194,7 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 			this.logicOps = logicOps;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
@@ -202,6 +203,7 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 					+ this.getLogicOps() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -233,11 +235,13 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ChoiceInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -251,12 +255,14 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 		}
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "BinaryLogicOpTypeInfo(choiceList=" + this.getChoiceList() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -280,11 +286,13 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof BinaryLogicOpTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

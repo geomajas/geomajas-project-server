@@ -61,12 +61,14 @@ public class GraphicStrokeInfo implements Serializable {
 		this.graphic = graphic;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "GraphicStrokeInfo(graphic=" + this.getGraphic() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -87,11 +89,13 @@ public class GraphicStrokeInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof GraphicStrokeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

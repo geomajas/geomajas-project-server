@@ -227,12 +227,14 @@ public class ArcLinkInfo implements Serializable {
 			this.arcrole = arcrole;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ArcLinkInfo.ArcroleInfo(arcrole=" + this.getArcrole() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -253,11 +255,13 @@ public class ArcLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ArcroleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -307,12 +311,14 @@ public class ArcLinkInfo implements Serializable {
 			this.title = title;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ArcLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -333,11 +339,13 @@ public class ArcLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof TitleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -387,12 +395,14 @@ public class ArcLinkInfo implements Serializable {
 			this.from = from;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ArcLinkInfo.FromInfo(from=" + this.getFrom() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -413,11 +423,13 @@ public class ArcLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof FromInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -467,12 +479,14 @@ public class ArcLinkInfo implements Serializable {
 			this.to = to;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ArcLinkInfo.ToInfo(to=" + this.getTo() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -492,11 +506,13 @@ public class ArcLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ToInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -507,6 +523,7 @@ public class ArcLinkInfo implements Serializable {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -515,6 +532,7 @@ public class ArcLinkInfo implements Serializable {
 				+ this.getTo() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -558,11 +576,13 @@ public class ArcLinkInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ArcLinkInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

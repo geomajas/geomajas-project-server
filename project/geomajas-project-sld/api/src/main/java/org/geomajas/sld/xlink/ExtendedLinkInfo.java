@@ -136,12 +136,14 @@ public class ExtendedLinkInfo implements Serializable {
 			this.role = role;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ExtendedLinkInfo.RoleInfo(role=" + this.getRole() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -162,11 +164,13 @@ public class ExtendedLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof RoleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -216,12 +220,14 @@ public class ExtendedLinkInfo implements Serializable {
 			this.title = title;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ExtendedLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -242,11 +248,13 @@ public class ExtendedLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof TitleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -257,6 +265,7 @@ public class ExtendedLinkInfo implements Serializable {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -264,6 +273,7 @@ public class ExtendedLinkInfo implements Serializable {
 				+ ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -292,11 +302,13 @@ public class ExtendedLinkInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ExtendedLinkInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

@@ -187,6 +187,7 @@ public class FilterTypeInfo implements Serializable {
 		featureIdList = list;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	public java.lang.String toString() {
 		return "FilterTypeInfo(choiceSelect=" + this.choiceSelect + ", spatialOps=" + this.getSpatialOps()
@@ -194,6 +195,7 @@ public class FilterTypeInfo implements Serializable {
 				+ ", featureIdList=" + this.getFeatureIdList() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -209,20 +211,20 @@ public class FilterTypeInfo implements Serializable {
 		if (this.choiceSelect != other.choiceSelect) {
 			return false;
 		}
-		if (this.getSpatialOps() == null ? other.getSpatialOps() != null :
-				!this.getSpatialOps().equals(other.getSpatialOps())) {
+		if (this.getSpatialOps() == null ? other.getSpatialOps() != null : !this.getSpatialOps().equals(
+				other.getSpatialOps())) {
 			return false;
 		}
-		if (this.getComparisonOps() == null ? other.getComparisonOps() != null :
-				!this.getComparisonOps().equals(other.getComparisonOps())) {
+		if (this.getComparisonOps() == null ? other.getComparisonOps() != null : !this.getComparisonOps().equals(
+				other.getComparisonOps())) {
 			return false;
 		}
-		if (this.getLogicOps() == null ? other.getLogicOps() != null :
-				!this.getLogicOps().equals(other.getLogicOps())) {
+		if (this.getLogicOps() == null ? 
+				other.getLogicOps() != null : !this.getLogicOps().equals(other.getLogicOps())) {
 			return false;
 		}
-		if (this.getFeatureIdList() == null ? other.getFeatureIdList() != null :
-				!this.getFeatureIdList().equals(other.getFeatureIdList())) {
+		if (this.getFeatureIdList() == null ? other.getFeatureIdList() != null : !this.getFeatureIdList().equals(
+				other.getFeatureIdList())) {
 			return false;
 		}
 		return true;
@@ -230,7 +232,7 @@ public class FilterTypeInfo implements Serializable {
 
 	/**
 	 * Check whether the object can be compared with this.
-	 *
+	 * 
 	 * @param other other object
 	 * @return true when object can be compared
 	 */
@@ -238,6 +240,7 @@ public class FilterTypeInfo implements Serializable {
 		return other instanceof FilterTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	public int hashCode() {
 		final int prime = 31;

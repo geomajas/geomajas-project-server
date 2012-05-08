@@ -130,6 +130,7 @@ public class LineStringTypeInfo extends AbstractGeometryInfo implements Serializ
 		this.coordinates = coordinates;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -137,6 +138,7 @@ public class LineStringTypeInfo extends AbstractGeometryInfo implements Serializ
 				+ ", coordinates=" + this.getCoordinates() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -167,11 +169,13 @@ public class LineStringTypeInfo extends AbstractGeometryInfo implements Serializ
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof LineStringTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

@@ -102,12 +102,14 @@ public class MarkInfo implements Serializable {
 		this.stroke = stroke;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	public java.lang.String toString() {
 		return "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
 				+ this.getStroke() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -120,8 +122,8 @@ public class MarkInfo implements Serializable {
 		if (!other.canEqual(this)) {
 			return false;
 		}
-		if (this.getWellKnownName() == null ? other.getWellKnownName() != null :
-				!this.getWellKnownName().equals(other.getWellKnownName())) {
+		if (this.getWellKnownName() == null ? other.getWellKnownName() != null : !this.getWellKnownName().equals(
+				other.getWellKnownName())) {
 			return false;
 		}
 		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals(other.getFill())) {
@@ -135,7 +137,7 @@ public class MarkInfo implements Serializable {
 
 	/**
 	 * Check whether the object can be compared with this.
-	 *
+	 * 
 	 * @param other other object
 	 * @return true when object can be compared
 	 */
@@ -143,6 +145,7 @@ public class MarkInfo implements Serializable {
 		return other instanceof MarkInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	public int hashCode() {
 		final int prime = 31;

@@ -33,20 +33,32 @@ public class OuterBoundaryIsInfo extends GeometryAssociationTypeInfo implements 
 
 	private LinearRingTypeInfo linearRing;
 
+	/**
+	 * Get the linear ring describing the outer boundary.
+	 * 
+	 * @return the linear ring
+	 */
 	public LinearRingTypeInfo getLinearRing() {
 		return linearRing;
 	}
 
+	/**
+	 * Set the linear ring describing the outer boundary.
+	 * 
+	 * @param linearRing the linear ring
+	 */
 	public void setLinearRing(LinearRingTypeInfo linearRing) {
 		this.linearRing = linearRing;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "OuterBoundaryIsInfo(linearRing=" + this.getLinearRing() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -70,11 +82,13 @@ public class OuterBoundaryIsInfo extends GeometryAssociationTypeInfo implements 
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof OuterBoundaryIsInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

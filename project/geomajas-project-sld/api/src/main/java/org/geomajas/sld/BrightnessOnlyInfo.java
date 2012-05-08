@@ -51,12 +51,14 @@ public class BrightnessOnlyInfo implements Serializable {
 		this.brightnessOnly = brightnessOnly;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "BrightnessOnlyInfo(brightnessOnly=" + this.isBrightnessOnly() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -76,11 +78,13 @@ public class BrightnessOnlyInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof BrightnessOnlyInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

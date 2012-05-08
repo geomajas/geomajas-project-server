@@ -65,10 +65,21 @@ public enum ActuateInfo implements Serializable {
 		this.value = value;
 	}
 
+	/**
+	 * Get the text value of the actuation attribute.
+	 * 
+	 * @return the string value
+	 */
 	public String xmlValue() {
 		return value;
 	}
 
+	/**
+	 * Convert a string to an {@link ActuateInfo} object.
+	 * 
+	 * @param value the string value
+	 * @return the object
+	 */
 	public static ActuateInfo convert(String value) {
 		for (ActuateInfo inst : values()) {
 			if (inst.xmlValue().equals(value)) {

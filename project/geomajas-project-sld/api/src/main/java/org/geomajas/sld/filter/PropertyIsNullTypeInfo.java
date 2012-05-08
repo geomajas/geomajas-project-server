@@ -123,6 +123,7 @@ public class PropertyIsNullTypeInfo extends ComparisonOpsTypeInfo implements Ser
 		this.literal = literal;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -130,6 +131,7 @@ public class PropertyIsNullTypeInfo extends ComparisonOpsTypeInfo implements Ser
 				+ ", literal=" + this.getLiteral() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -160,11 +162,13 @@ public class PropertyIsNullTypeInfo extends ComparisonOpsTypeInfo implements Ser
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PropertyIsNullTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

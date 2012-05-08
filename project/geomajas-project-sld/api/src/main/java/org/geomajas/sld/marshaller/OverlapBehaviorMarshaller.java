@@ -52,11 +52,7 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		this.name = name;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jibx.runtime.IMarshaller#marshal(java.lang.Object, org.jibx.runtime.IMarshallingContext)
-	 */
+	/** {@inheritDoc} */
 	public void marshal(Object obj, IMarshallingContext ictx) throws JiBXException {
 		// make sure the parameters are as expected
 		if (!(obj instanceof OverlapBehaviorInfo)) {
@@ -72,29 +68,17 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jibx.runtime.IMarshaller#isExtension(java.lang.String)
-	 */
+	/** {@inheritDoc} */
 	public boolean isExtension(String mapname) {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jibx.runtime.IUnmarshaller#isPresent(org.jibx.runtime.IUnmarshallingContext)
-	 */
+	/** {@inheritDoc} */
 	public boolean isPresent(IUnmarshallingContext ctx) throws JiBXException {
 		return ctx.isAt(uri, name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jibx.runtime.IUnmarshaller#unmarshal(java.lang.Object, org.jibx.runtime.IUnmarshallingContext)
-	 */
+	/** {@inheritDoc} */
 	public Object unmarshal(Object obj, IUnmarshallingContext ictx) throws JiBXException {
 		// make sure we're at the appropriate start tag
 		UnmarshallingContext ctx = (UnmarshallingContext) ictx;
@@ -124,12 +108,14 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		return overlapBehaviorInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "OverlapBehaviorMarshaller(uri=" + this.uri + ", index=" + this.index + ", name=" + this.name + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -155,11 +141,13 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof OverlapBehaviorMarshaller;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

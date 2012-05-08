@@ -148,6 +148,7 @@ public class BinarySpatialOpTypeInfo extends SpatialOpsTypeInfo implements Seria
 		this.box = box;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -155,6 +156,7 @@ public class BinarySpatialOpTypeInfo extends SpatialOpsTypeInfo implements Seria
 				+ ", geometry=" + this.getGeometry() + ", box=" + this.getBox() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -188,11 +190,13 @@ public class BinarySpatialOpTypeInfo extends SpatialOpsTypeInfo implements Seria
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof BinarySpatialOpTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

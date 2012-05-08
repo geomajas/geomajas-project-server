@@ -17,7 +17,7 @@ package org.geomajas.sld.service;
  * 
  */
 public class SldException extends Exception {
-	
+
 	private static final long serialVersionUID = 110L;
 
 	public SldException() {

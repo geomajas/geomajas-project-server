@@ -86,6 +86,7 @@ public class PolygonTypeInfo extends AbstractGeometryInfo implements Serializabl
 		innerBoundaryIList = list;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -93,6 +94,7 @@ public class PolygonTypeInfo extends AbstractGeometryInfo implements Serializabl
 				+ this.getInnerBoundaryIList() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -120,11 +122,13 @@ public class PolygonTypeInfo extends AbstractGeometryInfo implements Serializabl
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PolygonTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

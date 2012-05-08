@@ -89,6 +89,11 @@ public class FillInfo implements Serializable {
 		cssParameterList = list;
 	}
 
+	/**
+	 * Set the fill color.
+	 * 
+	 * @param fillColor the css fill color
+	 */
 	public void setFillColor(String fillColor) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(FILL)) {
@@ -99,6 +104,10 @@ public class FillInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(FILL, fillColor));
 	}
 
+	/**
+	 * Set the fill opacity.
+	 * @param f the fill opacity
+	 */
 	public void setFillOpacity(float f) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(FILL_OPACITY)) {
@@ -109,6 +118,7 @@ public class FillInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(FILL_OPACITY, Float.toString(f)));
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -116,6 +126,7 @@ public class FillInfo implements Serializable {
 				+ ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -140,11 +151,13 @@ public class FillInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof FillInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

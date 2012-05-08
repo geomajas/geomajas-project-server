@@ -194,6 +194,7 @@ public class StrokeInfo implements Serializable {
 			this.graphicStroke = graphicStroke;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
@@ -201,6 +202,7 @@ public class StrokeInfo implements Serializable {
 					+ ", graphicStroke=" + this.getGraphicStroke() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -228,11 +230,13 @@ public class StrokeInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ChoiceInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -245,6 +249,11 @@ public class StrokeInfo implements Serializable {
 		}
 	}
 
+	/**
+	 * Set the stroke width.
+	 * 
+	 * @param f the stroke width
+	 */
 	public void setStrokeWidth(float f) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(STROKE_WIDTH)) {
@@ -255,6 +264,11 @@ public class StrokeInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(STROKE_WIDTH, Float.toString(f)));
 	}
 
+	/**
+	 * Set the stroke color.
+	 * 
+	 * @param strokeColor the stroke color (css)
+	 */
 	public void setStrokeColor(String strokeColor) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(STROKE)) {
@@ -265,6 +279,11 @@ public class StrokeInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(STROKE, strokeColor));
 	}
 
+	/**
+	 * Set the stroke opacity.
+	 * 
+	 * @param f the stroke opacity
+	 */
 	public void setStrokeOpacity(float f) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(STROKE_OPACITY)) {
@@ -275,12 +294,14 @@ public class StrokeInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(STROKE_OPACITY, Float.toString(f)));
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "StrokeInfo(choice=" + this.getChoice() + ", cssParameterList=" + this.getCssParameterList() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -305,11 +326,13 @@ public class StrokeInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof StrokeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

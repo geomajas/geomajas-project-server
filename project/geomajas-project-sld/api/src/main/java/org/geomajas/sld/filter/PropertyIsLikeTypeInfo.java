@@ -145,6 +145,7 @@ public class PropertyIsLikeTypeInfo extends ComparisonOpsTypeInfo implements Ser
 		this.escape = escape;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -153,6 +154,7 @@ public class PropertyIsLikeTypeInfo extends ComparisonOpsTypeInfo implements Ser
 				+ this.getEscape() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -192,11 +194,13 @@ public class PropertyIsLikeTypeInfo extends ComparisonOpsTypeInfo implements Ser
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PropertyIsLikeTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

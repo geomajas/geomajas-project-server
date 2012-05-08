@@ -171,6 +171,7 @@ public class FeatureTypeStyleInfo implements Serializable {
 		ruleList = list;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -179,6 +180,7 @@ public class FeatureTypeStyleInfo implements Serializable {
 				+ this.getSemanticTypeIdentifierList() + ", ruleList=" + this.getRuleList() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -219,11 +221,13 @@ public class FeatureTypeStyleInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof FeatureTypeStyleInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

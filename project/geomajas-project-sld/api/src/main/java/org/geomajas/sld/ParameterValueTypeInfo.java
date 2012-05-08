@@ -66,20 +66,32 @@ public class ParameterValueTypeInfo implements Serializable {
 		expressionList = list;
 	}
 
+	/**
+	 * Get the textual expression value.
+	 * 
+	 * @return the textual value
+	 */
 	public String getValue() {
 		return value;
 	}
 
+	/**
+	 * Set the textual expression value.
+	 * 
+	 * @param value the value
+	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "ParameterValueTypeInfo(expressionList=" + this.getExpressionList() + ", value=" + this.getValue() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -104,11 +116,13 @@ public class ParameterValueTypeInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ParameterValueTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

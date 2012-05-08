@@ -156,6 +156,7 @@ public class UnaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializab
 		this.logicOps = logicOps;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -163,6 +164,7 @@ public class UnaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializab
 				+ ", spatialOps=" + this.getSpatialOps() + ", logicOps=" + this.getLogicOps() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -197,11 +199,13 @@ public class UnaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializab
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof UnaryLogicOpTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

@@ -33,12 +33,14 @@ public class PropertyIsLessThanOrEqualToInfo extends BinaryComparisonOpTypeInfo 
 
 	private static final long serialVersionUID = 100;
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "PropertyIsLessThanOrEqualToInfo()";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -58,11 +60,13 @@ public class PropertyIsLessThanOrEqualToInfo extends BinaryComparisonOpTypeInfo 
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PropertyIsLessThanOrEqualToInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

@@ -32,12 +32,14 @@ public abstract class AbstractGeometryCollectionInfo extends GeometryCollectionT
 
 	private static final long serialVersionUID = 100;
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "AbstractGeometryCollectionInfo()";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -57,11 +59,13 @@ public abstract class AbstractGeometryCollectionInfo extends GeometryCollectionT
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof AbstractGeometryCollectionInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

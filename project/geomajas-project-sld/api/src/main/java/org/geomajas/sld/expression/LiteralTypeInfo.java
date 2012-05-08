@@ -40,19 +40,29 @@ public class LiteralTypeInfo extends ExpressionInfo implements Serializable {
 
 	private static final long serialVersionUID = 100;
 
+	/**
+	 * Construct an empty literal type (GWT).
+	 */
 	public LiteralTypeInfo() {
 	}
 
-	public LiteralTypeInfo(String name) {
-		setValue(name);
+	/**
+	 * Construct a literal type with the specified literal value.
+	 * 
+	 * @param value
+	 */
+	public LiteralTypeInfo(String value) {
+		setValue(value);
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "LiteralTypeInfo()";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -72,11 +82,13 @@ public class LiteralTypeInfo extends ExpressionInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof LiteralTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

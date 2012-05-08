@@ -170,6 +170,7 @@ public class ChannelSelectionInfo implements Serializable {
 		this.grayChannel = grayChannel;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -178,6 +179,7 @@ public class ChannelSelectionInfo implements Serializable {
 				+ this.getBlueChannel() + ", grayChannel=" + this.getGrayChannel() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -213,11 +215,13 @@ public class ChannelSelectionInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ChannelSelectionInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

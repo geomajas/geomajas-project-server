@@ -224,12 +224,14 @@ public class SimpleLinkInfo implements Serializable {
 			this.href = href;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "SimpleLinkInfo.HrefInfo(href=" + this.getHref() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -250,11 +252,13 @@ public class SimpleLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof HrefInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -302,12 +306,14 @@ public class SimpleLinkInfo implements Serializable {
 			this.role = role;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "SimpleLinkInfo.RoleInfo(role=" + this.getRole() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -328,11 +334,13 @@ public class SimpleLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof RoleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -380,12 +388,14 @@ public class SimpleLinkInfo implements Serializable {
 			this.arcrole = arcrole;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "SimpleLinkInfo.ArcroleInfo(arcrole=" + this.getArcrole() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -406,11 +416,13 @@ public class SimpleLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ArcroleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -458,12 +470,14 @@ public class SimpleLinkInfo implements Serializable {
 			this.title = title;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "SimpleLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -484,11 +498,13 @@ public class SimpleLinkInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof TitleInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -499,6 +515,7 @@ public class SimpleLinkInfo implements Serializable {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -507,6 +524,7 @@ public class SimpleLinkInfo implements Serializable {
 				+ ", actuate=" + this.getActuate() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -551,11 +569,13 @@ public class SimpleLinkInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof SimpleLinkInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

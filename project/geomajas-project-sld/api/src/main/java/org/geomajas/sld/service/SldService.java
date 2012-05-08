@@ -58,17 +58,18 @@ public interface SldService {
 	 */
 	StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException;
 
-	
 	/**
 	 * Remove a style.
+	 * 
 	 * @param name the name of the style
 	 * @return true if removed, false if there was no such style
 	 * @throws SldException oops
 	 */
 	boolean remove(String name) throws SldException;
-	
+
 	/**
 	 * Validates (part of) a style.
+	 * 
 	 * @param obj any of the Info classes for which can be validated as types
 	 * @throws SldException invalid or unrecognized object
 	 */

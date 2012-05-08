@@ -32,19 +32,29 @@ public class PropertyNameInfo extends ExpressionInfo implements Serializable {
 
 	private static final long serialVersionUID = 100;
 
+	/**
+	 * Construct an empty property name (GWT).
+	 */
 	public PropertyNameInfo() {
 	}
 
+	/**
+	 * Constructs a property name with the specified name.
+	 * 
+	 * @param name the name of the property
+	 */
 	public PropertyNameInfo(String name) {
 		setValue(name);
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "PropertyNameInfo()";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -64,11 +74,13 @@ public class PropertyNameInfo extends ExpressionInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PropertyNameInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

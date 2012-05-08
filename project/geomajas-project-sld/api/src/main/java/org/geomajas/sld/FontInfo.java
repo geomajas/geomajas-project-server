@@ -72,6 +72,11 @@ public class FontInfo implements Serializable {
 		cssParameterList = list;
 	}
 
+	/**
+	 * Set the font family.
+	 * 
+	 * @param fontFamily the font family
+	 */
 	public void setFamily(String fontFamily) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(FONT_FAMILY)) {
@@ -82,6 +87,11 @@ public class FontInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(FONT_FAMILY, fontFamily));
 	}
 
+	/**
+	 * Set the font size.
+	 * 
+	 * @param fontSize the font size
+	 */
 	public void setSize(int fontSize) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(FONT_SIZE)) {
@@ -92,6 +102,11 @@ public class FontInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(FONT_SIZE, Integer.toString(fontSize)));
 	}
 
+	/**
+	 * Set the font style.
+	 * 
+	 * @param fontStyle the font style
+	 */
 	public void setStyle(String fontStyle) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(FONT_STYLE)) {
@@ -102,6 +117,11 @@ public class FontInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(FONT_STYLE, fontStyle));
 	}
 
+	/**
+	 * Set the font weight.
+	 * 
+	 * @param fontWeight the font weight
+	 */
 	public void setWeight(String fontWeight) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(FONT_WEIGHT)) {
@@ -112,12 +132,14 @@ public class FontInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(FONT_WEIGHT, fontWeight));
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "FontInfo(cssParameterList=" + this.getCssParameterList() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -138,11 +160,13 @@ public class FontInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof FontInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

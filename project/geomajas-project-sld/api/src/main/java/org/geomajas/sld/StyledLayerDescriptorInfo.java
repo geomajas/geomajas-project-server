@@ -249,6 +249,7 @@ public class StyledLayerDescriptorInfo implements Serializable {
 			this.userLayer = userLayer;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
@@ -256,6 +257,7 @@ public class StyledLayerDescriptorInfo implements Serializable {
 					+ this.getNamedLayer() + ", userLayer=" + this.getUserLayer() + ")";
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
@@ -283,11 +285,13 @@ public class StyledLayerDescriptorInfo implements Serializable {
 			return true;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.SuppressWarnings("all")
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ChoiceInfo;
 		}
 
+		/** {@inheritDoc} */
 		@java.lang.Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
@@ -300,6 +304,7 @@ public class StyledLayerDescriptorInfo implements Serializable {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -307,6 +312,7 @@ public class StyledLayerDescriptorInfo implements Serializable {
 				+ this.aAbstract + ", choiceList=" + this.getChoiceList() + ", version=" + this.getVersion() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -343,11 +349,13 @@ public class StyledLayerDescriptorInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof StyledLayerDescriptorInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

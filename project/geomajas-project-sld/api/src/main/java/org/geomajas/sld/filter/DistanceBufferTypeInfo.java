@@ -104,6 +104,7 @@ public class DistanceBufferTypeInfo extends SpatialOpsTypeInfo implements Serial
 		this.distance = distance;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -111,6 +112,7 @@ public class DistanceBufferTypeInfo extends SpatialOpsTypeInfo implements Serial
 				+ ", distance=" + this.getDistance() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -142,11 +144,13 @@ public class DistanceBufferTypeInfo extends SpatialOpsTypeInfo implements Serial
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof DistanceBufferTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

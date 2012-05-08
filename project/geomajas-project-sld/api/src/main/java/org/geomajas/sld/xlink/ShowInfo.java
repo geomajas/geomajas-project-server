@@ -69,10 +69,21 @@ public enum ShowInfo implements Serializable {
 		this.value = value;
 	}
 
+	/**
+	 * Get the value of the show attribute.
+	 * 
+	 * @return the string value
+	 */
 	public String xmlValue() {
 		return value;
 	}
 
+	/**
+	 * Convert a string to an {@link ShowInfo} object.
+	 * 
+	 * @param value the string value
+	 * @return the object
+	 */
 	public static ShowInfo convert(String value) {
 		for (ShowInfo inst : values()) {
 			if (inst.xmlValue().equals(value)) {

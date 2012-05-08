@@ -55,20 +55,32 @@ public class DistanceTypeInfo implements Serializable {
 		this.units = units;
 	}
 
+	/**
+	 * Get the value of the distance.
+	 * 
+	 * @return the value
+	 */
 	public String getValue() {
 		return value;
 	}
 
+	/**
+	 * Set the value of the distance.
+	 * 
+	 * @param value the value
+	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "DistanceTypeInfo(units=" + this.getUnits() + ", value=" + this.getValue() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -93,11 +105,13 @@ public class DistanceTypeInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof DistanceTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

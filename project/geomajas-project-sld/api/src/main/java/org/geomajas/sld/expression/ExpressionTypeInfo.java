@@ -33,20 +33,32 @@ public abstract class ExpressionTypeInfo implements Serializable {
 
 	private String value;
 
+	/**
+	 * Get the TEXT node value of the expression.
+	 * 
+	 * @return the value
+	 */
 	public String getValue() {
 		return value;
 	}
 
+	/**
+	 * Set the TEXT node value of the expression.
+	 * 
+	 * @param value the value of the expression
+	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "ExpressionTypeInfo(value=" + this.getValue() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -67,11 +79,13 @@ public abstract class ExpressionTypeInfo implements Serializable {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ExpressionTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

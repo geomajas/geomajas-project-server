@@ -31,12 +31,14 @@ public class OrInfo extends BinaryLogicOpTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 100;
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "OrInfo()";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -58,7 +60,7 @@ public class OrInfo extends BinaryLogicOpTypeInfo implements Serializable {
 
 	/**
 	 * Check whether the object can be compared with this.
-	 *
+	 * 
 	 * @param other other object
 	 * @return true when object can be compared
 	 */
@@ -66,6 +68,7 @@ public class OrInfo extends BinaryLogicOpTypeInfo implements Serializable {
 		return other instanceof OrInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

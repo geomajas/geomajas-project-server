@@ -44,9 +44,18 @@ public class CssParameterInfo extends ParameterValueTypeInfo implements Serializ
 
 	private static final long serialVersionUID = 100;
 
+	/**
+	 * Construct an empty css parameter (GWT).
+	 */
 	public CssParameterInfo() {
 	}
 
+	/**
+	 * Construct a css parameter with the specified name and value.
+	 * 
+	 * @param name the name
+	 * @param value the value
+	 */
 	public CssParameterInfo(String name, String value) {
 		setName(name);
 		setValue(value);
@@ -72,12 +81,14 @@ public class CssParameterInfo extends ParameterValueTypeInfo implements Serializ
 		this.name = name;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "CssParameterInfo(name=" + this.getName() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -101,11 +112,13 @@ public class CssParameterInfo extends ParameterValueTypeInfo implements Serializ
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof CssParameterInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

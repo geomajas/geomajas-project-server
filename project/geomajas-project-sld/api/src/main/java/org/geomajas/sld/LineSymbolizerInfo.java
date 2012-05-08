@@ -87,12 +87,14 @@ public class LineSymbolizerInfo extends SymbolizerTypeInfo implements Serializab
 		this.stroke = stroke;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "LineSymbolizerInfo(geometry=" + this.getGeometry() + ", stroke=" + this.getStroke() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -120,11 +122,13 @@ public class LineSymbolizerInfo extends SymbolizerTypeInfo implements Serializab
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof LineSymbolizerInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

@@ -102,6 +102,7 @@ public class PropertyIsBetweenTypeInfo extends ComparisonOpsTypeInfo implements 
 		this.upperBoundary = upperBoundary;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -109,6 +110,7 @@ public class PropertyIsBetweenTypeInfo extends ComparisonOpsTypeInfo implements 
 				+ this.getLowerBoundary() + ", upperBoundary=" + this.getUpperBoundary() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -140,11 +142,13 @@ public class PropertyIsBetweenTypeInfo extends ComparisonOpsTypeInfo implements 
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PropertyIsBetweenTypeInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

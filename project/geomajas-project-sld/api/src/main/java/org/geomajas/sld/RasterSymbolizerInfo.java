@@ -212,6 +212,7 @@ public class RasterSymbolizerInfo extends SymbolizerTypeInfo implements Serializ
 		this.imageOutline = imageOutline;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
@@ -221,6 +222,7 @@ public class RasterSymbolizerInfo extends SymbolizerTypeInfo implements Serializ
 				+ ", shadedRelief=" + this.getShadedRelief() + ", imageOutline=" + this.getImageOutline() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -272,11 +274,13 @@ public class RasterSymbolizerInfo extends SymbolizerTypeInfo implements Serializ
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof RasterSymbolizerInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {

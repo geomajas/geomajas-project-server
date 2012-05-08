@@ -86,12 +86,14 @@ public class PointSymbolizerInfo extends SymbolizerTypeInfo implements Serializa
 		this.graphic = graphic;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "PointSymbolizerInfo(geometry=" + this.getGeometry() + ", graphic=" + this.getGraphic() + ")";
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
@@ -119,11 +121,13 @@ public class PointSymbolizerInfo extends SymbolizerTypeInfo implements Serializa
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof PointSymbolizerInfo;
 	}
 
+	/** {@inheritDoc} */
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
