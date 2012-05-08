@@ -23,8 +23,9 @@ import org.geomajas.global.GeomajasException;
 @Api(allMethods = true)
 public class RasterException extends GeomajasException {
 
+	/** Image writing failed. */
 	public static final int IMAGE_WRITING_FAILED = 1;
-
+	/** Missing layer factory. */
 	public static final int MISSING_LAYER_FACTORY = 2;
 
 	/**
@@ -62,7 +63,6 @@ public class RasterException extends GeomajasException {
 	 *
 	 * @param ex cause exception
 	 * @param exceptionCode code which points to the message
-	 * @param parameters possible extra parameters
 	 */
 	public RasterException(Throwable ex, int exceptionCode) {
 		super(ex, exceptionCode);
