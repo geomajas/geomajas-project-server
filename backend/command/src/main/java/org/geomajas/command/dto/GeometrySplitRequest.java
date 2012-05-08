@@ -35,8 +35,8 @@ public class GeometrySplitRequest extends EmptyCommandRequest {
 	/**
 	 * Main constructor.
 	 * 
-	 * @param geometry
-	 * @param splitLine
+	 * @param geometry to be split
+	 * @param splitLine used for splitting the geometry
 	 */
 	public GeometrySplitRequest(Geometry geometry, Geometry splitLine) {
 		this.geometry = geometry;
@@ -44,36 +44,36 @@ public class GeometrySplitRequest extends EmptyCommandRequest {
 	}
 
 	/**
-	 * Get geometry.
+	 * Get the geometry that will be split.
 	 * 
-	 * @return geometry
+	 * @return geometry that will be split
 	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
 	/**
-	 * Get split line.
+	 * Get split line used for splitting the geometry.
 	 * 
-	 * @return split line
+	 * @return split line used for splitting the geometry
 	 */
 	public Geometry getSplitLine() {
 		return splitLine;
 	}
 
 	/**
-	 * Set geometry.
+	 * Set the geometry that will be split.
 	 * 
-	 * @param geometry
+	 * @param geometry that will be split
 	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
 	/**
-	 * Set split line.
+	 * Set split line used for splitting the geometry.
 	 * 
-	 * @param splitLine
+	 * @param splitLine used for splitting the geometry
 	 */
 	public void setSplitLine(Geometry splitLine) {
 		this.splitLine = splitLine;

@@ -37,7 +37,7 @@ public class GeometryAreaRequest implements CommandRequest {
 	/**
 	 * Get geometries.
 	 * 
-	 * @return geometries
+	 * @return geometries to calculate area with
 	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
@@ -46,7 +46,7 @@ public class GeometryAreaRequest implements CommandRequest {
 	/**
 	 * Set geometries.
 	 * 
-	 * @param geometries
+	 * @param geometries to calculate area with
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
@@ -55,7 +55,7 @@ public class GeometryAreaRequest implements CommandRequest {
 	/**
 	 * Get the crs.
 	 * 
-	 * @return crs.
+	 * @return crs of the area to be calculated
 	 */
 	public String getCrs() {
 		return crs;
@@ -63,7 +63,7 @@ public class GeometryAreaRequest implements CommandRequest {
 	
 	/**
 	 * Set the crs.
-	 * @param crs
+	 * @param crs of the area to be calculated
 	 */
 	public void setCrs(String crs) {
 		this.crs = crs;

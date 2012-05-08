@@ -30,7 +30,7 @@ public class GeometryAreaResponse extends CommandResponse {
 
 	/**
 	 * Get areas.
-	 * @return areas
+	 * @return areas calculated areas
 	 */
 	public List<Double> getAreas() {
 		return areas;
@@ -38,7 +38,7 @@ public class GeometryAreaResponse extends CommandResponse {
 	
 	/**
 	 * Set areas.
-	 * @param areas
+	 * @param areas calculated areas
 	 */
 	public void setAreas(List<Double> areas) {
 		this.areas = areas;

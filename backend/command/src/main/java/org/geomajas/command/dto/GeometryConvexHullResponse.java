@@ -26,20 +26,23 @@ import org.geomajas.geometry.Geometry;
 public class GeometryConvexHullResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1110L;
-	
+
 	private List<Geometry> geometries;
 
 	/**
-	 * Get geometries.
-	 * @return geometries
+	 * Get the geometries that were processed by the convex hull command.
+	 * 
+	 * @return geometries that were processed by the convex hull command
 	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
 	/**
-	 * Set geometries.
+	 * Set the geometries that were processed by the convex hull command.
+	 * 
 	 * @param geometries
+	 *            that were processed by the convex hull command
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
@@ -47,12 +50,11 @@ public class GeometryConvexHullResponse extends CommandResponse {
 
 	/**
 	 * Get the string representation of this response.
+	 * 
 	 * @return string representation of this response
 	 */
 	@Override
 	public String toString() {
-		return "GeometryConvexHullResponse{" +
-				"geometries=" + geometries +
-				'}';
+		return "GeometryConvexHullResponse{" + "geometries=" + geometries + '}';
 	}
 }

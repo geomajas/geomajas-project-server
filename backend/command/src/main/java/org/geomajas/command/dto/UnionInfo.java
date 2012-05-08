@@ -31,36 +31,36 @@ public class UnionInfo implements Serializable {
 	private boolean usePrecisionAsBuffer;
 
 	/**
-	 * Get precision.
+	 * Get optional precision to use when merging geometries.
 	 * 
-	 * @return precision
+	 * @return precision of the merging
 	 */
 	public int getPrecision() {
 		return precision;
 	}
 
 	/**
-	 * Set precision.
+	 * Set optional precision to use when merging geometries.
 	 * 
-	 * @param precision
+	 * @param precision of the merging
 	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
 
 	/**
-	 * Check if precision is being used as buffer.
+	 * Check if the precision is being used as buffer.
 	 * 
-	 * @return true if precision is being used as buffer
+	 * @return usePrecisionAsBuffer true if precision is being used as buffer
 	 */
 	public boolean isUsePrecisionAsBuffer() {
 		return usePrecisionAsBuffer;
 	}
 
 	/**
-	 * Set if precision should be used as buffer.
+	 * Optional buffer to extend the merging result.
 	 * 
-	 * @param true if precision should be used as buffer
+	 * @param usePrecisionAsBuffer true if precision is being used as buffer
 	 */
 	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;

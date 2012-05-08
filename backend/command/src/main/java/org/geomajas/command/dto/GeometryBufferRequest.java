@@ -38,7 +38,7 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	/**
 	 * Get geometries.
-	 * @return geometries
+	 * @return geometries to buffer
 	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
@@ -46,7 +46,7 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	/**
 	 * Set geometries.
-	 * @param geometries
+	 * @param geometries to buffer
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
@@ -54,7 +54,7 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	/**
 	 * Get the buffer distance.
-	 * @return distance
+	 * @return buffer distance distance of buffer
 	 */
 	public double getBufferDistance() {
 		return bufferDistance;
@@ -62,7 +62,7 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	/**
 	 * Set the buffer distance.
-	 * @param bufferDistance
+	 * @param bufferDistance distance of buffer
 	 */
 	public void setBufferDistance(double bufferDistance) {
 		this.bufferDistance = bufferDistance;
@@ -70,7 +70,7 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	/**
 	 * Get the quadrant segments or the number of segments of one quarter of a circle.
-	 * @return quadrant segments
+	 * @return quadrant segments the number of segments of one quarter of a circle
 	 */
 	public int getQuadrantSegments() {
 		return quadrantSegments;
@@ -78,7 +78,7 @@ public class GeometryBufferRequest implements CommandRequest {
 
 	/**
 	 * Set the quadrant segments or the number of segments of one quarter of a circle.
-	 * @param quadrantSegments
+	 * @param quadrantSegments the number of segments of one quarter of a circle
 	 */
 	public void setQuadrantSegments(int quadrantSegments) {
 		this.quadrantSegments = quadrantSegments;

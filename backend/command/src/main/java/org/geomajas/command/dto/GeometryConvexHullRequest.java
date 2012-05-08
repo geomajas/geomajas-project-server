@@ -35,7 +35,7 @@ public class GeometryConvexHullRequest implements CommandRequest {
 	/**
 	 * Get geometries.
 	 * 
-	 * @return geometries
+	 * @return geometries for the convex hull command
 	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
@@ -44,7 +44,7 @@ public class GeometryConvexHullRequest implements CommandRequest {
 	/**
 	 * Set geometries.
 	 * 
-	 * @param geometries
+	 * @param geometries for the convex hull command
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;

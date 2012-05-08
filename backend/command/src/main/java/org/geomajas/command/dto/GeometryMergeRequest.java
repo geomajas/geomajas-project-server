@@ -37,18 +37,18 @@ public class GeometryMergeRequest implements CommandRequest {
 	private boolean usePrecisionAsBuffer;
 
 	/**
-	 * Get geometries.
+	 * Get the geometries  for the merge command.
 	 * 
-	 * @return geometries
+	 * @return geometries for the merge command
 	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
 	/**
-	 * Set geometries.
+	 * Set the geometries  for the merge command.
 	 * 
-	 * @param geometries
+	 * @param geometries for the merge command
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
@@ -57,7 +57,7 @@ public class GeometryMergeRequest implements CommandRequest {
 	/**
 	 * Get optional precision to use when merging geometries.
 	 * 
-	 * @return precision
+	 * @return precision of the merging
 	 */
 	public int getPrecision() {
 		return precision;
@@ -66,7 +66,7 @@ public class GeometryMergeRequest implements CommandRequest {
 	/**
 	 * Set optional precision to use when merging geometries.
 	 * 
-	 * @param precision
+	 * @param precision of the merging
 	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
@@ -75,8 +75,7 @@ public class GeometryMergeRequest implements CommandRequest {
 	/**
 	 * Optional buffer to extend the merging result.
 	 * 
-	 * @param usePrecisionAsBuffer
-	 *            should precision be used as buffer?
+	 * @param usePrecisionAsBuffer true if precision is being used as buffer
 	 */
 	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
@@ -85,7 +84,7 @@ public class GeometryMergeRequest implements CommandRequest {
 	/**
 	 * Check if the precision is being used as buffer.
 	 * 
-	 * @return true if precision is being used as buffer
+	 * @return usePrecisionAsBuffer true if precision is being used as buffer
 	 */
 	public boolean usePrecisionAsBuffer() {
 		return usePrecisionAsBuffer;

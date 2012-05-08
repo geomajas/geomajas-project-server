@@ -32,7 +32,7 @@ public class GeometryBufferResponse extends CommandResponse {
 	/**
 	 * Get buffered geometries.
 	 *
-	 * @return buffered geometries
+	 * @return geometries that were buffered
 	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
@@ -41,7 +41,7 @@ public class GeometryBufferResponse extends CommandResponse {
 	/**
 	 * Set buffered geometries.
 	 *
-	 * @param geometries buffered geometries
+	 * @param geometries that were buffered
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
