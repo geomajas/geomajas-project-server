@@ -33,6 +33,11 @@ public abstract class AbstractSearchPanel extends Canvas {
 	private boolean canReset = true;
 	private boolean canCancel = true;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public AbstractSearchPanel(MapWidget mapWidget) {
 		super();
 		if (mapWidget == null) {
@@ -145,8 +150,7 @@ public abstract class AbstractSearchPanel extends Canvas {
 	/**
 	 * Called to restore the settings previously requested through getSettings().
 	 * 
-	 * @param featureSearch
-	 *            settings
+	 * @param featureSearch settings
 	 */
 	public abstract void initialize(Criterion featureSearch);
 
