@@ -28,9 +28,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface SelectAlternativeHandler extends EventHandler {
 
-	/**
-	 * Event type.
-	 */
+	/** Event type. */
 	GwtEvent.Type<SelectAlternativeHandler> TYPE = new GwtEvent.Type<SelectAlternativeHandler>();
 
 	/**

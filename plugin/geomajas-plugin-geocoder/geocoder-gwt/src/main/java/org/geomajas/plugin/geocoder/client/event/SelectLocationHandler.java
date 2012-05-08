@@ -26,6 +26,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface SelectLocationHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<SelectLocationHandler> TYPE = new GwtEvent.Type<SelectLocationHandler>();
 
 	/**

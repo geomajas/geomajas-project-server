@@ -32,15 +32,23 @@ public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
 	private MapWidget mapWidget;
 	private List<GetLocationForStringAlternative> alternatives;
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	public Type getAssociatedType() {
 		return SelectAlternativeHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(SelectAlternativeHandler handler) {
 		handler.onSelectAlternative(this);
 	}
 
+	/**
+	 * Constructor which passes the map and alternatives.
+	 *
+	 * @param mapWidget map
+	 * @param alternatives alternatives
+	 */
 	public SelectAlternativeEvent(MapWidget mapWidget, List<GetLocationForStringAlternative> alternatives) {
 		this.mapWidget = mapWidget;
 		this.alternatives = alternatives;

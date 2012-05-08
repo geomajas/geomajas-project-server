@@ -26,6 +26,7 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface SelectAlternativeHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<SelectAlternativeHandler> TYPE = new GwtEvent.Type<SelectAlternativeHandler>();
 
 	/**

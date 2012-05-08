@@ -25,7 +25,9 @@ public class GetLocationForStringRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 100L;
 
+	/** Value for maxAlternatives which does not limit the result. */
 	public static final int MAX_ALTERNATIVES_UNLIMITED = 0;
+	/** Default value for maxAlternatives. */
 	public static final int MAX_ALTERNATIVES_DEFAULT = 50;
 
 	/**

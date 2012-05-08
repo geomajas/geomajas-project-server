@@ -28,9 +28,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface SelectLocationHandler extends EventHandler {
 
-	/**
-	 * Event type.
-	 */
+	/** Event type. */
 	GwtEvent.Type<SelectLocationHandler> TYPE = new GwtEvent.Type<SelectLocationHandler>();
 
 	/**

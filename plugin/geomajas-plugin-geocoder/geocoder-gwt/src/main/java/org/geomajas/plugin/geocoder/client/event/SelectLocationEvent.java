@@ -37,11 +37,13 @@ public class SelectLocationEvent extends GwtEvent<SelectLocationHandler> {
 	private String geocoderName;
 	private ClientUserDataInfo userData;
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	public Type getAssociatedType() {
 		return SelectLocationHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(SelectLocationHandler handler) {
 		handler.onSelectLocation(this);
 	}

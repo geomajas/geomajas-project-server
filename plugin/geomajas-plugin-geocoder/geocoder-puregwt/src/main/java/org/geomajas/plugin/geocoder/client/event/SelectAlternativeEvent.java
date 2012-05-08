@@ -34,14 +34,22 @@ public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
 	private MapPresenter mapPresenter;
 	private List<GetLocationForStringAlternative> alternatives;
 
+	/** {@inheritDoc} */
 	public Type<SelectAlternativeHandler> getAssociatedType() {
 		return SelectAlternativeHandler.TYPE;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(SelectAlternativeHandler handler) {
 		handler.onSelectAlternative(this);
 	}
 
+	/**
+	 * Constructor which passes the map and alternatives.
+	 *
+	 * @param mapPresenter map presenter
+	 * @param alternatives alternatives
+	 */
 	public SelectAlternativeEvent(MapPresenter mapPresenter, List<GetLocationForStringAlternative> alternatives) {
 		this.mapPresenter = mapPresenter;
 		this.alternatives = alternatives;
