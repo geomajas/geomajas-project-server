@@ -11,9 +11,8 @@
 
 package org.geomajas.internal.service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
@@ -30,7 +29,10 @@ import org.geomajas.service.LayerInvalidationService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,44 +47,32 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	private final Logger log = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
 
 	@Autowired(required = false)
-	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
-
-	@Autowired(required = false)
-	protected Map<String, VectorLayer> vectorLayerMap = new LinkedHashMap<String, VectorLayer>();
-
-	@Autowired(required = false)
-	protected Map<String, RasterLayer> rasterLayerMap = new LinkedHashMap<String, RasterLayer>();
-
-	@Autowired(required = false)
-	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
-
-	@Autowired(required = false)
 	private List<LayerInvalidationService> layerInvalidationServices;
+	
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	@Autowired
 	private GeoService geoService;
 
 	/** {@inheritDoc} */
 	public VectorLayer getVectorLayer(String id) {
-		return id == null ? null : vectorLayerMap.get(id);
+		return getBeanOrNull(id, VectorLayer.class);
 	}
 
 	/** {@inheritDoc} */
 	public RasterLayer getRasterLayer(String id) {
-		return id == null ? null : rasterLayerMap.get(id);
+		return getBeanOrNull(id, RasterLayer.class);
 	}
 
 	/** {@inheritDoc} */
 	public Layer<?> getLayer(String id) {
-		return id == null ? null : layerMap.get(id);
+		return getBeanOrNull(id, Layer.class);
 	}
 
 	/** {@inheritDoc} */
 	public ClientMapInfo getMap(String mapId, String applicationId) {
-		if (null == mapId || null == applicationId) {
-			return null;
-		}
-		ClientApplicationInfo application = applicationMap.get(applicationId);
+		ClientApplicationInfo application = getBeanOrNull(applicationId, ClientApplicationInfo.class);
 		if (application != null) {
 			for (ClientMapInfo map : application.getMaps()) {
 				if (mapId.equals(map.getId())) {
@@ -106,6 +96,25 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 		invalidateLayer(layer);
 	}
+	
+	/**
+	 * Get a bean from the application context. Returns null if the bean does not exist.
+	 * @param name name of bean
+	 * @param requiredType type of bean
+	 * @return the bean or null
+	 */
+	private <T> T getBeanOrNull(String name, Class<T> requiredType) {
+		if (name == null || !applicationContext.containsBean(name)) {
+			return null;
+		} else {
+			try {
+				return applicationContext.getBean(name, requiredType);
+			} catch (BeansException be) {
+				log.error("Error during getBeanOrNull, not rethrown, " + be.getMessage(), be);
+				return null;
+			}
+		}
+	}
 
 	private void invalidateLayer(Layer layer) {
 		if (null != layerInvalidationServices) {
@@ -124,7 +133,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	/** {@inheritDoc} */
 	public void invalidateAllLayers() throws GeomajasException {
-		for (Map.Entry<String, Layer<?>> entry : layerMap.entrySet()) {
+		for (Entry<String, Layer> entry : applicationContext.getBeansOfType(Layer.class).entrySet()) {
 			invalidateLayer(entry.getValue());
 		}
 	}
@@ -142,5 +151,5 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 		return null;
 	}
-
+	
 }
