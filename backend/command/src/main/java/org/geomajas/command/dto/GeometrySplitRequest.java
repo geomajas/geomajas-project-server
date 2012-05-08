@@ -32,32 +32,60 @@ public class GeometrySplitRequest extends EmptyCommandRequest {
 
 	private Geometry splitLine;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry
+	 * @param splitLine
+	 */
 	public GeometrySplitRequest(Geometry geometry, Geometry splitLine) {
 		this.geometry = geometry;
 		this.splitLine = splitLine;
 	}
 
+	/**
+	 * Get geometry.
+	 * 
+	 * @return geometry
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Get split line.
+	 * 
+	 * @return split line
+	 */
 	public Geometry getSplitLine() {
 		return splitLine;
 	}
 
+	/**
+	 * Set geometry.
+	 * 
+	 * @param geometry
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * Set split line.
+	 * 
+	 * @param splitLine
+	 */
 	public void setSplitLine(Geometry splitLine) {
 		this.splitLine = splitLine;
 	}
 
+	/**
+	 * Get the string representation of this request.
+	 * 
+	 * @return string representation of this request
+	 */
 	@Override
 	public String toString() {
-		return "GeometrySplitRequest{" +
-				"geometry=" + geometry +
-				", splitLine=" + splitLine +
-				'}';
+		return "GeometrySplitRequest{" + "geometry=" + geometry + ", splitLine=" + splitLine + '}';
 	}
 }

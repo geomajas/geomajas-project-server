@@ -29,14 +29,26 @@ public class GeometryConvexHullResponse extends CommandResponse {
 	
 	private List<Geometry> geometries;
 
+	/**
+	 * Get geometries.
+	 * @return geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set geometries.
+	 * @param geometries
+	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
 
+	/**
+	 * Get the string representation of this response.
+	 * @return string representation of this response
+	 */
 	@Override
 	public String toString() {
 		return "GeometryConvexHullResponse{" +

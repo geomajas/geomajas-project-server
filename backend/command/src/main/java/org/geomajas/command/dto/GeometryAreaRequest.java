@@ -34,22 +34,45 @@ public class GeometryAreaRequest implements CommandRequest {
 	
 	private String crs;
 
+	/**
+	 * Get geometries.
+	 * 
+	 * @return geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set geometries.
+	 * 
+	 * @param geometries
+	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
 	
+	/**
+	 * Get the crs.
+	 * 
+	 * @return crs.
+	 */
 	public String getCrs() {
 		return crs;
 	}
 	
+	/**
+	 * Set the crs.
+	 * @param crs
+	 */
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
 
+	/**
+	 * Get the string representation of this request.
+	 * @return string representation of this request
+	 */
 	@Override
 	public String toString() {
 		return "GeometryAreaRequest{" +

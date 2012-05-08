@@ -28,14 +28,26 @@ public class GeometryAreaResponse extends CommandResponse {
 
 	private List<Double> areas;
 
+	/**
+	 * Get areas.
+	 * @return areas
+	 */
 	public List<Double> getAreas() {
 		return areas;
 	}
 	
+	/**
+	 * Set areas.
+	 * @param areas
+	 */
 	public void setAreas(List<Double> areas) {
 		this.areas = areas;
 	}
 
+	/**
+	 * Get the string representation of this response.
+	 * @return string representation of this response
+	 */
 	@Override
 	public String toString() {
 		return "GeometryAreaResponse{" +

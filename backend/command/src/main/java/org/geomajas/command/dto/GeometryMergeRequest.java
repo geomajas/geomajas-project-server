@@ -36,46 +36,69 @@ public class GeometryMergeRequest implements CommandRequest {
 
 	private boolean usePrecisionAsBuffer;
 
+	/**
+	 * Get geometries.
+	 * 
+	 * @return geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set geometries.
+	 * 
+	 * @param geometries
+	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
 
+	/**
+	 * Get optional precision to use when merging geometries.
+	 * 
+	 * @return precision
+	 */
 	public int getPrecision() {
 		return precision;
 	}
 
 	/**
-	 * Optional precision to use when merging geometries.
+	 * Set optional precision to use when merging geometries.
 	 * 
 	 * @param precision
 	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
-	
+
 	/**
 	 * Optional buffer to extend the merging result.
 	 * 
-	 * @param usePrecisionAsBuffer should precision be used as buffer?
+	 * @param usePrecisionAsBuffer
+	 *            should precision be used as buffer?
 	 */
 	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
 	}
-	
+
+	/**
+	 * Check if the precision is being used as buffer.
+	 * 
+	 * @return true if precision is being used as buffer
+	 */
 	public boolean usePrecisionAsBuffer() {
 		return usePrecisionAsBuffer;
 	}
 
+	/**
+	 * Get the string representation of this request.
+	 * 
+	 * @return string representation of this request
+	 */
 	@Override
 	public String toString() {
-		return "GeometryMergeRequest{" +
-				"geometries=" + geometries +
-				", precision=" + precision +
-				", usePrecisionAsBuffer=" + usePrecisionAsBuffer +
-				'}';
+		return "GeometryMergeRequest{" + "geometries=" + geometries + ", precision=" + precision
+				+ ", usePrecisionAsBuffer=" + usePrecisionAsBuffer + '}';
 	}
 }

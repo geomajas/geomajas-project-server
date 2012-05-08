@@ -29,18 +29,31 @@ public class GeometrySplitResponse extends CommandResponse {
 
 	private List<Geometry> geometries;
 
+	/**
+	 * Get geoemtries.
+	 * 
+	 * @return geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set geometries.
+	 * 
+	 * @param geometries
+	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
 
+	/**
+	 * Get the string representation of this response.
+	 * 
+	 * @return string representation of this response
+	 */
 	@Override
 	public String toString() {
-		return "GeometrySplitResponse{" +
-				"geometries=" + geometries +
-				'}';
+		return "GeometrySplitResponse{" + "geometries=" + geometries + '}';
 	}
 }

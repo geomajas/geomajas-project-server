@@ -32,18 +32,31 @@ public class GeometryConvexHullRequest implements CommandRequest {
 
 	private List<Geometry> geometries;
 
+	/**
+	 * Get geometries.
+	 * 
+	 * @return geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set geometries.
+	 * 
+	 * @param geometries
+	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
 
+	/**
+	 * Get the string representation of this request.
+	 * 
+	 * @return string representation of this request
+	 */
 	@Override
 	public String toString() {
-		return "GeometryConvexHullRequest{" +
-				"geometries=" + geometries +
-				'}';
+		return "GeometryConvexHullRequest{" + "geometries=" + geometries + '}';
 	}
 }

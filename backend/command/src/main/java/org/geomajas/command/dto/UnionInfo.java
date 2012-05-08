@@ -30,27 +30,49 @@ public class UnionInfo implements Serializable {
 
 	private boolean usePrecisionAsBuffer;
 
+	/**
+	 * Get precision.
+	 * 
+	 * @return precision
+	 */
 	public int getPrecision() {
 		return precision;
 	}
 
+	/**
+	 * Set precision.
+	 * 
+	 * @param precision
+	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
 
+	/**
+	 * Check if precision is being used as buffer.
+	 * 
+	 * @return true if precision is being used as buffer
+	 */
 	public boolean isUsePrecisionAsBuffer() {
 		return usePrecisionAsBuffer;
 	}
 
+	/**
+	 * Set if precision should be used as buffer.
+	 * 
+	 * @param true if precision should be used as buffer
+	 */
 	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
 	}
 
+	/**
+	 * Get the string representation of this info object.
+	 * 
+	 * @return string representation of this info object
+	 */
 	@Override
 	public String toString() {
-		return "UnionInfo{" +
-				"precision=" + precision +
-				", usePrecisionAsBuffer=" + usePrecisionAsBuffer +
-				'}';
+		return "UnionInfo{" + "precision=" + precision + ", usePrecisionAsBuffer=" + usePrecisionAsBuffer + '}';
 	}
 }
