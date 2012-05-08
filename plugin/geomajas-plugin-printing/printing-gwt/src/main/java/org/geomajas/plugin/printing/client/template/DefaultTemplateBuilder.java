@@ -69,7 +69,6 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	@Override
 	public PrintTemplateInfo buildTemplate() {
 		PrintTemplateInfo template = super.buildTemplate();
-		template.setTemplate(false);
 		template.setId(1L);
 		template.setName("default");
 		return template;

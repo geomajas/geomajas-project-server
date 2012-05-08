@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * DTO object for LegendItemComponent.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.LegendItemComponent
+ * @see org.geomajas.plugin.printing.component.LegendComponent
  * @since 2.0.0
  *
  */
@@ -26,7 +26,8 @@ import org.geomajas.annotation.Api;
 public class LegendItemComponentInfo  extends PrintComponentInfo implements Serializable {
 
 	private static final long serialVersionUID = 200L;
-	
+
+	/** No-arguments constructor. */
 	public LegendItemComponentInfo() {
 		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.LEFT);
 		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.BOTTOM);

@@ -35,7 +35,7 @@ public class LegendComponentInfo extends PrintComponentInfo {
 	private String title = "Legend";
 
 	/**
-	 * Default contrustor.
+	 * Default constructor.
 	 */
 	public LegendComponentInfo() {
 		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.RIGHT);
