@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.LoadingScreen;
@@ -54,7 +55,9 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  */
 public class Application implements EntryPoint {
 
-	private static final String CUSTOMCOUNTRIES_FEATUREDETAILINFO_BUILDER_KEY = "SampleCustomCountriesFeatureDetail";
+	private static final ApplicationMessages MESSAGES = GWT.create(ApplicationMessages.class);
+	private static final String CUSTOM_COUNTRIES_FEATURE_DETAIL_INFO_BUILDER_KEY =
+			"SampleCustomCountriesFeatureDetail";
 
 	private OverviewMap overviewMap;
 
@@ -63,11 +66,6 @@ public class Application implements EntryPoint {
 	private TabSet tabSet = new TabSet();
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
-
-	private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
-
-	public Application() {
-	}
 
 	public void onModuleLoad() {
 		VLayout mainLayout = new VLayout();
@@ -87,7 +85,7 @@ public class Application implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label(messages.applicationTitle("Feature info"));
+		Label title = new Label(MESSAGES.applicationTitle("Feature info"));
 		title.setStyleName("appTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
@@ -107,7 +105,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		final MapWidget map = new MapWidget("mapMain", "app");
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowResizeBar(true);
@@ -181,20 +179,20 @@ public class Application implements EntryPoint {
 				+ Geomajas.getVersion());
 		loadScreen.draw();
 		
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-			
-			public void onMapModelChange(MapModelEvent event) {
-				VectorLayer layerSmallPopul = (VectorLayer) map.getMapModel().getVectorLayer(
-									"clientLayerCountriesSmallPopul");
+		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
+
+			public void onMapModelChanged(MapModelChangedEvent event) {
+				VectorLayer layerSmallPopul = map.getMapModel().getVectorLayer(
+						"clientLayerCountriesSmallPopul");
 				//layer.setFilter("NAME like '%e%'");
-				if (layerSmallPopul != null) { 
+				if (layerSmallPopul != null) {
 					layerSmallPopul.setFilter("PEOPLE <= 50000000");
 				}
-				
-				VectorLayer layerLargePopul = (VectorLayer) map.getMapModel().getVectorLayer(
-									"clientLayerCountriesLargePopul");
+
+				VectorLayer layerLargePopul = map.getMapModel().getVectorLayer(
+						"clientLayerCountriesLargePopul");
 				//layer.setFilter("NAME like '%e%'");
-				if (layerLargePopul != null) { 
+				if (layerLargePopul != null) {
 					layerLargePopul.setFilter("PEOPLE > 50000000");
 				}
 			}
@@ -220,6 +218,7 @@ public class Application implements EntryPoint {
 	}
 
 	private void registerWidgetBuilders() {
-		WidgetFactory.put(CUSTOMCOUNTRIES_FEATUREDETAILINFO_BUILDER_KEY, new CustomCountriesFeatureInfoCanvasBuilder());
+		WidgetFactory.put(CUSTOM_COUNTRIES_FEATURE_DETAIL_INFO_BUILDER_KEY,
+				new CustomCountriesFeatureInfoCanvasBuilder());
 	}
 }

@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.geomajas.configuration.AttributeInfo;
+
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
@@ -52,9 +54,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private static final int MAX_ROWS = 25;
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
-
-	private final Map<String, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 
 	private final Map<String, RasterLayer> rasterLayers = new HashMap<String, RasterLayer>();
 
@@ -71,10 +71,10 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private Map<String, String> featuresListLabels;
 	
-	private static final String label = "label";
-	private static final String featureId = "featureId";
-	private static final String layerId = "layerId";
-	private static final String layerLabel = "layerLabel";
+	private static final String LABEL = "LABEL";
+	private static final String FEATURE_ID = "FEATURE_ID";
+	private static final String LAYER_ID = "LAYER_ID";
+	private static final String LAYER_LABEL = "LAYER_LABEL";
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -82,8 +82,8 @@ public class MultiLayerFeaturesList extends ListGrid {
 	/**
 	 * Create an instance.
 	 * 
-	 * @param mapWidget
-	 * @param featureClickHandler
+	 * @param mapWidget map widget
+	 * @param featureClickHandler handler
 	 */
 	public MultiLayerFeaturesList(final MapWidget mapWidget, FeatureClickHandler featureClickHandler) {
 		super();
@@ -95,7 +95,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	/**
 	 * Feed a map of features to the widget, so it can be built.
 	 * 
-	 * @param featureMap
+	 * @param featureMap feature map
 	 */
 	public void setFeatures(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		MapModel mapModel = mapWidget.getMapModel();
@@ -114,7 +114,6 @@ public class MultiLayerFeaturesList extends ListGrid {
 	private void addFeatures(Layer<?> layer, List<org.geomajas.layer.feature.Feature> orgFeatures) {
 		if (layer instanceof VectorLayer) {
 			VectorLayer vLayer = (VectorLayer) layer;
-			vectorLayers.put(layer.getId(), vLayer);
 			for (org.geomajas.layer.feature.Feature featDTO : orgFeatures) {
 				Feature feat = new Feature(featDTO, vLayer);
 				vLayer.getFeatureStore().addFeature(feat);
@@ -139,7 +138,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 		String newStyle;
 		String style = record.getCustomStyle(); /* returns groupNode if group row, else e.g. null */
 
-		if (label.equals(getFieldName(colNum)) && (null == style || !"groupNode".equalsIgnoreCase(style))) {
+		if (LABEL.equals(getFieldName(colNum)) && (null == style || !"groupNode".equalsIgnoreCase(style))) {
 			newStyle = "padding-left: 40px;";
 		} else { /* groupCell */
 			newStyle = "padding-left: 5px;";
@@ -169,13 +168,13 @@ public class MultiLayerFeaturesList extends ListGrid {
 		// Feature checks out, add it to the grid:
 		ListGridRecord record = new ListGridRecord();
 		if (layer instanceof VectorLayer) {
-			record.setAttribute(label, getLabel(feature));
+			record.setAttribute(LABEL, getLabel(feature));
 		} else if (layer instanceof RasterLayer) {
-			record.setAttribute(label, feature.getId());
+			record.setAttribute(LABEL, feature.getId());
 		}
-		record.setAttribute(featureId, getFullFeatureId(feature, layer));
-		record.setAttribute(layerId, layer.getId());
-		record.setAttribute(layerLabel, layer.getLabel());
+		record.setAttribute(FEATURE_ID, getFullFeatureId(feature, layer));
+		record.setAttribute(LAYER_ID, layer.getId());
+		record.setAttribute(LAYER_LABEL, layer.getLabel());
 		addData(record);
 		return true;
 	}
@@ -197,10 +196,9 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	/**
 	 * Build the entire widget.
-	 * 
 	 */
 	private void buildWidget() {
-		// setTitle(messages.nearbyFeaturesListTooltip());
+		// setTitle(MESSAGES.nearbyFeaturesListTooltip());
 		setShowEmptyMessage(true);
 		setWidth100();
 		setHeight100();
@@ -215,23 +213,23 @@ public class MultiLayerFeaturesList extends ListGrid {
 		setAutoFitFieldWidths(true);
 		setAutoFitWidthApproach(AutoFitWidthApproach.BOTH);
 
-		ListGridField labelField = new ListGridField(label);
-		ListGridField featIdField = new ListGridField(featureId);
-		ListGridField layerField = new ListGridField(layerId);
-		ListGridField layerLabelField = new ListGridField(layerLabel);
+		ListGridField labelField = new ListGridField(LABEL);
+		ListGridField featIdField = new ListGridField(FEATURE_ID);
+		ListGridField layerField = new ListGridField(LAYER_ID);
+		ListGridField layerLabelField = new ListGridField(LAYER_LABEL);
 
-		setGroupByField(layerLabel);
+		setGroupByField(LAYER_LABEL);
 
 		setGroupStartOpen(GroupStartOpen.ALL);
 		setFields(/* dummyIndentField, */labelField, layerField, featIdField, layerLabelField);
-		hideField(layerId);
-		hideField(featureId);
-		hideField(layerLabel);
+		hideField(LAYER_ID);
+		hideField(FEATURE_ID);
+		hideField(LAYER_LABEL);
 		addRecordClickHandler(new RecordClickHandler() {
 
 			public void onRecordClick(RecordClickEvent event) {
-				String fId = event.getRecord().getAttribute(featureId);
-				String lId = event.getRecord().getAttribute(layerId);
+				String fId = event.getRecord().getAttribute(FEATURE_ID);
+				String lId = event.getRecord().getAttribute(LAYER_ID);
 				Feature feat = vectorFeatures.get(fId);
 
 				if (feat != null) {
@@ -251,22 +249,23 @@ public class MultiLayerFeaturesList extends ListGrid {
 		setHoverCustomizer(new HoverCustomizer() {
 
 			public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
-				String fId = record.getAttribute(featureId);
+				String fId = record.getAttribute(FEATURE_ID);
 				Feature feat = vectorFeatures.get(fId);
 
 				StringBuilder tooltip = new StringBuilder();
 
 				if (feat != null) {
-					for (AttributeInfo a : feat.getLayer().getLayerInfo().getFeatureInfo().getAttributes()) {
-						if (a.isIdentifying()) {
+					for (AbstractAttributeInfo a : feat.getLayer().getLayerInfo().getFeatureInfo().getAttributes()) {
+						if (a instanceof AbstractReadOnlyAttributeInfo &&
+								((AbstractReadOnlyAttributeInfo) a).isIdentifying()) {
 							tooltip.append("<b>");
-							tooltip.append(a.getLabel());
+							tooltip.append(((AbstractReadOnlyAttributeInfo) a).getLabel());
 							tooltip.append("</b>: ");
 							tooltip.append(feat.getAttributeValue(a.getName()));
 							tooltip.append("<br/>");
 						}
 					}
-					tooltip.append(messages.nearbyFeaturesListTooltip());
+					tooltip.append(MESSAGES.nearbyFeaturesListTooltip());
 				}
 				return tooltip.toString();
 			}

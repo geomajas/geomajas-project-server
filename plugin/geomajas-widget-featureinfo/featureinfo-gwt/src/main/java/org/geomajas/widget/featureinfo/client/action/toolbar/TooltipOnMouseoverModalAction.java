@@ -27,7 +27,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements ConfigurableAction {
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 	
 	private final MapWidget mapWidget;
 	private final TooltipOnMouseoverListener listener;
@@ -35,8 +35,8 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 	public TooltipOnMouseoverModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/mouse_tooltip.png", null);
 		this.mapWidget = mapWidget;
-		this.setTitle(messages.tooltipOnMouseoverActionTitle());
-		this.setTooltip(messages.tooltipOnMouseoverActionTooltip());
+		this.setTitle(MESSAGES.tooltipOnMouseoverActionTitle());
+		this.setTooltip(MESSAGES.tooltipOnMouseoverActionTooltip());
 		listener = new TooltipOnMouseoverListener(mapWidget);
 	}
 

@@ -28,28 +28,36 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class ShowCoordinatesModalAction extends ToolbarModalAction implements ConfigurableAction {
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 
 	private boolean showViewCoordinates; // = false;
 	private boolean showWorldCoordinates = true;
 
 	private final MapWidget mapWidget;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public ShowCoordinatesModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/mouse_info_tool.png", null);
 		this.mapWidget = mapWidget;
-		this.setTitle(messages.showCoordinatesActionTitle());
-		this.setTooltip(messages.showCoordinatesActionTooltip());
+		this.setTitle(MESSAGES.showCoordinatesActionTitle());
+		this.setTooltip(MESSAGES.showCoordinatesActionTooltip());
 	}
 
+	/** {@inheritDoc} */
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(new ShowCoordinatesController(mapWidget, showWorldCoordinates, showViewCoordinates));
 	}
 
+	/** {@inheritDoc} */
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
 
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if ("showWorldCoordinates".equals(key)) {
 			showWorldCoordinates = Boolean.parseBoolean(value);

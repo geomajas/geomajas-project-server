@@ -12,13 +12,15 @@
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -45,6 +47,7 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 
 /**
+ * Listener for feature tooltip on mouse over.
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
@@ -52,7 +55,7 @@ import com.smartgwt.client.widgets.Img;
  */
 public class TooltipOnMouseoverListener extends AbstractListener {
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 	private Canvas tooltip;
 	private int pixelTolerance = FitSetting.tooltipPixelTolerance;
 
@@ -66,7 +69,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private Coordinate worldPosition; // world !!
 	private Timer timer;
 	private int widest = 10;
-	private int count = 0;
+	private int count;
 	
 	private final MapWidget mapWidget;
 	private final List<String> layersToExclude = new ArrayList<String>();
@@ -77,6 +80,11 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			+ ".tblcFeatureLabel {margin: 0; font-size: 0.9em; font-style: italic;} "
 			+ ".tblcMore {padding-top: 5px; font-size: 0.9em; font-style: italic;}</style>";
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public TooltipOnMouseoverListener(MapWidget mapWidget) {
 		super();
 		this.mapWidget = mapWidget;
@@ -97,6 +105,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		}
 	}
 
+	@Override
 	public void onMouseMove(ListenerEvent event) {
 		// do not use getRelative(mapwidget.getElement()) -- it reinitializes the map...
 		currentPosition = event.getClientPosition();
@@ -128,6 +137,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		}
 	}
 
+	@Override
 	public void onMouseOut(ListenerEvent event) {
 		// when label is repositioned in corner it can be put under mouse, which (falsely) generates a mouseOutEvent
 		if (!overlapsTooltip((int) event.getClientPosition().getX(), (int) event.getClientPosition().getY())) {
@@ -166,7 +176,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private void writeNone(StringBuilderImpl sb) {
 		sb.append("<span class='tblcMore'>(");
-		sb.append(messages.tooltipOnMouseoverNoResult());
+		sb.append(MESSAGES.tooltipOnMouseoverNoResult());
 		sb.append(")</span>");
 	}
 
@@ -262,9 +272,10 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private boolean isIdentifying(String key, Layer layer) {
 		if (layer instanceof VectorLayer) {
 			ClientVectorLayerInfo c = (ClientVectorLayerInfo) layer.getLayerInfo();
-			for (AttributeInfo a : c.getFeatureInfo().getAttributes()) {
+			for (AbstractAttributeInfo a : c.getFeatureInfo().getAttributes()) {
 				if (a.getName().equalsIgnoreCase(key)) {
-					return a.isIdentifying();
+					return a instanceof AbstractReadOnlyAttributeInfo &&
+							((AbstractReadOnlyAttributeInfo) a).isIdentifying();
 				}
 			}
 		}
@@ -272,10 +283,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	}
 
 	private boolean useLayer(String id) {
-		if (layersToExclude.contains(id)) {
-			return false;
-		}
-		return true;
+		return !layersToExclude.contains(id);
 	}
 
 	protected int updateTooltipSize(int widest, String label) {
@@ -409,11 +417,21 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		c.addChild(new Img("[ISOMORPHIC]/geomajas/loading_small.gif", 16, 16));
 		return c;
 	}
-	
+
+	/**
+	 * Get pixel tolerance.
+	 *
+	 * @return pixel tolerance
+	 */
 	public int getPixelTolerance() {
 		return pixelTolerance;
 	}
 
+	/**
+	 * Set pixel tolerance.
+	 *
+	 * @param pixelTolerance pixel tolerance
+	 */
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
 	}
@@ -436,7 +454,8 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	
 	/**
 	 * Set if tooltip should be filled with feature details instead of label.
-	 * @param detailedLayers true to use details of object, false to use default labels
+	 *
+	 * @param useFeatureDetail true to use details of object, false to use default labels
 	 */
 	public void setTooltipUseFeatureDetail(boolean useFeatureDetail) {
 		this.useFeatureDetail = useFeatureDetail;
@@ -444,13 +463,12 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	/**
 	 * Set the list of Layer IDs for layers which should not be used to draw the detail tooltip.
+	 *
 	 * @param layerIds list of Layer IDs
 	 */
 	public void setLayersToExclude(String[] layerIds) {
 		this.layersToExclude.clear();
-		for (String layerId : layerIds) {
-			this.layersToExclude.add(layerId);
-		}
+		Collections.addAll(this.layersToExclude, layerIds);
 	}
 
 	/**
@@ -460,7 +478,12 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	public void setTooltipMaxLabelCount(int maxLabelCount) {
 		this.maxLabelCount = maxLabelCount;
 	}
-	
+
+	/**
+	 * Get max label count.
+	 *
+	 * @return max label count
+	 */
 	public int getMaxLabelCount() {
 		return this.maxLabelCount;
 	}

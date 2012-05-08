@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.Window;
  */
 public class MultiLayerFeatureInfoWindow extends DockableWindow {
 
-	private static final FeatureInfoMessages featureInfoMessages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 
 	private MultiLayerFeaturesList featuresList;
 
@@ -44,7 +44,6 @@ public class MultiLayerFeatureInfoWindow extends DockableWindow {
 	 * 
 	 * @param mapWidget the map widget
 	 * @param featureMap a Map (Layer, List(Feature)) that contains all the features on this position
-	 * @param showDetailWindowInline should the detailwindow be displayed inline or in a popup 
 	 */
 	public MultiLayerFeatureInfoWindow(MapWidget mapWidget,
 			Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
@@ -60,8 +59,7 @@ public class MultiLayerFeatureInfoWindow extends DockableWindow {
 	 * 
 	 * @param mapWidget the map widget
 	 * @param featureMap a Map (Layer, List(Feature)) that contains all the features on this position
-	 * @param showDetailWindowInline should the detailwindow be displayed inline or in a popup
-	 * @param featuresListLabels contains for each layer specified in SLD attributeName 
+	 * @param featuresListLabels contains for each layer specified in SLD attributeName
 	 * to be used as shown list entry value
 	 */
 	public MultiLayerFeatureInfoWindow(MapWidget mapWidget,	Map<String, 
@@ -82,7 +80,7 @@ public class MultiLayerFeatureInfoWindow extends DockableWindow {
 
 	private void buildWidget() {
 		setAutoSize(true);
-		setTitle(featureInfoMessages.nearbyFeaturesWindowTitle());
+		setTitle(MESSAGES.nearbyFeaturesWindowTitle());
 		setCanDragReposition(true);
 		setCanDragResize(true);
 		setWidth("250px");

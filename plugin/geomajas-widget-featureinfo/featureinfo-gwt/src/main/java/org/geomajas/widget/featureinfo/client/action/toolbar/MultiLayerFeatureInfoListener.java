@@ -12,6 +12,7 @@
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,9 +61,10 @@ import com.smartgwt.client.widgets.Window;
  */
 public class MultiLayerFeatureInfoListener extends AbstractListener {
 
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
+
 	private boolean dragging;
 	private boolean clickstart;
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private final MapWidget mapWidget;
 
 	private boolean includeRasterLayers = FitSetting.featureinfoIncludeRasterLayer;
@@ -76,11 +78,22 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	
 	private Map<String, String> featuresListLabels;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
 		super();
 		this.mapWidget = mapWidget;
 	}
-	
+
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 * @param pixelTolerance pixel tolerance
+	 */
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget, int pixelTolerance) {
 		this(mapWidget);
 		this.pixelTolerance = pixelTolerance;
@@ -96,17 +109,17 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 
 	public void setLayersToExclude(String[] layerIds) {
 		this.layersToExclude.clear();
-		for (String layerId : layerIds) {
-			this.layersToExclude.add(layerId);
-		}
+		Collections.addAll(this.layersToExclude, layerIds);
 	}
 
+	@Override
 	public void onMouseDown(ListenerEvent event) {
 		if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			clickstart = true;
 		}
 	}
 
+	@Override
 	public void onMouseMove(ListenerEvent event) {
 		if (clickstart) {
 			dragging = true;
@@ -185,8 +198,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
 			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
-				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel()
-													.getLayer(featureMap.keySet().iterator().next()));
+				Layer<?> layer = (mapWidget.getMapModel().getLayer(featureMap.keySet().iterator().next()));
 				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
 					Feature feature = new Feature(featDTO, (VectorLayer) layer);
@@ -196,7 +208,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 					window.setKeepInParentRect(true);
 					window.draw();
 				} else {
-					Notify.error(messages.multiLayerFeatureInfoLayerNotFound());
+					Notify.error(MESSAGES.multiLayerFeatureInfoLayerNotFound());
 				}
 			} else {
 				Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap, featuresListLabels);
@@ -205,7 +217,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 				window.draw();
 			}
 		} else {
-			Notify.info(messages.multiLayerFeatureInfoNoResult());
+			Notify.info(MESSAGES.multiLayerFeatureInfoNoResult());
 		}
 	}
 
@@ -237,6 +249,8 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	}
 
 	/**
+	 * Set whether to include raster layers.
+	 *
 	 * @param includeRasterLayers
 	 *            whether to include raster layers in the result
 	 */
@@ -245,6 +259,8 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	}
 
 	/**
+	 * Are raster layers included?
+	 *
 	 * @return the whether to include raster layer features in the result
 	 */
 	public boolean isIncludeRasterLayers() {
@@ -252,6 +268,8 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	}
 
 	/**
+	 * Set list labels.
+	 *
 	 * @param featuresListLabels the featuresListLabels to set
 	 */
 	public void setFeaturesListLabels(Map<String, String> featuresListLabels) {

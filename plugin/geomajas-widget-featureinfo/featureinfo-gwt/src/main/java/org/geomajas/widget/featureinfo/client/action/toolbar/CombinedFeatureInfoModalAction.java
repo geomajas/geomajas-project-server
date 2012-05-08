@@ -29,14 +29,14 @@ public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 
 	private final CombinedFeatureInfoController controller;
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 
 	// Constructor:
 
 	public CombinedFeatureInfoModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/pan_info.png", null);
-		setTitle(messages.combinedFeatureInfoActionTitle());
-		setTooltip(messages.combinedFeatureInfoActionTooltip());
+		setTitle(MESSAGES.combinedFeatureInfoActionTitle());
+		setTooltip(MESSAGES.combinedFeatureInfoActionTooltip());
 		this.mapWidget = mapWidget;
 		controller = new CombinedFeatureInfoController(mapWidget);
 
@@ -47,12 +47,12 @@ public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 
 	// ToolbarModalAction implementation:
 
-	@Override
+	/** {@inheritDoc} */
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(controller);
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}

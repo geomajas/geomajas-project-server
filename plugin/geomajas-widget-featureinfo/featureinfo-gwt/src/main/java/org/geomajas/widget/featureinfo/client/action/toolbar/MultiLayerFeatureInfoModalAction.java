@@ -32,6 +32,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction implements ConfigurableAction {
 
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
+
 	private final MapWidget mapWidget;
 
 	private final MultiLayerFeatureInfoController controller;
@@ -43,16 +45,14 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	private String[] layersToExclude = new String[0];
 	private Map<String, String> featuresListLabels = new HashMap<String, String>();
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
-
 	/**
 	 * Constructor.
 	 * @param mapWidget the mapwidget where this action should work on
 	 */
 	public MultiLayerFeatureInfoModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/info.png", null);
-		setTitle(messages.nearbyFeaturesModalActionTitle());
-		setTooltip(messages.nearbyFeaturesModalActionTooltip());
+		setTitle(MESSAGES.nearbyFeaturesModalActionTitle());
+		setTooltip(MESSAGES.nearbyFeaturesModalActionTooltip());
 		this.mapWidget = mapWidget;
 		controller = new MultiLayerFeatureInfoController(mapWidget, pixelTolerance);
 		if (null != layersToExclude) {
@@ -63,9 +63,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.gwt.client.action.ConfigurableAction#configure(java.lang.String, java.lang.String)
-	 */
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
@@ -77,26 +75,20 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 			setLayersToExclude(layersToExcl);
 		} else if ("featuresListLabels".equalsIgnoreCase(key) && null != value) {
 			String [] features = value.split(",");
-			for (int i = 0; i < features.length; i++) {
-				if (features[i].indexOf((char) 61) > -1) { //String.indexOf(char) faster than String.indexOf(String)
-					featuresListLabels.put(features[i].split("=")[0], features[i].split("=")[1]);
+			for (String feature : features) {
+				if (feature.indexOf((char) 61) > -1) { //String.indexOf(char) faster than String.indexOf(String)
+					featuresListLabels.put(feature.split("=")[0], feature.split("=")[1]);
 				}
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.gwt.client.action.ToolbarModalAction#onSelect(com.smartgwt.client.widgets.events.ClickEvent)
-	 */
-	@Override
+	/** {@inheritDoc} */
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(controller);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.gwt.client.action.ToolbarModalAction#onDeselect(com.smartgwt.client.widgets.events.ClickEvent)
-	 */
-	@Override
+	/** {@inheritDoc} */
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
@@ -112,6 +104,8 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	}
 
 	/**
+	 * Get pixel tolerance.
+	 *
 	 * @return the current pixel tolerance
 	 */
 	public int getPixelTolerance() {
@@ -120,6 +114,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	
 	/**
 	 * Set the layers that should be excluded from the query.
+	 *
 	 * @param layerIds list of layerIds
 	 */
 	public void setLayersToExclude(String[] layerIds) {
@@ -128,6 +123,8 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	}
 
 	/**
+	 * Set labels for feature lists.
+	 *
 	 * @param featuresListLabels the featuresListLabels to set
 	 */
 	public void setFeaturesListLabels(Map<String, String> featuresListLabels) {

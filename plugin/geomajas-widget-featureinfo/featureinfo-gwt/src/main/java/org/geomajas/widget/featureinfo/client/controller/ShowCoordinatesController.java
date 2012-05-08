@@ -23,17 +23,24 @@ import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Label;
 
 /**
- * 
+ * Controller to show coordinates.
+ *
  * @author Kristof Heirwegh
- * 
  */
 public class ShowCoordinatesController extends AbstractGraphicsController {
 
-	private static final FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
 	private final boolean showViewCoordinates; // = false;
 	private boolean showWorldCoordinates = true;
 	private CoordinatesLabel label;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 * @param showWorldCoordinates show world coordinates
+	 * @param showViewCoordinates show view voordinates
+	 */
 	public ShowCoordinatesController(MapWidget mapWidget, boolean showWorldCoordinates, boolean showViewCoordinates) {
 		super(mapWidget);
 		this.showViewCoordinates = showViewCoordinates;
@@ -71,8 +78,8 @@ public class ShowCoordinatesController extends AbstractGraphicsController {
 	 */
 	private class CoordinatesLabel extends Label {
 
-		private final NumberFormat viewformatter = NumberFormat.getFormat("#,##0");
-		private final NumberFormat worldformatter = NumberFormat.getFormat("#,##0.000");
+		private final NumberFormat viewFormatter = NumberFormat.getFormat("#,##0");
+		private final NumberFormat worldFormatter = NumberFormat.getFormat("#,##0.000");
 		private final boolean showBoth;
 
 		public CoordinatesLabel() {
@@ -99,16 +106,16 @@ public class ShowCoordinatesController extends AbstractGraphicsController {
 			String world = "";
 			String view = "";
 			if (showViewCoordinates) {
-				view = "<b>" + (showBoth ? messages.showCoordinatesViewX() : "X: ") + "</b>"
-						+ viewformatter.format(viewX) + "<br/>";
-				view += "<b>" + (showBoth ? messages.showCoordinatesViewY() : "Y: ") + "</b>"
-						+ viewformatter.format(viewY) + "<br/>";
+				view = "<b>" + (showBoth ? MESSAGES.showCoordinatesViewX() : "X: ") + "</b>"
+						+ viewFormatter.format(viewX) + "<br/>";
+				view += "<b>" + (showBoth ? MESSAGES.showCoordinatesViewY() : "Y: ") + "</b>"
+						+ viewFormatter.format(viewY) + "<br/>";
 			}
 			if (showWorldCoordinates) {
-				world = "<b>" + (showBoth ? messages.showCoordinatesWorldX() : "X: ") + "</b>"
-						+ worldformatter.format(worldX) + "<br />";
-				world += "<b>" + (showBoth ? messages.showCoordinatesWorldY() : "Y: ") + "</b>"
-						+ worldformatter.format(worldY) + "<br />";
+				world = "<b>" + (showBoth ? MESSAGES.showCoordinatesWorldX() : "X: ") + "</b>"
+						+ worldFormatter.format(worldX) + "<br />";
+				world += "<b>" + (showBoth ? MESSAGES.showCoordinatesWorldY() : "Y: ") + "</b>"
+						+ worldFormatter.format(worldY) + "<br />";
 			}
 
 			String all = "<div>";
