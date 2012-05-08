@@ -27,6 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface GeometryMergeStartHandler extends EventHandler {
 
+	/** Type of this handler. */
 	GwtEvent.Type<GeometryMergeStartHandler> TYPE = new GwtEvent.Type<GeometryMergeStartHandler>();
 
 	/**

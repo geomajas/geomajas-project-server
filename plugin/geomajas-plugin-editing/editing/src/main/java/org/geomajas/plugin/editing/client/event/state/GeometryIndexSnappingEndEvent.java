@@ -27,10 +27,18 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 @Api(allMethods = true)
 public class GeometryIndexSnappingEndEvent extends AbstractGeometryEditEvent<GeometryIndexSnappingEndHandler> {
 
+	/**
+	 * Main constructor.
+	 * @param geometry that has stopped snapping
+	 * @param indices
+	 */
 	public GeometryIndexSnappingEndEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Type<GeometryIndexSnappingEndHandler> getAssociatedType() {
 		return GeometryIndexSnappingEndHandler.TYPE;
 	}

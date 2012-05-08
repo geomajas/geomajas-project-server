@@ -27,6 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface CoordinateSnapHandler extends EventHandler {
 
+	/** Type of this handler. */
 	GwtEvent.Type<CoordinateSnapHandler> TYPE = new GwtEvent.Type<CoordinateSnapHandler>();
 
 	/**

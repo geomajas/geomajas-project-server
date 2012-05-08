@@ -27,6 +27,10 @@ public class GeometryMergeAddedEvent extends GwtEvent<GeometryMergeAddedHandler>
 
 	private final Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * @param geometry that needs to be added to the list for merging.
+	 */
 	public GeometryMergeAddedEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}

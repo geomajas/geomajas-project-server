@@ -27,10 +27,18 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 @Api(allMethods = true)
 public class GeometryIndexSnappingBeginEvent extends AbstractGeometryEditEvent<GeometryIndexSnappingBeginHandler> {
 
+	/**
+	 * Main constructor for this event.
+	 * @param geometry that has snapped to another geometry
+	 * @param indices 
+	 */
 	public GeometryIndexSnappingBeginEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Type<GeometryIndexSnappingBeginHandler> getAssociatedType() {
 		return GeometryIndexSnappingBeginHandler.TYPE;
 	}

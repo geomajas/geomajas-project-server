@@ -27,6 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface GeometrySplitStopHandler extends EventHandler {
 
+	/** Type of this handler. */
 	GwtEvent.Type<GeometrySplitStopHandler> TYPE = new GwtEvent.Type<GeometrySplitStopHandler>();
 
 	/**

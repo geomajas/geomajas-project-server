@@ -58,16 +58,25 @@ public class GeometrySplitService {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Default constructor.
+	 */
 	public GeometrySplitService() {
 		this(new GeometryEditServiceImpl());
 	}
 
+	/**
+	 * Constructor with a {@link GeometryEditService}, that if stopped, stops this service as well.
+	 * 
+	 * @param service the {@link GeometryEditService} that need to be used
+	 */
 	public GeometrySplitService(GeometryEditService service) {
 		this.service = service;
 		eventBus = new SimpleEventBus();
 
 		service.addGeometryEditStopHandler(new GeometryEditStopHandler() {
 
+			/** {@inheritDoc} */
 			public void onGeometryEditStop(GeometryEditStopEvent event) {
 				if (started) {
 					stop(null);
@@ -79,15 +88,27 @@ public class GeometrySplitService {
 	// ------------------------------------------------------------------------
 	// Public regarding the splitting work-flow:
 	// ------------------------------------------------------------------------
-
+	/**
+	 * Add a {@link GeometrySplitStartHandler}.
+	 * @param handler to be added
+	 * @return {@link HandlerRegistration} for the given handler
+	 */
 	public HandlerRegistration addGeometrySplitStartHandler(GeometrySplitStartHandler handler) {
 		return eventBus.addHandler(GeometrySplitStartHandler.TYPE, handler);
 	}
-
+	/**
+	 * Add a {@link GeometrySplitStopHandler}.
+	 * @param handler to be added
+	 * @return {@link HandlerRegistration} for the given handler
+	 */
 	public HandlerRegistration addGeometrySplitStopHandler(GeometrySplitStopHandler handler) {
 		return eventBus.addHandler(GeometrySplitStopHandler.TYPE, handler);
 	}
 
+	/**
+	 * Start splitting the given geometry.
+	 * @param geometry to be split
+	 */
 	public void start(Geometry geometry) {
 		this.geometry = geometry;
 
@@ -100,6 +121,11 @@ public class GeometrySplitService {
 		eventBus.fireEvent(new GeometrySplitStartEvent(geometry));
 	}
 
+	/**
+	 * Stop splitting the geometry.
+	 * @param callback 
+	 * 			the {@link GeometryArrayFunction} to be executed after the splitting has stopped
+	 */
 	public void stop(final GeometryArrayFunction callback) {
 		started = false;
 		service.stop();
@@ -122,14 +148,26 @@ public class GeometrySplitService {
 	// Getters:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the geometry that needs to be split.
+	 * @return geometry that needs to be split
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Get the geometry that represents the split line.
+	 * @return geometry that represents the split line.
+	 */
 	public Geometry getSplitLine() {
 		return splitLine;
 	}
 
+	/**
+	 * Get the {@link GeometryEditService} that is used to edit the split line.
+	 * @return the {@link GeometryEditService} that is used to edit the split line
+	 */
 	public GeometryEditService getGeometryEditService() {
 		return service;
 	}

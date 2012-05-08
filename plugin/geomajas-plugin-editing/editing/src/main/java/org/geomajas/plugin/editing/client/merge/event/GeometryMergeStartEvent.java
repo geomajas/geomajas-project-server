@@ -24,6 +24,9 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class GeometryMergeStartEvent extends GwtEvent<GeometryMergeStartHandler> {
 
+	/**
+	 * Default constructor.
+	 */
 	public GeometryMergeStartEvent() {
 	}
 

@@ -27,6 +27,10 @@ public class GeometryMergeRemovedEvent extends GwtEvent<GeometryMergeRemovedHand
 
 	private final Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * @param geometry that needs to be removed
+	 */
 	public GeometryMergeRemovedEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}

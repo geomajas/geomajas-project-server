@@ -27,6 +27,12 @@ public class GeometryMergeStopEvent extends GwtEvent<GeometryMergeStopHandler> {
 
 	private final Geometry geometry;
 
+	/**
+	 * Initialize this event with the resulting geometry of the merging process.
+	 * 
+	 * @param geometry
+	 *            The geometry that is the result of the merging process.
+	 */
 	public GeometryMergeStopEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
@@ -41,6 +47,10 @@ public class GeometryMergeStopEvent extends GwtEvent<GeometryMergeStopHandler> {
 		handler.onGeometryMergingStop(this);
 	}
 
+	/**
+	 * Get the geometry.
+	 * @return geometry last geometry that needs to be added before stopping
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}

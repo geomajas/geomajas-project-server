@@ -27,6 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface GeometryMergeStopHandler extends EventHandler {
 
+	/** Type of this handler. */
 	GwtEvent.Type<GeometryMergeStopHandler> TYPE = new GwtEvent.Type<GeometryMergeStopHandler>();
 
 	/**

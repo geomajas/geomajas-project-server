@@ -27,6 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface GeometryIndexSnappingBeginHandler extends EventHandler {
 
+	/** Type of this handler. */
 	GwtEvent.Type<GeometryIndexSnappingBeginHandler> TYPE = new GwtEvent.Type<GeometryIndexSnappingBeginHandler>();
 
 	/**

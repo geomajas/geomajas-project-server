@@ -57,6 +57,9 @@ public class GeometryMergeService {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Default constructor.
+	 */
 	public GeometryMergeService() {
 	}
 

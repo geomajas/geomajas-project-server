@@ -25,14 +25,26 @@ public class GeometryIndexNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 100L;
 
+	/**
+	 * Default constructor.
+	 */
 	public GeometryIndexNotFoundException() {
 		super();
 	}
 
+	/**
+	 * Constructor with a message.
+	 * @param message message of this exception
+	 */
 	public GeometryIndexNotFoundException(String message) {
 		super(message);
 	}
 
+	/**
+	 * Constructor with a message and cause.
+	 * @param message message of this exception
+	 * @param cause cause of this exception
+	 */
 	public GeometryIndexNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
