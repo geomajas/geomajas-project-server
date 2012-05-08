@@ -98,6 +98,9 @@ public class FeatureSelectionController extends NavigationController {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Create a controller.
+	 */
 	public FeatureSelectionController() {
 		super();
 		selectionRectangleController = new SelectionRectangleController();
@@ -107,6 +110,7 @@ public class FeatureSelectionController extends NavigationController {
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void onActivate(MapPresenter mapPresenter) {
 		// Activate all 3 controllers:
 		super.onActivate(mapPresenter);
@@ -114,6 +118,7 @@ public class FeatureSelectionController extends NavigationController {
 		selectionRectangleController.onActivate(mapPresenter);
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseDown(MouseDownEvent event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -125,6 +130,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDown(HumanInputEvent<?> event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -138,6 +144,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseMove(MouseMoveEvent event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -150,6 +157,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDrag(HumanInputEvent<?> event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -160,6 +168,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onUp(HumanInputEvent<?> event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -181,6 +190,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseOut(MouseOutEvent event) {
 		super.onMouseOut(event);
 		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {

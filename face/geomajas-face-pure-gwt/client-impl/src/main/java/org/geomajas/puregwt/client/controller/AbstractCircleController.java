@@ -70,7 +70,7 @@ public abstract class AbstractCircleController extends AbstractMapController {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public AbstractCircleController() {
+	protected AbstractCircleController() {
 		super(false);
 	}
 

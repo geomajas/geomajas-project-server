@@ -75,6 +75,9 @@ public class NavigationController extends AbstractMapController {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Create a controller.
+	 */
 	public NavigationController() {
 		super(false);
 		zoomToRectangleController = new ZoomToRectangleController();
@@ -84,11 +87,13 @@ public class NavigationController extends AbstractMapController {
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void onActivate(MapPresenter mapPresenter) {
 		super.onActivate(mapPresenter);
 		zoomToRectangleController.onActivate(mapPresenter);
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseDown(MouseDownEvent event) {
 		super.onMouseDown(event);
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
@@ -97,6 +102,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDown(HumanInputEvent<?> event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
 			zooming = true;
@@ -108,6 +114,7 @@ public class NavigationController extends AbstractMapController {
 		lastClickPosition = getLocation(event, RenderSpace.WORLD);
 	}
 
+	/** {@inheritDoc} */
 	public void onUp(HumanInputEvent<?> event) {
 		if (zooming) {
 			zoomToRectangleController.onUp(event);
@@ -117,6 +124,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseMove(MouseMoveEvent event) {
 		if (zooming) {
 			zoomToRectangleController.onMouseMove(event);
@@ -126,10 +134,12 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDrag(HumanInputEvent<?> event) {
 		updateView(event);
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseOut(MouseOutEvent event) {
 		if (zooming) {
 			zoomToRectangleController.onMouseOut(event);
@@ -138,6 +148,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDoubleClick(DoubleClickEvent event) {
 		// Zoom in on the event location:
 		Bbox bounds = mapPresenter.getViewPort().getBounds();
@@ -147,6 +158,7 @@ public class NavigationController extends AbstractMapController {
 		mapPresenter.getViewPort().applyBounds(newBounds);
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseWheel(MouseWheelEvent event) {
 		ViewPort viewPort = mapPresenter.getViewPort();
 		int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
@@ -175,10 +187,20 @@ public class NavigationController extends AbstractMapController {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the scroll zoom type of this controller.
+	 * 
+	 * @return the scroll zoom type.
+	 */
 	public ScrollZoomType getScrollZoomType() {
 		return scrollZoomType;
 	}
 
+	/**
+	 * Set the scroll zoom type of this controller.
+	 * 
+	 * @param scrollZoomType the scroll zoom type.
+	 */
 	public void setScrollZoomType(ScrollZoomType scrollZoomType) {
 		this.scrollZoomType = scrollZoomType;
 	}

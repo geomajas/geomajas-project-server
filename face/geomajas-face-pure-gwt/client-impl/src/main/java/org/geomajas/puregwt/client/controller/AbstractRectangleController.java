@@ -66,7 +66,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public AbstractRectangleController() {
+	protected AbstractRectangleController() {
 		super(false);
 	}
 
@@ -74,11 +74,13 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void onActivate(MapPresenter mapPresenter) {
 		super.onActivate(mapPresenter);
 		getContainer();
 	}
 
+	/** {@inheritDoc} */
 	public void onDown(HumanInputEvent<?> event) {
 		if (!isRightMouseButton(event)) {
 			dragging = true;
@@ -94,6 +96,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onUp(HumanInputEvent<?> event) {
 		// Assure dragging or clicking started inside this widget
 		if (dragging) {
@@ -108,10 +111,12 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void onDrag(HumanInputEvent<?> event) {
 		updateRectangle(event);
 	}
 
+	/** {@inheritDoc} */
 	public void onMouseOut(MouseOutEvent event) {
 		stopDragging();
 		dragging = false;
@@ -129,42 +134,92 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	// Getters and setters for the style of the rectangle:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the fill color of the rectangle.
+	 * 
+	 * @return the css fill color
+	 */
 	public String getRectangleFillColor() {
 		return fillColor;
 	}
 
+	/**
+	 * Set the fill color of the rectangle.
+	 * 
+	 * @param fillColor the css fill color
+	 */
 	public void setRectangleFillColor(String fillColor) {
 		this.fillColor = fillColor;
 	}
 
+	/**
+	 * Get the fill opacity of the rectangle.
+	 * 
+	 * @return the fill opacity.
+	 */
 	public float getRectangleFillOpacity() {
 		return fillOpacity;
 	}
 
+	/**
+	 * Set the fill opacity of the rectangle.
+	 * 
+	 * @param fillOpacity the fill opacity
+	 */
 	public void setRectangleFillOpacity(float fillOpacity) {
 		this.fillOpacity = fillOpacity;
 	}
 
+	/**
+	 * Get the stroke color of the rectangle.
+	 * 
+	 * @return the css stroke color
+	 */
 	public String getRectangleStrokeColor() {
 		return strokeColor;
 	}
 
+	/**
+	 * Set the stroke color of the rectangle.
+	 * 
+	 * @param strokeColor the css stroke color
+	 */
 	public void setRectangleStrokeColor(String strokeColor) {
 		this.strokeColor = strokeColor;
 	}
 
+	/**
+	 * Get the stroke opacity of the rectangle.
+	 * 
+	 * @return the stroke opacity.
+	 */
 	public float getRectangleStrokeOpacity() {
 		return strokeOpacity;
 	}
 
+	/**
+	 * Set the stroke opacity of the rectangle.
+	 * 
+	 * @param strokeOpacity the stroke opacity
+	 */
 	public void setRectangleStrokeOpacity(float strokeOpacity) {
 		this.strokeOpacity = strokeOpacity;
 	}
 
+	/**
+	 * Get the stroke width of the rectangle.
+	 * 
+	 * @return the stroke width.
+	 */
 	public int getRectangleStrokeWidth() {
 		return strokeWidth;
 	}
 
+	/**
+	 * Set the stroke width of the rectangle.
+	 * 
+	 * @param strokeWidth the stroke width
+	 */
 	public void setRectangleStrokeWidth(int strokeWidth) {
 		this.strokeWidth = strokeWidth;
 	}
