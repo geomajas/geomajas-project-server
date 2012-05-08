@@ -39,6 +39,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface EnabledHandler extends EventHandler {
 
+	/** Event type. */
 	GwtEvent.Type<EnabledHandler> TYPE = new GwtEvent.Type<EnabledHandler>();
 
 	/**

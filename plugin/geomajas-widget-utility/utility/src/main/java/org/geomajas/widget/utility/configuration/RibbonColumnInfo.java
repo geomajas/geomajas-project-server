@@ -34,26 +34,56 @@ public class RibbonColumnInfo implements ClientWidgetInfo {
 
 	private List<Parameter> parameters;
 
+	/**
+	 * Get column type.
+	 *
+	 * @return type
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Set columns type.
+	 *
+	 * @param type type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	 * Get tools.
+	 *
+	 * @return tools
+	 */
 	public List<ClientToolInfo> getTools() {
 		return tools;
 	}
 
+	/**
+	 * Set tools.
+	 *
+	 * @param tools tools
+	 */
 	public void setTools(List<ClientToolInfo> tools) {
 		this.tools = tools;
 	}
 
+	/**
+	 * Get parameters.
+	 *
+	 * @return parameters
+	 */
 	public List<Parameter> getParameters() {
 		return parameters;
 	}
 
+	/**
+	 * Set parameters.
+	 *
+	 * @param parameters parameters
+	 */
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
 	}

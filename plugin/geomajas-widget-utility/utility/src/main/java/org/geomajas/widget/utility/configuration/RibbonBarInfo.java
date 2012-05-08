@@ -31,18 +31,38 @@ public class RibbonBarInfo implements ClientWidgetInfo {
 
 	private List<RibbonGroupInfo> groups;
 
+	/**
+	 * Get bar title.
+	 *
+	 * @return title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Set bar title.
+	 *
+	 * @param title title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * Get groups.
+	 *
+	 * @return groups
+	 */
 	public List<RibbonGroupInfo> getGroups() {
 		return groups;
 	}
 
+	/**
+	 * Set groups.
+	 *
+	 * @param groups groups
+	 */
 	public void setGroups(List<RibbonGroupInfo> groups) {
 		this.groups = groups;
 	}

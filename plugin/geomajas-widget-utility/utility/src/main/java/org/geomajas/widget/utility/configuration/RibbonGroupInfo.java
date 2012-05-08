@@ -30,18 +30,38 @@ public class RibbonGroupInfo implements ClientWidgetInfo {
 
 	private List<RibbonColumnInfo> columns;
 
+	/**
+	 * Get group title.
+	 *
+	 * @return title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Set group title.
+	 *
+	 * @param title title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * Get columns.
+	 *
+	 * @return columns
+	 */
 	public List<RibbonColumnInfo> getColumns() {
 		return columns;
 	}
 
+	/**
+	 * Set columns.
+	 *
+	 * @param columns columns
+	 */
 	public void setColumns(List<RibbonColumnInfo> columns) {
 		this.columns = columns;
 	}

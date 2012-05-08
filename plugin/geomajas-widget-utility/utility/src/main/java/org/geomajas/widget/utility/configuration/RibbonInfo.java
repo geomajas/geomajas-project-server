@@ -30,18 +30,38 @@ public class RibbonInfo implements ClientWidgetInfo {
 
 	private List<RibbonBarInfo> tabs;
 
+	/**
+	 * Get id.
+	 *
+	 * @return id
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set id.
+	 *
+	 * @param id id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get tabs.
+	 *
+	 * @return tabs
+	 */
 	public List<RibbonBarInfo> getTabs() {
 		return tabs;
 	}
 
+	/**
+	 * Set tabs.
+	 *
+	 * @param tabs tabs
+	 */
 	public void setTabs(List<RibbonBarInfo> tabs) {
 		this.tabs = tabs;
 	}
