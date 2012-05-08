@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FeatureInfo implements Serializable {
+public class FeatureInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 	@NotNull

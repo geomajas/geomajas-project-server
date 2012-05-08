@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.LayerType;
@@ -32,7 +32,7 @@ import org.geomajas.layer.LayerType;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public abstract class ClientLayerInfo implements Serializable {
+public abstract class ClientLayerInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

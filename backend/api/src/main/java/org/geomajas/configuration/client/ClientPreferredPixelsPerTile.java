@@ -10,9 +10,8 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 
 /**
@@ -22,7 +21,7 @@ import org.geomajas.annotation.Api;
  * @since 1.9.0
  */
 @Api(allMethods = true)
-public class ClientPreferredPixelsPerTile implements Serializable {
+public class ClientPreferredPixelsPerTile implements IsInfo {
 
 	private static final long serialVersionUID = 1L;
 

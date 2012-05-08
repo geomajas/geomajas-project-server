@@ -10,13 +10,13 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Representation of a node in the layer tree widget.
@@ -26,7 +26,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ClientLayerTreeNodeInfo implements Serializable {
+public class ClientLayerTreeNodeInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

@@ -10,8 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.Null;
 
 import org.geomajas.annotation.Api;
@@ -25,7 +23,7 @@ import org.geomajas.layer.LayerType;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FeatureStyleInfo implements Serializable, CacheableObject {
+public class FeatureStyleInfo implements IsInfo, CacheableObject {
 
 	private static final int PRIME = 31;
 

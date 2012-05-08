@@ -10,8 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.global.CacheableObject;
 
@@ -22,7 +20,7 @@ import org.geomajas.global.CacheableObject;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FontStyleInfo implements Serializable, CacheableObject {
+public class FontStyleInfo implements IsInfo, CacheableObject {
 
 	private static final int PRIME = 31;
 

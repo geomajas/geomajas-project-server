@@ -10,11 +10,11 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Scale configuration of the map. The map needs a maximum scale (minimum is determined by maximum bounds) and
@@ -24,7 +24,7 @@ import org.geomajas.annotation.Api;
  * @since 1.7.0
  */
 @Api(allMethods = true)
-public class ScaleConfigurationInfo implements Serializable {
+public class ScaleConfigurationInfo implements IsInfo {
 
 	private static final long serialVersionUID = 170L;
 

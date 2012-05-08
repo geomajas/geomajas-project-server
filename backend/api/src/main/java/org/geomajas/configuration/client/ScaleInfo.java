@@ -10,9 +10,8 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Represents a single scale. This class is needed to support 1:x notation because annotation-based formatters only
@@ -22,7 +21,7 @@ import org.geomajas.annotation.Api;
  * @since 1.7.0
  */
 @Api(allMethods = true)
-public class ScaleInfo implements Serializable {
+public class ScaleInfo implements IsInfo {
 
 	private static final long serialVersionUID = 170L;
 

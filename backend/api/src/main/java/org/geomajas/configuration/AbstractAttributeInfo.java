@@ -13,8 +13,6 @@ package org.geomajas.configuration;
 
 import org.geomajas.annotation.Api;
 
-import java.io.Serializable;
-
 /**
  * Base information which is shared between all attributes.
  *
@@ -22,7 +20,7 @@ import java.io.Serializable;
  * @since 1.10.0 split out of AttributeBaseInfo, fixing the naming and removing the editable property
  */
 @Api(allMethods = true)
-public abstract class AbstractAttributeInfo implements Serializable {
+public abstract class AbstractAttributeInfo implements IsInfo {
 
 	private static final long serialVersionUID = 1100L;
 	private String name;

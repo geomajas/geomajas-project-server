@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import org.geomajas.layer.LayerType;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class RasterLayerInfo extends LayerInfo implements Serializable {
+public class RasterLayerInfo extends LayerInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

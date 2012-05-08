@@ -10,11 +10,11 @@
  */
 package org.geomajas.configuration.validation;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Validator configuration information.
@@ -24,7 +24,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ValidatorInfo implements Serializable {
+public class ValidatorInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

@@ -10,10 +10,9 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Use this interface to define custom data classes to be passed to the client.
@@ -27,6 +26,6 @@ import org.geomajas.annotation.UserImplemented;
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface ClientUserDataInfo extends Serializable {
+public interface ClientUserDataInfo extends IsInfo {
 
 }

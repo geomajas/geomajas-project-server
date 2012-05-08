@@ -10,10 +10,9 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Marker interface for widget information which is contained in the map (or application)
@@ -27,6 +26,6 @@ import org.geomajas.annotation.UserImplemented;
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface ClientWidgetInfo extends Serializable {
+public interface ClientWidgetInfo extends IsInfo {
 
 }

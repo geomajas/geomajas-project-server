@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ import org.geomajas.sld.UserStyleInfo;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class NamedStyleInfo implements Serializable, CacheableObject {
+public class NamedStyleInfo implements IsInfo, CacheableObject {
 	
 	private static final long serialVersionUID = 154L;
 	private static final int HASH_FACTOR = 31;

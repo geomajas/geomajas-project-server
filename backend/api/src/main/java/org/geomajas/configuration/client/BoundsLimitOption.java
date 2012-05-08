@@ -10,8 +10,8 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Available options to limit (e.g. the map view) bounds when applying the maxBounds limitation.
@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public enum BoundsLimitOption implements Serializable {
+public enum BoundsLimitOption implements IsInfo {
 
 	/**
 	 *  View center must be within maxBounds.

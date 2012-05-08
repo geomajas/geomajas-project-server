@@ -10,8 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
@@ -23,7 +21,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class AssociationAttributeInfo extends AbstractEditableAttributeInfo implements Serializable {
+public class AssociationAttributeInfo extends AbstractEditableAttributeInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

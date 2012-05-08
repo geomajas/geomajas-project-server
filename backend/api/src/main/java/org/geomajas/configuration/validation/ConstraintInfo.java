@@ -10,9 +10,8 @@
  */
 package org.geomajas.configuration.validation;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Base class for validation constraints.
@@ -21,6 +20,6 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public interface ConstraintInfo extends Serializable {
+public interface ConstraintInfo extends IsInfo {
 
 }

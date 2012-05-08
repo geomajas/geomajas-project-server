@@ -10,9 +10,8 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Scale unit type.
@@ -21,7 +20,7 @@ import org.geomajas.annotation.Api;
  * @since 1.7.0
  */
 @Api(allMethods = true)
-public enum ScaleUnit  implements Serializable {
+public enum ScaleUnit  implements IsInfo {
 
 	/**
 	 * scale expressed in pixels per map unit.

@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 
 /**
  * Base application info entry point.
@@ -28,7 +28,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ClientApplicationInfo implements Serializable {
+public class ClientApplicationInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

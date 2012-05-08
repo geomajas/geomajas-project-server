@@ -10,8 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -21,7 +19,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class PrimitiveAttributeInfo extends AbstractEditableAttributeInfo implements Serializable {
+public class PrimitiveAttributeInfo extends AbstractEditableAttributeInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 	private PrimitiveType type;

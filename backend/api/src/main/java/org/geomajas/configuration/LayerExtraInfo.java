@@ -11,8 +11,6 @@
 
 package org.geomajas.configuration;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
@@ -27,6 +25,6 @@ import org.geomajas.annotation.UserImplemented;
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface LayerExtraInfo extends Serializable {
+public interface LayerExtraInfo extends IsInfo {
 
 }

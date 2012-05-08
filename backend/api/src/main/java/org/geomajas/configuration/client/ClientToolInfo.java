@@ -10,13 +10,13 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.IsInfo;
 import org.geomajas.configuration.Parameter;
 
 /**
@@ -26,7 +26,7 @@ import org.geomajas.configuration.Parameter;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ClientToolInfo implements Serializable {
+public class ClientToolInfo implements IsInfo {
 
 	private static final long serialVersionUID = 151L;
 

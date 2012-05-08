@@ -10,10 +10,10 @@
  */
 package org.geomajas.configuration;
 
+import javax.validation.constraints.NotNull;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.validation.ValidatorInfo;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Attribute information class.

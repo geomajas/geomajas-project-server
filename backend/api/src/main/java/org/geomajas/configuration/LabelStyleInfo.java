@@ -10,8 +10,6 @@
  */
 package org.geomajas.configuration;
 
-import java.io.Serializable;
-
 import javax.annotation.PostConstruct;
 
 import org.geomajas.annotation.Api;
@@ -23,7 +21,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class LabelStyleInfo implements Serializable {
+public class LabelStyleInfo implements IsInfo {
 
 	private static final int PRIME = 31;
 
