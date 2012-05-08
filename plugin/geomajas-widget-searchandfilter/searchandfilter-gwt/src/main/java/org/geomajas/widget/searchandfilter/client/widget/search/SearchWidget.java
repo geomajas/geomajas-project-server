@@ -24,6 +24,11 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 @Api(allMethods = true)
 public interface SearchWidget {
 
+	/**
+	 * Get search widget id.
+	 *
+	 * @return search widget id
+	 */
 	String getSearchWidgetId();
 
 	/**
@@ -44,16 +49,46 @@ public interface SearchWidget {
 	 */
 	void showForSave(SaveRequestHandler handler);
 
+	/**
+	 * Add search request handler.
+	 *
+	 * @param handler search request handler
+	 */
 	void addSearchRequestHandler(SearchRequestHandler handler);
 
+	/**
+	 * Remove search request handler.
+	 *
+	 * @param handler handler to remove
+	 */
 	void removeSearchRequestHandler(SearchRequestHandler handler);
 
+	/**
+	 * Add save request handler.
+	 *
+	 * @param handler handler to add
+	 */
 	void addSaveRequestHandler(SaveRequestHandler handler);
 
+	/**
+	 * Remove save request handler.
+	 *
+	 * @param handler handler to remove
+	 */
 	void removeSaveRequestHandler(SaveRequestHandler handler);
 
+	/**
+	 * Add favourites request handler.
+	 *
+	 * @param handler request handler to add
+	 */
 	void addFavouriteRequestHandler(FavouriteRequestHandler handler);
 
+	/**
+	 * Remove favourites request handler.
+	 *
+	 * @param handler request handler to remove
+	 */
 	void removeFavouriteRequestHandler(FavouriteRequestHandler handler);
 
 	/**
