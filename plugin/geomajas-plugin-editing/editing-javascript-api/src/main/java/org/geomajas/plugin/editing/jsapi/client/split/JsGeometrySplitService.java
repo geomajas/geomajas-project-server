@@ -47,26 +47,41 @@ public class JsGeometrySplitService implements Exportable {
 
 	private JsGeometryEditService editService;
 
+	/**
+	 * Default constructor.
+	 */
 	public JsGeometrySplitService() {
 		this.delegate = new GeometrySplitService();
 		editService = new JsGeometryEditService(delegate.getGeometryEditService());
 	}
 
+	/**
+	 * Constructor with a {@link GeometryEditService}, that if stopped, stops this service as well.
+	 * 
+	 * @param service
+	 *            the {@link GeometryEditService} that needs to be used
+	 */
 	@NoExport
 	public JsGeometrySplitService(GeometryEditService editService) {
 		this.editService = new JsGeometryEditService(editService);
 		this.delegate = new GeometrySplitService(editService);
 	}
-//
-//	public void setGeometryEditService(JsGeometryEditService editService) {
-//		this.editService = editService;
-//		this.delegate = new GeometrySplitService(editService.getDelegate());
-//	}
+
+	//
+	// public void setGeometryEditService(JsGeometryEditService editService) {
+	// this.editService = editService;
+	// this.delegate = new GeometrySplitService(editService.getDelegate());
+	// }
 
 	// ------------------------------------------------------------------------
 	// Public methods for adding handlers:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the delegating {@link GeometryEditService}.
+	 * 
+	 * @return delegate delegate
+	 */
 	@NoExport
 	public GeometrySplitService getDelegate() {
 		return delegate;
@@ -121,10 +136,22 @@ public class JsGeometrySplitService implements Exportable {
 	// Public methods for splitting work-flow:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Start splitting the given geometry.
+	 * 
+	 * @param geometry
+	 *            to be split
+	 */
 	public void start(Geometry geometry) {
 		delegate.start(geometry);
 	}
 
+	/**
+	 * Stop splitting the geometry.
+	 * 
+	 * @param callback
+	 *            the {@link GeometryArrayCallback} to be executed after the splitting has stopped
+	 */
 	public void stop(final GeometryArrayCallback callback) {
 		if (callback == null) {
 			delegate.stop(null);
@@ -142,14 +169,29 @@ public class JsGeometrySplitService implements Exportable {
 	// Getters:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the geometry that needs to be split.
+	 * 
+	 * @return geometry that needs to be split
+	 */
 	public Geometry getGeometry() {
 		return delegate.getGeometry();
 	}
 
+	/**
+	 * Get the geometry that represents the split line.
+	 * 
+	 * @return geometry that represents the split line.
+	 */
 	public Geometry getSplitLine() {
 		return delegate.getSplitLine();
 	}
 
+	/**
+	 * Get the {@link JsGeometryEditService} that is used to edit the split line.
+	 * 
+	 * @return the {@link JsGeometryEditService} that is used to edit the split line
+	 */
 	public JsGeometryEditService getGeometryEditService() {
 		return editService;
 	}

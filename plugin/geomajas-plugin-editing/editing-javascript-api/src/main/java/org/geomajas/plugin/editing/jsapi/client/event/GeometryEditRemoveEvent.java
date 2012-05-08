@@ -34,6 +34,12 @@ public class GeometryEditRemoveEvent extends JsEvent<GeometryEditRemoveHandler> 
 
 	private GeometryIndex[] indices;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 * @param indices indices
+	 */
 	public GeometryEditRemoveEvent(Geometry geometry, GeometryIndex[] indices) {
 		this.geometry = geometry;
 		this.indices = indices;
@@ -58,6 +64,9 @@ public class GeometryEditRemoveEvent extends JsEvent<GeometryEditRemoveHandler> 
 		return indices;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditRemoveHandler> getType() {
 		return GeometryEditRemoveHandler.class;
 	}

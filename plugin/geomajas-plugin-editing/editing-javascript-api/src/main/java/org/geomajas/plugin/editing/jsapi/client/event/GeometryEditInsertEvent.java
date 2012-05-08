@@ -34,6 +34,14 @@ public class GeometryEditInsertEvent extends JsEvent<GeometryEditInsertHandler> 
 
 	private GeometryIndex[] indices;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry
+	 *            geometry
+	 * @param indices
+	 *            indices
+	 */
 	public GeometryEditInsertEvent(Geometry geometry, GeometryIndex[] indices) {
 		this.geometry = geometry;
 		this.indices = indices;
@@ -58,6 +66,9 @@ public class GeometryEditInsertEvent extends JsEvent<GeometryEditInsertHandler> 
 		return indices;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditInsertHandler> getType() {
 		return GeometryEditInsertHandler.class;
 	}

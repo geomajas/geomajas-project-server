@@ -31,10 +31,18 @@ public class GeometryEditStopEvent extends JsEvent<GeometryEditStopHandler> impl
 
 	private Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 */
 	public GeometryEditStopEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditStopHandler> getType() {
 		return GeometryEditStopHandler.class;
 	}

@@ -93,17 +93,28 @@ public class JsGeometryEditService implements Exportable {
 
 	private JsGeometryIndexStateService stateService;
 
+	/**
+	 * Default constructor.
+	 */
 	public JsGeometryEditService() {
 		delegate = new GeometryEditServiceImpl();
 		stateService = new JsGeometryIndexStateService(delegate.getIndexStateService());
 	}
 
+	/**
+	 * Constructor with a {@link GeometryEditService} delegate.
+	 * @param delegate delegate
+	 */
 	@NoExport
 	public JsGeometryEditService(GeometryEditService delegate) {
 		this.delegate = delegate;
 		stateService = new JsGeometryIndexStateService(delegate.getIndexStateService());
 	}
 
+	/**
+	 * Get the delegating {@link GeometryEditService}.
+	 * @return delegate delegate
+	 */
 	@NoExport
 	public GeometryEditService getDelegate() {
 		return delegate;

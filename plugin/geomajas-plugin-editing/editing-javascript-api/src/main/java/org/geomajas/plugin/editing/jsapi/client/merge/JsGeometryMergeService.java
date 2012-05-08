@@ -44,6 +44,9 @@ public class JsGeometryMergeService implements Exportable {
 
 	private final GeometryMergeService delegate;
 
+	/**
+	 * Default constructor.
+	 */
 	public JsGeometryMergeService() {
 		this.delegate = new GeometryMergeService();
 	}

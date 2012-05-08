@@ -33,11 +33,20 @@ public class GeometryEditTentativeMoveEvent extends JsEvent<GeometryEditTentativ
 
 	private Coordinate currentPosition;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry
+	 *            geometry
+	 */
 	public GeometryEditTentativeMoveEvent(Coordinate origin, Coordinate currentPosition) {
 		this.origin = origin;
 		this.currentPosition = currentPosition;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditTentativeMoveHandler> getType() {
 		return GeometryEditTentativeMoveHandler.class;
 	}
@@ -46,10 +55,21 @@ public class GeometryEditTentativeMoveEvent extends JsEvent<GeometryEditTentativ
 		handler.onInsertMove(this);
 	}
 
+	/**
+	 * Get the origin of the tentative mouse movement.
+	 * 
+	 * @return origin the origin of the tentative mouse movement
+	 */
 	public Coordinate getOrigin() {
 		return origin;
 	}
 
+	/**
+	 * Get the current coordinate of the tentative mouse movement.
+	 * 
+	 * @return current coordinate
+	 * 			the current coordinate of the tentative mouse movement
+	 */
 	public Coordinate getCurrentPosition() {
 		return currentPosition;
 	}

@@ -34,11 +34,20 @@ public class GeometryIndexHighlightEndEvent extends JsEvent<GeometryIndexHighlig
 
 	private GeometryIndex[] indices;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 * @param indices indices
+	 */
 	public GeometryIndexHighlightEndEvent(Geometry geometry, GeometryIndex[] indices) {
 		this.geometry = geometry;
 		this.indices = indices;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryIndexHighlightEndHandler> getType() {
 		return GeometryIndexHighlightEndHandler.class;
 	}

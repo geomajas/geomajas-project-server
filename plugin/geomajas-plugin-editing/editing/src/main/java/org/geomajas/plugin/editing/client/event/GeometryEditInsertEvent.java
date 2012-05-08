@@ -26,10 +26,20 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 @FutureApi(allMethods = true)
 public class GeometryEditInsertEvent extends AbstractGeometryEditEvent<GeometryEditInsertHandler> {
 
+	/**
+	 * Main constructor.
+	 * @param geometry geometry
+	 * @param indices indices
+	 */
 	public GeometryEditInsertEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
+	/**
+	 * Get the current editing state.
+	 * 
+	 * @return Returns the current editing state.
+	 */
 	public Type<GeometryEditInsertHandler> getAssociatedType() {
 		return GeometryEditInsertHandler.TYPE;
 	}

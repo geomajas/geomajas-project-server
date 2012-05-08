@@ -30,10 +30,18 @@ public class GeometryEditChangeStateEvent extends JsEvent<GeometryEditChangeStat
 
 	private String state;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param state state
+	 */
 	public GeometryEditChangeStateEvent(String state) {
 		this.state = state;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditChangeStateHandler> getType() {
 		return GeometryEditChangeStateHandler.class;
 	}

@@ -26,10 +26,20 @@ public class GeometryEditChangeStateEvent extends GwtEvent<GeometryEditChangeSta
 
 	private final GeometryEditState editingState;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param state state
+	 */
 	public GeometryEditChangeStateEvent(GeometryEditState editingState) {
 		this.editingState = editingState;
 	}
 
+	/**
+	 * Get the type of this class.
+	 * 
+	 * @return the type of this class
+	 */
 	@Override
 	public Type<GeometryEditChangeStateHandler> getAssociatedType() {
 		return GeometryEditChangeStateHandler.TYPE;

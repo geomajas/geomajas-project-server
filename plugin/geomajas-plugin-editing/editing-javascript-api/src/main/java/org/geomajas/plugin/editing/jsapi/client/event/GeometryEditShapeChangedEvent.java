@@ -32,10 +32,18 @@ public class GeometryEditShapeChangedEvent extends JsEvent<GeometryEditShapeChan
 
 	private Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 */
 	public GeometryEditShapeChangedEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditShapeChangedHandler> getType() {
 		return GeometryEditShapeChangedHandler.class;
 	}
@@ -44,6 +52,11 @@ public class GeometryEditShapeChangedEvent extends JsEvent<GeometryEditShapeChan
 		handler.onShapeChanged(this);
 	}
 
+	/**
+	 * Get the geometry that is currently being edited.
+	 * 
+	 * @return The geometry that is currently being edited.
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}

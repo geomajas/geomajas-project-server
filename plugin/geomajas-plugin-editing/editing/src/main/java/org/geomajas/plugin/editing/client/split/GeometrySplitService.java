@@ -68,7 +68,8 @@ public class GeometrySplitService {
 	/**
 	 * Constructor with a {@link GeometryEditService}, that if stopped, stops this service as well.
 	 * 
-	 * @param service the {@link GeometryEditService} that need to be used
+	 * @param service
+	 *            the {@link GeometryEditService} that needs to be used
 	 */
 	public GeometrySplitService(GeometryEditService service) {
 		this.service = service;
@@ -90,15 +91,20 @@ public class GeometrySplitService {
 	// ------------------------------------------------------------------------
 	/**
 	 * Add a {@link GeometrySplitStartHandler}.
-	 * @param handler to be added
+	 * 
+	 * @param handler
+	 *            to be added
 	 * @return {@link HandlerRegistration} for the given handler
 	 */
 	public HandlerRegistration addGeometrySplitStartHandler(GeometrySplitStartHandler handler) {
 		return eventBus.addHandler(GeometrySplitStartHandler.TYPE, handler);
 	}
+
 	/**
 	 * Add a {@link GeometrySplitStopHandler}.
-	 * @param handler to be added
+	 * 
+	 * @param handler
+	 *            to be added
 	 * @return {@link HandlerRegistration} for the given handler
 	 */
 	public HandlerRegistration addGeometrySplitStopHandler(GeometrySplitStopHandler handler) {
@@ -107,7 +113,9 @@ public class GeometrySplitService {
 
 	/**
 	 * Start splitting the given geometry.
-	 * @param geometry to be split
+	 * 
+	 * @param geometry
+	 *            to be split
 	 */
 	public void start(Geometry geometry) {
 		this.geometry = geometry;
@@ -123,8 +131,9 @@ public class GeometrySplitService {
 
 	/**
 	 * Stop splitting the geometry.
-	 * @param callback 
-	 * 			the {@link GeometryArrayFunction} to be executed after the splitting has stopped
+	 * 
+	 * @param callback
+	 *            the {@link GeometryArrayFunction} to be executed after the splitting has stopped
 	 */
 	public void stop(final GeometryArrayFunction callback) {
 		started = false;
@@ -150,6 +159,7 @@ public class GeometrySplitService {
 
 	/**
 	 * Get the geometry that needs to be split.
+	 * 
 	 * @return geometry that needs to be split
 	 */
 	public Geometry getGeometry() {
@@ -158,6 +168,7 @@ public class GeometrySplitService {
 
 	/**
 	 * Get the geometry that represents the split line.
+	 * 
 	 * @return geometry that represents the split line.
 	 */
 	public Geometry getSplitLine() {
@@ -166,6 +177,7 @@ public class GeometrySplitService {
 
 	/**
 	 * Get the {@link GeometryEditService} that is used to edit the split line.
+	 * 
 	 * @return the {@link GeometryEditService} that is used to edit the split line
 	 */
 	public GeometryEditService getGeometryEditService() {

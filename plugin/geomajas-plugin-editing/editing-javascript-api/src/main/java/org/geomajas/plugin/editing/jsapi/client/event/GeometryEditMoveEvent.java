@@ -34,6 +34,14 @@ public class GeometryEditMoveEvent extends JsEvent<GeometryEditMoveHandler> impl
 
 	private GeometryIndex[] indices;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry
+	 *            geometry
+	 * @param indices
+	 *            indices
+	 */
 	public GeometryEditMoveEvent(Geometry geometry, GeometryIndex[] indices) {
 		this.geometry = geometry;
 		this.indices = indices;
@@ -58,6 +66,9 @@ public class GeometryEditMoveEvent extends JsEvent<GeometryEditMoveHandler> impl
 		return indices;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditMoveHandler> getType() {
 		return GeometryEditMoveHandler.class;
 	}

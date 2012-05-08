@@ -28,9 +28,15 @@ import org.timepedia.exporter.client.Exportable;
 @ExportPackage("org.geomajas.plugin.editing.merge.event")
 public class GeometryMergeStopEvent extends JsEvent<GeometryMergeStopHandler> implements Exportable {
 
+	/**
+	 * Default constructor.
+	 */
 	public GeometryMergeStopEvent() {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryMergeStopHandler> getType() {
 		return GeometryMergeStopHandler.class;
 	}

@@ -31,10 +31,18 @@ public class GeometryEditStartEvent extends JsEvent<GeometryEditStartHandler> im
 
 	private Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 */
 	public GeometryEditStartEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryEditStartHandler> getType() {
 		return GeometryEditStartHandler.class;
 	}

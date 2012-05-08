@@ -35,11 +35,20 @@ public class GeometryIndexMarkForDeletionEndEvent extends JsEvent<GeometryIndexM
 
 	private GeometryIndex[] indices;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 * @param indices indices
+	 */
 	public GeometryIndexMarkForDeletionEndEvent(Geometry geometry, GeometryIndex[] indices) {
 		this.geometry = geometry;
 		this.indices = indices;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryIndexMarkForDeletionEndHandler> getType() {
 		return GeometryIndexMarkForDeletionEndHandler.class;
 	}

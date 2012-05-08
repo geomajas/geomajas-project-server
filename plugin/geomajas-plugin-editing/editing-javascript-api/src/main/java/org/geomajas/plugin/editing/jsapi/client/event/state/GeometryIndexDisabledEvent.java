@@ -34,11 +34,20 @@ public class GeometryIndexDisabledEvent extends JsEvent<GeometryIndexDisabledHan
 
 	private GeometryIndex[] indices;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 * @param indices indices
+	 */
 	public GeometryIndexDisabledEvent(Geometry geometry, GeometryIndex[] indices) {
 		this.geometry = geometry;
 		this.indices = indices;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryIndexDisabledHandler> getType() {
 		return GeometryIndexDisabledHandler.class;
 	}

@@ -26,10 +26,21 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 @FutureApi(allMethods = true)
 public class GeometryEditRemoveEvent extends AbstractGeometryEditEvent<GeometryEditRemoveHandler> {
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 * @param indices indices
+	 */
 	public GeometryEditRemoveEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
+	/**
+	 * Get the type of this class.
+	 * 
+	 * @return Class .class of this class
+	 */
 	public Type<GeometryEditRemoveHandler> getAssociatedType() {
 		return GeometryEditRemoveHandler.TYPE;
 	}

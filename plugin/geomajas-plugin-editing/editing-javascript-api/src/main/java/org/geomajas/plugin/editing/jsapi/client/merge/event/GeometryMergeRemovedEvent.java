@@ -31,10 +31,18 @@ public class GeometryMergeRemovedEvent extends JsEvent<GeometryMergeRemovedHandl
 
 	private final Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 */
 	public GeometryMergeRemovedEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometryMergeRemovedHandler> getType() {
 		return GeometryMergeRemovedHandler.class;
 	}

@@ -41,6 +41,9 @@ public class GeometrySplitStopEvent extends JsEvent<GeometrySplitStopHandler> im
 		this.geometry = geometry;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class<GeometrySplitStopHandler> getType() {
 		return GeometrySplitStopHandler.class;
 	}
