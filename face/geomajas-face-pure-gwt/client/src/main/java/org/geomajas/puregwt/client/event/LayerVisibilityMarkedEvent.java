@@ -31,10 +31,16 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerVisibilityMarkedEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer of which the visibility mark has changed
+	 */
 	public LayerVisibilityMarkedEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<LayerVisibilityHandler> getAssociatedType() {
 		return LayerVisibilityHandler.TYPE;

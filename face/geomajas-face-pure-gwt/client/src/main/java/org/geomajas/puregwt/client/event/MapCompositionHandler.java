@@ -27,6 +27,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface MapCompositionHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<MapCompositionHandler> TYPE = new Type<MapCompositionHandler>();
 
 	/**

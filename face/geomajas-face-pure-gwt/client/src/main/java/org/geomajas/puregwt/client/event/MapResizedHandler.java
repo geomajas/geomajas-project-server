@@ -26,6 +26,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface MapResizedHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<MapResizedHandler> TYPE = new Type<MapResizedHandler>();
 
 	/**

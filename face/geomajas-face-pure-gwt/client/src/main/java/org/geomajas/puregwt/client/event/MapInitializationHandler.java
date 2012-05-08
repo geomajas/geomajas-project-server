@@ -26,6 +26,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface MapInitializationHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<MapInitializationHandler> TYPE = new Type<MapInitializationHandler>();
 
 	/**

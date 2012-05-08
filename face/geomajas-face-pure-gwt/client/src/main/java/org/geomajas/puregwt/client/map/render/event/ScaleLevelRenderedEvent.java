@@ -26,10 +26,16 @@ public class ScaleLevelRenderedEvent extends GwtEvent<ScaleLevelRenderedHandler>
 
 	private final double scale;
 
+	/**
+	 * Create an event for the specified scale.
+	 * 
+	 * @param scale the scale that was rendered
+	 */
 	public ScaleLevelRenderedEvent(double scale) {
 		this.scale = scale;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<ScaleLevelRenderedHandler> getAssociatedType() {
 		return ScaleLevelRenderedHandler.TYPE;

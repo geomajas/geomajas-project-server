@@ -22,10 +22,17 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerDeselectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer that was deselected
+	 */
 	public LayerDeselectedEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public Type<LayerSelectionHandler> getAssociatedType() {
 		return LayerSelectionHandler.TYPE;
 	}

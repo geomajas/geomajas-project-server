@@ -29,11 +29,18 @@ public class LayerOrderChangedEvent extends Event<LayerOrderChangedHandler> {
 
 	private final int toIndex;
 
+	/**
+	 * Create an event for the specified layer indices.
+	 * 
+	 * @param fromIndex the index before the move
+	 * @param toIndex the index after the move
+	 */
 	public LayerOrderChangedEvent(int fromIndex, int toIndex) {
 		this.fromIndex = fromIndex;
 		this.toIndex = toIndex;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<LayerOrderChangedHandler> getAssociatedType() {
 		return LayerOrderChangedHandler.TYPE;

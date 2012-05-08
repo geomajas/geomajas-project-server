@@ -26,6 +26,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface LayerVisibilityHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<LayerVisibilityHandler> TYPE = new Type<LayerVisibilityHandler>();
 
 	/**

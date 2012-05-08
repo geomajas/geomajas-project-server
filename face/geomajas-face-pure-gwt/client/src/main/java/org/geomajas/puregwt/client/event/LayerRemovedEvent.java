@@ -25,15 +25,28 @@ public class LayerRemovedEvent extends BaseLayerEvent<MapCompositionHandler> {
 	
 	private int index;
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer which has been removed
+	 * @param index the index of the layer before removal
+	 */
 	public LayerRemovedEvent(Layer<?> layer, int index) {
 		super(layer);
 		this.index = index;
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public Type<MapCompositionHandler> getAssociatedType() {
 		return MapCompositionHandler.TYPE;
 	}
 	
+	/**
+	 * Get the index of the layer.
+	 * 
+	 * @return index of the layer before removal.
+	 */
 	public int getIndex() {
 		return index;
 	}

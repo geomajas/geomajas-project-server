@@ -22,10 +22,17 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer which has been refreshed
+	 */
 	public LayerRefreshedEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public Type<LayerRefreshedHandler> getAssociatedType() {
 		return LayerRefreshedHandler.TYPE;
 	}

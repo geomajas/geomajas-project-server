@@ -21,11 +21,18 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  */
 @Api(allMethods = true)
 public class LayerAddedEvent extends BaseLayerEvent<MapCompositionHandler> {
-
+	
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer that was added
+	 */
 	public LayerAddedEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public Type<MapCompositionHandler> getAssociatedType() {
 		return MapCompositionHandler.TYPE;
 	}

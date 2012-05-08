@@ -26,6 +26,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface LayerRefreshedHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<LayerRefreshedHandler> TYPE = new Type<LayerRefreshedHandler>();
 
 	/**

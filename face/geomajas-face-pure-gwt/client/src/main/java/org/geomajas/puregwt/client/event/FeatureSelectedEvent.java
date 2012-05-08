@@ -26,6 +26,12 @@ public class FeatureSelectedEvent extends BaseLayerEvent<FeatureSelectionHandler
 
 	private final Feature feature;
 
+	/**
+	 * Create an event for the specified layer and feature.
+	 * 
+	 * @param layer the layer of the feature
+	 * @param feature the selected feature
+	 */
 	public FeatureSelectedEvent(Layer<?> layer, Feature feature) {
 		super(layer);
 		this.feature = feature;
@@ -40,6 +46,8 @@ public class FeatureSelectedEvent extends BaseLayerEvent<FeatureSelectionHandler
 		return feature;
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public Type<FeatureSelectionHandler> getAssociatedType() {
 		return FeatureSelectionHandler.TYPE;
 	}

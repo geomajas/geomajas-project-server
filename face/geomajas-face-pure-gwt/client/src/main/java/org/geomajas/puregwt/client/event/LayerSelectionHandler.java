@@ -26,6 +26,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface LayerSelectionHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<LayerSelectionHandler> TYPE = new Type<LayerSelectionHandler>();
 
 	/**

@@ -22,10 +22,16 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerLabelShowEvent extends BaseLayerEvent<LayerLabeledHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer of which the labels where shown
+	 */
 	public LayerLabelShowEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<LayerLabeledHandler> getAssociatedType() {
 		return LayerLabeledHandler.TYPE;

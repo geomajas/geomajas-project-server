@@ -22,10 +22,16 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerShowEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer that was shown
+	 */
 	public LayerShowEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<LayerVisibilityHandler> getAssociatedType() {
 		return LayerVisibilityHandler.TYPE;

@@ -27,6 +27,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface LayerStyleChangedHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<LayerStyleChangedHandler> TYPE = new Type<LayerStyleChangedHandler>();
 
 	/**

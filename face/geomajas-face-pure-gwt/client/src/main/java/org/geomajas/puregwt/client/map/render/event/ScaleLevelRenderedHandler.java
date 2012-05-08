@@ -28,6 +28,9 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 @UserImplemented
 public interface ScaleLevelRenderedHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<ScaleLevelRenderedHandler> TYPE = new Type<ScaleLevelRenderedHandler>();
 
 	/**

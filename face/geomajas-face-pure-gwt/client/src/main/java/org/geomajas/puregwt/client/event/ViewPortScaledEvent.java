@@ -30,7 +30,11 @@ public class ViewPortScaledEvent extends Event<ViewPortChangedHandler> {
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
-
+	/**
+	 * Create an event for the specified view port.
+	 * 
+	 * @param viewPort the view port
+	 */
 	public ViewPortScaledEvent(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}
@@ -39,10 +43,17 @@ public class ViewPortScaledEvent extends Event<ViewPortChangedHandler> {
 	// Event implementation:
 	// -------------------------------------------------------------------------
 
-	public final Type<ViewPortChangedHandler> getAssociatedType() {
+	/** {@inheritDoc} */
+	@Override
+	public Type<ViewPortChangedHandler> getAssociatedType() {
 		return ViewPortChangedHandler.TYPE;
 	}
 
+	/**
+	 * Get the view port that has scaled.
+	 * 
+	 * @return the view port
+	 */
 	public ViewPort getViewPort() {
 		return viewPort;
 	}

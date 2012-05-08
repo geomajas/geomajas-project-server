@@ -27,11 +27,18 @@ public class MapResizedEvent extends Event<MapResizedHandler> {
 
 	private final int mapHeight;
 
+	/**
+	 * Create an event with the specified map width and height.
+	 * 
+	 * @param mapWidth the new map width
+	 * @param mapHeight the new map height
+	 */
 	public MapResizedEvent(int mapWidth, int mapHeight) {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<MapResizedHandler> getAssociatedType() {
 		return MapResizedHandler.TYPE;

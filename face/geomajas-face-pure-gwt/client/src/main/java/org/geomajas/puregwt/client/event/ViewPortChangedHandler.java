@@ -27,6 +27,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface ViewPortChangedHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<ViewPortChangedHandler> TYPE = new Type<ViewPortChangedHandler>();
 
 	/**

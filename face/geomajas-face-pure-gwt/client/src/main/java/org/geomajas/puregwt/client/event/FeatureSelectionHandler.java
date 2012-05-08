@@ -27,6 +27,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface FeatureSelectionHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<FeatureSelectionHandler> TYPE = new Type<FeatureSelectionHandler>();
 
 	/**

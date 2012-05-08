@@ -25,7 +25,13 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 public class FeatureDeselectedEvent extends BaseLayerEvent<FeatureSelectionHandler> {
 
 	private final Feature feature;
-
+	
+	/**
+	 * Create an event for the specified layer and feature.
+	 * 
+	 * @param layer the layer of the feature
+	 * @param feature the deselected feature
+	 */
 	public FeatureDeselectedEvent(Layer<?> layer, Feature feature) {
 		super(layer);
 		this.feature = feature;
@@ -40,6 +46,7 @@ public class FeatureDeselectedEvent extends BaseLayerEvent<FeatureSelectionHandl
 		return feature;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<FeatureSelectionHandler> getAssociatedType() {
 		return FeatureSelectionHandler.TYPE;

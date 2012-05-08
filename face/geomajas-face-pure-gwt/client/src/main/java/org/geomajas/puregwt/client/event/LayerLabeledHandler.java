@@ -26,6 +26,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface LayerLabeledHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<LayerLabeledHandler> TYPE = new Type<LayerLabeledHandler>();
 
 	/**

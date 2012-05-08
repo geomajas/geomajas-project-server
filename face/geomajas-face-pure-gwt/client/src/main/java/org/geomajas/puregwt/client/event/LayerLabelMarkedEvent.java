@@ -31,10 +31,16 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerLabelMarkedEvent extends BaseLayerEvent<LayerLabeledHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer of which the labels where marked as visible/invisible
+	 */
 	public LayerLabelMarkedEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<LayerLabeledHandler> getAssociatedType() {
 		return LayerLabeledHandler.TYPE;

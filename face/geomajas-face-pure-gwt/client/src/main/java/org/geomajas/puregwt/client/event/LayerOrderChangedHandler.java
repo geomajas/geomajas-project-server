@@ -27,6 +27,9 @@ import com.google.web.bindery.event.shared.Event.Type;
 @UserImplemented
 public interface LayerOrderChangedHandler extends EventHandler {
 
+	/**
+	 * The type of the handler.
+	 */
 	Type<LayerOrderChangedHandler> TYPE = new Type<LayerOrderChangedHandler>();
 
 	/**

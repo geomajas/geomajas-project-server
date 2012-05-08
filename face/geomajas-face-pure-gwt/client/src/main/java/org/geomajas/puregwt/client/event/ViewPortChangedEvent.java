@@ -31,7 +31,11 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
-
+	/**
+	 * Create an event for the specified view port.
+	 * 
+	 * @param viewPort the view port
+	 */
 	public ViewPortChangedEvent(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}
@@ -40,10 +44,17 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 	// Event implementation:
 	// -------------------------------------------------------------------------
 
-	public final Type<ViewPortChangedHandler> getAssociatedType() {
+	/** {@inheritDoc} */
+	@Override
+	public Type<ViewPortChangedHandler> getAssociatedType() {
 		return ViewPortChangedHandler.TYPE;
 	}
 
+	/**
+	 * Get the view port that has changed.
+	 * 
+	 * @return the view port
+	 */
 	public ViewPort getViewPort() {
 		return viewPort;
 	}

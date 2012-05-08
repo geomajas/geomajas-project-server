@@ -22,10 +22,16 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 @Api(allMethods = true)
 public class LayerStyleChangedEvent extends BaseLayerEvent<LayerStyleChangedHandler> {
 
+	/**
+	 * Create an event for the specified layer.
+	 * 
+	 * @param layer the layer of which the style has changed
+	 */
 	public LayerStyleChangedEvent(Layer<?> layer) {
 		super(layer);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Type<LayerStyleChangedHandler> getAssociatedType() {
 		return LayerStyleChangedHandler.TYPE;
