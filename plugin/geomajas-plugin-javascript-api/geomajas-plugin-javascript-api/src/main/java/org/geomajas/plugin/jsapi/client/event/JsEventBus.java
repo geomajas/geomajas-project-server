@@ -23,8 +23,10 @@ import org.timepedia.exporter.client.Exportable;
 @Api(allMethods = true)
 public interface JsEventBus extends Exportable {
 
+	/** {@inheritDoc} */
 	JsHandlerRegistration addLayersModelChangedHandler(LayersModelChangedHandler handler);
 
+	/** {@inheritDoc} */
 	JsHandlerRegistration addFeatureSelectionHandler(FeatureSelectedHandler selectedHandler,
 			FeatureDeselectedHandler deselectedHandler);
 }

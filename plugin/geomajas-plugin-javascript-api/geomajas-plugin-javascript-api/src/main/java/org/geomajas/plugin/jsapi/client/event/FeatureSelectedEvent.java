@@ -30,18 +30,30 @@ public class FeatureSelectedEvent extends JsEvent<FeatureSelectedHandler> implem
 
 	private Feature feature;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param feature selected event
+	 */
 	public FeatureSelectedEvent(Feature feature) {
 		this.feature = feature;
 	}
 
+	/** {@inheritDoc} */
 	public Class<FeatureSelectedHandler> getType() {
 		return FeatureSelectedHandler.class;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(FeatureSelectedHandler handler) {
 		handler.onFeatureSelected(this);
 	}
 
+	/**
+	 * Get selected feature.
+	 *
+	 * @return selected feature
+	 */
 	public Feature getFeature() {
 		return feature;
 	}

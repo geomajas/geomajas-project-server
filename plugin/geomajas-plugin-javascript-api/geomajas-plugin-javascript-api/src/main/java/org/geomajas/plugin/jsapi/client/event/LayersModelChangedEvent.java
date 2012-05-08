@@ -30,18 +30,30 @@ public class LayersModelChangedEvent extends JsEvent<LayersModelChangedHandler> 
 
 	private LayersModel layersModel;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param layersModel layers model
+	 */
 	public LayersModelChangedEvent(LayersModel layersModel) {
 		this.layersModel = layersModel;
 	}
 
+	/** {@inheritDoc} */
 	public Class<LayersModelChangedHandler> getType() {
 		return LayersModelChangedHandler.class;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(LayersModelChangedHandler handler) {
 		handler.onLayersModelChanged(this);
 	}
 
+	/**
+	 * Get layers model which has changed.
+	 *
+	 * @return layers model
+	 */
 	public LayersModel getLayersModel() {
 		return layersModel;
 	}

@@ -54,7 +54,7 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 	public JsEventBusImpl() {
 	}
 
-	/** Construct event bus for specific map */
+	/** Construct event bus for specific map. */
 	public JsEventBusImpl(Map map) {
 		this.map = map;
 	}

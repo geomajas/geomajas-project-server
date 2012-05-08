@@ -29,38 +29,74 @@ import org.timepedia.exporter.client.Exportable;
 @Api(allMethods = true)
 public class Coordinate implements ExportOverlay<org.geomajas.geometry.Coordinate>, Exportable {
 
+	/**
+	 * Constructor.
+	 *
+	 * @param x x
+	 * @param y y
+	 * @return coordinate
+	 */
 	@ExportConstructor
 	public static org.geomajas.geometry.Coordinate constructor(double x, double y) {
 		return new org.geomajas.geometry.Coordinate(x, y);
 	}
 
+	@Override
 	public String toString() {
 		return "";
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		return 0;
 	}
 
+	/**
+	 * Get distance with other coordinate.
+	 *
+	 * @param c other coordinate
+	 * @return distance
+	 */
 	public double distance(org.geomajas.geometry.Coordinate c) {
 		return 0;
 	}
 
+	/**
+	 * Get x.
+	 *
+	 * @return x
+	 */
 	public double getX() {
 		return 0;
 	}
 
+	/**
+	 * Get y.
+	 *
+	 * @return y
+	 */
 	public double getY() {
 		return 0;
 	}
 
+	/**
+	 * Set x.
+	 *
+	 * @param x x
+	 */
 	public void setX(double x) {
 	}
 
+	/**
+	 * Set y.
+	 *
+	 * @param y y
+	 */
 	public void setY(double y) {
 	}
 }

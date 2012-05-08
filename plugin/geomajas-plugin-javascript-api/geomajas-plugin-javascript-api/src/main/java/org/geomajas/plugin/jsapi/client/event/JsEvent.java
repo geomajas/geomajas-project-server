@@ -27,6 +27,7 @@ import org.timepedia.exporter.client.Exportable;
 @Api(allMethods = true)
 public abstract class JsEvent<H extends JsHandler> implements Exportable {
 
+	/** No-arguments constructor. */
 	public JsEvent() {
 	}
 

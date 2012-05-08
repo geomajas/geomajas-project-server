@@ -27,13 +27,16 @@ import org.timepedia.exporter.client.Exportable;
 @ExportPackage("org.geomajas.jsapi.event")
 public class DispatchStoppedEvent extends JsEvent<DispatchStoppedHandler> implements Exportable {
 
+	/** No-arguments constructor. */
 	public DispatchStoppedEvent() {
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(DispatchStoppedHandler handler) {
 		handler.onDispatchStopped(this);
 	}
 
+	/** {@inheritDoc} */
 	public Class<DispatchStoppedHandler> getType() {
 		return DispatchStoppedHandler.class;
 	}

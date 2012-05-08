@@ -30,18 +30,30 @@ public class FeatureDeselectedEvent extends JsEvent<FeatureDeselectedHandler> im
 
 	private Feature feature;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param feature deselected feature
+	 */
 	public FeatureDeselectedEvent(Feature feature) {
 		this.feature = feature;
 	}
 
+	/** {@inheritDoc} */
 	public Class<FeatureDeselectedHandler> getType() {
 		return FeatureDeselectedHandler.class;
 	}
 
+	/** {@inheritDoc} */
 	protected void dispatch(FeatureDeselectedHandler handler) {
 		handler.onFeatureDeselected(this);
 	}
 
+	/**
+	 * Get deselected feature.
+	 *
+	 * @return deselected feature
+	 */
 	public Feature getFeature() {
 		return feature;
 	}

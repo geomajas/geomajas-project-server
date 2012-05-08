@@ -31,6 +31,11 @@ public class JsHandlerRegistration implements Exportable {
 
 	private HandlerRegistration[] handlerRegistration;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param handlerRegistration handler registration
+	 */
 	public JsHandlerRegistration(HandlerRegistration[] handlerRegistration) {
 		this.handlerRegistration = handlerRegistration;
 	}
