@@ -61,6 +61,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 
 	private static final String SECURITY_EXCEPTION_CLASS_NAME = "org.geomajas.security.GeomajasSecurityException";
 
+	private static final String RANDOM_UNLIKELY_TOKEN = "%t@kén§#";
+
 	private static GwtCommandDispatcher instance = new GwtCommandDispatcher();
 
 	private final GeomajasServiceAsync service;
@@ -75,7 +77,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 
 	private String userToken;
 
-	private UserDetail userDetail;
+	private UserDetail userDetail = new UserDetail();
 
 	private boolean useLazyLoading;
 
@@ -180,7 +182,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		command.setLocale(locale);
 		command.setUserToken(userToken);
 
-		// shortcut, no need to invoke the server if whe know the token has expired
+		// shortcut, no need to invoke the server if we know the token has expired
 		if (null != userToken && userToken.length() > 0 && afterLoginCommands.containsKey(userToken)) {
 			afterLogin(command, deferred);
 			return deferred;
@@ -290,22 +292,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		final String oldToken = notNull(command.getUserToken());
 		if (!afterLoginCommands.containsKey(oldToken)) {
 			afterLoginCommands.put(oldToken, new ArrayList<RetryCommand>());
-			tokenRequestHandler.login(new TokenChangedHandler() {
-
-				/**
-				 * Login handling. @todo since declaration should be removed, needed because of bug in api checks
-				 * 
-				 * @param event
-				 *            new token details
-				 * @since 1.0.0
-				 */
-				public void onTokenChanged(TokenChangedEvent event) {
-					List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
-					for (RetryCommand retryCommand : retryCommands) {
-						execute(retryCommand.getCommand(), retryCommand.getDeferred());
-					}
-				}
-			});
+			login(oldToken);
 		}
 		afterLogin(command, deferred);
 	}
@@ -340,8 +327,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Default behaviour for handling a command execution exception. Shows an exception report to the user.
 	 * 
-	 * @param response
-	 *            command response with error
+	 * @param response command response with error
 	 * @since 0.0.0
 	 */
 	public void onCommandException(CommandResponse response) {
@@ -365,8 +351,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 * 
 	 * @see org.geomajas.gwt.server.mvc.GeomajasController
 	 * 
-	 * @param url
-	 *            the new URL
+	 * @param url the new URL
 	 * @since 1.0.0
 	 */
 	public void setServiceEndPointUrl(String url) {
@@ -375,25 +360,75 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	}
 
 	/**
-	 * Set the user token, so it can be included in every command.
-	 * 
-	 * @param userToken
-	 *            user token
+	 * Force request a new user token. This is not used for extending the user token, that is handled automatically.
+	 *
+	 * @since 1.1.0
 	 */
-	public void setUserToken(String userToken) {
-		setUserToken(userToken, null);
+	public void login() {
+		logout();
+		login(RANDOM_UNLIKELY_TOKEN);
 	}
 
 	/**
-	 * Set the user token, so it can be sent in very command.
-	 * 
-	 * @param userToken
-	 *            user token
-	 * @param userDetail
-	 *            user details
-	 * @since 1.0.0
+	 * Force request a new login, the dangling commands for the previous token are retried when logged in.
+	 *
+	 * @param oldToken previous token
 	 */
+	private void login(final String oldToken) {
+		tokenRequestHandler.login(new TokenChangedHandler() {
+
+			public void onTokenChanged(TokenChangedEvent event) {
+				setToken(event.getToken(), event.getUserDetail());
+				List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
+				if (null != retryCommands) {
+					for (RetryCommand retryCommand : retryCommands) {
+						execute(retryCommand.getCommand(), retryCommand.getDeferred());
+					}
+				}
+			}
+		});
+	}
+	/**
+	 * Logout. Clear the user token.
+	 *
+	 * @since 1.1.0
+	 */
+	public void logout() {
+		setToken(null, null);
+	}
+
+	/**
+	 * Set the user token, so it can be included in every command.
+	 * 
+	 * @param userToken user token
+	 * @deprecated use {@link #login()} or {@link #logout()}
+	 */
+	@Deprecated
+	public void setUserToken(String userToken) {
+		setToken(userToken, null);
+	}
+
+	/**
+	 * Set the user token, so it can be sent in every command.
+	 * 
+	 * @param userToken user token
+	 * @param userDetail user details
+	 * @since 1.0.0
+	 * @deprecated use {@link #login()} or {@link #logout()}
+	 */
+	@Deprecated
 	public void setUserToken(String userToken, UserDetail userDetail) {
+		setToken(userToken, userDetail);
+	}
+
+	/**
+	 * Set the user token, so it can be sent in every command.
+	 * This is the internal version, used by the token changed handler.
+	 *
+	 * @param userToken user token
+	 * @param userDetail user details
+	 */
+	private void setToken(String userToken, UserDetail userDetail) {
 		boolean changed = !EqualsUtil.isEqual(this.userToken, userToken);
 		this.userToken = userToken;
 		if (null == userDetail) {
@@ -412,7 +447,6 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 * @return authentication token
 	 * @since 1.0.0
 	 */
-	@Api
 	public String getUserToken() {
 		return userToken;
 	}
@@ -425,7 +459,6 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 * @return user details object
 	 * @since 1.0.0
 	 */
-	@Api
 	public UserDetail getUserDetail() {
 		return userDetail;
 	}
@@ -433,8 +466,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Add handler which is notified when the user token changes.
 	 * 
-	 * @param handler
-	 *            token changed handler
+	 * @param handler token changed handler
 	 * @return handler registration
 	 * @since 1.0.0
 	 */
@@ -445,8 +477,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Set the login handler which should be used to request aan authentication token.
 	 * 
-	 * @param tokenRequestHandler
-	 *            login handler
+	 * @param tokenRequestHandler login handler
 	 * @since 1.0.0
 	 */
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
@@ -454,10 +485,19 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	}
 
 	/**
+	 * Get the current token request handler.
+	 *
+	 * @return token request handler
+	 * @since 1.1.0
+	 */
+	public TokenRequestHandler getTokenRequestHandler() {
+		return tokenRequestHandler;
+	}
+
+	/**
 	 * Set default command exception callback.
 	 * 
-	 * @param commandExceptionCallback
-	 *            command exception callback
+	 * @param commandExceptionCallback command exception callback
 	 * @since 1.0.0
 	 */
 	public void setCommandExceptionCallback(CommandExceptionCallback commandExceptionCallback) {
@@ -467,8 +507,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Set default communication exception callback.
 	 * 
-	 * @param communicationExceptionCallback
-	 *            communication exception callback
+	 * @param communicationExceptionCallback communication exception callback
 	 * @since 1.0.0
 	 */
 	public void setCommunicationExceptionCallback(CommunicationExceptionCallback communicationExceptionCallback) {
@@ -487,8 +526,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Set lazy feature loading status.
 	 * 
-	 * @param useLazyLoading
-	 *            lazy feature loading status
+	 * @param useLazyLoading lazy feature loading status
 	 */
 	public void setUseLazyLoading(boolean useLazyLoading) {
 		if (useLazyLoading != this.useLazyLoading) {
@@ -518,8 +556,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Set default value for "featureIncludes" when getting features.
 	 * 
-	 * @param lazyFeatureIncludesDefault
-	 *            default for "featureIncludes"
+	 * @param lazyFeatureIncludesDefault default for "featureIncludes"
 	 */
 	public void setLazyFeatureIncludesDefault(int lazyFeatureIncludesDefault) {
 		setUseLazyLoading(false);
@@ -538,8 +575,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Set default "featureIncludes" for select commands.
 	 * 
-	 * @param lazyFeatureIncludesSelect
-	 *            default "featureIncludes" for select commands
+	 * @param lazyFeatureIncludesSelect default "featureIncludes" for select commands
 	 */
 	public void setLazyFeatureIncludesSelect(int lazyFeatureIncludesSelect) {
 		setUseLazyLoading(false);
@@ -558,8 +594,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Set "featureIncludes" value when all should be included.
 	 * 
-	 * @param lazyFeatureIncludesAll
-	 *            "featureIncludes" value when all should be included
+	 * @param lazyFeatureIncludesAll "featureIncludes" value when all should be included
 	 */
 	public void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll) {
 		setUseLazyLoading(false);
@@ -579,8 +614,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Sets whether the dispatcher should show error messages.
 	 * 
-	 * @param showError
-	 *            true if showing error messages, false otherwise
+	 * @param showError true if showing error messages, false otherwise
 	 * @since 0.0.0
 	 */
 	public void setShowError(boolean showError) {
@@ -620,10 +654,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		/**
 		 * Create data to allow retying the command later.
 		 * 
-		 * @param command
-		 *            command
-		 * @param deferred
-		 *            callbacks
+		 * @param command command
+		 * @param deferred callbacks
 		 */
 		public RetryCommand(GwtCommand command, Deferred deferred) {
 			this.command = command;

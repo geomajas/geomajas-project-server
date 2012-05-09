@@ -69,7 +69,10 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return id
 	 */
 	public static String assembleId(String id, String... suffixes) {
-		StringBuilder sb = new StringBuilder(id);
+		StringBuilder sb = new StringBuilder();
+		if (null != id) {
+			sb.append(id);
+		}
 		for (String s : suffixes) {
 			sb.append(Dom.ID_SEPARATOR);
 			sb.append(s);

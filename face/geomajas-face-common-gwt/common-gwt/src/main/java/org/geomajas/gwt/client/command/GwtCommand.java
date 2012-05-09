@@ -47,8 +47,7 @@ public class GwtCommand implements Serializable {
 	/**
 	 * Constructor setting the command spring bean name.
 	 * 
-	 * @param commandName
-	 *            The Java class name of the actual command to be executed. Or rather the spring bean name.
+	 * @param commandName name of command to execute
 	 */
 	public GwtCommand(String commandName) {
 		this.commandName = commandName;
@@ -56,22 +55,29 @@ public class GwtCommand implements Serializable {
 
 	// getters and setters:
 
-	/** The Java class name of the actual command to be executed. Or rather the spring bean name. */
+	/**
+	 * The name of the command to be executed (matches the spring bean name).
+	 *
+	 * @return command name
+	 */
 	public String getCommandName() {
 		return commandName;
 	}
 
 	/**
-	 * The Java class name of the actual command to be executed. Or rather the spring bean name.
+	 * The name of the command to be executed (matches the spring bean name).
 	 * 
-	 * @param commandName
-	 *            Set the command bean name.
+	 * @param commandName command name
 	 */
 	public void setCommandName(String commandName) {
 		this.commandName = commandName;
 	}
 
-	/** Get the specific request for the command you wish to execute. */
+	/**
+	 * Get the specific request for the command you wish to execute.
+	 *
+	 * @return request object for command
+	 */
 	public CommandRequest getCommandRequest() {
 		return commandRequest;
 	}
@@ -79,14 +85,17 @@ public class GwtCommand implements Serializable {
 	/**
 	 * Set the specific request for the command you wish to execute.
 	 * 
-	 * @param commandRequest
-	 *            The request object.
+	 * @param commandRequest request object
 	 */
 	public void setCommandRequest(CommandRequest commandRequest) {
 		this.commandRequest = commandRequest;
 	}
 
-	/** Get the user's identification token. */
+	/**
+	 * Get the user's identification token.
+	 *
+	 * @return current user token
+	 */
 	public String getUserToken() {
 		return userToken;
 	}
@@ -94,14 +103,17 @@ public class GwtCommand implements Serializable {
 	/**
 	 * A user identification token.
 	 * 
-	 * @param userToken
-	 *            The user's unique token (acquired from the server at login).
+	 * @param userToken user token (acquired from the server at login).
 	 */
 	public void setUserToken(String userToken) {
 		this.userToken = userToken;
 	}
 
-	/** A string that identifies the preferred language in which to handle responses or errors. */
+	/**
+	 * A string that identifies the preferred language in which to handle responses or errors.
+	 *
+	 * @return locale
+	 */
 	public String getLocale() {
 		return locale;
 	}
@@ -109,8 +121,7 @@ public class GwtCommand implements Serializable {
 	/**
 	 * A string that identifies the preferred language in which to handle responses or errors.
 	 * 
-	 * @param locale
-	 *            The new language to use.
+	 * @param locale The new language to use.
 	 */
 	public void setLocale(String locale) {
 		this.locale = locale;
