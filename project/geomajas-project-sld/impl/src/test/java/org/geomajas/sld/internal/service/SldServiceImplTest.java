@@ -20,6 +20,7 @@ import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geomajas.sld.service.SldException;
 import org.jibx.runtime.JiBXException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,16 @@ public class SldServiceImplTest {
 
 	@Autowired
 	private SldServiceImpl sldService;
+
+	@Before
+	public void before() throws SldException {
+		// remove all except for 1
+		for (StyledLayerDescriptorInfo sld : sldService.findAll()) {
+			if (!"point_attribute".equals(sld.getName())) {
+				sldService.remove(sld.getName());
+			}
+		}
+	}
 
 	@Test
 	public void testDirectory() throws IOException {
@@ -68,8 +79,8 @@ public class SldServiceImplTest {
 	@Test
 	public void testCreate() throws SldException, JiBXException {
 		// make sure the an SLD with name 'test' is created in case the previous test hasn't been run
-		testSaveOrUpdate(); 
-		
+		testSaveOrUpdate();
+
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setVersion("1.0.0");
 		sld.setName("test");
@@ -86,7 +97,7 @@ public class SldServiceImplTest {
 		} catch (SldException e) {
 			Assert.fail("Creating failed");
 		}
-		Assert.assertEquals(sldService.findAll().size(), prevNumOfSlds+1);
+		Assert.assertEquals(sldService.findAll().size(), prevNumOfSlds + 1);
 	}
 
 	@Test
