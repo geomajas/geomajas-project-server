@@ -57,14 +57,14 @@ public class LayerActions extends Window {
 	private static final String BTN_REMOVEFILTER_IMG = "[SKIN]/actions/remove.png";
 	private static final int WINDOW_WIDTH = 375;
 
-	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	private Img layerImg;
 	private Img layerLabelOverlay;
 	private Slider transparencySlider;
 	private CheckboxItem layerlabels;
-	private CheckboxItem layerShow;
-	private Layer<?> layer;
+	private final CheckboxItem layerShow;
+	private final Layer<?> layer;
 	private VectorLayer vectorLayer;
 	private RasterLayer rasterLayer;
 
@@ -73,10 +73,10 @@ public class LayerActions extends Window {
 		this.layer = layer;
 		if (layer instanceof VectorLayer) {
 			this.vectorLayer = (VectorLayer) layer;
-		} else {
+		} else if (layer instanceof RasterLayer) { // handle unchecked cast below
 			this.rasterLayer = (RasterLayer) layer;
 		}
-		setTitle(messages.layerActionsWindowTitle());
+		setTitle(MESSAGES.layerActionsWindowTitle());
 		setAutoCenter(true);
 		setWidth(WINDOW_WIDTH);
 		setAutoSize(true);
@@ -97,15 +97,15 @@ public class LayerActions extends Window {
 		header.addMember(createTitle());
 		layout.addMember(header);
 
-		// -- create info -- 
+		// -- create info --
 		VLayout infoLayout = new VLayout(5);
 		infoLayout.setPadding(5);
 		infoLayout.setAutoHeight();
 		infoLayout.setIsGroup(true);
-		infoLayout.setGroupTitle(messages.layerInfoLayerInfo());
+		infoLayout.setGroupTitle(MESSAGES.layerInfoLayerInfo());
 
-		IButton legendInfo = new IButton(vectorLayer != null ? messages.layerActionsShowLegendAndFields()
-				: messages.layerActionsShowLegend());
+		IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields() 
+				: MESSAGES.layerActionsShowLegend());
 		legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
 		legendInfo.setAutoFit(true);
 		legendInfo.addClickHandler(new ClickHandler() {
@@ -123,7 +123,7 @@ public class LayerActions extends Window {
 		actiesLayout.setPadding(5);
 		actiesLayout.setIsGroup(true);
 		actiesLayout.setAutoHeight();
-		actiesLayout.setGroupTitle(messages.layerInfoLayerActions());
+		actiesLayout.setGroupTitle(MESSAGES.layerInfoLayerActions());
 
 		DynamicForm form = new DynamicForm();
 		form.setTitleOrientation(TitleOrientation.TOP);
@@ -139,7 +139,7 @@ public class LayerActions extends Window {
 			form.setFields(layerlabels, layerShow);
 
 		} else {
-			transparencySlider = new Slider(messages.layerActionsOpacity());
+			transparencySlider = new Slider(MESSAGES.layerActionsOpacity());
 			String raw = rasterLayer.getLayerInfo().getStyle();
 			double opacity = 1d;
 			if (raw != null && !"".equals(raw)) {
@@ -158,7 +158,7 @@ public class LayerActions extends Window {
 		// ----------------------------------------------------------
 
 		if (vectorLayer != null && vectorLayer.getFilter() != null && !"".equals(vectorLayer.getFilter())) {
-			final IButton removeFilter = new IButton(messages.layerActionsRemoveFilter());
+			final IButton removeFilter = new IButton(MESSAGES.layerActionsRemoveFilter());
 			removeFilter.setIcon(BTN_REMOVEFILTER_IMG);
 			removeFilter.setAutoFit(true);
 			String tooltip = vectorLayer.getFilter();
@@ -186,15 +186,16 @@ public class LayerActions extends Window {
 
 	private Canvas createTitle() {
 		HTMLPane title = new HTMLPane();
-		String html = "<span style='font-size: 1.2em; font-weight: bold;'>" + layer.getLabel() + "</span><br /><br />";
+		StringBuffer html = new StringBuffer("<span style='font-size: 1.2em; font-weight: bold;'>" 
+		+ layer.getLabel() + "</span><br /><br />");
 		if (vectorLayer != null) {
-			html += messages.layerInfoLayerInfoFldLayerTypeVector();
-			html += "<br />" + messages.layerInfoLayerInfoFldLayerType() + ": "
-					+ vectorLayer.getLayerInfo().getLayerType().name();
+			html.append(MESSAGES.layerInfoLayerInfoFldLayerTypeVector());
+			html.append("<br />" + MESSAGES.layerInfoLayerInfoFldLayerType() + ": "
+					+ vectorLayer.getLayerInfo().getLayerType().name());
 		} else {
-			html += messages.layerInfoLayerInfoFldLayerTypeRaster();
+			html.append(MESSAGES.layerInfoLayerInfoFldLayerTypeRaster());
 		}
-		title.setContents(html);
+		title.setContents(html.toString());
 		return title;
 	}
 
@@ -224,8 +225,8 @@ public class LayerActions extends Window {
 	}
 
 	private void initLayerShow() {
-		layerShow.setTitle(messages.layerActionsShowLayer());
-		layerShow.setTooltip(messages.layerActionsShowLayerToolTip());
+		layerShow.setTitle(MESSAGES.layerActionsShowLayer());
+		layerShow.setTooltip(MESSAGES.layerActionsShowLayerToolTip());
 		layerShow.setTitleOrientation(TitleOrientation.LEFT);
 		if (vectorLayer != null) {
 			layerShow.setValue(vectorLayer.isVisible());
@@ -245,8 +246,8 @@ public class LayerActions extends Window {
 	}
 
 	private void initLabels() {
-		layerlabels.setTitle(messages.layerActionsLabels());
-		layerlabels.setTooltip(messages.layerActionsLabelsToolTip());
+		layerlabels.setTitle(MESSAGES.layerActionsLabels());
+		layerlabels.setTooltip(MESSAGES.layerActionsLabelsToolTip());
 		layerlabels.setTitleOrientation(TitleOrientation.LEFT);
 		layerlabels.setValue(vectorLayer.isLabelsVisible());
 		Boolean val = vectorLayer.isLabelsVisible();
@@ -269,7 +270,7 @@ public class LayerActions extends Window {
 		transparencySlider.setMaxValueLabel("100%");
 		transparencySlider.setVertical(false);
 		transparencySlider.setWidth(230);
-		transparencySlider.setLabelWidth(Integer.parseInt(messages.layerActionsOpacitySliderLabelWidth()));
+		transparencySlider.setLabelWidth(Integer.parseInt(MESSAGES.layerActionsOpacitySliderLabelWidth()));
 		transparencySlider.addValueChangedHandler(new ValueChangedHandler() {
 
 			public void onValueChanged(ValueChangedEvent event) {
@@ -299,6 +300,7 @@ public class LayerActions extends Window {
 		private static final String VALUE_FLD = "valueField";
 
 		public LayerInfoListGrid() {
+			super();
 			setWidth100();
 			setHeight(50);
 			setCanEdit(false);
@@ -325,10 +327,10 @@ public class LayerActions extends Window {
 					layer);
 			if (eli != null) {
 				if (eli.getSource() != null && !"".equals(eli.getSource())) {
-					recordList.add(createRecord(messages.layerInfoLayerInfoSource() + ":", eli.getSource()));
+					recordList.add(createRecord(MESSAGES.layerInfoLayerInfoSource() + ":", eli.getSource()));
 				}
 				if (eli.getDate() != null) {
-					recordList.add(createRecord(messages.layerInfoLayerInfoDate() + ":", eli.getDate()));
+					recordList.add(createRecord(MESSAGES.layerInfoLayerInfoDate() + ":", eli.getDate()));
 //					recordList.add(createRecord(messages.layerInfoLayerInfoDate() + ":", 
 //						DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(eli.getDate())));
 				}
@@ -346,8 +348,8 @@ public class LayerActions extends Window {
 				layerMin = buildScale(rl.getLayerInfo().getMinimumScale());
 			}
 
-			recordList.add(createRecord(messages.layerInfoLayerInfoFldMaxViewScale() + ":", layerMax));
-			recordList.add(createRecord(messages.layerInfoLayerInfoFldMinViewScale() + ":", layerMin));
+			recordList.add(createRecord(MESSAGES.layerInfoLayerInfoFldMaxViewScale() + ":", layerMax));
+			recordList.add(createRecord(MESSAGES.layerInfoLayerInfoFldMinViewScale() + ":", layerMin));
 
 			setData(recordList);
 		}

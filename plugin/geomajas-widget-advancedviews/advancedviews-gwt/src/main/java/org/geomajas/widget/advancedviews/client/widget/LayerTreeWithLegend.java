@@ -75,7 +75,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 	private static final String SHOW_LAYERINFO_ICON = "[ISOMORPHIC]/geomajas/silk/cog.png";
 
-	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	private static final String EXPANDED_ATTR = "isExpanded";
 
@@ -135,6 +135,8 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 	/**
 	 * When a legendItem is selected, select the layer instead.
+	 *
+	 * @param event event
 	 */
 	public void onLeafClick(LeafClickEvent event) {
 		LayerTreeTreeNode layerTreeNode;
@@ -196,7 +198,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	 */
 	public class LayerTreeLegendItemNode extends LayerTreeTreeNode {
 		private LayerTreeLegendNode parent;
-		private UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
+		private final UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
 
 		// rasterlayer
 		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, RasterLayer layer, String rasterIconUrl) {
@@ -269,10 +271,10 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	protected void onIconClick(TreeNode node) {
 		if (node instanceof LayerTreeLegendNode) {
 			super.onIconClick(node);
-		} else if (node instanceof TreeNode) {
-			// TODO -- show/hide all layers in folder
+		} //else if (node instanceof TreeNode) {
+		  	// TODO -- show/hide all layers in folder
 			GWT.log("TODO");
-		}
+		//}
 	}
 
 	protected TreeGrid createTreeGridInfoWindowRollover() {
@@ -296,7 +298,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 					showInfo.setShowRollOver(false);
 					showInfo.setLayoutAlign(Alignment.CENTER);
 					showInfo.setSrc(SHOW_LAYERINFO_ICON);
-					showInfo.setPrompt(messages.layerTreeWithLegendLayerActionsToolTip());
+					showInfo.setPrompt(MESSAGES.layerTreeWithLegendLayerActionsToolTip());
 					showInfo.setHeight(16);
 					showInfo.setWidth(16);
 					showInfo.addClickHandler(new ClickHandler() {
@@ -329,7 +331,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 		return new TreeGrid() {
 			private HLayout rollOverTools;
 			private HLayout emptyRollOver;
-			private Canvas[] toolButtons;
+			private Canvas[] toolButtons = new Canvas[0];
 
 			@Override
 			protected Canvas getRollOverCanvas(Integer rowNum, Integer colNum) {
@@ -384,7 +386,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 			/**
 			 * Updates the icons and the state of the buttons in the toolbar
 			 * based upon the current layer
-			 * 
+			 *
 			 * @param toolStripMembers
 			 *            data for the toolbar
 			 */
@@ -402,17 +404,18 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 	/**
 	 * General definition of an action button for the layer tree.
-	 * 
+	 *
 	 * @author Frank Wynants
 	 * @author Pieter De Graef
 	 */
 	private class LayerTreeButton extends IButton {
 
-		private LayerTreeWithLegend tree;
+		private final LayerTreeWithLegend tree;
 
-		private LayerTreeAction action;
+		private final LayerTreeAction action;
 
 		public LayerTreeButton(final LayerTreeWithLegend tree, final LayerTreeAction action) {
+			super();
 			this.tree = tree;
 			this.action = action;
 			setWidth(LAYERTREEBUTTON_SIZE);
@@ -457,9 +460,9 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	 */
 	private class LayerTreeModalButton extends IButton {
 
-		private LayerTreeWithLegend tree;
+		private final LayerTreeWithLegend tree;
 
-		private LayerTreeModalAction modalAction;
+		private final LayerTreeModalAction modalAction;
 
 		/**
 		 * Constructor
@@ -470,6 +473,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 		 *            The action coupled to this button
 		 */
 		public LayerTreeModalButton(final LayerTreeWithLegend tree, final LayerTreeModalAction modalAction) {
+			super();
 			this.tree = tree;
 			this.modalAction = modalAction;
 			setWidth(LAYERTREEBUTTON_SIZE);
@@ -532,10 +536,8 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 					GWT.log("Legend: onLabelChange() - " + event.getLayer().getLabel());
 					// find the node & update the icon
 					for (TreeNode node : tree.getAllNodes()) {
-						if (node.getName().equals(event.getLayer().getLabel())) {
-							if (node instanceof LayerTreeTreeNode) {
-								((LayerTreeTreeNode) node).updateIcon();
-							}
+						if (node.getName().equals(event.getLayer().getLabel()) && node instanceof LayerTreeTreeNode) {
+							((LayerTreeTreeNode) node).updateIcon();
 						}
 					}
 				}
@@ -544,10 +546,8 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 					GWT.log("Legend: onVisibleChange() - " + event.getLayer().getLabel());
 					// find the node & update the icon
 					for (TreeNode node : tree.getAllNodes()) {
-						if (node.getName().equals(event.getLayer().getLabel())) {
-							if (node instanceof LayerTreeTreeNode) {
-								((LayerTreeTreeNode) node).updateIcon();
-							}
+						if (node.getName().equals(event.getLayer().getLabel()) && node instanceof LayerTreeTreeNode) {
+							((LayerTreeTreeNode) node).updateIcon();
 						}
 					}
 				}
@@ -566,10 +566,9 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 						GWT.log("Legend: onLayerFilterChange() - " + event.getLayer().getLabel());
 						// find the node & update the icon
 						for (TreeNode node : tree.getAllNodes()) {
-							if (node.getName().equals(event.getLayer().getLabel())) {
-								if (node instanceof LayerTreeTreeNode) {
-									((LayerTreeTreeNode) node).updateIcon();
-								}
+							if (node.getName().equals(event.getLayer().getLabel()) 
+									&& node instanceof LayerTreeTreeNode) {
+								((LayerTreeTreeNode) node).updateIcon();
 							}
 						}
 					}

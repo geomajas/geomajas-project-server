@@ -14,8 +14,9 @@ package org.geomajas.widget.advancedviews.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.Geomajas;
@@ -44,14 +45,14 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * A simple layerinfo window.
- * 
+ *
  * @author Kristof Heirwegh
  * @author Wout Swartenbroekx
- * 
+ *
  */
 public class LayerInfo extends Window {
 
-	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
+    private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	private static final String NUMERIC_TYPES = "short integer long float double currency";
 	private static final int WINDOW_HEIGHT = 400;
@@ -64,11 +65,15 @@ public class LayerInfo extends Window {
 	private static final String IDENT = "ide";
 	private static final String HIDDE = "hid";
 	private static final String NUMER = "num";
-	private static final String VALUE = "val";
 
+	/**
+	 * Constructor.
+	 *
+	 * @param layer layer
+	 */
 	public LayerInfo(Layer<?> layer) {
 		super();
-		setTitle(messages.layerInfoWindowLegendTitle() + " - " + layer.getLabel());
+		setTitle(MESSAGES.layerInfoWindowLegendTitle() + " - " + layer.getLabel());
 		setAutoCenter(true);
 		setWidth(WINDOW_WIDTH);
 		setHeight(WINDOW_HEIGHT);
@@ -85,7 +90,7 @@ public class LayerInfo extends Window {
 		if (layer instanceof VectorLayer) {
 			layout.addMember(createVectorLegend((VectorLayer) layer));
 			layout.addMember(createFeatureInfo((VectorLayer) layer));
-		} else {
+		} else if (layer instanceof RasterLayer) { // handle unchecked cast below
 			Canvas c = createLegendInfo((RasterLayer) layer);
 			if (c != null) {
 				layout.addMember(c);
@@ -103,7 +108,7 @@ public class LayerInfo extends Window {
 		legend.setWidth100();
 		legend.setIsGroup(true);
 		legend.setPadding(5);
-		legend.setGroupTitle(messages.layerInfoLayerInfoLegend());
+		legend.setGroupTitle(MESSAGES.layerInfoLayerInfoLegend());
 		legend.addMember(new VectorLegendListGrid(layer));
 		legend.setHeight100();
 		return legend;
@@ -111,28 +116,30 @@ public class LayerInfo extends Window {
 
 	private Canvas createFeatureInfo(VectorLayer layer) {
 		List<ListGridRecord> records = new ArrayList<ListGridRecord>();
-		for (AttributeInfo attInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+		for (AbstractAttributeInfo attInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
 			ListGridRecord r = new ListGridRecord();
 			records.add(r);
 			String type = getType(attInfo);
 			r.setAttribute(ATTRI, attInfo.getName());
-			r.setAttribute(LABEL, attInfo.getLabel());
+			r.setAttribute(LABEL, ((AbstractReadOnlyAttributeInfo) attInfo).getLabel());
 			r.setAttribute(TYPE, type);
 			r.setAttribute(EDITA,
-					(attInfo.isEditable() ? messages.layerInfoLayerInfoAttYes() : messages.layerInfoLayerInfoAttNo()));
-			r.setAttribute(IDENT, (attInfo.isIdentifying() ? messages.layerInfoLayerInfoAttYes() :
-					messages.layerInfoLayerInfoAttNo()));
+					(((AbstractReadOnlyAttributeInfo) attInfo).isEditable() ? MESSAGES.layerInfoLayerInfoAttYes()
+							: MESSAGES.layerInfoLayerInfoAttNo()));
+			r.setAttribute(IDENT, (((AbstractReadOnlyAttributeInfo) attInfo).isIdentifying()
+					? MESSAGES.layerInfoLayerInfoAttYes() : MESSAGES.layerInfoLayerInfoAttNo()));
 			r.setAttribute(HIDDE,
-					(attInfo.isHidden() ? messages.layerInfoLayerInfoAttYes() : messages.layerInfoLayerInfoAttNo()));
+					(((AbstractReadOnlyAttributeInfo) attInfo).isHidden() ? MESSAGES.layerInfoLayerInfoAttYes()
+							: MESSAGES.layerInfoLayerInfoAttNo()));
 			r.setAttribute(NUMER,
-					(isNumeric(type) ? messages.layerInfoLayerInfoAttYes() : messages.layerInfoLayerInfoAttNo()));
+					(isNumeric(type) ? MESSAGES.layerInfoLayerInfoAttYes() : MESSAGES.layerInfoLayerInfoAttNo()));
 		}
 
 		// ----------------------------------------------------------
 
 		VLayout c = new VLayout();
 		c.setIsGroup(true);
-		c.setGroupTitle(messages.layerInfoLayerInfoFldInfo());
+		c.setGroupTitle(MESSAGES.layerInfoLayerInfoFldInfo());
 		c.setPadding(5);
 		ListGrid info = new ListGrid();
 		info.setShowAllRecords(true);
@@ -140,13 +147,13 @@ public class LayerInfo extends Window {
 		info.setWidth100();
 		info.setHeight(400);
 
-		ListGridField fld1 = new ListGridField(ATTRI, messages.layerInfoLayerInfoAttAttribute());
-		ListGridField fld2 = new ListGridField(LABEL, messages.layerInfoLayerInfoAttLabel());
-		ListGridField fld3 = new ListGridField(TYPE, messages.layerInfoLayerInfoAttType());
-		ListGridField fld4 = new ListGridField(EDITA, messages.layerInfoLayerInfoAttEditable());
-		ListGridField fld5 = new ListGridField(IDENT, messages.layerInfoLayerInfoAttIdentifying());
-		ListGridField fld6 = new ListGridField(HIDDE, messages.layerInfoLayerInfoAttHidden());
-		ListGridField fld7 = new ListGridField(NUMER, messages.layerInfoLayerInfoAttNumeric());
+		ListGridField fld1 = new ListGridField(ATTRI, MESSAGES.layerInfoLayerInfoAttAttribute());
+		ListGridField fld2 = new ListGridField(LABEL, MESSAGES.layerInfoLayerInfoAttLabel());
+		ListGridField fld3 = new ListGridField(TYPE, MESSAGES.layerInfoLayerInfoAttType());
+		ListGridField fld4 = new ListGridField(EDITA, MESSAGES.layerInfoLayerInfoAttEditable());
+		ListGridField fld5 = new ListGridField(IDENT, MESSAGES.layerInfoLayerInfoAttIdentifying());
+		ListGridField fld6 = new ListGridField(HIDDE, MESSAGES.layerInfoLayerInfoAttHidden());
+		ListGridField fld7 = new ListGridField(NUMER, MESSAGES.layerInfoLayerInfoAttNumeric());
 		fld1.setWidth(70);
 		fld2.setWidth(90);
 		info.setFields(fld1, fld2, fld3, fld4, fld5, fld6, fld7);
@@ -161,7 +168,7 @@ public class LayerInfo extends Window {
 		return (NUMERIC_TYPES.indexOf(type) > -1);
 	}
 
-	private String getType(AttributeInfo attInfo) {
+	private String getType(AbstractAttributeInfo attInfo) {
 		if (attInfo instanceof PrimitiveAttributeInfo) {
 			return ((PrimitiveAttributeInfo) attInfo).getType().toString();
 
@@ -186,7 +193,7 @@ public class LayerInfo extends Window {
 //			}, LoadEvent.getType());
 		} else {
 			legendPane.setContents("<br /><div style=\"text-align: center\">"
-					+ messages.layerInfoLayerInfoLegendNoLegend() +	"</div>");
+					+ MESSAGES.layerInfoLayerInfoLegendNoLegend() +	"</div>");
 		}
 		return legendPane;
 	}
@@ -206,6 +213,7 @@ public class LayerInfo extends Window {
 		private static final int ICONSIZE = 18;
 
 		public VectorLegendListGrid(VectorLayer layer) {
+			super();
 			setWidth100();
 			setHeight(10);
 			setCanEdit(false);
@@ -256,7 +264,7 @@ public class LayerInfo extends Window {
 
 		private ListGridRecord createRecord(String title, int index) {
 			ListGridRecord r = new ListGridRecord();
-			r.setAttribute(KEY_FLD, "" + index);
+			r.setAttribute(KEY_FLD, index);
 			r.setAttribute(VALUE_FLD, title);
 			return r;
 		}

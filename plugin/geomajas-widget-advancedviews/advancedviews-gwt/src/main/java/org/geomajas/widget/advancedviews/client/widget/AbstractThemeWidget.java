@@ -36,10 +36,10 @@ import com.smartgwt.client.widgets.Canvas;
 
 /**
  * Base class that handles the layer and map Changes. Contains no GUI.
- * 
+ *
  * @author Oliver May
  * @author Kristof Heirwegh
- * 
+ *
  */
 public abstract class AbstractThemeWidget extends Canvas implements MapViewChangedHandler, LayerChangedHandler {
 
@@ -160,7 +160,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	// ----------------------------------------------------------
 	// -- MapViewChangedHandler --
 	// ----------------------------------------------------------
-
+	/** {@inheritDoc} */
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (null != activeViewConfig && !event.isSameScaleLevel()) {
 			renderViewConfig(activeViewConfig.getViewConfig());
@@ -170,22 +170,22 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	// ----------------------------------------------------------
 	// -- LayerChangedHandler --
 	// ----------------------------------------------------------
-
+	/** {@inheritDoc} */
 	public void onVisibleChange(LayerShownEvent event) {
 		if (!themeChange && getActiveViewConfig() != null && !event.isScaleChange()) {
 			activateViewConfig(null);
 		}
 	}
-
+	/** {@inheritDoc} */
 	public void onLabelChange(LayerLabeledEvent event) {
 		// ignore
 	}
 
 	/**
 	 * Model for Viewconfig.
-	 * 
+	 *
 	 * @author Oliver May
-	 * 
+	 *
 	 */
 	protected static class ViewConfigItem {
 
@@ -212,7 +212,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	/**
 	 * Custom button type, can be an IButton, but this is not required.
 	 */
-	protected static interface Button {
+	protected interface Button {
 
 		void setIcon(String src);
 

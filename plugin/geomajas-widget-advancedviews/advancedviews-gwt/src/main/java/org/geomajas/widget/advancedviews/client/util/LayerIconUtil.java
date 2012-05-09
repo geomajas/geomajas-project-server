@@ -66,7 +66,7 @@ public final class LayerIconUtil {
 		} else {
 			if (layer instanceof RasterLayer) {
 				return new Img(LAYER_RASTER_ICON_LARGE_URL);
-			} else {
+			} else if (layer instanceof VectorLayer) { // handle unchecked cast below NOSONAR
 				switch (((VectorLayer) layer).getLayerInfo().getLayerType()) {
 				case POINT:
 				case MULTIPOINT:
@@ -85,6 +85,7 @@ public final class LayerIconUtil {
 				}
 			}
 		}
+		return new Img(""); // in case eli=null && layer != raster or vector
 	}
 
 	public static Img getLegendImage(Layer<?> layer) {

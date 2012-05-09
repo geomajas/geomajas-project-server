@@ -127,6 +127,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When a layer deselection event comes in, the LayerTree must also deselect
 	 * the correct node in the tree, update the selected layer text, and update
 	 * all buttons icons.
+	 *
+	 * @param event event
 	 */
 	public void onDeselectLayer(LayerDeselectedEvent event) {
 		ListGridRecord selected = treeGrid.getSelectedRecord();
@@ -141,6 +143,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When a layer selection event comes in, the LayerTree must also select the
 	 * correct node in the tree, update the selected layer text, and update all
 	 * buttons icons.
+	 *
+	 * @param event event
 	 */
 	public void onSelectLayer(LayerSelectedEvent event) {
 		for (TreeNode node : tree.getAllNodes()) {
@@ -162,6 +166,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 	/**
 	 * When the user clicks on a folder nothing gets selected.
+	 *
+	 * @param event event
 	 */
 	public void onFolderClick(FolderClickEvent event) {
 		try {
@@ -185,6 +191,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When the user clicks on a leaf the headertext of the treetable is changed
 	 * to the selected leaf and the toolbar buttons are updated to represent the
 	 * correct state of the buttons.
+	 *
+	 * @param event event
 	 */
 	public void onLeafClick(LeafClickEvent event) {
 		try {
@@ -202,7 +210,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	}
 
 	protected void onIconClick(TreeNode node) {
-		if (node != null && node instanceof LayerTreeTreeNode) {
+		if (node instanceof LayerTreeTreeNode) {
 			LayerTreeTreeNode n = (LayerTreeTreeNode) node;
 			n.layer.setVisible(!n.layer.isVisible());
 			n.updateIcon();
@@ -359,22 +367,21 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		 */
 		public void updateIcon(boolean refresh) {
 			if (layer.isVisible()) {
-				String icon = ICON_SHOW;
+				StringBuffer icon =  new StringBuffer(ICON_SHOW);
 				if (!layer.isShowing()) {
-					icon += ICON_SHOW_OUT_OF_RANGE;
+					icon.append(ICON_SHOW_OUT_OF_RANGE);
 				}
 				if (layer.isLabelsVisible()) {
-					icon += ICON_SHOW_LABELED;
+					icon.append(ICON_SHOW_LABELED);
 				}
 				if (layer instanceof VectorLayer) {
 					VectorLayer vl = (VectorLayer) layer;
 					if (vl.getFilter() != null && vl.getFilter().length() > 0) {
-						icon += ICON_SHOW_FILTERED;
+						icon.append(ICON_SHOW_FILTERED);
 					}
 				}
-					
-				icon += ICON_SHOW_END;
-				setIcon(icon);
+				icon.append(ICON_SHOW_END);
+				setIcon(icon.toString());
 			} else {
 				setIcon(ICON_HIDE);
 			}

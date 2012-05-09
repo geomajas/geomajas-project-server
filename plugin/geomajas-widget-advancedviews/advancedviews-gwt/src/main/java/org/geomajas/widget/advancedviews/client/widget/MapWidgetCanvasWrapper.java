@@ -18,12 +18,10 @@ import com.smartgwt.client.widgets.Canvas;
  *
  */
 public class MapWidgetCanvasWrapper extends Canvas {
-	private Canvas child;
-	
+	private final Canvas child;
+
 	public MapWidgetCanvasWrapper(Canvas child) {
+		super();
 		this.child = child;
 	}
-
-	
-	
 }

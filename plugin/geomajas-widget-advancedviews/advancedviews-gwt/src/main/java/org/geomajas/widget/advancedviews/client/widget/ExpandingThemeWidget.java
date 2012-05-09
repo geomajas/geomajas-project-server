@@ -51,7 +51,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 	private int menuWidth = 325;
 
-	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	protected MenuItem disabledBtn;
 	protected MenuItem masterBtn;
@@ -70,7 +70,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	}
 
 	protected void buildWidget() {
-		disabledBtn = new MenuItem(NOTHEME_ICON, messages.expandingThemeWidgetNoThemeSelected(), null,
+		disabledBtn = new MenuItem(NOTHEME_ICON, MESSAGES.expandingThemeWidgetNoThemeSelected(), null,
 				new ClickHandler() {
 
 					public void onClick(ClickEvent event) {
@@ -78,7 +78,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 					}
 				});
 
-		masterBtn = new MenuItem(disabledBtn.getIcon(), "<b>" + messages.expandingThemeWidgetTitle() + "</b>", null,
+		masterBtn = new MenuItem(disabledBtn.getIcon(), "<b>" + MESSAGES.expandingThemeWidgetTitle() + "</b>", null,
 				new ClickHandler() {
 
 					public void onClick(ClickEvent event) {
@@ -138,7 +138,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 				}
 			});
 
-			panel.addMember(createCategory(messages.expandingThemeWidgetTitle()));
+			panel.addMember(createCategory(MESSAGES.expandingThemeWidgetTitle()));
 			panel.hide();
 			panel.draw();
 		}
@@ -173,7 +173,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 	private void setMasterItem(MenuItem item) {
 		masterBtn.setIcon(item.getIcon());
-		masterBtn.setTooltip(messages.expandingThemeWidgetTooltip());
+		masterBtn.setTooltip(MESSAGES.expandingThemeWidgetTooltip());
 	}
 
 	protected void activateViewConfig(ViewConfigItem viewConfig) {
@@ -238,7 +238,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 		private static final String DESCRIPTION_HOVER_STYLENAME = "themeWidgetDescriptionHover";
 		private static final String DESCRIPTION_STYLENAME = "themeWidgetDescription";
 
-		private Img img;
+		private final Img img;
 
 		public MenuItem(String imageSrc, String title, String description, ClickHandler handler) {
 			super(5);
@@ -257,11 +257,11 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			addMember(img);
 
 			// -- description
-			String labeltext = title;
+			StringBuffer labeltext = new StringBuffer(title);
 			if (description != null) {
-				labeltext += "<br />" + description;
+				labeltext.append("<br />" + description);
 			}
-			Label desc = new Label(labeltext);
+			Label desc = new Label(labeltext.toString());
 			desc.setCursor(Cursor.HAND);
 			desc.setBackgroundColor("transparent");
 			desc.setWidth100();

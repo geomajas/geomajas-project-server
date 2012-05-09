@@ -32,10 +32,10 @@ public final class WidgetInfoUtil {
 	@SuppressWarnings("unchecked")
 	public static <T extends ClientWidgetInfo> T getClientWidgetInfo(String id, Class<T> clazz, Layer<?> layer) {
 		if (layer != null) {
-			ClientWidgetInfo cli;
+			ClientWidgetInfo cli = null;
 			if (layer instanceof VectorLayer) {
 				cli = ((VectorLayer) layer).getLayerInfo().getWidgetInfo(id);
-			} else {
+			} else if (layer instanceof RasterLayer) { // handle unchecked cast below
 				cli = ((RasterLayer) layer).getLayerInfo().getWidgetInfo(id);
 			}
 
