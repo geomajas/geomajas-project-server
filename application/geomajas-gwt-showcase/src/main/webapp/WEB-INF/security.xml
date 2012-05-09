@@ -185,6 +185,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								<property name="commandsInclude">
 									<list>
 										<value>command.configuration.GetMap</value>
+										<value>command.configuration.Get</value>
 										<value>command.render.GetRasterTiles</value>
 									</list>
 								</property>
