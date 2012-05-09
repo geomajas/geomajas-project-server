@@ -12,7 +12,6 @@
 package org.geomajas.application.gwt.showcase.client.security;
 
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -32,7 +31,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 
 /**
  * <p>
@@ -60,6 +58,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		}
 	};
 
+	/** {@inheritDoc} */
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
 		layout.setMembersMargin(10);
@@ -77,49 +76,16 @@ public class AttributeSecuritySample extends SamplePanel {
 		layout.addMember(map);
 		map.init();
 
-		// Create login handler that re-initializes the map on a successful login:
-		final BooleanCallback initMapCallback = new BooleanCallback() {
-
-			public void execute(Boolean value) {
-				if (value) {
-					map.destroy();
-					map = new MapWidget("mapBeans", "gwtExample");
-					map.setVisible(false);
-					layout.addMember(map);
-					map.init();
+		Runnable removeAttributeWindow = new Runnable() {
+			public void run() {
+				if (null != featureAttributeWindow) {
+					featureAttributeWindow.destroy();
+					featureAttributeWindow = null;
 				}
 			}
 		};
-
-		// Create a button that logs in user "elvis":
-		IButton loginButtonMarino = new IButton(MESSAGES.securityLogInWith("elvis"));
-		loginButtonMarino.setWidth(150);
-		loginButtonMarino.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				SsecAccess.login("elvis", "elvis", initMapCallback);
-				if (null != featureAttributeWindow) {
-					featureAttributeWindow.destroy();
-					featureAttributeWindow = null;
-				}
-			}
-		});
-		buttonLayout.addMember(loginButtonMarino);
-
-		// Create a button that logs in user "luc":
-		IButton loginButtonLuc = new IButton(MESSAGES.securityLogInWith("luc"));
-		loginButtonLuc.setWidth(150);
-		loginButtonLuc.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				SsecAccess.login("luc", "luc", initMapCallback);
-				if (null != featureAttributeWindow) {
-					featureAttributeWindow.destroy();
-					featureAttributeWindow = null;
-				}
-			}
-		});
-		buttonLayout.addMember(loginButtonLuc);
+		buttonLayout.addMember(new UserLoginButton("elvis", removeAttributeWindow));
+		buttonLayout.addMember(new UserLoginButton("luc", removeAttributeWindow));
 
 		// Set up the search command, that will fetch a feature:
 		// Searches for ID=1, but we might as well have created a filter on one of the attributes...

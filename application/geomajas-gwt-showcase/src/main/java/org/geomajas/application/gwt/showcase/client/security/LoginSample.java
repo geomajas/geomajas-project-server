@@ -12,7 +12,6 @@
 package org.geomajas.application.gwt.showcase.client.security;
 
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -22,15 +21,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.plugin.staticsecurity.client.Authentication;
-import org.geomajas.plugin.staticsecurity.client.LoginWindow;
-import org.geomajas.plugin.staticsecurity.client.LogoutButton;
-import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
-import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LogoutFailureEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LogoutHandler;
-import org.geomajas.plugin.staticsecurity.client.event.LogoutSuccessEvent;
+import org.geomajas.plugin.staticsecurity.client.TokenReleaseButton;
+import org.geomajas.plugin.staticsecurity.client.TokenRequestWindow;
 
 /**
  * <p>
@@ -68,40 +60,17 @@ public class LoginSample extends SamplePanel {
 		loginButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				LoginWindow loginWindow = new LoginWindow();
-				loginWindow.setKeepInParentRect(true);
-				layout.addMember(loginWindow);
-			}
-		});
-
-		// Add a login handler that disables the login button on successful login:
-		Authentication.getInstance().addLoginHandler(new LoginHandler() {
-
-			public void onLoginFailure(LoginFailureEvent event) {
-			}
-
-			public void onLoginSuccess(LoginSuccessEvent event) {
-				loginButton.setDisabled(true);
+				TokenRequestWindow tokenRequestWindow = new TokenRequestWindow();
+				tokenRequestWindow.setKeepInParentRect(true);
+				layout.addMember(tokenRequestWindow);
 			}
 		});
 
 		// Create a log out button, and attach an event handler:
-		LogoutButton logoutButton = new LogoutButton(new LogoutHandler() {
-
-			// Show localized messages:
-			public void onLogoutFailure(LogoutFailureEvent event) {
-				SC.warn(MESSAGES.logoutFailure());
-			}
-
-			// Logout success - enable the login button again:
-			public void onLogoutSuccess(LogoutSuccessEvent event) {
-				SC.say(MESSAGES.logoutSuccess());
-				loginButton.setDisabled(false);
-			}
-		});
+		TokenReleaseButton tokenReleaseButton = new TokenReleaseButton();
 
 		buttonLayout.addMember(loginButton);
-		buttonLayout.addMember(logoutButton);
+		buttonLayout.addMember(tokenReleaseButton);
 		layout.addMember(buttonLayout);
 		return layout;
 	}

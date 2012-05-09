@@ -12,11 +12,7 @@
 package org.geomajas.application.gwt.showcase.client.security;
 
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
@@ -24,7 +20,6 @@ import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.plugin.staticsecurity.client.Authentication;
 
 /**
  * <p>
@@ -37,8 +32,6 @@ public class FilterSecuritySample extends SamplePanel {
 
 	public static final String TITLE = "FilterSecurity";
 	private static final ShowcaseMessages MESSAGES = GWT.create(ShowcaseMessages.class);
-
-	private MapWidget map;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
@@ -57,7 +50,7 @@ public class FilterSecuritySample extends SamplePanel {
 		final VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 		mapLayout.setHeight("60%");
-		map = new MapWidget("mapVectorSecurity", "gwtExample");
+		MapWidget map = new MapWidget("mapVectorSecurity", "gwtExample");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
@@ -65,40 +58,8 @@ public class FilterSecuritySample extends SamplePanel {
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
 
-		// Create login handler that re-initializes the map on a successful login:
-		final BooleanCallback initMapCallback = new BooleanCallback() {
-
-			public void execute(Boolean value) {
-				if (value) {
-					map.destroy();
-					map = new MapWidget("mapVectorSecurity", "gwtExample");
-					mapLayout.addMember(map);
-					map.setController(new PanController(map));
-				}
-			}
-		};
-
-		// Create a button that logs in user "marino":
-		IButton loginButtonMarino = new IButton(MESSAGES.securityLogInWith("jan"));
-		loginButtonMarino.setWidth("50%");
-		loginButtonMarino.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("jan", "jan", initMapCallback);
-			}
-		});
-		buttonLayout.addMember(loginButtonMarino);
-
-		// Create a button that logs in user "luc":
-		IButton loginButtonLuc = new IButton(MESSAGES.securityLogInWith("luc"));
-		loginButtonLuc.setWidth("50%");
-		loginButtonLuc.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("luc", "luc", initMapCallback);
-			}
-		});
-		buttonLayout.addMember(loginButtonLuc);
+		buttonLayout.addMember(new UserLoginButton("jan"));
+		buttonLayout.addMember(new UserLoginButton("luc"));
 
 		layout.addMember(mapLayout);
 		layout.addMember(buttonLayout);

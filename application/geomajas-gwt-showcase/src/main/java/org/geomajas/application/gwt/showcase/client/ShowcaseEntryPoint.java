@@ -13,7 +13,6 @@ package org.geomajas.application.gwt.showcase.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Label;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
 import org.geomajas.application.gwt.showcase.client.security.AttributeSecuritySample;
@@ -21,6 +20,7 @@ import org.geomajas.application.gwt.showcase.client.security.CommandSecuritySamp
 import org.geomajas.application.gwt.showcase.client.security.FilterSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.LayerSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.LoginSample;
+import org.geomajas.application.gwt.showcase.client.security.ShowcaseTokenRequestHandler;
 import org.geomajas.application.gwt.showcase.client.security.ToolSecuritySample;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
@@ -42,6 +42,13 @@ public class ShowcaseEntryPoint implements EntryPoint {
 	private static final ShowcaseMessages MESSAGES = GWT.create(ShowcaseMessages.class);
 
 	private static final String SECURITY_GROUP = "Security";
+
+	// CHECKSTYLE VISIBILITY MODIFIER: OFF
+
+	/** Runnable which should be run on successful login. */
+	public static Runnable runOnLogin;
+
+	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	public void onModuleLoad() {
 		// Security samples:
@@ -74,7 +81,9 @@ public class ShowcaseEntryPoint implements EntryPoint {
 
 		// security demo
 		final Label userLabel = exampleLayout.getUserLabel();
-		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
+		GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
+		dispatcher.setTokenRequestHandler(new ShowcaseTokenRequestHandler());
+		dispatcher.addTokenChangedHandler(new TokenChangedHandler() {
 			public void onTokenChanged(TokenChangedEvent event) {
 				String userId = null;
 				if (null != event.getUserDetail()) {
@@ -84,6 +93,10 @@ public class ShowcaseEntryPoint implements EntryPoint {
 					userLabel.setContents("No user is logged in.");
 				} else {
 					userLabel.setContents("Logged in with: " + userId);
+					if (null != runOnLogin) {
+						runOnLogin.run();
+						runOnLogin = null;
+					}
 				}
 			}
 		});
@@ -102,13 +115,10 @@ public class ShowcaseEntryPoint implements EntryPoint {
 				login = "luc";
 				password = login;
 			}
-			SsecAccess.login(login, password, new BooleanCallback() {
-				public void execute(Boolean loginSucceeded) {
-					if (loginSucceeded) {
-						callback.run();
-					}
-				}
-			});
+			ShowcaseTokenRequestHandler.userId = login;
+			ShowcaseTokenRequestHandler.password = password;
+			runOnLogin = callback;
+			GwtCommandDispatcher.getInstance().login();
 		}
 	}
 

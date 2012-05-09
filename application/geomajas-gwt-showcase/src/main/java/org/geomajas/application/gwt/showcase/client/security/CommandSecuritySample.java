@@ -28,7 +28,6 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.example.base.command.dto.GetResourceRequest;
-import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 
 /**
  * <p>
@@ -60,27 +59,8 @@ public class CommandSecuritySample extends SamplePanel {
 		buttonLayout.setMembersMargin(10);
 		buttonLayout.setHeight(20);
 
-		// Create a button that logs in user "mark":
-		IButton loginButtonMarino = new IButton(MESSAGES.securityLogInWith("mark"));
-		loginButtonMarino.setWidth(150);
-		loginButtonMarino.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				SsecAccess.login("mark", "mark", null);
-			}
-		});
-		buttonLayout.addMember(loginButtonMarino);
-
-		// Create a button that logs in user "luc":
-		IButton loginButtonLuc = new IButton(MESSAGES.securityLogInWith("luc"));
-		loginButtonLuc.setWidth(150);
-		loginButtonLuc.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				SsecAccess.login("luc", "luc", null);
-			}
-		});
-		buttonLayout.addMember(loginButtonLuc);
+		buttonLayout.addMember(new UserLoginButton("mark"));
+		buttonLayout.addMember(new UserLoginButton("luc"));
 
 		// Create horizontal layout for login buttons:
 		HLayout commandLayout = new HLayout();
