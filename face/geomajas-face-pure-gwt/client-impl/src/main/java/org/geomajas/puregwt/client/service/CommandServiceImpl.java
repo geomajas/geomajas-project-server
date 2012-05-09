@@ -42,40 +42,39 @@ public class CommandServiceImpl implements CommandService {
 	
 	private GlobalMessages messages = GWT.create(GlobalMessages.class);
 
+	/** No-arguments constructor. */
 	public CommandServiceImpl() {
 		CommandExceptionCallbackImpl callback = new CommandExceptionCallbackImpl();
 		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(callback);
 		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(callback);
 	}
 
+	/** {@inheritDoc} */
 	public Deferred execute(GwtCommand command, CommandCallback... callback) {
 		return GwtCommandDispatcher.getInstance().execute(command, callback);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setUserToken(String userToken) {
-		GwtCommandDispatcher.getInstance().setUserToken(userToken);
+	/** {@inheritDoc} */
+	public void login() {
+		GwtCommandDispatcher.getInstance().login();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
+	public void logout() {
+		GwtCommandDispatcher.getInstance().logout();
+	}
+
+	/** {@inheritDoc} */
 	public String getUserToken() {
 		return GwtCommandDispatcher.getInstance().getUserToken();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
 		return GwtCommandDispatcher.getInstance().addTokenChangedHandler(handler);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
 		GwtCommandDispatcher.getInstance().setTokenRequestHandler(tokenRequestHandler);		
 	}
@@ -84,11 +83,11 @@ public class CommandServiceImpl implements CommandService {
 	 * Simple callback implementation that writes all exceptions to {@link Log}.
 	 * 
 	 * @author Emiel Ackermann
-	 * 
 	 */
 	public class CommandExceptionCallbackImpl implements
 			CommandExceptionCallback, CommunicationExceptionCallback {
 
+		/** {@inheritDoc} */
 		public void onCommandException(CommandResponse response) {
 			String msg = null;
 			String stack = null;
@@ -103,6 +102,7 @@ public class CommandServiceImpl implements CommandService {
 			showDialog(msg, stack);
 		}
 
+		/** {@inheritDoc} */
 		public void onCommunicationException(Throwable error) {
 			if (null != error) {
 				String msg = messages.commandCommunicationError() + ":\n" + error.getMessage();
@@ -151,7 +151,7 @@ public class CommandServiceImpl implements CommandService {
 			text.setStyleName("Caption", true);
 			text.setHeight("25");
 			
-			ScrollPanel details = new ScrollPanel(new Label(stack.toString()));
+			ScrollPanel details = new ScrollPanel(new Label(stack));
 			details.setHeight("450");
 			
 			DialogBox warning = new DialogBox(true, true, text);
@@ -173,14 +173,16 @@ public class CommandServiceImpl implements CommandService {
 				super(msg);
 			}
 
+			/** {@inheritDoc} */
 			public String getHTML() {
 				return null;
 			}
 
+			/** {@inheritDoc} */
 			public void setHTML(String html) {
-				
 			}
 
+			/** {@inheritDoc} */
 			public void setHTML(SafeHtml html) {
 			}
 			

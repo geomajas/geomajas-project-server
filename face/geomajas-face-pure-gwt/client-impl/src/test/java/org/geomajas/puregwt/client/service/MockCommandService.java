@@ -25,8 +25,13 @@ import com.smartgwt.client.core.Function;
 
 public class MockCommandService implements CommandService {
 
+	/** Default token assigned when logging in. */
+	public static final String TOKEN_DEFAULT = "token";
+	/** Token value when nog logged in. */
+	public static final String TOKEN_NONE = "none";
+
 	Stack<CommandResponse> responseStack = new Stack<CommandResponse>();
-	private String userToken;
+	private String userToken = TOKEN_NONE;
 	private TokenChangedHandler handler;
 	private TokenRequestHandler tokenRequestHandler;
 
@@ -67,19 +72,28 @@ public class MockCommandService implements CommandService {
 
 	}
 
-	public void setUserToken(String userToken) {
-		this.userToken = userToken;
+	/** {@inheritDoc} */
+	public void login() {
+		this.userToken = TOKEN_DEFAULT;
 	}
 
+	/** {@inheritDoc} */
+	public void logout() {
+		this.userToken = TOKEN_NONE;
+	}
+
+	/** {@inheritDoc} */
 	public String getUserToken() {
 		return userToken;
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
 		this.handler = handler;
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
 		this.tokenRequestHandler = tokenRequestHandler;
 	}

@@ -43,13 +43,19 @@ public interface CommandService {
 	Deferred execute(final GwtCommand command, final CommandCallback... callback);
 
 	/**
-	 * Set the user token.
+	 * Request a user login. Requests a new user token to be obtained.
 	 * 
-	 * @param authenticationToken
 	 * @since 1.0.0
 	 */
-	void setUserToken(String userToken);
-	
+	void login();
+
+	/**
+	 * Invalidate the current user token. This may automatically force a requests for a new user token to be obtained.
+	 *
+	 * @since 1.0.0
+	 */
+	void logout();
+
 	/**
 	 * Get the user token.
 	 * 
