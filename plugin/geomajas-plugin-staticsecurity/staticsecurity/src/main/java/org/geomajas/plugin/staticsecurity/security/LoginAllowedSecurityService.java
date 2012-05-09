@@ -34,7 +34,7 @@ public class LoginAllowedSecurityService implements SecurityService {
 	public Authentication getAuthentication(String authenticationToken) {
 		Authentication auth = new Authentication();
 		auth.setAuthorizations(new BaseAuthorization[]{new LoginAuthorization()});
-		auth.setUserId("anynomous");
+		auth.setUserId("anonymous");
 		return auth;
 	}
 
