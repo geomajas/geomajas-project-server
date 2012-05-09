@@ -15,7 +15,6 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.KeyNames;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
@@ -32,7 +31,6 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.util.HtmlBuilder;
@@ -55,7 +53,7 @@ import org.geomajas.plugin.staticsecurity.client.util.SsecLayout;
  * @since 1.9.0
  */
 @Api
-public class TokenRequestWindow extends Window implements BooleanCallback {
+public class TokenRequestWindow extends Window implements TokenChangedHandler {
 
 	public static final String STYLE_NAME_WINDOW = "tokenRequestWindow";
 	public static final String STYLE_NAME_ERROR = "tokenRequestError";
@@ -109,13 +107,12 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		finishLoginHandler = tokenChangedHandler;
 	}
 
-	public void execute(Boolean value) {
-		if (null != value && value) {
-			GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
-			TokenChangedEvent tokenChangedEvent =
-					new TokenChangedEvent(dispatcher.getUserToken(), dispatcher.getUserDetail());
+	/** {@inheritDoc} */
+	public void onTokenChanged(TokenChangedEvent event) {
+		String token = event.getToken();
+		if (null != token && token.length() > 0) {
 			if (finishLoginHandler != null) {
-				finishLoginHandler.onTokenChanged(tokenChangedEvent);
+				finishLoginHandler.onTokenChanged(event);
 			}
 			destroy();
 		} else {

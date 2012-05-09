@@ -11,12 +11,13 @@
 
 package org.geomajas.plugin.staticsecurity.client.util;
 
-import com.smartgwt.client.util.BooleanCallback;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.UserDetail;
+import org.geomajas.gwt.client.command.event.TokenChangedEvent;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
@@ -39,18 +40,15 @@ public final class SsecAccess {
 	 * Execute a login attempt, given a user name and password. If a user has already logged in, a logout will be called
 	 * first.
 	 * 
-	 * @param userId
-	 *            The unique user ID.
-	 * @param password
-	 *            The user's password.
-	 * @param callback
-	 *            A possible callback to be executed when the login has been done (successfully or not). Can be null.
+	 * @param userId The unique user ID.
+	 * @param password The user's password.
+	 * @param tokenHandler actual handler whoch is used to change the token
 	 */
-	public static void login(final String userId, final String password, final BooleanCallback callback) {
+	public static void login(final String userId, final String password, final TokenChangedHandler tokenHandler) {
 		if (userId != null) {
 			logout();
 		}
-		loginOnly(userId, password, callback);
+		loginOnly(userId, password, tokenHandler);
 	}
 
 	/**
@@ -60,7 +58,7 @@ public final class SsecAccess {
 		GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 		if (null != dispatcher.getUserToken()) {
 			GwtCommand command = new GwtCommand(LogoutRequest.COMMAND);
-			dispatcher.setUserToken(null);
+			dispatcher.logout();
 			dispatcher.execute(command);
 		}
 	}
@@ -70,7 +68,7 @@ public final class SsecAccess {
 	// -------------------------------------------------------------------------
 
 	/* Effectively log in a certain user. */
-	private static void loginOnly(final String userId, final String password, final BooleanCallback callback) {
+	private static void loginOnly(final String userId, final String password, final TokenChangedHandler tokenHandler) {
 		LoginRequest request = new LoginRequest();
 		request.setLogin(userId);
 		request.setPassword(password);
@@ -85,9 +83,8 @@ public final class SsecAccess {
 				userDetail.setUserOrganization(response.getUserOrganization());
 				userDetail.setUserDivision(response.getUserDivision());
 				userDetail.setUserLocale(response.getUserLocale());
-				GwtCommandDispatcher.getInstance().setUserToken(response.getToken(), userDetail);
-				if (callback != null) {
-					callback.execute(null != response.getToken());
+				if (null != tokenHandler) {
+					tokenHandler.onTokenChanged(new TokenChangedEvent(response.getToken(), userDetail));
 				}
 			}
 		});

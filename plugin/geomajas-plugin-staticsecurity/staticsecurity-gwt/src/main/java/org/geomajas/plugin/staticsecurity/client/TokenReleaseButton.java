@@ -64,7 +64,7 @@ public class TokenReleaseButton extends IButton implements ClickHandler, TokenCh
 	public void onClick(ClickEvent event) {
 		GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 		SsecAccess.logout();
-		dispatcher.setUserToken(null);
+		dispatcher.logout();
 	}
 
 	// -------------------------------------------------------------------------

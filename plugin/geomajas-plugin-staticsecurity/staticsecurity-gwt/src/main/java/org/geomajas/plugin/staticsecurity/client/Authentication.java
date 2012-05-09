@@ -139,7 +139,7 @@ public final class Authentication {
 					if (callback != null) {
 						callback.execute(true);
 					}
-					GwtCommandDispatcher.getInstance().setUserToken(null);
+					GwtCommandDispatcher.getInstance().logout();
 					manager.fireEvent(new LogoutSuccessEvent());
 				} else {
 					if (callback != null) {
