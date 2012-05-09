@@ -201,9 +201,8 @@ public class MapRendererImpl implements MapRenderer {
 		Layer<?> layer = event.getLayer();
 		if (layer instanceof RasterLayer) {
 			for (int i = 0; i < htmlContainer.getChildCount(); i++) {
-				// TODO is this right???
-				HtmlObject htmlObject = htmlContainer.getChild(i);
-				htmlObject.setOpacity(((RasterLayer) layer).getOpacity());
+				HtmlContainer layerContainer = layerRenderers.get(layer).getHtmlContainer();
+				layerContainer.setOpacity(((RasterLayer) layer).getOpacity());
 			}
 		} else if (layer instanceof VectorLayer) {
 			// TODO implement me...
