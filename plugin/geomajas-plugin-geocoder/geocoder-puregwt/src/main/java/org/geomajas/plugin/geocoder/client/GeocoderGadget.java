@@ -76,7 +76,6 @@ public class GeocoderGadget extends AbstractMapGadget {
 		box.setValue(FIND_PLACE_ON_MAP);
 		box.addStyleName(GM_GEOCODER_GADGET_TIP);
 		
-		// All handlers seem to be removed from the TextBox. Text selection by dragging not reinstated.
 		box.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
