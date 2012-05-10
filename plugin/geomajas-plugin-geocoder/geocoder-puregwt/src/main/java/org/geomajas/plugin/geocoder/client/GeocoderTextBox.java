@@ -47,7 +47,11 @@ public class GeocoderTextBox extends TextBox {
 	}
 
 	public void goToLocation() {
-		geocoderPresenter.goToLocation(getValue());
+		goToLocation(getValue());
+	}
+
+	public void goToLocation(String altText) {
+		geocoderPresenter.goToLocation(altText);
 	}
 
 	/**

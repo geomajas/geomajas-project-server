@@ -18,14 +18,18 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Map gadget that contains a {@link GeocoderTextBox} with a clickable magnifying glass.
+ * <p>Alternatives for ambiguous searches are shown in a drop-down panel below the text box.</p>
  * <p><b>Tip</b>: To position next to the {@link org.geomajas.puregwt.client.map.gadget.ZoomToRectangleGadget}, 
  * set top to 5 and left to 90 with <code>new GeocoderGadget(5, 90)</code></p>
  * @author Emiel Ackermann
@@ -33,12 +37,16 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class GeocoderGadget extends AbstractMapGadget {
 	
+	private static final String GM_GEOCODER_GADGET_GLASS = "gm-GeocoderGadget-glass";
 	private static final String GM_GEOCODER_GADGET = "gm-GeocoderGadget";
 	private static final String GM_GEOCODER_GADGET_TEXT_BOX = "gm-GeocoderGadget-textBox";
+	static final String GM_GEOCODER_GADGET_TEXT_BOX_WITH_ALTS = "gm-GeocoderGadget-textBox-withAlts";
 	/**
 	 * Extra css to style the tip
 	 */
 	private static final String GM_GEOCODER_GADGET_TIP = "gm-GeocoderGadget-tip";
+	static final String GM_GEOCODER_GADGET_ALT_PANEL = "gm-GeocoderGadget-altPanel";
+	static final String GM_GEOCODER_GADGET_ALT_LABEL = "gm-GeocoderGadget-altLabel";
 	private static final String FIND_PLACE_ON_MAP = "Find place on map";
 	
 	private FlowPanel layout;
@@ -68,16 +76,14 @@ public class GeocoderGadget extends AbstractMapGadget {
 		box.setValue(FIND_PLACE_ON_MAP);
 		box.addStyleName(GM_GEOCODER_GADGET_TIP);
 		
-		// All handlers are removed from the TextBox. Text selection by dragging not reinstated.
+		// All handlers seem to be removed from the TextBox. Text selection by dragging not reinstated.
 		box.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
-				box.setFocus(true);
 				if (FIND_PLACE_ON_MAP.equals(box.getValue())) {
 					box.setValue(null);
 					box.removeStyleName(GM_GEOCODER_GADGET_TIP);
 				}
-				event.stopPropagation();
 			}
 		});
 		box.addBlurHandler(new BlurHandler() {
@@ -91,16 +97,19 @@ public class GeocoderGadget extends AbstractMapGadget {
 		});
 		layout.add(box);
 		layout.add(createMagnifyingGlass());
-		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
-		// ClickEvent is needed by local widgets
-		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
+		StopPropagationHandler stopHandler = new StopPropagationHandler();
+		layout.addDomHandler(stopHandler, MouseDownEvent.getType());
+		layout.addDomHandler(stopHandler, MouseUpEvent.getType());
+		layout.addDomHandler(stopHandler, ClickEvent.getType());
+		layout.addDomHandler(stopHandler, DoubleClickEvent.getType());
+		
+		// Create drop-down panel below text box with alternatives
+		new AlternativesPanel(box);
 	}
 
 	private Widget createMagnifyingGlass() {
 		Button glass = new Button();
-		glass.setStyleName("gm-GeocoderGadget-glass");
+		glass.setStyleName(GM_GEOCODER_GADGET_GLASS);
 		glass.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
@@ -109,6 +118,31 @@ public class GeocoderGadget extends AbstractMapGadget {
 			}
 		});
 		return glass;
+	}
+	
+	/**
+	 * Combination of different handlers with a single goal: stop all the events from propagating to the map. This is
+	 * meant to be used for clickable widgets.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	public class StopPropagationHandler implements MouseDownHandler, MouseUpHandler, ClickHandler, DoubleClickHandler {
+
+		public void onDoubleClick(DoubleClickEvent event) {
+			event.stopPropagation();
+		}
+
+		public void onClick(ClickEvent event) {
+			event.stopPropagation();
+		}
+
+		public void onMouseDown(MouseDownEvent event) {
+			event.stopPropagation();
+		}
+
+		public void onMouseUp(MouseUpEvent event) {
+			event.stopPropagation();
+		}
 	}
 
 }

@@ -1,15 +1,23 @@
 .gm-GeocoderGadget {
 	position: absolute;
+	z-index: 1;
 }
 
 .gm-GeocoderGadget-textBox {
-	border-radius: 20px;
-	-moz-border-radius:20px;
-	-webkit-border-radius:20px;
+	border-radius: 10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
 	padding-left: 5px;
+	padding-right: 23px;
     width: 200px;
     border: 1px solid #999999;
     color: #444;
+}
+
+.gm-GeocoderGadget-textBox-withAlts {
+	border-radius: 10px 10px 0px 0px;
+	-moz-border-radius: 10px 10px 0px 0px;
+	-webkit-border-radius: 10px 10px 0px 0px;
 }
 
 .gm-GeocoderGadget-tip {
@@ -25,4 +33,28 @@
 	height: 16px;
     width: 16px;
     background: no-repeat center center url("images/magnifying-glass16.png");
+}
+
+.gm-GeocoderGadget-altPanel {
+	width: 188px;
+	padding: 5px;
+	border-radius: 0px 0px 10px 10px;
+	-moz-border-radius: 0px 0px 10px 10px;
+	-webkit-border-radius: 0px 0px 10px 10px;
+    background: white;
+    border-top: 0;
+    border-right: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    border-left: 1px solid #999999;
+}
+
+.gm-GeocoderGadget-altLabel {
+	cursor: pointer;
+	border: 0;
+    background: transparent;
+    color: #444;
+}
+
+.gm-GeocoderGadget-altLabel:HOVER {
+	text-decoration: underline;
 }
