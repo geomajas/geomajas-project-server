@@ -15,7 +15,7 @@
   <title>Introduction</title>
 
   <para>This plug-in provides extra utility widgets for the Geomajas GWT faces
-  (both SmartGWT and pure GWT). These widgets are not necessarily GIS related.
+  (both SmartGWT and PureGWT). These widgets are not necessarily GIS related.
   Examples are a Ribbon (office like toolbar), a Wizard, a file upload widget,
   etc.</para>
 

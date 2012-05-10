@@ -16,7 +16,7 @@
 
   <para>The common GWT module is a module with common code for the two GWT
   based faced, the GWT face which uses the SmartGWT widget library, and the
-  pure GWT face which is not tied to a widget library.</para>
+  PureGWT face which is not tied to a widget library.</para>
 
   <para>Some of the features include the command dispatcher, which includes
   some important security hooks, and a string of utility classes which can

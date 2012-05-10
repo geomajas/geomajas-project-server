@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-geocoder-puregwt</artifactId>
 	<packaging>jar</packaging>
-	<name>geocoder (Pure GWT face)</name>
-	<description>geocoder (Pure GWT face)</description>
+	<name>geocoder (PureGWT face)</name>
+	<description>geocoder (PureGWT face)</description>
 
 	<dependencies>
 		<dependency>

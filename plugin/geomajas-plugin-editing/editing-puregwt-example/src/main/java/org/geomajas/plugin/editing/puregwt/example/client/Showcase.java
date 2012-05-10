@@ -46,7 +46,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Entry point and main class for pure GWT example application.
+ * Entry point and main class for PureGWT example application.
  * 
  * @author Pieter De Graef
  */

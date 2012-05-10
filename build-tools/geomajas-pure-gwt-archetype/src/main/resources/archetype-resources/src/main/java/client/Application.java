@@ -18,7 +18,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * Entry point and main class for pure GWT example application.
+ * Entry point and main class for PureGWT example application.
  * 
  * @author Pieter De Graef
  */

@@ -15,7 +15,7 @@
   <title>pure-GWT face architecture</title>
 
   <para>This part of the documentation describes the main architecture and API
-  of the Pure GWT face for Geomajas. For actual code examples or more detail
+  of the PureGWT face for Geomajas. For actual code examples or more detail
   on how to use them, visit the "HowTo" guide.</para>
 
   <section>
@@ -94,7 +94,7 @@
     handlers. Note that the term <code>Handler</code> is used, not listener,
     as we try to follow the GWT naming conventions. As of GWT 2.x, the use of
     a central <code>EventBus</code> has been promoted to work together with an
-    MVP approach. The pure GWT face has incorporated this train of thought,
+    MVP approach. The PureGWT face has incorporated this train of thought,
     and provides a map-centric <code>EventBus</code>. In other words, every
     <code>MapPresenter</code> governs it's own <code>EventBus</code>.</para>
 
@@ -116,7 +116,7 @@
     events that indicate the map has been resized.</para>
 
     <para>Time to go over all supported events and explain their purpose. Note
-    that every event in this list is part of the Pure GWT API within Geomajas.
+    that every event in this list is part of the PureGWT API within Geomajas.
     All event and handler classes can be found in the following package:
     <code>org.geomajas.puregwt.client.map.event</code>.</para>
 
@@ -405,7 +405,7 @@
     <section>
       <title>VectorObjectContainers &amp; VectorObjects</title>
 
-      <para>For vector object rendering, the Pure GWT face makes use of the
+      <para>For vector object rendering, the PureGWT face makes use of the
       Vaadin GwtGraphics library. This library provides all the necessary
       methods for standard SVG and VML rendering. The main interfaces to note
       are the <code>VectorObjectContainer</code> and the
@@ -416,7 +416,7 @@
       These VectorObjects in turn are the individual objects (such as
       Rectangle, Circle, Path, ...) that can be drawn on the map.</para>
 
-      <para>The Pure GWT face has extended the VectorObjectContainer to
+      <para>The PureGWT face has extended the VectorObjectContainer to
       provide a ScreenContainer and a WorldContainer. As you might have
       guessed, the ScreenContainer allows you to render objects in ScreenSpace
       while the WorldContainer allows you to render objects in

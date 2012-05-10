@@ -20,7 +20,7 @@ import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
 /**
- * Ginjector specific for the Geomajas pure GWT client.
+ * Ginjector specific for the Geomajas PureGWT client.
  * 
  * @author Pieter De Graef
  */

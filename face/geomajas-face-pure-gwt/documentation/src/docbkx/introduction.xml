@@ -14,7 +14,7 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>The Pure GWT face is an AJAX client for the Geomajas Server, based
+  <para>The PureGWT face is an AJAX client for the Geomajas Server, based
   upon the Google Web Toolkit. The goal of this client is to be as light as
   possible, so it can easily run on mobile devices.</para>
 
@@ -28,7 +28,7 @@
 
     <para>Since the Geomajas Server is perfectly capable of safeguarding your
     domain model or executing complex tasks, this client can focus more on the
-    map presentation than business logic. This already makes the Pure GWT face
+    map presentation than business logic. This already makes the PureGWT face
     a real thin client. Take also the use of the Google Web Toolkit (GWT) into
     account and this client becomes even thinner.</para>
 
@@ -49,10 +49,10 @@
   <sect1>
     <title>Mobile vs desktop</title>
 
-    <para>Although aimed towards mobile devices, the Pure GWT face is
+    <para>Although aimed towards mobile devices, the PureGWT face is
     perfectly suitable for both desktop and mobile environments. As mentioned
     above, the initial footprint is as small as possible (easily a factor 10
-    smaller than other frameworks). On top of this, the Pure GWT face is also
+    smaller than other frameworks). On top of this, the PureGWT face is also
     designed to keep client-server bandwidth to a minimum, by providing
     caching mechanisms, lazy loading, etc.</para>
   </sect1>

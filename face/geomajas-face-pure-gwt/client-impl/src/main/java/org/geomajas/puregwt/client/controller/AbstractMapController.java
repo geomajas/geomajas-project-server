@@ -19,7 +19,7 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 
 /**
  * <p>
- * Extension of the generic {@link AbstractController} that's specific for the pure GWT face. It adds activation and
+ * Extension of the generic {@link AbstractController} that's specific for the PureGWT face. It adds activation and
  * deactivation methods, and applies a {@link MapEventParser} at construction time.
  * </p>
  * 

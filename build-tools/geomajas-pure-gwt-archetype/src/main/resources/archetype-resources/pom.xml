@@ -20,8 +20,8 @@
 	<artifactId>${artifactId}</artifactId>
 	<version>${version}</version>
 	<packaging>war</packaging>
-	<name>Geomajas Pure GWT application</name>
-	<description>Geomajas Pure GWT application</description>
+	<name>Geomajas PureGWT application</name>
+	<description>Geomajas PureGWT application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<!-- @todo required for sample applications which are included in the Geomajas project, fix or delete

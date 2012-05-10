@@ -51,7 +51,7 @@
       required.</para>
 
       <para>Remember that the JavaScript API is a wrapper around the GWT face
-      or Pure GWT face, both of whom make heavy use of the Geomajas server.
+      or PureGWT face, both of whom make heavy use of the Geomajas server.
       Consequently this JavaScript API requires the same server to be present.
       </para>
 
@@ -105,7 +105,7 @@ function onGeomajasLoad() {
       of another application perhaps).</para>
 
       <para>This approach will have you build your application in GWT, as if
-      you're using the GWT face or Pure GWT face, and just have the JavaScript
+      you're using the GWT face or PureGWT face, and just have the JavaScript
       API in there for external parties that require client-side integration.
       Let it be said that the Geomajas team is always a strong proposer of
       back-end integration, as it provides all integrating within a secured
@@ -168,7 +168,7 @@ function onGeomajasLoad() {
 
     <note>
       <para>The configuration in this section adds the JavaScript API for the
-      GWT face to your application. The JavaScript API for the Pure GWT face
+      GWT face to your application. The JavaScript API for the PureGWT face
       is not yet ready.</para>
     </note>
   </section>
@@ -177,7 +177,7 @@ function onGeomajasLoad() {
     <title>What can the API do?</title>
 
     <para>Ofcourse, this API is a subset of the shared functionality of the
-    GWT face and Pure GWT face. It is after all a wrapper around the Java API.
+    GWT face and PureGWT face. It is after all a wrapper around the Java API.
     Therefore, it will not exceed the Java functionalities. Having said that,
     the API is still pretty extensive. It provides the most access to the map,
     the layer model, the viewport, the features, the geometries, etc. It also

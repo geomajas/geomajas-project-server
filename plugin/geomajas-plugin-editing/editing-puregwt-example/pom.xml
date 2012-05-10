@@ -22,9 +22,8 @@
 	<artifactId>geomajas-plugin-editing-puregwt-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas Editing plugin - Pure GWT application war</name>
-	<description>Geomajas Pure GWT application for the Editing plugin.</description>
-	<url>http://www.geomajas.org/</url>
+	<name>Geomajas Editing plugin - PureGWT application war</name>
+	<description>Geomajas PureGWT application for the Editing plugin.</description>
 
 	<dependencies>
 		<dependency>

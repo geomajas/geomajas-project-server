@@ -22,7 +22,7 @@
 	<artifactId>geomajas-plugin-editing-puregwt</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Geomajas Editing plugin - Pure GWT face</name>
+	<name>Geomajas Editing plugin - PureGWT face</name>
 	<description>Geomajas Editing plugin</description>
 
 	<dependencies>

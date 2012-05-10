@@ -37,7 +37,7 @@
 						</td>
 						<td align='right' valign='bottom'>
 							<div class='{style.title}'>
-								<ui:msg key='mainTitle'>Pure GWT Application</ui:msg>
+								<ui:msg key='mainTitle'>PureGWT Application</ui:msg>
 							</div>
 						</td>
 					</tr>

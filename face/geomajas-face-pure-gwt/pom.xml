@@ -19,8 +19,8 @@
 	<artifactId>geomajas-face-pure-gwt</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Geomajas pure gwt face</name>
-	<description>Geomajas pure gwt face</description>
+	<name>Geomajas PureGWT face</name>
+	<description>Geomajas PureGWT face</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-pure-gwt</connection>

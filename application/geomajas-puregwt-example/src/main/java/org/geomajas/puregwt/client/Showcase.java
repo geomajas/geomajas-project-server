@@ -18,7 +18,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
- * Entry point and main class for pure GWT example application.
+ * Entry point and main class for PureGWT example application.
  * 
  * @author Pieter De Graef
  */

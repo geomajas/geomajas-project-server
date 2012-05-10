@@ -14,7 +14,7 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para>In order to use the Pure GWT face in your web application, there are a
+  <para>In order to use the PureGWT face in your web application, there are a
   few steps you need to take. These include adding the correct libraries to
   your project, configuring the web.xml to set up the Geomajas Communication
   Service, and setting up the GWT module configuration.</para>

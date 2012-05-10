@@ -28,16 +28,15 @@ public class IntroductionContentPanel extends ContentPanel {
 	}
 
 	public String getTitle() {
-		return "Geomajas Pure GWT face";
+		return "Geomajas PureGWT face";
 	}
 
 	public String getDescription() {
-		return "This is the introduction page for the Geomajas Pure GWT face. Feel free to explore all" +
-				" functionalities this demo application provides.";
+		return "This is the introduction page for the Geomajas PureGWT face. Feel free to explore all " +
+				"features this demo application provides.";
 	}
 
 	public Widget getContentWidget() {
-		HTML content = new HTML("Please give Geomajas a try and let the world know how wonderful it is.");
-		return content;
+		return new HTML("Please give Geomajas a try and let the world know how wonderful it is.");
 	}
 }

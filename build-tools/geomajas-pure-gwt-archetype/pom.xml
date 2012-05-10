@@ -21,8 +21,8 @@
 	<artifactId>geomajas-pure-gwt-archetype</artifactId>
 	<version>1.11.0-SNAPSHOT</version>
 	<packaging>maven-archetype</packaging>
-	<name>Geomajas pure GWT application archetype</name>
-	<description>Geomajas pure GWT application archetype</description>
+	<name>Geomajas PureGWT application archetype</name>
+	<description>Geomajas PureGWT application archetype</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</connection>

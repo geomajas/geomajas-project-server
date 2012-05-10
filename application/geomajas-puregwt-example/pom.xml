@@ -20,8 +20,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-puregwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas pure GWT application</name>
-	<description>Geomajas pure GWT application</description>
+	<name>Geomajas PureGWT application</name>
+	<description>Geomajas PureGWT application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencyManagement>

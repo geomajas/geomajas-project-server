@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-puregwt</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas SLD editor (pure GWT)</name>
-	<description>Geomajas SLD editor (pure GWT)</description>
+	<name>Geomajas SLD editor (PureGWT)</name>
+	<description>Geomajas SLD editor (PureGWT)</description>
 
 	<dependencies>
 		<dependency>

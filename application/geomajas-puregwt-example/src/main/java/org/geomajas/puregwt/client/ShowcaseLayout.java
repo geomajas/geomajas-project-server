@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.TreeViewModel;
 
 /**
- * Top layout for the Geomajas pure GWT showcase.
+ * Top layout for the Geomajas PureGWT showcase.
  * 
  * @author Pieter De Graef
  */

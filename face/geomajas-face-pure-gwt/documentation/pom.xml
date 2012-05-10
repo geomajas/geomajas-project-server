@@ -20,8 +20,8 @@
 	<artifactId>geomajas-face-pure-gwt-documentation</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas pure GWT face documentation</name>
-	<description>Geomajas pure GWT face documentation</description>
+	<name>Geomajas PureGWT face documentation</name>
+	<description>Geomajas PureGWT face documentation</description>
 
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
