@@ -70,11 +70,24 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	private int numFeatures;
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
-	
+
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 * @param layer layer to search
+	 */
 	public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer) {
 		this(mapWidget, layer, true);
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 * @param layer layer
+	 * @param showCsvExportAction show csv export action?
+	 */
 	public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final boolean showCsvExportAction) {
 		super(layer.getLabel());
 		this.mapWidget = mapWidget;
@@ -183,10 +196,20 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		});
 	}
 
+	/**
+	 * Should features be sorted?
+	 *
+	 * @return true when features are sorted
+	 */
 	public boolean getSortFeatures() {
 		return sortFeatures;
 	}
 
+	/**
+	 * Should features for sorted?
+	 *
+	 * @param sortFeatures sort features?
+	 */
 	public void setSortFeatures(boolean sortFeatures) {
 		this.sortFeatures = sortFeatures;
 	}
@@ -203,8 +226,13 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		button.setDisabled(true);
 	}
 
+	/**
+	 * Add features to grid.
+	 *
+	 * @param features features to add
+	 */
 	public void addFeatures(List<Feature> features) {
-		numFeatures = features.size();
+		numFeatures += features.size();
 		for (Feature feature : features) {
 			featureListGrid.addFeature(feature);
 		}
@@ -217,6 +245,9 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		}
 	}
 
+	/**
+	 * Clear feature list grid.
+	 */
 	public void empty() {
 		featureListGrid.empty();
 	}
@@ -285,6 +316,8 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	}
 
 	/**
+	 * Set the search criterion.
+	 *
 	 * @param criterion the criterion to set
 	 */
 	public void setCriterion(Criterion criterion) {
@@ -300,6 +333,8 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 	}
 
 	/**
+	 * Get the search criterion.
+	 *
 	 * @return the criterion
 	 */
 	public Criterion getCriterion() {
