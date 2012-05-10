@@ -48,7 +48,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * A simple layer actions window.
- * 
+ *
  * @author Kristof Heirwegh
  */
 public class LayerActions extends Window {
@@ -104,7 +104,7 @@ public class LayerActions extends Window {
 		infoLayout.setIsGroup(true);
 		infoLayout.setGroupTitle(MESSAGES.layerInfoLayerInfo());
 
-		IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields() 
+		IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields()
 				: MESSAGES.layerActionsShowLegend());
 		legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
 		legendInfo.setAutoFit(true);
@@ -186,7 +186,7 @@ public class LayerActions extends Window {
 
 	private Canvas createTitle() {
 		HTMLPane title = new HTMLPane();
-		StringBuffer html = new StringBuffer("<span style='font-size: 1.2em; font-weight: bold;'>" 
+		StringBuffer html = new StringBuffer("<span style='font-size: 1.2em; font-weight: bold;'>"
 		+ layer.getLabel() + "</span><br /><br />");
 		if (vectorLayer != null) {
 			html.append(MESSAGES.layerInfoLayerInfoFldLayerTypeVector());
@@ -331,7 +331,7 @@ public class LayerActions extends Window {
 				}
 				if (eli.getDate() != null) {
 					recordList.add(createRecord(MESSAGES.layerInfoLayerInfoDate() + ":", eli.getDate()));
-//					recordList.add(createRecord(messages.layerInfoLayerInfoDate() + ":", 
+//					recordList.add(createRecord(messages.layerInfoLayerInfoDate() + ":",
 //						DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(eli.getDate())));
 				}
 			}

@@ -48,7 +48,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 /**
  * The LayerTree shows a tree resembling the available layers for the map.
  * Several actions can be executed on the layers (make them invisible, ...).
- * 
+ *
  * TODO This is a copy from LayerTree, should make original properties
  * protected, of add get/setters
  *
@@ -94,7 +94,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * Initialize the LayerTree, using a MapWidget as base reference. It will
 	 * display the map's layers, as configured in the XML configuration, and
 	 * select/deselect the layer as the user clicks on them in the tree.
-	 * 
+	 *
 	 * @param mapWidget
 	 *            map widget this layer tree is connected to
 	 * @since 1.0.0
@@ -274,7 +274,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 	/**
 	 * Processes a treeNode (add it to the TreeGrid).
-	 * 
+	 *
 	 * @param treeNode
 	 *            The treeNode to process
 	 * @param nodeRoot

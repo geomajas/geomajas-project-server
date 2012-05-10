@@ -52,7 +52,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class LayerInfo extends Window {
 
-    private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	private static final String NUMERIC_TYPES = "short integer long float double currency";
 	private static final int WINDOW_HEIGHT = 400;
@@ -79,7 +79,7 @@ public class LayerInfo extends Window {
 		setHeight(WINDOW_HEIGHT);
 		setKeepInParentRect(true);
 		setCanDragResize(true); // resize
-		
+
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();

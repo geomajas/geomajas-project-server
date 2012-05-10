@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Show a single button with the currently selected theme.
- * 
+ *
  * @author Oliver May
  * @author Kristof Heirwegh
  */

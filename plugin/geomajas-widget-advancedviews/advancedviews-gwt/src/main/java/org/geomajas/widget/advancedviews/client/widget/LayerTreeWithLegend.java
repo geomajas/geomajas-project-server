@@ -566,7 +566,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 						GWT.log("Legend: onLayerFilterChange() - " + event.getLayer().getLabel());
 						// find the node & update the icon
 						for (TreeNode node : tree.getAllNodes()) {
-							if (node.getName().equals(event.getLayer().getLabel()) 
+							if (node.getName().equals(event.getLayer().getLabel())
 									&& node instanceof LayerTreeTreeNode) {
 								((LayerTreeTreeNode) node).updateIcon();
 							}

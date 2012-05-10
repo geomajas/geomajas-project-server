@@ -15,7 +15,7 @@ import com.google.gwt.core.client.EntryPoint;
 
 /**
  * Initializes the Advancedview plugin.
- * 
+ *
  * @author Kristof Heirwegh
  */
 public class Advancedview implements EntryPoint {

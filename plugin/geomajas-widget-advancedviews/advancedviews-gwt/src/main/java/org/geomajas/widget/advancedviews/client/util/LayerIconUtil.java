@@ -19,9 +19,9 @@ import com.smartgwt.client.widgets.Img;
 
 /**
  * Helper class for working with layerIcons.
- * 
+ *
  * @author Kristof Heirwegh
- * 
+ *
  */
 public final class LayerIconUtil {
 
