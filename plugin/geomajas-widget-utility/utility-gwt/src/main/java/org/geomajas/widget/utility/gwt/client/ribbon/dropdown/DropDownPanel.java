@@ -17,7 +17,7 @@ import java.util.List;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
 import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
-import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.gwt.client.action.ButtonAction;
@@ -73,7 +73,7 @@ public class DropDownPanel extends VStack {
 		group.setAutoHeight();
 		group.setWidth100();
 		
-		Layout buttonLayout = Layout.ICON_AND_TITLE;
+		ButtonLayoutStyle buttonButtonLayoutStyle = ButtonLayoutStyle.ICON_AND_TITLE;
 		if (null != title) {
 			Label groupTitle = new Label(title.getTitle());
 			groupTitle.setOverflow(Overflow.VISIBLE);
@@ -81,15 +81,15 @@ public class DropDownPanel extends VStack {
 			groupTitle.setWidth100();
 			group.addMember(groupTitle);
 			groupTitles.add(groupTitle);
-			buttonLayout = (Layout) (null == title.getLayout() ? 
-					Layout.ICON_AND_TITLE : title.getLayout());
+			buttonButtonLayoutStyle = (ButtonLayoutStyle) (null == title.getButtonLayoutStyle() ?
+					ButtonLayoutStyle.ICON_AND_TITLE : title.getButtonLayoutStyle());
 		}
 		VStack body = new VStack();
 		body.setOverflow(Overflow.VISIBLE);
 		body.setAutoHeight();
 		body.setWidth100();
 		for (ButtonAction action : actions) {
-			RibbonColumn button = getButton(action, buttonLayout);
+			RibbonColumn button = getButton(action, buttonButtonLayoutStyle);
 			body.addMember(button.asWidget());
 			buttons.add(button);
 		}
@@ -104,23 +104,23 @@ public class DropDownPanel extends VStack {
 	 * Converts the given action into a {@link RibbonColumn}.
 	 * 
 	 * @param action ButtonAction
-	 * @param buttonLayout the layout of the group. Is used if the action does not contain one itself.
+	 * @param buttonButtonLayoutStyle the layout of the group. Is used if the action does not contain one itself.
 	 * @return column RibbonColumn containing the button.
 	 */
-	private RibbonColumn getButton(ButtonAction action, Layout buttonLayout) {
+	private RibbonColumn getButton(ButtonAction action, ButtonLayoutStyle buttonButtonLayoutStyle) {
 		RibbonColumn column;
 		if (action instanceof ToolbarButtonCanvas) { 
 			column = new RibbonColumnCanvas((ToolbarButtonCanvas) action);
 		} else {
 			// if no layout was given, use the one given by the group
-			if (null == action.getLayout()) {
-				action.setLayout(buttonLayout);
+			if (null == action.getButtonLayoutStyle()) {
+				action.setButtonLayoutStyle(buttonButtonLayoutStyle);
 			}
 			RibbonButton button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
-			if (Layout.ICON_AND_TITLE.equals(buttonLayout)) {
+			if (ButtonLayoutStyle.ICON_AND_TITLE.equals(buttonButtonLayoutStyle)) {
 				button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonIconSize, 
 						TitleAlignment.RIGHT);
-			} else if (Layout.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+			} else if (ButtonLayoutStyle.ICON_TITLE_AND_DESCRIPTION.equals(buttonButtonLayoutStyle)) {
 				button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonDescriptionIconSize, 
 						TitleAlignment.RIGHT);
 			}

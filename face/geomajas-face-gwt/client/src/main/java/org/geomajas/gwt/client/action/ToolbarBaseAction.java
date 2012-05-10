@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
-import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -43,7 +43,7 @@ public abstract class ToolbarBaseAction {
 
 	private HandlerManager handlerManager;
 
-	private Layout layout;
+	private ButtonLayoutStyle buttonLayoutStyle;
 
 	/**
 	 * Constructor.
@@ -164,7 +164,7 @@ public abstract class ToolbarBaseAction {
 	}
 
 	/**
-	 * @deprecated Replaced by {@link #getLayout()}
+	 * @deprecated Replaced by {@link #getButtonLayoutStyle()}
 	 * Get the button layout which determines the gui in a RibbonColumn.
 	 * 
 	 * @return The button layout which determines the gui.
@@ -181,7 +181,7 @@ public abstract class ToolbarBaseAction {
 	 * @param buttonLayout
 	 *           The button layout which determines the gui.
 	 * @since 1.10.0
-	 * @deprecated Replaced by {@link #setLayout(Layout)}
+	 * @deprecated Replaced by {@link #setButtonLayoutStyle(ButtonLayoutStyle)}
 	 */
 	@Deprecated
 	public void setButtonLayout(String buttonLayout) {
@@ -191,21 +191,21 @@ public abstract class ToolbarBaseAction {
 	/**
 	 * Get the button layout which determines the gui in a RibbonColumn.
 	 * 
-	 * @return The {@link Layout} which determines the gui.
+	 * @return The {@link ButtonLayoutStyle} which determines the gui.
 	 * @since 1.11.0
 	 */
-	public Layout getLayout() {
-		return layout;
+	public ButtonLayoutStyle getButtonLayoutStyle() {
+		return buttonLayoutStyle;
 	}
 
 	/**
 	 * Get the button layout which determines the gui in a RibbonColumn. 
 	 * 
-	 * @param layout The {@link Layout} which determines the gui.
+	 * @param buttonLayoutStyle The {@link ButtonLayoutStyle} which determines the gui.
 	 * @since 1.11.0
 	 */
-	public void setLayout(Layout layout) {
-		this.layout = layout;
+	public void setButtonLayoutStyle(ButtonLayoutStyle buttonLayoutStyle) {
+		this.buttonLayoutStyle = buttonLayoutStyle;
 	}
 }
 // @extract-end

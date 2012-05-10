@@ -11,7 +11,7 @@
 
 package org.geomajas.widget.utility.gwt.client.action;
 
-import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle;
 
 import com.smartgwt.client.widgets.events.ClickHandler;
 
@@ -86,17 +86,17 @@ public interface ButtonAction extends ClickHandler {
 	void setTooltip(String tooltip);
 	
 	/**
-	 * Get the button {@link Layout} which determines the gui in a RibbonColumn.
+	 * Get the button {@link ButtonLayoutStyle} which determines the gui in a RibbonColumn.
 	 * 
-	 * @return The button {@link Layout} which determines the gui.
+	 * @return The button {@link ButtonLayoutStyle} which determines the gui.
 	 */
-	Layout getLayout();
+	ButtonLayoutStyle getButtonLayoutStyle();
 
 	/**
-	 * Set the button {@link Layout} which determines the gui in a RibbonColumn.
+	 * Set the button {@link ButtonLayoutStyle} which determines the gui in a RibbonColumn.
 	 * 
-	 * @param buttonLayout
-	 *           The button {@link Layout} which determines the gui.
+	 * @param buttonLayoutStyle
+	 *           The button {@link ButtonLayoutStyle} which determines the gui.
 	 */
-	void setLayout(Layout layout);
+	void setButtonLayoutStyle(ButtonLayoutStyle buttonLayoutStyle);
 }

@@ -11,7 +11,7 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon;
 
-import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
@@ -290,8 +290,8 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 * Update the GUI to reflect the settings.
 	 */
 	protected void updateGui() {
-		ButtonLayoutParameter.Layout buttonLayout = buttonAction.getLayout();
-		if (ButtonLayoutParameter.Layout.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+		ButtonLayoutStyle buttonButtonLayoutStyle = buttonAction.getButtonLayoutStyle();
+		if (ButtonLayoutStyle.ICON_TITLE_AND_DESCRIPTION.equals(buttonButtonLayoutStyle)) {
 			buildGuiWithDescription();
 		} else { // LayoutParameter.Layout.ICON_AND_TITLE || null || ...
 			setWidth(50);

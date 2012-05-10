@@ -14,9 +14,10 @@ package org.geomajas.gwt.client.action.toolbar;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter;
-import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle;
+
 /**
- * {@link ConfigurableAction} implementation that fetches a title and a {@link Layout} from the parameters.
+ * {@link ConfigurableAction} implementation that fetches a title and a {@link ButtonLayoutStyle} from the parameters.
  * 
  * @author Emiel Ackermann
  */
@@ -24,34 +25,39 @@ public class ButtonGroup extends ToolbarBaseAction implements ConfigurableAction
 
 	private String buttonLayout;
 	
-	private Layout layout;
+	private ButtonLayoutStyle buttonLayoutStyle;
 
 	public ButtonGroup() {
 		super("", "", "");
 	}
 
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if ("title".equals(key)) {
 			setTitle(value);
 		} else if (ButtonLayoutParameter.NAME.equals(key)) {
 			setButtonLayout(value);
-			setLayout(Layout.valueOf(value));
+			setButtonLayoutStyle(ButtonLayoutStyle.valueOf(value));
 		}
 	}
-	
+
+	@Override
 	public String getButtonLayout() {
 		return buttonLayout;
 	}
 
+	@Override
 	public void setButtonLayout(String buttonLayout) {
 		this.buttonLayout = buttonLayout;
 	}
 
-	public Layout getLayout() {
-		return layout;
+	@Override
+	public ButtonLayoutStyle getButtonLayoutStyle() {
+		return buttonLayoutStyle;
 	}
 
-	public void setLayout(Layout layout) {
-		this.layout = layout;
+	@Override
+	public void setButtonLayoutStyle(ButtonLayoutStyle buttonLayoutStyle) {
+		this.buttonLayoutStyle = buttonLayoutStyle;
 	}
 }

@@ -10,42 +10,29 @@
  */
 package org.geomajas.gwt.client.action.toolbar.parameter;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 
 /**
  * {@link Parameter} that is used to configure the layout of a button in ribbon or drop down panel.
- * 
- * @author Emiel Ackermann
  *
+ * @author Emiel Ackermann
+ * @since 1.11.0
  */
+@Api(allMethods = true)
 public class ButtonLayoutParameter extends Parameter {
-	
-	/**
-	 * Layout values for a button in ribbon or drop down panel.
-	 * @author Emiel Ackermann
-	 *
-	 */
-	public enum Layout {
-		/**
-		 * Button layout, which is the same as a RibbonButton 
-		 * in a ToolbarActionList; icon (16px) on the left and title on the right.
-		 */
-		ICON_AND_TITLE,
-		/**
-		 * Button layout consisting of an icon (24px) on the 
-		 * left and the title and description on the right, the title on top of the description.
-		 */
-		ICON_TITLE_AND_DESCRIPTION
-	}
 
 	private static final long serialVersionUID = 1L;
+	private ButtonLayoutStyle buttonLayoutStyle;
+
+	/** Parameter name. */
 	public static final String NAME = "buttonLayout";
-	private Layout layout;
-	
+
+	/** No-arguments constructor. */
 	public ButtonLayoutParameter() {
 		super.setName(NAME);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -54,23 +41,33 @@ public class ButtonLayoutParameter extends Parameter {
 		throw new IllegalArgumentException(
 				"Public naming is not allowed for LayoutParameter (its name is always 'buttonLayout')");
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setValue(String value) {
-		this.layout = Layout.valueOf(value);
-		super.setValue(layout.toString());
+		this.buttonLayoutStyle = ButtonLayoutStyle.valueOf(value);
+		super.setValue(buttonLayoutStyle.toString());
 	}
-	
-	public void setValue(Layout layout) {
-		this.layout = layout;
-		super.setValue(layout.toString());
+
+	/**
+	 * Set button layout style.
+	 *
+	 * @param buttonLayoutStyle button layout style
+	 */
+	public void setValue(ButtonLayoutStyle buttonLayoutStyle) {
+		this.buttonLayoutStyle = buttonLayoutStyle;
+		super.setValue(buttonLayoutStyle.toString());
 	}
-	
-	public Layout getLayoutValue() {
-		return layout;
+
+	/**
+	 * Get button layout style.
+	 *
+	 * @return button layout style
+	 */
+	public ButtonLayoutStyle getButtonLayoutStyle() {
+		return buttonLayoutStyle;
 	}
 
 }

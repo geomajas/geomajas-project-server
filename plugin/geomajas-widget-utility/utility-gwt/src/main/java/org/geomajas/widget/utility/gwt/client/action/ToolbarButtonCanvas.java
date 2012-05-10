@@ -16,7 +16,7 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
-import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter.Layout;
+import org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledHandler;
@@ -185,7 +185,7 @@ public class ToolbarButtonCanvas implements ButtonAction, HasEnabledHandlers {
 	 * 
 	 * @return null
 	 */
-	public Layout getLayout() {
+	public ButtonLayoutStyle getButtonLayoutStyle() {
 		return null;
 	}
 	/**
@@ -195,7 +195,7 @@ public class ToolbarButtonCanvas implements ButtonAction, HasEnabledHandlers {
 	 * 
 	 * @param does nothing
 	 */
-	public void setLayout(Layout layout) {
+	public void setButtonLayoutStyle(ButtonLayoutStyle buttonLayoutStyle) {
 	}
 
 }
