@@ -42,7 +42,7 @@
  &lt;repository&gt;
   &lt;id&gt;Geomajas&lt;/id&gt;
   &lt;name&gt;Geomajas repository&lt;/name&gt;
-  &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+  &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/public&lt;/url&gt;
  &lt;/repository&gt;
 
  &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster builds --&gt;
@@ -50,7 +50,7 @@
  &lt;repository&gt;
   &lt;id&gt;Geomajas-latest&lt;/id&gt;
   &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
-  &lt;url&gt;http://apps.geomajas.org/nexus/content/groups/latest&lt;/url&gt;
+  &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/latest&lt;/url&gt;
   &lt;snapshots&gt;
    &lt;enabled&gt;true&lt;/enabled&gt;
   &lt;/snapshots&gt;

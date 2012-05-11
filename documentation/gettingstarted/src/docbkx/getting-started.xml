@@ -47,9 +47,6 @@
 
           <example>
             <title>Create project using GWT Maven archetype</title>
-
-            <!--<programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting>-->
-
             <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
           </example>
 
@@ -59,9 +56,6 @@
 
           <example>
             <title>Create project using GWT Maven archetype</title>
-
-            <!--<programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting>-->
-
             <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting>
           </example>
 
@@ -618,7 +612,7 @@
     the latest release of the archetype. Therefore, we recommend you update
     this dependency to the latest version. You can check the latest version
     using this URL: <ulink
-    url="http://apps.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep">http://apps.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep</ulink>.</para>
+    url="http://repo.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep">http://repo.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep</ulink>.</para>
 
     <para>The most important configuration files in the project are the
     following:</para>

@@ -826,7 +826,7 @@ public class GeomajasMapWrapper {
       <programlisting>&lt;repository&gt;
     &lt;id&gt;Geomajas-latest&lt;/id&gt;
     &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
-    &lt;url&gt;http://apps.geomajas.org/nexus/content/groups/latest/&lt;/url&gt;
+    &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/latest/&lt;/url&gt;
     &lt;snapshots&gt;
         &lt;enabled&gt;true&lt;/enabled&gt;
     &lt;/snapshots&gt;
