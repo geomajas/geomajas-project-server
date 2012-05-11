@@ -11,15 +11,11 @@
 
 package org.geomajas.application.gwt.showcase.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Label;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
 import org.geomajas.application.gwt.showcase.client.security.AttributeSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.CommandSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.FilterSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.LayerSecuritySample;
-import org.geomajas.application.gwt.showcase.client.security.LoginSample;
 import org.geomajas.application.gwt.showcase.client.security.ShowcaseTokenRequestHandler;
 import org.geomajas.application.gwt.showcase.client.security.ToolSecuritySample;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -29,6 +25,10 @@ import org.geomajas.gwt.example.base.ExampleLayout;
 import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
 import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Label;
 
 /**
  * <p>
@@ -54,9 +54,6 @@ public class ShowcaseEntryPoint implements EntryPoint {
 		// Security samples:
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupSecurity(),
 				"[ISOMORPHIC]/geomajas/silk/key.png", SECURITY_GROUP, "topLevel"));
-		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.loginTitle(),
-				"[ISOMORPHIC]/geomajas/staticsecurity/key_go.png", LoginSample.LOGIN_TITLE, SECURITY_GROUP,
-				LoginSample.FACTORY));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.layerSecurityTitle(),
 				"[ISOMORPHIC]/geomajas/staticsecurity/key_go.png", LayerSecuritySample.LAYER_SECURITY_TITLE,
 				SECURITY_GROUP, LayerSecuritySample.FACTORY));
