@@ -164,11 +164,11 @@ public abstract class ToolbarBaseAction {
 	}
 
 	/**
-	 * @deprecated Replaced by {@link #getButtonLayoutStyle()}
 	 * Get the button layout which determines the gui in a RibbonColumn.
 	 * 
 	 * @return The button layout which determines the gui.
 	 * @since 1.10.0
+	 * @deprecated Replaced by {@link #getButtonLayoutStyle()}
 	 */
 	@Deprecated
 	public String getButtonLayout() {
