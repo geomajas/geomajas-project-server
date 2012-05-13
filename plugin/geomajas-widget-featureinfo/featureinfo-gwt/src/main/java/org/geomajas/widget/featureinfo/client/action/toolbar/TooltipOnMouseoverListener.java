@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
+import org.geomajas.widget.featureinfo.client.util.FitLayout;
 import org.geomajas.widget.featureinfo.client.util.FitSetting;
 
 import com.google.gwt.core.client.GWT;
@@ -56,6 +57,7 @@ import com.smartgwt.client.widgets.Img;
 public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private static final FeatureInfoMessages MESSAGES = GWT.create(FeatureInfoMessages.class);
+
 	private Canvas tooltip;
 	private int pixelTolerance = FitSetting.tooltipPixelTolerance;
 
@@ -153,7 +155,8 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private void showTooltip() {
 		if (!isShowing()) {
-			createTooltip((int) currentPosition.getX() + 12, (int) currentPosition.getY() + 12, null);
+			createTooltip((int) currentPosition.getX() + FitLayout.tooltipOffsetX,
+					(int) currentPosition.getY() + FitLayout.tooltipOffsetY, null);
 			getData();
 		}
 	}
@@ -394,7 +397,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	}
 
 	private boolean overlapsTooltip(int x, int y) {
-		if (tooltip == null) {
+		if (null == tooltip) {
 			 return false;
 		} else {
 			return (!(x < tooltip.getLeft() || x > tooltip.getRight() || y < tooltip.getTop() || y > tooltip
@@ -473,6 +476,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	/**
 	 * Set the amount of features for which detailed information should be shown.
+	 *
 	 * @param maxLabelCount the number of features.
 	 */
 	public void setTooltipMaxLabelCount(int maxLabelCount) {
