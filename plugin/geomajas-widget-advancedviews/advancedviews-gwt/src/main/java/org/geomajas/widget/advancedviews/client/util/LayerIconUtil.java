@@ -13,6 +13,7 @@ package org.geomajas.widget.advancedviews.client.util;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.layer.LayerType;
 import org.geomajas.widget.advancedviews.configuration.client.ExtraLayerInfo;
 
 import com.smartgwt.client.widgets.Img;
@@ -21,24 +22,19 @@ import com.smartgwt.client.widgets.Img;
  * Helper class for working with layerIcons.
  *
  * @author Kristof Heirwegh
- *
  */
 public final class LayerIconUtil {
 
-	private static final String LAYER_LABEL_OVERLAY_URL = "[ISOMORPHIC]/geomajas/layerIcons/layer_label_overlay.png";
-	private static final String LAYER_TRANSPARENCY_UNDERLAY_URL = "[ISOMORPHIC]/geomajas/layerIcons/layer_transparenc" +
-			"y_underlay.png";
-	private static final String LAYER_RASTER_ICON_LARGE_URL = "[ISOMORPHIC]/geomajas/layerIcons/raster_icon_large.png";
-	private static final String LAYER_VECTOR_POINT_ICON_LARGE_URL = "[ISOMORPHIC]/geomajas/layerIcons/vector_point_ic" +
-			"on_large.png";
-	private static final String LAYER_VECTOR_LINE_ICON_LARGE_URL = "[ISOMORPHIC]/geomajas/layerIcons/vector_line_icon" +
-			"_large.png";
-	private static final String LAYER_VECTOR_POLYGON_ICON_LARGE_URL = "[ISOMORPHIC]/geomajas/layerIcons/vector_polygo" +
-			"n_icon_large.png";
-
 	private LayerIconUtil() {
+		// utility class, hide constructor
 	}
 
+	/**
+	 * Get small layer icon as image.
+	 *
+	 * @param layer layer
+	 * @return image
+	 */
 	public static Img getSmallLayerIcon(Layer<?> layer) {
 		String url = getSmallLayerIconUrl(layer);
 		if (url != null) {
@@ -48,6 +44,12 @@ public final class LayerIconUtil {
 		}
 	}
 
+	/**
+	 * Get small layer image URL.
+	 *
+	 * @param layer layer
+	 * @return image URL
+	 */
 	public static String getSmallLayerIconUrl(Layer<?> layer) {
 		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
@@ -65,27 +67,30 @@ public final class LayerIconUtil {
 			return new Img(eli.getLargeLayerIconUrl());
 		} else {
 			if (layer instanceof RasterLayer) {
-				return new Img(LAYER_RASTER_ICON_LARGE_URL);
-			} else if (layer instanceof VectorLayer) { // handle unchecked cast below NOSONAR
-				switch (((VectorLayer) layer).getLayerInfo().getLayerType()) {
-				case POINT:
-				case MULTIPOINT:
-					return new Img(LAYER_VECTOR_POINT_ICON_LARGE_URL);
+				return new Img(GavLayout.layerRasterIconLargeUrl);
+			} else if (layer instanceof VectorLayer) {
+				LayerType layerType = ((VectorLayer) layer).getLayerInfo().getLayerType();
+				switch (layerType) {
+					case POINT:
+					case MULTIPOINT:
+						return new Img(GavLayout.layerVectorPointIconLargeUrl);
 
-				case LINESTRING:
-				case MULTILINESTRING:
-					return new Img(LAYER_VECTOR_LINE_ICON_LARGE_URL);
+					case LINESTRING:
+					case MULTILINESTRING:
+						return new Img(GavLayout.layerVectorLineIconLargeUrl);
 
-				case POLYGON:
-				case MULTIPOLYGON:
-					return new Img(LAYER_VECTOR_POLYGON_ICON_LARGE_URL);
+					case POLYGON:
+					case MULTIPOLYGON:
+					case GEOMETRY:
+						return new Img(GavLayout.layerVectorPolygonIconLargeUrl);
 
-				default:
-					return new Img(""); // should not happen
+					default:
+						throw new IllegalStateException("Unknown vector layer type " + layerType);
 				}
+			} else {
+				throw new IllegalStateException("Unknown layer type");
 			}
 		}
-		return new Img(""); // in case eli=null && layer != raster or vector
 	}
 
 	public static Img getLegendImage(Layer<?> layer) {
@@ -109,10 +114,10 @@ public final class LayerIconUtil {
 	}
 
 	public static Img getLabelOverlayImg() {
-		return new Img(LAYER_LABEL_OVERLAY_URL);
+		return new Img(GavLayout.layerLabelOverlayUrl);
 	}
 
 	public static Img getTransparencyUnderlayImg() {
-		return new Img(LAYER_TRANSPARENCY_UNDERLAY_URL);
+		return new Img(GavLayout.layerTransparencyUnderlayUrl);
 	}
 }
