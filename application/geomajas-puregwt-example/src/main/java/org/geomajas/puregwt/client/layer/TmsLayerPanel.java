@@ -49,7 +49,7 @@ public class TmsLayerPanel extends ContentPanel {
 		layout.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapTms");
+		mapPresenter.initialize("puregwt-app", "mapTms");
 		return layout;
 	}
 }

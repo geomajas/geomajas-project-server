@@ -12,7 +12,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="ch-arch">
-  <title>pure-GWT face architecture</title>
+  <title>PureGWT face architecture</title>
 
   <para>This part of the documentation describes the main architecture and API
   of the PureGWT face for Geomajas. For actual code examples or more detail

@@ -13,12 +13,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-face-pure-gwt</artifactId>
+		<artifactId>geomajas-face-puregwt</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
-	<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+	<artifactId>geomajas-puregwt-client-impl</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas PureGWT face, client side, impl</name>
 	<description>Geomajas PureGWT face, client side</description>
@@ -27,11 +27,11 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client</artifactId>
+			<artifactId>geomajas-puregwt-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client</artifactId>
+			<artifactId>geomajas-puregwt-client</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 

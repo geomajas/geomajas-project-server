@@ -145,7 +145,7 @@ public class NavigationOptionPanel extends ContentPanel {
 		layout.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapCountries");
+		mapPresenter.initialize("puregwt-app", "mapCountries");
 		return layout;
 	}
 

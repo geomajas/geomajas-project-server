@@ -27,7 +27,7 @@
 		<module>geomajas-face-common-gwt</module>
 		<module>geomajas-face-gwt</module>
 		<module>geomajas-face-rest</module>
-		<module>geomajas-face-pure-gwt</module>
+		<module>geomajas-face-puregwt</module>
 	</modules>
 	
 </project>

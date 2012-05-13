@@ -16,22 +16,22 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-puregwt-widget-core-all</artifactId>
+		<artifactId>geomajas-widget-puregwt-core-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
-	<name>geomajas-plugin-puregwt-widget-core</name>
-	<description>geomajas-plugin-puregwt-widget-core</description>
+	<artifactId>geomajas-widget-puregwt-core</artifactId>
+	<name>geomajas-widget-puregwt-core</name>
+	<description>geomajas-widget-puregwt-core</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client</artifactId>
+			<artifactId>geomajas-puregwt-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client</artifactId>
+			<artifactId>geomajas-puregwt-client</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 

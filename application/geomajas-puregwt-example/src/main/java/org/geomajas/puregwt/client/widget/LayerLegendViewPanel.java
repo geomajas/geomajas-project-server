@@ -72,7 +72,7 @@ public class LayerLegendViewPanel extends ContentPanel {
 		layout.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapLegend");
+		mapPresenter.initialize("puregwt-app", "mapLegend");
 		return layout;
 	}
 }

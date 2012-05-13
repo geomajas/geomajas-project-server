@@ -64,7 +64,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 		mapDecorator.add(mapPresenter.asWidget());
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapOsm");
+		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return mapDecorator;
 	}
 

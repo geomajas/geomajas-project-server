@@ -153,7 +153,7 @@ public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
 		layout.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapOsm");
+		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return layout;
 	}
 

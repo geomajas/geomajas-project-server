@@ -82,7 +82,7 @@ public class LayerVisibilityPanel extends ContentPanel {
 		layout.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapLayerVisibility");
+		mapPresenter.initialize("puregwt-app", "mapLayerVisibility");
 		return layout;
 	}
 

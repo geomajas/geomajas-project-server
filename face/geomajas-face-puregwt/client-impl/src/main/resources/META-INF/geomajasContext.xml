@@ -23,7 +23,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="Pure-GWT face impl" />
+				<property name="name" value="PureGWT face impl" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
@@ -31,7 +31,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="Pure-GWT face" />
+					<property name="name" value="PureGWT face" />
 					<property name="version" value="${project.version}" />
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">

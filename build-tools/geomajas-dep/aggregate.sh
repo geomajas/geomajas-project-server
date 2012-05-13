@@ -119,12 +119,12 @@ include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.11.0-S
     "incubating" "gwt_face.pdf" \
     "org.geomajas" "geomajas-gwt-client" "1.10.0"
 
-include "org.geomajas.documentation" "geomajas-face-pure-gwt-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.0-SNAPSHOT" \
     "PureGWT face" \
     "GWT face for building powerful AJAX web user interfaces without depending on a widget library. Ideal for mobile." \
     "incubating" "master.pdf" \
     "" "" ""
-#    "org.geomajas" "geomajas-pure-gwt-client" "1.0.0"
+#    "org.geomajas" "geomajas-puregwt-client" "1.0.0"
 
 include "org.geomajas.documentation" "common-gwt-documentation" "1.1.0-SNAPSHOT" \
     "Common-GWT " \

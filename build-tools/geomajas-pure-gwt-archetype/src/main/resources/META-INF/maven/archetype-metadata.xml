@@ -10,7 +10,7 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<archetype-descriptor name="geomajas-pure-gwt-archetype">
+<archetype-descriptor name="geomajas-puregwt-archetype">
 	<fileSets>
 		<fileSet filtered="false" packaged="false" encoding="UTF-8">
 			<directory>.</directory>

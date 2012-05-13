@@ -44,7 +44,7 @@
 		<module>geomajas-widget-featureinfo</module>
 		<module>geomajas-widget-searchandfilter</module>
 		<module>geomajas-widget-utility</module>
-		<module>geomajas-plugin-puregwt-widget-core</module>
+		<module>geomajas-widget-puregwt-core</module>
 	</modules>
 	
 </project>

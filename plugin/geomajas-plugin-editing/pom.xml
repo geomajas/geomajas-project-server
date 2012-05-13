@@ -68,7 +68,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-pure-gwt</artifactId>
+				<artifactId>geomajas-face-puregwt</artifactId>
 				<version>${geomajas-plugin-editing-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>

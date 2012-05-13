@@ -16,16 +16,16 @@
 		<version>1.0.7-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>geomajas-face-pure-gwt</artifactId>
+	<artifactId>geomajas-face-puregwt</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas PureGWT face</name>
 	<description>Geomajas PureGWT face</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-pure-gwt</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-pure-gwt</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-pure-gwt</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-puregwt</url>
 	</scm>
 
 	<developers>
@@ -70,26 +70,26 @@
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-pure-gwt-client</artifactId>
+				<artifactId>geomajas-puregwt-client</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-pure-gwt-client</artifactId>
+				<artifactId>geomajas-puregwt-client</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+				<artifactId>geomajas-puregwt-client-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+				<artifactId>geomajas-puregwt-client-impl</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>

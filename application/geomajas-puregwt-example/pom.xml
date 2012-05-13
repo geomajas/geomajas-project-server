@@ -28,7 +28,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-puregwt-widget-core-all</artifactId>
+				<artifactId>geomajas-widget-puregwt-core-all</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -57,7 +57,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+			<artifactId>geomajas-puregwt-client-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -82,11 +82,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
+			<artifactId>geomajas-widget-puregwt-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-puregwt-widget-core</artifactId>
+			<artifactId>geomajas-widget-puregwt-core</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 

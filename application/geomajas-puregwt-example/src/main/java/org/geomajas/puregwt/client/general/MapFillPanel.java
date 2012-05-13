@@ -83,7 +83,7 @@ public class MapFillPanel extends ContentPanel {
 		});
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapOsm");
+		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return layout;
 	}
 

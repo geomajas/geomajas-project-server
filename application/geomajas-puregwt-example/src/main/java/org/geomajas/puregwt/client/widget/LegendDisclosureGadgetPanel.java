@@ -39,7 +39,7 @@ public class LegendDisclosureGadgetPanel extends ContentPanel {
 
 	public Widget getContentWidget() {
 		// Create the MapPresenter:
-		mapPresenter.initialize("pure-gwt-app", "mapLegend");
+		mapPresenter.initialize("puregwt-app", "mapLegend");
 		ResizableMapLayout mapLayout = new ResizableMapLayout(mapPresenter);
 
 		

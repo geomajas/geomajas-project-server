@@ -58,7 +58,7 @@
 			<!--  TODO: replace with release version -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+				<artifactId>geomajas-puregwt-client-impl</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 			<!-- External GWT libraries -->
@@ -85,7 +85,7 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+			<artifactId>geomajas-puregwt-client-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
