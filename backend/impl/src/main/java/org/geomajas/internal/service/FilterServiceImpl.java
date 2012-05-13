@@ -56,7 +56,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	private final Logger log = LoggerFactory.getLogger(FilterServiceImpl.class);
 	
-	private IdReplacingVisitor idReplacer = new IdReplacingVisitor();
+	private final IdReplacingVisitor idReplacer = new IdReplacingVisitor();
 
 	private static final FilterFactory2 FF;
 	static {
@@ -256,21 +256,18 @@ public final class FilterServiceImpl implements FilterService {
 	 * parsing.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	private class IdReplacingVisitor extends DuplicatingFilterVisitor {
 
 		private static final String FAKE_ID = "__id__";
 
-		private static final String ID_IN_ATTRIBUTE_PATH = "@id";
-
 		public Filter parse(String filter) throws GeomajasException {
-			filter =  filter.replace(ID_IN_ATTRIBUTE_PATH, FAKE_ID);
+			filter =  filter.replace(FilterService.ATTRIBUTE_ID, FAKE_ID);
 			return (Filter) parseFilter(filter).accept(this, null);
 		}
 
 		public boolean shouldParse(String filter) {
-			return filter.contains(ID_IN_ATTRIBUTE_PATH);
+			return filter.contains(FilterService.ATTRIBUTE_ID);
 		}
 
 		@Override
@@ -280,7 +277,7 @@ public final class FilterServiceImpl implements FilterService {
 		}
 
 		private String replaceId(String propertyName) {
-			return propertyName.replace(FAKE_ID, ID_IN_ATTRIBUTE_PATH);
+			return propertyName.replace(FAKE_ID, FilterService.ATTRIBUTE_ID);
 		}
 
 	}

@@ -14,6 +14,7 @@ package org.geomajas.service;
 import java.util.Date;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;
@@ -30,6 +31,13 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Api(allMethods = true)
 public interface FilterService {
+
+	/**
+	 * Generic attribute name which can be used to reference the id attribute (whatever the actual name is).
+	 *
+	 * @since 1.11.0
+	 */
+	String ATTRIBUTE_ID = LabelStyleInfo.ATTRIBUTE_NAME_ID;
 
 	/**
 	 * Create a filter which passes all features from the FeatureInfo within featureTypeInfo with attribute values from

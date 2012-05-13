@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.geomajas.layer.LayerException;
+import org.geomajas.service.FilterService;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -71,8 +72,6 @@ import com.vividsolutions.jts.geom.Geometry;
 public class CriteriaVisitor implements FilterVisitor {
 
 	private static final String HIBERNATE_ID = "id";
-
-	private static final String FILTER_ID = "@id";
 
 	private final Logger log = LoggerFactory.getLogger(CriteriaVisitor.class);
 
@@ -347,9 +346,9 @@ public class CriteriaVisitor implements FilterVisitor {
 			throw new IllegalArgumentException("Expression " + expression + " is not a PropertyName.");
 		}
 		String name = ((PropertyName) expression).getPropertyName();
-		if (name.endsWith(FILTER_ID)) {
+		if (name.endsWith(FilterService.ATTRIBUTE_ID)) {
 			// replace by Hibernate id property, always refers to the id, even if named differently
-			name = name.substring(0, name.length() - FILTER_ID.length()) + HIBERNATE_ID;
+			name = name.substring(0, name.length() - FilterService.ATTRIBUTE_ID.length()) + HIBERNATE_ID;
 		}
 		return name;
 	}

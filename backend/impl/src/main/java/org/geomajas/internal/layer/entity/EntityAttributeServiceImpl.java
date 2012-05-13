@@ -37,6 +37,7 @@ import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.FilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,8 +51,6 @@ import org.springframework.stereotype.Component;
 public class EntityAttributeServiceImpl implements EntityAttributeService {
 
 	public static final String ATTRIBUTE_SEPARATOR = "[/.]+";
-
-	public static final String ID = "@id";
 
 	@Autowired
 	private DtoConverterService dtoConverterService;
@@ -79,7 +78,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		Set<String> names = new HashSet<String>();
 		// check for id
 		PrimitiveAttributeInfo identifier = featureInfo.getIdentifier();
-		if (identifier.getName().equals(name) || ID.equalsIgnoreCase(name)) {
+		if (identifier.getName().equals(name) || FilterService.ATTRIBUTE_ID.equalsIgnoreCase(name)) {
 			try {
 				return dtoConverterService
 						.toDto(entity == null ? null : entity.getId(identifier.getName()), identifier);
