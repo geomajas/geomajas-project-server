@@ -23,7 +23,7 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
  */
 public class WidgetBuilderInfo implements ClientWidgetInfo {
 
-	private static final long serialVersionUID = 180L;
+	private static final long serialVersionUID = 100L;
 
 	/**
 	 * Use this identifier in your configuration files (beans).
@@ -33,27 +33,45 @@ public class WidgetBuilderInfo implements ClientWidgetInfo {
 	/**
 	 * The name (key) of a builder for the custom Widget. (the type will depend
 	 * on the face, eg. a Canvas builder when using GWT)
-	 * <p>
-	 * Do not forget to add your builder to the widgetfactory (in
-	 * EntryPoint.onModuleLoad).
-	 * </p>
+	 * <p />
+	 * Do not forget to add your builder to the widget factory (in EntryPoint.onModuleLoad).
 	 */
 	private String builderName;
 
 	private List<Parameter> parameters = new ArrayList<Parameter>();
 
+	/**
+	 * Get widget parameters.
+	 *
+	 * @return parameters
+	 */
 	public List<Parameter> getParameters() {
 		return parameters;
 	}
 
+	/**
+	 * Set widget parameters.
+	 *
+	 * @param parameters parameters
+	 */
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
 	}
 
+	/**
+	 * Get builder name, this needs to be registered in the WidgetFactory class.
+	 *
+	 * @return name of builder
+	 */
 	public String getBuilderName() {
 		return builderName;
 	}
 
+	/**
+	 * Set builder name, this needs to be registered in the WidgetFactory class.
+	 *
+	 * @param builderName name of builder
+	 */
 	public void setBuilderName(String builderName) {
 		this.builderName = builderName;
 	}
