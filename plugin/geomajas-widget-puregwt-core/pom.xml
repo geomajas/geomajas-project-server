@@ -35,7 +35,7 @@
 	</scm>
 
 	<modules>
-		<module>puregwt-widget-core</module>
+		<module>core</module>
 		<module>documentation</module>
 	</modules>
 
