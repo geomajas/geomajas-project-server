@@ -61,8 +61,6 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 
 	private static final String SECURITY_EXCEPTION_CLASS_NAME = "org.geomajas.security.GeomajasSecurityException";
 
-	private static final String RANDOM_UNLIKELY_TOKEN = "%t@kén§#";
-
 	private static GwtCommandDispatcher instance = new GwtCommandDispatcher();
 
 	private final GeomajasServiceAsync service;
@@ -183,13 +181,14 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		command.setUserToken(userToken);
 
 		// shortcut, no need to invoke the server if we know the token has expired
-		if (null != userToken && userToken.length() > 0 && afterLoginCommands.containsKey(userToken)) {
+		if (afterLoginCommands.containsKey(notNull(userToken))) {
 			afterLogin(command, deferred);
 			return deferred;
 		}
 
 		incrementDispatched();
 
+		final boolean isAnonymous = (userToken == null);
 		service.execute(command, new AsyncCallback<CommandResponse>() {
 
 			public void onFailure(Throwable error) {
@@ -225,7 +224,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 						for (ExceptionDto exception : response.getExceptions()) {
 							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName())
 									&& (ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode() 
-									|| null == userToken);
+									|| isAnonymous);
 						}
 						if (authenticationFailed && null != tokenRequestHandler) {
 							handleLogin(command, deferred);
@@ -366,7 +365,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 */
 	public void login() {
 		logout();
-		login(RANDOM_UNLIKELY_TOKEN);
+		login(null);
 	}
 
 	/**
@@ -379,7 +378,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 
 			public void onTokenChanged(TokenChangedEvent event) {
 				setToken(event.getToken(), event.getUserDetail());
-				List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
+				List<RetryCommand> retryCommands = afterLoginCommands.remove(notNull(oldToken));
 				if (null != retryCommands) {
 					for (RetryCommand retryCommand : retryCommands) {
 						execute(retryCommand.getCommand(), retryCommand.getDeferred());
