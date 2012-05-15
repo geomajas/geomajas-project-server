@@ -11,6 +11,20 @@
 
 package org.geomajas.application.gwt.showcase.client.security;
 
+import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
+import org.geomajas.command.dto.SearchFeatureRequest;
+import org.geomajas.command.dto.SearchFeatureResponse;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.layer.feature.SearchCriterion;
+
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
@@ -18,19 +32,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
-import org.geomajas.command.dto.SearchFeatureRequest;
-import org.geomajas.command.dto.SearchFeatureResponse;
-import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.layer.feature.SearchCriterion;
 
 /**
  * <p>
@@ -45,7 +46,7 @@ public class AttributeSecuritySample extends SamplePanel {
 
 	private static final ShowcaseMessages MESSAGES = GWT.create(ShowcaseMessages.class);
 
-	private MapWidget map;
+	private MapModel mapModel;
 
 	private VectorLayer layer;
 
@@ -71,10 +72,8 @@ public class AttributeSecuritySample extends SamplePanel {
 		buttonLayout.setHeight(20);
 
 		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
-		map = new MapWidget("mapBeans", "gwtExample");
-		map.setVisible(false);
-		layout.addMember(map);
-		map.init();
+		mapModel = new MapModel("mapBeans", "gwtExample");
+		mapModel.init();
 
 		Runnable removeAttributeWindow = new Runnable() {
 			public void run() {
@@ -104,7 +103,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		editFeatureButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				layer = (VectorLayer) map.getMapModel().getLayer("clientLayerBeans");
+				layer = (VectorLayer) mapModel.getLayer("clientLayerBeans");
 				GwtCommandDispatcher.getInstance().execute(command,
 						new AbstractCommandCallback<SearchFeatureResponse>() {
 
