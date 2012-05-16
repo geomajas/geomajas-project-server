@@ -56,7 +56,11 @@ public class RasterTile implements Tile, Paintable {
 		this.store = store;
 		this.id = store.getLayer().getMapModel().getId() + "." + store.getLayer().getId() + "." + code.toString();
 		String styleStr = store.getLayer().getLayerInfo().getStyle();
-		style = new PictureStyle(Double.parseDouble(styleStr));
+		try {
+			style = new PictureStyle(Double.parseDouble(styleStr));
+		} catch (NumberFormatException e) {
+			style = new PictureStyle(1.0);
+		}
 	}
 
 	/** {@inheritDoc} */
