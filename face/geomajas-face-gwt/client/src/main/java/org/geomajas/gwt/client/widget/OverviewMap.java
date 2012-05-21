@@ -331,6 +331,8 @@ public class OverviewMap extends MapWidget {
 	 */
 	private void updateMaxExtent() {
 		if (targetMap.getMapModel().isInitialized() && getGraphics().isReady()) {
+			// map view size may not have been set yet !
+			getMapModel().getMapView().setSize(getWidth(), getHeight());
 			Bbox targetMaxBounds = getOverviewMaxBounds();
 
 			MapView mapView = getMapModel().getMapView();

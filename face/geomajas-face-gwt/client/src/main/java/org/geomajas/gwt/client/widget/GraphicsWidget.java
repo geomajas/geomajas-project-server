@@ -48,6 +48,7 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.smartgwt.client.util.SC;
@@ -136,6 +137,8 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 	private EventWidget eventWidget;
 
 	private int previousWidth, previousHeight;
+	
+	private HandlerRegistration resizedHandlerRegistration;
 
 
 	// -------------------------------------------------------------------------
@@ -174,8 +177,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		eventWidget.addMouseDownHandler(rmh);
 		eventWidget.addMouseUpHandler(rmh);
 		// add a resize handler to connect the event widget and set the sizes
-		GwtResizedHandler h = new GwtResizedHandler();
-		addResizedHandler(h);
+		resizedHandlerRegistration = addResizedHandler(new GwtResizedHandler());
 	}
 
 	// -------------------------------------------------------------------------
@@ -471,6 +473,13 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 			setWidth(INITIAL_SIZE);
 			setHeight(INITIAL_SIZE);
 		}
+		
+		protected void onDraw() {
+			super.onDraw();
+			// must force this as in some cases smartgwt is not setting the size on our element !
+			DOM.setStyleAttribute(getDOM(), "width", "100%");
+			DOM.setStyleAttribute(getDOM(), "height", "100%");
+		}
 
 		public EventWidget(String id) {
 			this(new StyledFocusWidget(Document.get().createDivElement()));
@@ -525,4 +534,11 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 	public boolean isReady() {
 		return contains(eventWidget) && eventWidget.getWidget().isAttached();
 	}
+
+	@Override
+	protected void onDestroy() {
+		resizedHandlerRegistration.removeHandler();
+		super.onDestroy();
+	}	
+	
 }

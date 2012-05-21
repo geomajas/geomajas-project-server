@@ -170,6 +170,11 @@ public class MapWidget extends VLayout {
 	private String cursor = Cursor.DEFAULT.getValue();
 
 	/**
+	 * A list of handler registrations that are needed to correctly clean up after destruction.
+	 */
+	private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+
+	/**
 	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
 	 * unless you need something very specific and you know what you are doing.
 	 */
@@ -269,13 +274,13 @@ public class MapWidget extends VLayout {
 		mapModel = new MapModel(mapId, applicationId);
 		mapModelRenderer = new MapModelRenderer();
 		mapModel.runWhenInitialized(mapModelRenderer);
-		mapModel.addMapModelChangedHandler(mapModelRenderer);
-		mapModel.addMapModelClearHandler(mapModelRenderer);
+		handlers.add(mapModel.addMapModelChangedHandler(mapModelRenderer));
+		handlers.add(mapModel.addMapModelClearHandler(mapModelRenderer));
 		mapViewRenderer = new MapViewRenderer();
-		mapModel.getMapView().addMapViewChangedHandler(mapViewRenderer);
+		handlers.add(mapModel.getMapView().addMapViewChangedHandler(mapViewRenderer));
 		graphics = new GraphicsWidget(getID() + "Graphics");
 		painterVisitor = new PainterVisitor(graphics);
-		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
+		handlers.add(mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this)));
 		graphics.setFallbackController(new PanController(this));
 
 		// Painter registration:
@@ -302,12 +307,12 @@ public class MapWidget extends VLayout {
 		setWidth100();
 		setHeight100();
 		setDynamicContents(true);
-		graphics.addGraphicsReadyHandler(new MapResizedRenderer());
+		handlers.add(graphics.addGraphicsReadyHandler(new MapResizedRenderer()));
 		// adding the graphics here causes problems when embedding in HTML !
 		// addChild(graphics);
 		setZoomOnScrollEnabled(true);
 
-		mapModel.getFeatureEditor().addEditingHandler(new EditingHandler() {
+		handlers.add(mapModel.getFeatureEditor().addEditingHandler(new EditingHandler() {
 
 			public void onEditingChange(EditingEvent event) {
 				FeatureTransaction ft = mapModel.getFeatureEditor().getFeatureTransaction();
@@ -319,7 +324,7 @@ public class MapWidget extends VLayout {
 					}
 				}
 			}
-		});
+		}));
 	}
 
 	// -------------------------------------------------------------------------
@@ -1359,4 +1364,13 @@ public class MapWidget extends VLayout {
 		}
 		render(layer, null, RenderStatus.ALL);
 	}
+
+	@Override
+	protected void onDestroy() {
+		for (HandlerRegistration handler : handlers) {
+			handler.removeHandler();
+		}
+		super.onDestroy();
+	}
+
 }
