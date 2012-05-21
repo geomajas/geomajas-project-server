@@ -73,7 +73,6 @@ public class AttributeSecuritySample extends SamplePanel {
 
 		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
 		mapModel = new MapModel("mapBeans", "gwtExample");
-		mapModel.init();
 
 		Runnable removeAttributeWindow = new Runnable() {
 			public void run() {
@@ -126,6 +125,10 @@ public class AttributeSecuritySample extends SamplePanel {
 		layout.addMember(buttonLayout);
 		layout.addMember(editFeatureButton);
 		return layout;
+	}
+	
+	public void onDraw() {
+		mapModel.init();
 	}
 
 	public String getDescription() {

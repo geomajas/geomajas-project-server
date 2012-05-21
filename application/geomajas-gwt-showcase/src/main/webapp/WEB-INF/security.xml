@@ -26,7 +26,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="securityServices">
 			<list>
 				<ref bean="SecurityService"/>
-				<bean class="org.geomajas.plugin.staticsecurity.security.LoginAllowedSecurityService"/>
+				<bean class="org.geomajas.application.gwt.showcase.server.AnonymousSecurityService"/>
 			</list>
 		</property>
 	</bean>
