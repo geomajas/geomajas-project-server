@@ -15,17 +15,19 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.EditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
-import org.geomajas.annotation.FutureApi;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationAttribute;
@@ -111,6 +113,8 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	private AttributeProvider attributeProvider;
 
 	private HandlerManager manager = new HandlerManager(this);
+	
+	private Set<String> editableItemNames = new HashSet<String>(); 
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -231,7 +235,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 			FormItem formItem = formWidget.getItem(info.getName());
 			if (formItem != null) {
-				if (info instanceof EditableAttributeInfo && ((EditableAttributeInfo) info).isEditable()) {
+				if (editableItemNames.contains(info.getName())) {
 					formItem.setDisabled(disabled);
 				} else {
 					formItem.setDisabled(true);
@@ -302,9 +306,14 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			return;
 		}
 		FormItem item = formWidget.getField(info.getName());
-		if (attribute == null) {
-			item.setDisabled(true);
+		boolean editable = (attribute != null && attribute.isEditable());
+		if (editable) {
+			editableItemNames.add(info.getName());
 		} else {
+			editableItemNames.remove(info.getName());
+		}
+		item.setDisabled(isDisabled() || !editable);
+		if (attribute != null) {
 			if (attribute instanceof StringAttribute) {
 				setValue(info.getName(), (StringAttribute) attribute);
 			} else if (attribute instanceof ShortAttribute) {
