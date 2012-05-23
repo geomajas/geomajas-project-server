@@ -225,7 +225,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 						for (ExceptionDto exception : response.getExceptions()) {
 							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName())
 									&& (ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode() 
-									|| command.getUserToken() == null);
+									|| (command.getUserToken() == null && userToken == null));
 						}
 						if (authenticationFailed && null != tokenRequestHandler) {
 							handleLogin(command, deferred);
@@ -365,7 +365,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 * @since 1.1.0
 	 */
 	public void login() {
-		logout();
+		logout(true);
 		login(RANDOM_UNLIKELY_TOKEN);
 	}
 
@@ -378,7 +378,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		tokenRequestHandler.login(new TokenChangedHandler() {
 
 			public void onTokenChanged(TokenChangedEvent event) {
-				setToken(event.getToken(), event.getUserDetail());
+				setToken(event.getToken(), event.getUserDetail(), false);
 				List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
 				if (null != retryCommands) {
 					for (RetryCommand retryCommand : retryCommands) {
@@ -394,7 +394,16 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 * @since 1.1.0
 	 */
 	public void logout() {
-		setToken(null, null);
+		setToken(null, null, false);
+	}
+	
+	/**
+	 * Logout. Clear the user token and indicate that a login is about to follow.
+	 * 
+	 * @param loginPending
+	 */
+	private void logout(boolean loginPending) {
+		setToken(null, null, loginPending);
 	}
 
 	/**
@@ -405,7 +414,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 */
 	@Deprecated
 	public void setUserToken(String userToken) {
-		setToken(userToken, null);
+		setToken(userToken, null, false);
 	}
 
 	/**
@@ -418,7 +427,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 */
 	@Deprecated
 	public void setUserToken(String userToken, UserDetail userDetail) {
-		setToken(userToken, userDetail);
+		setToken(userToken, userDetail, false);
 	}
 
 	/**
@@ -427,8 +436,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 *
 	 * @param userToken user token
 	 * @param userDetail user details
+	 * @param loginPending true if this will be followed by a fresh token change
 	 */
-	private void setToken(String userToken, UserDetail userDetail) {
+	private void setToken(String userToken, UserDetail userDetail, boolean loginPending) {
 		boolean changed = !EqualsUtil.isEqual(this.userToken, userToken);
 		this.userToken = userToken;
 		if (null == userDetail) {
@@ -436,7 +446,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 		}
 		this.userDetail = userDetail;
 		if (changed) {
-			TokenChangedEvent event = new TokenChangedEvent(userToken, userDetail);
+			TokenChangedEvent event = new TokenChangedEvent(userToken, userDetail, loginPending);
 			manager.fireEvent(event);
 		}
 	}

@@ -26,6 +26,7 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 
 	private String token;
 	private UserDetail userDetail;
+	private boolean loginPending;
 
 	/**
 	 * Constructor for a token without user details.
@@ -33,7 +34,7 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 	 * @param token user token
 	 */
 	public TokenChangedEvent(String token) {
-		this(token, null);
+		this(token, null, false);
 	}
 
 	/**
@@ -43,11 +44,23 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 	 * @param userDetail user details
 	 */
 	public TokenChangedEvent(String token, UserDetail userDetail) {
+		this(token, userDetail, false);
+	}
+
+	/**
+	 * Constructor containing both user token and user details.
+	 *
+	 * @param token user token
+	 * @param userDetail user details
+	 * @param loginPending true if a login is about to follow
+	 */
+	public TokenChangedEvent(String token, UserDetail userDetail, boolean loginPending) {
 		this.token = token;
 		this.userDetail = userDetail;
 		if (null == userDetail) {
 			this.userDetail = new UserDetail();
 		}
+		this.loginPending = loginPending;
 	}
 
 	/** {@inheritDoc} */
@@ -82,4 +95,17 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 	public UserDetail getUserDetail() {
 		return userDetail;
 	}
+
+	/**
+	 * Indicates whether a new login is pending. Check on this flag to avoid unnecessary actions during the logout
+	 * period.
+	 * 
+	 * @return true if pending
+	 * @since 1.1.0
+	 */
+	@Api
+	public boolean isLoginPending() {
+		return loginPending;
+	}	
+	
 }
