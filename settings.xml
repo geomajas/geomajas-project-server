@@ -1,0 +1,35 @@
+<settings>
+	<profiles>
+		<profile>
+			<id>mine</id>
+			<repositories>
+				<repository>
+					<id>Geomajas</id>
+					<name>Geomajas repository</name>
+					<url>http://repo.geomajas.org/nexus/content/groups/public</url>
+				</repository>
+
+				<!-- uncomment if you want to use Geomajas snapshots, comment for faster 
+					builds -->
+				<repository>
+					<id>Geomajas-latest</id>
+					<name>Geomajas snapshot repository</name>
+					<url>http://repo.geomajas.org/nexus/content/groups/latest</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>Geomajas</id>
+					<name>Geomajas repository</name>
+					<url>http://maven.geomajas.org/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>mine</activeProfile>
+	</activeProfiles>
+</settings>
