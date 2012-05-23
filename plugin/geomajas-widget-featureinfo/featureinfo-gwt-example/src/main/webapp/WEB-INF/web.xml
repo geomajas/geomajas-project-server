@@ -62,10 +62,6 @@
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
   </listener>
   <servlet>
-    <servlet-name>GeomajasServiceServlet</servlet-name>
-    <servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
-  </servlet>
-  <servlet>
     <servlet-name>dispatcher</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
@@ -76,11 +72,8 @@
     <load-on-startup>3</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GeomajasServiceServlet</servlet-name>
-    <url-pattern>/org.geomajas.widget.featureinfo.gwt.example.Application/geomajasService</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/FeatureinfoExample/*</url-pattern>
     <url-pattern>/d/*</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
