@@ -220,30 +220,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 			public void onSuccess(CommandResponse response) {
 				try {
 					if (response.isError()) {
-						// first check for authentication problems, these are handled separately
-						boolean authenticationFailed = false;
-						for (ExceptionDto exception : response.getExceptions()) {
-							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName())
-									&& (ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode() 
-									|| (command.getUserToken() == null && userToken == null));
-						}
-						if (authenticationFailed && null != tokenRequestHandler) {
-							handleLogin(command, deferred);
-						} else {
-							// normal error handling...
-
-							boolean errorHandled = false;
-							for (CommandCallback callback : deferred.getCallbacks()) {
-								if (callback instanceof CommandExceptionCallback) {
-									((CommandExceptionCallback) callback).onCommandException(response);
-									errorHandled = true;
-								}
-							}
-							// fallback to the default behaviour
-							if (!errorHandled) {
-								onCommandException(response);
-							}
-						}
+						handleError(response);
 					} else {
 						if (!deferred.isCancelled()) {
 							for (CommandCallback callback : deferred.getCallbacks()) {
@@ -256,6 +233,38 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 				} finally {
 					decrementDispatched();
 					deferreds.remove(deferred);
+				}
+			}
+
+			private void handleError(CommandResponse response) {
+				// Security exceptions which indicate that the token is invalid cause a token request.
+				// Other security exceptions are normally reported, except when then undefined (null or empty)
+				// token is used. For restricted access for the anonymous user, this should also be assigned
+				// a proper token (can be a constant).
+				// This assumes that the undefined token is only used either in combination with the allow all
+				// security service or in a state between logout and login.
+				boolean authenticationFailed = false;
+				for (ExceptionDto exception : response.getExceptions()) {
+					authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName())
+							&& (ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode()
+							|| isUndefinedToken(command.getUserToken()) );
+				}
+				if (authenticationFailed && null != tokenRequestHandler) {
+					handleLogin(command, deferred);
+				} else {
+					// normal error handling...
+
+					boolean errorHandled = false;
+					for (CommandCallback callback : deferred.getCallbacks()) {
+						if (callback instanceof CommandExceptionCallback) {
+							((CommandExceptionCallback) callback).onCommandException(response);
+							errorHandled = true;
+						}
+					}
+					// fallback to the default behaviour
+					if (!errorHandled) {
+						onCommandException(response);
+					}
 				}
 			}
 		});
@@ -309,6 +318,16 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 			return "";
 		}
 		return string;
+	}
+
+	/**
+	 * Check whether this is an "undefined" token.
+	 *
+	 * @param token token to test
+	 * @return true when token is null or empty string
+	 */
+	private boolean isUndefinedToken(String token) {
+		return null == token || 0 == token.length();
 	}
 
 	/**
@@ -394,13 +413,13 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 * @since 1.1.0
 	 */
 	public void logout() {
-		setToken(null, null, false);
+		logout(false);
 	}
 	
 	/**
-	 * Logout. Clear the user token and indicate that a login is about to follow.
+	 * Logout. Clear the user token. Can indicate that a login is about to follow.
 	 * 
-	 * @param loginPending
+	 * @param loginPending is a new login pending?
 	 */
 	private void logout(boolean loginPending) {
 		setToken(null, null, loginPending);
