@@ -85,6 +85,11 @@
 				<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-featureinfo-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.google.gwt</groupId>
@@ -102,8 +107,9 @@
 	<modules>
 		<module>featureinfo</module>
 		<module>featureinfo-gwt</module>
+		<module>featureinfo-gwt-example-jar</module>
 		<module>featureinfo-gwt-example</module>
-  </modules>
+	</modules>
 
 	<profiles>
 		<profile>

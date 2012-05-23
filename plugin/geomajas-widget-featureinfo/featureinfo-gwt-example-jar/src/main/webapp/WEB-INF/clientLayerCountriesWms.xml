@@ -1,0 +1,16 @@
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+    <bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerCountriesWms">
+        <property name="serverLayerId" value="layerWmsCountries" />
+        <property name="label" value="Countries layer (WMS)" />
+        <property name="visible" value="true" />
+        <property name="style" value="0.8" />
+    </bean>
+</beans>

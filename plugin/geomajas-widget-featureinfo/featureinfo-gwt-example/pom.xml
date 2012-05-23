@@ -1,138 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
-  ~
-  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
-  ~
-  ~ The program is available in open source according to the GNU Affero
-  ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
-  ~ details, see LICENSE.txt in the project root.
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the GNU Affero ~ General 
+	Public License. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-    	<artifactId>geomajas-widget-featureinfo-all</artifactId>
+		<artifactId>geomajas-widget-featureinfo-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-  	</parent>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-featureinfo-gwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas widget featureinfo GWT example application</name>
-	<description>Geomajas GWT application</description>
+	<name>Geomajas GWT example</name>
+	<description>Geocoder GWT example application</description>
 	<url>http://www.geomajas.org/</url>
 
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${geomajas-widget-featureinfo-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-gwt-client</artifactId>
-				<version>${geomajas-widget-featureinfo-gwt-face-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geotools</groupId>
-				<artifactId>gt-epsg-wkt</artifactId>
-				<version>2.7.4</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.8</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-		</dependency>
-
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client</artifactId>
+			<artifactId>geomajas-gwt-example-base</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo</artifactId>
-			<version>${project.version}</version>
+			<artifactId>geomajas-widget-featureinfo-gwt-example-jar</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo</artifactId>
+			<artifactId>geomajas-widget-featureinfo-gwt-example-jar</artifactId>
 			<version>${project.version}</version>
 			<classifier>sources</classifier>
-		</dependency>
-			
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>${project.version}</version>
-			<classifier>sources</classifier>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-openstreetmap</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-geotools</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-wms-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${geomajas-widget-featureinfo-gwt-version}</version>
+			<!-- <version>${featureinfo-gwt-version}</version> -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${geomajas-widget-featureinfo-gwt-version}</version>
+			<!-- <version>${featureinfo-gwt-version}</version> -->
 			<scope>runtime</scope>
 		</dependency>
+
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
 		<dependency>
@@ -151,28 +70,27 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!-- Run the application using "mvn jetty:run" -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.20</version>
-				<configuration>
-					<webAppConfig>
-						<contextPath>/</contextPath>
-						<baseResource implementation="org.mortbay.resource.ResourceCollection">
-							<!-- need both the webapp dir and location where GWT puts stuff -->
-							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
-						</baseResource>
-					</webAppConfig>
-					<reload>manual</reload>
-				</configuration>
-			</plugin>
-
-			<!-- some default config, added to in profiles -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -191,8 +109,15 @@
 				</dependencies>
 				<configuration>
 					<disableCastChecking>true</disableCastChecking>
-					<disableClassMetadata>true</disableClassMetadata>
+					<disableClassMetadata>false</disableClassMetadata>
+					<!--<logLevel>DEBUG</logLevel> -->
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<module>org.geomajas.widget.featureinfo.gwt.example.FeatureinfoExampleStandalone</module>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<executions>
 					<execution>
@@ -212,46 +137,27 @@
 				</executions>
 			</plugin>
 
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+						<baseResource implementation="org.mortbay.resource.ResourceCollection">
+							<!-- need both the webapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+						</baseResource>
+					</webAppConfig>
+					<reload>manual</reload>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
 	<profiles>
-		<profile>
-			<id>defaultGWT</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>org.geomajas.widget.featureinfo.gwt.example.Application</module>
-							<runTarget>index.html</runTarget>
-							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<copyWebapp>true</copyWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<id>compile</id>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>clean</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
@@ -266,7 +172,17 @@
 					<artifactId>geomajas-jetty-runner</artifactId>
 					<version>1.0.0</version>
 				</dependency>
+				<dependency>
+					<groupId>com.google.gwt</groupId>
+					<artifactId>gwt-dev</artifactId>
+<!-- 					<version>${featureinfo-gwt-version}</version> -->
+					<scope>provided</scope>
+				</dependency>
 			</dependencies>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+				<gwt-version>2.1.1</gwt-version>
+			</properties>
 		</profile>
 		<profile>
 			<id>skipGwt</id>
@@ -275,18 +191,75 @@
 					<name>skipGwt</name>
 				</property>
 			</activation>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>selenium-tests</id>
+			<activation>
+				<property>
+					<name>!skipSelenium</name>
+				</property>
+			</activation>
 			<build>
 				<plugins>
+					<!-- Run the application using "mvn jetty:run" -->
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
+						<version>6.1.20</version>
+						<configuration>
+							<webAppConfig>
+								<contextPath>/</contextPath>
+							</webAppConfig>
+							<reload>manual</reload>
+							<stopPort>9966</stopPort>
+							<stopKey>stop-jetty</stopKey>
+						</configuration>
 						<executions>
 							<execution>
-								<id>clean</id>
-								<phase>clean</phase>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>clean</goal>
+									<goal>run</goal>
 								</goals>
+								<configuration>
+									<daemon>true</daemon>
+									<scanIntervalSeconds>5</scanIntervalSeconds>
+									<connectors>
+										<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+											<port>9080</port>
+											<maxIdleTime>60000</maxIdleTime>
+										</connector>
+									</connectors>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-jetty</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<includes>
+										<include>**/*TestInt.java</include>
+										<include>**/IntTest*.java</include>
+									</includes>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
