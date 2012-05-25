@@ -148,8 +148,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		// refresh the map when the token changes
 		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
 			public void onTokenChanged(TokenChangedEvent event) {
-				// avoid double refresh on re(login)
-				if (!event.isLoginPending()) {
+				if (event.isLoginPending()) {
+					// avoid double refresh on re-login
+					clear();
+					ClientConfigurationService.clear(); // refresh because configuration changed, clear cache
+				} else {
 					refresh(); // clearing is done in the refresh
 				}
 			}
