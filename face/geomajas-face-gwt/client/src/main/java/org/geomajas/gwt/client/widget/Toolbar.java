@@ -80,6 +80,11 @@ public class Toolbar extends ToolStrip {
 	private MapWidget mapWidget;
 
 	private int buttonSize;
+	
+	/**
+	 * keep track of the currently selected ModalAction.
+	 */
+	private ToolbarModalAction currentModalAction;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -215,6 +220,7 @@ public class Toolbar extends ToolStrip {
 	 *            The actual action that determines what should happen when the button is selected or deselected.
 	 */
 	public void addModalButton(final ToolbarModalAction modalAction) {
+		currentModalAction = modalAction;
 		final IButton button = new IButton();
 		button.setWidth(buttonSize);
 		button.setHeight(buttonSize);
@@ -226,6 +232,7 @@ public class Toolbar extends ToolStrip {
 
 			public void onClick(ClickEvent event) {
 				if (button.isSelected()) {
+					currentModalAction.onDeselect(event);
 					modalAction.onSelect(event);
 				} else {
 					modalAction.onDeselect(event);
