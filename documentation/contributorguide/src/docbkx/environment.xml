@@ -35,36 +35,65 @@
     <section>
       <title>Maven repository configuration</title>
 
-      <para>You should configure the following repositories in your maven
-      settings.xml file:</para>
+      <para>Before you can run <code>mvn install</code> on one of the
+      subprojects, you should undertake the following steps:</para>
 
-      <para><programlisting>&lt;repositories&gt;
- &lt;repository&gt;
-  &lt;id&gt;Geomajas&lt;/id&gt;
-  &lt;name&gt;Geomajas repository&lt;/name&gt;
-  &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/public&lt;/url&gt;
- &lt;/repository&gt;
+      <itemizedlist>
+        <listitem>
+          <para>Check if you already have a settings.xml file in your local
+          home directory. The default location is
+          &lt;HOME&gt;/.m2/settings.xml (mind the dot !) on both windows and
+          linux, where &lt;HOME&gt; is your home directory.</para>
+        </listitem>
 
- &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster builds --&gt;
- &lt;!--
- &lt;repository&gt;
-  &lt;id&gt;Geomajas-latest&lt;/id&gt;
-  &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
-  &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/latest&lt;/url&gt;
-  &lt;snapshots&gt;
-   &lt;enabled&gt;true&lt;/enabled&gt;
-  &lt;/snapshots&gt;
- &lt;/repository&gt;
- --&gt;
-&lt;/repositories&gt;
-&lt;pluginRepositories&gt;
- &lt;pluginRepository&gt;
-  &lt;id&gt;Geomajas&lt;/id&gt;
-  &lt;name&gt;Geomajas repository&lt;/name&gt;
-  &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
- &lt;/pluginRepository&gt;
-&lt;/pluginRepositories&gt;
-</programlisting></para>
+        <listitem>
+          <para>If you don't have that file, create the .m2 directory and add
+          the file settings.xml with the following contents (this same file
+          can be found at the Geomajas trunk root when you check
+          out):<programlisting>&lt;settings&gt;
+    &lt;profiles&gt;
+        &lt;profile&gt;
+            &lt;id&gt;mine&lt;/id&gt;
+            &lt;repositories&gt;
+                &lt;repository&gt;
+                    &lt;id&gt;Geomajas&lt;/id&gt;
+                    &lt;name&gt;Geomajas repository&lt;/name&gt;
+                    &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/public&lt;/url&gt;
+                &lt;/repository&gt;
+
+                &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster 
+                    builds --&gt;
+                &lt;repository&gt;
+                    &lt;id&gt;Geomajas-latest&lt;/id&gt;
+                    &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
+                    &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/latest&lt;/url&gt;
+                    &lt;snapshots&gt;
+                        &lt;enabled&gt;true&lt;/enabled&gt;
+                    &lt;/snapshots&gt;
+                &lt;/repository&gt;
+            &lt;/repositories&gt;
+            &lt;pluginRepositories&gt;
+                &lt;pluginRepository&gt;
+                    &lt;id&gt;Geomajas&lt;/id&gt;
+                    &lt;name&gt;Geomajas repository&lt;/name&gt;
+                    &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+                &lt;/pluginRepository&gt;
+            &lt;/pluginRepositories&gt;
+        &lt;/profile&gt;
+    &lt;/profiles&gt;
+    &lt;activeProfiles&gt;
+        &lt;activeProfile&gt;mine&lt;/activeProfile&gt;
+    &lt;/activeProfiles&gt;
+&lt;/settings&gt;</programlisting></para>
+        </listitem>
+
+        <listitem>
+          <para>If the file is already present, add the above content to the
+          appropriate tags (&lt;profiles&gt; and &lt;activeProfiles&gt;.
+          Alternatively you can also pass the above settings.xml by using the
+          maven option 'mvn --settings settings.xml'.</para>
+        </listitem>
+      </itemizedlist>
 
       <para>The repositories are not configured in the pom.xml to allow us
       maximum freedom in changing these in the future. Ideally, Geomajas
@@ -144,15 +173,31 @@
         </mediaobject>
       </figure>
 
-      <para>Build the code by running the install command on the pom in the
-      top directory:</para>
+      <para>It is possible to build all the code by running the install
+      command on the pom in the top directory:</para>
 
       <para><prompt>geomajas-trunk&gt;</prompt> <command>mvn install
       </command></para>
 
+      <para>However, in practice you should only build the subproject that you
+      are going to commit to. For example</para>
+
+      <para><code><prompt>geomajas-trunk&gt;</prompt><command>cd
+      geomajas/application/geomajas-gwt-showcase</command></code></para>
+
+      <para><prompt>geomajas-gwt-showcase&gt;</prompt> <command>mvn
+      install</command></para>
+
       <para>The install procedure will build all code, run all unit tests and
       install the artifacts in the repository. Integration tests based on
       Selenium will also be run.</para>
+
+      <para><warning>
+          <para>As we said, building trunk including all tests can take a very
+          long time because of the integration tests and GWT compilations. You
+          should only build the projects/plugins that you are actually working
+          on !!!</para>
+        </warning></para>
     </section>
   </section>
 
