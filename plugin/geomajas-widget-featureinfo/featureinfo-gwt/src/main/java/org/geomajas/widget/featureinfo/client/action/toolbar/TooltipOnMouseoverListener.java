@@ -21,6 +21,8 @@ import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -256,12 +258,14 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private void setTooltipDetailData(StringBuilderImpl sb, Layer<?> layer, List<Feature> features) {
 		for (Feature feature : features) {
 			if (count < maxLabelCount) {
+
 				String featureLabel = layer.getLabel() + " " + feature.getId();
 				widest = updateTooltipSize(widest, featureLabel);
 				writeLayerStart(sb, featureLabel);
 				for (Entry<String, Attribute> entry : feature .getAttributes().entrySet()) {
 					if (isIdentifying(entry.getKey(), layer)) {
-						String label = entry.getKey() + ": " + entry.getValue().toString();
+								
+						String label = getEntryLabel(entry.getKey(), layer) + ": " + entry.getValue().toString();
 						writeFeature(sb, label);
 						widest = updateTooltipSize(widest, label);
 					}
@@ -270,6 +274,16 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 				count++;
 			}
 		}
+	}
+	
+	private String getEntryLabel(String key, Layer layer) {
+		ClientVectorLayerInfo c = (ClientVectorLayerInfo) layer.getLayerInfo();
+		for (AbstractAttributeInfo a : c.getFeatureInfo().getAttributes()) {
+			if (a.getName().equalsIgnoreCase(key)) {
+				return ((PrimitiveAttributeInfo) a).getLabel();
+			}
+		}
+		return null;
 	}
 	
 	private boolean isIdentifying(String key, Layer layer) {
