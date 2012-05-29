@@ -36,7 +36,7 @@
       <title>Maven repository configuration</title>
 
       <para>Before you can run <code>mvn install</code> on one of the
-      subprojects, you should undertake the following steps:</para>
+      sub-projects, you should undertake the following steps:</para>
 
       <itemizedlist>
         <listitem>
@@ -61,8 +61,8 @@
                     &lt;url&gt;http://repo.geomajas.org/nexus/content/groups/public&lt;/url&gt;
                 &lt;/repository&gt;
 
-                &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster 
-                    builds --&gt;
+                &lt;!-- uncomment if you want to use Geomajas snapshots, 
+                     comment for faster builds --&gt;
                 &lt;repository&gt;
                     &lt;id&gt;Geomajas-latest&lt;/id&gt;
                     &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
@@ -91,15 +91,24 @@
           <para>If the file is already present, add the above content to the
           appropriate tags (&lt;profiles&gt; and &lt;activeProfiles&gt;.
           Alternatively you can also pass the above settings.xml by using the
-          maven option 'mvn --settings settings.xml'.</para>
+          option '--settings settings.xml' on the maven command line.</para>
         </listitem>
       </itemizedlist>
 
-      <para>The repositories are not configured in the pom.xml to allow us
-      maximum freedom in changing these in the future. Ideally, Geomajas
-      releases should be completely downloadable from the maven central
-      repository, but some patched library versions force us to maintain our
-      own repository at the moment.</para>
+      <para>The repositories are not configured in the pom.xml as publishing
+      artifacts with embedded repository definitions is not allowed on maven
+      central<footnote>
+          <para>Though this is a maven central requirement, it is not enforced
+          at the time of writing. Maven central contains many artifacts
+          (including older Geomajas artifacts) which include a repository
+          declaration. Such declarations can give unexpected effects on
+          dependent libraries. At least in some maven versions (possibly all),
+          these dependent libraries will only be searched in the repositories
+          from the pom and no longer in the repositories from local settings
+          or the project pom.</para>
+        </footnote>. Ideally, Geomajas releases should be not require
+      additional repositories, but we require to some artifacts which are not
+      found on maven central and some patched library versions.</para>
     </section>
 
     <section id="install-svn">
@@ -148,11 +157,12 @@
     <section id="install-gwt">
       <title>GWT</title>
 
-      <para>The GWT (Google Web Toolkit) software development kit (SDK) should
-      be downloaded from the Google site:<ulink
+      <para>The GWT (Google Web Toolkit) software development kit (SDK) can be
+      downloaded from the Google site:<ulink
       url="http://code.google.com/webtoolkit/download.html">
       http://code.google.com/webtoolkit/download.html</ulink>. After
-      downloading you should unzip it in a directory of choice.</para>
+      downloading you should unzip it in a directory of choice. This is not
+      required for the maven builds but can be required by your IDE.</para>
     </section>
 
     <section id="install-build">
@@ -198,6 +208,26 @@
           should only build the projects/plugins that you are actually working
           on !!!</para>
         </warning></para>
+
+      <para>If you want to build all of trunk, you may need to give maven more
+      memory. This can be done using the MAVEN_OPTS environment variable. A
+      possible settings is "-Xmx2048m -XX:MaxPermSize=128m".</para>
+
+      <para>The build contains many tests. Some of these tests require a
+      connection to external systems (like the project Geoserver instance) or
+      other web services. If you need a proxy to connect to the internet, then
+      you may need to assure your proxy is configured at the network level
+      (and not only at application level). Alterntaively, configuring the
+      proxy at maven level may also work (see <ulink
+      url="http://maven.apache.org/guides/mini/guide-proxies.html">http://maven.apache.org/guides/mini/guide-proxies.html</ulink>).</para>
+
+      <para>The tests also do graphical comparisons of expected versus
+      calculated images. This assumes that the Arial font is installed. When
+      on Linux, you need to install the msttcorefonts package. For example on
+      Ubuntu and Debian based distributions this can be done using the
+      command: <informalexample>
+          <para><code>sudo apt-get install msttcorefonts</code></para>
+        </informalexample></para>
     </section>
   </section>
 
@@ -210,7 +240,7 @@
     Eclipse (embedded Jetty option)". The embedded Jetty setup is needed to
     avoid problems with references to multiple versions of Geomajas artifacts
     like the backend. When using the direct GWT setup, these artifacts are not
-    always correctly mediated.</para>
+    always correctly mediated. </para>
 
     <section>
       <title>Running/debugging with M2Eclipse (quickstart)</title>
