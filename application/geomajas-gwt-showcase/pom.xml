@@ -388,7 +388,10 @@
 			<plugin>
 				<groupId>com.cloudbees</groupId>
 				<artifactId>bees-maven-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
+				<version>1.3.2</version>
+				<configuration>
+					<appid>geosparc/showcase</appid>
+				</configuration>
 			</plugin>
 
 			<plugin>
