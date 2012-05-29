@@ -17,10 +17,10 @@
   <para>This plug-in contains a raster layer definition for accessing raster
   data from TMS servers as specified by OSGeo. See the <ulink
   url="http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">Specification</ulink>.
-  Although not an official OGC specification, the TMS is easy to understand
-  and has the advantage of being very performing. </para>
+  Although not an official OGC specification, TMS is easy to understand and
+  has the advantage of high performance.</para>
 
-  <para>This plug-in does not support the entire TileMapService capabilities,
-  it does support a single TileMap configuration, as such a TileMap represents
-  a single Layer. The supported TMS version is 1.0.0.</para>
+  <para>This plug-in does not support all TileMapService capabilities. It only
+  supports a single TileMap configuration, represents a single layer. The
+  supported TMS version is 1.0.0.</para>
 </chapter>

@@ -15,8 +15,8 @@
   <title>Configuration</title>
 
   <para>This chapter describes the perils of configuring a TMS layer for your
-  Geomajas application. Basically there are 2 obstacles to conquer: Getting
-  the TMS plug-in jar on your classpath, and configuring a TMS layer using the
+  Geomajas application. There are 2 obstacles to conquer: getting the TMS
+  plug-in jar on your class path, and configuring a TMS layer using the
   Geomajas configuration.</para>
 
   <sect1>
@@ -32,7 +32,7 @@
 &lt;/dependency&gt;</programlisting>
 
     <para>If you are not a Maven user, make sure that there is a recent
-    version of JaxB (2.x) on your classpath. Normally the Geomajas server has
+    version of JaxB (2.x) on your class path. Normally the Geomajas server has
     already required this, but we're mentioning it just in case.</para>
 
     <sect2>
@@ -56,7 +56,7 @@
 
       <para>This options requires you to specify the TMS layer description
       URL, upon which the TMS plug-in will retrieve the description and build
-      a <code>RasterLayerInfo</code> automatically. The SRS, bounding box,
+      a <code>RasterLayerInfo</code> automatically. The CRS, bounding box,
       resolutions, etc will be taken from the TileMap description. Below is an
       example of such a configuration:</para>
 
