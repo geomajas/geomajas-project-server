@@ -391,6 +391,8 @@
 				<version>1.3.2</version>
 				<configuration>
 					<appid>geosparc/showcase</appid>
+					<apikey>${bees.apikey}</apikey>
+					<secret>${bees.secret}</secret>
 				</configuration>
 			</plugin>
 
