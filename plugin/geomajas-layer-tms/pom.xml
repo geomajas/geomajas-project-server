@@ -13,20 +13,20 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.7-SNAPSHOT</version>
+		<version>1.0.6</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-tms-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>Geomajas TMS layer plug-in</name>
 	<description>Geomajas TMS layer plug-in</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-tms</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-tms</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-layer-tms</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-tms-all-1.0.0</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-tms-all-1.0.0</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-tms-all-1.0.0</url>
 	</scm>
 
 	<developers>
