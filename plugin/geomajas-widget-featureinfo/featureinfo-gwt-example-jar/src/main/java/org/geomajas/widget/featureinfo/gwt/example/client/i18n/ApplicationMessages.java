@@ -22,6 +22,13 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface ApplicationMessages extends Messages {
 
-	String applicationTitle(String version);
+		/** @return title for the plugins tree node. */
+		String treeGroupPlugins();
+		
+		/** @return title with version for the FeautureInfo example */
+		String applicationTitle(String version);
+		
+		/** @return description for the FeautureInfo example */
+		String applicationDescription();
 
 }

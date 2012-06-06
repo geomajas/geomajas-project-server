@@ -89,7 +89,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<bean class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
-						<ref bean="CombinedFeatureInfoMode" />
 						<ref bean="ToolbarSeparator" />
 						<ref bean="ZoomToRectangleMode" />
 						<ref bean="PanMode" />
@@ -137,9 +136,27 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="CombinedFeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo" />
-
-	<bean name="TooltipOnMouseOverMode" class="org.geomajas.configuration.client.ClientToolInfo" />
+	<bean name="TooltipOnMouseOverMode" class="org.geomajas.configuration.client.ClientToolInfo">
+	<property name="parameters">
+		<list>
+			<bean class="org.geomajas.configuration.Parameter">
+				<property name="name" value="layersToExclude"/>
+				<property name="value" value="clientLayerPopulatedPlaces110m"/>
+				<!-- define for which layers the tooltip should NOT be drawn, use the id of the ClientVectorLayerInfo bean of the layer -->
+			</bean>
+			<bean class="org.geomajas.configuration.Parameter">
+				<property name="name" value="tooltipUseFeatureDetail"/>
+				<property name="value" value="true"/>
+				<!-- if true shows all the attributes of features instead of (only) the id attribute -->
+			</bean>
+			<bean class="org.geomajas.configuration.Parameter">
+				<property name="name" value="tooltipMaxLabelCount"/>
+				<property name="value" value="6"/> 
+				<!-- the maximum number of features for which the attributes (details) will be shown -->
+			</bean>
+		</list>
+		</property>
+	</bean>
 
 	<bean name="ShowCoordinatesMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
@@ -224,7 +241,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="MultilayerFeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo" />
+	<bean name="MultilayerFeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
 
 	<bean name="SelectionMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">

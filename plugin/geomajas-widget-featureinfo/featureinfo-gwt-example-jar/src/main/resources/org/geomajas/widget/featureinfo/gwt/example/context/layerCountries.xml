@@ -134,26 +134,26 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 </bean>
             </list>
 		</property>
-		<property name="labelStyle">
-			<bean class="org.geomajas.configuration.LabelStyleInfo">
-               <property name="labelValueExpression" value="NAME + '(population : '+ new Long(PEOPLE.longValue())+')'"/>
-                <property name="fontStyle">
-					<bean class="org.geomajas.configuration.FontStyleInfo">
-						<property name="color" value="#000000" />
-						<property name="opacity" value="1" />
-					</bean>
-                </property>
-                <property name="backgroundStyle">
-                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                        <property name="fillColor" value="#FFFFFF"/>
-                        <property name="fillOpacity" value=".7"/>
-                        <property name="strokeColor" value="#000099"/>
-                        <property name="strokeOpacity" value="1"/>
-                        <property name="strokeWidth" value="1"/>
-                    </bean>
-                </property>
-			</bean>
-		</property>
+<!-- 		<property name="labelStyle"> -->
+<!-- 			<bean class="org.geomajas.configuration.LabelStyleInfo"> -->
+<!--                <property name="labelValueExpression" value="NAME + ' (population: '+ new Long(PEOPLE.longValue())+')'"/> -->
+<!--                 <property name="fontStyle"> -->
+<!-- 					<bean class="org.geomajas.configuration.FontStyleInfo"> -->
+<!-- 						<property name="color" value="#000000" /> -->
+<!-- 						<property name="opacity" value="1" /> -->
+<!-- 					</bean> -->
+<!--                 </property> -->
+<!--                 <property name="backgroundStyle"> -->
+<!--                     <bean class="org.geomajas.configuration.FeatureStyleInfo"> -->
+<!--                         <property name="fillColor" value="#FFFFFF"/> -->
+<!--                         <property name="fillOpacity" value=".7"/> -->
+<!--                         <property name="strokeColor" value="#000099"/> -->
+<!--                         <property name="strokeOpacity" value="1"/> -->
+<!--                         <property name="strokeWidth" value="1"/> -->
+<!--                     </bean> -->
+<!--                 </property> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
 	</bean>
 
 </beans>

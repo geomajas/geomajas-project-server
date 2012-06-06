@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -10,8 +10,10 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<hibernate-spatial>
-	<default_dialect>org.hibernatespatial.postgis.PostgisDialect</default_dialect>
-	<precision_model>FIXED</precision_model>
-	<precision_model_scale>100</precision_model_scale>
-</hibernate-spatial>
+<module>
+	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
+	<!-- Inherit the GWT widget (plugin) module for the featureinfo widget . -->
+	<inherits name="org.geomajas.widget.featureinfo.Featureinfo"/>
+
+    <entry-point class="org.geomajas.widget.featureinfo.gwt.example.client.FeatureinfoExample"/>
+</module>

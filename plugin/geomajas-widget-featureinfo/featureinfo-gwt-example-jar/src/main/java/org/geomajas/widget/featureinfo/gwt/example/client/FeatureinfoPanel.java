@@ -11,63 +11,57 @@
 
 package org.geomajas.widget.featureinfo.gwt.example.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
-import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
-import org.geomajas.gwt.client.widget.LoadingScreen;
-import org.geomajas.gwt.client.widget.LocaleSelect;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.OverviewMap;
-import org.geomajas.gwt.client.widget.Toolbar;
-import org.geomajas.widget.featureinfo.client.widget.factory.WidgetFactory;
-import org.geomajas.widget.featureinfo.gwt.example.client.customfeatureinfowidgets.
-			CustomCountriesFeatureInfoCanvasBuilder;
-import org.geomajas.widget.featureinfo.gwt.example.client.i18n.ApplicationMessages;
-import org.geomajas.widget.featureinfo.gwt.example.client.pages.AbstractTab;
-import org.geomajas.widget.featureinfo.gwt.example.client.pages.FeatureListGridPage;
-import org.geomajas.widget.featureinfo.gwt.example.client.pages.SearchPage;
-
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
+import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.gwt.client.widget.LayerTree;
+import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.LocaleSelect;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.widget.featureinfo.client.widget.factory.WidgetFactory;
+import org.geomajas.widget.featureinfo.gwt.example.client.
+		customfeatureinfowidgets.CustomCountriesFeatureInfoCanvasBuilder;
+import org.geomajas.widget.featureinfo.gwt.example.client.i18n.ApplicationMessages;
+
 /**
- * Entry point and main class for GWT application. This class defines the layout
- * and functionality of this application.
- * 
- * @author geomajas-gwt-archetype
+ * Sample to demonstrate use of the featureinfo  plug-in.
+ *
+ * @author Wout Swartenbroekx
  */
-public class Application implements EntryPoint {
+public class FeatureinfoPanel extends SamplePanel {
 
-	private static final ApplicationMessages MESSAGES = GWT.create(ApplicationMessages.class);
-	private static final String CUSTOM_COUNTRIES_FEATURE_DETAIL_INFO_BUILDER_KEY =
-			"SampleCustomCountriesFeatureDetail";
-
+	public static final ApplicationMessages MESSAGES = GWT.create(ApplicationMessages.class);
+	
+	public static final String TITLE = "FeatureInfo plug-in";
+	
 	private OverviewMap overviewMap;
 
 	private Legend legend;
-
-	private TabSet tabSet = new TabSet();
-
-	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
-
-	public void onModuleLoad() {
+	
+	private static final String CUSTOM_COUNTRIES_FEATURE_DETAIL_INFO_BUILDER_KEY =
+			"SampleCustomCountriesFeatureDetail";
+	
+	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
+		public SamplePanel createPanel() {
+			return new FeatureinfoPanel();
+		}
+	};
+	
+	/** {@inheritDoc} */
+	public Canvas getViewPanel() {
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
@@ -113,15 +107,10 @@ public class Application implements EntryPoint {
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 		mapLayout.setHeight("65%");
-		tabSet.setTabBarPosition(Side.TOP);
-		tabSet.setWidth100();
-		tabSet.setHeight("35%");
-		tabSet.setID("tabs");
 
 		VLayout leftLayout = new VLayout();
 		leftLayout.setShowEdges(true);
 		leftLayout.addMember(mapLayout);
-		leftLayout.addMember(tabSet);
 
 		layout.addMember(leftLayout);
 
@@ -159,66 +148,42 @@ public class Application implements EntryPoint {
 		// Putting the right side layouts together:
 		layout.addMember(sectionStack);
 
-		// ---------------------------------------------------------------------
-		// Bottom left: Add tabs here:
-		// ---------------------------------------------------------------------
-		FeatureListGridPage page1 = new FeatureListGridPage(map);
-		addTab(new SearchPage(map, tabSet, page1.getTable()));
-		addTab(page1);
-
-		// ---------------------------------------------------------------------
-		// Finally draw everything:
-		// ---------------------------------------------------------------------
-		mainLayout.addMember(layout);
-		mainLayout.draw();
-
-		// Install a loading screen
-		// This only works if the application initially shows a map with at
-		// least 1 vector layer:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
-				+ Geomajas.getVersion());
-		loadScreen.draw();
-		
-		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
-
-			public void onMapModelChanged(MapModelChangedEvent event) {
-				VectorLayer layerSmallPopul = map.getMapModel().getVectorLayer(
-						"clientLayerCountriesSmallPopul");
-				//layer.setFilter("NAME like '%e%'");
-				if (layerSmallPopul != null) {
-					layerSmallPopul.setFilter("PEOPLE <= 50000000");
-				}
-
-				VectorLayer layerLargePopul = map.getMapModel().getVectorLayer(
-						"clientLayerCountriesLargePopul");
-				//layer.setFilter("NAME like '%e%'");
-				if (layerLargePopul != null) {
-					layerLargePopul.setFilter("PEOPLE > 50000000");
-				}
-			}
-		});
-		// Then initialize:
-		initialize();
-	}
-
-	private void addTab(AbstractTab tab) {
-		tabSet.addTab(tab);
-		tabs.add(tab);
-	}
-
-	private void initialize() {
 		registerWidgetBuilders();
-
 		legend.setHeight(200);
 		overviewMap.setHeight(200);
 
-		for (AbstractTab tab : tabs) {
-			tab.initialize();
-		}
-	}
+		mainLayout.addMember(layout);
 
+		return mainLayout;
+	}
+	
 	private void registerWidgetBuilders() {
 		WidgetFactory.put(CUSTOM_COUNTRIES_FEATURE_DETAIL_INFO_BUILDER_KEY,
 				new CustomCountriesFeatureInfoCanvasBuilder());
+	}
+	
+	/** {@inheritDoc} */
+	public String getDescription() {
+		return MESSAGES.applicationDescription();
+	}
+
+	/** {@inheritDoc} */
+	public String[] getConfigurationFiles() {
+		return new String[]{"classpath:WEB-INF/applicationContext.xml",
+		"classpath:WEB-INF/mapMain.xml",
+		"classpath:WEB-INF/mapOverview.xml",
+		"classpath:WEB-INF/clientLayerOsm.xml",
+		"classpath:WEB-INF/clientLayerCountries.xml",
+		"classpath:WEB-INF/clientLayerCountriesWms.xml",
+		"classpath:WEB-INF/layerOsm.xml",
+		"classpath:WEB-INF/layerCountries.xml",
+		"classpath:WEB-INF/layerCountriesWms.xml",
+		"classpath:WEB-INF/clientLayerPopulatedPlaces110m.xml",
+		"classpath:WEB-INF/layerPopulatedPlaces110m.xml"};
+	}
+
+	/** {@inheritDoc} */
+	public String ensureUserLoggedIn() {
+		return "luc";
 	}
 }
