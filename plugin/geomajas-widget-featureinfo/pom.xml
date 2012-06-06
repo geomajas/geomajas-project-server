@@ -101,7 +101,18 @@
 				<artifactId>gwt-servlet</artifactId>
 				<version>${geomajas-widget-featureinfo-gwt-version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching-all</artifactId>
+				<version>2.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
 		</dependencies>
+		
+
 	</dependencyManagement>
 
 	<modules>
@@ -143,6 +154,6 @@
 		<geomajas-widget-featureinfo-backend-version>1.11.0-SNAPSHOT</geomajas-widget-featureinfo-backend-version>
 		<geomajas-widget-featureinfo-gwt-face-version>1.11.0-SNAPSHOT</geomajas-widget-featureinfo-gwt-face-version>
 		<geomajas-widget-featureinfo-gwt-version>2.4.0</geomajas-widget-featureinfo-gwt-version>
-		<geomajas-layer-wms-version>1.8.0</geomajas-layer-wms-version>
+		<geomajas-layer-wms-version>1.9.0</geomajas-layer-wms-version>
 	</properties>
 </project>
