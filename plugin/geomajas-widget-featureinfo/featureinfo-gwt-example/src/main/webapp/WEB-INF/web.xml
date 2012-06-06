@@ -14,26 +14,9 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-			
 			classpath:org/geomajas/spring/geomajasContext.xml
-
-			
 			WEB-INF/applicationContext.xml
-			WEB-INF/mapMain.xml
-			WEB-INF/mapOverview.xml
-			WEB-INF/clientLayerOsm.xml
-			WEB-INF/clientLayerCountries.xml
-			WEB-INF/clientLayerCountriesWms.xml
-			WEB-INF/layerOsm.xml
-			WEB-INF/layerCountries.xml
-			WEB-INF/layerCountriesWms.xml
-			
-			WEB-INF/clientLayerPopulatedPlaces110m.xml 
-			WEB-INF/layerPopulatedPlaces110m.xml
-			
-		
-        
-		
+			<!-- layers and maps included through geomajasExampleContext.xml -->
 		</param-value>
   </context-param>
   <filter>

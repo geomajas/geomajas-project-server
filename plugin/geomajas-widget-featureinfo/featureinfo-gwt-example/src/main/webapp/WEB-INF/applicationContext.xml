@@ -20,63 +20,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<context:component-scan base-package="org.geomajas.widget.featureinfo.gwt.example"
+	<!-- @extract-start ExampleCommandScan, Scan to assure command is available -->
+	<context:component-scan base-package="com.my.program"
 		name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
-
-	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
-		<property name="loopAllServices" value="false" />
-		<property name="securityServices">
-			<list>
-				<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />
-			</list>
-		</property>
-	</bean>
-
-	<bean name="app"
-		class="org.geomajas.configuration.client.ClientApplicationInfo">
-		<property name="maps">
-			<list>
-				<ref bean="mapMain" />
-				<ref bean="mapOverview" />
-			</list>
-		</property>
-	</bean>
-	
-	<!-- define server layer here -->
-	<bean name="populatedPlaces110m" class="org.geomajas.layer.bean.BeanLayer">
-		<property name="layerInfo" ref="populatedPlaces110mInfo" />
-		<property name="features">
-			<list>
-				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
-					<property name="id" value="1" />
-					<property name="name" value="Ghent" />
-					<property name="country" value="Belgium" />
-					<property name="worldcity" value="0" />
-					<property name="geometry" value="POINT(3.733333 51.05)" />
- 				</bean>				
-				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
-					<property name="id" value="2" />
-					<property name="name" value="Brussels" />
-					<property name="country" value="Belgium" />
-					<property name="worldcity" value="1" />
-					<property name="geometry" value="POINT(4.35 50.85)" />
- 				</bean>				
-				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
-					<property name="id" value="3" />
-					<property name="name" value="Paris" />
-					<property name="country" value="France" />
-					<property name="worldcity" value="1" />
-					<property name="geometry" value="POINT(2.350833 48.856667)" />
- 				</bean>				
-				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
-					<property name="id" value="4" />
-					<property name="name" value="Barcelona" />
-					<property name="country" value="Spain" />
-					<property name="worldcity" value="1" />
-					<property name="geometry" value="POINT(2.183333 41.383333)" />
- 				</bean>				
-			</list>
-		</property>
-	</bean>
+		<!-- @extract-end -->
 
 </beans>

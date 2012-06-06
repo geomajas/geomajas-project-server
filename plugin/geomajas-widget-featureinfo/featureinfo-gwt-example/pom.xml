@@ -37,6 +37,16 @@
 			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
+		
+		<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching</artifactId>
+			</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms-gwt</artifactId>
+		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -45,6 +55,7 @@
 			<!-- <version>${featureinfo-gwt-version}</version> -->
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
