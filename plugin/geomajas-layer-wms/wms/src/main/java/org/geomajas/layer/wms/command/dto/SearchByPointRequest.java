@@ -222,6 +222,7 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 	
 	/**
 	 * @deprecated Use getlayerMapping()
+	 * @since 1.10.0
 	 */
 	@Deprecated
 	public String[] getLayerIds() {
@@ -230,6 +231,7 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 
 	/**
 	 * @deprecated Use setlayerMapping()
+	 * @since 1.10.0
 	 */
 	@Deprecated
 	public void setLayerIds(String[] layerIds) {
