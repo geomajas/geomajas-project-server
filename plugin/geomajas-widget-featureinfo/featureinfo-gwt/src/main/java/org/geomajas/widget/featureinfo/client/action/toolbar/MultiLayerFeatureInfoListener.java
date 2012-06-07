@@ -13,10 +13,9 @@ package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
@@ -26,9 +25,9 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.listener.AbstractListener;
 import org.geomajas.gwt.client.controller.listener.ListenerEvent;
-import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Mathlib;
@@ -149,13 +148,18 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 							((VectorLayer) layer).getFilter());
 				}
 			}
-
 			final SearchByPointRequest rasterLayerRequest = new SearchByPointRequest();
 			rasterLayerRequest.setLocation(point.getCoordinate());
 			rasterLayerRequest.setCrs(mapWidget.getMapModel().getCrs());
 			rasterLayerRequest.setSearchType(SearchByPointRequest.SEARCH_ALL_LAYERS);
 			rasterLayerRequest.setPixelTolerance(pixelTolerance);
-			rasterLayerRequest.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+			final Map<String, String> rasterLayerIds = new HashMap<String, String>();
+			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+				if (layer.isShowing() && layer instanceof RasterLayer && !layersToExclude.contains(layer.getId())) {
+					rasterLayerIds.put(layer.getId(), layer.getServerLayerId());
+				}
+			}
+			rasterLayerRequest.setLayerMapping(rasterLayerIds);
 			rasterLayerRequest.setBbox(toBbox(mapWidget.getMapModel().getMapView().getBounds()));
 			rasterLayerRequest.setScale(mapWidget.getMapModel().getMapView().getCurrentScale());
 
@@ -172,6 +176,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 						GwtCommandDispatcher.getInstance().execute(commandRequest,
 								new AbstractCommandCallback<SearchByPointResponse>() {
 									public void execute(final SearchByPointResponse rasterResponse) {
+										//Featuremap maps client layer on feature
 										Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = 
 											vectorResponse.getFeatureMap();
 										featureMap.putAll(rasterResponse.getFeatureMap());
@@ -201,7 +206,12 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 				Layer<?> layer = (mapWidget.getMapModel().getLayer(featureMap.keySet().iterator().next()));
 				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
-					Feature feature = new Feature(featDTO, (VectorLayer) layer);
+					Feature feature;
+					if (layer instanceof VectorLayer) {
+						feature = new Feature(featDTO, (VectorLayer) layer);
+					} else {
+						feature = new Feature(featDTO, null);
+					}
 					Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, layer, false);
 					window.setPageTop(mapWidget.getAbsoluteTop() + 25);
 					window.setPageLeft(mapWidget.getAbsoluteLeft() + 25);
@@ -229,16 +239,6 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	 */
 	private org.geomajas.geometry.Bbox toBbox(Bbox bounds) {
 		return new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-	}
-
-	private String[] getServerLayerIds(MapModel mapModel) {
-		Set<String> layerIds = new HashSet<String>();
-		for (Layer<?> layer : mapModel.getLayers()) {
-			if (layer.isShowing()) {
-				layerIds.add(layer.getServerLayerId());
-			}
-		}
-		return layerIds.toArray(new String[layerIds.size()]);
 	}
 
 	private double calculateBufferFromPixelTolerance() {

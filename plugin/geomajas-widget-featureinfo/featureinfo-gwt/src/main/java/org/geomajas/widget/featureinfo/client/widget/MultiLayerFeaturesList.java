@@ -162,7 +162,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 */
 	private boolean addFeature(Feature feature, Layer<?> layer) {
 		// Basic checks:
-		if (feature == null || layer == null || !feature.getLayer().getId().equals(layer.getId())) {
+		if (feature == null || layer == null ) {
 			return false;
 		}
 		// Feature checks out, add it to the grid:

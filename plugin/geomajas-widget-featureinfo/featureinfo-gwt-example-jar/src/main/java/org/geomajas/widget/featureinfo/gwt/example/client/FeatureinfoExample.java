@@ -16,6 +16,8 @@ import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
 
 import com.google.gwt.core.client.EntryPoint;
+
+import org.geomajas.widget.featureinfo.client.util.FitSetting;
 import org.geomajas.widget.featureinfo.gwt.example.client.i18n.ApplicationMessages;
 
 /**
@@ -29,6 +31,7 @@ public class FeatureinfoExample implements EntryPoint {
 
 	public void onModuleLoad() {
 
+		FitSetting.featureinfoIncludeRasterLayer = true;
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode("Plug-ins",
 				"[ISOMORPHIC]/geomajas/silk/plugin.png", "Plugins", "topLevel"));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.applicationTitle("Feature info"),
