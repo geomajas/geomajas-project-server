@@ -53,6 +53,13 @@
 				<version>2.7.4</version>
 			</dependency>
 			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>${geomajas-layer-wms-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
 				<version>1.11.36</version>
