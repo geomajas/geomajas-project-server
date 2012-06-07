@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,9 @@ public class SearchByPointCommandTest {
 		SearchByPointRequest request = new SearchByPointRequest();
 		request.setBbox(new Bbox(-3211986.0066263545, 98246.25012821658, 1.065471024672729E7, 3365675.229452881));
 		request.setCrs("EPSG:900913");
-		request.setLayerIds(new String[] {layer});
+		Map<String, String> layers = new HashMap<String, String>();
+		layers.put(layer, layer);
+		request.setLayerMapping(layers);
 		request.setLocation(new Coordinate(672238.022713162, 2554015.0948743597));
 		request.setScale(1.022083167709322E-4);
 		CommandResponse response = dispatcher.execute(SearchByPointRequest.COMMAND, request, null, "en");
