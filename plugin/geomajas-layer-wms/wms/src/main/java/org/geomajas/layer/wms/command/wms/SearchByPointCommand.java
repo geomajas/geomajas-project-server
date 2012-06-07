@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * <p>
@@ -79,9 +80,8 @@ public class SearchByPointCommand
 
 	public void execute(SearchByPointRequest request, SearchByPointResponse response)
 			throws Exception {
-		String[] layerIds = request.getLayerIds();
-		if (null == layerIds) {
-			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerIds");
+		if (null == request.getLayerMapping()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "serverLayerMapping");
 		}
 		String crsCode = request.getCrs();
 		if (null == crsCode) {
@@ -112,10 +112,13 @@ public class SearchByPointCommand
 
 		log.debug("search by location {}", coordinate);
 
-		if (layerIds.length > 0) {
-			for (String layerId : layerIds) {
-				if (securityContext.isLayerVisible(layerId)) {
-					Layer<?> layer = configurationService.getLayer(layerId);
+		if (request.getLayerMapping().size() > 0) {
+			for (Entry<String, String> entry : request.getLayerMapping().entrySet()) {
+				String serverLayerId = entry.getValue();
+				String clientLayerId = entry.getKey();
+				
+				if (securityContext.isLayerVisible(serverLayerId)) {
+					Layer<?> layer = configurationService.getLayer(serverLayerId);
 					if (layer instanceof LayerFeatureInfoSupport &&
 							((LayerFeatureInfoSupport) layer).isEnableFeatureInfoSupport()) {
 						Crs layerCrs = layerService.getCrs(layer);
@@ -124,7 +127,7 @@ public class SearchByPointCommand
 						List<Feature> features = ((LayerFeatureInfoSupport) layer).getFeaturesByLocation(
 								layerCoordinate, layerScale, request.getPixelTolerance());
 						if (features != null && features.size() > 0) {
-							response.addLayer(layerId, features);
+							response.addLayer(clientLayerId, features);
 							if (searchFirstLayerOnly) {
 								break;
 							}

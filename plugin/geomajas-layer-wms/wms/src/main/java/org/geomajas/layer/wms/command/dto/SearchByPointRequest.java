@@ -10,6 +10,8 @@
  */
 package org.geomajas.layer.wms.command.dto;
 
+import java.util.Map;
+
 import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
@@ -66,7 +68,10 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 
 	/** Search accuracy in pixels. */
 	private int pixelTolerance = 1;
-
+	
+	/** Map that contains the client to server layer mapping.*/
+	private Map<String, String> layerMapping;
+	
 	// -------------------------------------------------------------------------
 	// Command fields:
 	// -------------------------------------------------------------------------
@@ -190,4 +195,45 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 				", pixelTolerance=" + pixelTolerance +
 				'}';
 	}
+
+	/**
+	 * Set the server layer mapping. This contains keys (client Layer id's) and values (server layer id's).
+	 * 
+	 * This deprecates {@link LayerIdsCommandRequest}.setLayerIds()
+	 * 
+	 * @param layerMapping the serverLayerMapping to set
+	 * @since 1.10.0
+	 */
+	public void setLayerMapping(Map<String, String> layerMapping) {
+		this.layerMapping = layerMapping;
+	}
+
+	/**
+	 * Get the server layer mapping. This contains keys (client Layer id's) and values (server layer id's).
+	 *
+	 * This deprecates {@link LayerIdsCommandRequest}.getLayerIds()
+	 * 
+	 * @return the layerMapping
+	 * @since 1.10.0
+	 */
+	public Map<String, String> getLayerMapping() {
+		return layerMapping;
+	}
+	
+	/**
+	 * @deprecated Use getlayerMapping()
+	 */
+	@Deprecated
+	public String[] getLayerIds() {
+		return super.getLayerIds();
+	}
+
+	/**
+	 * @deprecated Use setlayerMapping()
+	 */
+	@Deprecated
+	public void setLayerIds(String[] layerIds) {
+		super.setLayerIds(layerIds);
+	}
+	
 }
