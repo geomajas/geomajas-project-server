@@ -226,7 +226,7 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 	 */
 	@Deprecated
 	public String[] getLayerIds() {
-		return super.getLayerIds();
+		return layerMapping.values().toArray(new String[0]);
 	}
 
 	/**
@@ -235,7 +235,9 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 	 */
 	@Deprecated
 	public void setLayerIds(String[] layerIds) {
-		super.setLayerIds(layerIds);
+		for (String s : layerIds) {
+			layerMapping.put(s, s);
+		}
 	}
 	
 }
