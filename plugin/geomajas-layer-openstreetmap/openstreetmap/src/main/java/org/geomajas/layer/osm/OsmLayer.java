@@ -12,7 +12,7 @@ package org.geomajas.layer.osm;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
@@ -40,8 +40,26 @@ public class OsmLayer implements RasterLayer {
 
 	public static final int TILE_SIZE = 256; // tile size in pixels
 
+	/**
+	 * Default tile URLs.
+	 *
+	 * @since 1.10.0
+	 */
+	@Api
 	public static final List<String> OPEN_STREET_MAP_URLS = new ArrayList<String>();
+
+	/**
+	 * Open Cycle Map rendering of OpenStreetMap.
+	 *
+	 * @since 1.10.0
+	 */
+	@Api
 	public static final List<String> OPEN_CYCLE_MAP_URLS = new ArrayList<String>();
+
+	/**
+	 * @deprecated no longer working, use {@link #OPEN_STREET_MAP_URLS} or another set of URLs instead.
+	 */
+	@Deprecated
 	public static final List<String> TILES_AT_HOME_MAP_URLS = new ArrayList<String>();
 
 	@Autowired
@@ -60,12 +78,12 @@ public class OsmLayer implements RasterLayer {
 		OPEN_STREET_MAP_URLS.add("http://a.tile.openstreetmap.org/${level}/${x}/${y}.png");
 		OPEN_STREET_MAP_URLS.add("http://b.tile.openstreetmap.org/${level}/${x}/${y}.png");
 		OPEN_STREET_MAP_URLS.add("http://c.tile.openstreetmap.org/${level}/${x}/${y}.png");
-		OPEN_CYCLE_MAP_URLS.add("http://a.tile.opencyclemap.org/${level}/${x}/${y}.png");
-		OPEN_CYCLE_MAP_URLS.add("http://b.tile.opencyclemap.org/${level}/${x}/${y}.png");
-		OPEN_CYCLE_MAP_URLS.add("http://c.tile.opencyclemap.org/${level}/${x}/${y}.png");
-		TILES_AT_HOME_MAP_URLS.add("http://a.tah.openstreetmap.org/Tiles/tile/${level}/${x}/${y}.png");
-		TILES_AT_HOME_MAP_URLS.add("http://b.tah.openstreetmap.org/Tiles/tile/${level}/${x}/${y}.png");
-		TILES_AT_HOME_MAP_URLS.add("http://c.tah.openstreetmap.org/Tiles/tile/${level}/${x}/${y}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://a.tile.opencyclemap.org/cycle/${level}/${x}/${y}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://b.tile.opencyclemap.org/cycle/${level}/${x}/${y}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://c.tile.opencyclemap.org/cycle/${level}/${x}/${y}.png");
+		TILES_AT_HOME_MAP_URLS.add("http://a.tile.openstreetmap.org/${level}/${x}/${y}.png");
+		TILES_AT_HOME_MAP_URLS.add("http://b.tile.openstreetmap.org/${level}/${x}/${y}.png");
+		TILES_AT_HOME_MAP_URLS.add("http://c.tile.openstreetmap.org/${level}/${x}/${y}.png");
 	}
 
 	public String getId() {

@@ -109,11 +109,11 @@ public class OsmLayerTest {
 		tiles = osmCycleMap.paint(osmCycleMap.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		tile = tiles.get(0);
-		Assert.assertEquals("http://c.tile.opencyclemap.org/14/8196/8189.png", tile.getUrl());
+		Assert.assertEquals("http://c.tile.opencyclemap.org/cycle/14/8196/8189.png", tile.getUrl());
 		tiles = osmCycleMap.paint(osmCycleMap.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		tile = tiles.get(0);
-		Assert.assertEquals("http://c.tile.opencyclemap.org/14/8196/8189.png", tile.getUrl());
+		Assert.assertEquals("http://c.tile.opencyclemap.org/cycle/14/8196/8189.png", tile.getUrl());
 	}
 
 	@Test

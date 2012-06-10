@@ -15,7 +15,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
