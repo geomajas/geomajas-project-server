@@ -12,6 +12,7 @@
 package org.geomajas.application.gwt.showcase.client;
 
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
+import org.geomajas.application.gwt.showcase.client.layer.OpenCycleMapSample;
 import org.geomajas.application.gwt.showcase.client.security.AttributeSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.CommandSecuritySample;
 import org.geomajas.application.gwt.showcase.client.security.FilterSecuritySample;
@@ -51,6 +52,11 @@ public class ShowcaseEntryPoint implements EntryPoint {
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	public void onModuleLoad() {
+		// layer samples
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.openCycleMapTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", OpenCycleMapSample.TITLE, "Layers",
+				OpenCycleMapSample.FACTORY));
+
 		// Security samples:
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupSecurity(),
 				"[ISOMORPHIC]/geomajas/silk/key.png", SECURITY_GROUP, "topLevel"));

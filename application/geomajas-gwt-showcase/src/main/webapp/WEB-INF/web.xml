@@ -28,6 +28,9 @@
 
 			<!-- layers and maps included through geomajasExampleContext.xml -->
 
+			WEB-INF/appShowcase.xml
+			WEB-INF/layerOpenCycleMap.xml
+
 			<!--
 			classpath:org/geomajas/spring/testRecorder.xml
 			-->

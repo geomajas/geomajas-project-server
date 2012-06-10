@@ -81,4 +81,10 @@ public interface ShowcaseMessages extends Messages {
 	String attributeSecurityDescription();
 
 	String attributeSecurityButtonTitle();
+
+	// layer samples
+
+	String openCycleMapTitle();
+	String openCycleMapDescription();
+
 }
