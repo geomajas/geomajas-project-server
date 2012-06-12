@@ -48,6 +48,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="mapEditMultiPoint" />
 				<ref bean="mapEditMultiLine" />
 				<ref bean="mapEditMultiPolygon" />
+				<ref bean="mapCustomToolbar" />
+				<ref bean="mapCustomToolbarTools" />
 				<ref bean="mapLegend" />
 				<ref bean="mapFeatureListGrid" />
 				<ref bean="mapPipeline" />

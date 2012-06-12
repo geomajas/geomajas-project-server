@@ -11,17 +11,17 @@
 
 package org.geomajas.gwt.example.client.sample.toolbar;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.action.toolbar.ZoomToRectangleModalAction;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
 /**
  * <p>
@@ -51,13 +51,10 @@ public class CustomToolbarSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("mapOsm", "gwtExample");
+		final MapWidget map = new MapWidget("mapCustomToolbar", "gwtExample");
 
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
-
-		// add a button in GWT code
-		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
@@ -68,6 +65,8 @@ public class CustomToolbarSample extends SamplePanel {
 		map.getMapModel().runWhenInitialized(new Runnable() {
 
 			public void run() {
+				// add a button
+				toolbar.addModalButton(new ZoomToRectangleModalAction(map));
 				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
 			}
 		});
@@ -81,7 +80,7 @@ public class CustomToolbarSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/context/mapOsm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapCustomToolbar.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 

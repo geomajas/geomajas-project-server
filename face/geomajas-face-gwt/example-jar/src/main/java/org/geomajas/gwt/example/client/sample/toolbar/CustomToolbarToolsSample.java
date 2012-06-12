@@ -11,25 +11,25 @@
 
 package org.geomajas.gwt.example.client.sample.toolbar;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
 /**
  * <p>
@@ -59,7 +59,7 @@ public class CustomToolbarToolsSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("mapOsm", "gwtExample");
+		final MapWidget map = new MapWidget("mapCustomToolbarTools", "gwtExample");
 		map.setController(new PanController(map));
 
 		final Toolbar toolbar = new Toolbar(map);
@@ -77,20 +77,26 @@ public class CustomToolbarToolsSample extends SamplePanel {
 			}
 		};
 
-		// Add the customController to the toolbar using a custom ToolbarModalAction button
-		toolbar.addModalButton(new ToolbarModalAction("[ISOMORPHIC]/geomajas/widget/target.gif",
-				MESSAGES.customToolbarToolsTooltip()) {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			@Override
-			public void onSelect(ClickEvent event) {
-				map.setController(customController);
-			}
+			public void run() {
+				// Add the customController to the toolbar using a custom ToolbarModalAction button
+				toolbar.addModalButton(new ToolbarModalAction("[ISOMORPHIC]/geomajas/widget/target.gif",
+						MESSAGES.customToolbarToolsTooltip()) {
 
-			@Override
-			public void onDeselect(ClickEvent event) {
-				map.setController(null);
+					@Override
+					public void onSelect(ClickEvent event) {
+						map.setController(customController);
+					}
+
+					@Override
+					public void onDeselect(ClickEvent event) {
+						map.setController(null);
+					}
+				});
 			}
 		});
+
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
@@ -104,7 +110,7 @@ public class CustomToolbarToolsSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/context/mapOsm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapCustomToolbarTools.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 
