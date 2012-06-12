@@ -11,20 +11,20 @@
 
 package org.geomajas.gwt.example.client.sample.attribute;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
-import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
 /**
  * <p>
@@ -41,6 +41,8 @@ public class EditAttributeSample extends SamplePanel {
 
 	private FeatureAttributeEditor editor;
 
+	private MapModel mapModel;
+
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
@@ -55,10 +57,7 @@ public class EditAttributeSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID beansMap is defined in the XML configuration. (contains any type of attribute)
-		final MapWidget map = new MapWidget("mapBeansAssociation", "gwtExample");
-		map.setVisible(false);
-		layout.addMember(map);
-		map.init();
+		mapModel = new MapModel("mapBeansAssociation", "gwtExample");
 
 		HLayout hLayout = new HLayout(10);
 		hLayout.setHeight(40);
@@ -80,11 +79,12 @@ public class EditAttributeSample extends SamplePanel {
 		hLayout.addMember(enabledBtn);
 		layout.addMember(hLayout);
 
-		map.getMapModel().runWhenInitialized(new Runnable() {
+		mapModel.runWhenInitialized(new Runnable() {
 
 			public void run() {
-				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansAssociationLayer");
+				VectorLayer layer = (VectorLayer) mapModel.getLayer("beansAssociationLayer");
 				editor = new FeatureAttributeEditor(layer, false);
+				editor.setFeature(layer.getFeatureStore().newFeature());
 				editor.setWidth(400);
 				layout.addMember(editor);
 			}
@@ -92,6 +92,11 @@ public class EditAttributeSample extends SamplePanel {
 
 		return layout;
 	}
+	
+	public void onDraw() {
+		mapModel.init();
+	}
+
 
 	public String getDescription() {
 		return MESSAGES.editAttributeDescription();
