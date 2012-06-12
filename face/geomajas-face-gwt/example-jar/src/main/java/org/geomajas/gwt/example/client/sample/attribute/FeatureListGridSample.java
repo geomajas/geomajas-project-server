@@ -17,7 +17,7 @@ import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.controller.SelectionController;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
@@ -64,7 +64,7 @@ public class FeatureListGridSample extends SamplePanel {
 
 		// Map with ID featureListGridMap is defined in the XML configuration.
 		final MapWidget map = new MapWidget("mapFeatureListGrid", "gwtExample");
-		map.setController(new PanController(map));
+		map.setController(new SelectionController(map, 1000, 0.7f, false, 5));
 		mapLayout.addMember(map);
 
 		// Create a layout with a FeatureListGrid in it:
@@ -73,7 +73,6 @@ public class FeatureListGridSample extends SamplePanel {
 		grid.setShowResizeBar(true);
 
 		// Add a trigger to fill the grid when the map has finished loading:
-
 		map.getMapModel().runWhenInitialized(new Runnable() {
 
 			public void run() {
