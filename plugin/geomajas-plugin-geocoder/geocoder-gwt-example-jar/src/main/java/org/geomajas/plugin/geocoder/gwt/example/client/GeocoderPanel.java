@@ -11,18 +11,6 @@
 
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.DataSourceField;
-import com.smartgwt.client.data.Record;
-import com.smartgwt.client.data.fields.DataSourceTextField;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
@@ -30,6 +18,21 @@ import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.plugin.geocoder.client.GeocoderWidget;
 import org.geomajas.plugin.geocoder.gwt.example.client.i18n.GeocoderMessages;
+
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.data.DataSourceField;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.fields.DataSourceTextField;
+import com.smartgwt.client.widgets.Button;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Sample to demonstrate use of the geocoder plug-in.
@@ -83,12 +86,20 @@ public class GeocoderPanel extends SamplePanel {
 		geocoderSourceForm.setFields(geocoderSource);
 		toolbar.addMember(geocoderSourceForm);
 
-		// add second geocoder widget without title at the right
-		LayoutSpacer spacer = new LayoutSpacer();
-		toolbar.addMember(spacer);
-		GeocoderWidget geocoderWidgetNoTitle = new GeocoderWidget(map, "noTitle", "No Title");
-		geocoderWidgetNoTitle.setShowTitle(false);
-		toolbar.addMember(geocoderWidgetNoTitle);
+		// add button to toggle title
+		final Button button = new Button("Hide title");
+		button.addClickHandler(new ClickHandler() {
+
+			private boolean showTitle;
+
+			public void onClick(ClickEvent event) {
+				geocoderWidget.setShowTitle(showTitle);
+				button.setTitle(showTitle ? "Hide title" : "Show title");
+				showTitle = !showTitle;
+				
+			}
+		});
+		toolbar.addMember(button);
 		
 		layout.addMember(toolbar);
 		layout.addMember(map);
