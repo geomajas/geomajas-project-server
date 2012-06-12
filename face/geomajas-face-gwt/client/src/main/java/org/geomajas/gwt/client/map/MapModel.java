@@ -676,6 +676,26 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 	
 	/**
+	 * Pan to the center of the bounds of the specified features.
+	 * 
+	 * @param features list of features, will be lazy-loaded if necessary
+	 * @since 1.11.0
+	 */
+	@Api
+	public void panToFeatures(List<Feature> features) {
+		PanToFeaturesLazyLoadCallback callback = new PanToFeaturesLazyLoadCallback(features.size());
+		for (Feature feature : features) {
+			// no need to fetch if we already have the geometry !
+			if (feature.isGeometryLoaded()) {
+				callback.execute(Arrays.asList(feature));
+			} else {
+				feature.getLayer().getFeatureStore()
+						.getFeature(feature.getId(), GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, callback);			
+			}
+		}
+	}
+	
+	/**
 	 * Zoom to the bounds of the specified features.
 	 * 
 	 * @param features list of features, will be lazy-loaded if necessary
@@ -1114,6 +1134,37 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 						getMapView().setCenterPosition(bounds.getCenterPoint());
 						getMapView().setCurrentScale(pointScale, ZoomOption.LEVEL_CLOSEST);
 					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Stateful callback that pans to the center of the bounds of all features when they have been retrieved.
+	 * 
+	 * @author Jan De Moerloose
+	 */
+	private class PanToFeaturesLazyLoadCallback implements LazyLoadCallback {
+
+		private int featureCount;
+		private Bbox bounds;
+
+		public PanToFeaturesLazyLoadCallback(int featureCount) {
+			this.featureCount = featureCount;
+		}
+
+		public void execute(List<Feature> response) {
+			if (response != null && response.size() > 0) {
+				if (bounds == null) {
+					bounds = (Bbox) response.get(0).getGeometry().getBounds().clone();
+				} else {
+					bounds = bounds.union(response.get(0).getGeometry().getBounds());
+				}
+			}
+			featureCount--;
+			if (featureCount == 0) {
+				if (bounds != null) {
+					getMapView().setCenterPosition(bounds.getCenterPoint());
 				}
 			}
 		}
