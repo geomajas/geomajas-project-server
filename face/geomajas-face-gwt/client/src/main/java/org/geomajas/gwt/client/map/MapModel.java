@@ -375,7 +375,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	@Api
 	public void refresh() {
-		if (isInitialized()) { // to prevent refresh before the map is drawn
+		if (initCalled) { // to prevent refresh before the map is drawn
 			clear();
 			ClientConfigurationService.clear(); // refresh because configuration changed, clear cache
 			refreshFromConfiguration();
