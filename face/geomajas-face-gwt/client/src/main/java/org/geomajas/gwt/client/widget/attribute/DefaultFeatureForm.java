@@ -459,7 +459,6 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * @param attribute attribute value
 	 */
 	protected void setValue(String name, BooleanAttribute attribute) {
-		// formWidget.setValue(name, attribute.getValue());
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
 			item.setValue(attribute.getValue());
@@ -473,7 +472,10 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * @param attribute attribute value
 	 */
 	protected void setValue(String name, ShortAttribute attribute) {
-		formWidget.setValue(name, attribute.getValue());
+		FormItem item = formWidget.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/**
