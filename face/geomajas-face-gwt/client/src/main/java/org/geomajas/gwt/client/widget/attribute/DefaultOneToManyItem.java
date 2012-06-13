@@ -15,9 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.smartgwt.client.types.Overflow;
-import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -43,11 +42,11 @@ import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
 
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 import com.smartgwt.client.widgets.form.fields.LinkItem;
@@ -75,7 +74,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 
 	private IButton deleteButton;
 
-	private FeatureForm<DynamicForm> detailForm;
+	private DefaultFeatureForm detailForm;
 
 	private Window window;
 
@@ -133,6 +132,9 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		layout.setMembersMargin(WidgetLayout.marginLarge);
 		layout.setMargin(WidgetLayout.marginLarge);
 		detailForm = new DefaultFeatureForm(featureInfo, attributeProvider);
+		// The following flag is set because we assume that if a user is authorized to edit a one-to-many attribute,
+		// he/she is also authorized to edit the nested values of the attribute:
+		detailForm.setUseEditableFromInfo(true);
 		masterGrid = new AttributeListGrid(featureInfo);
 		masterGrid.setData(new ListGridRecord[] {});
 		masterGrid.setHeight(200);

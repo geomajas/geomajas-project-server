@@ -39,7 +39,6 @@ import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -51,8 +50,6 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridFieldIfFunction;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.CellClickEvent;
-import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.CellOverEvent;
 import com.smartgwt.client.widgets.grid.events.CellOverHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -584,9 +581,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			} else if (info.getType().equals(PrimitiveType.CURRENCY)) {
 				gridField.setType(ListGridFieldType.TEXT);
 			} else if (info.getType().equals(PrimitiveType.URL)) {
-				gridField.setType(ListGridFieldType.TEXT);
-				gridField.setAttribute("text-decoration", "underline");
-				addCellClickHandler(new UrlCellHandler(attributeInfo));
+				gridField.setType(ListGridFieldType.LINK);
 			}
 		} else if (attributeInfo instanceof AssociationAttributeInfo) {
 			gridField.setType(ListGridFieldType.TEXT);
@@ -704,30 +699,6 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			img.destroy();
 			img = null;
 		}
-	}
-
-	/**
-	 * Open the url in a separate browser window
-	 * 
-	 * @author Jan De Moerloose
-	 */
-	private class UrlCellHandler implements CellClickHandler {
-
-		private AttributeInfo attributeInfo;
-
-		UrlCellHandler(AttributeInfo attributeInfo) {
-			this.attributeInfo = attributeInfo;
-		}
-
-		public void onCellClick(CellClickEvent event) {
-			ListGridField gridField = FeatureListGrid.this.getField(event.getColNum());
-			if (gridField.getName().equals(attributeInfo.getName())) {
-				ListGridRecord record = event.getRecord();
-				String value = record.getAttribute(attributeInfo.getName());
-				Window.open(value, "urlWindow", null);
-			}
-		}
-
 	}
 	
 	/**
