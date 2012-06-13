@@ -104,13 +104,26 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	private GeometryFactory geometryFactory;
 
-	private boolean initialized;
-	private boolean initCalled;
 	private boolean mapModelEventFired; // assures MapModelEvent is only fired once
 
 	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
 	
 	private List<Runnable> whenInitializedRunnables = new ArrayList<Runnable>();
+	
+	private State state = State.IDLE;
+	
+	/**
+	 * Internal configuration state of the map.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	enum State {
+		IDLE, // initial state
+		INITIALIZING, // waiting for configuration callback (1st time)
+		INITIALIZED, // configuration applied
+		REFRESHING // waiting for configuration callback (> 1st time)
+	}	
 	
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -375,7 +388,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	@Api
 	public void refresh() {
-		if (initCalled) { // to prevent refresh before the map is drawn
+		if (state == State.INITIALIZED) { // to prevent refresh before the map is drawn
+			state = State.REFRESHING;
 			clear();
 			ClientConfigurationService.clear(); // refresh because configuration changed, clear cache
 			refreshFromConfiguration();
@@ -393,8 +407,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	@Api
 	public void init() {
-		if (!initCalled) {
-			initCalled = true;
+		if (state == State.IDLE) {
+			state = State.INITIALIZING;
 			refreshFromConfiguration();
 		}
 	}
@@ -406,7 +420,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	@Api
 	public void clear() {
-		initialized = false;
 		handlerManager.fireEvent(new MapModelClearEvent(this));
 		layers.clear();
 	}
@@ -432,14 +445,13 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param mapInfo The configuration object.
 	 */
 	private void refresh(final ClientMapInfo mapInfo) {
-		boolean firstRefresh = !initialized;
 		actualRefresh(mapInfo);
-		if (firstRefresh) {
+		if (state == State.INITIALIZING) {
 			// only change the initial bounds the first time around
 			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds());
 			mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
-			initialized = true;
 		}
+		state = State.INITIALIZED;
 		fireRefreshEvents();
 		
 		while (whenInitializedRunnables.size() > 0) {
@@ -523,7 +535,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	@Api
 	public boolean isInitialized() {
-		return initialized;
+		return state == State.INITIALIZED;
 	}
 
 	/**
