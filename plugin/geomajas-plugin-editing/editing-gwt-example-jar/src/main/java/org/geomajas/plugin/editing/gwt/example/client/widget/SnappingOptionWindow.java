@@ -54,7 +54,7 @@ public class SnappingOptionWindow extends Window {
 		super();
 		this.editor = editor;
 		sourceProvider = new VectorLayerSourceProvider(editor.getMapWidget().getMapModel()
-				.getVectorLayer("clientLayerCountries"));
+				.getVectorLayer("clientLayerGepCountries"));
 
 		setHeaderControls(HeaderControls.HEADER_ICON, HeaderControls.HEADER_LABEL, HeaderControls.CLOSE_BUTTON);
 		setAutoSize(true);
@@ -100,7 +100,7 @@ public class SnappingOptionWindow extends Window {
 		RadioGroupItem typeItem = new RadioGroupItem("type");
 		typeItem.setValueMap("Snap to end-points only", "Snap to end-points and edges");
 		typeItem.setWidth("400");
-		typeItem.setRequired(true);
+		typeItem.setValue("Snap to end-points only");
 
 		CheckboxItem intersectItem = new CheckboxItem("intersect", "Snap only to intersecting geometries");
 		intersectItem.setValue(false);
