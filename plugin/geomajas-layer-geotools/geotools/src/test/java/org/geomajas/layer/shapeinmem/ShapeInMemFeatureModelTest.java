@@ -47,8 +47,10 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
-		"/org/geomajas/testdata/layerPopulatedPlaces110m.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+		"/org/geomajas/testdata/layerCountries.xml", 
+		"/org/geomajas/testdata/simplevectorsContext.xml",
+		"/org/geomajas/layer/geotools/layerPopulatedPlaces110mEditable.xml",
+		"/org/geomajas/testdata/simplevectorsContext.xml" })
 public class ShapeInMemFeatureModelTest {
 
 	private static final String SHAPE_FILE = 
@@ -68,7 +70,7 @@ public class ShapeInMemFeatureModelTest {
 	private DtoConverterService converterService;
 
 	@Autowired
-	@Qualifier("populatedPlaces110mInfo")
+	@Qualifier("populatedPlaces110mInfoEditable")
 	private VectorLayerInfo layerInfo;
 
 	@Before

@@ -12,13 +12,22 @@
 package org.geomajas.layer.shapeinmem;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
+import org.geomajas.configuration.GeometryAttributeInfo;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Both the {@link org.geomajas.layer.geotools.GeoToolsFeatureModel} and the
@@ -43,6 +52,10 @@ public class FeatureSourceRetriever {
 	 * The FeatureSource object with which we have access to the GeoTools persistence layer.
 	 */
 	private SimpleFeatureSource featureSource;
+	
+	private final Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+	
+	private GeometryAttributeInfo geometryInfo;
 
 	protected long nextId;
 
@@ -119,6 +132,20 @@ public class FeatureSourceRetriever {
 	}
 
 	/**
+	 * Create a GeoTools feature model.
+	 *
+	 * @param vectorLayerInfo vector layer info
+	 * @throws LayerException feature model could not be constructed
+	 */
+	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
+		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
+		for (AttributeInfo info : featureInfo.getAttributes()) {
+			attributeInfoMap.put(info.getName(), info);
+		}
+		geometryInfo = featureInfo.getGeometryType();
+	}
+
+	/**
 	 * Convert the given feature object to a {@link SimpleFeature}.
 	 *
 	 * @param possibleFeature feature object to convert
@@ -132,4 +159,37 @@ public class FeatureSourceRetriever {
 			throw new LayerException(ExceptionCode.INVALID_FEATURE_OBJECT, possibleFeature.getClass().getName());
 		}
 	}
+
+	/** {@inheritDoc} */
+	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
+		for (String name : attributes.keySet()) {
+			if (!name.equals(getGeometryAttributeName()) && attributeInfoMap.get(name).isEditable()) {
+				asFeature(feature).setAttribute(name, attributes.get(name));
+			}
+		}
+	}
+	
+	/** {@inheritDoc} */
+	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
+		if (geometryInfo.isEditable()) {
+			asFeature(feature).setDefaultGeometry(geometry);
+		}
+	}
+
+	/** {@inheritDoc} */
+	public String getGeometryAttributeName() throws LayerException {
+		return getSchema().getGeometryDescriptor().getLocalName();
+	}
+
+	protected Map<String, AttributeInfo> getAttributeInfoMap() {
+		return attributeInfoMap;
+	}
+	
+	public GeometryAttributeInfo getGeometryInfo() {
+		return geometryInfo;
+	}
+	
+	
+	
+	
 }

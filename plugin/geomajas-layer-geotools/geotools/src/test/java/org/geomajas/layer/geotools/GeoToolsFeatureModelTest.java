@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.IntegerAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
@@ -43,21 +44,34 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 
-	private static GeoToolsFeatureModel featureModel;
+	private static final double DELTA = 0.00001;
 
-	private static SimpleFeature feature;
+	private GeoToolsFeatureModel readOnlyFeatureModel;
+
+	private GeoToolsFeatureModel featureModel;
+
+	private SimpleFeature feature;
+
+	private SimpleFeature readOnlyFeature;
 
 	@Autowired
 	@Qualifier("populatedPlaces110mInfo")
 	private VectorLayerInfo layerInfo;
+
+	@Autowired
+	@Qualifier("populatedPlaces110mInfoEditable")
+	private VectorLayerInfo layerInfoEditable;
 
 	@Before
 	public void init() throws Exception {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		URL url = classloader.getResource(SHAPE_FILE);
 		DataStore dataStore = new ShapefileDataStore(url);
+		readOnlyFeatureModel = new GeoToolsFeatureModel(dataStore, LAYER_NAME, 4326, converterService);
+		readOnlyFeatureModel.setLayerInfo(layerInfo);
+
 		featureModel = new GeoToolsFeatureModel(dataStore, LAYER_NAME, 4326, converterService);
-		featureModel.setLayerInfo(layerInfo);
+		featureModel.setLayerInfo(layerInfoEditable);
 
 		FeatureSource<SimpleFeatureType, SimpleFeature> fs = featureModel.getFeatureSource();
 		FeatureIterator<SimpleFeature> fi = fs.getFeatures().features();
@@ -66,7 +80,15 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 		feature = fi.next();
 		feature = fi.next();
 		feature = fi.next();
-	}
+
+		FeatureSource<SimpleFeatureType, SimpleFeature> fs2 = readOnlyFeatureModel.getFeatureSource();
+		FeatureIterator<SimpleFeature> fi2 = fs.getFeatures().features();
+		readOnlyFeature = fi2.next();
+		readOnlyFeature = fi2.next();
+		readOnlyFeature = fi2.next();
+		readOnlyFeature = fi2.next();
+		readOnlyFeature = fi2.next();
+}
 
 	@Test
 	public void testGetId() throws Exception {
@@ -114,5 +136,23 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 		Point pt = (Point) wktReader.read("POINT (5 5)");
 		featureModel.setGeometry(feature, pt);
 		Assert.assertEquals(5, featureModel.getGeometry(feature).getCoordinate().x, 0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testSetAttributesReadOnly() throws Exception {
+		Map<String, Attribute> map = new HashMap<String, Attribute>();
+		map.put(ATTRIBUTE_NAME, new StringAttribute("Heikant"));
+		map.put(ATTRIBUTE_POPULATION, new IntegerAttribute(100));
+		readOnlyFeatureModel.setAttributes(readOnlyFeature, map);
+		Assert.assertEquals("Pasay City", featureModel.getAttribute(feature, ATTRIBUTE_NAME).getValue());
+	}
+
+	@Test
+	public void testSetGeometryReadOnly() throws Exception {
+		WKTReader wktReader = new WKTReader();
+		Point pt = (Point) wktReader.read("POINT (5 5)");
+		readOnlyFeatureModel.setGeometry(readOnlyFeature, pt);
+		Assert.assertEquals(121, featureModel.getGeometry(feature).getCoordinate().x, DELTA);
 	}
 }
