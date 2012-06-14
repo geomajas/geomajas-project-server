@@ -87,4 +87,7 @@ public interface ShowcaseMessages extends Messages {
 	String openCycleMapTitle();
 	String openCycleMapDescription();
 
+	String tmsTitle();
+	String tmsDescription();
+
 }

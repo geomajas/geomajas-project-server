@@ -173,6 +173,12 @@
 			<artifactId>geomajas-gwt-face-example-jar</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-tms</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!-- dependencies for embedded examples -->
 		<!--
 		<dependency>

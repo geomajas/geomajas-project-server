@@ -24,12 +24,12 @@
 
 			<!-- security -->
 			WEB-INF/security.xml
-			WEB-INF/map*.xml
 
 			<!-- layers and maps included through geomajasExampleContext.xml -->
 
 			WEB-INF/appShowcase.xml
-			WEB-INF/layerOpenCycleMap.xml
+			WEB-INF/map*.xml
+			WEB-INF/layer*.xml
 
 			<!--
 			classpath:org/geomajas/spring/testRecorder.xml
