@@ -80,11 +80,21 @@
 				<artifactId>geomajas-layer-google-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-google-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-google-gwt-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${google-gwt-version}</version>
+				<version>${google-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -94,6 +104,8 @@
 	<modules>
 		<module>google</module>
 		<module>google-gwt</module>
+		<module>google-gwt-example-jar</module>
+		<module>google-gwt-example</module>
 	</modules>
 
 	<profiles>
@@ -125,8 +137,9 @@
 	</profiles>
 
 	<properties>
-		<google-layer-backend-version>1.7.1</google-layer-backend-version>
-		<google-gwt-version>1.8.0</google-gwt-version>
+		<google-layer-backend-version>1.10.0</google-layer-backend-version>
+		<google-gwt-face-version>1.10.0</google-gwt-face-version>
+		<google-gwt-version>2.4.0</google-gwt-version>
 		<google-layer-osm-version>1.8.0</google-layer-osm-version>
 	</properties>
 	
