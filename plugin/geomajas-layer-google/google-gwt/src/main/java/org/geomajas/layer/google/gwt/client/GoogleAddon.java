@@ -11,10 +11,6 @@
 
 package org.geomajas.layer.google.gwt.client;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.DOM;
-import com.smartgwt.client.types.VerticalAlignment;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -23,6 +19,13 @@ import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.DOM;
+import com.smartgwt.client.types.VerticalAlignment;
 
 /**
  * <p>
@@ -61,16 +64,31 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	}
 
 	// Constructor:
+	/**
+	 * Create the Google addon to assure the copyright details and ToS are displayed on the map. The map itself is
+	 * displayed in the background, any other raster layers will be displayed in front of it.
+	 * 
+	 * @param id element id
+	 * @param map map widget to display copyright on
+	 * @param type map type
+	 */
+	@Api
+	public GoogleAddon(String id, MapWidget map, MapType type) {
+		this(id, map, type, true);
+	}
 
 	/**
-	 * Create the Google addon to assure the copyright details are displayed on the map.
-	 *
+	 * Create the Google addon to assure the copyright details are displayed on the map. WARNING: deprecated because of
+	 * change in <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
+	 * 
 	 * @param id element id
 	 * @param map map widget to display copyright on
 	 * @param type map type
 	 * @param showMap should the map be visible?
+	 * @deprecated use {{@link #GoogleAddon(String, MapWidget, MapType)}
 	 */
 	@Api
+	@Deprecated
 	public GoogleAddon(String id, MapWidget map, MapType type, boolean showMap) {
 		super(id, 0, 0);
 		this.map = map;
@@ -89,10 +107,13 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		if (googleMap == null) {
 			// create as first child of raster group
-			map.getRasterContext().drawGroup(null, this);
+			map.getRasterContext().drawGroup(null, this);			
 			String id = map.getRasterContext().getId(this);
-			String graphicsId = map.getVectorContext().getId();
-
+			// move to first position
+			Element mapDiv = DOM.getElementById(id);
+			Element rasterGroup = DOM.getElementById(map.getRasterContext().getId(map.getGroup(RenderGroup.RASTER)));
+			DOM.insertBefore(DOM.getParent(rasterGroup), mapDiv, rasterGroup);
+				String graphicsId = map.getVectorContext().getId();
 			googleMap = createGoogleMap(id, graphicsId, type.name(), showMap, getVerticalMargin(),
 					getHorizontalMargin(), getVerticalAlignmentString());
 		}
@@ -109,14 +130,14 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		// Remove the terms of use:
 		Element element = DOM.getElementById(id + "-googleAddon");
 		if (element != null) {
-			Element parent = element.getParentElement();
+			Element parent = DOM.getParent(element);
 			parent.removeChild(element);
 		}
 
 		// Remove the Google map too:
 		element = DOM.getElementById(id);
 		if (element != null) {
-			Element parent = element.getParentElement();
+			Element parent = DOM.getParent(element);
 			parent.removeChild(element);
 		}
 

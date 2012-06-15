@@ -11,6 +11,7 @@
 package org.geomajas.layer.google;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +35,9 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * Layer for displaying Google Maps images. Caution: you must comply with the Google terms of service to display the
  * calculated tiles. For the GWT face, a special map add-on (<code>GoogleAddOn</code>) is available.
+ * 
+ * WARNING: because of change in <a href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>,
+ * the default behavior for this layer is to not send tiles to the client.
  * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
@@ -62,6 +66,8 @@ public class GoogleLayer implements RasterLayer {
 	private boolean satellite;
 
 	private boolean physical;
+	
+	private boolean tilesEnabled;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -207,6 +213,32 @@ public class GoogleLayer implements RasterLayer {
 		}
 		this.physical = physical;
 	}
+	
+	/**
+	 * Check whether tiles should be sent to the client. WARNING: deprecated because of change in <a
+	 * href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
+	 * 
+	 * @return
+	 * @since 1.9.0
+	 * @deprecated use default setting of false
+	 */
+	@Deprecated
+	public boolean isTilesEnabled() {
+		return tilesEnabled;
+	}
+	
+	/**
+	 * Set whether tiles should be sent to the client. Defaults to false. WARNING: deprecated because of change in <a
+	 * href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
+	 * 
+	 * @param tilesEnabled
+	 * @since 1.9.0
+	 * @deprecated use default setting of false
+	 */
+	@Deprecated
+	public void setTilesEnabled(boolean tilesEnabled) {
+		this.tilesEnabled = tilesEnabled;
+	}
 
 	@PostConstruct
 	protected void postConstruct() throws GeomajasException {
@@ -239,7 +271,11 @@ public class GoogleLayer implements RasterLayer {
 	/** {@inheritDoc} */
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
 			throws GeomajasException {
-		return tileService.paint(tileServiceState, boundsCrs, bounds, scale);
+		if (isTilesEnabled()) {
+			return tileService.paint(tileServiceState, boundsCrs, bounds, scale);
+		} else {
+			return Collections.emptyList();
+		}
 	}
 
 }

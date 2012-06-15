@@ -20,17 +20,21 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start SimpleGoogleConfig, Simple Google layer configuration -->
-	<bean name="google" class="org.geomajas.layer.google.GoogleLayer"/>
+	<bean name="google" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true"/>
+	</bean>
 	<!-- @extract-end -->
 
 	<!-- @extract-start GoogleMaxZoomLevelConfig, Google layer max zoom level configuration -->
 	<bean name="googleMaxLevel" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true"/>
 		<property name="maxZoomLevel" value="12"/>
 	</bean>
 	<!-- @extract-end -->
 
 	<!-- @extract-start GoogleCustomUrls, Using custom URLs -->
 	<bean name="googleSingle" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true"/>
 		<property name="tileUrls">
 			<list>
 				<value>http://mt0.google.com/vt?v=w2.95&amp;x=${x}&amp;y=${y}&amp;z=${level}</value>
@@ -40,6 +44,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<!-- @extract-end -->
 
 	<bean name="googleWrongCrs" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true"/>
 		<property name="layerInfo">
 			<bean name="googleInfo" class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="crs" value="EPSG:4326"/>
@@ -49,6 +54,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start GoogleCustomUrlStrategy, Using a custom URL selection strategy -->
 	<bean name="googleStrategy" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true"/>
 		<property name="urlSelectionStrategy">
 			<bean class="org.geomajas.layer.google.LastUrlSelectionStrategy" />
 		</property>
@@ -58,17 +64,20 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start GoogleSatellite, Configure to use satellite images and increase max zoom level -->
 	<bean name="satellite" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="tilesEnabled" value="true"/>
 		<property name="satellite" value="true" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>
 	<!-- @extract-end -->
 
 	<bean name="physical" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="tilesEnabled" value="true"/>
 		<property name="physical" value="true" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>
 
 	<bean name="googleDs" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true"/>
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_NORMAL_MAP" />
@@ -79,6 +88,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start GoogleSatelliteDs, Configure to use satellite images and increase max zoom level -->
 	<bean name="satelliteDs" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="tilesEnabled" value="true"/>
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_SATELLITE_MAP" />
@@ -89,6 +99,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<!-- @extract-end -->
 
 	<bean name="physicalDs" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="tilesEnabled" value="true"/>
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_PHYSICAL_MAP" />
@@ -99,6 +110,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start GoogleLayerSample, Google layer configuration -->
 	<bean name="layerGoogle" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="tilesEnabled" value="true"/>
 		<property name="layerInfo" ref="layerGoogleInfo" />
 		<property name="satellite" value="false" />
 		<property name="maxZoomLevel" value="21" />
