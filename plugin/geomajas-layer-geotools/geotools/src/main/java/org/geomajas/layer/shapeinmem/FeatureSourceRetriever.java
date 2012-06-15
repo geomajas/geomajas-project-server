@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AbstractEditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -53,7 +54,7 @@ public class FeatureSourceRetriever {
 	 */
 	private SimpleFeatureSource featureSource;
 	
-	private final Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+	private final Map<String, AbstractAttributeInfo> attributeInfoMap = new HashMap<String, AbstractAttributeInfo>();
 	
 	private GeometryAttributeInfo geometryInfo;
 
@@ -139,7 +140,7 @@ public class FeatureSourceRetriever {
 	 */
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
-		for (AttributeInfo info : featureInfo.getAttributes()) {
+		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 			attributeInfoMap.put(info.getName(), info);
 		}
 		geometryInfo = featureInfo.getGeometryType();
@@ -162,9 +163,14 @@ public class FeatureSourceRetriever {
 
 	/** {@inheritDoc} */
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
-		for (String name : attributes.keySet()) {
-			if (!name.equals(getGeometryAttributeName()) && attributeInfoMap.get(name).isEditable()) {
-				asFeature(feature).setAttribute(name, attributes.get(name));
+		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
+			String name = entry.getKey();
+			if (!name.equals(getGeometryAttributeName())) {
+				AbstractAttributeInfo attributeInfo = attributeInfoMap.get(name);
+				if (attributeInfo instanceof AbstractEditableAttributeInfo &&
+						((AbstractEditableAttributeInfo) attributeInfo).isEditable()) {
+					asFeature(feature).setAttribute(name, entry.getValue());
+				}
 			}
 		}
 	}
@@ -181,15 +187,12 @@ public class FeatureSourceRetriever {
 		return getSchema().getGeometryDescriptor().getLocalName();
 	}
 
-	protected Map<String, AttributeInfo> getAttributeInfoMap() {
+	protected Map<String, AbstractAttributeInfo> getAttributeInfoMap() {
 		return attributeInfoMap;
 	}
 	
 	public GeometryAttributeInfo getGeometryInfo() {
 		return geometryInfo;
 	}
-	
-	
-	
-	
+
 }

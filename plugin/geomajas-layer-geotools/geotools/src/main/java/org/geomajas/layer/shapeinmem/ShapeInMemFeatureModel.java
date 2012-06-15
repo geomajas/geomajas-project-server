@@ -13,7 +13,7 @@ package org.geomajas.layer.shapeinmem;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -67,9 +67,15 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	// FeatureModel implementation:
 
+	@Override
+	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
+		super.setLayerInfo(vectorLayerInfo);
+		this.vectorLayerInfo = vectorLayerInfo;
+	}
+
 	/** {@inheritDoc} */
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
-		AttributeInfo attributeInfo = getAttributeInfoMap().get(name);
+		AbstractAttributeInfo attributeInfo = getAttributeInfoMap().get(name);
 		if (null == attributeInfo) {
 			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name, getAttributeInfoMap().keySet());
 		}
@@ -84,7 +90,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
-		for (Map.Entry<String, AttributeInfo> entry : getAttributeInfoMap().entrySet()) {
+		for (Map.Entry<String, AbstractAttributeInfo> entry : getAttributeInfoMap().entrySet()) {
 			String name = entry.getKey();
 			try {
 				attribs.put(name, converterService.toDto(f.getAttribute(name), entry.getValue()));
@@ -133,7 +139,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 				new Object[getSchema().getAttributeCount()], getSchema(), id);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		asFeature(feature).setDefaultGeometry(geometry);
 	}

@@ -14,7 +14,7 @@ package org.geomajas.layer.geotools;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -74,7 +74,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
-		for (AttributeInfo attributeInfo : getAttributeInfoMap().values()) {
+		for (AbstractAttributeInfo attributeInfo : getAttributeInfoMap().values()) {
 			String name = attributeInfo.getName();
 			attribs.put(name, convertAttribute(f.getAttribute(name), name));
 		}
@@ -82,7 +82,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 	}
 
 	private Attribute convertAttribute(Object object, String name) throws LayerException {
-		AttributeInfo attributeInfo = getAttributeInfoMap().get(name);
+		AbstractAttributeInfo attributeInfo = getAttributeInfoMap().get(name);
 		if (null == attributeInfo) {
 			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name, getAttributeInfoMap().keySet());
 		}

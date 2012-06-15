@@ -99,6 +99,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	 */
 	@Api
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
+		super.setLayerInfo(layerInfo);
 		this.layerInfo = layerInfo;
 	}
 

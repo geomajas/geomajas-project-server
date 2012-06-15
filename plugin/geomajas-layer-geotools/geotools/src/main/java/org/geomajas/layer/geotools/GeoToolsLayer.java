@@ -185,6 +185,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 */
 	@Api
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
+		super.setLayerInfo(layerInfo);
 		this.layerInfo = layerInfo;
 	}
 
