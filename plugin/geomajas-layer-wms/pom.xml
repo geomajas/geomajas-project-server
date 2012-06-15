@@ -68,6 +68,16 @@
 				<artifactId>geomajas-layer-wms-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms-gwt-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -77,6 +87,14 @@
 				<scope>import</scope>
 			</dependency>
 			
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${wms-gwt-face-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-caching</artifactId>
@@ -105,6 +123,8 @@
 	<modules>
 		<module>wms</module>
 		<module>wms-gwt</module>
+		<module>wms-gwt-example-jar</module>
+		<module>wms-gwt-example</module>
 	</modules>
 
 	<profiles>
@@ -138,5 +158,7 @@
 	<properties>
 		<wms-layer-backend-version>1.10.0</wms-layer-backend-version>
 		<wms-layer-caching-version>2.0.0</wms-layer-caching-version>
+		<wms-gwt-face-version>1.10.0</wms-gwt-face-version>
+		<google-gwt-version>2.4.0</google-gwt-version>
 	</properties>
 </project>

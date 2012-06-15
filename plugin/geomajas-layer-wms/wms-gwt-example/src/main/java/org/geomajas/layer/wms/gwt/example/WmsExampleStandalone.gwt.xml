@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<!-- @extract-start GwtModule, GWT module include google -->
+<module rename-to="WmsExample">
+	<!-- @extract-skip-start -->
+	<inherits name="org.geomajas.layer.wms.gwt.example.WmsExample"/>
+	<!-- @extract-skip-end -->
+	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
+	<inherits name="org.geomajas.gwt.GeomajasClient"/>
+	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
+
+	<!-- @extract-skip-start -->
+
+	<!-- add required languages
+	<extend-property name="locale" values="nl"/>
+	-->
+
+	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
+	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
+	<set-property name="user.agent" value="gecko1_8" />
+	<!-- @extract-skip-end -->
+
+	<entry-point class="org.geomajas.layer.wms.gwt.example.client.WmsExampleStandalone"/>
+</module>
+<!-- @extract-end -->
