@@ -11,8 +11,13 @@
 
 package org.geomajas.layer.google.gwt.client;
 
+import org.geomajas.command.dto.TransformGeometryRequest;
+import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
@@ -22,8 +27,8 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.smartgwt.client.types.VerticalAlignment;
 
 /**
@@ -43,6 +48,10 @@ import com.smartgwt.client.types.VerticalAlignment;
 @Api
 public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
+	private static final String EPSG_900913 = "EPSG:900913";
+	private static final String EPSG_3857 = "EPSG:3857";
+	private static final String EPSG_4326 = "EPSG:4326";
+	
 	private static final double HALF_CIRCLE = 180.0;
 	private static final double MERCATOR_WIDTH = Math.PI * 6378137.0;
 	private static final int VERTICAL_MARGIN = 20;
@@ -148,14 +157,43 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		// assume google coordinates here
 		if (googleMap != null) {
-			Bbox latLon = convertToLatLon(event.getBounds());
-			fitGoogleMapBounds(googleMap, latLon.getX(), latLon.getY(), latLon.getMaxX(), latLon.getMaxY());
+			String sourceCrs = map.getMapModel().getCrs();
+			if (isGoogleProjection(sourceCrs)) {
+				Bbox latLon = convertToLatLon(event.getBounds());
+				fitGoogleMapBounds(googleMap, latLon.getX(), latLon.getY(), latLon.getMaxX(), latLon.getMaxY());
+			} else {
+				// transform on server
+				Bbox latLon = convertToLatLon(event.getBounds());
+				fitGoogleMapBounds(googleMap, latLon.getX(), latLon.getY(), latLon.getMaxX(), latLon.getMaxY());
+
+				TransformGeometryRequest request = new TransformGeometryRequest();
+				Bbox mapBounds = event.getBounds();
+				request.setBounds(new org.geomajas.geometry.Bbox(mapBounds.getX(), mapBounds.getY(), mapBounds
+						.getWidth(), mapBounds.getHeight()));
+				request.setSourceCrs(map.getMapModel().getCrs());
+				request.setTargetCrs(EPSG_4326);
+				GwtCommand command = new GwtCommand(TransformGeometryRequest.COMMAND);
+				command.setCommandRequest(request);
+				GwtCommandDispatcher.getInstance().execute(command,
+						new AbstractCommandCallback<TransformGeometryResponse>() {
+
+							public void execute(TransformGeometryResponse response) {
+								Bbox latLon = new Bbox(response.getBounds());
+								fitGoogleMapBounds(googleMap, latLon.getY(), latLon.getX(), latLon.getMaxY(),
+										latLon.getMaxX());
+							}
+						});
+			}
 		}
 	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
+
+	private boolean isGoogleProjection(String sourceCrs) {
+		return EPSG_900913.equals(sourceCrs) || EPSG_3857.equals(sourceCrs);
+	}
 
 	private native JavaScriptObject createGoogleMap(String mapId, String graphicsId, String mapType, boolean showMap,
 			int verticalMargin, int horizontalMargin, String verticalAlignment)
