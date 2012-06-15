@@ -10,6 +10,7 @@
   -->
 
 <module>
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
 	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
 	<inherits name="org.geomajas.layer.google.gwt.GeomajasGoogle"/>
 

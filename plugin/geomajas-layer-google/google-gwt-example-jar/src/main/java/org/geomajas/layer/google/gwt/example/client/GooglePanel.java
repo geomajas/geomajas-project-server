@@ -101,9 +101,13 @@ public class GooglePanel extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapGoogle.xml", "WEB-INF/mapGoogleSat.xml",
-				"WEB-INF/mapGoogleTerrain.xml", "WEB-INF/layerGoogle.xml", "WEB-INF/layerGoogleSat.xml",
-				"WEB-INF/layerGoogleTerrain.xml" };
+		return new String[] { 
+				"classpath:org/geomajas/layer/google/gwt/example/context/mapGoogle.xml",
+				"classpath:org/geomajas/layer/google/gwt/example/context/mapGoogleSat.xml",
+				"classpath:org/geomajas/layer/google/gwt/example/context/mapGoogleTerrain.xml",
+				"classpath:org/geomajas/layer/google/gwt/example/context/layerGoogle.xml",
+				"classpath:org/geomajas/layer/google/gwt/example/context/layerGoogleSat.xml",
+				"classpath:org/geomajas/layer/google/gwt/example/context/layerGoogleTerrain.xml" };
 	}
 
 	@Override

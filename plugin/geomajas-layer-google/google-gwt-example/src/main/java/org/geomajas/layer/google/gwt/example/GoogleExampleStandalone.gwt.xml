@@ -12,7 +12,6 @@
 
 <!-- @extract-start GwtModule, GWT module include google -->
 <module rename-to="GoogleExample">
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
 	<!-- @extract-skip-start -->
 	<inherits name="org.geomajas.layer.google.gwt.example.GoogleExample"/>
 	<!-- @extract-skip-end -->
