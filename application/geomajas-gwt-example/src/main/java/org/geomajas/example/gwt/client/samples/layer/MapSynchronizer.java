@@ -22,9 +22,9 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
  */
 public class MapSynchronizer implements MapViewChangedHandler {
 
-	private MapView map1;
+	private final MapView map1;
 
-	private MapView map2;
+	private final MapView map2;
 
 	private boolean enabled;
 
