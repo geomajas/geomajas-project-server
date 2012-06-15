@@ -147,7 +147,7 @@ public class TmsLayer implements RasterLayer {
 
 		try {
 			// We don't necessarily need to split into same CRS and different CRS cases, the latter implementation uses
-			// identity transform if crs's are equal for map and layer but might introduce bugs in rounding and/or
+			// identity transform if CRSs are equal for map and layer but might introduce bugs in rounding and/or
 			// conversions.
 			if (needTransform) {
 				layerToMap = geoService.getCrsTransform(state.getCrs(), boundsCrs);

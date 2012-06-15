@@ -11,6 +11,7 @@
 
 package org.geomajas.layer.tms;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,6 +41,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TmsConfigurationService {
 
+	private static final String CLASSPATH = "classpath:";
+
 	/**
 	 * Get the configuration for a TMS layer by retrieving and parsing it's XML description file. The parsing is done
 	 * using JaxB.
@@ -57,23 +60,39 @@ public class TmsConfigurationService {
 			Unmarshaller um = context.createUnmarshaller();
 
 			// Find out where to retrieve the capabilities and unmarshall:
-			if (layerCapabilitiesUrl.startsWith("classpath:")) {
-				String location = layerCapabilitiesUrl.substring(10);
+			if (layerCapabilitiesUrl.startsWith(CLASSPATH)) {
+				String location = layerCapabilitiesUrl.substring(CLASSPATH.length());
+				if (location.startsWith("/")) {
+					// classpath resources should not start with a slash, but they often do
+					location = location.substring(1);
+				}
 				ClassLoader cl = Thread.currentThread().getContextClassLoader();
 				if (null == cl) {
 					cl = getClass().getClassLoader();
 				}
 				InputStream is = cl.getResourceAsStream(location);
-				return (TileMapInfo) um.unmarshal(is);
+				if (null != is) {
+					try {
+						return (TileMapInfo) um.unmarshal(is);
+					} finally {
+						try {
+							is.close();
+						} catch (IOException ioe) {
+							// ignore, just closing the stream
+						}
+					}
+				}
+				throw new TmsConfigurationException("Could not find the capabilities file. " + layerCapabilitiesUrl,
+						null);
 			}
 
 			// Normal case, find the URL and unmarshal:
 			URL url = new URL(layerCapabilitiesUrl);
 			return (TileMapInfo) um.unmarshal(url);
 		} catch (JAXBException e) {
-			throw new TmsConfigurationException("Could not read the capabilities file.", e);
+			throw new TmsConfigurationException("Could not read the capabilities file. " + layerCapabilitiesUrl, e);
 		} catch (MalformedURLException e) {
-			throw new TmsConfigurationException("Could not find the capabilities file.", e);
+			throw new TmsConfigurationException("Could not find the capabilities file. " + layerCapabilitiesUrl, e);
 		}
 	}
 
