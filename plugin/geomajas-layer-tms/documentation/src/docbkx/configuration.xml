@@ -60,7 +60,7 @@
       resolutions, etc will be taken from the TileMap description. Below is an
       example of such a configuration:</para>
 
-      <programlisting>&lt;bean name="tms" class="org.geomajas.layer.tms.TmsLayer" &gt;
+      <programlisting>&lt;bean name="layerTms" class="org.geomajas.layer.tms.TmsLayer" &gt;
     &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
 &lt;/bean&gt;</programlisting>
     </sect2>
@@ -73,13 +73,13 @@
       You would still need to specify the "baseTmsUrl" and a
       <code>RasterLayerInfo</code> object:</para>
 
-      <programlisting>&lt;bean name="tms" class="org.geomajas.layer.tms.TmsLayer" &gt;
+      <programlisting>&lt;bean name="layerTms" class="org.geomajas.layer.tms.TmsLayer" &gt;
     &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
     &lt;property name="extension" value="jpg" /&gt;
-    &lt;property name="layerInfo" ref="<emphasis role="bold">layerTms</emphasis>" /&gt;
+    &lt;property name="layerInfo" ref="<emphasis role="bold">layerTmsInfo</emphasis>" /&gt;
 &lt;/bean&gt;
 
-&lt;bean name="<emphasis role="bold">layerTms</emphasis>" class="org.geomajas.configuration.RasterLayerInfo"&gt;
+&lt;bean name="<emphasis role="bold">layerTmsInfo</emphasis>" class="org.geomajas.configuration.RasterLayerInfo"&gt;
     &lt;property name="crs" value="EPSG:4326"/&gt;
     &lt;property name="maxExtent"&gt;
         &lt;bean class="org.geomajas.geometry.Bbox"&gt;
