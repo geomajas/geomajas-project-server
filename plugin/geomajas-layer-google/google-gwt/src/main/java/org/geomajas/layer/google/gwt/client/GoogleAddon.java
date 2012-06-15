@@ -199,53 +199,32 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 			int verticalMargin, int horizontalMargin, String verticalAlignment)
 	/*-{
 	 	var mapDiv = $doc.getElementById(mapId);
-		var map = new $wnd.GMap2(mapDiv);		
 		if (mapType == "NORMAL") {
-			map.setMapType($wnd.G_NORMAL_MAP);
+			var options = {mapTypeId: $wnd.google.maps.MapTypeId.ROADMAP};
+		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		} else if (mapType == "SATELLITE") {
-			map.setMapType($wnd.G_SATELLITE_MAP);
+			var options = {mapTypeId: $wnd.google.maps.MapTypeId.SATELLITE};
+		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		} else if (mapType == "HYBRID") {
-			map.setMapType($wnd.G_HYBRID_MAP);
+			var options = {mapTypeId: $wnd.google.maps.MapTypeId.HYBRID};
+		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		} else if (mapType == "PHYSICAL") {
-			map.setMapType($wnd.G_PHYSICAL_MAP);
+			var options = {mapTypeId: $wnd.google.maps.MapTypeId.TERRAIN};
+		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		}  
 		if(!showMap) {
 			mapDiv.style.visibility = "hidden";
 		}
-		var graphics = $doc.getElementById(graphicsId);
-		var group = $doc.createElement("div");
-		group.setAttribute("id", mapId + "-googleAddon");
-		graphics.appendChild(group);
-
-		var termsOfUse = mapDiv.lastChild;
-		mapDiv.removeChild(termsOfUse);
-		group.appendChild(termsOfUse);
-		if ("top" == verticalAlignment) {
-			termsOfUse.style.top = verticalMargin + "px";
-		} else {
-			termsOfUse.style.bottom = verticalMargin + "px";
-		}
-		termsOfUse.style.marginRight = horizontalMargin + "px";
-
-		var poweredBy = mapDiv.lastChild;
-		mapDiv.removeChild(poweredBy);
-		group.appendChild(poweredBy);
-		if ("top" == verticalAlignment) {
-			poweredBy.style.top = verticalMargin + "px";
-		} else {
-			poweredBy.style.bottom = verticalMargin + "px";
-		}
-		poweredBy.style.marginLeft = horizontalMargin + "px";
 
 		return map;
 	}-*/;
 
 	private native void fitGoogleMapBounds(JavaScriptObject map, double xmin, double ymin, double xmax, double ymax)
 	/*-{
-		var sw = new $wnd.GLatLng(xmin, ymin);
-		var ne = new $wnd.GLatLng(xmax, ymax);
-		var bounds = new $wnd.GLatLngBounds(sw,ne);
-		map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds)); 
+		var sw = new $wnd.google.maps.LatLng(xmin, ymin);
+		var ne = new $wnd.google.maps.LatLng(xmax, ymax);
+		var bounds = new $wnd.google.maps.LatLngBounds(sw,ne);
+		map.fitBounds(bounds); 
 	}-*/;
 
 	private Bbox convertToLatLon(Bbox bounds) {

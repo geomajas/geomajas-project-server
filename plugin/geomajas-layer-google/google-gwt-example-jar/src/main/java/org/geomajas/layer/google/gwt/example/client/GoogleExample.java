@@ -30,8 +30,6 @@ public class GoogleExample implements EntryPoint {
 
 	public void onModuleLoad() {
 
-		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupLayers(),
-				"[ISOMORPHIC]/geomajas/osgeo/layer.png", "Layers", "topLevel"));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.googleTitle(),
 				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", GooglePanel.TITLE, "Layers",
 				GooglePanel.FACTORY));
