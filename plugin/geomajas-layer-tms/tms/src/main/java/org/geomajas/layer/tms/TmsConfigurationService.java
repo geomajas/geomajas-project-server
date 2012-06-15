@@ -59,7 +59,11 @@ public class TmsConfigurationService {
 			// Find out where to retrieve the capabilities and unmarshall:
 			if (layerCapabilitiesUrl.startsWith("classpath:")) {
 				String location = layerCapabilitiesUrl.substring(10);
-				InputStream is = getClass().getResourceAsStream(location);
+				ClassLoader cl = Thread.currentThread().getContextClassLoader();
+				if (null == cl) {
+					cl = getClass().getClassLoader();
+				}
+				InputStream is = cl.getResourceAsStream(location);
 				return (TileMapInfo) um.unmarshal(is);
 			}
 
