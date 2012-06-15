@@ -106,7 +106,7 @@
 					<draftCompile>true</draftCompile>
 					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<module>org.geomajas.layer.wms.gwt.example.GoogleExampleStandalone</module>
+					<module>org.geomajas.layer.wms.gwt.example.WmsExampleStandalone</module>
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>
