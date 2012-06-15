@@ -251,7 +251,9 @@ public class TmsLayer implements RasterLayer {
 	 * 
 	 * @param baseTmsUrl
 	 *            The base URL for the TMS layer.
+	 * @since 1.0.0
 	 */
+	@Api
 	public void setBaseTmsUrl(String baseTmsUrl) {
 		this.baseTmsUrl = baseTmsUrl;
 	}
@@ -271,7 +273,9 @@ public class TmsLayer implements RasterLayer {
 	 * 
 	 * @param extension
 	 *            The extension. Default value is "jpg".
+	 * @since 1.0.0
 	 */
+	@Api
 	public void setExtension(String extension) {
 		this.extension = extension;
 	}
