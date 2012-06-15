@@ -143,15 +143,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-google-all</artifactId>
-				<version>1.8.0</version>
+				<version>1.9.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			-->
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -225,6 +223,10 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-utility-gwt-example-jar</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google-gwt-example-jar</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->

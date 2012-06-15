@@ -16,14 +16,13 @@
 	<inherits name="org.geomajas.plugin.rasterizing.gwt.example.RasterizingExample"/>
 	<inherits name="org.geomajas.plugin.editing.gwt.example.EditingExample"/>
 	<inherits name="org.geomajas.widget.utility.gwt.example.WidgetUtilityExample"/>
+	<inherits name="org.geomajas.layer.google.gwt.example.GoogleExample"/>
 
 	<extend-property name="locale" values="nl"/>
 
 	<!-- uncomment following lines for faster compile during development -->
-	<!--
 	<set-property name="user.agent" value="gecko1_8" />
 	<set-property name="locale" value="default" />
-	-->
 
     <entry-point class="org.geomajas.application.gwt.showcase.client.ShowcaseEntryPoint"/>
 </module>
