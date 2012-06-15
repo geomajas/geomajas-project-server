@@ -23,7 +23,6 @@ import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.DOM;
 import com.smartgwt.client.types.VerticalAlignment;
 
@@ -71,6 +70,7 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	 * @param id element id
 	 * @param map map widget to display copyright on
 	 * @param type map type
+	 * @since 1.9.0
 	 */
 	@Api
 	public GoogleAddon(String id, MapWidget map, MapType type) {
