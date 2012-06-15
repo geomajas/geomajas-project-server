@@ -226,7 +226,7 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 	 */
 	@Deprecated
 	public String[] getLayerIds() {
-		return layerMapping.values().toArray(new String[0]);
+		return layerMapping.values().toArray(new String[layerMapping.size()]);
 	}
 
 	/**
