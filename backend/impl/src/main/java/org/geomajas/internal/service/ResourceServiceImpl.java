@@ -47,7 +47,7 @@ public class ResourceServiceImpl implements ResourceService {
 		if (resource.exists()) {
 			return resource;
 		} else {
-			String cpResource = null;
+			String cpResource;
 			if (location.startsWith("/")) {
 				cpResource = GeomajasConstant.CLASSPATH_URL_PREFIX + location.substring(1);
 			} else {

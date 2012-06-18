@@ -22,6 +22,7 @@ import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import org.opengis.filter.FilterFactory;
 
 /**
  * Filter creator service.
@@ -271,4 +272,13 @@ public interface FilterService {
 	 * @throws GeomajasException could not parse string to filter
 	 */
 	Filter parseFilter(String filter) throws GeomajasException;
+
+	/**
+	 * Get filter factory which is used by the implementation.
+	 *
+	 * @return filter factory
+	 * @since 1.11.0
+	 */
+	FilterFactory getFilterFactory();
+
 }

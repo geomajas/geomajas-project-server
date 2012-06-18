@@ -30,6 +30,7 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -282,4 +283,8 @@ public final class FilterServiceImpl implements FilterService {
 
 	}
 
+	@Override
+	public FilterFactory getFilterFactory() {
+		return FF;
+	}
 }

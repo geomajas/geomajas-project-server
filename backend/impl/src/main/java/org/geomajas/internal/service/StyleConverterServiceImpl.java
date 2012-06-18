@@ -194,24 +194,6 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	@Autowired
 	private ResourceService resourceService;
 
-	/**
-	 * Get the GeoTools style factory.
-	 *
-	 * @return style factory
-	 */
-	public StyleFactory getStyleFactory() {
-		return styleFactory;
-	}
-
-	/**
-	 * Set the GeoTools style factory.
-	 *
-	 * @param styleFactory style factory
-	 */
-	public void setStyleFactory(StyleFactory styleFactory) {
-		this.styleFactory = styleFactory;
-	}
-
 	/** {@inheritDoc} */
 	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
 		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
@@ -296,7 +278,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			marshallingContext.setOutput(sw);
 			marshallingContext.marshalDocument(sld);
 
-			SLDParser parser = new SLDParser(styleFactory);
+			SLDParser parser = new SLDParser(styleFactory, filterService.getFilterFactory());
 			parser.setOnLineResourceLocator(new ResourceServiceBasedLocator());
 			parser.setInput(new StringReader(sw.toString()));
 
@@ -561,6 +543,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				return "TOUCHES(" + propertyName + "," + wkt + ")";
 			} else if (binary instanceof WithinInfo) {
 				return "WITHIN(" + propertyName + "," + wkt + ")";
+			} else {
+				throw new IllegalArgumentException("Unhandled type of BinarySpatialOpTypeInfo " + binary);
 			}
 		} else if (spatialOps instanceof DistanceBufferTypeInfo) {
 			DistanceBufferTypeInfo distanceBuffer = (DistanceBufferTypeInfo) spatialOps;
@@ -576,9 +560,12 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				return "DWITHIN(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
 			} else if (distanceBuffer instanceof BeyondInfo) {
 				return "BEYOND(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
+			} else {
+				throw new IllegalArgumentException("Unhandled type of DistanceBufferTypeInfo " + distanceBuffer);
 			}
+		} else {
+			throw new IllegalArgumentException("Unhandled type of SpatialOpsTypeInfo " + spatialOps);
 		}
-		return null;
 	}
 	
 	private Envelope toEnvelope(BoxTypeInfo box) {
@@ -892,7 +879,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		SymbolInfo info = featureStyle.getSymbol();
 		if (info.getImage() != null) {
 
-			return styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()), getFormat(info.getImage()
+			return styleBuilder.createExternalGraphic(getUrl(info.getImage().getHref()), getFormat(info.getImage()
 					.getHref()));
 		} else {
 			Mark mark;
@@ -938,7 +925,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				styleBuilder.literalExpression(featureStyle.getFillOpacity()));
 	}
 
-	private URL getURL(String resourceLocation) throws LayerException {
+	private URL getUrl(String resourceLocation) throws LayerException {
 		if (resourceLocation.startsWith(GeomajasConstant.CLASSPATH_URL_PREFIX)) {
 			resourceLocation = resourceLocation.substring(GeomajasConstant.CLASSPATH_URL_PREFIX.length());
 		}
@@ -971,8 +958,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	 */
 	@PostConstruct
 	protected void postConstruct() {
-		// @todo is it ok that this uses the default GeoTools filter factory instead of the one use in FilterService ?
-		styleBuilder = new StyleBuilder(styleFactory);
+		styleBuilder = new StyleBuilder(filterService.getFilterFactory());
 	}
 	
 	/**
