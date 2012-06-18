@@ -11,7 +11,7 @@
 
 <module>
 	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
-	<inherits name="org.geomajas.layer.wms.gwt.GeomajasWms"/>
+	<inherits name="org.geomajas.layer.wms.GeomajasWms"/>
 
     <entry-point class="org.geomajas.layer.wms.gwt.example.client.WmsExample"/>
 </module>
