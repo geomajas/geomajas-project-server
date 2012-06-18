@@ -207,13 +207,13 @@ public class DefaultImageContext implements ImageContext {
 							case Event.ONERROR:
 								retries--;
 								if (retries > 0) {
-									Dom.setElementAttribute(image, "src", href);
+									Dom.setElementAttribute(image, "src", Dom.makeUrlAbsolute(href));
 								}
 								break;
 						}
 					}
 				});
-				Dom.setElementAttribute(image, "src", href);
+				Dom.setElementAttribute(image, "src", Dom.makeUrlAbsolute(href));
 			}
 		}
 	}

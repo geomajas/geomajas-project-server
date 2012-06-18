@@ -271,7 +271,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 			Dom.setElementAttribute(image, "y", Integer.toString((int) bounds.getY()));
 			Dom.setElementAttribute(image, "width", Integer.toString((int) bounds.getWidth()));
 			Dom.setElementAttribute(image, "height", Integer.toString((int) bounds.getHeight()));
-			Dom.setElementAttributeNS(Dom.NS_XLINK, image, "xlink:href", href);
+			Dom.setElementAttributeNS(Dom.NS_XLINK, image, "xlink:href", Dom.makeUrlAbsolute(href));
 		}
 	}
 
@@ -402,13 +402,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 				// Create the image symbol:
 				node = Dom.createElementNS(Dom.NS_SVG, "image");
 
-				String href = symbol.getImage().getHref();
-				if (href.indexOf(':') <= 0) {
-					// SVG in Chrome can't handle relative paths (the xml:base attribute has not yet been tested):
-					href = GWT.getHostPageBaseURL() + href;
-				}
-
-				Dom.setElementAttributeNS(Dom.NS_XLINK, node, "xlink:href", href);
+				Dom.setElementAttributeNS(Dom.NS_XLINK, node, "xlink:href",
+						Dom.makeUrlAbsolute(symbol.getImage().getHref()));
 
 				long width = (long) symbol.getImage().getWidth();
 				long height = (long) symbol.getImage().getHeight();
@@ -424,12 +419,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 
 				if (isNew) {
 					Element node2 = Dom.createElementNS(Dom.NS_SVG, "image");
-					href = symbol.getImage().getSelectionHref();
-					if (href.indexOf(':') <= 0) {
-						// SVG in Chrome can't handle relative paths (the xml:base attribute has not yet been tested):
-						href = GWT.getHostPageBaseURL() + href;
-					}
-					Dom.setElementAttributeNS(Dom.NS_XLINK, node2, "xlink:href", href);
+					Dom.setElementAttributeNS(Dom.NS_XLINK, node2, "xlink:href",
+							Dom.makeUrlAbsolute(symbol.getImage().getSelectionHref()));
 					Dom.setElementAttribute(node2, "width", Long.toString(width));
 					Dom.setElementAttribute(node2, "height", Long.toString(height));
 					Dom.setElementAttribute(node2, "x", Long.toString(-Math.round(width / 2)));

@@ -15,7 +15,6 @@ import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Image;
-import org.geomajas.gwt.client.gfx.style.PictureStyle;
 
 /**
  * <p>
@@ -49,7 +48,7 @@ public class ImagePainter implements Painter {
 	public void paint(Paintable paintable, Object group, MapContext context) {
 		Image image = (Image) paintable;
 		context.getVectorContext().drawImage(group, image.getId(), image.getHref(), image.getBounds(),
-				(PictureStyle) image.getStyle());
+				image.getStyle());
 	}
 
 	/**
@@ -60,7 +59,7 @@ public class ImagePainter implements Painter {
 	 *            The object to be painted.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {

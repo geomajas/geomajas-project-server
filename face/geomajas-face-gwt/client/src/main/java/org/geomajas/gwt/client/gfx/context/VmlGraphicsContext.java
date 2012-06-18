@@ -268,7 +268,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 			Element image = helper.createOrUpdateElement(parent, name, "image", style);
 			applyAbsolutePosition(image, bounds.getOrigin());
 			applyElementSize(image, (int) bounds.getWidth(), (int) bounds.getHeight(), true);
-			Dom.setElementAttribute(image, "src", href);
+			Dom.setElementAttribute(image, "src", Dom.makeUrlAbsolute(href));
 		}
 	}
 
@@ -424,7 +424,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 			} else if (symbol.getImage() != null) {
 				// Creating an image; ignoring style....
 				Element image = helper.createOrUpdateElement(parent, name, "image", null);
-				Dom.setElementAttribute(image, "src", symbol.getImage().getHref());
+				Dom.setElementAttribute(image, "src", Dom.makeUrlAbsolute(symbol.getImage().getHref()));
 				int width = symbol.getImage().getWidth();
 				int height = symbol.getImage().getHeight();
 				applyElementSize(image, width, height, false);
