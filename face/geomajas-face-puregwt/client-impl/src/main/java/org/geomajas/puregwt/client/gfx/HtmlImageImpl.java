@@ -22,6 +22,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import org.geomajas.gwt.client.util.Dom;
 
 /**
  * <p>
@@ -90,8 +91,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
 	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
 	 */
-	public HtmlImageImpl( String src,  int width,  int height,  int top,
-			 int left) {
+	public HtmlImageImpl( String src,  int width,  int height,  int top, int left) {
 		this(src, width, height, top, left, null);
 	}
 
@@ -128,7 +128,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 		super("img", width, height, top, left);
 
 		DOM.setStyleAttribute(getElement(), "border", "none");
-		DOM.setElementProperty(getElement(), "src", src);
+		DOM.setElementProperty(getElement(), "src", Dom.makeUrlAbsolute(src));
 		// set visible when loaded !
 		setVisible(false);
 		onLoadingDone(onLoadingDone, nrRetries);
