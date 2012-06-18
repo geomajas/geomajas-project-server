@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.util;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.Element;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasConstant;
 
 /**
@@ -25,7 +26,9 @@ import org.geomajas.global.GeomajasConstant;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.1.0
  */
+@Api(allMethods = true)
 public class Dom extends com.google.gwt.user.client.DOM {
 
 	/**
