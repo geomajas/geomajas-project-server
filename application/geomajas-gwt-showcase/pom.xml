@@ -78,6 +78,20 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+				<version>1.10.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-wms-all</artifactId>
+				<version>1.10.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder-all</artifactId>
 				<version>1.3.0-SNAPSHOT</version>
 				<type>pom</type>
@@ -106,13 +120,6 @@
 				<scope>import</scope>
 			</dependency>
 			-->
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
 			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -138,13 +145,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-utility-all</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-google-all</artifactId>
 				<version>1.9.0-SNAPSHOT</version>
 				<type>pom</type>
@@ -152,11 +152,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<artifactId>geomajas-widget-utility-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -184,6 +185,10 @@
 			<version>1.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
 		<!-- dependencies for embedded examples -->
 		<!--
 		<dependency>
