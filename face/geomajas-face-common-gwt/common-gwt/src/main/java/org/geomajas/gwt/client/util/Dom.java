@@ -11,8 +11,10 @@
 
 package org.geomajas.gwt.client.util;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.Element;
+import org.geomajas.global.GeomajasConstant;
 
 /**
  * <p>
@@ -338,4 +340,25 @@ public class Dom extends com.google.gwt.user.client.DOM {
 			  }
 		  }
 	 }-*/;
+
+	/**
+	 * Convert a URL to an absolute URL. This assumes the page is at the application root.
+	 * <p/>
+	 * It converts relative URLs by prepending the HostPageBaseURL and converts classpath resources to use the
+	 * resource dispatcher.
+	 *
+	 * @param url URL to convert
+	 * @return converted URL
+	 */
+	public static String makeUrlAbsolute(String url) {
+		String href = url;
+		if (href.indexOf(':') <= 0) {
+			// SVG in Chrome can't handle relative paths (the xml:base attribute has not yet been tested):
+			href = GWT.getHostPageBaseURL() + href;
+		} else if (href.startsWith(GeomajasConstant.CLASSPATH_URL_PREFIX)) {
+			href = GWT.getHostPageBaseURL() + "d/resource/" +
+					href.substring(GeomajasConstant.CLASSPATH_URL_PREFIX.length());
+		}
+		return href;
+	}
 }
