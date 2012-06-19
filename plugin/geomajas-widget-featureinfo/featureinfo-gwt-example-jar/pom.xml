@@ -233,43 +233,27 @@
 	</build>
 
 	<profiles>
+		<!--  include sources in build -->
 		<profile>
-			<id>defaultGWT</id>
+			<id>default</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>org.geomajas.widget.featureinfo.gwt.example.Application</module>
-							<runTarget>index.html</runTarget>
-							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<copyWebapp>true</copyWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<id>compile</id>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>clean</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.java</include>
+						</includes>
+					</resource>
+				</resources>
 			</build>
 		</profile>
-		<!-- m2eclipse with embedded jetty -->
+		<!--  no sources needed in eclipse -->
 		<profile>
 			<id>m2e</id>
 			<activation>
@@ -277,38 +261,6 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.geomajas</groupId>
-					<artifactId>geomajas-jetty-runner</artifactId>
-					<version>1.0.0</version>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>skipGwt</id>
-			<activation>
-				<property>
-					<name>skipGwt</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>clean</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
