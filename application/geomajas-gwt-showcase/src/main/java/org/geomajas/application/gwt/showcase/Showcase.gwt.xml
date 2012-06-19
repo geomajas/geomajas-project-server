@@ -16,6 +16,7 @@
 	<inherits name="org.geomajas.plugin.rasterizing.gwt.example.RasterizingExample"/>
 	<inherits name="org.geomajas.plugin.editing.gwt.example.EditingExample"/>
 	<inherits name="org.geomajas.widget.utility.gwt.example.WidgetUtilityExample"/>
+	<inherits name="org.geomajas.widget.featureinfo.gwt.example.FeatureInfoExample"/>
 	<inherits name="org.geomajas.layer.google.gwt.example.GoogleExample"/>
 	<inherits name="org.geomajas.layer.wms.gwt.example.WmsExample"/>
 
