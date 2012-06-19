@@ -8,7 +8,6 @@
 					<name>Geomajas repository</name>
 					<url>http://repo.geomajas.org/nexus/content/groups/public</url>
 				</repository>
-
 				<!-- uncomment if you want to use Geomajas snapshots, comment for faster 
 					builds -->
 				<repository>
@@ -24,7 +23,17 @@
 				<pluginRepository>
 					<id>Geomajas</id>
 					<name>Geomajas repository</name>
-					<url>http://maven.geomajas.org/</url>
+					<url>http://repo.geomajas.org/nexus/content/groups/public</url>
+				</pluginRepository>
+				<!-- uncomment if you want to use Geomajas snapshots, comment for faster 
+					builds -->
+				<pluginRepository>
+					<id>Geomajas-latest</id>
+					<name>Geomajas snapshot repository</name>
+					<url>http://repo.geomajas.org/nexus/content/groups/latest</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
