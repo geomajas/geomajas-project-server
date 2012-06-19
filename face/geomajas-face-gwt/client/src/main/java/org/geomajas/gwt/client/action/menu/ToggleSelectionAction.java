@@ -204,10 +204,9 @@ public class ToggleSelectionAction extends MenuAction {
 			if (!layer.isShowing()) {
 				return;
 			}
-			request.setLayerIds(new String[] { layer.getServerLayerId() });
-			request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+			request.addLayerWithFilter(layer.getId(), layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
 		} else {
-			request.setLayerIds(getVisibleServerLayerIds(mapModel));
+			addVisibleLayers(request, mapModel);
 		}
 		Point point = mapModel.getGeometryFactory().createPoint(worldPosition);
 		request.setLocation(GeometryConverter.toDto(point));
@@ -232,25 +231,23 @@ public class ToggleSelectionAction extends MenuAction {
 		});
 	}
 
-	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
+	private void selectFeatures(String clientLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
 			String selectionId, boolean singleSelection) {
-		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+		VectorLayer layer = mapWidget.getMapModel().getVectorLayer(clientLayerId);
 		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
-		for (VectorLayer vectorLayer : layers) {
-			if (isSelectionTargetLayer(vectorLayer, selectedLayer)) {
-				for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
-					org.geomajas.gwt.client.map.feature.Feature feature = 
-						new org.geomajas.gwt.client.map.feature.Feature(orgFeature, vectorLayer);
-					vectorLayer.getFeatureStore().addFeature(feature);
-					if (vectorLayer.isFeatureSelected(feature.getId()) || feature.getId().equals(selectionId)) {
-						vectorLayer.deselectFeature(feature);
-					} else {
-						vectorLayer.selectFeature(feature);
-						if (singleSelection) {
-							break;
-						}
-
+		if (isSelectionTargetLayer(layer, selectedLayer)) {
+			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
+				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
+						orgFeature, layer);
+				layer.getFeatureStore().addFeature(feature);
+				if (layer.isFeatureSelected(feature.getId()) || feature.getId().equals(selectionId)) {
+					layer.deselectFeature(feature);
+				} else {
+					layer.selectFeature(feature);
+					if (singleSelection) {
+						break;
 					}
+
 				}
 			}
 		}
@@ -267,14 +264,12 @@ public class ToggleSelectionAction extends MenuAction {
 		}
 	}
 
-	private String[] getVisibleServerLayerIds(MapModel mapModel) {
-		List<String> layerIds = new ArrayList<String>();
+	private void addVisibleLayers(SearchByLocationRequest request, MapModel mapModel) {
 		for (VectorLayer layer : mapModel.getVectorLayers()) {
 			if (layer.isShowing()) {
-				layerIds.add(layer.getServerLayerId());
+				request.addLayerWithFilter(layer.getId(), layer.getServerLayerId(), layer.getFilter());
 			}
 		}
-		return layerIds.toArray(new String[layerIds.size()]);
 	}
 
 	private double calculateBufferFromPixelTolerance() {
