@@ -32,8 +32,6 @@ public class FeatureinfoExample implements EntryPoint {
 	public void onModuleLoad() {
 
 		FitSetting.featureinfoIncludeRasterLayer = true;
-		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode("Plug-ins",
-				"[ISOMORPHIC]/geomajas/silk/plugin.png", "Plugins", "topLevel"));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.applicationTitle("Feature info"),
 				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", FeatureinfoPanel.TITLE, "Plugins",
 				FeatureinfoPanel.FACTORY));

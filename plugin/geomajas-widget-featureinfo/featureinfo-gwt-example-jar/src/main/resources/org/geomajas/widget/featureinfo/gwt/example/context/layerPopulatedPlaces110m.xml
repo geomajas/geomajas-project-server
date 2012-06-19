@@ -103,8 +103,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 						<bean class="org.geomajas.configuration.SymbolInfo">
 							<property name="image">
 								<bean class="org.geomajas.configuration.ImageInfo">
-									<property name="href" value="images/city1.png" />
-									<property name="selectionHref" value="images/city1_selected.png" />
+									<property name="href" value="classpath:org/geomajas/gwt/example/base/image/city1.png" />
+									<property name="selectionHref" value="classpath:org/geomajas/gwt/example/base/image/city1_selected.png" />
 									<property name="width" value="24" />
 									<property name="height" value="32" />
 								</bean>
@@ -123,8 +123,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 						<bean class="org.geomajas.configuration.SymbolInfo">
 							<property name="image">
 								<bean class="org.geomajas.configuration.ImageInfo">
-									<property name="href" value="images/city3.png" />
-									<property name="selectionHref" value="images/city3_selected.png" />
+									<property name="href" value="classpath:org/geomajas/gwt/example/base/image/city3.png" />
+									<property name="selectionHref" value="classpath:org/geomajas/gwt/example/base/image/city3_selected.png" />
 									<property name="width" value="13" />
 									<property name="height" value="20" />
 								</bean>

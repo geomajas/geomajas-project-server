@@ -32,7 +32,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="app"
+	<bean name="featureInfoApp"
 		class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
