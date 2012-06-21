@@ -154,13 +154,18 @@ public class VectorTile extends AbstractVectorTile {
 				fetch(filter, callback);
 				break;
 			case LOADING:
-				final VectorTile self = this;
-				deferred.addCallback(new AbstractCommandCallback<GetVectorTileResponse>() {
+				if (needsReload(filter)) {
+					deferred.cancel();
+					fetch(filter, callback);
+				} else {
+					final VectorTile self = this;
+					deferred.addCallback(new AbstractCommandCallback<GetVectorTileResponse>() {
 
-					public void execute(GetVectorTileResponse response) {
-						callback.execute(self);
-					}
-				});
+						public void execute(GetVectorTileResponse response) {
+							callback.execute(self);
+						}
+					});
+				}
 				break;
 			case LOADED:
 				if (needsReload(filter)) {
