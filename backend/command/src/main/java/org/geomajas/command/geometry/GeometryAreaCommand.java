@@ -58,7 +58,7 @@ public class GeometryAreaCommand implements Command<GeometryAreaRequest, Geometr
 	 * Calculate the geographical area for each of the requested geometries. The current algorithm uses the global
 	 * sinusoidal projection (a so-called equal-area projection) and assumes a spherical earth. More accurate
 	 * projections exist (Albers, Mollweide, ...) but they are more complicated and cause tolerance problems when
-	 * directly applied with geotools transformations.
+	 * directly applied with Geotools transformations.
 	 * 
 	 * @param request request parameters
 	 * @param response response object
@@ -71,7 +71,7 @@ public class GeometryAreaCommand implements Command<GeometryAreaRequest, Geometr
 			double area = 0;
 			if (geometry instanceof Polygonal) {
 				if (request.getCrs() != null) {
-					if (request.getCrs() != EPSG_4326) {
+					if (!EPSG_4326.equals(request.getCrs())) {
 						geometry = geoService.transform(geometry, request.getCrs(), EPSG_4326);
 					}
 					// applying global sinusoidal projection (equal-area)
