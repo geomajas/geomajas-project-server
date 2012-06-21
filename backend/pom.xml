@@ -297,7 +297,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<geotools-version>2.7.4-GBE-276</geotools-version>
+		<geotools-version>2.7.5</geotools-version>
 		<geotools-epsg-wkt-version>2.6.3</geotools-epsg-wkt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
