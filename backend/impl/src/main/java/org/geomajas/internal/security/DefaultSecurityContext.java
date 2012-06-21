@@ -702,7 +702,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class VisibleAreaCombineGetter implements AreaCombineGetter {
 
-		private String layerId;
+		private final String layerId;
 
 		private VisibleAreaCombineGetter(String layerId) {
 			this.layerId = layerId;
@@ -718,7 +718,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class UpdateAreaCombineGetter implements AreaCombineGetter {
 
-		private String layerId;
+		private final String layerId;
 
 		private UpdateAreaCombineGetter(String layerId) {
 			this.layerId = layerId;
@@ -734,7 +734,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class CreateAreaCombineGetter implements AreaCombineGetter {
 
-		private String layerId;
+		private final String layerId;
 
 		private CreateAreaCombineGetter(String layerId) {
 			this.layerId = layerId;
@@ -750,7 +750,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class DeleteAreaCombineGetter implements AreaCombineGetter {
 
-		private String layerId;
+		private final String layerId;
 
 		private DeleteAreaCombineGetter(String layerId) {
 			this.layerId = layerId;
@@ -766,7 +766,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class PartlyVisibleAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
 
-		private String layerId;
+		private final String layerId;
 
 		private PartlyVisibleAuthorizationGetter(String layerId) {
 			this.layerId = layerId;
@@ -782,7 +782,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class PartlyUpdateAuthorizedAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
 
-		private String layerId;
+		private final String layerId;
 
 		private PartlyUpdateAuthorizedAuthorizationGetter(String layerId) {
 			this.layerId = layerId;
@@ -798,7 +798,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class PartlyDeleteAuthorizedAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
 
-		private String layerId;
+		private final String layerId;
 
 		private PartlyDeleteAuthorizedAuthorizationGetter(String layerId) {
 			this.layerId = layerId;
@@ -814,7 +814,7 @@ public class DefaultSecurityContext implements SecurityContext {
 	 */
 	private final class PartlyCreateAuthorizedAuthorizationGetter implements AuthorizationGetter<AreaAuthorization> {
 
-		private String layerId;
+		private final String layerId;
 
 		private PartlyCreateAuthorizedAuthorizationGetter(String layerId) {
 			this.layerId = layerId;

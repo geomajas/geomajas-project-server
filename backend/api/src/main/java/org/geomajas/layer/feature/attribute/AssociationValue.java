@@ -89,6 +89,8 @@ public class AssociationValue implements Serializable {
 	 * @since 1.7.0
 	 * @return A new AssociationValue with the same contents.
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		PrimitiveAttribute<?> idClone = null;
 		if (id != null) {

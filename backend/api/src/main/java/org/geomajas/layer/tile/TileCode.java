@@ -90,7 +90,7 @@ public class TileCode implements Serializable, CacheableObject {
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
 			justification = "needed for GWT")
-	public TileCode clone() {
+	public TileCode clone() { // NOSONAR super.clone() not supported by GWT
 		return new TileCode(tileLevel, x, y);
 	}
 

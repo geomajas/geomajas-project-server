@@ -48,6 +48,8 @@ public class StringAttribute extends PrimitiveAttribute<String> {
 	 * @since 1.7.0
 	 * @return A copy of this string attribute.
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		StringAttribute clone = new StringAttribute();
 		if (getValue() != null) {

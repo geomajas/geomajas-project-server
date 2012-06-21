@@ -66,7 +66,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	/**
 	 * The features (should be Java beans compliant)
 	 */
-	private List<Object> features = new ArrayList<Object>();
+	private final List<Object> features = new ArrayList<Object>();
 
 	private BeanFeatureModel featureModel;
 
@@ -261,7 +261,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 		return features;
 	}
 
-	public synchronized void setFeatures(List<Object> features) throws LayerException {
+	public void setFeatures(List<Object> features) throws LayerException {
 		if (null != features) {
 			for (Object feature : features) {
 				if (feature instanceof FeatureModelAware) {
@@ -312,7 +312,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 				try {
 					attributes.add(converterService.toDto(object, attributeInfo));
 				} catch (LayerException le) {
-					throw le; // assure LayerException is not wrapped unnecessarily
+					throw le; // NOSONAR assure LayerException is not wrapped unnecessarily
 				} catch (GeomajasException e) {
 					throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM, attributeName);
 				}
@@ -325,7 +325,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 		return layerInfo.getFeatureInfo();
 	}
 
-	protected synchronized void initFeatureModel() throws LayerException {
+	protected void initFeatureModel() throws LayerException {
 		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()),
 				entityMappingService);
 		filterService.registerFeatureModel(featureModel);
@@ -356,9 +356,9 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	 */
 	class FeatureComparator implements Comparator<Object> {
 
-		private String attributeName;
+		private final String attributeName;
 
-		private SortType type;
+		private final SortType type;
 
 		public FeatureComparator(String attributeName, SortType type) {
 			this.attributeName = attributeName;

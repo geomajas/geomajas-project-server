@@ -72,17 +72,17 @@ public class StringContentTilePainter implements TilePainter {
 	/**
 	 * The layer wherein the tiles lie.
 	 */
-	private VectorLayer layer;
+	private final VectorLayer layer;
 
 	/**
 	 * The layer style.
 	 */
-	private NamedStyleInfo style;
+	private final NamedStyleInfo style;
 
 	/**
 	 * Rendering output type. This can be either "SVG" or "VML". This depends on what the client requests.
 	 */
-	private String renderer;
+	private final String renderer;
 
 	/**
 	 * The tile to render.
@@ -92,7 +92,7 @@ public class StringContentTilePainter implements TilePainter {
 	/**
 	 * The current client-side scale.
 	 */
-	private double scale;
+	private final double scale;
 
 	/**
 	 * Transformer that transforms the feature's geometries from world to view space.
@@ -112,11 +112,11 @@ public class StringContentTilePainter implements TilePainter {
 	/**
 	 * The current origin may differ, depending on whether or not the client has been panning.
 	 */
-	private Coordinate panOrigin;
+	private final Coordinate panOrigin;
 
-	private GeoService geoService;
+	private final GeoService geoService;
 
-	private TextService textService;
+	private final TextService textService;
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------

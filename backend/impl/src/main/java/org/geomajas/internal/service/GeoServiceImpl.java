@@ -66,6 +66,8 @@ import com.vividsolutions.jts.geom.Polygon;
 public final class GeoServiceImpl implements GeoService {
 
 	private final Logger log = LoggerFactory.getLogger(GeoServiceImpl.class);
+	private static final String WARN_TRANSFORMABLE_AREA = "Cannot build transformableArea for CRS transformation " +
+			"between {} and {}, {}";
 
 	@Autowired(required = false)
 	private Map<String, CrsInfo> crsDefinitions;
@@ -73,9 +75,9 @@ public final class GeoServiceImpl implements GeoService {
 	@Autowired(required = false)
 	private Map<String, CrsTransformInfo> crsTransformDefinitions;
 
-	private Map<String, Crs> crsCache = new ConcurrentHashMap<String, Crs>();
+	private final Map<String, Crs> crsCache = new ConcurrentHashMap<String, Crs>();
 
-	private Map<String, CrsTransform> transformCache = new ConcurrentHashMap<String, CrsTransform>();
+	private final Map<String, CrsTransform> transformCache = new ConcurrentHashMap<String, CrsTransform>();
 
 	private static final Map<Class<? extends Geometry>, Geometry> EMPTY_GEOMETRIES = 
 		new HashMap<Class<? extends Geometry>, Geometry>();
@@ -266,14 +268,14 @@ public final class GeoServiceImpl implements GeoService {
 					log.debug("transformable area for " + key + " is " + transformableArea);
 				}
 			} catch (MismatchedDimensionException mde) {
-				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
-						+ targetCrs.getId() + ", " + mde.getMessage());
+				log.warn(WARN_TRANSFORMABLE_AREA, new Object[] {sourceCrs.getId(), targetCrs.getId(),
+						mde.getMessage()});
 			} catch (TransformException te) {
-				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
-						+ targetCrs.getId() + ", " + te.getMessage());
+				log.warn(WARN_TRANSFORMABLE_AREA, new Object[] {sourceCrs.getId(), targetCrs.getId(),
+						te.getMessage()});
 			} catch (FactoryException fe) {
-				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
-						+ targetCrs.getId() + ", " + fe.getMessage());
+				log.warn(WARN_TRANSFORMABLE_AREA, new Object[] {sourceCrs.getId(), targetCrs.getId(),
+						fe.getMessage()});
 			}
 
 			transform = new CrsTransformImpl(key, sourceCrs, targetCrs, mathTransform, transformableArea);
@@ -296,11 +298,25 @@ public final class GeoServiceImpl implements GeoService {
 				return source;
 			}
 		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Envelope.", e);
+			logEnvelopeSuggestCrsTransformInfo(crsTransform.getId(), source, e);
 			return createEmptyGeometryForClass(source.getClass());
 		}
+	}
+
+
+	private void logEnvelopeSuggestCrsTransformInfo(String transform, Object object, Throwable throwable) {
+		logSuggestCrsTransformInfo(transform, object, throwable, "Envelope");
+	}
+
+	private void logBboxSuggestCrsTransformInfo(String transform, Object object, Throwable throwable) {
+		logSuggestCrsTransformInfo(transform, object, throwable, "Bbox");
+	}
+
+	private void logSuggestCrsTransformInfo(String transform, Object object, Throwable throwable, String empty) {
+		log.warn("Problem during transformation " + transform + "of " + object
+				+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+				+ "transformation. Object replaced by empty " + empty + ".", throwable);
+
 	}
 
 	/** {@inheritDoc} */
@@ -368,9 +384,7 @@ public final class GeoServiceImpl implements GeoService {
 				return source;
 			}
 		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Bbox.", e);
+			logBboxSuggestCrsTransformInfo(crsTransform.getId(), source, e);
 			return new Bbox();
 		}
 	}
@@ -416,9 +430,7 @@ public final class GeoServiceImpl implements GeoService {
 				return source;
 			}
 		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Envelope.", e);
+			logEnvelopeSuggestCrsTransformInfo(crsTransform.getId(), source, e);
 			return new Envelope();
 		}
 	}
@@ -458,9 +470,7 @@ public final class GeoServiceImpl implements GeoService {
 				return source;
 			}
 		} catch (Exception e) { // NOSONAR typically TopologyException, TransformException or FactoryException
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Envelope.", e);
+			logEnvelopeSuggestCrsTransformInfo(crsTransform.getId(), source, e);
 			return null;
 		}
 	}

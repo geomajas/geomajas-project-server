@@ -42,19 +42,19 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	private final Logger log = LoggerFactory.getLogger(VmlLabelTileWriter.class);
 
-	private GeometryFactory factory;
+	private final GeometryFactory factory;
 
-	private GeometryCoordinateSequenceTransformer transformer;
+	private final GeometryCoordinateSequenceTransformer transformer;
 
-	private int coordWidth;
+	private final int coordWidth;
 
-	private int coordHeight;
+	private final int coordHeight;
 
-	private LabelStyleInfo labelStyle;
+	private final LabelStyleInfo labelStyle;
 
-	private GeoService geoService;
+	private final GeoService geoService;
 
-	private TextService textService;
+	private final TextService textService;
 
 	public VmlLabelTileWriter(int coordWidth, int coordHeight, GeometryCoordinateSequenceTransformer transformer,
 			LabelStyleInfo labelStyle, GeoService geoService, TextService textService) {

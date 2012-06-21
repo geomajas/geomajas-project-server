@@ -34,7 +34,7 @@ public class RealTestRecorder implements TestRecorder {
 
 	/** {@inheritDoc} */
 	public void record(Object groupObj, String message) {
-		String group = "" + groupObj;
+		String group = "" + groupObj; // NOSONAR
 		List<String> list = messages.get(group);
 		if (null == list) {
 			list = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class RealTestRecorder implements TestRecorder {
 
 	/** {@inheritDoc} */
 	public String matches(Object groupObj, String... compare) {
-		String group = "" + groupObj;
+		String group = "" + groupObj; // NOSONAR
 		List<String> list = messages.get(group);
 		if (null == list) {
 			if (compare.length > 0) {
