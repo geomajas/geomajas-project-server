@@ -154,7 +154,7 @@ public class RenderingServiceImpl implements RenderingService {
 		return true;
 	}
 
-	public void paintMap(MapContext context, Graphics2D graphics) {
+	public void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> hints) {
 		List<RenderRequest> renderStack = new ArrayList<RenderRequest>();
 		VectorRenderRequest vectorRequest = null;
 		for (Layer layer : context.layers()) {
@@ -162,7 +162,7 @@ public class RenderingServiceImpl implements RenderingService {
 				renderStack.add(new DirectRenderRequest(graphics, context, (DirectLayer) layer));
 			} else {
 				if (vectorRequest == null) {
-					vectorRequest = new VectorRenderRequest(graphics, context);
+					vectorRequest = new VectorRenderRequest(graphics, context, hints);
 					renderStack.add(vectorRequest);
 				}
 				vectorRequest.getMapContext().addLayer(layer);
@@ -172,6 +172,10 @@ public class RenderingServiceImpl implements RenderingService {
 		for (RenderRequest renderRequest : renderStack) {
 			renderRequest.execute();
 		}
+	}
+
+	public void paintMap(MapContext context, Graphics2D graphics) {
+		paintMap(context, graphics, new HashMap<Object, Object>());
 	}
 
 	/**
@@ -225,8 +229,11 @@ public class RenderingServiceImpl implements RenderingService {
 
 		private final MapContext mapContext = new MapContext();
 
-		public VectorRenderRequest(Graphics2D graphics, MapContext context) {
+		private final Map<Object, Object> hints;
+
+		public VectorRenderRequest(Graphics2D graphics, MapContext context, Map<Object, Object> hints) {
 			this.graphics = graphics;
+			this.hints = hints;
 			this.mapContext.setAreaOfInterest(context.getAreaOfInterest());
 			MapViewport viewPort = this.mapContext.getViewport();
 			viewPort.setBounds(context.getViewport().getBounds());
@@ -237,11 +244,14 @@ public class RenderingServiceImpl implements RenderingService {
 		public void execute() {
 			StreamingRenderer renderer = new StreamingRenderer();
 			renderer.setContext(mapContext);
-			Map<Object, Object> rendererParams = new HashMap<Object, Object>();
-			rendererParams.put(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY, true);
+			if (!hints.containsKey(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY)) {
+				hints.put(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY, true);
+			}
 			// we use OGC scale for predictable conversion between pix/m scale and relative scale
-			rendererParams.put(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY, StreamingRenderer.SCALE_OGC);
-			renderer.setRendererHints(rendererParams);
+			if (!hints.containsKey(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY)) {
+				hints.put(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY, StreamingRenderer.SCALE_OGC);
+			}
+			renderer.setRendererHints(hints);
 			renderer.paint(graphics, mapContext.getViewport().getScreenArea(), mapContext.getViewport().getBounds());
 			mapContext.dispose();
 		}

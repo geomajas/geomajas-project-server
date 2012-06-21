@@ -12,6 +12,7 @@ package org.geomajas.plugin.rasterizing.api;
 
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
+import java.util.Map;
 
 import org.geomajas.annotation.Api;
 import org.geotools.map.MapContext;
@@ -43,5 +44,15 @@ public interface RenderingService {
 	 * @param graphic graphics object
 	 */
 	void paintMap(MapContext context, Graphics2D graphics);
+
+	/**
+	 * Renders the map context to the specified Java 2D graphics using some extra renderer hints.
+	 * 
+	 * @param context map context
+	 * @param graphic graphics object
+	 * @param renderHints map of renderer hints (see
+	 *        {@link org.geotools.renderer.lite.StreamingRenderer#setRendererHints(Map)}
+	 */
+	void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> rendererHints);
 }
 // @extract-end

@@ -13,6 +13,8 @@ package org.geomajas.plugin.rasterizing;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.GeomajasException;
@@ -28,6 +30,7 @@ import org.geomajas.service.pipeline.PipelineService;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.renderer.lite.StreamingRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -64,8 +67,8 @@ public class ImageServiceImpl implements ImageService {
 		DefaultMapContext mapContext = new DefaultMapContext();
 		try {
 			mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
-			MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(
-					MapRasterizingInfo.WIDGET_KEY);
+			MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo
+					.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
 			mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
 					mapContext.getCoordinateReferenceSystem()));
 			RenderingHints renderingHints = new Hints();
@@ -73,6 +76,11 @@ public class ImageServiceImpl implements ImageService {
 			RasterizingContainer response = new RasterizingContainer();
 			context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
 			context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
+			Map<Object, Object> rendererHints = new HashMap<Object, Object>();
+			if (mapInfo.getDpi() > 0) {
+				rendererHints.put(StreamingRenderer.DPI_KEY, mapInfo.getDpi());
+			}
+			context.put(RasterizingPipelineCode.RENDERER_HINTS, rendererHints);
 			context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
 			pipelineService.execute(pipelineKey, null, context, response);
 			stream.write(response.getImage());

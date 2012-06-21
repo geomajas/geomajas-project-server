@@ -68,9 +68,19 @@ public interface RasterizingPipelineCode {
 	String RENDERED_IMAGE = "rasterizing.renderedImage"; // RenderedImage
 
 	/**
-	 * Pipeline context key for storing the graphics context.
+	 * Pipeline context key for storing the java 2D rendering hints.
+	 * 
+	 * @see org.geotools.renderer.lite.StreamingRenderer#setJava2DHints(java.awt.RenderingHints)
 	 */
 	String RENDERING_HINTS = "rasterizing.renderingHints"; // RenderingHints
+
+	/**
+	 * Pipeline context key for storing the Geotools renderer hints.
+	 * 
+	 * @see org.geotools.renderer.lite.StreamingRenderer#setRendererHints(java.util.Map)
+	 * 
+	 */
+	String RENDERER_HINTS = "rasterizing.rendererHints"; // Map<Object, Object>
 
 	/**
 	 * Pipeline context key for storing the map context metadata.

@@ -32,6 +32,8 @@ public class MapRasterizingInfo implements ClientWidgetInfo, RasterizingConstant
 	private Bbox bounds;
 
 	private double scale;
+	
+	private int dpi;
 
 	// default to true (users should provide a background if necessary)
 	private boolean transparent = true;
@@ -95,6 +97,22 @@ public class MapRasterizingInfo implements ClientWidgetInfo, RasterizingConstant
 	 */
 	public void setScale(double scale) {
 		this.scale = scale;
+	}
+	
+	/**
+	 * Get the DPI (Dots per inch) used for rendering the image. If not set or 0, the renderer's default DPI is used.
+	 * @return the DPI
+	 */
+	public int getDpi() {
+		return dpi;
+	}
+	
+	/**
+	 * Set the DPI (Dots per inch) used for rendering the image.
+	 * @param dpi the DPI
+	 */
+	public void setDpi(int dpi) {
+		this.dpi = dpi;
 	}
 
 	/**

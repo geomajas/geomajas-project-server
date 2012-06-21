@@ -83,7 +83,7 @@ public class ImageServiceMapTest {
 	private static final double DELTA = 0.07;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	@Before
 	public void login() {
@@ -138,6 +138,27 @@ public class ImageServiceMapTest {
 		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
 		mapInfo.getLayers().add(cl2);
 		new MapAssert(mapInfo).assertEqualImage("twovector.png", writeImages, DELTA);
+	}
+
+	@Test
+	public void testDpi() throws Exception {
+		ClientMapInfo mapInfo = new ClientMapInfo();
+		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
+		mapRasterizingInfo.setBounds(new Bbox(-80, -50, 100, 100));
+		mapInfo.setCrs("EPSG:4326");
+		// increase scale by factor 5
+		mapRasterizingInfo.setScale(5);
+		// increase dpi accordingly so labels stay the same size
+		mapRasterizingInfo.setDpi(96*5);
+		mapRasterizingInfo.setTransparent(true);
+		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		ClientVectorLayerInfo clientBeansPointLayerInfo = new ClientVectorLayerInfo();
+		clientBeansPointLayerInfo.setServerLayerId(layerBeansPoint.getId());
+		VectorLayerRasterizingInfo layerRasterizingInfo = new VectorLayerRasterizingInfo();
+		layerRasterizingInfo.setStyle(layerBeansPointStyleInfo);
+		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
+		mapInfo.getLayers().add(clientBeansPointLayerInfo);
+		new MapAssert(mapInfo).assertEqualImage("dpi.png", writeImages, DELTA);
 	}
 
 	@Test

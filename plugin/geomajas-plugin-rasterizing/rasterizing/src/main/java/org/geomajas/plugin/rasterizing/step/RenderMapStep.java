@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
@@ -40,12 +41,14 @@ public class RenderMapStep extends AbstractRasterizingStep {
 	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		MapContext mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContext.class);
 		RenderingHints renderingHints = context.get(RasterizingPipelineCode.RENDERING_HINTS, RenderingHints.class);
+		@SuppressWarnings("unchecked")
+		Map<Object, Object> rendererHints = context.get(RasterizingPipelineCode.RENDERER_HINTS, Map.class);
 		Rectangle paintArea = mapContext.getViewport().getScreenArea();
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
 				LayerFactory.USERDATA_RASTERIZING_INFO);
 		BufferedImage image = createImage(paintArea.width, paintArea.height, mapRasterizingInfo.isTransparent());
 		Graphics2D graphics = getGraphics(image, mapRasterizingInfo.isTransparent(), renderingHints);
-		renderingService.paintMap(mapContext, graphics);
+		renderingService.paintMap(mapContext, graphics, rendererHints);
 		context.put(RasterizingPipelineCode.RENDERED_IMAGE, image);
 	}
 
