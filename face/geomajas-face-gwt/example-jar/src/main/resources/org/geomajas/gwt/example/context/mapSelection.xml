@@ -75,6 +75,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						<ref bean="SelectionMode" />
 						<ref bean="PanToSelection" />
 						<ref bean="ZoomToSelection" />
+						<ref bean="DeselectAll" />
 					</list>
 				</property>
 			</bean>

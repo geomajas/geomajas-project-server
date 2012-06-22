@@ -49,6 +49,9 @@ public interface ToolId {
 	/** Tool id for the selection toolbar button. */
 	String TOOL_SELECTION_MODE = "SelectionMode";
 
+	/** Tool id for the deselect all toolbar button. */
+	String TOOL_DESELECT_ALL = "DeselectAll";
+
 	/** Tool id for the zoom in toolbar button. */
 	String TOOL_ZOOM_IN = "ZoomIn";
 

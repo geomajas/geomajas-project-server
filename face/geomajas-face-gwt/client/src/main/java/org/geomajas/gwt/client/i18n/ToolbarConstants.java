@@ -165,4 +165,8 @@ public interface ToolbarConstants extends Constants {
 
 	String featureInfoTooltip();
 
+	String deselectAllTitle();
+
+	String deselectAllTooltip();
+
 }

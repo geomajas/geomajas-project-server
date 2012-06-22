@@ -81,6 +81,12 @@ public final class ToolbarRegistry {
 				return new SelectionModalAction(mapWidget);
 			}
 		});
+		REGISTRY.put(ToolId.TOOL_DESELECT_ALL, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new DeselectAllAction(mapWidget);
+			}
+		});
 		REGISTRY.put(ToolId.TOOL_ZOOM_IN, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
