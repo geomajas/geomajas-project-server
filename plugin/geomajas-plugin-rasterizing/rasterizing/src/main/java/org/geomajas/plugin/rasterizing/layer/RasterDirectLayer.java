@@ -163,6 +163,7 @@ public class RasterDirectLayer extends DirectLayer {
 							images.add(translated);
 						} catch (ExecutionException e) {
 							addLoadError(graphics, (ImageException) (e.getCause()), viewport);
+							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
 						} catch (InterruptedException e) {
 							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
 						} catch (MalformedURLException e) {

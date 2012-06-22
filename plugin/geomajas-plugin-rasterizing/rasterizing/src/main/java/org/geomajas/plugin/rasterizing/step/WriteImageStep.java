@@ -21,6 +21,8 @@ import org.geomajas.plugin.rasterizing.api.RasterException;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Step which writes the in-memory image to the required format. Currently, only png is supported.
@@ -29,6 +31,8 @@ import org.geomajas.service.pipeline.PipelineContext;
  */
 public class WriteImageStep extends AbstractRasterizingStep {
 
+	private final Logger log = LoggerFactory.getLogger(WriteImageStep.class);
+
 	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		if (context.containsKey(RasterizingPipelineCode.RENDERED_IMAGE)) {
 			RenderedImage image = context.get(RasterizingPipelineCode.RENDERED_IMAGE, RenderedImage.class);
@@ -36,6 +40,7 @@ public class WriteImageStep extends AbstractRasterizingStep {
 			try {
 				ImageIO.write(image, "PNG", imageStream);
 			} catch (IOException e) {
+				log.error("Image writing failed", e);
 				throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
 			}
 			byte[] imageData = imageStream.toByteArray();

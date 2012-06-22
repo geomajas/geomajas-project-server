@@ -73,6 +73,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -88,6 +90,8 @@ public class VectorLayerFactory implements LayerFactory {
 
 	private static final String NORMAL_RULE_ATTRIBUTE_NAME = "geomajas_normal_rule_index";
 	private static final String SELECTED_RULE_ATTRIBUTE_NAME = "geomajas_selected_rule_index";
+
+	private final Logger log = LoggerFactory.getLogger(VectorLayerFactory.class);
 
 	@Autowired
 	private VectorLayerService vectorLayerService;
@@ -265,6 +269,7 @@ public class VectorLayerFactory implements LayerFactory {
 				}
 			}
 		} catch (IOException e) {
+			log.error("Unexpected error finding rules in layer", e);
 			// cannot happen !
 		}
 	}

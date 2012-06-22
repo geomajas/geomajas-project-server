@@ -32,6 +32,8 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +44,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ImageServiceImpl implements ImageService {
+
+	private final Logger log = LoggerFactory.getLogger(ImageServiceImpl.class);
 
 	@Autowired
 	private GeoService geoService;
@@ -67,6 +71,7 @@ public class ImageServiceImpl implements ImageService {
 			try {
 				stream.write(container.getImage());
 			} catch (IOException e) {
+				log.error("Image writing failed", e);
 				throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
 			}
 		}
@@ -81,6 +86,7 @@ public class ImageServiceImpl implements ImageService {
 			try {
 				stream.write(container.getImage());
 			} catch (IOException e) {
+				log.error("Image writing failed", e);
 				throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
 			}
 		}
