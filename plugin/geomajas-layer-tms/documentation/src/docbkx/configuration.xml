@@ -25,11 +25,17 @@
     <para>If you are using Maven, you're in luck. All you have to do is add
     the following dependency to your configuration:</para>
 
-    <programlisting>&lt;dependency&gt;
+    <example>
+      <title>TMS layer dependency, using geomajas-dep</title>
+
+      <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-layer-tms&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you are not using geomajas-dep to manage versions, then you need
+    to mention the version as well.</para>
 
     <para>If you are not a Maven user, make sure that there is a recent
     version of JaxB (2.x) on your class path. Normally the Geomajas server has
