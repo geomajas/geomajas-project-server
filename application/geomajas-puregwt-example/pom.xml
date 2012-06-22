@@ -19,6 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-puregwt-example</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas PureGWT application</name>
 	<description>Geomajas PureGWT application</description>
