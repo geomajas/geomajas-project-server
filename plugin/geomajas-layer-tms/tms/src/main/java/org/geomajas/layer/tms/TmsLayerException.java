@@ -51,6 +51,6 @@ public class TmsLayerException extends LayerException {
 
 	@Override
 	public String getResourceBundleName() {
-		return super.getResourceBundleName();    // @todo implement
+		return RESOURCE_BUNDLE_NAME;
 	}
 }

@@ -28,7 +28,7 @@ public class TileSets implements Serializable {
 
 	private String profile;
 
-	private List<TileSet> tileSets;
+	private List<TileSet> tileSets; // NOSONAR yes the name is the same, that is the point
 
 	public TileSets() {
 	}

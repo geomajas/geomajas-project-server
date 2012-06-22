@@ -62,13 +62,13 @@ public class TmsConfigurationService {
 			// Find out where to retrieve the capabilities and unmarshall:
 			if (layerCapabilitiesUrl.startsWith(CLASSPATH)) {
 				String location = layerCapabilitiesUrl.substring(CLASSPATH.length());
-				if (location.startsWith("/")) {
+				if (location.length() > 0 && location.charAt(0) == '/') {
 					// classpath resources should not start with a slash, but they often do
 					location = location.substring(1);
 				}
 				ClassLoader cl = Thread.currentThread().getContextClassLoader();
 				if (null == cl) {
-					cl = getClass().getClassLoader();
+					cl = getClass().getClassLoader(); // NOSONAR fallback from proper behaviour for some environments
 				}
 				InputStream is = cl.getResourceAsStream(location);
 				if (null != is) {
