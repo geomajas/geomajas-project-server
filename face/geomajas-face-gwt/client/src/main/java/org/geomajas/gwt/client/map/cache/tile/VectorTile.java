@@ -86,6 +86,7 @@ public class VectorTile extends AbstractVectorTile {
 		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
 		final VectorTile self = this;
+		lastRequest = request;
 		deferred = GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetVectorTileResponse>() {
 
@@ -99,7 +100,6 @@ public class VectorTile extends AbstractVectorTile {
 					contentType = tile.getContentType();
 					featureContent.setContent(tile.getFeatureContent());
 					labelContent.setContent(tile.getLabelContent());
-					lastRequest = request;
 					try {
 						callback.execute(self);
 					} catch (Throwable t) {
