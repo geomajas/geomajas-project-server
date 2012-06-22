@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.tms.configuration;
+package org.geomajas.layer.tms.xml;
 
 import java.io.Serializable;
 
@@ -20,13 +20,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * ...
+ * Represents the TileMap tag in the TMS description/capabilities XML file.
  * 
  * @author Pieter De Graef
  */
 @XmlRootElement(name = "TileMap")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-public class TileMapInfo implements Serializable {
+public class TileMap implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
@@ -40,15 +40,15 @@ public class TileMapInfo implements Serializable {
 
 	private String srs;
 
-	private BoundingBoxInfo boundingBox;
+	private BoundingBox boundingBox;
 
-	private OriginInfo origin;
+	private Origin origin;
 
-	private TileFormatInfo tileFormat;
+	private TileFormat tileFormat;
 
-	private TileSetsInfo tileSets;
+	private TileSets tileSets;
 
-	public TileMapInfo() {
+	public TileMap() {
 	}
 
 	@XmlAttribute()
@@ -88,38 +88,38 @@ public class TileMapInfo implements Serializable {
 	}
 
 	@XmlElement(name = "BoundingBox")
-	public BoundingBoxInfo getBoundingBox() {
+	public BoundingBox getBoundingBox() {
 		return boundingBox;
 	}
 
-	public void setBoundingBox(BoundingBoxInfo boundingBox) {
+	public void setBoundingBox(BoundingBox boundingBox) {
 		this.boundingBox = boundingBox;
 	}
 
 	@XmlElement(name = "Origin")
-	public OriginInfo getOrigin() {
+	public Origin getOrigin() {
 		return origin;
 	}
 
-	public void setOrigin(OriginInfo origin) {
+	public void setOrigin(Origin origin) {
 		this.origin = origin;
 	}
 
 	@XmlElement(name = "TileFormat")
-	public TileFormatInfo getTileFormat() {
+	public TileFormat getTileFormat() {
 		return tileFormat;
 	}
 
-	public void setTileFormat(TileFormatInfo tileFormat) {
+	public void setTileFormat(TileFormat tileFormat) {
 		this.tileFormat = tileFormat;
 	}
 
 	@XmlElement(name = "TileSets")
-	public TileSetsInfo getTileSets() {
+	public TileSets getTileSets() {
 		return tileSets;
 	}
 
-	public void setTileSets(TileSetsInfo tileSets) {
+	public void setTileSets(TileSets tileSets) {
 		this.tileSets = tileSets;
 	}
 

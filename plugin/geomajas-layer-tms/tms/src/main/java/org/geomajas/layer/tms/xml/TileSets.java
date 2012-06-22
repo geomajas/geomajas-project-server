@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.tms.configuration;
+package org.geomajas.layer.tms.xml;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,19 +18,19 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * ...
+ * Represents the TileSets tag in the TMS description/capabilities XML file.
  * 
  * @author Pieter De Graef
  */
-public class TileSetsInfo implements Serializable {
+public class TileSets implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
 	private String profile;
 
-	private List<TileSetInfo> tileSets;
+	private List<TileSet> tileSets;
 
-	public TileSetsInfo() {
+	public TileSets() {
 	}
 
 	@XmlAttribute(name = "profile")
@@ -43,11 +43,11 @@ public class TileSetsInfo implements Serializable {
 	}
 
 	@XmlElement(name = "TileSet")
-	public List<TileSetInfo> getTileSets() {
+	public List<TileSet> getTileSets() {
 		return tileSets;
 	}
 
-	public void setTileSets(List<TileSetInfo> tileSets) {
+	public void setTileSets(List<TileSet> tileSets) {
 		this.tileSets = tileSets;
 	}
 }

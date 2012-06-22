@@ -12,34 +12,35 @@
 package org.geomajas.layer.tms.tile;
 
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tms.configuration.TileMapInfo;
-import org.geomajas.layer.tms.configuration.TileSetInfo;
+import org.geomajas.layer.tms.xml.TileMap;
+import org.geomajas.layer.tms.xml.TileSet;
 
 /**
- * Tile URL builder that builds URLs based upon a {@link TileMapInfo} configuration object. This class uses the
- * tile-level to get the correct {@link TileSetInfo} object, and assumes that these tile-sets are ordered.
+ * Tile URL builder that builds URLs based upon a {@link TileMap} configuration object. This class uses the
+ * tile-level to get the correct {@link TileSet} object, and assumes that these tile-sets are ordered.
  * 
  * @author Pieter De Graef
  */
 public class TileMapUrlBuilder implements TileUrlBuilder {
 
-	private final TileMapInfo tileMapInfo;
+	private final TileMap tileMap;
 
 	private final String baseTmsUrl;
 
-	public TileMapUrlBuilder(TileMapInfo tileMapInfo, String baseTmsUrl) {
-		if (tileMapInfo == null || baseTmsUrl == null) {
+	public TileMapUrlBuilder(TileMap tileMap, String baseTmsUrl) {
+		if (tileMap == null || baseTmsUrl == null) {
 			throw new IllegalStateException("No null values allowed.");
 		}
-		this.tileMapInfo = tileMapInfo;
+		this.tileMap = tileMap;
 		this.baseTmsUrl = baseTmsUrl;
 	}
 
+	/** {@inheritDoc} */
 	public String buildUrl(TileCode tileCode) {
 		StringBuilder builder;
 
 		// assuming they are ordered:
-		TileSetInfo tileSet = tileMapInfo.getTileSets().getTileSets().get(tileCode.getTileLevel());
+		TileSet tileSet = tileMap.getTileSets().getTileSets().get(tileCode.getTileLevel());
 		String href = tileSet.getHref();
 		if (href.startsWith("http://") || href.startsWith("https://")) {
 			builder = new StringBuilder(href);
@@ -59,7 +60,7 @@ public class TileMapUrlBuilder implements TileUrlBuilder {
 		builder.append("/");
 		builder.append(tileCode.getY());
 		builder.append(".");
-		builder.append(tileMapInfo.getTileFormat().getExtension());
+		builder.append(tileMap.getTileFormat().getExtension());
 		return builder.toString();
 	}
 }

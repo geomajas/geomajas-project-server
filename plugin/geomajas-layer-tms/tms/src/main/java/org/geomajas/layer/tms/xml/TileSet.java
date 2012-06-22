@@ -9,18 +9,18 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.tms.configuration;
+package org.geomajas.layer.tms.xml;
 
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * ...
+ * Represents the TileSet tag in the TMS description/capabilities XML file.
  * 
  * @author Pieter De Graef
  */
-public class TileSetInfo implements Serializable {
+public class TileSet implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
@@ -30,7 +30,7 @@ public class TileSetInfo implements Serializable {
 
 	private int order;
 
-	public TileSetInfo() {
+	public TileSet() {
 	}
 
 	@XmlAttribute(name = "href")

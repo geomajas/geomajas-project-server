@@ -9,18 +9,18 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.tms.configuration;
+package org.geomajas.layer.tms.xml;
 
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * ...
+ * Represents the Origin tag in the TMS description/capabilities XML file.
  * 
  * @author Pieter De Graef
  */
-public class OriginInfo implements Serializable {
+public class Origin implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
@@ -28,7 +28,7 @@ public class OriginInfo implements Serializable {
 
 	private double y;
 
-	public OriginInfo() {
+	public Origin() {
 	}
 
 	@XmlAttribute(name = "x")

@@ -37,6 +37,7 @@ public class SimpleTmsUrlBuilder implements TileUrlBuilder {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String buildUrl(TileCode tileCode) {
 		StringBuilder builder = new StringBuilder(baseTmsUrl);
 		if (!baseTmsUrl.endsWith("/")) {

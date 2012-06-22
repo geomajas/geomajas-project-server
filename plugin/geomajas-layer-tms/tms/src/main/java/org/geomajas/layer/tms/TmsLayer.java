@@ -25,7 +25,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tms.configuration.TileMapInfo;
+import org.geomajas.layer.tms.xml.TileMap;
 import org.geomajas.layer.tms.tile.SimpleTmsUrlBuilder;
 import org.geomajas.layer.tms.tile.TileMapUrlBuilder;
 import org.geomajas.layer.tms.tile.TileService;
@@ -60,7 +60,7 @@ public class TmsLayer implements RasterLayer {
 
 	private String version = "1.0.0";
 
-	private TileMapInfo tileMapInfo;
+	private TileMap tileMap;
 
 	private RasterLayerInfo layerInfo;
 
@@ -83,6 +83,7 @@ public class TmsLayer implements RasterLayer {
 	// Construction:
 	// ------------------------------------------------------------------------
 
+	/** Finish initializing the service. */
 	@PostConstruct
 	protected void postConstruct() throws GeomajasException {
 		if (null == baseTmsUrl) {
@@ -97,10 +98,10 @@ public class TmsLayer implements RasterLayer {
 		// Make sure there is a correct RasterLayerInfo object:
 		if (layerInfo == null) {
 			try {
-				tileMapInfo = configurationService.getCapabilities(baseTmsUrl);
-				version = tileMapInfo.getVersion();
-				extension = tileMapInfo.getTileFormat().getExtension();
-				layerInfo = configurationService.asLayerInfo(tileMapInfo);
+				tileMap = configurationService.getCapabilities(baseTmsUrl);
+				version = tileMap.getVersion();
+				extension = tileMap.getTileFormat().getExtension();
+				layerInfo = configurationService.asLayerInfo(tileMap);
 			} catch (TmsConfigurationException e) {
 				throw new GeomajasException(e);
 			}
@@ -110,8 +111,8 @@ public class TmsLayer implements RasterLayer {
 
 		// Finally prepare some often needed values:
 		state = new TileServiceState(geoService, layerInfo);
-		if (tileMapInfo != null) {
-			urlBuilder = new TileMapUrlBuilder(tileMapInfo, baseTmsUrl);
+		if (tileMap != null) {
+			urlBuilder = new TileMapUrlBuilder(tileMap, baseTmsUrl);
 		} else {
 			urlBuilder = new SimpleTmsUrlBuilder(baseTmsUrl, extension);
 		}

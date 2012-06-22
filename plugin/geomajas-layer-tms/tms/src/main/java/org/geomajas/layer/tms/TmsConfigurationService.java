@@ -26,9 +26,9 @@ import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.LayerType;
-import org.geomajas.layer.tms.configuration.BoundingBoxInfo;
-import org.geomajas.layer.tms.configuration.TileMapInfo;
-import org.geomajas.layer.tms.configuration.TileSetInfo;
+import org.geomajas.layer.tms.xml.BoundingBox;
+import org.geomajas.layer.tms.xml.TileMap;
+import org.geomajas.layer.tms.xml.TileSet;
 import org.springframework.stereotype.Component;
 
 /**
@@ -53,10 +53,10 @@ public class TmsConfigurationService {
 	 * @throws TmsConfigurationException
 	 *             In case something went wrong trying to find or parse the XML description file.
 	 */
-	public TileMapInfo getCapabilities(String layerCapabilitiesUrl) throws TmsConfigurationException {
+	public TileMap getCapabilities(String layerCapabilitiesUrl) throws TmsConfigurationException {
 		try {
 			// Create a JaxB unmarshaller:
-			JAXBContext context = JAXBContext.newInstance(TileMapInfo.class);
+			JAXBContext context = JAXBContext.newInstance(TileMap.class);
 			Unmarshaller um = context.createUnmarshaller();
 
 			// Find out where to retrieve the capabilities and unmarshall:
@@ -73,7 +73,7 @@ public class TmsConfigurationService {
 				InputStream is = cl.getResourceAsStream(location);
 				if (null != is) {
 					try {
-						return (TileMapInfo) um.unmarshal(is);
+						return (TileMap) um.unmarshal(is);
 					} finally {
 						try {
 							is.close();
@@ -88,7 +88,7 @@ public class TmsConfigurationService {
 
 			// Normal case, find the URL and unmarshal:
 			URL url = new URL(layerCapabilitiesUrl);
-			return (TileMapInfo) um.unmarshal(url);
+			return (TileMap) um.unmarshal(url);
 		} catch (JAXBException e) {
 			throw new TmsConfigurationException("Could not read the capabilities file. " + layerCapabilitiesUrl, e);
 		} catch (MalformedURLException e) {
@@ -99,22 +99,22 @@ public class TmsConfigurationService {
 	/**
 	 * Transform a TMS layer description object into a raster layer info object.
 	 * 
-	 * @param tileMapInfo
+	 * @param tileMap
 	 *            The TMS layer description object.
 	 * @return The raster layer info object as used by Geomajas.
 	 */
-	public RasterLayerInfo asLayerInfo(TileMapInfo tileMapInfo) {
+	public RasterLayerInfo asLayerInfo(TileMap tileMap) {
 		RasterLayerInfo layerInfo = new RasterLayerInfo();
 
-		layerInfo.setCrs(tileMapInfo.getSrs());
-		layerInfo.setDataSourceName(tileMapInfo.getTitle());
+		layerInfo.setCrs(tileMap.getSrs());
+		layerInfo.setDataSourceName(tileMap.getTitle());
 		layerInfo.setLayerType(LayerType.RASTER);
-		layerInfo.setMaxExtent(asBbox(tileMapInfo.getBoundingBox()));
-		layerInfo.setTileHeight(tileMapInfo.getTileFormat().getHeight());
-		layerInfo.setTileWidth(tileMapInfo.getTileFormat().getWidth());
+		layerInfo.setMaxExtent(asBbox(tileMap.getBoundingBox()));
+		layerInfo.setTileHeight(tileMap.getTileFormat().getHeight());
+		layerInfo.setTileWidth(tileMap.getTileFormat().getWidth());
 
-		List<ScaleInfo> zoomLevels = new ArrayList<ScaleInfo>(tileMapInfo.getTileSets().getTileSets().size());
-		for (TileSetInfo tileSet : tileMapInfo.getTileSets().getTileSets()) {
+		List<ScaleInfo> zoomLevels = new ArrayList<ScaleInfo>(tileMap.getTileSets().getTileSets().size());
+		for (TileSet tileSet : tileMap.getTileSets().getTileSets()) {
 			zoomLevels.add(asScaleInfo(tileSet));
 		}
 		layerInfo.setZoomLevels(zoomLevels);
@@ -125,26 +125,26 @@ public class TmsConfigurationService {
 	/**
 	 * Transforms a TMS bounding box information object into a Geomajas {@link Bbox} object.
 	 * 
-	 * @param boundingBoxInfo
+	 * @param boundingBox
 	 *            The TMS bounding box object.
 	 * @return The default Geomajas bounding box.
 	 */
-	public Bbox asBbox(BoundingBoxInfo boundingBoxInfo) {
-		double width = boundingBoxInfo.getMaxX() - boundingBoxInfo.getMinX();
-		double height = boundingBoxInfo.getMaxY() - boundingBoxInfo.getMinY();
-		return new Bbox(boundingBoxInfo.getMinX(), boundingBoxInfo.getMinY(), width, height);
+	public Bbox asBbox(BoundingBox boundingBox) {
+		double width = boundingBox.getMaxX() - boundingBox.getMinX();
+		double height = boundingBox.getMaxY() - boundingBox.getMinY();
+		return new Bbox(boundingBox.getMinX(), boundingBox.getMinY(), width, height);
 	}
 
 	/**
 	 * Transforms a TMS tile-set description object into a Geomajas {@link ScaleInfo} object.
 	 * 
-	 * @param tileSetInfo
+	 * @param tileSet
 	 *            The tile set description.
 	 * @return The default Geomajas scale object.
 	 */
-	public ScaleInfo asScaleInfo(TileSetInfo tileSetInfo) {
+	public ScaleInfo asScaleInfo(TileSet tileSet) {
 		ScaleInfo scaleInfo = new ScaleInfo();
-		scaleInfo.setPixelPerUnit(1 / tileSetInfo.getUnitsPerPixel());
+		scaleInfo.setPixelPerUnit(1 / tileSet.getUnitsPerPixel());
 		return scaleInfo;
 	}
 }

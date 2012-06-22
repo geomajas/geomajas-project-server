@@ -9,18 +9,18 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.tms.configuration;
+package org.geomajas.layer.tms.xml;
 
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * ...
+ * Represents the BoundingBox tag in the TMS description/capabilities XML file.
  * 
  * @author Pieter De Graef
  */
-public class BoundingBoxInfo implements Serializable {
+public class BoundingBox implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
