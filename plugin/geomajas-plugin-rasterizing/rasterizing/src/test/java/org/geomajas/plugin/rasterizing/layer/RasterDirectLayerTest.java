@@ -38,7 +38,7 @@ public class RasterDirectLayerTest {
 	private RasterLayer layerBluemarble;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	private static final double DELTA = 0.04;
 
