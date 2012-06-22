@@ -50,10 +50,10 @@ public class TmsConfigurationService {
 	 * @param layerCapabilitiesUrl
 	 *            The TMS base URL where to find the description.
 	 * @return Returns the description as a Java configuration object.
-	 * @throws TmsConfigurationException
+	 * @throws TmsLayerException
 	 *             In case something went wrong trying to find or parse the XML description file.
 	 */
-	public TileMap getCapabilities(String layerCapabilitiesUrl) throws TmsConfigurationException {
+	public TileMap getCapabilities(String layerCapabilitiesUrl) throws TmsLayerException {
 		try {
 			// Create a JaxB unmarshaller:
 			JAXBContext context = JAXBContext.newInstance(TileMap.class);
@@ -82,17 +82,16 @@ public class TmsConfigurationService {
 						}
 					}
 				}
-				throw new TmsConfigurationException("Could not find the capabilities file. " + layerCapabilitiesUrl,
-						null);
+				throw new TmsLayerException(TmsLayerException.COULD_NOT_FIND_FILE, layerCapabilitiesUrl);
 			}
 
 			// Normal case, find the URL and unmarshal:
 			URL url = new URL(layerCapabilitiesUrl);
 			return (TileMap) um.unmarshal(url);
 		} catch (JAXBException e) {
-			throw new TmsConfigurationException("Could not read the capabilities file. " + layerCapabilitiesUrl, e);
+			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layerCapabilitiesUrl);
 		} catch (MalformedURLException e) {
-			throw new TmsConfigurationException("Could not find the capabilities file. " + layerCapabilitiesUrl, e);
+			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_FIND_FILE, layerCapabilitiesUrl);
 		}
 	}
 

@@ -39,7 +39,7 @@ public class TmsConfigurationTest {
 	private TmsConfigurationService configurationService;
 
 	@Test
-	public void testParseConfiguration() throws TmsConfigurationException {
+	public void testParseConfiguration() throws TmsLayerException {
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 
@@ -85,7 +85,7 @@ public class TmsConfigurationTest {
 	}
 
 	@Test
-	public void testAsLayerInfo() throws TmsConfigurationException {
+	public void testAsLayerInfo() throws TmsLayerException {
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 		RasterLayerInfo layerInfo = configurationService.asLayerInfo(tileMap);

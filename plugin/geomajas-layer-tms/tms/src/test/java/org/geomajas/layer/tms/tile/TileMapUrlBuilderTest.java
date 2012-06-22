@@ -12,7 +12,7 @@
 package org.geomajas.layer.tms.tile;
 
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tms.TmsConfigurationException;
+import org.geomajas.layer.tms.TmsLayerException;
 import org.geomajas.layer.tms.TmsConfigurationService;
 import org.geomajas.layer.tms.xml.TileMap;
 import org.junit.Assert;
@@ -38,7 +38,7 @@ public class TileMapUrlBuilderTest {
 	private TmsConfigurationService configurationService;
 
 	@Test
-	public void testBuildUrl1() throws TmsConfigurationException {
+	public void testBuildUrl1() throws TmsLayerException {
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap, BASE_TMS_URL);
@@ -47,7 +47,7 @@ public class TileMapUrlBuilderTest {
 	}
 
 	@Test
-	public void testBuildUrl2() throws TmsConfigurationException {
+	public void testBuildUrl2() throws TmsLayerException {
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
 		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap, BASE_TMS_URL);
@@ -56,7 +56,7 @@ public class TileMapUrlBuilderTest {
 	}
 
 	@Test
-	public void testBuildUrlCornerCases() throws TmsConfigurationException {
+	public void testBuildUrlCornerCases() throws TmsLayerException {
 		try {
 			new TileMapUrlBuilder(null, BASE_TMS_URL);
 			Assert.fail();

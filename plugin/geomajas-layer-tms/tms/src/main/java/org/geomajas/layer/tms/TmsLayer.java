@@ -97,14 +97,10 @@ public class TmsLayer implements RasterLayer {
 
 		// Make sure there is a correct RasterLayerInfo object:
 		if (layerInfo == null) {
-			try {
-				tileMap = configurationService.getCapabilities(baseTmsUrl);
-				version = tileMap.getVersion();
-				extension = tileMap.getTileFormat().getExtension();
-				layerInfo = configurationService.asLayerInfo(tileMap);
-			} catch (TmsConfigurationException e) {
-				throw new GeomajasException(e);
-			}
+			tileMap = configurationService.getCapabilities(baseTmsUrl);
+			version = tileMap.getVersion();
+			extension = tileMap.getTileFormat().getExtension();
+			layerInfo = configurationService.asLayerInfo(tileMap);
 		} else if (extension == null) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "extension");
 		}
