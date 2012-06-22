@@ -46,10 +46,15 @@ public class RenderMapStep extends AbstractRasterizingStep {
 		Rectangle paintArea = mapContext.getViewport().getScreenArea();
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
 				LayerFactory.USERDATA_RASTERIZING_INFO);
-		BufferedImage image = createImage(paintArea.width, paintArea.height, mapRasterizingInfo.isTransparent());
-		Graphics2D graphics = getGraphics(image, mapRasterizingInfo.isTransparent(), renderingHints);
-		renderingService.paintMap(mapContext, graphics, rendererHints);
-		context.put(RasterizingPipelineCode.RENDERED_IMAGE, image);
+		Graphics2D graphics = context.getOptional(RasterizingPipelineCode.GRAPHICS_2D, Graphics2D.class);
+		if (graphics != null) {
+			renderingService.paintMap(mapContext, graphics, rendererHints);
+		} else {
+			BufferedImage image = createImage(paintArea.width, paintArea.height, mapRasterizingInfo.isTransparent());
+			graphics = getGraphics(image, mapRasterizingInfo.isTransparent(), renderingHints);
+			renderingService.paintMap(mapContext, graphics, rendererHints);
+			context.put(RasterizingPipelineCode.RENDERED_IMAGE, image);
+		}
 	}
 
 	private BufferedImage createImage(int width, int height, boolean transparent) {

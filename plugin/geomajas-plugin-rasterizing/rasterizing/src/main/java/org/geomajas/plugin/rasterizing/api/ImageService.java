@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.api;
 
+import java.awt.Graphics2D;
 import java.io.OutputStream;
 
 import org.geomajas.annotation.Api;
@@ -35,6 +36,16 @@ public interface ImageService {
 	 * @throws GeomajasException thrown when the stream could not be written
 	 */
 	void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
+	
+	/**
+	 * Writes a map to the specified graphics object.
+	 * 
+	 * @param graphics graphics object
+	 * @param clientMapInfo metadata of the map
+	 * @throws GeomajasException thrown when the stream could not be written
+	 * @since 1.1.0
+	 */
+	void writeMap(Graphics2D graphics, ClientMapInfo clientMapInfo) throws GeomajasException;
 
 	/**
 	 * Writes a legend to the specified output stream.

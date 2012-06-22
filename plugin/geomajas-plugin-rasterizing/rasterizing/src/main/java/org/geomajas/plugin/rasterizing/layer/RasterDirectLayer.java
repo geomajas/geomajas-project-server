@@ -232,11 +232,21 @@ public class RasterDirectLayer extends DirectLayer {
 		log.debug("before drawImage");
 		// create a copy to apply transform
 		Graphics2D g = (Graphics2D) graphics.create();
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, getOpacity()));
-		g.drawImage(image, transform, null);
+		// apply opacity to image off-graphics to avoid interference with whatever opacity model is used by graphics
+		BufferedImage opaqueCopy = makeOpaque(image);
+		g.drawImage(opaqueCopy, transform, null);
 		log.debug("after drawImage");
 	}
 
+	private BufferedImage makeOpaque(BufferedImage image) {
+		BufferedImage opaqueCopy = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+		Graphics2D g1 = opaqueCopy.createGraphics();
+		g1.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getOpacity()));
+		g1.drawImage(image, null, 0, 0);
+		g1.dispose();
+		return opaqueCopy;
+	}
+	
 	private float getOpacity() {
 		String match = style;
 		// could be 'opacity:0.5;' or '0.5'

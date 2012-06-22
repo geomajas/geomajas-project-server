@@ -52,6 +52,7 @@ public interface RenderingService {
 	 * @param graphic graphics object
 	 * @param renderHints map of renderer hints (see
 	 *        {@link org.geotools.renderer.lite.StreamingRenderer#setRendererHints(Map)}
+	 * @since 1.1.0
 	 */
 	void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> rendererHints);
 }

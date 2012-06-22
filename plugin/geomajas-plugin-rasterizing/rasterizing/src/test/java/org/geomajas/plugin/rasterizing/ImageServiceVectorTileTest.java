@@ -290,7 +290,6 @@ public class ImageServiceVectorTileTest {
 		getMultiPolygonLabelStyle().getFont().setWeight("bold");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_bold.png", true, true);
 		getMultiPolygonLabelStyle().getFont().setWeight("normal");
-		checkMultiPolygon("multipolygon_black_1_labeled_font_bold.png", true, true);
 		// synthetic
 		checkSynthetic("synthetic_black_1_labeled.png", true, true);
 	}

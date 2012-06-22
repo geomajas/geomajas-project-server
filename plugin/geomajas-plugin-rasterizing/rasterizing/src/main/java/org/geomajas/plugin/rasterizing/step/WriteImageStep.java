@@ -30,16 +30,17 @@ import org.geomajas.service.pipeline.PipelineContext;
 public class WriteImageStep extends AbstractRasterizingStep {
 
 	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		RenderedImage image = context.get(RasterizingPipelineCode.RENDERED_IMAGE, RenderedImage.class);
-		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(10 * 1024);
-		try {
-			ImageIO.write(image, "PNG", imageStream);
-		} catch (IOException e) {
-			throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
+		if (context.containsKey(RasterizingPipelineCode.RENDERED_IMAGE)) {
+			RenderedImage image = context.get(RasterizingPipelineCode.RENDERED_IMAGE, RenderedImage.class);
+			ByteArrayOutputStream imageStream = new ByteArrayOutputStream(10 * 1024);
+			try {
+				ImageIO.write(image, "PNG", imageStream);
+			} catch (IOException e) {
+				throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
+			}
+			byte[] imageData = imageStream.toByteArray();
+			response.setImage(imageData);
 		}
-		byte[] imageData = imageStream.toByteArray();
-		response.setImage(imageData);
-
 	}
 
 }

@@ -102,6 +102,7 @@ public class MapRasterizingInfo implements ClientWidgetInfo, RasterizingConstant
 	/**
 	 * Get the DPI (Dots per inch) used for rendering the image. If not set or 0, the renderer's default DPI is used.
 	 * @return the DPI
+	 * @since 1.1.0
 	 */
 	public int getDpi() {
 		return dpi;
@@ -110,6 +111,7 @@ public class MapRasterizingInfo implements ClientWidgetInfo, RasterizingConstant
 	/**
 	 * Set the DPI (Dots per inch) used for rendering the image.
 	 * @param dpi the DPI
+	 * @since 1.1.0
 	 */
 	public void setDpi(int dpi) {
 		this.dpi = dpi;

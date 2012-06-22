@@ -1,6 +1,14 @@
 package org.geomajas.plugin.rasterizing;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -22,7 +30,9 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
+import org.geotools.factory.Hints;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -159,6 +169,33 @@ public class ImageServiceMapTest {
 		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
 		mapInfo.getLayers().add(clientBeansPointLayerInfo);
 		new MapAssert(mapInfo).assertEqualImage("dpi.png", writeImages, DELTA);
+	}
+	
+	@Test
+	public void testGraphics2D() throws Exception {
+		ClientMapInfo mapInfo = new ClientMapInfo();
+		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
+		mapRasterizingInfo.setBounds(new Bbox(-80, -50, 100, 100));
+		mapInfo.setCrs("EPSG:4326");
+		mapRasterizingInfo.setScale(1);
+		mapRasterizingInfo.setTransparent(true);
+		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		ClientVectorLayerInfo clientBeansPointLayerInfo = new ClientVectorLayerInfo();
+		clientBeansPointLayerInfo.setServerLayerId(layerBeansPoint.getId());
+		VectorLayerRasterizingInfo layerRasterizingInfo = new VectorLayerRasterizingInfo();
+		layerRasterizingInfo.setStyle(layerBeansPointStyleInfo);
+		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
+		mapInfo.getLayers().add(clientBeansPointLayerInfo);
+		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+		RenderingHints renderingHints = new Hints();
+		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Graphics2D graphics2d = image.createGraphics();
+		graphics2d.setRenderingHints(renderingHints);
+		imageService.writeMap(graphics2d, mapInfo);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		imageService.writeMap(baos, mapInfo);
+		BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(baos.toByteArray()));
+		Assert.assertArrayEquals(image2.getRGB(0, 0, 100, 100, null, 0, 100),image.getRGB(0, 0, 100, 100, null, 0, 100));
 	}
 
 	@Test

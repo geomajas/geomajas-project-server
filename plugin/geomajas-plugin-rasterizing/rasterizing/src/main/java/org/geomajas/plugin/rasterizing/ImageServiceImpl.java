@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing;
 
+import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,44 +52,61 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	private PipelineService<RasterizingContainer> pipelineService;
 
+	public void writeMap(Graphics2D graphics, ClientMapInfo clientMapInfo) throws GeomajasException {
+		PipelineContext context = pipelineService.createContext();
+		context.put(RasterizingPipelineCode.GRAPHICS_2D, graphics);
+		callPipeline(clientMapInfo, context, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
+	}
+
 	/** {@inheritDoc} */
 	public void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
-		callPipeline(stream, clientMapInfo, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
+		PipelineContext context = pipelineService.createContext();
+		RasterizingContainer container = callPipeline(clientMapInfo, context,
+				RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
+		if (container.getImage().length != 0) {
+			try {
+				stream.write(container.getImage());
+			} catch (IOException e) {
+				throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
+			}
+		}
 	}
 
 	/** {@inheritDoc} */
 	public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
-		callPipeline(stream, clientMapInfo, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_LEGEND_IMAGE);
+		PipelineContext context = pipelineService.createContext();
+		RasterizingContainer container = callPipeline(clientMapInfo, context,
+				RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_LEGEND_IMAGE);
+		if (container.getImage().length != 0) {
+			try {
+				stream.write(container.getImage());
+			} catch (IOException e) {
+				throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
+			}
+		}
 	}
 
-	private void callPipeline(OutputStream stream, ClientMapInfo clientMapInfo, String pipelineKey)
+	private RasterizingContainer callPipeline(ClientMapInfo clientMapInfo, PipelineContext context, String pipelineKey)
 			throws GeomajasException {
-		PipelineContext context = pipelineService.createContext();
 		DefaultMapContext mapContext = new DefaultMapContext();
-		try {
-			mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
-			MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo
-					.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
-			mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
-					mapContext.getCoordinateReferenceSystem()));
-			RenderingHints renderingHints = new Hints();
-			renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			RasterizingContainer response = new RasterizingContainer();
-			context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
-			context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
-			Map<Object, Object> rendererHints = new HashMap<Object, Object>();
-			if (mapInfo.getDpi() > 0) {
-				rendererHints.put(StreamingRenderer.DPI_KEY, mapInfo.getDpi());
-			}
-			context.put(RasterizingPipelineCode.RENDERER_HINTS, rendererHints);
-			context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
-			pipelineService.execute(pipelineKey, null, context, response);
-			stream.write(response.getImage());
-		} catch (IOException e) {
-			throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
-		} finally {
-			mapContext.dispose();
+		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
+		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
+				mapContext.getCoordinateReferenceSystem()));
+		RenderingHints renderingHints = new Hints();
+		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		RasterizingContainer response = new RasterizingContainer();
+		context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
+		context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
+		Map<Object, Object> rendererHints = new HashMap<Object, Object>();
+		if (mapInfo.getDpi() > 0) {
+			rendererHints.put(StreamingRenderer.DPI_KEY, mapInfo.getDpi());
 		}
+		context.put(RasterizingPipelineCode.RENDERER_HINTS, rendererHints);
+		context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
+		pipelineService.execute(pipelineKey, null, context, response);
+		mapContext.dispose();
+		return response;
 	}
 
 }
