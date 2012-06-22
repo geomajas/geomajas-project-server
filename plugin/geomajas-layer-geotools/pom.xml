@@ -98,6 +98,13 @@
 				<artifactId>geomajas-layer-geotools</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.opengeo</groupId>
+				<artifactId>geodb</artifactId>
+				<version>${geodb-version}</version>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -135,8 +142,9 @@
 
 	<properties>
 		<geotools-layer-backend-version>1.10.0</geotools-layer-backend-version>
-		<geotools-version>2.7.4-GBE-276</geotools-version>
+		<geotools-version>2.7.5</geotools-version>
 		<geotools-extras-version>2.7.4</geotools-extras-version>
+		<geodb-version>0.7</geodb-version>
 	</properties>
 
 </project>
