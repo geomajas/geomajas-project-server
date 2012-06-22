@@ -19,7 +19,6 @@ import org.geomajas.annotation.Api;
  * DTO object for VectorLayerComponent.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.VectorLayerComponent
  * @since 2.0.0
  *
  */

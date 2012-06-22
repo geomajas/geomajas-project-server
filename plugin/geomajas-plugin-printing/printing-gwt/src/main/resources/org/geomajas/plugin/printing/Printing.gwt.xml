@@ -12,6 +12,7 @@
 <module>
 
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
+	<inherits name="org.geomajas.plugin.rasterizing.Rasterizing" />
 
 	<source path="client" />
 	<source path="component/dto" />

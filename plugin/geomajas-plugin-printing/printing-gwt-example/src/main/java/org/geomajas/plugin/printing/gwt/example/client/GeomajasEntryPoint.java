@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.printing.gwt.example.client;
 
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.widget.LoadingScreen;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
@@ -51,7 +53,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label("Geomajas, geocoder GWT widget example");
+		Label title = new Label("Geomajas, Simple printing GWT example");
 		title.setStyleName("sgwtTitle");
 		title.setWidth(400);
 		topBar.addMember(title);
@@ -67,9 +69,15 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		MapWidget map = new MapWidget("printingMap", "app");
+		final MapWidget map = new MapWidget("printingMap", "app");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		map.getMapModel().runWhenInitialized(new Runnable() {
+			
+			public void run() {
+				map.getMapModel().getVectorLayer("clientLayerCountriesPrinting").setLabeled(true);
+			}
+		});
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.addMember(toolbar);

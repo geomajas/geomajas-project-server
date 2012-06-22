@@ -64,7 +64,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<value>6.698324247899813</value>
 			</list>
 		</property>
-        <property name="dataSourceName" value="geosparc:rivers" />
+        <property name="dataSourceName" value="bluemarble" />
         <property name="tileWidth" value="512"/>
         <property name="tileHeight" value="512"/>
     </bean>

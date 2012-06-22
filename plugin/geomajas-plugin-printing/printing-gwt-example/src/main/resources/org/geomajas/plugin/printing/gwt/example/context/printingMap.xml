@@ -72,8 +72,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="clientLayerCountriesPrinting" />
 				<ref bean="clientLayerWms" />
+				<ref bean="clientLayerCountriesPrinting" />
 			</list>
 		</property>
 		<!-- @extract-start PrintingToolInfo, example toolbar -->

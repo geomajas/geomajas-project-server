@@ -12,6 +12,7 @@ package org.geomajas.plugin.printing.component;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.net.URL;
 import java.util.Stack;
 
@@ -570,6 +571,13 @@ public class PdfContext {
 	public Rectangle toRelative(Rectangle rect) {
 		return new Rectangle(rect.getLeft() - origX, rect.getBottom() - origY, rect.getRight() - origX, rect.getTop()
 				- origY);
+	}
+
+	public Graphics2D getGraphics2D(Rectangle clipRect) {
+		Graphics2D graphics = template.createGraphics(template.getWidth(), template.getHeight());
+		graphics.translate(origX, template.getHeight() - origY - clipRect.getHeight());
+		graphics.clipRect(0, 0, (int) clipRect.getWidth(), (int) clipRect.getHeight());
+		return graphics;
 	}
 
 }

@@ -32,12 +32,18 @@
 			<artifactId>geomajas-common-servlet</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-rasterizing</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>

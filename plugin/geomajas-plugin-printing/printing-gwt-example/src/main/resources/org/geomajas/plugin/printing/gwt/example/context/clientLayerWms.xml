@@ -14,7 +14,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="serverLayerId" value="layerWmsBluemarble" />
 		<property name="label" value="Raster (WMS)" />
 		<property name="visible" value="true" />
-		<property name="style" value="0.8" />
+		<property name="style" value="0.5" />
 	</bean>
 
 </beans>

@@ -25,6 +25,8 @@ import org.geomajas.plugin.printing.client.util.UrlBuilder;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.rasterizing.client.image.ImageUrlService;
+import org.geomajas.plugin.rasterizing.client.image.ImageUrlServiceImpl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -89,6 +91,8 @@ public class PrintPreferencesCanvas extends Canvas {
 	private FormItemIcon barIcon;
 
 	private MapWidget mapWidget;
+	
+	private ImageUrlService imageUrlService = new ImageUrlServiceImpl();
 
 	public PrintPreferencesCanvas(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
@@ -197,6 +201,7 @@ public class PrintPreferencesCanvas extends Canvas {
 	protected void print() {
 		startProgress();
 		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
+		imageUrlService.makeRasterizable(mapWidget);
 		DefaultTemplateBuilder builder = new DefaultTemplateBuilder();
 		builder.setApplicationId(mapWidget.getApplicationId());
 		builder.setMapModel(mapWidget.getMapModel());

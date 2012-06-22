@@ -12,10 +12,10 @@ package org.geomajas.plugin.printing.client.template;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Coordinate;
@@ -36,8 +36,9 @@ import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
+import org.geomajas.plugin.printing.component.dto.RasterizedLayersComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
-import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 
 /**
  * Default print template builder, parameters include title, size, raster DPI, orientation, etc...
@@ -46,25 +47,25 @@ import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
  */
 public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
-	private double pageWidth;
+	protected double pageWidth;
 
-	private double pageHeight;
+	protected double pageHeight;
 
-	private int marginX;
+	protected int marginX;
 
-	private int marginY;
+	protected int marginY;
 
-	private String titleText;
+	protected String titleText;
 
-	private int rasterDpi;
+	protected int rasterDpi;
 
-	private boolean withScaleBar;
+	protected boolean withScaleBar;
 
-	private boolean withArrow;
+	protected boolean withArrow;
 
-	private MapModel mapModel;
+	protected MapModel mapModel;
 
-	private String applicationId;
+	protected String applicationId;
 
 	@Override
 	public PrintTemplateInfo buildTemplate() {
@@ -97,29 +98,30 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		map.setMapId(mapModel.getMapInfo().getId());
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
-		List<PrintComponentInfo> layerChildren = new ArrayList<PrintComponentInfo>();
+		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
+		// use the normal way for raster layers (TODO: add support for dpi to rasterized part)
 		for (Layer layer : mapModel.getLayers()) {
-			if (layer instanceof VectorLayer && layer.isShowing()) {
-				VectorLayerComponentInfo info = new VectorLayerComponentInfo();
-				VectorLayer vectorLayer = (VectorLayer) layer;
-				info.setLayerId(vectorLayer.getServerLayerId());
-				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
-				info.setStyleInfo(layerInfo.getNamedStyleInfo());
-				info.setFilter(vectorLayer.getFilter());
-				info.setLabelsVisible(vectorLayer.isLabelsShowing());
-				info.setSelected(vectorLayer.isSelected());
-				Set<String> features = vectorLayer.getSelectedFeatures();
-				info.setSelectedFeatureIds(features.toArray(new String[features.size()]));
-				layerChildren.add(info);
-			} else if (layer instanceof RasterLayer && layer.isShowing()) {
+			if (layer instanceof RasterLayer && layer.isShowing()) {
 				RasterLayerComponentInfo info = new RasterLayerComponentInfo();
 				RasterLayer rasterLayer = (RasterLayer) layer;
 				info.setLayerId(rasterLayer.getServerLayerId());
 				info.setStyle(rasterLayer.getLayerInfo().getStyle());
-				layerChildren.add(info);
+				layers.add(info);
 			}
 		}
-		map.getChildren().addAll(0, layerChildren);
+		// use the rasterized layers way for vector layers
+		for (ClientLayerInfo layerInfo : mapModel.getMapInfo().getLayers()) {
+			// we must skip the raster layers or we have them twice !
+			if (layerInfo instanceof ClientRasterLayerInfo) {
+				RasterLayerRasterizingInfo rInfo = (RasterLayerRasterizingInfo) layerInfo
+						.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
+				rInfo.setShowing(false);
+			}
+		}
+		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
+		rasterizedLayersComponentInfo.setMapInfo(mapModel.getMapInfo());
+		layers.add(rasterizedLayersComponentInfo);
+		map.getChildren().addAll(0, layers);
 		return map;
 	}
 

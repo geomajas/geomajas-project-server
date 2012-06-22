@@ -27,6 +27,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 		<property name="backendVersion" value="${printing-backend-version}" />
+		<property name="dependencies">
+			<list>
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<property name="name" value="rasterizing" />
+					<property name="version" value="1.1.0-SNAPSHOT" />
+				</bean>
+			</list>
+		</property>
 		<property name="copyrightInfo">
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">
