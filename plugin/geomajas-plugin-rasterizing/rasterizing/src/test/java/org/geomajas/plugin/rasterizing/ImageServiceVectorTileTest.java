@@ -108,7 +108,7 @@ public class ImageServiceVectorTileTest {
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
 
@@ -157,6 +157,7 @@ public class ImageServiceVectorTileTest {
 	public void testMultiLineLabelStyle() throws Exception {
 		// label on/off
 		log.info("start");
+		getMultiLineStyle().getStroke().setStrokeColor("#000000");
 		checkMultiLine("multiline_black_1_labeled.png", true, true);
 		log.info("stop");
 		// color
