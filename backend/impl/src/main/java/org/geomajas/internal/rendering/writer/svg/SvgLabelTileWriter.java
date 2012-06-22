@@ -43,15 +43,15 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 
 	private final Logger log = LoggerFactory.getLogger(SvgLabelTileWriter.class);
 
-	private GeometryFactory factory;
+	private final GeometryFactory factory;
 
-	private GeometryCoordinateSequenceTransformer transformer;
+	private final GeometryCoordinateSequenceTransformer transformer;
 
-	private LabelStyleInfo labelStyle;
+	private final LabelStyleInfo labelStyle;
 
-	private GeoService geoService;
+	private final GeoService geoService;
 
-	private TextService textService;
+	private final TextService textService;
 
 	public SvgLabelTileWriter(GeometryCoordinateSequenceTransformer transformer, LabelStyleInfo labelStyle,
 			GeoService geoService, TextService textService) {

@@ -24,15 +24,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GzipResponseStream extends ServletOutputStream {
 
-	private ByteArrayOutputStream byteStream;
+	private final ByteArrayOutputStream byteStream;
 
-	private GZIPOutputStream gzipStream;
+	private final GZIPOutputStream gzipStream;
 
 	private boolean closed;
 
-	private HttpServletResponse response;
+	private final HttpServletResponse response;
 
-	private ServletOutputStream servletStream;
+	private final ServletOutputStream servletStream;
 
 	public GzipResponseStream(HttpServletResponse response) throws IOException {
 		super();

@@ -29,9 +29,9 @@ import org.geomajas.rendering.RenderException;
  */
 public class VmlTileWriter implements GraphicsWriter {
 
-	private int coordWidth;
+	private final int coordWidth;
 
-	private int coordHeight;
+	private final int coordHeight;
 
 	public VmlTileWriter(int coordWidth, int coordHeight) {
 		this.coordWidth = coordWidth;

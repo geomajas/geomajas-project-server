@@ -51,17 +51,17 @@ public class BeanFeatureModel implements FeatureModel {
 
 	public static final String SEPARATOR_REGEXP = "\\.";
 
-	private Class<?> beanClass;
+	private final Class<?> beanClass;
 
-	private int srid;
+	private final int srid;
 
 	private VectorLayerInfo vectorLayerInfo;
 
-	private boolean wkt;
+	private final boolean wkt;
 
-	private EntityAttributeService entityMappingService;
+	private final EntityAttributeService entityMappingService;
 	
-	private BeanEntityMapper entityMapper;
+	private final BeanEntityMapper entityMapper;
 
 	public BeanFeatureModel(VectorLayerInfo vectorLayerInfo, int srid, EntityAttributeService entityMappingService)
 			throws LayerException {

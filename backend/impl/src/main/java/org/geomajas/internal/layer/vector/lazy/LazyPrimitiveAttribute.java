@@ -44,9 +44,9 @@ public class LazyPrimitiveAttribute<VALUE_TYPE> extends PrimitiveAttribute<VALUE
 
 	private static final long serialVersionUID = 190L;
 
-	private FeatureModel featureModel;
-	private Object pojo;
-	private String name;
+	private final FeatureModel featureModel;
+	private final Object pojo;
+	private final String name;
 	private boolean gotValue;
 
 	public LazyPrimitiveAttribute(PrimitiveType type, FeatureModel featureModel, Object pojo, String attribute) {
@@ -122,8 +122,10 @@ public class LazyPrimitiveAttribute<VALUE_TYPE> extends PrimitiveAttribute<VALUE
 		super.setValue(value);
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
 	@Override
-	public LazyPrimitiveAttribute<VALUE_TYPE> clone() { // NOSONAR
+	public LazyPrimitiveAttribute<VALUE_TYPE> clone() { // NOSONAR super.clone() not supported by GWT
 		return new LazyPrimitiveAttribute<VALUE_TYPE>(getType(), featureModel, pojo, name);
 	}
 }

@@ -35,11 +35,11 @@ public class CommandResponse implements Serializable {
 
 	private long executionTime;
 
-	private List<String> errorMessages = new ArrayList<String>();
+	private final List<String> errorMessages = new ArrayList<String>();
 
 	private List<ExceptionDto> exceptions;
 
-	private transient List<Throwable> errors = new ArrayList<Throwable>();
+	private final transient List<Throwable> errors = new ArrayList<Throwable>();
 
 	// Class specific functions:
 

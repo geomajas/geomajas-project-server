@@ -21,11 +21,11 @@ import org.geomajas.layer.VectorLayer;
  */
 public class StyledLayer {
 
-	private VectorLayerInfo layerInfo;
+	private final VectorLayerInfo layerInfo;
 
-	private NamedStyleInfo styleInfo;
+	private final NamedStyleInfo styleInfo;
 	
-	private String id;
+	private final String id;
 
 	/**
 	 * Constructs a styled layer.

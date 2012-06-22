@@ -38,11 +38,11 @@ public class VmlFeatureWriter implements GraphicsWriter {
 
 	private final Logger log = LoggerFactory.getLogger(VmlFeatureWriter.class);
 
-	private GeometryCoordinateSequenceTransformer transformer;
+	private final GeometryCoordinateSequenceTransformer transformer;
 
-	private int coordWidth;
+	private final int coordWidth;
 
-	private int coordHeight;
+	private final int coordHeight;
 
 	public VmlFeatureWriter(GeometryCoordinateSequenceTransformer transformer, int coordWidth, int coordHeight) {
 		this.transformer = transformer;

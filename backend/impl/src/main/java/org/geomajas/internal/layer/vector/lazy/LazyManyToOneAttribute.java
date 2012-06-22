@@ -28,9 +28,9 @@ public class LazyManyToOneAttribute extends ManyToOneAttribute implements LazyAt
 
 	private static final long serialVersionUID = 190L;
 
-	private FeatureModel featureModel;
-	private Object pojo;
-	private String name;
+	private final FeatureModel featureModel;
+	private final Object pojo;
+	private final String name;
 	private boolean gotValue;
 
 	public LazyManyToOneAttribute(FeatureModel featureModel, Object pojo, String attribute) {

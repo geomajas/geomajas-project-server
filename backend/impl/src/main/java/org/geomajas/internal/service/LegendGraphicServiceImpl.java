@@ -250,7 +250,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 			}
 			type = DataUtilities.createType("Sample", geomName + ":Geometry");
 		} catch (SchemaException e) {
-			throw new RuntimeException(e);
+			throw new IllegalStateException(e.getMessage(), e);
 		}
 		return SimpleFeatureBuilder.template(type, null);
 	}
