@@ -1,7 +1,7 @@
 #! /bin/sh
 
 #TARGETDIR="/home/joachim/tmp/"
-TARGETDIR="/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
+TARGETDIR="/srv/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
 TARGET="$TARGETDIR/temp.html"
 FINAL="$TARGETDIR/documentation.html"
 #LINKPREFIX="file:/home/joachim/tmp/"
