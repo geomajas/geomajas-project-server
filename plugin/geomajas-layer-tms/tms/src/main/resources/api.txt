@@ -1,0 +1,4 @@
+// TMS layer API for 1.10.0
+org.geomajas.layer.tms.TmsLayer::1.0.0
+org.geomajas.layer.tms.TmsLayer:void setBaseTmsUrl(String, ):1.0.0
+org.geomajas.layer.tms.TmsLayer:void setExtension(String, ):1.0.0
