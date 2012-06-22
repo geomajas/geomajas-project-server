@@ -20,7 +20,7 @@
 	<artifactId>geomajas-project-sld-editor-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Geomajas SLD project</name>
+	<name>Geomajas SLD editor project</name>
 	<description>
 		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
 		for the display, analysis and management of geographic information. It is a building block that allows
