@@ -35,7 +35,7 @@ public class CommandResponse implements Serializable {
 
 	private long executionTime;
 
-	private final List<String> errorMessages = new ArrayList<String>();
+	private List<String> errorMessages = new ArrayList<String>(); // NOSONAR final makes it non-serializable
 
 	private List<ExceptionDto> exceptions;
 
