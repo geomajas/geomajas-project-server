@@ -30,11 +30,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="app"
+	<bean name="appPrinting"
 		  class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="printingMap"/>
+				<ref bean="mapPrinting"/>
 			</list>
 		</property>
 	</bean>

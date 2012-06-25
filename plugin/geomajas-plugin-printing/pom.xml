@@ -53,6 +53,7 @@
 	<modules>
 		<module>printing</module>
 		<module>printing-gwt</module>
+		<module>printing-gwt-example-jar</module>
 		<module>printing-gwt-example</module>
 	</modules>
 
@@ -90,9 +91,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing-gwt</artifactId>
+				<artifactId>geomajas-plugin-printing-gwt-example</artifactId>
 				<version>${project.version}</version>
-				<classifier>sources</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
@@ -211,5 +216,6 @@
 		<printing-backend-version>1.11.0-SNAPSHOT</printing-backend-version>
 		<printing-gwt-face-version>1.11.0-SNAPSHOT</printing-gwt-face-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
+		<google-gwt-version>2.4.0</google-gwt-version>
 	</properties>
 </project>

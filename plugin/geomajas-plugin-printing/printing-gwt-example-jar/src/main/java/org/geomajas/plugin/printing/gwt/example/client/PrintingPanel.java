@@ -11,11 +11,14 @@
 
 package org.geomajas.plugin.printing.gwt.example.client;
 
-import org.geomajas.gwt.client.widget.LoadingScreen;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.plugin.printing.gwt.example.client.i18n.PrintingMessages;
 
-import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -23,17 +26,24 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 /**
- * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
+ * Sample to demonstrate use of the printing plugin.
  *
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class GeomajasEntryPoint implements EntryPoint {
+public class PrintingPanel extends SamplePanel {
 
-	public GeomajasEntryPoint() {
-	}
+	public static final PrintingMessages MESSAGES = GWT.create(PrintingMessages.class);
 
-	public void onModuleLoad() {
+	public static final String TITLE = "Printing";
 
+	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
+
+		public SamplePanel createPanel() {
+			return new PrintingPanel();
+		}
+	};
+
+	public Canvas getViewPanel() {
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
@@ -67,7 +77,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		final MapWidget map = new MapWidget("printingMap", "app");
+		final MapWidget map = new MapWidget("mapPrinting", "appPrinting");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 		map.getMapModel().runWhenInitialized(new Runnable() {
@@ -89,12 +99,27 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Finally draw everything:
 		// ---------------------------------------------------------------------
-		mainLayout.addMember(layout);
-		mainLayout.draw();
+		return layout;
+	}
 
-		// Install a loading screen
-		// This only works if the application initially shows a map with at least 1 vector layer:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas, printing GWT widget example");
-		loadScreen.draw();
+	@Override
+	public String getDescription() {
+		return MESSAGES.printDescription();
+	}
+
+	@Override
+	public String[] getConfigurationFiles() {
+		return new String[] { 
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/appPrinting.xml",
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/mapPrinting.xml",
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/layerWmsPrinting.xml",
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/layerCountriesPrinting.xml",
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/clientLayerCountriesPrinting.xml",
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/clientLayerWmsPrinting.xml"};
+	}
+
+	@Override
+	public String ensureUserLoggedIn() {
+		return "luc";
 	}
 }

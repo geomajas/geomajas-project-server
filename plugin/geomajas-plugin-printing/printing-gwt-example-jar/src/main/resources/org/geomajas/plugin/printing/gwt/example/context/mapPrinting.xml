@@ -16,7 +16,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="printingMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapPrinting" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -72,7 +72,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="clientLayerWms" />
+				<ref bean="clientLayerWmsPrinting" />
 				<ref bean="clientLayerCountriesPrinting" />
 			</list>
 		</property>
@@ -81,7 +81,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean name="printingMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
-						<bean name="ShowDefaultPrint" class="org.geomajas.configuration.client.ClientToolInfo" />
+						<ref bean="ShowDefaultPrint"/>
 					</list>
 				</property>
 			</bean>
@@ -89,6 +89,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<!-- @extract-end -->
 	</bean>
 	
+	<bean name="ShowDefaultPrint" class="org.geomajas.configuration.client.ClientToolInfo" />
 	
 
 </beans>

@@ -17,7 +17,7 @@
 
 	<!-- @extract-start PrintingGwtModule, Inherit the GWT module for the printing plug-in. -->
 	
-	<inherits name="org.geomajas.plugin.printing.Printing"/>
+	<inherits name="org.geomajas.plugin.printing.gwt.example.PrintingExample"/>
 
 	<!-- @extract-end -->
 
@@ -32,5 +32,5 @@
 	<set-property name="user.agent" value="gecko1_8" />
 	-->
 
-	<entry-point class="org.geomajas.plugin.printing.gwt.example.client.GeomajasEntryPoint"/>
+	<entry-point class="org.geomajas.plugin.printing.gwt.example.client.PrintingExampleStandalone"/>
 </module>

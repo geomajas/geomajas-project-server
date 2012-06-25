@@ -10,8 +10,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo"
-		id="clientLayerWms">
-		<property name="serverLayerId" value="layerWmsBluemarble" />
+		id="clientLayerWmsPrinting">
+		<property name="serverLayerId" value="layerWmsPrinting" />
 		<property name="label" value="Raster (WMS)" />
 		<property name="visible" value="true" />
 		<property name="style" value="0.5" />

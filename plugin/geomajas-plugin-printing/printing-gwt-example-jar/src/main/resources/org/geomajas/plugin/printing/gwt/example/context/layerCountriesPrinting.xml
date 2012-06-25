@@ -19,12 +19,12 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="layerCountries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="layerCountries110mInfo" />
+	<bean name="layerCountriesPrinting" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerCountriesPrintingInfo" />
         <property name="url" value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_admin_0_countries.shp"/>
 	</bean>
 
-	<bean name="layerCountries110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerCountriesPrintingInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -38,12 +38,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="featureInfo" ref="layerCountries110mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="layerCountries110mStyleInfo" />
+				<ref bean="layerCountriesPrintingStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="layerCountries110mFeatureInfo">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="layerCountriesPrintingFeatureInfo">
         <property name="dataSourceName" value="110m_admin_0_countries"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -93,7 +93,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountries110mStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountriesPrintingStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">

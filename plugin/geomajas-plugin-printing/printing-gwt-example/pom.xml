@@ -26,58 +26,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-		</dependency>
-
-		<!-- Geomajas dependencies -->
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client</artifactId>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-wms</artifactId>
+			<artifactId>geomajas-plugin-printing-gwt-example-jar</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-geotools</artifactId>
-		</dependency>
-		
-		<!-- @extract-start PrintingDependency, printing plugin dependencies - including source -->
-		
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<!-- @extract-end -->
-
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
-		</dependency>
-		
 		
 		<!-- Google dependencies -->
 		<dependency>
@@ -184,7 +135,7 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
 						<configuration>
-							<module>org.geomajas.plugin.printing.gwt.example.GeomajasEntryPoint</module>
+							<module>org.geomajas.plugin.printing.gwt.example.PrintingExampleStandalone</module>
 							<runTarget>index.html</runTarget>
 							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 							<copyWebapp>true</copyWebapp>

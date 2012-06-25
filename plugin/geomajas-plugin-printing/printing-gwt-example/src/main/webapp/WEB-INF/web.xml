@@ -17,9 +17,13 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+			<!-- generic Geomajas context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
- 			classpath:org/geomajas/plugin/printing/gwt/example/context/*.xml
-  			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
+
+			<!-- security -->
+			WEB-INF/security.xml
+
+			<!-- layers and maps included through geomajasExampleContext.xml -->
 		</param-value>
     </context-param>
 
