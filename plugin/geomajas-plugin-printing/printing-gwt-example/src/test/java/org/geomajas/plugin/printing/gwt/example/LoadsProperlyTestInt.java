@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.wms.gwt.example;
+package org.geomajas.plugin.printing.gwt.example;
 
 import org.junit.After;
 import org.junit.Before;
