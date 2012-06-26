@@ -51,11 +51,15 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-example-base</artifactId>
 		</dependency>
+		
+		<!-- @extract-start PrintingDependency, printing plugin dependencies - including source -->
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing-gwt</artifactId>
 		</dependency>
+		
+		<!-- @extract-end -->
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>

@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-configuration">
@@ -36,11 +35,6 @@
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-plugin-printing-gwt&lt;/artifactId&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-printing-gwt&lt;/artifactId&gt;
-    &lt;version&gt;2.1.0&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
 
@@ -51,7 +45,7 @@
     <xi:include href="listing/PrintingDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para></para>
+    <para />
   </section>
 
   <section id="gwtface">
