@@ -82,6 +82,16 @@
 				service.setEditingState("inserting");
 			}
 
+			function insertHole() {
+				var geometry = service.getGeometry();
+				var ringIndex = service.addEmptyChild();
+				var indexValue = ringIndex.getValue();
+				indexValue += 0;
+				var index = service.getIndexService().create("vertex", [indexValue, 0]);
+				service.setInsertIndex(index);
+				service.setEditingState("inserting");
+			}
+
 			function log(txt) {
 				var el = document.getElementById("log");
 				el.innerHTML += txt + "<br/>";
@@ -106,6 +116,7 @@
 			<button onclick="drawPoint()">Draw Point</button>
 			<button onclick="drawLineString()">Draw LineString</button>
 			<button onclick="drawPolygon()">Draw Polygon</button>
+			<button onclick="insertHole()">Insert hole</button>
 		</div>
 		
 		<table>
