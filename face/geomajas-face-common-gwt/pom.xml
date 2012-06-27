@@ -100,7 +100,7 @@
 	</profiles>
 
 	<properties>
-		<common-gwt-backend-version>1.11.0-SNAPSHOT</common-gwt-backend-version>
+		<common-gwt-backend-version>1.11.0</common-gwt-backend-version>
 		<common-gwt-gwt-version>2.4.0</common-gwt-gwt-version>
 	</properties>	
 </project>
