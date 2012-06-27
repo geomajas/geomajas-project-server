@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-doc-parent</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<packaging>pom</packaging>
 	<name>Geomajas documentation parent</name>
 	<description>
@@ -28,9 +28,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-doc-parent</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-doc-parent-1.0.2</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-doc-parent-1.0.2</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-doc-parent-1.0.2</url>
 	</scm>
 
 	<developers>
