@@ -16,7 +16,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean name="layerTms" class="org.geomajas.layer.tms.TmsLayer" >
-		<property name="baseTmsUrl" value="http://apps.geomajas.org/geoserver/gwc/service/tms/1.0.0/topp%3Atasmania_state_boundaries@EPSG%3A4326@png" />
+		<property name="baseTmsUrl" value="http://www.milieuinfo.be/orthos/" />
 	</bean>
 
 </beans>

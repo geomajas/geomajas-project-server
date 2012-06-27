@@ -32,15 +32,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 			</bean>
 		</property>
-		<property name="crs" value="EPSG:4326" />
+		<property name="crs" value="EPSG:31370" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="130" />
-				<property name="y" value="-50" />
-				<property name="width" value="30" />
-				<property name="height" value="30" />
+				<property name="x" value="18000.0" />
+				<property name="y" value="152999.75" />
+				<property name="width" value="241500.25" />
+				<property name="height" value="241500.25" />
 			</bean>
 		</property>
 		<property name="scaleConfiguration">
