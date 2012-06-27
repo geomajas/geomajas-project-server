@@ -113,11 +113,11 @@ include "org.geomajas.documentation" "geomajas-project-sld-documentation" "1.1.0
 
 # faces
 
-include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.11.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.12.0-SNAPSHOT" \
     "GWT face" \
     "GWT face for building powerful AJAX web user interfaces in Java using SmartGWT." \
     "incubating" "gwt_face.pdf" \
-    "org.geomajas" "geomajas-gwt-client" "1.10.0"
+    "org.geomajas" "geomajas-gwt-client" "1.11.0"
 
 include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.0-SNAPSHOT" \
     "PureGWT face" \
