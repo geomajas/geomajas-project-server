@@ -1,5 +1,4 @@
-// common-gwt module API version 1.0.0
-// initial api as copied from GWT face marked as 0.0.0
+// common-gwt module API version 1.1.0
 org.geomajas.gwt.client.GeomajasService::0.0.0
 org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):0.0.0
 org.geomajas.gwt.client.GeomajasServiceAsync::0.0.0
@@ -40,6 +39,7 @@ org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDisp
 org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addTokenChangedHandler(TokenChangedHandler, ):1.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:String getUserToken():1.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:TokenRequestHandler getTokenRequestHandler():1.1.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:UserDetail getUserDetail():1.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isBusy():0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isShowError():0.0.0
@@ -48,6 +48,8 @@ org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesA
 org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesDefault():0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesSelect():0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:static GwtCommandDispatcher getInstance():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void login():1.1.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void logout():1.1.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommandException(CommandResponse, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommunicationException(Throwable, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setCommandExceptionCallback(CommandExceptionCallback, ):1.0.0
@@ -92,6 +94,7 @@ org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStop
 org.geomajas.gwt.client.command.event.HasDispatchHandlers::0.0.0
 org.geomajas.gwt.client.command.event.TokenChangedEvent::0.0.0
 org.geomajas.gwt.client.command.event.TokenChangedEvent:String getToken():0.0.0
+org.geomajas.gwt.client.command.event.TokenChangedEvent:boolean isLoginPending():1.1.0
 org.geomajas.gwt.client.command.event.TokenChangedHandler:. TYPE:0.0.0
 org.geomajas.gwt.client.command.event.TokenChangedHandler::0.0.0
 org.geomajas.gwt.client.command.event.TokenChangedHandler:void onTokenChanged(TokenChangedEvent, ):0.0.0
@@ -134,6 +137,29 @@ org.geomajas.gwt.client.service.ClientConfigurationService:static void setConfig
 org.geomajas.gwt.client.service.ClientConfigurationSetter::1.0.0
 org.geomajas.gwt.client.service.ClientConfigurationSetter:void set(String, ClientApplicationInfo, ):1.0.0
 org.geomajas.gwt.client.service.WidgetConfigurationCallback::1.0.0
+org.geomajas.gwt.client.util.Dom::1.1.0
+org.geomajas.gwt.client.util.Dom:Dom():1.1.0
+org.geomajas.gwt.client.util.Dom:static Element cloneSvgElement(Element, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static Element createElement(String, String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static Element createElementNS(String, String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static Element createElementNS(String, String, String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static String assembleId(String, String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static String disAssembleId(String, String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static String makeUrlAbsolute(String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static boolean isChrome():1.1.0
+org.geomajas.gwt.client.util.Dom:static boolean isFireFox():1.1.0
+org.geomajas.gwt.client.util.Dom:static boolean isIE():1.1.0
+org.geomajas.gwt.client.util.Dom:static boolean isSafari():1.1.0
+org.geomajas.gwt.client.util.Dom:static boolean isSvg():1.1.0
+org.geomajas.gwt.client.util.Dom:static boolean isWebkit():1.1.0
+org.geomajas.gwt.client.util.Dom:static final String ID_SEPARATOR:1.1.0
+org.geomajas.gwt.client.util.Dom:static final String NS_HTML:1.1.0
+org.geomajas.gwt.client.util.Dom:static final String NS_SVG:1.1.0
+org.geomajas.gwt.client.util.Dom:static final String NS_VML:1.1.0
+org.geomajas.gwt.client.util.Dom:static final String NS_XLINK:1.1.0
+org.geomajas.gwt.client.util.Dom:static void initVMLNamespace():1.1.0
+org.geomajas.gwt.client.util.Dom:static void setElementAttributeNS(String, Element, String, String, ):1.1.0
+org.geomajas.gwt.client.util.Dom:static void setInnerSvg(Element, String, ):1.1.0
 org.geomajas.gwt.client.util.EqualsUtil::0.0.0
 org.geomajas.gwt.client.util.EqualsUtil:static boolean isEqual(Object, Object, ):0.0.0
 org.geomajas.gwt.client.util.Html::1.0.0
