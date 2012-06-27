@@ -39,7 +39,7 @@ public final class Geomajas {
 	 * @return Geomajas version
 	 */
 	public static String getVersion() {
-		return "1.10.0-SNAPSHOT";
+		return "1.11.0";
 	}
 
 	/**
