@@ -126,11 +126,11 @@ include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.
     "" "" ""
 #    "org.geomajas" "geomajas-puregwt-client" "1.0.0"
 
-include "org.geomajas.documentation" "common-gwt-documentation" "1.1.0-SNAPSHOT" \
+include "org.geomajas.documentation" "common-gwt-documentation" "1.2.0-SNAPSHOT" \
     "Common-GWT " \
     "Common module which is used by both the GWT and PureGWT faces." \
     "incubating" "master.pdf" \
-    "org.geomajas" "geomajas-face-common-gwt" "1.0.0"
+    "org.geomajas" "geomajas-face-common-gwt" "1.1.0"
 
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
