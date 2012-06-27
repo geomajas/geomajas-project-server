@@ -11,19 +11,22 @@
 
 package org.geomajas.internal.configuration;
 
+import static org.fest.assertions.Assertions.assertThat;
+
+import java.util.List;
+import java.util.Locale;
+
 import junit.framework.Assert;
+
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.UserStyleInfo;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.List;
-
-import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Verify that the check on layer tree nodes, layer needs to be part of the map.
@@ -32,6 +35,11 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class ConfigurationDtoPostProcessorVectorLayerTest {
 
+	@Before
+	public void before() {
+		Locale.setDefault(Locale.ENGLISH);
+	}
+	
 	@Test
 	public void testAttributeInvalidNameCheck() {
 		try {
