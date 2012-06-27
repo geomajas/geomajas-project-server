@@ -1,4 +1,4 @@
-// geomajas-api module API for 1.10.0
+// geomajas-api module API for 1.11.0
 org.geomajas.command.Command::1.6.0
 org.geomajas.command.Command:RESPONSE getEmptyCommandResponse():1.6.0
 org.geomajas.command.Command:void execute(REQUEST, RESPONSE, ):1.6.0
@@ -169,6 +169,7 @@ org.geomajas.configuration.ImageInfo:void setHeight(int, ):1.6.0
 org.geomajas.configuration.ImageInfo:void setHref(String, ):1.6.0
 org.geomajas.configuration.ImageInfo:void setSelectionHref(String, ):1.6.0
 org.geomajas.configuration.ImageInfo:void setWidth(int, ):1.6.0
+org.geomajas.configuration.IsInfo::1.11.0
 org.geomajas.configuration.LabelStyleInfo::1.6.0
 org.geomajas.configuration.LabelStyleInfo:FeatureStyleInfo getBackgroundStyle():1.6.0
 org.geomajas.configuration.LabelStyleInfo:FontStyleInfo getFontStyle():1.6.0
@@ -217,6 +218,7 @@ org.geomajas.configuration.NamedStyleInfo:void setSldStyleName(String, ):1.10.0
 org.geomajas.configuration.NamedStyleInfo:void setUserStyle(UserStyleInfo, ):1.10.0
 org.geomajas.configuration.Parameter::1.6.0
 org.geomajas.configuration.Parameter:Parameter():1.6.0
+org.geomajas.configuration.Parameter:Parameter(String, String, ):1.11.0
 org.geomajas.configuration.Parameter:String getName():1.6.0
 org.geomajas.configuration.Parameter:String getValue():1.6.0
 org.geomajas.configuration.Parameter:void setName(String, ):1.6.0
@@ -328,6 +330,7 @@ org.geomajas.configuration.client.ClientLayerInfo:LayerType getLayerType():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:Map<String,ClientWidgetInfo> getWidgetInfo():1.8.0
 org.geomajas.configuration.client.ClientLayerInfo:ScaleInfo getMaximumScale():1.7.0
 org.geomajas.configuration.client.ClientLayerInfo:ScaleInfo getMinimumScale():1.7.0
+org.geomajas.configuration.client.ClientLayerInfo:ScaleInfo getZoomToPointScale():1.11.0
 org.geomajas.configuration.client.ClientLayerInfo:String getCrs():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:String getId():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:String getLabel():1.6.0
@@ -347,6 +350,7 @@ org.geomajas.configuration.client.ClientLayerInfo:void setViewScaleMax(double, )
 org.geomajas.configuration.client.ClientLayerInfo:void setViewScaleMin(double, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setVisible(boolean, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setWidgetInfo(Map<String,ClientWidgetInfo>, ):1.8.0
+org.geomajas.configuration.client.ClientLayerInfo:void setZoomToPointScale(ScaleInfo, ):1.11.0
 org.geomajas.configuration.client.ClientLayerTreeInfo::1.6.0
 org.geomajas.configuration.client.ClientLayerTreeInfo:ClientLayerTreeInfo():1.6.0
 org.geomajas.configuration.client.ClientLayerTreeInfo:ClientLayerTreeNodeInfo getTreeNode():1.6.0
@@ -479,6 +483,7 @@ org.geomajas.configuration.client.ScaleConfigurationInfo:void setMaximumScale(Sc
 org.geomajas.configuration.client.ScaleConfigurationInfo:void setZoomLevels(List<ScaleInfo>, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo::1.7.0
 org.geomajas.configuration.client.ScaleInfo:ScaleInfo():1.7.0
+org.geomajas.configuration.client.ScaleInfo:ScaleInfo(ScaleInfo, ):1.11.0
 org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:double getDenominator():1.7.0
@@ -702,6 +707,7 @@ org.geomajas.global.ExceptionDto:void setStackTrace(StackTraceElement[], ):1.8.0
 org.geomajas.global.ExpectAlternatives::1.5.0
 org.geomajas.global.FutureApi::1.9.0.
 org.geomajas.global.GeomajasConstant::1.6.0
+org.geomajas.global.GeomajasConstant:String CLASSPATH_URL_PREFIX:1.11.0
 org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_ALL:1.6.0
 org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_ATTRIBUTES:1.6.0
 org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_GEOMETRY:1.6.0
@@ -1275,6 +1281,8 @@ org.geomajas.service.FilterService:Filter createTouchesFilter(Geometry, String, 
 org.geomajas.service.FilterService:Filter createTrueFilter():1.6.0
 org.geomajas.service.FilterService:Filter createWithinFilter(Geometry, String, ):1.6.0
 org.geomajas.service.FilterService:Filter parseFilter(String, ):1.6.0
+org.geomajas.service.FilterService:FilterFactory getFilterFactory():1.11.0
+org.geomajas.service.FilterService:String ATTRIBUTE_ID:1.11.0
 org.geomajas.service.FilterService:void registerFeatureModel(FeatureModel, ):1.6.0
 org.geomajas.service.GeoService::1.6.0
 org.geomajas.service.GeoService:Bbox transform(Bbox, Crs, Crs, ):1.8.0

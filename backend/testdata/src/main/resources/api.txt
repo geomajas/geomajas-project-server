@@ -1,1 +1,1 @@
-// geomajas-testdata module API, 1.10.0
+// geomajas-testdata module API, 1.11.0

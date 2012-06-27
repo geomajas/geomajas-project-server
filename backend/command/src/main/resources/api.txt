@@ -1,5 +1,11 @@
-// geomajas-command module API, 1.10.0
+// geomajas-command module API, 1.11.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
+org.geomajas.command.dto.BufferInfo::1.11.0
+org.geomajas.command.dto.BufferInfo:BufferInfo():1.11.0
+org.geomajas.command.dto.BufferInfo:double getDistance():1.11.0
+org.geomajas.command.dto.BufferInfo:int getQuadrantSegments():1.11.0
+org.geomajas.command.dto.BufferInfo:void setDistance(double, ):1.11.0
+org.geomajas.command.dto.BufferInfo:void setQuadrantSegments(int, ):1.11.0
 org.geomajas.command.dto.CopyrightRequest::1.9.0
 org.geomajas.command.dto.CopyrightRequest:CopyrightRequest():1.9.0
 org.geomajas.command.dto.CopyrightRequest:static final String COMMAND:1.9.0
@@ -7,6 +13,64 @@ org.geomajas.command.dto.CopyrightResponse::1.7.1
 org.geomajas.command.dto.CopyrightResponse:CopyrightResponse():1.7.1
 org.geomajas.command.dto.CopyrightResponse:List<CopyrightInfo> getCopyrights():1.7.1
 org.geomajas.command.dto.CopyrightResponse:void setCopyrights(List<CopyrightInfo>, ):1.7.1
+org.geomajas.command.dto.GeometryAreaRequest::1.11.0
+org.geomajas.command.dto.GeometryAreaRequest:GeometryAreaRequest():1.11.0
+org.geomajas.command.dto.GeometryAreaRequest:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometryAreaRequest:String getCrs():1.11.0
+org.geomajas.command.dto.GeometryAreaRequest:static final String COMMAND:1.11.0
+org.geomajas.command.dto.GeometryAreaRequest:void setCrs(String, ):1.11.0
+org.geomajas.command.dto.GeometryAreaRequest:void setGeometries(List<Geometry>, ):1.11.0
+org.geomajas.command.dto.GeometryAreaResponse::1.11.0
+org.geomajas.command.dto.GeometryAreaResponse:GeometryAreaResponse():1.11.0
+org.geomajas.command.dto.GeometryAreaResponse:List<Double> getAreas():1.11.0
+org.geomajas.command.dto.GeometryAreaResponse:void setAreas(List<Double>, ):1.11.0
+org.geomajas.command.dto.GeometryBufferRequest::1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:GeometryBufferRequest():1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:double getBufferDistance():1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:int getQuadrantSegments():1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:static final String COMMAND:1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:void setBufferDistance(double, ):1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:void setGeometries(List<Geometry>, ):1.11.0
+org.geomajas.command.dto.GeometryBufferRequest:void setQuadrantSegments(int, ):1.11.0
+org.geomajas.command.dto.GeometryBufferResponse::1.11.0
+org.geomajas.command.dto.GeometryBufferResponse:GeometryBufferResponse():1.11.0
+org.geomajas.command.dto.GeometryBufferResponse:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometryBufferResponse:void setGeometries(List<Geometry>, ):1.11.0
+org.geomajas.command.dto.GeometryConvexHullRequest::1.11.0
+org.geomajas.command.dto.GeometryConvexHullRequest:GeometryConvexHullRequest():1.11.0
+org.geomajas.command.dto.GeometryConvexHullRequest:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometryConvexHullRequest:static final String COMMAND:1.11.0
+org.geomajas.command.dto.GeometryConvexHullRequest:void setGeometries(List<Geometry>, ):1.11.0
+org.geomajas.command.dto.GeometryConvexHullResponse::1.11.0
+org.geomajas.command.dto.GeometryConvexHullResponse:GeometryConvexHullResponse():1.11.0
+org.geomajas.command.dto.GeometryConvexHullResponse:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometryConvexHullResponse:void setGeometries(List<Geometry>, ):1.11.0
+org.geomajas.command.dto.GeometryMergeRequest::1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:GeometryMergeRequest():1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:boolean usePrecisionAsBuffer():1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:int getPrecision():1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:static final String COMMAND:1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:void setGeometries(List<Geometry>, ):1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:void setPrecision(int, ):1.11.0
+org.geomajas.command.dto.GeometryMergeRequest:void setUsePrecisionAsBuffer(boolean, ):1.11.0
+org.geomajas.command.dto.GeometryMergeResponse::1.11.0
+org.geomajas.command.dto.GeometryMergeResponse:Geometry getGeometry():1.11.0
+org.geomajas.command.dto.GeometryMergeResponse:GeometryMergeResponse():1.11.0
+org.geomajas.command.dto.GeometryMergeResponse:void setGeometry(Geometry, ):1.11.0
+org.geomajas.command.dto.GeometrySplitRequest::1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:Geometry getGeometry():1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:Geometry getSplitLine():1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:GeometrySplitRequest():1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:GeometrySplitRequest(Geometry, Geometry, ):1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:static final String COMMAND:1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:void setGeometry(Geometry, ):1.11.0
+org.geomajas.command.dto.GeometrySplitRequest:void setSplitLine(Geometry, ):1.11.0
+org.geomajas.command.dto.GeometrySplitResponse::1.11.0
+org.geomajas.command.dto.GeometrySplitResponse:GeometrySplitResponse():1.11.0
+org.geomajas.command.dto.GeometrySplitResponse:List<Geometry> getGeometries():1.11.0
+org.geomajas.command.dto.GeometrySplitResponse:void setGeometries(List<Geometry>, ):1.11.0
 org.geomajas.command.dto.GetMapConfigurationRequest::1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest():1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest(String, String, ):1.6.0
@@ -167,10 +231,21 @@ org.geomajas.command.dto.TransformGeometryResponse:TransformGeometryResponse():1
 org.geomajas.command.dto.TransformGeometryResponse:void setBounds(Bbox, ):1.9.0
 org.geomajas.command.dto.TransformGeometryResponse:void setGeometry(Geometry, ):1.9.0
 org.geomajas.command.dto.TransformGeometryResponse:void setGeometryCollection(List<Geometry>, ):1.9.0
+org.geomajas.command.dto.UnionInfo::1.11.0
+org.geomajas.command.dto.UnionInfo:UnionInfo():1.11.0
+org.geomajas.command.dto.UnionInfo:boolean isUsePrecisionAsBuffer():1.11.0
+org.geomajas.command.dto.UnionInfo:int getPrecision():1.11.0
+org.geomajas.command.dto.UnionInfo:void setPrecision(int, ):1.11.0
+org.geomajas.command.dto.UnionInfo:void setUsePrecisionAsBuffer(boolean, ):1.11.0
 org.geomajas.command.feature.PersistTransactionCommand::1.6.0
 org.geomajas.command.feature.SearchByLocationCommand::1.6.0
 org.geomajas.command.feature.SearchFeatureCommand::1.6.0
 org.geomajas.command.general.CopyrightCommand::1.7.0
+org.geomajas.command.geometry.GeometryAreaCommand::1.11.0
+org.geomajas.command.geometry.GeometryBufferCommand::1.11.0
+org.geomajas.command.geometry.GeometryConvexHullCommand::1.11.0
+org.geomajas.command.geometry.GeometryMergeCommand::1.11.0
+org.geomajas.command.geometry.GeometrySplitCommand::1.11.0
 org.geomajas.command.geometry.TransformGeometryCommand::1.9.0.
 org.geomajas.command.render.GetRasterTilesCommand::1.6.0
 org.geomajas.command.render.GetVectorTileCommand::1.6.0

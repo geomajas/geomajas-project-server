@@ -1,7 +1,14 @@
-// geomajas-common-servlet module API, 1.9.0
+// geomajas-common-servlet module API, 1.11.0
 org.geomajas.servlet.ApplicationContextUtil::1.7.0
 org.geomajas.servlet.ApplicationContextUtil:static ApplicationContext getApplicationContext(ServletConfig, ):1.7.0
 org.geomajas.servlet.ApplicationContextUtil:static ApplicationContext getApplicationContext(ServletContext, ):1.7.0
 org.geomajas.servlet.ApplicationContextUtil:static void setApplicationContext(ServletContext, ApplicationContext, ):1.7.0
+org.geomajas.servlet.AutomaticDispatcherUrlService::1.10.0
+org.geomajas.servlet.AutomaticDispatcherUrlService:void setLocalDispatcherUrl(String, ):1.10.0
 org.geomajas.servlet.CacheFilter::1.9.0
 org.geomajas.servlet.CacheFilter:static void configureNoCaching(HttpServletResponse, ):1.9.0
+org.geomajas.servlet.mvc.TransactionalInterceptor::1.10.0
+org.geomajas.servlet.mvc.TransactionalInterceptor:TransactionalInterceptor():1.10.0
+org.geomajas.servlet.mvc.TransactionalInterceptor:boolean preHandle(HttpServletRequest, HttpServletResponse, Object, ):1.10.0
+org.geomajas.servlet.mvc.TransactionalInterceptor:void afterCompletion(HttpServletRequest, HttpServletResponse, Object, Exception, ):1.10.0
+org.geomajas.servlet.mvc.TransactionalInterceptor:void setTransactionDefinition(TransactionDefinition, ):1.10.0
