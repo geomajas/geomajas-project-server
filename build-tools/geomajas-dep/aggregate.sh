@@ -77,17 +77,17 @@ template_start
 
 # main guides
 
-include "org.geomajas.documentation" "docbook-gettingstarted" "1.11.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-gettingstarted" "1.12.0-SNAPSHOT" \
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
-    "org.geomajas" "geomajas-command" "1.10.0"
+    "org.geomajas" "geomajas-command" "1.11.0"
 
-include "org.geomajas.documentation" "docbook-devuserguide" "1.11.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-devuserguide" "1.12.0-SNAPSHOT" \
     "User guide for developers" \
     "Reference guide detailing architecture, implementation and extension possibilities of the back-end core." \
     "incubating" "User_Guide_for_Developers.pdf" \
-    "org.geomajas" "geomajas-api" "1.10.0"
+    "org.geomajas" "geomajas-api" "1.11.0"
 
 
 # projects
