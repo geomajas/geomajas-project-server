@@ -1,1 +1,1 @@
-// GWT face example-jar module API, version 1.10.0
+// GWT face example-jar module API, version 1.11.0

@@ -1,4 +1,4 @@
-// geomajas-face-gwt module API, 1.10.0
+// geomajas-face-gwt module API, 1.11.0
 org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getDispatcherUrl():1.10.0
@@ -11,6 +11,7 @@ org.geomajas.gwt.client.action.ToolbarAction::1.6.0
 org.geomajas.gwt.client.action.ToolbarAction:ToolbarAction(String, String, ):1.6.0
 org.geomajas.gwt.client.action.ToolbarAction:ToolbarAction(String, String, String, ):1.10.0
 org.geomajas.gwt.client.action.ToolbarBaseAction::1.6.0
+org.geomajas.gwt.client.action.ToolbarBaseAction:ButtonLayoutStyle getButtonLayoutStyle():1.11.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:HandlerRegistration addToolbarActionHandler(ToolbarActionHandler, ):1.6.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:String getButtonLayout():1.10.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:String getIcon():1.6.0
@@ -20,6 +21,7 @@ org.geomajas.gwt.client.action.ToolbarBaseAction:ToolbarBaseAction(String, Strin
 org.geomajas.gwt.client.action.ToolbarBaseAction:ToolbarBaseAction(String, String, String, ):1.10.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:boolean isDisabled():1.6.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:void setButtonLayout(String, ):1.10.0
+org.geomajas.gwt.client.action.ToolbarBaseAction:void setButtonLayoutStyle(ButtonLayoutStyle, ):1.11.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:void setDisabled(boolean, ):1.6.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:void setIcon(String, ):1.6.0
 org.geomajas.gwt.client.action.ToolbarBaseAction:void setTitle(String, ):1.10.0
@@ -71,6 +73,7 @@ org.geomajas.gwt.client.action.toolbar.ToolId:String BUTTON_GROUP:1.10.0
 org.geomajas.gwt.client.action.toolbar.ToolId:String BUTTON_ICON_TITLE:1.10.0
 org.geomajas.gwt.client.action.toolbar.ToolId:String BUTTON_ICON_TITLE_DESCRIPTION:1.10.0
 org.geomajas.gwt.client.action.toolbar.ToolId:String DROP_DOWN_BUTTON:1.10.0
+org.geomajas.gwt.client.action.toolbar.ToolId:String TOOL_DESELECT_ALL:1.11.0
 org.geomajas.gwt.client.action.toolbar.ToolId:String TOOL_EDIT:1.10.0
 org.geomajas.gwt.client.action.toolbar.ToolId:String TOOL_FEATURE_INFO:1.10.0
 org.geomajas.gwt.client.action.toolbar.ToolId:String TOOL_LAYER_LABELLED:1.10.0
@@ -95,6 +98,16 @@ org.geomajas.gwt.client.action.toolbar.ToolId:String TOOL_ZOOM_TO_SELECTION:1.10
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry::1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static ToolbarBaseAction getToolbarAction(String, MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static void put(String, ToolCreator, ):1.6.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter::1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter:ButtonLayoutParameter():1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter:ButtonLayoutStyle getButtonLayoutStyle():1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter:static final String NAME:1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter:void setName(String, ):1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter:void setValue(ButtonLayoutStyle, ):1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutParameter:void setValue(String, ):1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle::1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle:ICON_AND_TITLE:1.11.0
+org.geomajas.gwt.client.action.toolbar.parameter.ButtonLayoutStyle:ICON_TITLE_AND_DESCRIPTION:1.11.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController::1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetX():1.8.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetY():1.8.0
@@ -217,11 +230,13 @@ org.geomajas.gwt.client.map.MapModel:final HandlerRegistration addMapModelClearH
 org.geomajas.gwt.client.map.MapModel:final HandlerRegistration addMapModelHandler(MapModelHandler, ):1.6.0
 org.geomajas.gwt.client.map.MapModel:void clear():1.10.0
 org.geomajas.gwt.client.map.MapModel:void init():1.10.0
+org.geomajas.gwt.client.map.MapModel:void panToFeatures(List<Feature>, ):1.11.0
 org.geomajas.gwt.client.map.MapModel:void refresh():1.10.0
 org.geomajas.gwt.client.map.MapModel:void removeMapModelChangedHandler(MapModelChangedHandler, ):1.10.0
 org.geomajas.gwt.client.map.MapModel:void removeMapModelClearHandler(MapModelClearHandler, ):1.10.0
 org.geomajas.gwt.client.map.MapModel:void removeMapModelHandler(MapModelHandler, ):1.6.0
 org.geomajas.gwt.client.map.MapModel:void runWhenInitialized(Runnable, ):1.10.0
+org.geomajas.gwt.client.map.MapModel:void zoomToFeatures(List<Feature>, ):1.11.0
 org.geomajas.gwt.client.map.MapView::1.6.0
 org.geomajas.gwt.client.map.event.EditingEvent::1.8.0
 org.geomajas.gwt.client.map.event.EditingEvent:EditingEvent(EditingEventType, ):1.8.0
@@ -533,6 +548,7 @@ org.geomajas.gwt.client.widget.MapWidget:boolean addListener(Listener, ):1.8.0
 org.geomajas.gwt.client.widget.MapWidget:boolean removeListener(Listener, ):1.8.0
 org.geomajas.gwt.client.widget.MapWidget:double getPixelPerUnit():1.7.0
 org.geomajas.gwt.client.widget.MapWidget:void init():1.6.0
+org.geomajas.gwt.client.widget.MapWidget:void refreshLayer(Layer<?>, ):1.11.0
 org.geomajas.gwt.client.widget.MapWidget:void registerPainter(Painter, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void registerWorldPaintable(WorldPaintable, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void render(Paintable, RenderGroup, RenderStatus, ):1.6.0
