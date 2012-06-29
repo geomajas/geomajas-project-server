@@ -13,6 +13,7 @@ package org.geomajas.plugin.jsapi.gwt.client.exporter;
 import java.util.HashMap;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.action.toolbar.ToolId;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.DispatchStartedEvent;
 import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
@@ -45,7 +46,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 
 /**
- * MapRegistry provides a registry where {@link org.geomajas.plugin.jsapi.map.Map} components can be registered from GWT
+ * MapRegistry provides a registry where {@link org.geomajas.plugin.jsapi.client.map.Map} components can be registered
+ * fromGWT
  * to be retrieved from plain JavaScript.
  * 
  * @author Oliver May
@@ -116,16 +118,16 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 	 *            the map to register.
 	 */
 	public void registerMap(String applicationId, String mapId, Map map) {
-		HashMap<String, Map> mapmap = null;
+		HashMap<String, Map> mapMap;
 		if (maps.containsKey(applicationId)) {
-			mapmap = maps.get(applicationId);
-			if (!mapmap.containsKey(mapId)) {
-				mapmap.put(mapId, map);
+			mapMap = maps.get(applicationId);
+			if (!mapMap.containsKey(mapId)) {
+				mapMap.put(mapId, map);
 			}
 		} else {
-			mapmap = new HashMap<String, Map>();
-			mapmap.put(mapId, map);
-			maps.put(applicationId, mapmap);
+			mapMap = new HashMap<String, Map>();
+			mapMap.put(mapId, map);
+			maps.put(applicationId, mapMap);
 		}
 	}
 
@@ -198,17 +200,17 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 	@Export
 	public MapController createMapController(Map map, String id) {
 		MapWidget mapWidget = ((MapImpl) map).getMapWidget();
-		if (id.equalsIgnoreCase("PanMode")) {
+		if ("PanMode".equalsIgnoreCase(id)) {
 			return createMapController(map, new PanController(mapWidget));
-		} else if (id.equalsIgnoreCase("MeasureDistanceMode")) {
+		} else if (ToolId.TOOL_MEASURE_DISTANCE_MODE.equalsIgnoreCase(id)) {
 			return createMapController(map, new MeasureDistanceController(mapWidget));
-		} else if (id.equalsIgnoreCase("FeatureInfoMode")) {
+		} else if (ToolId.TOOL_FEATURE_INFO.equalsIgnoreCase(id)) {
 			return createMapController(map, new FeatureInfoController(mapWidget, 3));
-		} else if (id.equalsIgnoreCase("SelectionMode")) {
+		} else if (ToolId.TOOL_SELECTION_MODE.equalsIgnoreCase(id)) {
 			return createMapController(map, new SelectionController(mapWidget, 500, 0.5f, false, 3));
-		} else if (id.equalsIgnoreCase("SingleSelectionMode")) {
+		} else if ("SingleSelectionMode".equalsIgnoreCase(id)) {
 			return createMapController(map, new SingleSelectionController(mapWidget, false, 3));
-		} else if (id.equalsIgnoreCase("EditMode")) {
+		} else if (ToolId.TOOL_EDIT.equalsIgnoreCase(id)) {
 			return createMapController(map, new ParentEditController(mapWidget));
 		}
 		return null;
