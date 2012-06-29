@@ -221,7 +221,7 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 	}
 	
 	/**
-	 * @deprecated Use getlayerMapping()
+	 * @deprecated Use {@link #getLayerMapping}
 	 * @since 1.10.0
 	 */
 	@Deprecated
@@ -230,7 +230,7 @@ public class SearchByPointRequest extends LayerIdsCommandRequest {
 	}
 
 	/**
-	 * @deprecated Use setlayerMapping()
+	 * @deprecated Use {@link #setLayerMapping}
 	 * @since 1.10.0
 	 */
 	@Deprecated
