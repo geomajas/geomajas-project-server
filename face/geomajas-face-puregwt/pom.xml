@@ -169,8 +169,8 @@
 	</profiles>
 
 	<properties>
-		<puregwt-face-backend-version>1.11.0</puregwt-face-backend-version>
-		<puregwt-face-common-gwt-version>1.1.0</puregwt-face-common-gwt-version>
+		<puregwt-face-backend-version>1.11.0-SNAPSHOT</puregwt-face-backend-version>
+		<puregwt-face-common-gwt-version>1.1.0-SNAPSHOT</puregwt-face-common-gwt-version>
 		<puregwt-face-gwt-version>2.4.0</puregwt-face-gwt-version>
 	</properties>
 </project>
