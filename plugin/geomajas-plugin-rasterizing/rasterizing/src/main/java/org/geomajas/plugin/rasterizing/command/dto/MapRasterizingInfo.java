@@ -156,4 +156,15 @@ public class MapRasterizingInfo implements ClientWidgetInfo, RasterizingConstant
 		this.legendRasterizingInfo = legendRasterizingInfo;
 	}
 
+	@Override
+	public String toString() {
+		return "MapRasterizingInfo{" +
+				"bounds=" + bounds +
+				", scale=" + scale +
+				", dpi=" + dpi +
+				", transparent=" + transparent +
+				", extraLayers=" + extraLayers +
+				", legendRasterizingInfo=" + legendRasterizingInfo +
+				'}';
+	}
 }
