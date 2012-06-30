@@ -29,4 +29,10 @@ public interface GeocoderMessages extends Messages {
 	/** @return description for the geocoder panel. */
 	String geocoderDescription();
 
+	/** @return label for button to hide the title on the geocoder widget. */
+	String hideTitle();
+
+	/** @return label for button to show the title on the geocoder widget. */
+	String showTitle();
+
 }

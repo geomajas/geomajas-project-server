@@ -94,7 +94,7 @@ public class GeocoderPanel extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				geocoderWidget.setShowTitle(showTitle);
-				button.setTitle(showTitle ? "Hide title" : "Show title");
+				button.setTitle(showTitle ? MESSAGES.hideTitle() : MESSAGES.showTitle());
 				showTitle = !showTitle;
 				
 			}
