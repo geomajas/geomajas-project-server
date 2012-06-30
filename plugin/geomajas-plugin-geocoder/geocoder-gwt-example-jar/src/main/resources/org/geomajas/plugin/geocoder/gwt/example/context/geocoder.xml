@@ -21,9 +21,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<context:component-scan base-package="org.geomajas.plugin.geocoder.gwt.example"
-							name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
-
 	<!-- geocoder configuration -->
 
 	<!-- @extract-start exampleConfiguration, example configuration -->
@@ -45,7 +42,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</bean>
 				<!-- @extract-skip-start -->
 				<bean class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
-					<property name="geocoderInfo" ref="offlineInfo"/>
+					<property name="geocoderInfo" ref="gcOfflineInfo"/>
 					<property name="name" value="offline" />
 				</bean>
 				<!-- @extract-skip-end -->
@@ -54,7 +51,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 	<!-- @extract-end -->
 
-	<bean name="offlineInfo" class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
+	<bean name="gcOfflineInfo" class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
 		<property name="crs" value="EPSG:4326" />
 		<property name="locations">
 			<list>
