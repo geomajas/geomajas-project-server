@@ -11,10 +11,10 @@
 
 package org.geomajas.layer.google.gwt.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;

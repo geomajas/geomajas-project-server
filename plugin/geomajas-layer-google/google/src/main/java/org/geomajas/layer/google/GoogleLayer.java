@@ -16,8 +16,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
