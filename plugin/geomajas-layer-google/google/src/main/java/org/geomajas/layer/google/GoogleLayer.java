@@ -218,7 +218,7 @@ public class GoogleLayer implements RasterLayer {
 	 * Check whether tiles should be sent to the client. WARNING: deprecated because of change in <a
 	 * href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
 	 * 
-	 * @return
+	 * @return true when tiles are enabled
 	 * @since 1.9.0
 	 * @deprecated use default setting of false
 	 */
@@ -231,7 +231,7 @@ public class GoogleLayer implements RasterLayer {
 	 * Set whether tiles should be sent to the client. Defaults to false. WARNING: deprecated because of change in <a
 	 * href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
 	 * 
-	 * @param tilesEnabled
+	 * @param tilesEnabled true when tiles should be sent to the client
 	 * @since 1.9.0
 	 * @deprecated use default setting of false
 	 */
