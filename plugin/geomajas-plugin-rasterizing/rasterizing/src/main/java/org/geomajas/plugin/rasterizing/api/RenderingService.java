@@ -41,7 +41,7 @@ public interface RenderingService {
 	 * Renders the map context to the specified Java 2D graphics.
 	 * 
 	 * @param context map context
-	 * @param graphic graphics object
+	 * @param graphics graphics object
 	 */
 	void paintMap(MapContext context, Graphics2D graphics);
 
@@ -49,8 +49,8 @@ public interface RenderingService {
 	 * Renders the map context to the specified Java 2D graphics using some extra renderer hints.
 	 * 
 	 * @param context map context
-	 * @param graphic graphics object
-	 * @param renderHints map of renderer hints (see
+	 * @param graphics graphics object
+	 * @param rendererHints map of renderer hints (see
 	 *        {@link org.geotools.renderer.lite.StreamingRenderer#setRendererHints(Map)}
 	 * @since 1.1.0
 	 */
