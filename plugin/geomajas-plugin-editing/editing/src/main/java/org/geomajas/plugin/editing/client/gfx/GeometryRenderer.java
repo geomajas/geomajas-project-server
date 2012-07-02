@@ -22,5 +22,12 @@ public interface GeometryRenderer {
 	 * Redraw the geometry to apply changes in the editor internal state.
 	 */
 	void redraw();
+	
+	/**
+	 * Make the edited geometry.visible/invisible.
+	 * 
+	 * @param visible true to make the geometry visible, false to make the geometry invisible 
+	 */
+	void setVisible(boolean visible);
 
 }

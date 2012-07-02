@@ -413,6 +413,14 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			}
 		}
 	}
+	
+	public void setVisible(boolean visible) {
+		if (visible) {
+			mapWidget.getVectorContext().hide(editingService.getGeometry());
+		} else {
+			mapWidget.getVectorContext().unhide(editingService.getGeometry());
+		}
+	}
 
 	// ------------------------------------------------------------------------
 	// Geometry rendering methods:
@@ -807,4 +815,5 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 		return controller;
 	}
+
 }

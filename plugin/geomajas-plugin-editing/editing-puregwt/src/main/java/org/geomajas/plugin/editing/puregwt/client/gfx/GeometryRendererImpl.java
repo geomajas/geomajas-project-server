@@ -408,6 +408,12 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	public StyleProvider getStyleProvider() {
 		return styleProvider;
 	}
+	
+	public void setVisible(boolean visible) {
+		if (container != null) {
+			container.setVisible(visible);
+		}
+	}
 
 	// ------------------------------------------------------------------------
 	// Private methods for updating:
