@@ -26,6 +26,9 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface ShowcaseMessages extends Messages {
 
+	/** @return title for the SampleTree. */
+	String treeTitle();
+
 	String treeGroupSecurity();
 
 	// Login sample:

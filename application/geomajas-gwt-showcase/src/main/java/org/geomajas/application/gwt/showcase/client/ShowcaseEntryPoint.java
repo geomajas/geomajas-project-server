@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.example.base.ExampleLayout;
+import org.geomajas.gwt.example.base.SampleTree;
 import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
 import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
@@ -53,6 +54,8 @@ public class ShowcaseEntryPoint implements EntryPoint {
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	public void onModuleLoad() {
+		SampleTree.setTreeTitle(MESSAGES.treeTitle());
+
 		// layer samples
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.openCycleMapTitle(),
 				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", OpenCycleMapSample.TITLE, "Layers",

@@ -72,7 +72,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.11.0</version>
+				<version>1.11.1-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -315,6 +315,23 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>org/geomajas/application/gwt/showcase/client/i18n/**</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>org/geomajas/application/gwt/showcase/client/i18n/**</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
 		<plugins>
 			<!-- prepare src classifier for documentation listings -->
 			<plugin>
@@ -375,6 +392,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
+				<!-- @todo should be 2.5.0-SNAPSHOT for property repl, http://jira.codehaus.org/browse/MGWT-290 -->
 				<version>2.4.0</version>
 				<dependencies>
 					<dependency>
@@ -396,7 +414,6 @@
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>
-					<style>PRETTY</style>
 				</configuration>
 				<executions>
 					<execution>
@@ -600,7 +617,7 @@
 	</repositories>
 
 	<properties>
-		<gwt-version>2.4.0</gwt-version>
+		<gwt-version>2.5.0-rc1</gwt-version>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 
