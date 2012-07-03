@@ -14,6 +14,7 @@ package org.geomajas.gwt.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.i18n.VersionMessages;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,8 @@ import java.util.Map;
 @Api(allMethods = true)
 public final class Geomajas {
 
+	private static final VersionMessages MESSAGES = GWT.create(VersionMessages.class);
+
 	private Geomajas() {
 		// do not allow instantiation.
 	}
@@ -39,7 +42,7 @@ public final class Geomajas {
 	 * @return Geomajas version
 	 */
 	public static String getVersion() {
-		return "1.12.0-SNAPSHOT";
+		return MESSAGES.version();
 	}
 
 	/**

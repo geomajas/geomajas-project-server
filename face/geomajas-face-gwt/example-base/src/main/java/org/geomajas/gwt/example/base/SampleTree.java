@@ -18,6 +18,7 @@ import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.example.base.i18n.ExampleBaseMessages;
 
 /**
@@ -30,6 +31,11 @@ import org.geomajas.gwt.example.base.i18n.ExampleBaseMessages;
 public class SampleTree extends TreeGrid {
 
 	private static final ExampleBaseMessages MESSAGES = GWT.create(ExampleBaseMessages.class);
+	private static String treeTitle = MESSAGES.sampleTitle(Geomajas.getVersion());
+
+	public static void setTreeTitle(String title) {
+		treeTitle = title;
+	}
 
 	public SampleTree() {
 		super();
@@ -48,7 +54,7 @@ public class SampleTree extends TreeGrid {
 		TreeGridField field = new TreeGridField();
 		field.setCanFilter(true);
 		field.setName("name");
-		field.setTitle("<b>" + MESSAGES.sampleTitle("1.10.0-SNAPSHOT") + "</b>");
+		field.setTitle(treeTitle);
 		setFields(field);
 
 		Tree tree = new Tree();

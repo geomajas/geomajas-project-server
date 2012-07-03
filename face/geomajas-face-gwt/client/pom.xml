@@ -106,6 +106,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>META-INF/geomajasContext.xml</include>
+					<include>org/geomajas/gwt/client/i18n/**</include>
 				</includes>
 			</resource>
 			<resource>
@@ -113,6 +114,7 @@
 				<filtering>false</filtering>
 				<excludes>
 					<exclude>META-INF/geomajasContext.xml</exclude>
+					<exclude>org/geomajas/gwt/client/i18n/**</exclude>
 				</excludes>
 			</resource>
 		</resources>
