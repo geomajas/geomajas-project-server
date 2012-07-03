@@ -40,6 +40,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Iterator;
 import java.util.Map;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
  * Test for AttributeService.
  *
@@ -93,13 +95,20 @@ public class AttributeServiceTest {
 	public void testNormal() throws Exception {
 		InternalFeature feature = new InternalFeatureImpl();
 		Assert.assertNotNull(attributeService.getAttributes(layerBeans, feature, featureBean));
-		Assert.assertEquals(TEST_STRING, feature.getAttributes().get("stringAttr").getValue());
-		Assert.assertEquals(TEST_INTEGER, feature.getAttributes().get("integerAttr").getValue());
-		Assert.assertTrue((Boolean) feature.getAttributes().get("booleanAttr").getValue());
+		Attribute attribute;
+		attribute = feature.getAttributes().get("stringAttr");
+		assertThat(attribute.getValue()).isEqualTo(TEST_STRING);
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		attribute = feature.getAttributes().get("integerAttr");
+		assertThat(attribute.getValue()).isEqualTo(TEST_INTEGER);
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		attribute = feature.getAttributes().get("booleanAttr");
+		assertThat(attribute.getValue()).isEqualTo(Boolean.TRUE);
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
 
-		Assert.assertFalse(containsLazy(feature.getAttributes()));
+		assertThat(containsLazy(feature.getAttributes())).isFalse();
 		Feature dto = dtoConverter.toDto(feature);
-		Assert.assertFalse(containsLazy(dto.getAttributes()));
+		assertThat(containsLazy(dto.getAttributes())).isFalse();
 	}
 
 	@Test
@@ -107,13 +116,20 @@ public class AttributeServiceTest {
 	public void testLazy() throws Exception {
 		InternalFeature feature = new InternalFeatureImpl();
 		Assert.assertNotNull(attributeService.getAttributes(lazyLayerBeans, feature, featureBean));
-		Assert.assertEquals(TEST_STRING, feature.getAttributes().get("stringAttr").getValue());
-		Assert.assertEquals(TEST_INTEGER, feature.getAttributes().get("integerAttr").getValue());
-		Assert.assertTrue((Boolean) feature.getAttributes().get("booleanAttr").getValue());
+		Attribute attribute;
+		attribute = feature.getAttributes().get("stringAttr");
+		assertThat(attribute.getValue()).isEqualTo(TEST_STRING);
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		attribute = feature.getAttributes().get("integerAttr");
+		assertThat(attribute.getValue()).isEqualTo(TEST_INTEGER);
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		attribute = feature.getAttributes().get("booleanAttr");
+		assertThat(attribute.getValue()).isEqualTo(Boolean.TRUE);
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
 
-		Assert.assertTrue(containsLazy(feature.getAttributes()));
+		assertThat(containsLazy(feature.getAttributes())).isTrue();
 		Feature dto = dtoConverter.toDto(feature);
-		Assert.assertFalse(containsLazy(dto.getAttributes()));
+		assertThat(containsLazy(dto.getAttributes())).isFalse();
 	}
 
 	private boolean containsLazy(Map<String, Attribute> attributes) {
