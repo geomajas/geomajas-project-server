@@ -393,7 +393,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<!-- @todo should be 2.5.0-SNAPSHOT for property repl, http://jira.codehaus.org/browse/MGWT-290 -->
-				<version>2.4.0</version>
+				<version>2.4.0-CPF</version>
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
@@ -617,7 +617,7 @@
 	</repositories>
 
 	<properties>
-		<gwt-version>2.5.0-rc1</gwt-version>
+		<gwt-version>2.4.0</gwt-version>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 
