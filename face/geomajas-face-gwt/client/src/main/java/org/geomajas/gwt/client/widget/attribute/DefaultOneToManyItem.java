@@ -132,9 +132,6 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		layout.setMembersMargin(WidgetLayout.marginLarge);
 		layout.setMargin(WidgetLayout.marginLarge);
 		detailForm = new DefaultFeatureForm(featureInfo, attributeProvider);
-		// The following flag is set because we assume that if a user is authorized to edit a one-to-many attribute,
-		// he/she is also authorized to edit the nested values of the attribute:
-		detailForm.setUseEditableFromInfo(true);
 		masterGrid = new AttributeListGrid(featureInfo);
 		masterGrid.setData(new ListGridRecord[] {});
 		masterGrid.setHeight(200);

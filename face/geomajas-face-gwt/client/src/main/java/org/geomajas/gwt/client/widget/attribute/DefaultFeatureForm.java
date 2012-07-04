@@ -116,8 +116,6 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	
 	private Set<String> editableItemNames = new HashSet<String>(); 
 	
-	private boolean useEditableFromInfo;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -263,18 +261,6 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		return validate;
 	}
 	
-	/**
-	 * If this flag is set to true, the editability of an attribute is determined by the attribute info only. If set
-	 * to false, the editability is determined by the actual attribute value.
-	 * 
-	 * @see Attribute#isEditable()
-	 * @see AbstractReadOnlyAttributeInfo#isEditable()
-	 * @param useEditableFromInfo
-	 */
-	public void setUseEditableFromInfo(boolean useEditableFromInfo) {
-		this.useEditableFromInfo = useEditableFromInfo;
-	}
-
 	public boolean silentValidate() {
 		return formWidget.valuesAreValid(false);
 	}
@@ -320,7 +306,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			return;
 		}
 		FormItem item = formWidget.getField(info.getName());
-		boolean editable = (attribute != null && attribute.isEditable()) || (useEditableFromInfo && info.isEditable());
+		boolean editable = attribute != null && attribute.isEditable() && info.isEditable();
 		if (editable) {
 			editableItemNames.add(info.getName());
 		} else {
