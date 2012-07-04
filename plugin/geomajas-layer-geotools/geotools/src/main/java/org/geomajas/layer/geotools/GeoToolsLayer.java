@@ -18,10 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.annotation.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
@@ -32,17 +33,20 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +85,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private String dbtype;
 
 	private List<Parameter> parameters;
+	
+	private DataSource dataSource;
 
 	@Autowired
 	private FilterService filterService;
@@ -145,6 +151,30 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	@Api
 	public void setDbtype(String dbtype) {
 		this.dbtype = dbtype;
+	}
+	
+	/**
+	 * Get the data source used by this layer (optional and only for database layers). This is the data source that is
+	 * passed to the GeoTools data store.
+	 * 
+	 * @return the data source or null if not set
+	 * @since 1.10.0
+	 */
+	@Api
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	/**
+	 * Set the data source used by this layer. This optional property can be used to bind a layers to an external data
+	 * source. Alternatively, one can pass the JNDI name of a data source as a normal parameter.
+	 * 
+	 * @param dataSource the data source
+	 * @since 1.10.0
+	 */
+	@Api
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	/**
@@ -234,7 +264,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		try {
 			if (null == super.getDataStore()) {
-				Map<String, String> params = new HashMap<String, String>();
+				Map<String, Object> params = new HashMap<String, Object>();
 				if (null != url) {
 					params.put("url", url);
 				}
@@ -245,6 +275,15 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 					for (Parameter parameter : parameters) {
 						params.put(parameter.getName(), parameter.getValue());
 					}
+				}
+				if (null != dataSource) {
+					params.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
+					// these are apparently required but not used
+					params.put(JDBCDataStoreFactory.DATABASE.key, "some_database");
+					params.put(JDBCDataStoreFactory.USER.key, "some_user");
+					params.put(JDBCDataStoreFactory.PASSWD.key, "some_password");
+					params.put(JDBCDataStoreFactory.HOST.key, "some host");
+					params.put(JDBCDataStoreFactory.PORT.key, "0");
 				}
 				DataStore store = DataStoreFactory.create(params);
 				super.setDataStore(store);
@@ -270,16 +309,20 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/** {@inheritDoc} */
 	public Object create(Object feature) throws LayerException {
-		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
-		if (source instanceof FeatureStore<?, ?>) {
+		SimpleFeatureSource source = getFeatureSource();
+		if (source instanceof SimpleFeatureStore) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			FeatureCollection<SimpleFeatureType, SimpleFeature> col = DataUtilities
-					.collection(new SimpleFeature[] { (SimpleFeature) feature });
+			SimpleFeatureCollection collection = FeatureCollections.newCollection();
+			collection.add((SimpleFeature) feature);
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
 			try {
-				store.addFeatures(col);
+				List<FeatureId> ids = store.addFeatures(collection);
+				// fetch it again to get the generated values !!!
+				if (ids.size() == 1) {
+					return read(ids.get(0).getID());
+				}
 			} catch (IOException ioe) {
 				featureModelUsable = false;
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
@@ -287,7 +330,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			return feature;
 		} else {
 			log.error("Don't know how to create or update " + getFeatureSourceName() + ", class "
-					+ source.getClass().getName() + " does not implement FeatureStore");
+					+ source.getClass().getName() + " does not implement SimpleFeatureStore");
 			throw new LayerException(ExceptionCode.CREATE_OR_UPDATE_NOT_IMPLEMENTED, getFeatureSourceName(), source
 					.getClass().getName());
 		}
@@ -300,8 +343,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * @throws LayerException oops
 	 */
 	void update(Object feature) throws LayerException {
-		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
-		if (source instanceof FeatureStore<?, ?>) {
+		SimpleFeatureSource source = getFeatureSource();
+		if (source instanceof SimpleFeatureStore) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			String featureId = getFeatureModel().getId(feature);
 			Filter filter = filterService.createFidFilter(new String[] {featureId});
@@ -328,7 +371,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 		} else {
 			log.error("Don't know how to create or update " + getFeatureSourceName() + ", class "
-					+ source.getClass().getName() + " does not implement FeatureStore");
+					+ source.getClass().getName() + " does not implement SimpleFeatureStore");
 			throw new LayerException(ExceptionCode.CREATE_OR_UPDATE_NOT_IMPLEMENTED, getFeatureSourceName(), source
 					.getClass().getName());
 		}
@@ -336,8 +379,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/** {@inheritDoc} */
 	public void delete(String featureId) throws LayerException {
-		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
-		if (source instanceof FeatureStore<?, ?>) {
+		SimpleFeatureSource source = getFeatureSource();
+		if (source instanceof SimpleFeatureStore) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			Filter filter = filterService.createFidFilter(new String[] {featureId});
 			if (transactionManager != null) {
@@ -354,7 +397,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 		} else {
 			log.error("Don't know how to delete from " + getFeatureSourceName() + ", class "
-					+ source.getClass().getName() + " does not implement FeatureStore");
+					+ source.getClass().getName() + " does not implement SimpleFeatureStore");
 			throw new LayerException(ExceptionCode.DELETE_NOT_IMPLEMENTED, getFeatureSourceName(), source.getClass()
 					.getName());
 		}
@@ -419,7 +462,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 			return fc.getBounds();
 		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
-			throw new LayerException(t, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
+			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}
 
@@ -467,7 +510,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * 
 	 * @author Jan De Moerloose
 	 */
-	private static class JavaIterator implements Iterator {
+	private static class JavaIterator implements Iterator<SimpleFeature> {
 
 		private final FeatureIterator<SimpleFeature> delegate;
 
@@ -475,14 +518,17 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			this.delegate = delegate;
 		}
 
+		@Override
 		public boolean hasNext() {
 			return delegate.hasNext();
 		}
 
-		public Object next() {
+		@Override
+		public SimpleFeature next() {
 			return delegate.next();
 		}
 
+		@Override
 		public void remove() {
 			throw new UnsupportedOperationException("Feature removal not supported, use delete(id) instead");
 		}

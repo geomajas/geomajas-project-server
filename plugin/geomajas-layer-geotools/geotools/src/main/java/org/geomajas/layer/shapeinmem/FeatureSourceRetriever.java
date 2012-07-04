@@ -49,16 +49,9 @@ public class FeatureSourceRetriever {
 	 */
 	private String featureSourceName;
 
-	/**
-	 * The FeatureSource object with which we have access to the GeoTools persistence layer.
-	 */
-	private SimpleFeatureSource featureSource;
-	
 	private final Map<String, AbstractAttributeInfo> attributeInfoMap = new HashMap<String, AbstractAttributeInfo>();
 	
 	private GeometryAttributeInfo geometryInfo;
-
-	protected long nextId;
 
 	/**
 	 * Set the data store.
@@ -109,20 +102,17 @@ public class FeatureSourceRetriever {
 	 *             oops
 	 */
 	public SimpleFeatureSource getFeatureSource() throws LayerException {
-		if (featureSource == null) {
-			try {
-				featureSource = dataStore.getFeatureSource(featureSourceName);
-			} catch (IOException e) {
-				throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Cannot find feature source "
-						+ featureSourceName);
-			} catch (NullPointerException e) {
-				throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Cannot find feature source "
-						+ featureSourceName);
-			}
+		try {
+			return dataStore.getFeatureSource(featureSourceName);
+		} catch (IOException e) {
+			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Cannot find feature source "
+					+ featureSourceName);
+		} catch (NullPointerException e) {
+			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Cannot find feature source "
+					+ featureSourceName);
 		}
-		return featureSource;
 	}
-
+	
 	/**
 	 * Get the name of the feature source.
 	 * 

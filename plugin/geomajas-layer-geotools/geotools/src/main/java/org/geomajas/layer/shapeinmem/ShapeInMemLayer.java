@@ -134,7 +134,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	public void setUrl(String url) throws LayerException {
 		try {
 			this.url = url;
-			Map<String, String> params = new HashMap<String, String>();
+			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("url", url);
 			DataStore store = DataStoreFactory.create(params);
 			setDataStore(store);
@@ -241,17 +241,18 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			featureModel.setLayerInfo(layerInfo);
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = getFeatureSource().getFeatures();
 			FeatureIterator<SimpleFeature> iterator = col.features();
+			int lastIndex = 0;
 			while (iterator.hasNext()) {
 				SimpleFeature feature = iterator.next();
 				String id = featureModel.getId(feature);
 				features.put(id, feature);
 				int intId = Integer.parseInt(id.substring(id.lastIndexOf('.') + 1));
-				if (intId > nextId) {
-					nextId = intId;
+				if (intId > lastIndex) {
+					lastIndex = intId;
 				}
 			}
 			iterator.close();
-			((ShapeInMemFeatureModel) featureModel).setNextId(++nextId);
+			((ShapeInMemFeatureModel) featureModel).setNextId(++lastIndex);
 		} catch (NumberFormatException nfe) {
 			throw new LayerException(nfe, ExceptionCode.FEATURE_MODEL_PROBLEM, url);
 		} catch (MalformedURLException e) {

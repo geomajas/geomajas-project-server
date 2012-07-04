@@ -14,12 +14,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.geomajas.layer.geotools.postgis.NonTypedPostgisFidMapperFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.jdbc.JDBCDataStore;
-import org.geotools.data.postgis.PostgisDataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
@@ -44,19 +41,12 @@ public final class DataStoreFactory {
 	 * @return data store, never null
 	 * @throws IOException could not create data store
 	 */
-	public static DataStore create(Map<String, String> parameters) throws IOException {
-		String url = parameters.get("url");
-		if (url != null) {
-			parameters.put("url", ResourceUtils.getURL(url).toExternalForm());
+	public static DataStore create(Map<String, Object> parameters) throws IOException {
+		Object url = parameters.get("url");
+		if (url instanceof String) {
+			parameters.put("url", ResourceUtils.getURL((String) url).toExternalForm());
 		}
 		DataStore store = DataStoreFinder.getDataStore(parameters);
-		if (store instanceof PostgisDataStore) {
-			PostgisDataStore jdbcStore = (PostgisDataStore) store;
-			jdbcStore.setFIDMapperFactory(new NonTypedPostgisFidMapperFactory(false));
-		} else if (store instanceof JDBCDataStore) {
-			JDBCDataStore jdbcStore = (JDBCDataStore) store;
-			jdbcStore.setFIDMapperFactory(new NonTypedFidMapperFactory());
-		}
 		if (null == store) {
 			StringBuilder availableStr = new StringBuilder();
 			StringBuilder missingStr = new StringBuilder();

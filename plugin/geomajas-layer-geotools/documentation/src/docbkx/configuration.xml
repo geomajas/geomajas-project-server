@@ -71,6 +71,14 @@
           </row>
 
           <row>
+            <entry>dataSource</entry>
+
+            <entry>javax.sql.DataSource to be used for the database datastore.
+            This allows to configure a different connection pool and reuse it
+            between layers.</entry>
+          </row>
+
+          <row>
             <entry>cooldownTimeBetweenInitializationRetries</entry>
 
             <entry>Period in milliseconds that the system has to wait between
@@ -197,25 +205,42 @@
       </warning>
 
       <para>Configuring a GeoTools layer that makes use of a PostGIS database,
-      is again a question of using the correct parameters. As with other
-      examples of using a GeoTools layer, there is the choice of configuring
-      the GetoTools DataStore separately or not. By configuring the DataStore
-      separately, it can be used by multiple layers. In the case of a
-      database, this method would almost always be preferable.</para>
+      is again a question of using the correct parameters. There is the choice
+      of configuring the datasource separately or using the built-in
+      datasource of GeoTools. By configuring the datasource separately, it can
+      be used by multiple layers. In the case of a database, this method would
+      almost always be preferable.</para>
 
-      <para>In general, the following parameters can be configured:</para>
+      <para>If you prefer a custom datasource configuration (we recommend
+      BoneCP but alternatives are possible), the dataSource property should be
+      configured:</para>
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>namespace</emphasis>: The namespace of the database
-          (i.e. "postgis").</para>
+          <para>dataSource: bean reference or inner bean of type
+          javax.sql.DataSource</para>
         </listitem>
+      </itemizedlist>
 
+      <para>In this case only the <emphasis>dbtype</emphasis> and
+      <emphasis>namespace</emphasis> parameters should be configured:</para>
+
+      <itemizedlist>
         <listitem>
-          <para><emphasis>dbtype</emphasis>: The type of database: (i.e.
+          <para><emphasis>dbtype</emphasis>: The type of database: (e.g.
           "postgis").</para>
         </listitem>
 
+        <listitem>
+          <para><emphasis>namespace</emphasis>: The namespace of the datastore
+          (e.g. "postgis").</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>If using the built-in datasource of GeoTools, the following extra
+      parameters can be configured:</para>
+
+      <itemizedlist>
         <listitem>
           <para><emphasis>database</emphasis>: The name of the
           database.</para>
@@ -241,62 +266,55 @@
         </listitem>
       </itemizedlist>
 
-      <para>Configuring a database layer using PostGIS can be done like
-      this:</para>
+      <para>Configuring a database layer using PostGIS can be done like this
+      (with separate datasource):</para>
 
-      <programlisting>&lt;bean name="myPostGisLayer" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
-   &lt;property name="parameters"&gt;
-      &lt;list&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="namespace" /&gt;
-            &lt;property name="value" value="postgis" /&gt;
-         &lt;/bean&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="dbtype" /&gt;
-            &lt;property name="value" value="postgis" /&gt;
-         &lt;/bean&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="database" /&gt;
-            &lt;property name="value" value="some_database" /&gt;
-         &lt;/bean&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="user" /&gt;
-            &lt;property name="value" value="some_user" /&gt;
-         &lt;/bean&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="passwd" /&gt;
-            &lt;property name="value" value="some_password" /&gt;
-         &lt;/bean&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="host" /&gt;
-            &lt;property name="value" value="localhost" /&gt;
-         &lt;/bean&gt;
-         &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-            &lt;property name="name" value="port" /&gt;
-            &lt;property name="value" value="5432" /&gt;
-         &lt;/bean&gt;
-      &lt;/list&gt;
-   &lt;/property&gt;
-   &lt;property name="layerInfo" ref="blablaInfo" /&gt;
-&lt;/bean&gt; </programlisting>
+      <programlisting>&lt;bean id="postgisDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClass" value="org.postgresql.Driver" /&gt;
+   &lt;property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/app" /&gt;
+   &lt;property name="username" value="app"/&gt;
+   &lt;property name="password" value="app"/&gt;
+   &lt;property name="idleConnectionTestPeriod" value="60"/&gt;
+   &lt;property name="idleMaxAge" value="240"/&gt;
+   &lt;property name="maxConnectionsPerPartition" value="30"/&gt;
+   &lt;property name="minConnectionsPerPartition" value="10"/&gt;
+   &lt;property name="partitionCount" value="3"/&gt;
+   &lt;property name="acquireIncrement" value="5"/&gt;
+   &lt;property name="statementsCacheSize" value="100"/&gt;
+   &lt;property name="releaseHelperThreads" value="3"/&gt;
+&lt;/bean&gt;
 
-      <para>Don't forget to also add the necessary database driver libraries
-      to your project. Here is an example that adds PostGIS drivers and
-      GeoTools PostGIS plug-in to the pom.xml (when using Maven):</para>
+&lt;bean name="layerCountries" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
+  &lt;property name="layerInfo" ref="layerCountriesInfo"/&gt;
+  &lt;property name="dataSource" ref="postgisDataSource"/&gt;
+  &lt;property name="parameters"&gt;
+   &lt;list&gt;
+    &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+     &lt;property name="name" value="namespace" /&gt;
+     &lt;property name="value" value="postgis" /&gt;
+    &lt;/bean&gt;
+    &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+     &lt;property name="name" value="dbtype" /&gt;
+     &lt;property name="value" value="postgis" /&gt;
+    &lt;/bean&gt;
+   &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+
+      <para>Don't forget to also add the necessary GeoTools datastore library
+      (typically gt-jdbc-xxx) to your classpath and the required database
+      driver libraries. Here is an example that adds the postgresql driver and
+      (next generation) GeoTools PostGIS JDBC library to the pom.xml (when
+      using Maven):</para>
 
       <programlisting>&lt;dependency&gt;
-   &lt;groupId&gt;org.postgis&lt;/groupId&gt;
-   &lt;artifactId&gt;postgis-jdbc&lt;/artifactId&gt;
-   &lt;version&gt;1.1.6&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
    &lt;groupId&gt;postgresql&lt;/groupId&gt;
    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
    &lt;version&gt;8.1-407.jdbc3&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
    &lt;groupId&gt;org.geotools&lt;/groupId&gt;
-   &lt;artifactId&gt;gt-postgis&lt;/artifactId&gt;
+   &lt;artifactId&gt;gt-jdbc-postgis&lt;/artifactId&gt;
    &lt;version&gt;${geotools-version}&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
 

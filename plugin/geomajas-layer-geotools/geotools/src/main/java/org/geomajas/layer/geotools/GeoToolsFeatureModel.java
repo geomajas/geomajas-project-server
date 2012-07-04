@@ -116,7 +116,8 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);
 		}
-		return builder.buildFeature(Long.toString(nextId++));
+		// This creates a feature with a random id. This will probably not be used 
+		return builder.buildFeature(null);
 	}
 
 	/** {@inheritDoc} */

@@ -70,9 +70,9 @@
 				<version>${geotools-version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geotools</groupId>
-				<artifactId>gt-postgis</artifactId>
-				<version>${geotools-extras-version}</version>
+				<groupId>org.geotools.jdbc</groupId>
+				<artifactId>gt-jdbc-postgis</artifactId>
+				<version>${geotools-version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.postgis</groupId>
@@ -89,6 +89,11 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>org.geotools.jdbc</groupId>
+				<artifactId>gt-jdbc-h2</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-shapefile</artifactId>
 				<version>${geotools-version}</version>
@@ -96,6 +101,12 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools-gwt-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -110,6 +121,8 @@
 
 	<modules>
 		<module>geotools</module>
+		<module>geotools-gwt-example-jar</module>
+		<module>geotools-gwt-example</module>
 	</modules>
 
 	<profiles>
@@ -141,10 +154,12 @@
 	</profiles>
 
 	<properties>
-		<geotools-layer-backend-version>1.10.0</geotools-layer-backend-version>
+		<geotools-layer-backend-version>1.11.0</geotools-layer-backend-version>
+		<geotools-gwt-face-version>1.11.0</geotools-gwt-face-version>
 		<geotools-version>2.7.5</geotools-version>
-		<geotools-extras-version>2.7.4</geotools-extras-version>
+		<geotools-extras-version>2.7.5</geotools-extras-version>
 		<geodb-version>0.7</geodb-version>
+		<google-gwt-version>2.4.0</google-gwt-version>
 	</properties>
 
 </project>

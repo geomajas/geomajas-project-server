@@ -26,10 +26,11 @@ import org.springframework.transaction.support.ResourceHolderSupport;
  */
 public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 
-	private GeotoolsTransaction transaction = new GeotoolsTransaction();
-
 	private final List<IteratorInfo> iterators = new ArrayList<IteratorInfo>();
-
+	
+	// use object id as handle
+	private GeotoolsTransaction transaction = new GeotoolsTransaction(this.toString());
+	
 	/**
 	 * Get the list of iterators.
 	 *
@@ -87,6 +88,10 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 	public static class GeotoolsTransaction extends DefaultTransaction {
 
 		private boolean closed;
+		
+		GeotoolsTransaction(String handle) {
+			super(handle);
+		}
 
 		@Override
 		public synchronized void close() {

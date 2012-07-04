@@ -45,6 +45,8 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	private final DtoConverterService converterService;
 
+	protected long nextId;
+
 	// Constructor:
 
 	/**
