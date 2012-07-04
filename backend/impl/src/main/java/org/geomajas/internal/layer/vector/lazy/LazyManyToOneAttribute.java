@@ -11,6 +11,7 @@
 
 package org.geomajas.internal.layer.vector.lazy;
 
+import org.geomajas.internal.layer.feature.AttributeService;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
@@ -28,13 +29,16 @@ public class LazyManyToOneAttribute extends ManyToOneAttribute implements LazyAt
 
 	private static final long serialVersionUID = 190L;
 
+	private final AttributeService attributeService;
 	private final FeatureModel featureModel;
 	private final Object pojo;
 	private final String name;
 	private boolean gotValue;
 
-	public LazyManyToOneAttribute(FeatureModel featureModel, Object pojo, String attribute) {
+	public LazyManyToOneAttribute(AttributeService attributeService, FeatureModel featureModel, Object pojo,
+			String attribute) {
 		super();
+		this.attributeService = attributeService;
 		this.featureModel = featureModel;
 		this.pojo = pojo;
 		this.name = attribute;
@@ -42,7 +46,9 @@ public class LazyManyToOneAttribute extends ManyToOneAttribute implements LazyAt
 
 	@SuppressWarnings("unchecked")
 	public Attribute<AssociationValue> instantiate() {
-		return new ManyToOneAttribute(getValue());
+		Attribute<AssociationValue> attribute = new ManyToOneAttribute(getValue());
+		attributeService.setAttributeEditable(attribute, isEditable());
+		return attribute;
 	}
 
 	@Override
@@ -51,6 +57,7 @@ public class LazyManyToOneAttribute extends ManyToOneAttribute implements LazyAt
 		if (!gotValue) {
 			try {
 				Attribute<AssociationValue> attribute = featureModel.getAttribute(pojo, name);
+				attributeService.setAttributeEditable(attribute, isEditable());
 				super.setValue(attribute.getValue());
 			} catch (LayerException le) {
 				Logger log = LoggerFactory.getLogger(LazyManyToOneAttribute.class);
@@ -71,7 +78,7 @@ public class LazyManyToOneAttribute extends ManyToOneAttribute implements LazyAt
 
 	@Override
 	public LazyManyToOneAttribute clone() { // NOSONAR
-		return new LazyManyToOneAttribute(featureModel, pojo, name);
+		return new LazyManyToOneAttribute(attributeService, featureModel, pojo, name);
 	}
 
 }

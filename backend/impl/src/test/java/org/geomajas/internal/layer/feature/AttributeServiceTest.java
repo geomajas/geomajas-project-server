@@ -18,10 +18,14 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerLazyFeatureConversionSupport;
 import org.geomajas.layer.bean.FeatureBean;
+import org.geomajas.layer.bean.ManyToOneAttributeBean;
+import org.geomajas.layer.bean.OneToManyAttributeBean;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
@@ -37,7 +41,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -55,6 +61,8 @@ public class AttributeServiceTest {
 	private static final long TEST_ID = 17;
 	private static final String TEST_STRING = "test";
 	private static final int TEST_INTEGER = 37;
+	private static final String TEST_STRING2 = "m2oLinked";
+	private static final String TEST_STRING3 = "o2mLinked";
 
 	private FeatureBean featureBean;
 
@@ -80,6 +88,14 @@ public class AttributeServiceTest {
 		featureBean.setStringAttr(TEST_STRING);
 		featureBean.setIntegerAttr(TEST_INTEGER);
 		featureBean.setBooleanAttr(true);
+		ManyToOneAttributeBean manyToOne = new ManyToOneAttributeBean();
+		manyToOne.setStringAttr(TEST_STRING2);
+		featureBean.setManyToOneAttr(manyToOne);
+		OneToManyAttributeBean oneToMany = new OneToManyAttributeBean();
+		oneToMany.setStringAttr(TEST_STRING3);
+		List<OneToManyAttributeBean> list = new ArrayList<OneToManyAttributeBean>();
+		list.add(oneToMany);
+		featureBean.setOneToManyAttr(list);
 
 		securityManager.createSecurityContext(""); // log in
 
@@ -96,6 +112,7 @@ public class AttributeServiceTest {
 		InternalFeature feature = new InternalFeatureImpl();
 		Assert.assertNotNull(attributeService.getAttributes(layerBeans, feature, featureBean));
 		Attribute attribute;
+		Attribute linked;
 		attribute = feature.getAttributes().get("stringAttr");
 		assertThat(attribute.getValue()).isEqualTo(TEST_STRING);
 		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
@@ -109,6 +126,20 @@ public class AttributeServiceTest {
 		assertThat(containsLazy(feature.getAttributes())).isFalse();
 		Feature dto = dtoConverter.toDto(feature);
 		assertThat(containsLazy(dto.getAttributes())).isFalse();
+
+		// verify rights on many-to-one attributes
+		attribute = feature.getAttributes().get("manyToOneAttr");
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		linked = ((ManyToOneAttribute) attribute).getValue().getAllAttributes().get("stringAttr");
+		assertThat(linked.getValue()).isEqualTo(TEST_STRING2);
+		assertThat(linked.isEditable()).isTrue(); // AllowAll -> all editable
+
+		// verify rights on one-to-many attributes
+		attribute = feature.getAttributes().get("oneToManyAttr");
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		linked = ((OneToManyAttribute) attribute).getValue().get(0).getAllAttributes().get("stringAttr");
+		assertThat(linked.getValue()).isEqualTo(TEST_STRING3);
+		assertThat(linked.isEditable()).isTrue(); // AllowAll -> all editable
 	}
 
 	@Test
@@ -117,6 +148,7 @@ public class AttributeServiceTest {
 		InternalFeature feature = new InternalFeatureImpl();
 		Assert.assertNotNull(attributeService.getAttributes(lazyLayerBeans, feature, featureBean));
 		Attribute attribute;
+		Attribute linked;
 		attribute = feature.getAttributes().get("stringAttr");
 		assertThat(attribute.getValue()).isEqualTo(TEST_STRING);
 		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
@@ -130,6 +162,20 @@ public class AttributeServiceTest {
 		assertThat(containsLazy(feature.getAttributes())).isTrue();
 		Feature dto = dtoConverter.toDto(feature);
 		assertThat(containsLazy(dto.getAttributes())).isFalse();
+
+		// verify rights on many-to-one attributes
+		attribute = feature.getAttributes().get("manyToOneAttr");
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		linked = ((ManyToOneAttribute) attribute).getValue().getAllAttributes().get("stringAttr");
+		assertThat(linked.getValue()).isEqualTo(TEST_STRING2);
+		assertThat(linked.isEditable()).isTrue(); // AllowAll -> all editable
+
+		// verify rights on one-to-many attributes
+		attribute = feature.getAttributes().get("oneToManyAttr");
+		assertThat(attribute.isEditable()).isTrue(); // AllowAll -> all editable
+		linked = ((OneToManyAttribute) attribute).getValue().get(0).getAllAttributes().get("stringAttr");
+		assertThat(linked.getValue()).isEqualTo(TEST_STRING3);
+		assertThat(linked.isEditable()).isTrue(); // AllowAll -> all editable
 	}
 
 	private boolean containsLazy(Map<String, Attribute> attributes) {

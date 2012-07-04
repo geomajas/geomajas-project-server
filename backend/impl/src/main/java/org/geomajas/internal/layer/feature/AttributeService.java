@@ -12,6 +12,7 @@
 package org.geomajas.internal.layer.feature;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
@@ -21,6 +22,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.SyntheticAttributeInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.internal.layer.vector.lazy.LazyAttribute;
 import org.geomajas.internal.layer.vector.lazy.LazyManyToOneAttribute;
 import org.geomajas.internal.layer.vector.lazy.LazyOneToManyAttribute;
 import org.geomajas.internal.layer.vector.lazy.LazyPrimitiveAttribute;
@@ -31,6 +33,9 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.SyntheticAttributeBuilder;
+import org.geomajas.layer.feature.attribute.AssociationValue;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.FeatureExpressionService;
@@ -96,11 +101,40 @@ public class AttributeService {
 			String key = entry.getKey();
 			if (securityContext.isAttributeReadable(layerId, feature, key)) {
 				Attribute attribute = entry.getValue();
-				attribute.setEditable(securityContext.isAttributeWritable(layerId, feature, key));
+				boolean editable = securityContext.isAttributeWritable(layerId, feature, key);
+				setAttributeEditable(attribute, editable);
 				filteredAttributes.put(key, attribute);
 			}
 		}
 		return filteredAttributes;
+	}
+
+	/**
+	 * Set editable state on an attribute. This needs to also set the state on the associated attributes.
+	 *
+	 * @param attribute attribute for which the editable state needs to be set
+	 * @param editable new editable state
+	 */
+	public void setAttributeEditable(Attribute attribute, boolean editable) {
+		attribute.setEditable(editable);
+		if (!(attribute instanceof LazyAttribute)) { // should not instantiate lazy attributes!
+			if (attribute instanceof ManyToOneAttribute) {
+				setAttributeEditable(((ManyToOneAttribute) attribute).getValue(), editable);
+			} else if (attribute instanceof OneToManyAttribute) {
+				List<AssociationValue> values = ((OneToManyAttribute) attribute).getValue();
+				for (AssociationValue value : values) {
+					setAttributeEditable(value, editable);
+				}
+			}
+		}
+	}
+
+	private void setAttributeEditable(AssociationValue association, boolean editable) {
+		if (null != association) {
+			for (Attribute attribute : association.getAllAttributes().values()) {
+				setAttributeEditable(attribute, editable);
+			}
+		}
 	}
 
 	private Map<String, Attribute> getRealAttributes(VectorLayer layer, Object featureBean) throws LayerException {
@@ -121,10 +155,10 @@ public class AttributeService {
 						if (attribute instanceof AssociationAttributeInfo) {
 							switch (((AssociationAttributeInfo) attribute).getType()) {
 								case MANY_TO_ONE:
-									value = new LazyManyToOneAttribute(featureModel, featureBean, name);
+									value = new LazyManyToOneAttribute(this, featureModel, featureBean, name);
 									break;
 								case ONE_TO_MANY:
-									value = new LazyOneToManyAttribute(featureModel, featureBean, name);
+									value = new LazyOneToManyAttribute(this, featureModel, featureBean, name);
 									break;
 								default:
 									throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM,
