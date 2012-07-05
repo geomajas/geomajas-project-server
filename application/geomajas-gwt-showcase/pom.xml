@@ -412,7 +412,6 @@
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>
-					<style>PRETTY</style>
 				</configuration>
 				<executions>
 					<execution>
