@@ -19,6 +19,8 @@
 	<inherits name="org.geomajas.widget.featureinfo.gwt.example.FeatureInfoExample"/>
 	<inherits name="org.geomajas.layer.google.gwt.example.GoogleExample"/>
 	<inherits name="org.geomajas.layer.wms.gwt.example.WmsExample"/>
+	<inherits name="org.geomajas.layer.geotools.gwt.example.GeoToolsExample"/>
+	<inherits name="org.geomajas.plugin.printing.gwt.example.PrintingExample"/>
 
 	<extend-property name="locale" values="nl"/>
 
