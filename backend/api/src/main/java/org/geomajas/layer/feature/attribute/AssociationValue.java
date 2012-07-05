@@ -207,7 +207,7 @@ public class AssociationValue implements Serializable {
 	public void setPrimitiveOnly(boolean primitiveOnly) {
 		this.primitiveOnly = primitiveOnly;
 	}
-	
+
 	/**
 	 * Sets the specified boolean attribute to the specified value.
 	 * 
@@ -217,7 +217,9 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setBooleanAttribute(String name, Boolean value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new BooleanAttribute(value));
+		Attribute attribute = new BooleanAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -229,7 +231,9 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setCurrencyAttribute(String name, String value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new CurrencyAttribute(value));
+		Attribute attribute = new CurrencyAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -241,7 +245,9 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setDateAttribute(String name, Date value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new DateAttribute(value));
+		Attribute attribute = new DateAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -253,7 +259,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setDoubleAttribute(String name, Double value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new DoubleAttribute(value));
+		Attribute attribute = new DoubleAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -265,7 +274,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setFloatAttribute(String name, Float value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new FloatAttribute(value));
+		Attribute attribute = new FloatAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -277,7 +289,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setImageUrlAttribute(String name, String value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new ImageUrlAttribute(value));
+		Attribute attribute = new ImageUrlAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 	
 	/**
@@ -289,7 +304,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setIntegerAttribute(String name, Integer value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new IntegerAttribute(value));
+		Attribute attribute = new IntegerAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 	
 	/**
@@ -301,7 +319,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setLongAttribute(String name, Long value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new LongAttribute(value));
+		Attribute attribute = new LongAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -313,7 +334,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setShortAttribute(String name, Short value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new ShortAttribute(value));
+		Attribute attribute = new ShortAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -325,7 +349,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setStringAttribute(String name, String value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new StringAttribute(value));
+		Attribute attribute = new StringAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -337,7 +364,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setUrlAttribute(String name, String value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new UrlAttribute(value));
+		Attribute attribute = new UrlAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -349,7 +379,10 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setManyToOneAttribute(String name, AssociationValue value) {
 		ensureAttributes();
-		getAllAttributes().put(name, new ManyToOneAttribute(value));
+		Attribute attribute = new ManyToOneAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getAllAttributes().put(name, attribute);
+
 	}
 
 	/**
@@ -389,6 +422,12 @@ public class AssociationValue implements Serializable {
 		}
 	}
 
-
+	private boolean isEditable(String name) {
+		Attribute attribute = getAllAttributes().get(name);
+		if (null != attribute) {
+			return attribute.isEditable();
+		}
+		return true; // @todo without access to the FeatureInfo, assume editable if we cannot copy the editable state
+	}
 
 }

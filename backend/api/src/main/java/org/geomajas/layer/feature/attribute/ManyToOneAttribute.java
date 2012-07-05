@@ -117,7 +117,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setBooleanAttribute(String name, Boolean value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new BooleanAttribute(value));
+		Attribute attribute = new BooleanAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -129,7 +131,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setCurrencyAttribute(String name, String value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new CurrencyAttribute(value));
+		Attribute attribute = new CurrencyAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -141,7 +145,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setDateAttribute(String name, Date value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new DateAttribute(value));
+		Attribute attribute = new DateAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -153,7 +159,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setDoubleAttribute(String name, Double value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new DoubleAttribute(value));
+		Attribute attribute = new DoubleAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -165,7 +173,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setFloatAttribute(String name, Float value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new FloatAttribute(value));
+		Attribute attribute = new FloatAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -177,7 +187,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setImageUrlAttribute(String name, String value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new ImageUrlAttribute(value));
+		Attribute attribute = new ImageUrlAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 	
 	/**
@@ -189,7 +201,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setIntegerAttribute(String name, Integer value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new IntegerAttribute(value));
+		Attribute attribute = new IntegerAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 	
 	/**
@@ -201,7 +215,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setLongAttribute(String name, Long value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new LongAttribute(value));
+		Attribute attribute = new LongAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -213,7 +229,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setShortAttribute(String name, Short value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new ShortAttribute(value));
+		Attribute attribute = new ShortAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -225,7 +243,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setStringAttribute(String name, String value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new StringAttribute(value));
+		Attribute attribute = new StringAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	/**
@@ -237,7 +257,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setUrlAttribute(String name, String value) {
 		ensureValue();
-		getValue().getAllAttributes().put(name, new UrlAttribute(value));
+		Attribute attribute = new UrlAttribute(value);
+		attribute.setEditable(isEditable(name));
+		getValue().getAllAttributes().put(name, attribute);
 	}
 
 	private void ensureValue() {
@@ -245,4 +267,13 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 			value = new AssociationValue(null, new HashMap<String, Attribute<?>>(), false);
 		}
 	}
+
+	private boolean isEditable(String name) {
+		Attribute attribute = getValue().getAllAttributes().get(name);
+		if (null != attribute) {
+			return attribute.isEditable();
+		}
+		return true; // without access to the FeatureInfo, assume editable if we cannot copy the editable state
+	}
+
 }

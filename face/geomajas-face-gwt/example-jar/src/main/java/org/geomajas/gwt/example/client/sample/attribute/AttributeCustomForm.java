@@ -18,6 +18,7 @@ import org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.RowSpacerItem;
+import org.geomajas.gwt.client.widget.attribute.FormItemList;
 
 /**
  * Custom attribute form.
@@ -33,7 +34,7 @@ public class AttributeCustomForm extends DefaultFeatureForm {
 	}
 
 	@Override
-	protected FormItem createItem(AbstractReadOnlyAttributeInfo info) {
+	public FormItem createItem(AbstractReadOnlyAttributeInfo info) {
 		FormItem formItem = super.createItem(info);
 		formItem.setWidth("*");
 		if ("dateAttr".equals(info.getName())) {
@@ -44,7 +45,7 @@ public class AttributeCustomForm extends DefaultFeatureForm {
 	}
 
 	@Override
-	protected void prepareForm(FormItemList formItems, DataSource source) {
+	public void prepareForm(FormItemList formItems, DataSource source) {
 		// Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
 		formItems.insertBefore("stringAttr", new RowSpacerItem());
 		getWidget().setNumCols(4);

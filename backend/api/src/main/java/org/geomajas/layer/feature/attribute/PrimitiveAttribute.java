@@ -65,7 +65,7 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 	 * @since 1.7.0
 	 * @return Return an exact copy of this attribute.
 	 */
-	public abstract Object clone();
+	public abstract Object clone(); //NOSONAR
 
 	/**
 	 * Get type of primitive attribute.
