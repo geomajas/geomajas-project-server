@@ -123,7 +123,7 @@ public class FeatureAttributeEditor extends VLayout {
 	 * Validate the form. This only makes sense when the widget is not disabled. Because only then is it possible for a
 	 * user to alter the attribute values.
 	 * 
-	 * @return
+	 * @return true when validation succeeded
 	 */
 	public boolean validate() {
 		return featureForm.validate();
@@ -170,8 +170,6 @@ public class FeatureAttributeEditor extends VLayout {
 	// -------------------------------------------------------------------------
 
 	private void copyToForm(Feature feature) {
-		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			featureForm.toForm(info.getName(), feature.getAttributes().get(info.getName()));
-		}
+		featureForm.toForm(feature);
 	}
 }

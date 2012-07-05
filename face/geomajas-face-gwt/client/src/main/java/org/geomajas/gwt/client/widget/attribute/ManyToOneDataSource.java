@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
  * DataSource extension specifically designed for ManyToOne attribute FormItems. It automatically fetches possible
  * values from the Geomajas server. This DataSource is read only, which means that there is no cascading support for the
  * ManyToOne relationship through this DataSource.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ManyToOneDataSource extends DataSource {
@@ -69,7 +69,7 @@ public class ManyToOneDataSource extends DataSource {
 		field = new DataSourceTextField(ASSOCIATION_ITEM_VALUE_FIELD_NAME, idLabel);
 		field.setPrimaryKey(true);
 		addField(field);
-		
+
 		// Add field for each attribute
 		for (AttributeInfo info : attributeInfo.getFeature().getAttributes()) {
 			field = new DataSourceTextField(info.getName(), info.getLabel());

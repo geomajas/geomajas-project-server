@@ -10,7 +10,8 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 
@@ -31,12 +32,16 @@ import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
  * objects. Feature forms should support validation, clearance, notification of item changes and the possibility to
  * enable/disable editing.
  * </p>
+ * <p>
+ * Do not implement directly, please extend {@link DefaultFeatureForm}.
+ * </p>
  * 
  * @param <W> the widget class of the form
  * 
  * @author Jan De Moerloose
+ * @since 1.11.1
  */
-@FutureApi
+@Api(allMethods = true)
 public interface FeatureForm<W extends Widget> extends HasItemChangedHandlers {
 
 	/**
@@ -78,8 +83,8 @@ public interface FeatureForm<W extends Widget> extends HasItemChangedHandlers {
 	/**
 	 * Attach a handler that reacts to changes in the fields as the user makes them.
 	 * 
-	 * @param handler
-	 * @return registration
+	 * @param handler item changed handler
+	 * @return handler registration
 	 */
 	HandlerRegistration addItemChangedHandler(final ItemChangedHandler handler);
 
@@ -113,6 +118,13 @@ public interface FeatureForm<W extends Widget> extends HasItemChangedHandlers {
 	 * @param attribute The actual attribute to place the value in.
 	 */
 	void fromForm(String name, Attribute<?> attribute);
+
+	/**
+	 * Put all the attributes from the given feature on the form.
+	 *
+	 * @param feature feature
+	 */
+	void toForm(Feature feature);
 
 	/**
 	 * Clear all form values.

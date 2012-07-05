@@ -11,7 +11,7 @@
 package org.geomajas.gwt.client.widget.attribute;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -27,8 +27,9 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
  * @param <F> the item class of the form item
  * 
  * @author Jan De Moerloose
+ * @since 1.11.1
  */
-@FutureApi
+@Api
 public interface OneToManyItem<F extends FormItem> {
 
 	/**
@@ -46,7 +47,7 @@ public interface OneToManyItem<F extends FormItem> {
 	void toItem(OneToManyAttribute attribute);
 
 	/**
-	 * Copy the attribute value from the form item to the atribute.
+	 * Copy the attribute value from the form item to the attribute.
 	 * 
 	 * @param attribute attribute to copy value to
 	 */

@@ -20,26 +20,15 @@ import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.AttributeUtil;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.AttributeListGrid;
 import org.geomajas.gwt.client.widget.KeepInScreenWindow;
 import org.geomajas.gwt.client.widget.attribute.DefaultOneToManyItem.OneToManyLink;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
-import org.geomajas.layer.feature.attribute.BooleanAttribute;
-import org.geomajas.layer.feature.attribute.CurrencyAttribute;
-import org.geomajas.layer.feature.attribute.DateAttribute;
-import org.geomajas.layer.feature.attribute.DoubleAttribute;
-import org.geomajas.layer.feature.attribute.FloatAttribute;
-import org.geomajas.layer.feature.attribute.ImageUrlAttribute;
-import org.geomajas.layer.feature.attribute.IntegerAttribute;
-import org.geomajas.layer.feature.attribute.LongAttribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
-import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
-import org.geomajas.layer.feature.attribute.ShortAttribute;
-import org.geomajas.layer.feature.attribute.StringAttribute;
-import org.geomajas.layer.feature.attribute.UrlAttribute;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
@@ -169,6 +158,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 			public void onClick(ClickEvent event) {
 				selectedValue = createInstance();
 				detailForm.clear();
+				detailForm.toForm(selectedValue);
 				for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 					detailForm.toForm(info.getName(), selectedValue.getAllAttributes().get(info.getName()));
 				}
@@ -250,7 +240,8 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
 		for (AbstractAttributeInfo attrInfo : featureInfo.getAttributes()) {
 			if (attrInfo instanceof PrimitiveAttributeInfo) {
-				attributes.put(attrInfo.getName(), createPrimitiveAttribute((PrimitiveAttributeInfo) attrInfo));
+				attributes.put(attrInfo.getName(), AttributeUtil.createEmptyPrimitiveAttribute(
+						(PrimitiveAttributeInfo) attrInfo));
 			} else if (attrInfo instanceof AssociationAttributeInfo) {
 				AssociationAttributeInfo assocInfo = (AssociationAttributeInfo) attrInfo;
 				switch (assocInfo.getType()) {
@@ -270,37 +261,8 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		}
 		AssociationValue value = new AssociationValue();
 		value.setAllAttributes(attributes);
-		value.setId(createPrimitiveAttribute(featureInfo.getIdentifier()));
+		value.setId(AttributeUtil.createEmptyPrimitiveAttribute(featureInfo.getIdentifier()));
 		return value;
-	}
-
-	private PrimitiveAttribute<?> createPrimitiveAttribute(PrimitiveAttributeInfo primInfo) {
-		switch (primInfo.getType()) {
-			case BOOLEAN:
-				return new BooleanAttribute();
-			case CURRENCY:
-				return new CurrencyAttribute();
-			case DATE:
-				return new DateAttribute();
-			case DOUBLE:
-				return new DoubleAttribute();
-			case FLOAT:
-				return new FloatAttribute();
-			case IMGURL:
-				return new ImageUrlAttribute();
-			case INTEGER:
-				return new IntegerAttribute();
-			case LONG:
-				return new LongAttribute();
-			case SHORT:
-				return new ShortAttribute();
-			case STRING:
-				return new StringAttribute();
-			case URL:
-				return new UrlAttribute();
-			default:
-				throw new IllegalStateException("No support for creating attributes of type " + primInfo.getType());
-		}
 	}
 
 	/**

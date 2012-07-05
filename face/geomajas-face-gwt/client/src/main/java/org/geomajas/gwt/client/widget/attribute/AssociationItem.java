@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.smartgwt.client.widgets.form.fields.FormItem;
 
@@ -24,8 +24,9 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
  * @param <F> the form item class
  * 
  * @author Jan De Moerloose
+ * @since 1.11.1
  */
-@FutureApi
+@Api(allMethods = true)
 public interface AssociationItem<F extends FormItem> {
 
 	/**

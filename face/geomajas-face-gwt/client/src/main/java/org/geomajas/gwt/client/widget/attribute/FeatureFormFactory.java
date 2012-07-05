@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
@@ -25,15 +25,16 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.11.1
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface FeatureFormFactory<W extends Widget> {
 
 	/**
 	 * Creates a form using the specified attribute information.
 	 * 
-	 * @param infos List of attribute definitions. Normally taken from a {@link VectorLayer}.
+	 * @param layer layer for which a form needs to be created.
 	 * @return An attribute form that allows for editing of it's values.
 	 */
 	FeatureForm<W> createFeatureForm(VectorLayer layer);

@@ -11,7 +11,7 @@
 package org.geomajas.gwt.client.widget.attribute;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -27,8 +27,9 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
  * @param <F> the item class of the form item
  * 
  * @author Jan De Moerloose
+ * @since 1.11.1
  */
-@FutureApi
+@Api(allMethods = true)
 public interface ManyToOneItem<F extends FormItem> extends AssociationItem<F> {
 
 	/**
