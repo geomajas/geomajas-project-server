@@ -22,7 +22,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/spring-geotools.xml"/>
 	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/appGeoTools.xml"/>
 	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/mapGeoTools.xml"/>
-	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/clientLayerCountries.xml"/>
-	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/layerCountries.xml"/>
+	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/clientLayerCountriesGeoTools.xml"/>
+	<import resource="classpath:org/geomajas/layer/geotools/gwt/example/context/layerCountriesGeoTools.xml"/>
 
 </beans>

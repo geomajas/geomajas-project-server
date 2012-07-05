@@ -20,7 +20,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	
 	
-	<bean id="postgisDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+	<bean id="postgisDataSourceGeoTools" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
 	   <property name="driverClass" value="org.postgresql.Driver" />
 	   <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/app" />
 	   <property name="username" value="app"/>
@@ -35,9 +35,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	   <property name="releaseHelperThreads" value="3"/>
 	</bean>
 	
-	<bean name="layerCountries" class="org.geomajas.layer.geotools.GeoToolsLayer">
-		<property name="layerInfo" ref="layerCountriesInfo"/>
-		<property name="dataSource" ref="postgisDataSource"/>
+	<bean name="layerCountriesGeoTools" class="org.geomajas.layer.geotools.GeoToolsLayer">
+		<property name="layerInfo" ref="layerCountriesInfoGeoTools"/>
+		<property name="dataSource" ref="postgisDataSourceGeoTools"/>
 		<property name="parameters">
 			<list>
 				<bean class="org.geomajas.configuration.Parameter">
@@ -52,7 +52,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="layerCountriesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerCountriesInfoGeoTools" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -63,15 +63,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="height" value="180"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="layerCountriesFeatureInfo" />
+		<property name="featureInfo" ref="layerCountriesFeatureInfoGeoTools" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="layerCountriesStyleInfo" />
+				<ref bean="layerCountriesStyleInfoGeoTools" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountriesStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountriesStyleInfoGeoTools">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -106,7 +106,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.FeatureInfo" name="layerCountriesFeatureInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerCountriesFeatureInfoGeoTools">
 		<property name="dataSourceName" value="110m_admin_0_countries" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">

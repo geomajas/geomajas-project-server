@@ -50,11 +50,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="clientLayerCountries" />
+				<ref bean="clientLayerCountriesGeoTools" />
 			</list>
 		</property>
 		<property name="toolbar">
-			<bean name="editMultiPolygonLayerMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+			<bean class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
 						<ref bean="EditMode" />

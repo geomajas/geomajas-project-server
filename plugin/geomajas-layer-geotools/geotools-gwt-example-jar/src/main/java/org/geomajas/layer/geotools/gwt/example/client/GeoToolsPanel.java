@@ -56,7 +56,7 @@ public class GeoToolsPanel extends SamplePanel {
 			@Override
 			public void run() {
 				// select to create new features
-				map.getMapModel().getLayer("clientLayerCountries").setSelected(true);
+				map.getMapModel().getLayer("clientLayerCountriesGeoTools").setSelected(true);
 			}
 		});
 
@@ -81,8 +81,9 @@ public class GeoToolsPanel extends SamplePanel {
 		return new String[] { 
 				"classpath:org/geomajas/layer/geotools/gwt/example/context/appGeoTools.xml",
 				"classpath:org/geomajas/layer/geotools/gwt/example/context/mapGeoTools.xml",
-				"classpath:org/geomajas/layer/geotools/gwt/example/context/layerCountries.xml",
-				"classpath:org/geomajas/layer/geotools/gwt/example/context/clientLayerCountries.xml",
+				"classpath:org/geomajas/layer/geotools/gwt/example/context/layerCountriesGeoTools.xml",
+				"classpath:org/geomajas/layer/geotools/gwt/example/context/layerCountriesGeoToolsPostGis.xml",
+				"classpath:org/geomajas/layer/geotools/gwt/example/context/clientLayerCountriesGeoTools.xml",
 				"classpath:org/geomajas/layer/geotools/gwt/example/context/spring-geotools.xml"};
 	}
 
