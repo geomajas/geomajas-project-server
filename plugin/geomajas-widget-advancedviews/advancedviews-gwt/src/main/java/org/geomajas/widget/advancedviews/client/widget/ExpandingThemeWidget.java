@@ -38,13 +38,14 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Show a single button with the currently selected theme.
- *
+ * 
  * @author Oliver May
  * @author Kristof Heirwegh
  */
 public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 	private static final String NOTHEME_ICON = "[ISOMORPHIC]/geomajas/widget/themewidget/nothemeselected.png";
+
 	private static final String BACKGROUND_IMG = "[ISOMORPHIC]/geomajas/widget/themewidget/background.png";
 
 	private static final int IMAGE_SIZE = 48;
@@ -54,6 +55,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	protected MenuItem disabledBtn;
+
 	protected MenuItem masterBtn;
 
 	protected VLayout panel;
@@ -89,28 +91,29 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 						}
 					}
 				});
+		if (themeInfo != null && themeInfo.getThemeConfigs() != null) {
+			for (ViewConfig viewConfig : themeInfo.getThemeConfigs()) {
+				RangeConfig rangeConfig = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel()
+						.getMapView().getCurrentScale());
 
-		for (ViewConfig viewConfig : themeInfo.getThemeConfigs()) {
-			RangeConfig rangeConfig = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel().getMapView()
-					.getCurrentScale());
-
-			String icon;
-			if (rangeConfig != null) {
-				icon = "[ISOMORPHIC]/" + rangeConfig.getIcon();
-			} else {
-				icon = "[ISOMORPHIC]/" + viewConfig.getIcon();
-			}
-
-			final ViewConfigItem item = new ViewConfigItem();
-			item.setViewConfig(viewConfig);
-			final MenuItem button = new MenuItem(icon, viewConfig.getDescription(), null, new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					activateViewConfig(item);
+				String icon;
+				if (rangeConfig != null) {
+					icon = "[ISOMORPHIC]/" + rangeConfig.getIcon();
+				} else {
+					icon = "[ISOMORPHIC]/" + viewConfig.getIcon();
 				}
-			});
-			item.setButton(button);
-			viewConfigItems.add(item);
+
+				final ViewConfigItem item = new ViewConfigItem();
+				item.setViewConfig(viewConfig);
+				final MenuItem button = new MenuItem(icon, viewConfig.getDescription(), null, new ClickHandler() {
+
+					public void onClick(ClickEvent event) {
+						activateViewConfig(item);
+					}
+				});
+				item.setButton(button);
+				viewConfigItems.add(item);
+			}
 		}
 
 		setMasterItem(disabledBtn);
@@ -127,12 +130,13 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			panel.setShowShadow(true);
 			panel.setBackgroundImage(BACKGROUND_IMG);
 			panel.addMouseOutHandler(new MouseOutHandler() {
+
 				public void onMouseOut(MouseOutEvent event) {
 					Rectangle rect = panel.getRect();
 					int x = event.getX();
 					int y = event.getY();
-					if (x < rect.getLeft() || x > rect.getWidth() + rect.getLeft() || y < rect.getTop() ||
-							y > rect.getTop() + rect.getHeight()) {
+					if (x < rect.getLeft() || x > rect.getWidth() + rect.getLeft() || y < rect.getTop()
+							|| y > rect.getTop() + rect.getHeight()) {
 						panel.animateHide(AnimationEffect.FADE);
 					}
 				}
@@ -236,6 +240,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	public static class MenuItem extends HLayout implements Button {
 
 		private static final String DESCRIPTION_HOVER_STYLENAME = "themeWidgetDescriptionHover";
+
 		private static final String DESCRIPTION_STYLENAME = "themeWidgetDescription";
 
 		private final Img img;
