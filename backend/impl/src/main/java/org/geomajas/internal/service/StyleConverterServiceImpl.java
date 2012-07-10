@@ -780,12 +780,19 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		HashMap<String, String> result = new HashMap<String, String>();
 		if (css != null) {
 			for (CssParameterInfo cssParameter : css) {
-				if (cssParameter.getValue() != null) {
-					result.put(cssParameter.getName(), cssParameter.getValue());
-				} else if (cssParameter.getExpressionList().size() > 0) {
-					ExpressionInfo expression = cssParameter.getExpressionList().get(0);
-					if (expression instanceof LiteralTypeInfo) {
-						result.put(cssParameter.getName(), expression.getValue());
+				// check expressions first, if present ignore value
+				if (cssParameter.getExpressionList() != null) {
+					if (cssParameter.getExpressionList().size() > 0) {
+						ExpressionInfo expression = cssParameter.getExpressionList().get(0);
+						if (expression instanceof LiteralTypeInfo) {
+							result.put(cssParameter.getName(), expression.getValue());
+						}
+					}
+				} else if (cssParameter.getValue() != null) {
+					// ignore spaces and tabs for CSS
+					String value = cssParameter.getValue().trim();
+					if (!value.isEmpty()) {
+						result.put(cssParameter.getName(), value);
 					}
 				}
 			}

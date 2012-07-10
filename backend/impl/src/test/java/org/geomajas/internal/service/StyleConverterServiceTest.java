@@ -109,6 +109,19 @@ public class StyleConverterServiceTest {
 	}
 
 	@Test
+	public void testStyleWithLiteralCssParameter() throws JiBXException, LayerException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(
+				getClass().getResourceAsStream("/org/geomajas/testdata/sld/polygon_literalcssparameter.sld"),
+						null);
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
+		NamedStyleInfo info = styleConverterService.convert(sld.getChoiceList().get(0).getNamedLayer().getChoiceList()
+				.get(0).getUserStyle(), featureInfo);
+		Assert.assertNotNull(info);
+	}
+
+	@Test
 	public void testMixedGeometryStyle() throws LayerException {
 		UserStyleInfo style = styleConverterService.convert(layerBeansMixedGeometryStyleInfo, "geometry");
 		List<RuleInfo> rules = style.getFeatureTypeStyleList().get(0).getRuleList();
