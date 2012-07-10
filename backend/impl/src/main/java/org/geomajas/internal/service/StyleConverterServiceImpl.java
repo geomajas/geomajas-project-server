@@ -10,6 +10,7 @@
  */
 package org.geomajas.internal.service;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.CircleInfo;
@@ -365,7 +367,19 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				image.setHref(href);
 				// SLD has no selection concept + no default: what to do ?
 				image.setSelectionHref(href);
-				image.setHeight((int) Float.parseFloat(getParameterValue(graphic.getSize())));
+				try {
+					BufferedImage img = ImageIO.read(resourceService.find(href).getInputStream());
+					image.setWidth(img.getWidth());
+					image.setHeight(img.getHeight());
+				} catch (Exception e) {
+					// cannot determine image
+					log.warn("Unable to determine size of image " + href, e);
+				}
+				if (graphic.getSize() != null) {
+					double scale = Float.parseFloat(getParameterValue(graphic.getSize())) / image.getHeight();
+					image.setHeight((int) (scale * image.getHeight()));
+					image.setWidth((int) (scale * image.getWidth()));
+				}
 				symbol.setImage(image);
 			} else if (choice.ifMark()) {
 				MarkInfo mark = choice.getMark();
