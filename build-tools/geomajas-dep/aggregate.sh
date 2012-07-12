@@ -170,7 +170,7 @@ include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10
     "graduated" "Openstreetmap_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-openstreetmap" "1.9.0"
 
-include "org.geomajas.plugin" "geomajas-layer-tms-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-tms-documentation" "1.1.0-SNAPSHOT" \
     "TMS layer" \
     "This is a layer which allows accessing TMS images as raster layer." \
     "incubating" "master.pdf" \

@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dist</artifactId>
-	<version>1.12.10-SNAPSHOT</version>
+	<version>1.12.28-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas distribution</name>
 	<description>
@@ -38,7 +38,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.8</version>
+				<version>1.12.28-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -102,6 +102,10 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-tms</artifactId>
 		</dependency>
 
 		<dependency>
@@ -181,19 +185,19 @@
 								<artifactItem>
 									<groupId>org.geomajas.documentation</groupId>
 									<artifactId>docbook-devuserguide</artifactId>
-									<version>1.10.0</version>
+									<version>1.11.0</version>
 									<outputDirectory>${docdir}/devuserguide</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.geomajas.documentation</groupId>
 									<artifactId>docbook-gettingstarted</artifactId>
-									<version>1.10.0</version>
+									<version>1.11.0</version>
 									<outputDirectory>${docdir}/gettingstarted</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.geomajas.documentation</groupId>
 									<artifactId>docbook-contributorguide</artifactId>
-									<version>1.10.0</version>
+									<version>1.11.0</version>
 									<outputDirectory>${docdir}/contributorguide</outputDirectory>
 								</artifactItem>
 
@@ -206,7 +210,7 @@
 								<artifactItem>
 									<groupId>org.geomajas.documentation</groupId>
 									<artifactId>common-gwt-documentation</artifactId>
-									<version>1.0.0</version>
+									<version>1.1.0</version>
 									<outputDirectory>${docdir}/common-gwt-face</outputDirectory>
 								</artifactItem>
 								<!--
@@ -267,6 +271,12 @@
 									<groupId>org.geomajas.plugin</groupId>
 									<artifactId>geomajas-layer-wms-documentation</artifactId>
 									<version>1.9.0</version>
+									<outputDirectory>${docdir}/wms</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.geomajas.plugin</groupId>
+									<artifactId>geomajas-layer-tms-documentation</artifactId>
+									<version>1.0.0</version>
 									<outputDirectory>${docdir}/wms</outputDirectory>
 								</artifactItem>
 								<artifactItem>
