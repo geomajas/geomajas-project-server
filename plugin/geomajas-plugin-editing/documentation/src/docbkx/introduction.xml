@@ -76,6 +76,111 @@
     could also be used to let the user drag an interior ring within a polygon,
     or an entire LineString within a MultiLineString, or event the whole
     geometry.</para>
+
+    <para>The GeometryIndex is based on the internal structure of the
+    geometry, which may contain 4 or more levels:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>Geometry collection level: this is the highest structural level
+        for geometry collections: multipolygon, multilinestring or arbitrary
+        geometry collections. In theory a geometry collection may contain
+        other geometry collections, but this is rarely encountered.</para>
+      </listitem>
+
+      <listitem>
+        <para>Geometry level: this is the level of a basic geometry like
+        polygon, linestring or point</para>
+      </listitem>
+
+      <listitem>
+        <para>Ring level: for a polygon, this is the level of the linear
+        rings. There is usually an exterior ring (boundary), but there may
+        also be additional interior rings (holes)</para>
+      </listitem>
+
+      <listitem>
+        <para>Vertex or edge level: this is the level of the individual
+        vertices and edges. A single edge connects 2 vertices.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The elements at each level have a fixed ordering, which makes it
+    possible to uniquely determine such an element by its order at each level
+    of the structural tree. This combination of order numbers, together with a
+    type to distinguish between edges, vertices or higher level structures
+    (which we generally call geometries) forms the
+    <code>GeometryIndex</code>.</para>
+
+    <para>Lets give some examples to clarify this. The following table shows
+    at the left column a geometry in WKT format with a highlighted section and
+    the corresponding <code>GeometryIndex</code>. The GeometryIndex is an
+    array of integers combined with a type. For edge, the type is
+    <code>edge</code>, for vertex it is <code>vertex</code> and for all other
+    structures it is <code>geometry</code>. The last row contains a
+    multipolygon with 2 polygons. The highlighted section is a couple of
+    points that determines an edge of the interior ring of the first polygon.
+    The indices are 0 (for the first polygon), 1 (for the interior ring) and 2
+    for being the 3rd edge of this ring (counting starts with index 0 in all
+    cases).</para>
+
+    <table>
+      <title>Geometry index samples</title>
+
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry align="center">WKT</entry>
+
+            <entry align="center">Geometry index</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>POINT(<emphasis role="bold">0 0</emphasis>)</entry>
+
+            <entry>[0], type = vertex</entry>
+          </row>
+
+          <row>
+            <entry>LINESTRING (30 10, <emphasis role="bold">10 30</emphasis>,
+            40 40)</entry>
+
+            <entry>[1], type = vertex</entry>
+          </row>
+
+          <row>
+            <entry>LINESTRING (<emphasis role="bold">30 10</emphasis>, 10 30,
+            <emphasis role="bold">40 40</emphasis>)</entry>
+
+            <entry>[2], type = edge</entry>
+          </row>
+
+          <row>
+            <entry>POLYGON ((35 10, 10 20, 15 40, 45 45, 35 10), <emphasis
+            role="bold">(20 30, 35 35, 30 20, 20 30)</emphasis>)</entry>
+
+            <entry>[1], type = geometry</entry>
+          </row>
+
+          <row>
+            <entry>POLYGON ((35 10, 10 20, 15 40, 45 45, 35 10), (20 30, 35
+            35, <emphasis role="bold">30 20</emphasis>, 20 30))</entry>
+
+            <entry>[1,2], type = vertex</entry>
+          </row>
+
+          <row>
+            <entry>MULTIPOLYGON (((35 10, 10 20, 15 40, 45 45, 35 10), (20 30,
+            35 35, <emphasis role="bold">30 20, 20 30</emphasis>)),((35 10, 10
+            20, 15 40, 45 45, 35 10)))</entry>
+
+            <entry>[0,1,2], type = edge</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
   </sect1>
 
   <sect1>

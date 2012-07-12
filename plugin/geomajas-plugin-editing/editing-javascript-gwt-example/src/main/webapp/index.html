@@ -85,11 +85,17 @@
 			function insertHole() {
 				var geometry = service.getGeometry();
 				var ringIndex = service.addEmptyChild();
-				var indexValue = ringIndex.getValue();
-				indexValue += 0;
-				var index = service.getIndexService().create("vertex", [indexValue, 0]);
+				var index = service.getIndexService().create("vertex", [ringIndex.getValue(), 0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
+			}
+			
+			function deletefirstHole() {
+				var geometry = service.getGeometry();
+				if(geometry.getGeometries().length > 1) {
+					var index = service.getIndexService().create("geometry", [1]);
+					service.remove([index]);
+				}
 			}
 
 			function log(txt) {
@@ -117,6 +123,7 @@
 			<button onclick="drawLineString()">Draw LineString</button>
 			<button onclick="drawPolygon()">Draw Polygon</button>
 			<button onclick="insertHole()">Insert hole</button>
+			<button onclick="deletefirstHole()">Delete first hole</button>
 		</div>
 		
 		<table>
