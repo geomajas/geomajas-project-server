@@ -38,7 +38,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.28-SNAPSHOT</version>
+				<version>1.12.28</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
