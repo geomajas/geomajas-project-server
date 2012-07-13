@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>The administration plugin adds the capability to dynamically maintain
+  the Geomajas Spring application context. Prior to this plugin, the
+  application context was loaded once and for all at startup and any changes
+  to the context would necessarily involve a restart of the complete web
+  application. While this is standard practice for Spring-configured systems,
+  it prevents common GIS administrative tasks like:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>dynamically configuring layers: vector layers, raster layers,
+      styling, attributes, caching, security, ...</para>
+    </listitem>
+
+    <listitem>
+      <para>dynamically configuring fysical datastores: geodatabases,
+      shapefiles</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>or more specific Geomajas-related tasks like:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>dynamically configuring applications: maps, layers, tools,
+      etc...</para>
+    </listitem>
+
+    <listitem>
+      <para>dynamically configuring services and commands</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>There are various technical roads that could be pursued to reach this
+  goal, some of them involving a complete rehaul of the existing service
+  infrastructure. For this plugin we have tried to follow the least intrusive,
+  yet most generic option, which is to directly perform application context
+  changes on a runtime system. Initial testing has shown that this is a viable
+  road, although some limitations have to be taken into account:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Spring Dependency Injection, and more particularly autowiring,
+      will need to be reapplied to reestablish bean dependencies within the
+      context. This is not part of the standard bean definition registration
+      mechanism, although it can be achieved partially by manually rewiring
+      certain bean types.</para>
+    </listitem>
+
+    <listitem>
+      <para>Application context persistence is a separate issue that comes
+      into play when the context becomes dynamic. It will be handled by a
+      separate persistence service.</para>
+    </listitem>
+
+    <listitem>
+      <para>Concurrency issues may pop up as a consequence of dynamic
+      configuration. As Geomajas is a stateless system, this should have
+      limited consequences in most cases, although some glitches may appear
+      during the configuration stage. The overall approach here should be to
+      avoid locks by only sharing immutable objects. In the end it is up to
+      the service implementors to ensure proper behavior after
+      reconfiguration.</para>
+    </listitem>
+  </itemizedlist>
+
+  <section>
+    <title></title>
+
+    <para></para>
+  </section>
+</chapter>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+  <para>Configuration for the admin plug-in.</para>
+
+  <section id="dependencies">
+    <title>Dependencies</title>
+
+    <para>Make sure sure you include the correct version of the plug-in in
+    your project. Use the following excerpt (with the correct version) in the
+    dependencyManagement section of your project:</para>
+
+    <informalexample>
+      <programlisting> &lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-admin-all&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+    &lt;scope&gt;import&lt;/scope&gt;
+&lt;/dependency&gt;
+</programlisting>
+    </informalexample>
+
+    <para>If you are using geomajas-dep, this includes the latest released
+    version of the caching plug-in (at the time of publishing of that
+    version). If you want to overwrite the caching plug-in version, make sure
+    to include this excerpt <emphasis>before</emphasis> the geomajas-dep
+    dependency.</para>
+
+    <para>You can now include the actual dependency without explicit
+    version.</para>
+
+    <example>
+      <title>Plug-in dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-admin&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you want to use the admin widget for the GWT face, you need
+    the following dependency:</para>
+
+    <example>
+      <title>Plug-in GWT dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-admin-gwt&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+  </section>
+</chapter>
