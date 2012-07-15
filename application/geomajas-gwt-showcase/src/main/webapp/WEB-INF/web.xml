@@ -31,6 +31,9 @@
 			WEB-INF/map*.xml
 			WEB-INF/layer*.xml
 
+			<!-- force geocoder.xml from geocoder plug-in to be loaded after the geocoder from utility widgets -->
+			classpath:org/geomajas/plugin/geocoder/gwt/example/context/geocoder.xml
+
 			<!--
 			classpath:org/geomajas/spring/testRecorder.xml
 			-->

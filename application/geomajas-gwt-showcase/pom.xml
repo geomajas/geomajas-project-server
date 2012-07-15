@@ -218,7 +218,6 @@
 		</dependency>
 
 		<dependency>
-			<!-- needs to be before the geocoder to ensure that the geocoder demo works fully -->
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-utility-gwt-example-jar</artifactId>
 		</dependency>
