@@ -135,7 +135,7 @@
 
 	<properties>
 		<staticsecurity-backend-version>1.11.0</staticsecurity-backend-version>
-		<staticsecurity-gwt-face-version>1.11.0</staticsecurity-gwt-face-version>
+		<staticsecurity-gwt-face-version>1.11.1-SNAPSHOT</staticsecurity-gwt-face-version>
 		<staticsecurity-gwt-version>2.4.0</staticsecurity-gwt-version>
 	</properties>
 </project>

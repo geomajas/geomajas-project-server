@@ -178,7 +178,7 @@
 
 	<properties>
 		<admin-backend-version>1.11.0</admin-backend-version>
-		<admin-gwt-face-version>1.11.0-SNAPSHOT</admin-gwt-face-version>
+		<admin-gwt-face-version>1.11.1-SNAPSHOT</admin-gwt-face-version>
 		<admin-puregwt-face-version>1.0.0-SNAPSHOT</admin-puregwt-face-version>
 		<admin-gwt-version>2.4.0</admin-gwt-version>
 		<admin-geotools-version>1.9.0</admin-geotools-version>
