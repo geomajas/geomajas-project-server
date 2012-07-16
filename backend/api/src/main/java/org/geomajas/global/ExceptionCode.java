@@ -323,4 +323,16 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int DUPLICATE_ATTRIBUTE_NAME = 89;
+	/**
+	 * Cannot parse number ${0} in SLD file.
+	 *
+	 * @since 1.11.1
+	 */
+	int SLD_PARSE_NUMBER = 90;
+	/**
+	 * Cannot parse number ${0} in SLD file for attribute ${1}.
+	 *
+	 * @since 1.11.1
+	 */
+	int SLD_PARSE_NUMBER_ATTRIBUTE = 91;
 }

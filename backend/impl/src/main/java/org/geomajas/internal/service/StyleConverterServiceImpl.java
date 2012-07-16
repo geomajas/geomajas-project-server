@@ -175,7 +175,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private static final String CSS_STROKE_OPACITY = "stroke-opacity";
 	private static final String CSS_STROKE_WIDTH = "stroke-width";
 	private static final String CSS_STROKE_DASH_ARRAY = "stroke-dasharray";
-	
+	private static final String CSS_FONT_SIZE = "font-size";
+	private static final String CSS_FONT_STYLE = "font-style";
+	private static final String CSS_FONT_WEIGHT = "font-weight";
+	private static final String CSS_FONT_FAMILY = "font-family";
+
 	private static final String MARK_SQUARE = "square";
 	private static final String MARK_CIRCLE = "circle";
 	
@@ -197,7 +201,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private ResourceService resourceService;
 
 	/** {@inheritDoc} */
-	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
+	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) throws LayerException {
 		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
 		LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
 		List<FeatureStyleInfo> featureStyleInfos = new ArrayList<FeatureStyleInfo>();
@@ -354,7 +358,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
-	private void convertSymbol(FeatureStyleInfo featureStyleInfo, PointSymbolizerInfo pointInfo) {
+	private void convertSymbol(FeatureStyleInfo featureStyleInfo, PointSymbolizerInfo pointInfo)
+			throws LayerException {
 		GraphicInfo graphic = pointInfo.getGraphic();
 		SymbolInfo symbol = new SymbolInfo();
 
@@ -376,7 +381,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 					log.warn("Unable to determine size of image " + href, e);
 				}
 				if (graphic.getSize() != null) {
-					double scale = Float.parseFloat(getParameterValue(graphic.getSize())) / image.getHeight();
+					double scale = parseFloat(getParameterValue(graphic.getSize())) / image.getHeight();
 					image.setHeight((int) (scale * image.getHeight()));
 					image.setWidth((int) (scale * image.getWidth()));
 				}
@@ -386,13 +391,13 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				String name = mark.getWellKnownName().getWellKnownName();
 				if (MARK_SQUARE.equalsIgnoreCase(name)) {
 					RectInfo rect = new RectInfo();
-					rect.setH(Float.parseFloat(getParameterValue(graphic.getSize())));
-					rect.setW(Float.parseFloat(getParameterValue(graphic.getSize())));
+					rect.setH(parseFloat(getParameterValue(graphic.getSize())));
+					rect.setW(parseFloat(getParameterValue(graphic.getSize())));
 					symbol.setRect(rect);
 				} else {
 					// should treat everything else as circle ?!
 					CircleInfo circle = new CircleInfo();
-					circle.setR(0.5F * Float.parseFloat(getParameterValue(graphic.getSize())));
+					circle.setR(0.5F * parseFloat(getParameterValue(graphic.getSize())));
 					symbol.setCircle(circle);
 				}
 				convertFill(featureStyleInfo, mark.getFill());
@@ -402,40 +407,65 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		featureStyleInfo.setSymbol(symbol);
 	}
 
-	private void convertFontFill(FontStyleInfo fontStyle, FillInfo fill) {
+	private float parseFloat(String str) throws LayerException {
+		try {
+			return Float.parseFloat(str);
+		} catch (NumberFormatException nfe) {
+			throw new LayerException(nfe, ExceptionCode.SLD_PARSE_NUMBER, str);
+		}
+	}
+
+	private double parseDouble(String str) throws LayerException {
+		try {
+			return Double.parseDouble(str);
+		} catch (NumberFormatException nfe) {
+			throw new LayerException(nfe, ExceptionCode.SLD_PARSE_NUMBER, str);
+		}
+	}
+
+	private float parseFloat(Map<String, String> cssMap, String attribute) throws LayerException {
+		String str = cssMap.get(attribute);
+		try {
+			return Float.parseFloat(str);
+		} catch (NumberFormatException nfe) {
+			throw new LayerException(nfe, ExceptionCode.SLD_PARSE_NUMBER, str, attribute);
+		}
+	}
+
+	private void convertFontFill(FontStyleInfo fontStyle, FillInfo fill) throws LayerException {
 		if (fill != null) {
 			Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
 			fontStyle.setColor(cssMap.get(CSS_FILL));
 			if (cssMap.containsKey(CSS_FILL_OPACITY)) {
-				fontStyle.setOpacity(Float.parseFloat(cssMap.get(CSS_FILL_OPACITY)));
+				fontStyle.setOpacity(parseFloat(cssMap, CSS_FILL_OPACITY));
 			}
 		}
 	}
 
-	private FontStyleInfo convertFont(FontInfo font) {
+	private FontStyleInfo convertFont(FontInfo font) throws LayerException {
 		FontStyleInfo fontStyle = new FontStyleInfo();
 		if (font == null) {
 			fontStyle.applyDefaults();
 		} else {
 			Map<String, String> cssMap = getLiteralMap(font.getCssParameterList());
-			fontStyle.setFamily(cssMap.get("font-family"));
-			if (cssMap.containsKey("font-size")) {
-				fontStyle.setSize(Integer.parseInt(cssMap.get("font-size")));
+			fontStyle.setFamily(cssMap.get(CSS_FONT_FAMILY));
+			if (cssMap.containsKey(CSS_FONT_SIZE)) {
+				fontStyle.setSize((int) parseFloat(cssMap, CSS_FONT_SIZE));
 			}
-			fontStyle.setStyle(cssMap.get("font-style"));
-			fontStyle.setWeight(cssMap.get("font-weight"));
+			fontStyle.setStyle(cssMap.get(CSS_FONT_STYLE));
+			fontStyle.setWeight(cssMap.get(CSS_FONT_WEIGHT));
 		}
 		return fontStyle;
 	}
 
-	private void convertFill(FeatureStyleInfo featureStyleInfo, FillInfo fill) {
+	private void convertFill(FeatureStyleInfo featureStyleInfo, FillInfo fill) throws LayerException {
 		if (fill != null) {
 			Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
 			if (cssMap.containsKey(CSS_FILL)) {
 				featureStyleInfo.setFillColor(cssMap.get(CSS_FILL));
 			}
 			if (cssMap.containsKey(CSS_FILL_OPACITY)) {
-				featureStyleInfo.setFillOpacity(Float.parseFloat(cssMap.get(CSS_FILL_OPACITY)));
+				featureStyleInfo.setFillOpacity(parseFloat(cssMap, CSS_FILL_OPACITY));
 			}
 			if (fill.getGraphicFill() != null) {
 				GraphicInfo graphic = fill.getGraphicFill().getGraphic();
@@ -457,16 +487,16 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
-	private void convertStroke(FeatureStyleInfo featureStyleInfo, StrokeInfo stroke) {
+	private void convertStroke(FeatureStyleInfo featureStyleInfo, StrokeInfo stroke) throws LayerException {
 		if (stroke != null) {
 			Map<String, String> cssMap = getLiteralMap(stroke.getCssParameterList());
 			// not supported are "stroke-linejoin", "stroke-linecap", and "stroke-dashoffset"
 			featureStyleInfo.setStrokeColor(cssMap.get(CSS_STROKE));
 			if (cssMap.containsKey(CSS_STROKE_OPACITY)) {
-				featureStyleInfo.setStrokeOpacity(Float.parseFloat(cssMap.get(CSS_STROKE_OPACITY)));
+				featureStyleInfo.setStrokeOpacity(parseFloat(cssMap, CSS_STROKE_OPACITY));
 			}
 			if (cssMap.containsKey(CSS_STROKE_WIDTH)) {
-				featureStyleInfo.setStrokeWidth((int) Float.parseFloat(cssMap.get(CSS_STROKE_WIDTH)));
+				featureStyleInfo.setStrokeWidth((int) parseFloat(cssMap, CSS_STROKE_WIDTH));
 			}
 			if (cssMap.containsKey(CSS_STROKE_DASH_ARRAY)) {
 				featureStyleInfo.setDashArray(cssMap.get(CSS_STROKE_DASH_ARRAY));
@@ -474,7 +504,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
-	private String convertFormula(FilterTypeInfo filter, FeatureInfo featureInfo) {
+	private String convertFormula(FilterTypeInfo filter, FeatureInfo featureInfo) throws LayerException {
 		if (filter.ifComparisonOps()) {
 			return toComparison(filter.getComparisonOps(), featureInfo);
 		} else if (filter.ifFeatureIdList()) {
@@ -487,7 +517,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return null;
 	}
 
-	private String toLogic(LogicOpsTypeInfo logicOps, FeatureInfo featureInfo) {
+	private String toLogic(LogicOpsTypeInfo logicOps, FeatureInfo featureInfo) throws LayerException {
 		if (logicOps instanceof UnaryLogicOpTypeInfo) {
 			UnaryLogicOpTypeInfo unary = (UnaryLogicOpTypeInfo) logicOps;
 			if (unary.ifComparisonOps()) {
@@ -519,7 +549,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return null;
 	}
 
-	private String toSpatial(SpatialOpsTypeInfo spatialOps) {
+	private String toSpatial(SpatialOpsTypeInfo spatialOps) throws LayerException {
 		if (spatialOps instanceof BboxTypeInfo) {
 			BboxTypeInfo bbox = (BboxTypeInfo) spatialOps;
 			String propertyName = bbox.getPropertyName().getValue();
@@ -582,7 +612,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 	
-	private Envelope toEnvelope(BoxTypeInfo box) {
+	private Envelope toEnvelope(BoxTypeInfo box) throws LayerException {
 		if (box.ifCoordinates()) {
 			Coordinate[] coords = getCoordinates(box.getCoordinates());
 			if (coords.length == 2) {
@@ -602,7 +632,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
-	private Geometry toGeometry(GeometryFactory factory, AbstractGeometryInfo geom) {
+	private Geometry toGeometry(GeometryFactory factory, AbstractGeometryInfo geom) throws LayerException {
 		Geometry geometry = null;
 		if (geom instanceof AbstractGeometryCollectionInfo) {
 			AbstractGeometryCollectionInfo geomCollection = (AbstractGeometryCollectionInfo) geom;
@@ -638,7 +668,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return geometry;
 	}
 
-	private Geometry toSimpleGeometry(GeometryFactory factory, AbstractGeometryInfo geom) {
+	private Geometry toSimpleGeometry(GeometryFactory factory, AbstractGeometryInfo geom) throws LayerException {
 		Geometry geometry = null;
 		if (geom instanceof PointTypeInfo) {
 			PointTypeInfo point = (PointTypeInfo) geom;
@@ -672,7 +702,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return geometry;
 	}
 
-	private LinearRing toLinearRing(GeometryFactory factory, LinearRingTypeInfo linearRing) {
+	private LinearRing toLinearRing(GeometryFactory factory, LinearRingTypeInfo linearRing) throws LayerException {
 		LinearRing ring = null;
 		if (linearRing.ifCoordList()) {
 			ring = factory.createLinearRing(getCoordinates(linearRing.getCoordList()));
@@ -691,7 +721,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return result;
 	}
 
-	private Coordinate[] getCoordinates(CoordinatesTypeInfo coords) {
+	private Coordinate[] getCoordinates(CoordinatesTypeInfo coords) throws LayerException {
 		String cs = coords.getCs() == null ? "," : coords.getCs();
 		String ts = coords.getTs() == null ? "," : coords.getTs();
 		String ds = coords.getDecimal() == null ? "." : coords.getDecimal();
@@ -699,8 +729,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				.replace(cs, ",").split("[\\s,]+");
 		Coordinate[] result = new Coordinate[coordinates.length / 2];
 		for (int i = 0; i < coordinates.length; i += 2) {
-			double x = Double.parseDouble(coordinates[i].replace(ds, "."));
-			double y = Double.parseDouble(coordinates[i + 1].replace(ds, "."));
+			double x = parseDouble(coordinates[i].replace(ds, "."));
+			double y = parseDouble(coordinates[i + 1].replace(ds, "."));
 			result[i / 2] = new Coordinate(x, y);
 		}
 		return result;
@@ -922,7 +952,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
-	private Stroke createStroke(FeatureStyleInfo featureStyle) {
+	private Stroke createStroke(FeatureStyleInfo featureStyle) throws LayerException {
 		Stroke stroke = styleBuilder.createStroke(styleBuilder.literalExpression(featureStyle.getStrokeColor()),
 				styleBuilder.literalExpression(featureStyle.getStrokeWidth()),
 				styleBuilder.literalExpression(featureStyle.getStrokeOpacity()));
@@ -931,7 +961,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			float[] nrs = new float[strings.length];
 			for (int i = 0; i < strings.length; i++) {
 				try {
-					nrs[i] = Float.parseFloat(strings[i]);
+					nrs[i] = parseFloat(strings[i]);
 				} catch (NumberFormatException e) {
 					log.warn("Dash array cannot be parsed " + featureStyle.getDashArray(), e);
 				}
