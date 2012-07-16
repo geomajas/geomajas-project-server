@@ -39,6 +39,7 @@
 		<module>geomajas-plugin-profiling</module>
 		<module>geomajas-plugin-rasterizing</module>
 		<module>geomajas-plugin-reporting</module>
+		<module>geomajas-plugin-runtimeconfig</module>
 		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-widget-advancedviews</module>
 		<module>geomajas-widget-featureinfo</module>
