@@ -88,7 +88,7 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 		readOnlyFeature = fi2.next();
 		readOnlyFeature = fi2.next();
 		readOnlyFeature = fi2.next();
-}
+	}
 
 	@Test
 	public void testGetId() throws Exception {

@@ -82,8 +82,6 @@ public class FeatureSourceRetriever {
 		this.featureSourceName = featureSourceName;
 	}
 
-	// Class specific functions:
-
 	/**
 	 * Retrieve the GeoTools feature type for the 'featureSourceName'.
 	 * 
@@ -151,7 +149,13 @@ public class FeatureSourceRetriever {
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the attributes of a feature.
+	 *
+	 * @param feature the feature
+	 * @param attributes the attributes
+	 * @throws LayerException oops
+	 */
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
 		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
 			String name = entry.getKey();
@@ -164,25 +168,38 @@ public class FeatureSourceRetriever {
 			}
 		}
 	}
-	
-	/** {@inheritDoc} */
+
+	/**
+	 * Set the geometry of a feature.
+	 *
+	 * @param feature the feature
+	 * @param geometry the geometry
+	 * @throws LayerException oops
+	 */
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		if (geometryInfo.isEditable()) {
 			asFeature(feature).setDefaultGeometry(geometry);
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return the name which can be used to get the geometric attribute.
+	 * Can for example be be the name of a column in a SQL table, or the name of a method in a java object.
+	 *
+	 * @return attribute name
+	 * @throws LayerException oops
+	 */
 	public String getGeometryAttributeName() throws LayerException {
 		return getSchema().getGeometryDescriptor().getLocalName();
 	}
 
+	/**
+	 * Get map with attribute information.
+	 *
+	 * @return attribute info
+	 */
 	protected Map<String, AbstractAttributeInfo> getAttributeInfoMap() {
 		return attributeInfoMap;
 	}
 	
-	public GeometryAttributeInfo getGeometryInfo() {
-		return geometryInfo;
-	}
-
 }
