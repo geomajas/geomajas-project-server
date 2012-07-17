@@ -24,7 +24,6 @@ import org.geomajas.layer.feature.attribute.DoubleAttribute;
 import org.geomajas.layer.feature.attribute.FloatAttribute;
 import org.geomajas.layer.feature.attribute.LongAttribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
-import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
@@ -120,7 +119,7 @@ public class EntityAttributeServiceTest {
 		Assert.assertNull(bean.getManyToOneAttr().getStringAttr());
 		Assert.assertNull(bean.getStringAttr());
 	}
-	
+
 	@Test
 	public void testGetters() throws LayerException {
 		Iterator it = layerBeans.getElements(Filter.INCLUDE, 0, 0);

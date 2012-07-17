@@ -77,7 +77,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		// check attribute type
 		Set<String> names = new HashSet<String>();
 		// check for id
-		PrimitiveAttributeInfo identifier = featureInfo.getIdentifier();
+		AbstractAttributeInfo identifier = featureInfo.getIdentifier();
 		if (identifier.getName().equals(name) || FilterService.ATTRIBUTE_ID.equalsIgnoreCase(name)) {
 			try {
 				return dtoConverterService
@@ -92,11 +92,9 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 				if (attributeInfo instanceof AssociationAttributeInfo) {
 					associationAttributeInfo = (AssociationAttributeInfo) attributeInfo;
 				} else if (attributeInfo instanceof PrimitiveAttributeInfo) {
-					// primitive, return the attribute
-					PrimitiveAttributeInfo primitiveAttributeInfo = (PrimitiveAttributeInfo) attributeInfo;
 					try {
 						return dtoConverterService.toDto(entity == null ? null : entity.getAttribute(name),
-								primitiveAttributeInfo);
+								attributeInfo);
 					} catch (GeomajasException e) {
 						throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM);
 					}
@@ -144,7 +142,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		if (entity == null) {
 			return null;
 		}
-		PrimitiveAttributeInfo idInfo = associationAttributeInfo.getFeature().getIdentifier();
+		AbstractAttributeInfo idInfo = associationAttributeInfo.getFeature().getIdentifier();
 		FeatureInfo childInfo = associationAttributeInfo.getFeature();
 		PrimitiveAttribute<?> id;
 		try {
@@ -379,36 +377,29 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		}
 
 		protected void addChildOperations() throws LayerException {
-			Map<String, AssociationAttributeInfo> associationMap = new HashMap<String, AssociationAttributeInfo>();
-			Map<String, PrimitiveAttributeInfo> primitiveMap = new HashMap<String, PrimitiveAttributeInfo>();
-			for (AbstractAttributeInfo attributeInfo : featureInfo.getAttributes()) {
-				if (attributeInfo instanceof EditableAttributeInfo &&
-						((EditableAttributeInfo) attributeInfo).isEditable()) {
-					if (attributeInfo instanceof AssociationAttributeInfo) {
-						associationMap.put(attributeInfo.getName(), (AssociationAttributeInfo) attributeInfo);
-					} else if (attributeInfo instanceof PrimitiveAttributeInfo) {
-						primitiveMap.put(attributeInfo.getName(), (PrimitiveAttributeInfo) attributeInfo);
-					}
-				}
-			}
+			Map<String, AbstractAttributeInfo> attributesMap = featureInfo.getAttributesMap();
 			for (Map.Entry<String, Attribute<?>> entry : attributes.entrySet()) {
 				Attribute<?> attribute = entry.getValue();
-				if (primitiveMap.containsKey(entry.getKey())) {
-					addPrimitive(entry.getKey(), (PrimitiveAttribute<?>) attribute);
-				} else if (associationMap.containsKey(entry.getKey())) {
-					AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
-					AssociationAttributeInfo associationAttributeInfo = associationMap.get(entry.getKey());
-					switch (associationAttributeInfo.getType()) {
-						case MANY_TO_ONE:
-							association = (association == null ? new ManyToOneAttribute() : association);
-							addManyToOne(entry.getKey(), associationMap.get(entry.getKey()),
-									(ManyToOneAttribute) association);
-							break;
-						case ONE_TO_MANY:
-							association = (association == null ? new OneToManyAttribute() : association);
-							addOneToMany(entry.getKey(), associationMap.get(entry.getKey()),
-									(OneToManyAttribute) association);
-							break;
+				AbstractAttributeInfo attributeInfo = attributesMap.get(entry.getKey());
+				if (attributeInfo instanceof EditableAttributeInfo &&
+						((EditableAttributeInfo) attributeInfo).isEditable()) {
+					if (attributeInfo instanceof PrimitiveAttributeInfo) {
+						addPrimitive(entry.getKey(), (PrimitiveAttribute<?>) attribute);
+					} else if (attributeInfo instanceof AssociationAttributeInfo) {
+						AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
+						AssociationAttributeInfo associationAttributeInfo = (AssociationAttributeInfo) attributeInfo;
+						switch (associationAttributeInfo.getType()) {
+							case MANY_TO_ONE:
+								association = (association == null ? new ManyToOneAttribute() : association);
+								addManyToOne(entry.getKey(), associationAttributeInfo,
+										(ManyToOneAttribute) association);
+								break;
+							case ONE_TO_MANY:
+								association = (association == null ? new OneToManyAttribute() : association);
+								addOneToMany(entry.getKey(), associationAttributeInfo,
+										(OneToManyAttribute) association);
+								break;
+						}
 					}
 				}
 			}

@@ -160,7 +160,6 @@ public class ConfigurationDtoPostProcessor {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void postProcess(VectorLayer layer) throws LayerException {
 		VectorLayerInfo info = layer.getLayerInfo();
 		if (info != null) {
@@ -171,20 +170,7 @@ public class ConfigurationDtoPostProcessor {
 			}
 
 			FeatureInfo featureInfo = info.getFeatureInfo();
-			List<AbstractAttributeInfo> attributes = (List<AbstractAttributeInfo>) (List) featureInfo.getAttributes();
-
-			// check for invalid attribute names
-			for (AbstractAttributeInfo attributeInfo : attributes) {
-				if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
-					throw new LayerException(ExceptionCode.INVALID_ATTRIBUTE_NAME, attributeInfo.getName(),
-							layer.getId());
-				}
-			}
-
-			// check for duplicate attribute names
-			checkDuplicateAttributes(layer.getId(), "", attributes);
-
-			featureInfo.setAttributesMap(toMap(attributes));
+			postProcess(layer.getId(), featureInfo, "");
 
 			// convert sld to old styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
@@ -268,6 +254,29 @@ public class ConfigurationDtoPostProcessor {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private void postProcess(String layerId, FeatureInfo featureInfo, String path) throws LayerException {
+		List<AbstractAttributeInfo> attributes = (List<AbstractAttributeInfo>) (List) featureInfo.getAttributes();
+
+
+		// check for invalid attribute names and post-process association attributes' FeatureInfo
+		for (AbstractAttributeInfo attributeInfo : attributes) {
+			if (attributeInfo instanceof AssociationAttributeInfo) {
+				postProcess(layerId, ((AssociationAttributeInfo) attributeInfo).getFeature(),
+						path + "/" + attributeInfo.getName());
+			}
+
+			if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
+				throw new LayerException(ExceptionCode.INVALID_ATTRIBUTE_NAME, attributeInfo.getName(), layerId);
+			}
+		}
+
+		// check for duplicate attribute names
+		checkDuplicateAttributes(layerId, path, attributes);
+
+		featureInfo.setAttributesMap(toMap(attributes));
+	}
+
 	private Map<String, AbstractAttributeInfo> toMap(List<AbstractAttributeInfo> attributes) {
 		Map<String, AbstractAttributeInfo> map = new HashMap<String, AbstractAttributeInfo>();
 		for (AbstractAttributeInfo attributeInfo : attributes) {
@@ -286,10 +295,6 @@ public class ConfigurationDtoPostProcessor {
 				throw new LayerException(ExceptionCode.DUPLICATE_ATTRIBUTE_NAME, name, layerId, path);
 			}
 			names.add(name);
-			if (attribute instanceof AssociationAttributeInfo) {
-				checkDuplicateAttributes(layerId, path + "/" + name, (List<AbstractAttributeInfo>) (List) (
-						(AssociationAttributeInfo) attribute).getFeature().getAttributes());
-			}
 		}
 	}
 
