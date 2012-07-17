@@ -12,8 +12,11 @@ package org.geomajas.layer.geotools;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
@@ -62,6 +65,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 		ft.setGeometryType(ga);
 
 		List<AttributeInfo> attr = new ArrayList<AttributeInfo>();
+		Map<String, AbstractAttributeInfo> attrMap = new LinkedHashMap<String, AbstractAttributeInfo>();
 		PrimitiveAttributeInfo pa = new PrimitiveAttributeInfo();
 		pa.setLabel("Name");
 		pa.setName("NAME");
@@ -70,7 +74,9 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 		pa.setType(PrimitiveType.STRING);
 
 		attr.add(pa);
+		attrMap.put(pa.getName(), pa);
 		ft.setAttributes(attr);
+		ft.setAttributesMap(attrMap);
 
 		VectorLayerInfo layerInfo = new VectorLayerInfo();
 		layerInfo.setFeatureInfo(ft);

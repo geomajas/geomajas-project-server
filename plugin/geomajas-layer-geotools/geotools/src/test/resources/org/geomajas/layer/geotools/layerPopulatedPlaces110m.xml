@@ -8,18 +8,16 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+
 <beans
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
 		xsi:schemaLocation="
 http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
 		>
 
-	<bean name="populatedPlaces110mInfoEditable" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="populatedPlaces110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOINT"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -30,15 +28,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				<property name="height" value="35"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="populatedPlaces110mFeatureInfoEditable" />
+		<property name="featureInfo" ref="populatedPlaces110mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="populatedPlaces110mStyleInfoEditable" />
+				<ref bean="populatedPlaces110mStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="populatedPlaces110mFeatureInfoEditable">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="populatedPlaces110mFeatureInfo">
         <property name="dataSourceName" value="110m_populated_places_simple"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -88,7 +86,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="populatedPlaces110mStyleInfoEditable">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="populatedPlaces110mStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -101,12 +99,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					<property name="strokeWidth" value="1" />
 					<property name="symbol">
 						<bean class="org.geomajas.configuration.SymbolInfo">
-							<property name="image">
-								<bean class="org.geomajas.configuration.ImageInfo">
-									<property name="href" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city1.png" />
-									<property name="selectionHref" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city1_selected.png" />
-									<property name="width" value="24" />
-									<property name="height" value="32" />
+							<property name="circle">
+								<bean class="org.geomajas.configuration.CircleInfo">
+									<property name="r" value="1" />
 								</bean>
 							</property>
 						</bean>
@@ -121,12 +116,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					<property name="strokeWidth" value="1" />
 					<property name="symbol">
 						<bean class="org.geomajas.configuration.SymbolInfo">
-							<property name="image">
-								<bean class="org.geomajas.configuration.ImageInfo">
-									<property name="href" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city3.png" />
-									<property name="selectionHref" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city3_selected.png" />
-									<property name="width" value="13" />
-									<property name="height" value="20" />
+							<property name="circle">
+								<bean class="org.geomajas.configuration.CircleInfo">
+									<property name="r" value="1" />
 								</bean>
 							</property>
 						</bean>
@@ -156,9 +148,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
-	<!--bean name="populatedPlaces110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+	<bean name="populatedPlaces110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="populatedPlaces110mInfo" />
         <property name="url" value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp"/>
-	</bean-->
+	</bean>
 
 </beans>

@@ -39,7 +39,7 @@ public class GeoDbTest {
 	private FilterService filterService;
 
 	@Test
-	public void testRead() throws LayerException, GeomajasException {
+	public void testRead() throws GeomajasException {
 		Iterator<?> it = pointLayer.getElements(Filter.INCLUDE, 0, 0);
 		Map<String, SimpleFeature> all = new HashMap<String, SimpleFeature>();
 		while (it.hasNext()) {
@@ -53,7 +53,7 @@ public class GeoDbTest {
 	}
 
 	@Test
-	public void testCreate() throws LayerException, GeomajasException, ParseException {
+	public void testCreate() throws GeomajasException, ParseException {
 		// test creating a 5th geometry, expect auto-generated id
 		WKTReader wktReader = new WKTReader();
 		Point geometry = (Point) wktReader.read("POINT (0 0)");
@@ -65,7 +65,7 @@ public class GeoDbTest {
 	}
 
 	@Test
-	public void testDelete() throws LayerException, GeomajasException, ParseException {
+	public void testDelete() throws GeomajasException, ParseException {
 		pointLayer.delete("POINT.4");
 		try {
 			pointLayer.read("POINT.4");
@@ -75,7 +75,7 @@ public class GeoDbTest {
 	}
 
 	@Test
-	public void testUpdate() throws LayerException, GeomajasException, ParseException {
+	public void testUpdate() throws GeomajasException, ParseException {
 		// test updating geometry and name
 		WKTReader wktReader = new WKTReader();
 		Point geometry = (Point) wktReader.read("POINT (100 0)");

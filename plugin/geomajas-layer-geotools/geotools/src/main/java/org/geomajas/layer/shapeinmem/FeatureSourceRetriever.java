@@ -12,13 +12,10 @@
 package org.geomajas.layer.shapeinmem;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
-import org.geomajas.configuration.AbstractEditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
-import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
@@ -49,9 +46,7 @@ public class FeatureSourceRetriever {
 	 */
 	private String featureSourceName;
 
-	private final Map<String, AbstractAttributeInfo> attributeInfoMap = new HashMap<String, AbstractAttributeInfo>();
-	
-	private GeometryAttributeInfo geometryInfo;
+	private FeatureInfo featureInfo;
 
 	/**
 	 * Set the data store.
@@ -127,11 +122,7 @@ public class FeatureSourceRetriever {
 	 * @throws LayerException feature model could not be constructed
 	 */
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
-		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
-		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
-			attributeInfoMap.put(info.getName(), info);
-		}
-		geometryInfo = featureInfo.getGeometryType();
+		featureInfo = vectorLayerInfo.getFeatureInfo(); // do not store attributesMap, may not be PostConstruct-ed yet
 	}
 
 	/**
@@ -160,11 +151,7 @@ public class FeatureSourceRetriever {
 		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
 			String name = entry.getKey();
 			if (!name.equals(getGeometryAttributeName())) {
-				AbstractAttributeInfo attributeInfo = attributeInfoMap.get(name);
-				if (attributeInfo instanceof AbstractEditableAttributeInfo &&
-						((AbstractEditableAttributeInfo) attributeInfo).isEditable()) {
-					asFeature(feature).setAttribute(name, entry.getValue());
-				}
+				asFeature(feature).setAttribute(name, entry.getValue());
 			}
 		}
 	}
@@ -177,9 +164,7 @@ public class FeatureSourceRetriever {
 	 * @throws LayerException oops
 	 */
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
-		if (geometryInfo.isEditable()) {
-			asFeature(feature).setDefaultGeometry(geometry);
-		}
+		asFeature(feature).setDefaultGeometry(geometry);
 	}
 
 	/**
@@ -199,7 +184,7 @@ public class FeatureSourceRetriever {
 	 * @return attribute info
 	 */
 	protected Map<String, AbstractAttributeInfo> getAttributeInfoMap() {
-		return attributeInfoMap;
+		return featureInfo.getAttributesMap();
 	}
 	
 }
