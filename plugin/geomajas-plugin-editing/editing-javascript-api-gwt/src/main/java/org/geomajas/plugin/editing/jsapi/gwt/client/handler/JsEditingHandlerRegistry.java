@@ -21,8 +21,10 @@ import org.timepedia.exporter.client.Exportable;
  * {@link #getInstance()}.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 @Export("EditingHandlerRegistry")
 @ExportPackage("org.geomajas.plugin.editing.handler")
 public final class JsEditingHandlerRegistry implements Exportable {
@@ -36,9 +38,7 @@ public final class JsEditingHandlerRegistry implements Exportable {
 	 * Get a reference to the {@link EditingHandlerRegistry}.
 	 * 
 	 * @return the {@link JsEditingHandlerRegistry}.
-	 * @since 1.0.0
 	 */
-	@Api
 	@Export("$wnd.EditingHandlerRegistry")
 	public static JsEditingHandlerRegistry getInstance() {
 		return INSTANCE;

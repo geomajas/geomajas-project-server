@@ -20,6 +20,7 @@ import org.timepedia.exporter.client.Exportable;
  * JavaScript wrapper of {@link GeometryRenderer}.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 @Export("GeometryRenderer")

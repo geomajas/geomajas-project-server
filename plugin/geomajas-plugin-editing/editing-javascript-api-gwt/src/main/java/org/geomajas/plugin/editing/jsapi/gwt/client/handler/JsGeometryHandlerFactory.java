@@ -39,6 +39,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
  * JavaScript wrapper of {@link GeometryHandlerFactory}. This factory creates a singleton object.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 @Api
@@ -72,6 +73,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param mouseMoveHandler the closure
 	 */
+	@Api
 	public void setMouseMoveHandler(MouseMoveHandler mouseMoveHandler) {
 		this.mouseMoveHandler = mouseMoveHandler;
 	}
@@ -81,6 +83,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param mouseOutHandler the closure
 	 */
+	@Api
 	public void setMouseOutHandler(MouseOutHandler mouseOutHandler) {
 		this.mouseOutHandler = mouseOutHandler;
 	}
@@ -90,6 +93,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param mouseOverHandler the closure
 	 */
+	@Api
 	public void setMouseOverHandler(MouseOverHandler mouseOverHandler) {
 		this.mouseOverHandler = mouseOverHandler;
 	}
@@ -99,6 +103,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param downHandler the closure
 	 */
+	@Api
 	public void setDownHandler(DownHandler downHandler) {
 		this.downHandler = downHandler;
 	}
@@ -108,6 +113,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param upHandler the closure
 	 */
+	@Api
 	public void setUpHandler(UpHandler upHandler) {
 		this.upHandler = upHandler;
 	}
@@ -117,6 +123,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param dragHandler the closure
 	 */
+	@Api
 	public void setDragHandler(DragHandler dragHandler) {
 		this.dragHandler = dragHandler;
 	}
@@ -126,6 +133,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @param doubleClickHandler the closure
 	 */
+	@Api
 	public void setDoubleClickHandler(DoubleClickHandler doubleClickHandler) {
 		this.doubleClickHandler = doubleClickHandler;
 	}
@@ -135,6 +143,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 * 
 	 * @return the index
 	 */
+	@Api
 	public GeometryIndex getIndex() {
 		return handler.getIndex();
 	}
