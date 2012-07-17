@@ -38,7 +38,6 @@ public class PolygonWriter implements GraphicsWriter {
 	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
 		document.writeElement("vml:shape", asChild);
-		document.writeAttribute("fill-rule", "evenodd");
 		document.writeAttributeStart("path");
 		Polygon poly = (Polygon) o;
 		LineString shell = poly.getExteriorRing();
