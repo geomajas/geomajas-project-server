@@ -12,11 +12,10 @@ package org.geomajas.rest.server;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.LayerException;
@@ -89,10 +88,7 @@ public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 		builder.setCRS(geoservice.getCrs2(vectorLayerInfo.getCrs()));
 
 		// create a lookup map of attribute info's
-		Map<String, AttributeInfo> attrs = new LinkedHashMap<String, AttributeInfo>();
-		for (AttributeInfo a : vectorLayerInfo.getFeatureInfo().getAttributes()) {
-			attrs.put(a.getName(), a);
-		}
+		Map<String, AbstractAttributeInfo> attrs = vectorLayerInfo.getFeatureInfo().getAttributesMap();
 		if (attributeNames == null) {
 			attributeNames = new ArrayList<String>(attrs.keySet());
 		}
@@ -100,7 +96,7 @@ public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 		// now list 'm up
 		for (String name : attributeNames) {
 			if (attrs.containsKey(name)) {
-				AttributeInfo a = attrs.get(name);
+				AbstractAttributeInfo a = attrs.get(name);
 				if (a instanceof PrimitiveAttributeInfo) {
 					PrimitiveAttributeInfo attr = (PrimitiveAttributeInfo) a;
 					switch (attr.getType()) {
