@@ -19,7 +19,7 @@
 
     <section id="mig-1110">
       <title>Migrating between Geomajas 1.10.0 and Geomajas (back-end core)
-      1.11.0</title>
+      1.11.1</title>
 
       <itemizedlist>
         <listitem>
@@ -34,6 +34,14 @@
           can be changed on a per-layer level by assigning the
           <code>zoomToPointScale</code> property in
           <code>ClientLayerInfo</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>The back-end now strictly adheres to the "editable" capability
+          defined in attribute configuration. When this is false, the
+          attribute cannot be written. As creating features without geometry
+          is not allowed, having this set to false in GeometryAttributeInfo
+          will prohibit the creation of features.</para>
         </listitem>
       </itemizedlist>
     </section>
