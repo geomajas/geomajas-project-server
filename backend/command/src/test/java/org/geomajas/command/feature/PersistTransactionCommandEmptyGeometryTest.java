@@ -14,15 +14,11 @@ package org.geomajas.command.feature;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureTransaction;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.geomajas.testdata.rule.SecurityRule;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +44,6 @@ import static org.fest.assertions.Assertions.assertThat;
 @ReloadContext
 public class PersistTransactionCommandEmptyGeometryTest {
 
-	private static final double DOUBLE_TOLERANCE = .0000000001;
 	private static final String LAYER_EMPTY_POINT_ID = "layerEmptyPoint";
 	private static final String LAYER_EMPTY_POLYGON_ID = "layerEmptyGeometry";
 	private static final String CRS = "EPSG:4326";
