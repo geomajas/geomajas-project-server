@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.EditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
@@ -84,7 +85,8 @@ public class AttributeService {
 		addSyntheticAttributes(feature, featureAttributes, layer);
 		if (securityContext.isFeatureVisible(layerId, feature)) {
 
-			feature.setAttributes(filterAttributes(layerId, feature, featureAttributes));
+			feature.setAttributes(filterAttributes(layerId, layer.getLayerInfo().getFeatureInfo().getAttributesMap(),
+					feature, featureAttributes));
 
 			feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
 			feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
@@ -94,14 +96,18 @@ public class AttributeService {
 		return null;
 	}
 
-	private Map<String, Attribute> filterAttributes(String layerId, InternalFeature feature,
-													Map<String, Attribute> featureAttributes) {
+	private Map<String, Attribute> filterAttributes(String layerId, Map<String, AbstractAttributeInfo> attributeInfo,
+			InternalFeature feature, Map<String, Attribute> featureAttributes) {
 		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
 		for (Map.Entry<String, Attribute> entry : featureAttributes.entrySet()) {
 			String key = entry.getKey();
 			if (securityContext.isAttributeReadable(layerId, feature, key)) {
 				Attribute attribute = entry.getValue();
-				boolean editable = securityContext.isAttributeWritable(layerId, feature, key);
+				boolean editable = false;
+				AbstractAttributeInfo ai = attributeInfo.get(key);
+				if (ai instanceof EditableAttributeInfo && ((EditableAttributeInfo) ai).isEditable()) {
+					editable = securityContext.isAttributeWritable(layerId, feature, key);
+				}
 				setAttributeEditable(attribute, editable);
 				filteredAttributes.put(key, attribute);
 			}
