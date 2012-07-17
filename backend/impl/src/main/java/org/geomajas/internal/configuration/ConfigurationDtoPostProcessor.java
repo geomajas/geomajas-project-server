@@ -13,6 +13,7 @@ package org.geomajas.internal.configuration;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -159,6 +160,7 @@ public class ConfigurationDtoPostProcessor {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void postProcess(VectorLayer layer) throws LayerException {
 		VectorLayerInfo info = layer.getLayerInfo();
 		if (info != null) {
@@ -168,8 +170,11 @@ public class ConfigurationDtoPostProcessor {
 						layer.getId());
 			}
 
+			FeatureInfo featureInfo = info.getFeatureInfo();
+			List<AbstractAttributeInfo> attributes = (List<AbstractAttributeInfo>) (List) featureInfo.getAttributes();
+
 			// check for invalid attribute names
-			for (AbstractAttributeInfo attributeInfo : info.getFeatureInfo().getAttributes()) {
+			for (AbstractAttributeInfo attributeInfo : attributes) {
 				if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
 					throw new LayerException(ExceptionCode.INVALID_ATTRIBUTE_NAME, attributeInfo.getName(),
 							layer.getId());
@@ -177,8 +182,10 @@ public class ConfigurationDtoPostProcessor {
 			}
 
 			// check for duplicate attribute names
-			checkDuplicateAttributes(layer.getId(), "", info.getFeatureInfo().getAttributes());
-			
+			checkDuplicateAttributes(layer.getId(), "", attributes);
+
+			featureInfo.setAttributesMap(toMap(attributes));
+
 			// convert sld to old styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				// check sld location
@@ -203,7 +210,7 @@ public class ConfigurationDtoPostProcessor {
 								layer.getId());
 					}
 					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getUserStyle(),
-							info.getFeatureInfo());
+							featureInfo);
 					namedStyle.setFeatureStyles(sldStyle.getFeatureStyles());
 					namedStyle.setLabelStyle(sldStyle.getLabelStyle());
 				}
@@ -228,7 +235,7 @@ public class ConfigurationDtoPostProcessor {
 							style.setLayerType(layer.getLayerInfo().getLayerType());
 							convertedStyles.add(style);
 						} else {
-							String geometryName = info.getFeatureInfo().getGeometryType().getName();
+							String geometryName = featureInfo.getGeometryType().getName();
 							// we have to convert to 3 styles here !
 							convertedStyles.add(createPointStyle(style, geometryName));
 							convertedStyles.add(createLineStyle(style, geometryName));
@@ -253,7 +260,7 @@ public class ConfigurationDtoPostProcessor {
 			// convert old styles to sld
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				if (namedStyle.getUserStyle() == null) {
-					UserStyleInfo userStyle = styleConverterService.convert(namedStyle, info.getFeatureInfo()
+					UserStyleInfo userStyle = styleConverterService.convert(namedStyle, featureInfo
 							.getGeometryType().getName());
 					namedStyle.setUserStyle(userStyle);
 				}
@@ -261,7 +268,16 @@ public class ConfigurationDtoPostProcessor {
 		}
 	}
 
-	private void checkDuplicateAttributes(String layerId, String path, List<AttributeInfo> attributes)
+	private Map<String, AbstractAttributeInfo> toMap(List<AbstractAttributeInfo> attributes) {
+		Map<String, AbstractAttributeInfo> map = new HashMap<String, AbstractAttributeInfo>();
+		for (AbstractAttributeInfo attributeInfo : attributes) {
+			map.put(attributeInfo.getName(), attributeInfo);
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void checkDuplicateAttributes(String layerId, String path, List<AbstractAttributeInfo> attributes)
 			throws LayerException {
 		Set<String> names = new HashSet<String>();
 		for (AbstractAttributeInfo attribute : attributes) {
@@ -271,8 +287,8 @@ public class ConfigurationDtoPostProcessor {
 			}
 			names.add(name);
 			if (attribute instanceof AssociationAttributeInfo) {
-				checkDuplicateAttributes(layerId, path + "/" + name,
-						((AssociationAttributeInfo) attribute).getFeature().getAttributes());
+				checkDuplicateAttributes(layerId, path + "/" + name, (List<AbstractAttributeInfo>) (List) (
+						(AssociationAttributeInfo) attribute).getFeature().getAttributes());
 			}
 		}
 	}

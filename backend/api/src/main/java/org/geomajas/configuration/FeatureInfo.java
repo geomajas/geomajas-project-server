@@ -12,6 +12,7 @@ package org.geomajas.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -35,6 +36,7 @@ public class FeatureInfo implements IsInfo {
 	private SortType sortType;
 	private GeometryAttributeInfo geometryType;
 	private List<AttributeInfo> attributes = new ArrayList<AttributeInfo>();
+	private Map<String, AbstractAttributeInfo> attributesMap;
 
 	/**
 	 * Get the data source name. This is used by the layer to know which data source to contact.
@@ -162,5 +164,26 @@ public class FeatureInfo implements IsInfo {
 	 */
 	public void setAttributes(List<AttributeInfo> attributes) {
 		this.attributes = attributes;
+	}
+
+	/**
+	 * Get map with attributes. This allows instant access to the feature attributes by name.
+	 *
+	 * @return attributes indexed by attribute name
+	 * @since 1.11.1
+	 */
+	public Map<String, AbstractAttributeInfo> getAttributesMap() {
+		return attributesMap;
+	}
+
+	/**
+	 * Set map with the attributes indexed by name. Do not use this call, needed for GWT and for the configuration
+	 * post processor.
+	 *
+	 * @param attributesMap attributes indexed by attribute name
+	 * @since 1.11.1
+	 */
+	public void setAttributesMap(Map<String, AbstractAttributeInfo> attributesMap) {
+		this.attributesMap = attributesMap;
 	}
 }
