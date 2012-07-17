@@ -13,7 +13,6 @@ package org.geomajas.internal.configuration;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -278,7 +277,7 @@ public class ConfigurationDtoPostProcessor {
 	}
 
 	private Map<String, AbstractAttributeInfo> toMap(List<AbstractAttributeInfo> attributes) {
-		Map<String, AbstractAttributeInfo> map = new HashMap<String, AbstractAttributeInfo>();
+		Map<String, AbstractAttributeInfo> map = new LinkedHashMap<String, AbstractAttributeInfo>();
 		for (AbstractAttributeInfo attributeInfo : attributes) {
 			map.put(attributeInfo.getName(), attributeInfo);
 		}
