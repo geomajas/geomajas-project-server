@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.runtimeconfig.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.runtimeconfig;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.runtimeconfig.command.dto.DestroyBeanConfigurationRequest;
