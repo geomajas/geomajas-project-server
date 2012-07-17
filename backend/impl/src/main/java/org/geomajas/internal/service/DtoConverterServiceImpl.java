@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
@@ -30,7 +29,8 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.geometry.conversion.jts.GeometryConverterService;
+import org.geomajas.geometry.conversion.jts.JtsConversionException;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
@@ -64,15 +64,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Default implementation of DTO converter.
@@ -386,43 +383,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		if (geometry == null) {
 			return null;
 		}
-		int srid = geometry.getSRID();
-		int precision = -1;
-		PrecisionModel precisionmodel = geometry.getPrecisionModel();
-		if (!precisionmodel.isFloating()) {
-			precision = (int) Math.log10(precisionmodel.getScale());
+		try {
+			return GeometryConverterService.fromJts(geometry);
+		} catch (JtsConversionException jce) {
+			throw new GeomajasException(jce, ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getClass().getName());
 		}
-		String geometryType = getGeometryType(geometry);
-		Geometry dto = new Geometry(geometryType, srid, precision);
-		if (geometry.isEmpty()) { // NOSONAR short-circuit do-nothing conversion
-			// nothing to do
-		} else if (geometry instanceof Point) {
-			dto.setCoordinates(convertCoordinates(geometry));
-		} else if (geometry instanceof LinearRing) {
-			dto.setCoordinates(convertCoordinates(geometry));
-		} else if (geometry instanceof LineString) {
-			dto.setCoordinates(convertCoordinates(geometry));
-		} else if (geometry instanceof Polygon) {
-			Polygon polygon = (Polygon) geometry;
-			Geometry[] geometries = new Geometry[polygon.getNumInteriorRing() + 1];
-			for (int i = 0; i < geometries.length; i++) {
-				if (i == 0) {
-					geometries[i] = toDto(polygon.getExteriorRing());
-				} else {
-					geometries[i] = toDto(polygon.getInteriorRingN(i - 1));
-				}
-			}
-			dto.setGeometries(geometries);
-		} else if (geometry instanceof MultiPoint) {
-			dto.setGeometries(convertGeometries(geometry));
-		} else if (geometry instanceof MultiLineString) {
-			dto.setGeometries(convertGeometries(geometry));
-		} else if (geometry instanceof MultiPolygon) {
-			dto.setGeometries(convertGeometries(geometry));
-		} else {
-			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getClass().getName());
-		}
-		return dto;
 	}
 
 	/** {@inheritDoc} */
@@ -430,97 +395,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		if (geometry == null) {
 			return null;
 		}
-		int srid = geometry.getSrid();
-		int precision = geometry.getPrecision();
-		PrecisionModel model;
-		if (precision == -1) {
-			model = new PrecisionModel(PrecisionModel.FLOATING);
-		} else {
-			model = new PrecisionModel(Math.pow(10, precision));
-		}
-		GeometryFactory factory = new GeometryFactory(model, srid);
-		com.vividsolutions.jts.geom.Geometry jts;
-
-		String geometryType = geometry.getGeometryType();
-		if (GeometryService.isEmpty(geometry)) {
-			jts = createEmpty(factory, geometryType);
-		} else if (Geometry.POINT.equals(geometryType)) {
-			jts = factory.createPoint(convertCoordinates(geometry)[0]);
-		} else if (Geometry.LINEAR_RING.equals(geometryType)) {
-			jts = factory.createLinearRing(convertCoordinates(geometry));
-		} else if (Geometry.LINE_STRING.equals(geometryType)) {
-			jts = factory.createLineString(convertCoordinates(geometry));
-		} else if (Geometry.POLYGON.equals(geometryType)) {
-			Geometry[] geometries = geometry.getGeometries();
-			if (null != geometries && geometries.length > 0) {
-				LinearRing exteriorRing = (LinearRing) toInternal(geometries[0]);
-				LinearRing[] interiorRings = new LinearRing[geometries.length - 1];
-				for (int i = 0; i < interiorRings.length; i++) {
-					interiorRings[i] = (LinearRing) toInternal(geometries[i + 1]);
-				}
-				jts = factory.createPolygon(exteriorRing, interiorRings);
-			} else {
-				jts = factory.createPolygon(null, null);
-			}
-		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
-			Point[] points = new Point[geometry.getGeometries().length];
-			jts = factory.createMultiPoint((Point[]) convertGeometries(geometry, points));
-		} else if (Geometry.MULTI_LINE_STRING.equals(geometryType)) {
-			LineString[] lineStrings = new LineString[geometry.getGeometries().length];
-			jts = factory.createMultiLineString((LineString[]) convertGeometries(geometry, lineStrings));
-		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
-			Polygon[] polygons = new Polygon[geometry.getGeometries().length];
-			jts = factory.createMultiPolygon((Polygon[]) convertGeometries(geometry, polygons));
-		} else {
-			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometryType);
-		}
-
-		return jts;
-	}
-
-	// -------------------------------------------------------------------------
-	// Private functions converting from JTS to DTO:
-	// -------------------------------------------------------------------------
-
-	private com.vividsolutions.jts.geom.Geometry createEmpty(GeometryFactory factory, String geometryType)
-			throws GeomajasException {
-		if (Geometry.POINT.equals(geometryType)) {
-			return new Point(null, factory); // do not use GeometryFactory.createPoint(null,...) as that returns null
-		} else if (Geometry.LINEAR_RING.equals(geometryType)) {
-			return factory.createLinearRing((com.vividsolutions.jts.geom.Coordinate[]) null);
-		} else if (Geometry.LINE_STRING.equals(geometryType)) {
-			return factory.createLineString((com.vividsolutions.jts.geom.Coordinate[]) null);
-		} else if (Geometry.POLYGON.equals(geometryType)) {
-			return factory.createPolygon(null, null);
-		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
-			return factory.createMultiPoint((Point[]) null);
-		} else if (Geometry.MULTI_LINE_STRING.equals(geometryType)) {
-			return factory.createMultiLineString((LineString[]) null);
-		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
-			return factory.createMultiPolygon((Polygon[]) null);
-		} else {
-			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometryType);
-		}
-	}
-	
-	private String getGeometryType(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
-		if (geometry instanceof Point) {
-			return Geometry.POINT;
-		} else if (geometry instanceof LinearRing) {
-			return Geometry.LINEAR_RING;
-		} else if (geometry instanceof LineString) {
-			return Geometry.LINE_STRING;
-		} else if (geometry instanceof Polygon) {
-			return Geometry.POLYGON;
-		} else if (geometry instanceof MultiPoint) {
-			return Geometry.MULTI_POINT;
-		} else if (geometry instanceof MultiLineString) {
-			return Geometry.MULTI_LINE_STRING;
-		} else if (geometry instanceof GeometryCollection) {
-			// Multi-polygon and other GeometryCollection implementations
-			return Geometry.MULTI_POLYGON;
-		} else {
-			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getClass().getName());
+		try {
+			return GeometryConverterService.toJts(geometry);
+		} catch (JtsConversionException jce) {
+			throw new GeomajasException(jce, ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getGeometryType());
 		}
 	}
 

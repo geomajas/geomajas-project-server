@@ -31,6 +31,10 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api-experimental</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-geometry-jts</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
