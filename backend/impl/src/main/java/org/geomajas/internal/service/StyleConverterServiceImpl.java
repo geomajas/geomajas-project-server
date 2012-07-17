@@ -428,7 +428,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		try {
 			return Float.parseFloat(str);
 		} catch (NumberFormatException nfe) {
-			throw new LayerException(nfe, ExceptionCode.SLD_PARSE_NUMBER, str, attribute);
+			throw new LayerException(nfe, ExceptionCode.SLD_PARSE_NUMBER_ATTRIBUTE, str, attribute);
 		}
 	}
 
