@@ -12,29 +12,32 @@
 package org.geomajas.internal.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.Assert;
 
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.service.WktService;
 import org.geomajas.internal.layer.tile.TileMetadataImpl;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.testdata.Country;
 import org.geomajas.testdata.rule.SecurityRule;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +56,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-import javax.swing.text.StyleContext;
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Tests for VectorLayerService.
@@ -62,28 +65,34 @@ import javax.swing.text.StyleContext;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml"})
+		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
+		"/org/geomajas/internal/service/countriesNotAllEditable.xml"})
 public class VectorLayerServiceTest {
 
 	private static final String LAYER_ID = "beans";
 	private static final String STRING_ATTR = "stringAttr";
+	private static final String LAYER_NOT_ALL_EDITABLE_ID = "layerCountriesNotAllEditable";
+	private static final String COUNTRY_CODE_ATTR = "country";
+	private static final String COUNTRY_NAME_ATTR = "name";
+
 	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
 	private VectorLayerService layerService;
 
 	@Autowired
-	@Qualifier("beans")
+	@Qualifier(LAYER_ID)
 	private BeanLayer beanLayer;
+
+	@Autowired
+	@Qualifier(LAYER_NOT_ALL_EDITABLE_ID)
+	private BeanLayer notAllEditableLayer;
 
 	@Autowired
 	private FilterService filterService;
 
 	@Autowired
 	private DtoConverterService converterService;
-
-	@Autowired
-	private SecurityManager securityManager;
 
 	@Autowired
 	private GeoService geoService;
@@ -189,7 +198,6 @@ public class VectorLayerServiceTest {
 		}
 		Assert.assertEquals(3, count);
 		Assert.assertEquals(7, check);
-
 	}
 
 	@Test
@@ -273,6 +281,76 @@ public class VectorLayerServiceTest {
 		tileMetadata.setStyleInfo(styleInfo);
 		tileMetadata.setPanOrigin(new org.geomajas.geometry.Coordinate(0, 0));
 		return tileMetadata;
+	}
+
+	@Test
+	@DirtiesContext
+	@SuppressWarnings("unchecked")
+	public void testUpdateEditable() throws Exception {
+		String newGeometryWkt = "MULTIPOLYGON (((0 -1,1 -1,1 0,0 0,0 -1)))";
+		Filter filter = filterService.createFidFilter(new String[]{"1"});
+		Crs crs = geoService.getCrs2(notAllEditableLayer.getLayerInfo().getCrs());
+		List<InternalFeature> oldFeatures = layerService.getFeatures(LAYER_NOT_ALL_EDITABLE_ID,
+				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+		Assert.assertEquals(1, oldFeatures.size());
+		InternalFeature feature = oldFeatures.get(0);
+		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
+		feature = feature.clone();
+		feature.getAttributes().put(COUNTRY_CODE_ATTR, new StringAttribute("newCode"));
+		feature.getAttributes().put(COUNTRY_NAME_ATTR, new StringAttribute("newName"));
+		feature.setGeometry(converterService.toInternal(WktService.toGeometry(newGeometryWkt)));
+		newFeatures.add(feature);
+		layerService.saveOrUpdate(LAYER_NOT_ALL_EDITABLE_ID, crs, oldFeatures, newFeatures);
+
+		Iterator<Country> iterator =
+				(Iterator<Country>) notAllEditableLayer.getElements(filterService.createTrueFilter(), 0, 0);
+		int count = 0;
+		while (iterator.hasNext()) {
+			Country country = iterator.next();
+			count++;
+			if (1 == country.getId()) {
+				assertThat(country.getCountry()).isEqualTo("CODE"); // not overwritten
+				assertThat(country.getName()).isEqualTo("newName"); // overwritten
+				assertThat(country.getGeometry()).isEqualTo(
+						"MULTIPOLYGON(((0 0,1 0,1 1,0 1,0 0)))"); // not overwritten
+			}
+		}
+		Assert.assertEquals(1, count);
+	}
+
+	@Test
+	@DirtiesContext
+	@SuppressWarnings("unchecked")
+	public void testCreateEditable() throws Exception {
+		String newGeometryWkt = "MULTIPOLYGON (((0 -1, 1 -1, 1 0, 0 0, 0 -1)))";
+		Crs crs = geoService.getCrs2(notAllEditableLayer.getLayerInfo().getCrs());
+		List<InternalFeature> oldFeatures = new ArrayList<InternalFeature>();
+		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
+		InternalFeature feature = converterService.toInternal(new Feature());
+		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+		feature.setAttributes(attributes);
+		feature.setId("2");
+		feature.setLayer(notAllEditableLayer);
+		// feature needs a geometry or exceptions all over
+		feature.setGeometry(converterService.toInternal(WktService.toGeometry(newGeometryWkt)));
+		attributes.put(COUNTRY_CODE_ATTR, new StringAttribute("newCode"));
+		attributes.put(COUNTRY_NAME_ATTR, new StringAttribute("newName"));
+		newFeatures.add(feature);
+		layerService.saveOrUpdate(LAYER_NOT_ALL_EDITABLE_ID, crs, oldFeatures, newFeatures);
+
+		Iterator<Country> iterator =
+				(Iterator<Country>) notAllEditableLayer.getElements(filterService.createTrueFilter(), 0, 0);
+		int count = 0;
+		while (iterator.hasNext()) {
+			Country country = iterator.next();
+			if (2 == country.getId()) {
+				assertThat(country.getCountry()).isEqualTo("newCode"); // written
+				assertThat(country.getName()).isEqualTo("newName"); // written
+				assertThat(country.getGeometry()).isEqualTo(newGeometryWkt); // written
+			}
+			count++;
+		}
+		Assert.assertEquals(2, count);
 	}
 
 	// @todo should also test the getObjects() method.

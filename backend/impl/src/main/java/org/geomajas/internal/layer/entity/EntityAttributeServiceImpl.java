@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.EditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.global.ExceptionCode;
@@ -382,13 +381,10 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			Map<String, AssociationAttributeInfo> associationMap = new HashMap<String, AssociationAttributeInfo>();
 			Map<String, PrimitiveAttributeInfo> primitiveMap = new HashMap<String, PrimitiveAttributeInfo>();
 			for (AbstractAttributeInfo attributeInfo : featureInfo.getAttributes()) {
-				if (attributeInfo instanceof EditableAttributeInfo &&
-						((EditableAttributeInfo) attributeInfo).isEditable()) {
-					if (attributeInfo instanceof AssociationAttributeInfo) {
-						associationMap.put(attributeInfo.getName(), (AssociationAttributeInfo) attributeInfo);
-					} else if (attributeInfo instanceof PrimitiveAttributeInfo) {
-						primitiveMap.put(attributeInfo.getName(), (PrimitiveAttributeInfo) attributeInfo);
-					}
+				if (attributeInfo instanceof AssociationAttributeInfo) {
+					associationMap.put(attributeInfo.getName(), (AssociationAttributeInfo) attributeInfo);
+				} else if (attributeInfo instanceof PrimitiveAttributeInfo) {
+					primitiveMap.put(attributeInfo.getName(), (PrimitiveAttributeInfo) attributeInfo);
 				}
 			}
 			for (Map.Entry<String, Attribute<?>> entry : attributes.entrySet()) {

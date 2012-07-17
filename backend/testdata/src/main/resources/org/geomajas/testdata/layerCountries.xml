@@ -67,7 +67,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="geometryType">
 			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
 				<property name="name" value="geometry" />
-				<property name="editable" value="false" />
+				<property name="editable" value="true" />
 			</bean>
 		</property>
 		<property name="attributes">

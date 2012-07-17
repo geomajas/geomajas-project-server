@@ -14,6 +14,9 @@ package org.geomajas.internal.layer.vector;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.EditableAttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
@@ -46,6 +49,8 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 		Object feature = context.get(PipelineCode.FEATURE_DATA_OBJECT_KEY);
 		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
+		Map<String, AbstractAttributeInfo> attributesMap = featureInfo.getAttributesMap();
 		FeatureModel featureModel = layer.getFeatureModel();
 		Boolean isCreateObject = context.getOptional(PipelineCode.IS_CREATE_KEY, Boolean.class);
 		boolean isCreate  = false;
@@ -59,27 +64,32 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 		if (null != requestAttributes) {
 			for (Map.Entry<String, Attribute> entry : requestAttributes.entrySet()) {
 				String key = entry.getKey();
-				if (securityContext.isAttributeWritable(layerId, newFeature, key)) {
+				AbstractAttributeInfo attributeInfo = attributesMap.get(key);
+				if (securityContext.isAttributeWritable(layerId, newFeature, key) && (isCreate ||
+						attributeInfo instanceof EditableAttributeInfo &&
+						((EditableAttributeInfo) attributeInfo).isEditable())) {
 					filteredAttributes.put(key, entry.getValue());
 				}
 			}
 		}
 		featureModel.setAttributes(feature, filteredAttributes);
 
-		if (null != newFeature.getGeometry()) {
-			featureModel.setGeometry(feature, newFeature.getGeometry());
-		} else {
-			if (isCreate) {
-				VectorLayerInfo layerInfo = layer.getLayerInfo();
-				if (layerInfo.isAllowEmptyGeometries()) {
-					// use empty geometry
-					LayerType layerType = layer.getLayerInfo().getLayerType();
-					com.vividsolutions.jts.geom.Geometry geometry = converterService.toInternal(
-							new Geometry(layerType.getGeometryType(), featureModel.getSrid(), -1));
-					newFeature.setGeometry(geometry);
-					featureModel.setGeometry(feature, geometry);
-				} else {
-					throw new LayerException(ExceptionCode.LAYER_EMPTY_GEOMETRY_NOT_ALLOWED, layerId);
+		if (featureInfo.getGeometryType().isEditable() || isCreate) {
+			if (null != newFeature.getGeometry()) {
+				featureModel.setGeometry(feature, newFeature.getGeometry());
+			} else {
+				if (isCreate) {
+					VectorLayerInfo layerInfo = layer.getLayerInfo();
+					if (layerInfo.isAllowEmptyGeometries()) {
+						// use empty geometry
+						LayerType layerType = layer.getLayerInfo().getLayerType();
+						com.vividsolutions.jts.geom.Geometry geometry = converterService.toInternal(
+								new Geometry(layerType.getGeometryType(), featureModel.getSrid(), -1));
+						newFeature.setGeometry(geometry);
+						featureModel.setGeometry(feature, geometry);
+					} else {
+						throw new LayerException(ExceptionCode.LAYER_EMPTY_GEOMETRY_NOT_ALLOWED, layerId);
+					}
 				}
 			}
 		}
