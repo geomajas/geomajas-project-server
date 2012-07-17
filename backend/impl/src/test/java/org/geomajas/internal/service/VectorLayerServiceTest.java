@@ -22,6 +22,8 @@ import junit.framework.Assert;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.service.WktService;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.TileMetadataImpl;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
@@ -336,21 +338,12 @@ public class VectorLayerServiceTest {
 		attributes.put(COUNTRY_CODE_ATTR, new StringAttribute("newCode"));
 		attributes.put(COUNTRY_NAME_ATTR, new StringAttribute("newName"));
 		newFeatures.add(feature);
-		layerService.saveOrUpdate(LAYER_NOT_ALL_EDITABLE_ID, crs, oldFeatures, newFeatures);
-
-		Iterator<Country> iterator =
-				(Iterator<Country>) notAllEditableLayer.getElements(filterService.createTrueFilter(), 0, 0);
-		int count = 0;
-		while (iterator.hasNext()) {
-			Country country = iterator.next();
-			if (2 == country.getId()) {
-				assertThat(country.getCountry()).isEqualTo("newCode"); // written
-				assertThat(country.getName()).isEqualTo("newName"); // written
-				assertThat(country.getGeometry()).isEqualTo(newGeometryWkt); // written
-			}
-			count++;
+		try {
+			layerService.saveOrUpdate(LAYER_NOT_ALL_EDITABLE_ID, crs, oldFeatures, newFeatures);
+			Assert.fail("Should throw an exception.");
+		} catch (GeomajasException ge) {
+			assertThat(ge.getExceptionCode()).isEqualTo(ExceptionCode.CANNOT_CREATE_FEATURE_WITHOUT_GEOMETRY);
 		}
-		Assert.assertEquals(2, count);
 	}
 
 	// @todo should also test the getObjects() method.

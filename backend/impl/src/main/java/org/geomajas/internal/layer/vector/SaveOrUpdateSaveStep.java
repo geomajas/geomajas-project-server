@@ -65,16 +65,16 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 			for (Map.Entry<String, Attribute> entry : requestAttributes.entrySet()) {
 				String key = entry.getKey();
 				AbstractAttributeInfo attributeInfo = attributesMap.get(key);
-				if (securityContext.isAttributeWritable(layerId, newFeature, key) && (isCreate ||
+				if (securityContext.isAttributeWritable(layerId, newFeature, key) &&
 						attributeInfo instanceof EditableAttributeInfo &&
-						((EditableAttributeInfo) attributeInfo).isEditable())) {
+						((EditableAttributeInfo) attributeInfo).isEditable()) {
 					filteredAttributes.put(key, entry.getValue());
 				}
 			}
 		}
 		featureModel.setAttributes(feature, filteredAttributes);
 
-		if (featureInfo.getGeometryType().isEditable() || isCreate) {
+		if (featureInfo.getGeometryType().isEditable()) {
 			if (null != newFeature.getGeometry()) {
 				featureModel.setGeometry(feature, newFeature.getGeometry());
 			} else {
@@ -91,6 +91,10 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 						throw new LayerException(ExceptionCode.LAYER_EMPTY_GEOMETRY_NOT_ALLOWED, layerId);
 					}
 				}
+			}
+		} else {
+			if (isCreate) {
+				throw new LayerException(ExceptionCode.CANNOT_CREATE_FEATURE_WITHOUT_GEOMETRY, layerId);
 			}
 		}
 

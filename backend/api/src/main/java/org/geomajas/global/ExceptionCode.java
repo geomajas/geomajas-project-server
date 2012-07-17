@@ -335,4 +335,11 @@ public interface ExceptionCode {
 	 * @since 1.11.1
 	 */
 	int SLD_PARSE_NUMBER_ATTRIBUTE = 91;
+	/**
+	 * Cannot create feature without geometry for layer ${0}. This can be caused by passing a null geometry,
+	 * security limitations or geometry attribute not having the editable capability.
+	 *
+	 * @since 1.11.1
+	 */
+	int CANNOT_CREATE_FEATURE_WITHOUT_GEOMETRY = 92;
 }

@@ -30,6 +30,8 @@ public class GeometryAttributeInfo extends AttributeBaseInfo implements Editable
 	 * <p/>
 	 * It does not give any indication of whether the logged user is allowed to edit the geometry, for that
 	 * purpose use the {@link org.geomajas.security.SecurityContext}.
+	 * <p/>
+	 * Note that when editable is false, it will be impossible to create new features.
 	 *
 	 * @return does the layer have to capability of writing this attribute?
 	 * @since 1.10.0
@@ -44,6 +46,8 @@ public class GeometryAttributeInfo extends AttributeBaseInfo implements Editable
 	 * <p/>
 	 * It does not give any indication of whether the logged user is allowed to edit the geometry, for that
 	 * purpose use the {@link org.geomajas.security.SecurityContext}.
+	 * <p/>
+	 * Note that when editable is false, it will be impossible to create new features.
 	 *
 	 * @param editable "editable" capability for attribute
 	 * @since 1.10.0
