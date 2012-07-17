@@ -23,7 +23,9 @@
 			var map; // The map object.
 			var editor; // Geometry editor. Holds the central editing service, the renderer, the styling information...
 			var service; // The central editing service.
-
+			var factory; // GeometryHandlerFactory for deleting rings
+			var deleteFromPoint; // HandlerRegistration for delete from point
+			
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapMain", "js-map-element");
 				editor = new org.geomajas.plugin.editing.GeometryEditor();
@@ -97,6 +99,76 @@
 					service.remove([index]);
 				}
 			}
+			
+			function registerDeleteHole() {
+				factory = new org.geomajas.plugin.editing.handler.GeometryHandlerFactory();
+				factory.setUpHandler(function(event) {
+					var index = factory.getIndex();
+					if (service.getIndexStateService().isMarkedForDeletion(index)) {
+						try {
+							service.remove([index]);
+						} catch (e) {
+							alert("Error occurred while deleting the inner ring: " + e.getMessage());
+						}
+					}
+				});
+				factory.setMouseOverHandler(function(event) {
+					var index = factory.getIndex();
+					var geometryType = service.getIndexService().getGeometryType(service.getGeometry(), index);
+					if (geometryType == "LinearRing") {
+						if (service.getIndexService().getValue(index) > 0) {
+							// Only inner rings must be marked. The outer shell can remain as-is.
+							service.getIndexStateService().markForDeletionBegin([index]);
+						}
+					}
+				});
+				factory.setMouseOutHandler(function(event) {
+					var index = factory.getIndex();
+					if (service.getIndexStateService().isMarkedForDeletion(index)) {
+						service.getIndexStateService().markForDeletionEnd([index]);
+					}
+				});
+				EditingHandlerRegistry().addGeometryHandlerFactory(factory);	
+				editor.getRenderer().redraw();
+			}
+
+			function unRegisterDeleteHole() {
+				if(factory) {
+					EditingHandlerRegistry().removeGeometryHandlerFactory(factory);
+					editor.getRenderer().redraw();
+				}
+			}
+
+			function registerDeleteHoleFromPoint() {
+				if(!deleteFromPoint) {
+					deleteFromPoint = service.getIndexStateService().addGeometryIndexSelectedHandler(function(event) {
+						var indices = event.getIndices();
+						if(indices.length == 1) {
+							var index = indices[0];
+							var type = service.getIndexService().getType(index);
+							if(type == "vertex") {
+								var values = [];
+								var i = 0;
+								while(index.getType() == "geometry") {
+									values[i++] = index.getValue();
+									index = index.getChild();
+								}
+								if(values[i-1] >= 1) {
+									index = service.getIndexService().create("geometry", values);
+									service.remove([index]);
+								}
+							}
+						}
+					});
+				}
+			}
+			
+			function unRegisterDeleteHoleFromPoint() {
+				if(deleteFromPoint) {
+					deleteFromPoint.removeHandler();
+					deleteFromPoint = null;
+				}
+			}
 
 			function log(txt) {
 				var el = document.getElementById("log");
@@ -123,7 +195,10 @@
 			<button onclick="drawLineString()">Draw LineString</button>
 			<button onclick="drawPolygon()">Draw Polygon</button>
 			<button onclick="insertHole()">Insert hole</button>
-			<button onclick="deletefirstHole()">Delete first hole</button>
+			<button onclick="registerDeleteHole()">Register hole deletion</button>
+			<button onclick="unRegisterDeleteHole()">Unregister hole deletion</button>
+			<button onclick="registerDeleteHoleFromPoint()">Register hole deletion from point</button>
+			<button onclick="unRegisterDeleteHoleFromPoint()">Unregister hole deletion from point</button>
 		</div>
 		
 		<table>

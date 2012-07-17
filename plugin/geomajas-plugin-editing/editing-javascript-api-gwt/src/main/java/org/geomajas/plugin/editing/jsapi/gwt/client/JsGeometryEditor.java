@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
 import org.geomajas.plugin.editing.gwt.client.snap.SnapRuleUtil;
+import org.geomajas.plugin.editing.jsapi.client.gfx.JsGeometryRenderer;
 import org.geomajas.plugin.editing.jsapi.client.merge.JsGeometryMergeService;
 import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
 import org.geomajas.plugin.editing.jsapi.client.split.JsGeometrySplitService;
@@ -46,6 +47,8 @@ public class JsGeometryEditor implements Exportable {
 	private JsGeometrySplitService splitService;
 
 	private JsGeometryMergeService mergeService;
+	
+	private JsGeometryRenderer renderer;
 
 	// Needed for GWT exporter...
 	public JsGeometryEditor() {
@@ -58,6 +61,7 @@ public class JsGeometryEditor implements Exportable {
 		editingService = new JsGeometryEditService(delegate.getEditService());
 		splitService = new JsGeometrySplitService(delegate.getEditService());
 		mergeService = new JsGeometryMergeService();
+		renderer = new JsGeometryRenderer(delegate.getRenderer());		
 	}
 
 	/**
@@ -78,6 +82,10 @@ public class JsGeometryEditor implements Exportable {
 
 	public MapImpl getMap() {
 		return map;
+	}
+	
+	public JsGeometryRenderer getRenderer() {
+		return renderer;
 	}
 
 	public JsGeometryEditService getService() {

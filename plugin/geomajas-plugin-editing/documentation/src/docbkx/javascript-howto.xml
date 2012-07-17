@@ -139,4 +139,83 @@ function drawPolygon() {
     }
 }</programlisting>
   </section>
+
+  <section>
+    <title>How to register a geometry handler</title>
+
+    <para>Geometry handlers are necessary to apply custom editing actions when
+    certain mouse events occur. The concept is similar to normal map
+    controllers, but geometry handlers add information about the geometry
+    index of the part of the geometry on which the mouse event occurs. To
+    register a geometry handler, the following steps have to be taken:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>Create an instance of
+        <code>org.geomajas.plugin.editing.handler.GeometryHandlerFactory
+        </code></para>
+      </listitem>
+
+      <listitem>
+        <para>Set mouse event functions for each of the mouse events that have
+        to be captured</para>
+      </listitem>
+
+      <listitem>
+        <para>Register the factory.</para>
+      </listitem>
+
+      <listitem>
+        <para>Redraw the edited geometry by calling
+        <code>editor.getRenderer().redraw()</code>.This is necessary to
+        activate the handler.</para>
+      </listitem>
+
+      <listitem>
+        <para>Deregister the factory and call redraw when finished</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The following code illustrates such registration in the case of a
+    custom handler for deletion of interior rings. </para>
+
+    <programlisting>function registerDeleteHole() {
+    factory = new org.geomajas.plugin.editing.handler.GeometryHandlerFactory(); // (1)
+    factory.setUpHandler(function(event) {   // (2)
+        var index = factory.getIndex();
+        if (service.getIndexStateService().isMarkedForDeletion(index)) {
+            try {
+                service.remove([index]);
+            } catch (e) {
+                alert("Error occurred while deleting the inner ring: " + e.getMessage());
+            }
+        }
+    });
+    factory.setMouseOverHandler(function(event) {  // (2)
+        var index = factory.getIndex();
+        var geometryType = service.getIndexService().getGeometryType(service.getGeometry(), index);
+        if (geometryType == "LinearRing") {
+            if (service.getIndexService().getValue(index) &gt; 0) {
+                // Only inner rings must be marked. The outer shell can remain as-is.
+                service.getIndexStateService().markForDeletionBegin([index]);
+            }
+        }
+    });
+    factory.setMouseOutHandler(function(event) {  // (2)
+        var index = factory.getIndex();
+        if (service.getIndexStateService().isMarkedForDeletion(index)) {
+            service.getIndexStateService().markForDeletionEnd([index]);
+        }
+    });
+    EditingHandlerRegistry().addGeometryHandlerFactory(factory);  // (3)  
+    editor.getRenderer().redraw();  // (4)  
+}
+
+function unRegisterDeleteHole() {
+    if(factory) {
+        EditingHandlerRegistry().removeGeometryHandlerFactory(factory); // (5)
+        editor.getRenderer().redraw();  // (5)
+    }
+}</programlisting>
+  </section>
 </chapter>
