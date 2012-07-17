@@ -25,14 +25,14 @@
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<context:annotation-config />
 
-	<bean id="beanB" class="org.geomajas.plugin.admin.service.LifeCycleBean">
+	<bean id="beanB" class="org.geomajas.plugin.runtimeconfig.service.LifeCycleBean">
 		<property name="myString" value="b" />
 		<property name="innerBean">
-			<bean id="innerbeanB" class="org.geomajas.plugin.admin.service.AutowiredBean" />
+			<bean id="innerbeanB" class="org.geomajas.plugin.runtimeconfig.service.AutowiredBean" />
 		</property>
 	</bean>
 	
-	<bean id="autoB" class="org.geomajas.plugin.admin.service.AutowiredBean">
+	<bean id="autoB" class="org.geomajas.plugin.runtimeconfig.service.AutowiredBean">
 		<property name="name" value="autoB" />
 	</bean>
 

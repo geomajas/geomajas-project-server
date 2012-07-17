@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +81,7 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 		rewireClassNames = new String[] { Rewirable.class.getName(), ConfigurationService.class.getName() };
 	}
 
-	public void configureBeanDefinition(String beanName, BeanDefinition beanDefinition) throws AdminException {
+	public void configureBeanDefinition(String beanName, BeanDefinition beanDefinition) throws RuntimeConfigException {
 		BeanDefinition oldDefinition = null;
 		if (getRegistry().containsBeanDefinition(beanName)) {
 			oldDefinition = getRegistry().getBeanDefinition(beanName);
@@ -95,14 +95,14 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 			rewireAll();
 		} catch (BeanDefinitionStoreException e) {
 			restoreContext(Collections.singletonMap(beanName, oldDefinition), null);
-			throw new AdminException(e, AdminException.INVALID_BEAN_DEFINITION, beanName);
+			throw new RuntimeConfigException(e, RuntimeConfigException.INVALID_BEAN_DEFINITION, beanName);
 		} catch (BeansException e) {
 			restoreContext(Collections.singletonMap(beanName, oldDefinition), null);
-			throw new AdminException(e, AdminException.BEAN_CREATION_FAILED, beanName);
+			throw new RuntimeConfigException(e, RuntimeConfigException.BEAN_CREATION_FAILED, beanName);
 		}
 	}
 
-	public void configureBeanDefinitions(List<BeanDefinitionHolder> holders) throws AdminException {
+	public void configureBeanDefinitions(List<BeanDefinitionHolder> holders) throws RuntimeConfigException {
 		Map<String, BeanDefinition> oldDefinitions = new HashMap<String, BeanDefinition>();
 		for (BeanDefinitionHolder holder : holders) {
 			if (getRegistry().containsBeanDefinition(holder.getBeanName())) {
@@ -121,10 +121,10 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 			rewireAll();
 		} catch (BeanDefinitionStoreException e) {
 			restoreContext(oldDefinitions, null);
-			throw new AdminException(e, AdminException.INVALID_BEAN_DEFINITION, concatNames(holders));
+			throw new RuntimeConfigException(e, RuntimeConfigException.INVALID_BEAN_DEFINITION, concatNames(holders));
 		} catch (BeansException e) {
 			restoreContext(oldDefinitions, null);
-			throw new AdminException(e, AdminException.BEAN_CREATION_FAILED, concatNames(holders));
+			throw new RuntimeConfigException(e, RuntimeConfigException.BEAN_CREATION_FAILED, concatNames(holders));
 		}
 	}
 
@@ -141,12 +141,12 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 		return builder.toString();
 	}
 
-	public void configureBeanDefinitions(String location) throws AdminException {
+	public void configureBeanDefinitions(String location) throws RuntimeConfigException {
 		List<String> names;
 		try {
 			names = extractBeanNames(location);
 		} catch (BeanDefinitionStoreException e) {
-			throw new AdminException(e, AdminException.INVALID_BEAN_DEFINITION_LOCATION, location);
+			throw new RuntimeConfigException(e, RuntimeConfigException.INVALID_BEAN_DEFINITION_LOCATION, location);
 		}
 		Map<String, BeanDefinition> oldDefinitions = new HashMap<String, BeanDefinition>();
 		List<String> newDefinitions = new ArrayList<String>();
@@ -169,14 +169,14 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 			rewireAll();
 		} catch (BeanDefinitionStoreException e) {
 			restoreContext(oldDefinitions, newDefinitions);
-			throw new AdminException(e, AdminException.INVALID_BEAN_DEFINITION_LOCATION, location);
+			throw new RuntimeConfigException(e, RuntimeConfigException.INVALID_BEAN_DEFINITION_LOCATION, location);
 		} catch (BeansException e) {
 			restoreContext(oldDefinitions, newDefinitions);
-			throw new AdminException(e, AdminException.BEAN_CREATION_FAILED_LOCATION, location);
+			throw new RuntimeConfigException(e, RuntimeConfigException.BEAN_CREATION_FAILED_LOCATION, location);
 		}
 	}
 
-	public void removeBeanDefinition(String beanName) throws AdminException {
+	public void removeBeanDefinition(String beanName) throws RuntimeConfigException {
 		try {
 			getRegistry().removeBeanDefinition(beanName);
 		} catch (NoSuchBeanDefinitionException e) {
@@ -222,15 +222,15 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 		}
 	}
 
-	private BeanDefinitionRegistry getRegistry() throws AdminException {
+	private BeanDefinitionRegistry getRegistry() throws RuntimeConfigException {
 		if (registry != null) {
 			return registry;
 		} else {
-			throw new AdminException(AdminException.CONFIGURATION_NOT_SUPPORTED);
+			throw new RuntimeConfigException(RuntimeConfigException.CONFIGURATION_NOT_SUPPORTED);
 		}
 	}
 
-	private void restoreContext(Map<String, BeanDefinition> toAdd, List<String> toRemove) throws AdminException {
+	private void restoreContext(Map<String, BeanDefinition> toAdd, List<String> toRemove) throws RuntimeConfigException {
 		try {
 			for (String name : toAdd.keySet()) {
 				BeanDefinition beanDefinition = toAdd.get(name);
@@ -254,7 +254,7 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 					((ConfigurableApplicationContext) applicationContext).refresh();
 				}
 			} catch (Exception e1) {
-				throw new AdminException(e, AdminException.CONTEXT_RESTORE_FAILED);
+				throw new RuntimeConfigException(e, RuntimeConfigException.CONTEXT_RESTORE_FAILED);
 			}
 		}
 	}

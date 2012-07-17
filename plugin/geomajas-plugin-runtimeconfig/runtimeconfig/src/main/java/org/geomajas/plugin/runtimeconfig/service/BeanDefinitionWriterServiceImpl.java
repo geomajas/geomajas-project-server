@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -93,11 +93,11 @@ public class BeanDefinitionWriterServiceImpl implements BeanDefinitionWriterServ
 		this.baseResource = baseResource;
 	}
 
-	public void persist(String key, BeanDefinitionHolder beanDefinition) throws AdminException {
+	public void persist(String key, BeanDefinitionHolder beanDefinition) throws RuntimeConfigException {
 		persist(key, Collections.singletonList(beanDefinition));
 	}
 
-	public void persist(String key, List<BeanDefinitionHolder> beans) throws AdminException {
+	public void persist(String key, List<BeanDefinitionHolder> beans) throws RuntimeConfigException {
 		FileWriter fw;
 		try {
 			fw = new FileWriter(getBaseResource().createRelative(key + ".xml").getFile());
@@ -110,15 +110,15 @@ public class BeanDefinitionWriterServiceImpl implements BeanDefinitionWriterServ
 			fw.flush();
 			fw.close();
 		} catch (IOException e) {
-			throw new AdminException(e, AdminException.BEAN_PERSIST_FAILED, key);
+			throw new RuntimeConfigException(e, RuntimeConfigException.BEAN_PERSIST_FAILED, key);
 		}
 	}
 
-	public void delete(String key) throws AdminException {
+	public void delete(String key) throws RuntimeConfigException {
 		try {
 			getBaseResource().createRelative(key + ".xml").getFile().delete();
 		} catch (IOException e) {
-			throw new AdminException(e, AdminException.BEAN_DELETE_FAILED, key);
+			throw new RuntimeConfigException(e, RuntimeConfigException.BEAN_DELETE_FAILED, key);
 		}
 	}
 	

@@ -13,15 +13,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-admin-all</artifactId>
+		<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-admin-gwt-example-jar</artifactId>
+	<artifactId>geomajas-plugin-runtimeconfig-gwt-example-jar</artifactId>
 	<packaging>jar</packaging>
-	<name>admin GWT example code</name>
-	<description>admin GWT example application code</description>
+	<name>runtimeconfig GWT example code</name>
+	<description>runtimeconfig GWT example application code</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencyManagement>
@@ -55,7 +55,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-admin-gwt</artifactId>
+			<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->

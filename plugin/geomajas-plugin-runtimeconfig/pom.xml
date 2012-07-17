@@ -19,16 +19,16 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-admin-all</artifactId>
+	<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>admin plug-in parent</name>
 	<description>admin plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-admin/geomajas-plugin-admin-all</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-admin/geomajas-plugin-admin-all</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-admin/geomajas-plugin-admin-all</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig/geomajas-plugin-runtimeconfig-all</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig/geomajas-plugin-runtimeconfig-all</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-runtimeconfig/geomajas-plugin-runtimeconfig-all</url>
 	</scm>
 
 	<developers>
@@ -107,28 +107,28 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-admin</artifactId>
+				<artifactId>geomajas-plugin-runtimeconfig</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-admin</artifactId>
+				<artifactId>geomajas-plugin-runtimeconfig</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-admin-gwt</artifactId>
+				<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-admin-gwt-example-jar</artifactId>
+				<artifactId>geomajas-plugin-runtimeconfig-gwt-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-admin-puregwt</artifactId>
+				<artifactId>geomajas-plugin-runtimeconfig-puregwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -141,11 +141,11 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>admin</module>
-		<module>admin-gwt</module>
-		<module>admin-puregwt</module>
-		<module>admin-gwt-example-jar</module>
-		<module>admin-gwt-example</module>
+		<module>runtimeconfig</module>
+		<module>runtimeconfig-gwt</module>
+		<module>runtimeconfig-puregwt</module>
+		<module>runtimeconfig-gwt-example-jar</module>
+		<module>runtimeconfig-gwt-example</module>
 	</modules>
 
 	<profiles>

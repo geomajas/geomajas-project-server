@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
@@ -29,16 +29,16 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.constraints.Null;
 
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionHolderInfo;
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionInfo;
-import org.geomajas.plugin.admin.dto.bean.BeanMetadataElementInfo;
-import org.geomajas.plugin.admin.dto.bean.BeanReferenceInfo;
-import org.geomajas.plugin.admin.dto.bean.GenericBeanDefinitionInfo;
-import org.geomajas.plugin.admin.dto.bean.ManagedListInfo;
-import org.geomajas.plugin.admin.dto.bean.ManagedMapInfo;
-import org.geomajas.plugin.admin.dto.bean.ManagedSetInfo;
-import org.geomajas.plugin.admin.dto.bean.ObjectBeanDefinitionInfo;
-import org.geomajas.plugin.admin.dto.bean.TypedStringInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionHolderInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanMetadataElementInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanReferenceInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.GenericBeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.ManagedListInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.ManagedMapInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.ManagedSetInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.ObjectBeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.TypedStringInfo;
 import org.springframework.beans.BeanMetadataElement;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.MutablePropertyValues;

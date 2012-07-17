@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.admin;
 
 import java.util.Map;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.admin.command.dto.ListBeansOfTypeRequest;
-import org.geomajas.plugin.admin.command.dto.ListBeansOfTypeResponse;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService;
+import org.geomajas.plugin.runtimeconfig.command.dto.ListBeansOfTypeRequest;
+import org.geomajas.plugin.runtimeconfig.command.dto.ListBeansOfTypeResponse;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;

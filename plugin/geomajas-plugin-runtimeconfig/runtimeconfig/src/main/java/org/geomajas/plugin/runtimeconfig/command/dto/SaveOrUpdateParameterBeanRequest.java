@@ -8,17 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.dto;
+package org.geomajas.plugin.runtimeconfig.command.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.configuration.IsInfo;
-import org.geomajas.plugin.admin.dto.parameter.ListParameterDto;
-import org.geomajas.plugin.admin.dto.parameter.ObjectParameterDto;
-import org.geomajas.plugin.admin.dto.parameter.ParameterDto;
-import org.geomajas.plugin.admin.dto.parameter.StringParameterDto;
+import org.geomajas.plugin.runtimeconfig.dto.parameter.ListParameterDto;
+import org.geomajas.plugin.runtimeconfig.dto.parameter.ObjectParameterDto;
+import org.geomajas.plugin.runtimeconfig.dto.parameter.ParameterDto;
+import org.geomajas.plugin.runtimeconfig.dto.parameter.StringParameterDto;
 
 /**
  * Request object for {@link org.geomajas.configurator.command.configurator.SaveOrUpdateBeanConfigurationCommand}.
@@ -27,7 +27,7 @@ import org.geomajas.plugin.admin.dto.parameter.StringParameterDto;
  */
 public class SaveOrUpdateParameterBeanRequest implements CommandRequest {
 
-	public static final  String COMMAND = "admin.SaveOrUpdateParameterBean";
+	public static final  String COMMAND = "runtimeconfig.SaveOrUpdateParameterBean";
 
 	private static final long serialVersionUID = 100L;
 

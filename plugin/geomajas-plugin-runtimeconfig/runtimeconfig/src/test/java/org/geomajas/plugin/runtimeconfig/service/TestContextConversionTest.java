@@ -1,4 +1,4 @@
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +7,8 @@ import junit.framework.Assert;
 
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService.NamedObject;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService.NamedObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class TestContextConversionTest {
 	ContextConfiguratorService configuratorService;
 
 	@Test
-	public void testIntrospectionAndConversion() throws AdminException {
+	public void testIntrospectionAndConversion() throws RuntimeConfigException {
 		NamedObject info1 = new NamedObjectInfo(beansLayerInfo, "beansInfo");
 		NamedObject info2 = new NamedObjectInfo(beansLayer, "beans");
 		List<BeanDefinitionHolder> defs = converterService.createBeanDefinitionsByIntrospection(Arrays.asList(info1,
@@ -47,7 +47,7 @@ public class TestContextConversionTest {
 		try {
 			configuratorService.configureBeanDefinition(defs.get(1).getBeanName(), defs.get(1).getBeanDefinition());
 			Assert.fail("Expected exception for bean layer introspection (not a javabean)");
-		} catch (AdminException e) {
+		} catch (RuntimeConfigException e) {
 		}
 	}
 

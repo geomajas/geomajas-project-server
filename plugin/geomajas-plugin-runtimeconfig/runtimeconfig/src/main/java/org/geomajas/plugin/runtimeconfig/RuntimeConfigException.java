@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin;
+package org.geomajas.plugin.runtimeconfig;
 
 import org.geomajas.global.GeomajasException;
 
@@ -18,7 +18,7 @@ import org.geomajas.global.GeomajasException;
  * @author Jan De Moerloose
  * 
  */
-public class AdminException extends GeomajasException {
+public class RuntimeConfigException extends GeomajasException {
 
 	private static final long serialVersionUID = 100L;
 
@@ -47,7 +47,7 @@ public class AdminException extends GeomajasException {
 	 * @param exceptionCode code which points to the message
 	 * @param parameters possible extra parameters
 	 */
-	public AdminException(Throwable ex, int exceptionCode, Object... parameters) {
+	public RuntimeConfigException(Throwable ex, int exceptionCode, Object... parameters) {
 		super(ex, exceptionCode, parameters);
 	}
 
@@ -57,13 +57,13 @@ public class AdminException extends GeomajasException {
 	 * @param exceptionCode code which points to the message
 	 * @param parameters possible extra parameters
 	 */
-	public AdminException(int exceptionCode, Object... parameters) {
+	public RuntimeConfigException(int exceptionCode, Object... parameters) {
 		super(exceptionCode, parameters);
 	}
 
 	@Override
 	public String getResourceBundleName() {
-		return "org.geomajas.plugin.admin.AdminException";
+		return "org.geomajas.plugin.runtimeconfig.RuntimeConfigException";
 	}
 
 }

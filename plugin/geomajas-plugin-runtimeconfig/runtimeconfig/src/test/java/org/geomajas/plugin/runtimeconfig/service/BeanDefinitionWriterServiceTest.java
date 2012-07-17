@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -38,7 +38,7 @@ public class BeanDefinitionWriterServiceTest {
 	ConfigurableApplicationContext context;
 
 	@Test
-	public void testWriteAndBack() throws NoSuchBeanDefinitionException, AdminException, IllegalStateException,
+	public void testWriteAndBack() throws NoSuchBeanDefinitionException, RuntimeConfigException, IllegalStateException,
 			IOException {
 		BeanDefinitionWriterServiceImpl service = new BeanDefinitionWriterServiceImpl();
 		String basePath = File.createTempFile("tmp", "tmp").getParentFile().getAbsolutePath() + File.separator;

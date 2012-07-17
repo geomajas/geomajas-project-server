@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.gwt.example.client.action;
+package org.geomajas.plugin.runtimeconfig.gwt.example.client.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,10 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanRequest;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanResponse;
-import org.geomajas.plugin.admin.service.factory.ClientVectorLayerBeanFactory;
-import org.geomajas.plugin.admin.service.factory.GeoToolsLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanRequest;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanResponse;
+import org.geomajas.plugin.runtimeconfig.service.factory.ClientVectorLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.service.factory.GeoToolsLayerBeanFactory;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
 
@@ -70,10 +70,10 @@ public class AddLayerShapeAction extends ToolbarAction {
 						SaveOrUpdateParameterBeanRequest request = new SaveOrUpdateParameterBeanRequest();
 						request.addStringParameter(ClientVectorLayerBeanFactory.CLASS_NAME,
 								"org.geomajas.configuration.client.ClientVectorLayerInfo");
-						request.addStringParameter(ClientVectorLayerBeanFactory.BEAN_NAME, "clientAdminCountries");
+						request.addStringParameter(ClientVectorLayerBeanFactory.BEAN_NAME, "clientRuntimeConfigCountries");
 						request.addStringParameter(ClientVectorLayerBeanFactory.LABEL, "Countries");
 						request.addStringParameter(ClientVectorLayerBeanFactory.SERVER_LAYER_ID, "adminCountries");
-						request.addStringParameter(ClientVectorLayerBeanFactory.MAP_ID, "mapAdmin");
+						request.addStringParameter(ClientVectorLayerBeanFactory.MAP_ID, "mapRuntimeConfig");
 						GwtCommand command = new GwtCommand(SaveOrUpdateParameterBeanRequest.COMMAND);
 						command.setCommandRequest(request);
 						GwtCommandDispatcher.getInstance().execute(command,

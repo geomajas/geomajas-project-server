@@ -8,16 +8,16 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionInfo;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService.NamedObject;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService.NamedObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class BeanDefinitionDtoConverterTest {
 	}
 
 	@Test
-	public void testIntrospection() throws AdminException {
+	public void testIntrospection() throws RuntimeConfigException {
 		final ConvertTestBean bean = new ConvertTestBean();
 		bean.setList(Arrays.asList(new ConvertTestBean()));
 		BeanDefinition definition = service.createBeanDefinitionByIntrospection(bean);

@@ -11,13 +11,13 @@
   -->
 
 <!-- @extract-start GwtModule, GWT module include admin -->
-<module rename-to="adminExample">
+<module rename-to="runtimeconfigExample">
 	<!-- @extract-skip-start -->
-	<inherits name="org.geomajas.plugin.admin.gwt.example.AdminExample"/>
+	<inherits name="org.geomajas.plugin.runtimeconfig.gwt.example.RuntimeConfigExample"/>
 	<!-- @extract-skip-end -->
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>
-	<inherits name="org.geomajas.plugin.admin.Admin"/>
+	<inherits name="org.geomajas.plugin.runtimeconfig.RuntimeConfig"/>
 	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
 
 	<!-- @extract-skip-start -->
@@ -31,7 +31,7 @@
 	<set-property name="user.agent" value="gecko1_8" />
 	<!-- @extract-skip-end -->
 
-	<entry-point class="org.geomajas.plugin.admin.gwt.example.client.AdminExampleStandalone"/>
+	<entry-point class="org.geomajas.plugin.runtimeconfig.gwt.example.client.RuntimeConfigExampleStandalone"/>
 	
 	<source path="client" />
 	<source path="server/command/dto" />

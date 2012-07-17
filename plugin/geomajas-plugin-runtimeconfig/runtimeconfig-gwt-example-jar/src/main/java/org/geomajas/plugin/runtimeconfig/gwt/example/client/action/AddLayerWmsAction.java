@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.gwt.example.client.action;
+package org.geomajas.plugin.runtimeconfig.gwt.example.client.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +21,10 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanRequest;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanResponse;
-import org.geomajas.plugin.admin.service.factory.ClientRasterLayerBeanFactory;
-import org.geomajas.plugin.admin.service.factory.WmsLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanRequest;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanResponse;
+import org.geomajas.plugin.runtimeconfig.service.factory.ClientRasterLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
 
@@ -72,7 +72,7 @@ public class AddLayerWmsAction extends ToolbarAction {
 						request.addStringParameter(ClientRasterLayerBeanFactory.BEAN_NAME, "clientWmsLayer");
 						request.addStringParameter(ClientRasterLayerBeanFactory.LABEL, "WMS");
 						request.addStringParameter(ClientRasterLayerBeanFactory.SERVER_LAYER_ID, "wmsLayer");
-						request.addStringParameter(ClientRasterLayerBeanFactory.MAP_ID, "mapAdmin");
+						request.addStringParameter(ClientRasterLayerBeanFactory.MAP_ID, "mapRuntimeConfig");
 						GwtCommand command = new GwtCommand(SaveOrUpdateParameterBeanRequest.COMMAND);
 						command.setCommandRequest(request);
 						GwtCommandDispatcher.getInstance().execute(command,

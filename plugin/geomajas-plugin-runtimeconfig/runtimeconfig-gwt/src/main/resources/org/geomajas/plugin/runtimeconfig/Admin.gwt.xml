@@ -17,6 +17,6 @@
 	<source path="command/dto" />
 	<source path="dto" />
 
-	<entry-point class='org.geomajas.plugin.admin.client.AdminEntryPoint'/>
+	<entry-point class='org.geomajas.plugin.runtimeconfig.client.RuntimeConfigEntryPoint'/>
 
 </module>

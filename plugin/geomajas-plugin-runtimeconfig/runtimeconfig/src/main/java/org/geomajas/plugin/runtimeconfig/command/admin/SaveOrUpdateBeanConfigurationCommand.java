@@ -8,23 +8,23 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.admin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateBeanConfigurationRequest;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateBeanConfigurationResponse;
-import org.geomajas.plugin.admin.dto.BeanConfigurationInfo;
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionHolderInfo;
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionInfo;
-import org.geomajas.plugin.admin.dto.bean.ObjectBeanDefinitionInfo;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService.NamedObject;
-import org.geomajas.plugin.admin.service.BeanDefinitionWriterService;
-import org.geomajas.plugin.admin.service.ContextConfiguratorService;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateBeanConfigurationRequest;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateBeanConfigurationResponse;
+import org.geomajas.plugin.runtimeconfig.dto.BeanConfigurationInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionHolderInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.ObjectBeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService.NamedObject;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterService;
+import org.geomajas.plugin.runtimeconfig.service.ContextConfiguratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -73,7 +73,7 @@ public class SaveOrUpdateBeanConfigurationCommand implements
 
 	}
 
-	private void saveOrUpdateBean(String beanName, BeanDefinition beanDefinition) throws AdminException {
+	private void saveOrUpdateBean(String beanName, BeanDefinition beanDefinition) throws RuntimeConfigException {
 		configuratorService.configureBeanDefinition(beanName, beanDefinition);
 		writerService.persist(beanName, new BeanDefinitionHolder(beanDefinition, beanName));
 	}

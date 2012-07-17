@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.util.Map;
 
 import org.geomajas.configuration.RasterLayerInfo;
 
 /**
- * Base implementation of {@link org.geomajas.plugin.admin.service.BeanFactory;} for all
+ * Base implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory;} for all
  * {@link org.geomajas.layer.RasterLayer} beans.
  * 
  * @author Jan De Moerloose

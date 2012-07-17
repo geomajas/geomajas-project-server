@@ -21,13 +21,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<context:component-scan base-package="org.geomajas.plugin.admin.gwt.example"
+	<context:component-scan base-package="org.geomajas.plugin.runtimeconfig.gwt.example"
 							name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
 
-	<bean name="appAdmin" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean name="appRuntimeConfig" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="mapAdmin"/>
+				<ref bean="mapRuntimeConfig"/>
 			</list>
 		</property>
 	</bean>

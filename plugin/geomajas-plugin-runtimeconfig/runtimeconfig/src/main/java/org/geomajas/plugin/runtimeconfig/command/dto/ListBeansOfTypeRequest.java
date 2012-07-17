@@ -8,10 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.dto;
+package org.geomajas.plugin.runtimeconfig.command.dto;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.plugin.admin.dto.bean.BeanTypeInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanTypeInfo;
 
 /**
  * Request object for {@link org.geomajas.configurator.command.configurator.ListBeansOfTypeCommand}.

@@ -26,10 +26,10 @@
 	<context:annotation-config />
 
 	<bean id="contextConfiguratorService"
-		class="org.geomajas.plugin.admin.service.ContextConfiguratorServiceImpl">
+		class="org.geomajas.plugin.runtimeconfig.service.ContextConfiguratorServiceImpl">
 		<property name="rewireClassNames">
 			<list>
-				<value>org.geomajas.plugin.admin.service.TestRewirable</value>
+				<value>org.geomajas.plugin.runtimeconfig.service.TestRewirable</value>
 			</list>
 		</property>
 		<property name="RewireContextLocations">
@@ -39,7 +39,7 @@
 		</property>
 	</bean>
 
-	<bean id="testRewirable" class="org.geomajas.plugin.admin.service.TestRewirable">
+	<bean id="testRewirable" class="org.geomajas.plugin.runtimeconfig.service.TestRewirable">
 	</bean>
 	
 </beans>

@@ -13,24 +13,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-admin-all</artifactId>
+		<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-admin-gwt</artifactId>
+	<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>admin (GWT face)</name>
-	<description>admin (GWT face)</description>
+	<name>runtimeconfig (GWT face)</name>
+	<description>runtimeconfig (GWT face)</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-admin</artifactId>
+			<artifactId>geomajas-plugin-runtimeconfig</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-admin</artifactId>
+			<artifactId>geomajas-plugin-runtimeconfig</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 		

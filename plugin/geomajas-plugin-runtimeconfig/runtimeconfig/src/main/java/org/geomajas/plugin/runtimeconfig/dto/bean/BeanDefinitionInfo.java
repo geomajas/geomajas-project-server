@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.dto.bean;
+package org.geomajas.plugin.runtimeconfig.dto.bean;
 
 /**
  * Data transfer object for a Spring bean definition.

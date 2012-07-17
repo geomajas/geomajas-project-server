@@ -26,7 +26,7 @@
 	<context:annotation-config />
 
 	<bean id="postProcessor"
-		class="org.geomajas.plugin.admin.service.TestRewirablePostProcessor"></bean>
+		class="org.geomajas.plugin.runtimeconfig.service.TestRewirablePostProcessor"></bean>
 
 
 </beans>

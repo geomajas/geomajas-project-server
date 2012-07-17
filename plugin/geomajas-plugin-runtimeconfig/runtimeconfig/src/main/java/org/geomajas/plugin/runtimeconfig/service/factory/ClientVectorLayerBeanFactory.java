@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Default implementation of {@link org.geomajas.plugin.admin.service.BeanFactory} for {@link ClientVectorLayerInfo}
+ * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for {@link ClientVectorLayerInfo}
  * objects.
  * 
  * @author Jan De Moerloose

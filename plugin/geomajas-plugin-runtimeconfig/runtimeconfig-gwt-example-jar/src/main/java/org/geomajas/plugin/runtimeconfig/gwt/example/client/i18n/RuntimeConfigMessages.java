@@ -9,22 +9,21 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.admin.gwt.example.client;
+package org.geomajas.plugin.runtimeconfig.gwt.example.client.i18n;
 
-import org.geomajas.gwt.example.base.ExampleLayout;
-
-import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.i18n.client.Messages;
 
 /**
- * Entry point for admin example.
+ * Messages for the admin example panels.
  *
  * @author Jan De Moerloose
  */
-public class AdminExampleStandalone implements EntryPoint {
+public interface RuntimeConfigMessages extends Messages {
 
-	public void onModuleLoad() {
-		ExampleLayout exampleLayout = new ExampleLayout();
-		exampleLayout.buildUi();
-	}
+	String treeGroupPlugins();
+
+	String adminTitle();
+
+	String adminDescription();
 
 }

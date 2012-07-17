@@ -28,23 +28,23 @@
         http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<bean id="beanA" class="org.geomajas.plugin.admin.service.ConvertTestBean">
+	<bean id="beanA" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean">
 		<property name="primitive" value="a" />
 		<property name="otherPrimitive" value="12" />
 		<property name="testEnum" value="ENUM2" />
 		<property name="object">
-			<bean id="innerbeanA" class="org.geomajas.plugin.admin.service.ConvertTestBean" />
+			<bean id="innerbeanA" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean" />
 		</property>
 		<property name="list">
 			<list>
-				<bean id="innerbeanB" class="org.geomajas.plugin.admin.service.ConvertTestBean" />
+				<bean id="innerbeanB" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean" />
 				<ref bean="beanB" />
 			</list>
 		</property>
 
 		<property name="array">
 			<array>
-				<bean id="innerbeanC" class="org.geomajas.plugin.admin.service.ConvertTestBean" />
+				<bean id="innerbeanC" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean" />
 				<ref bean="beanB" />
 			</array>
 		</property>
@@ -55,7 +55,7 @@
 					<key>
 						<value>innerbeanA</value>
 					</key>
-					<bean id="innerbeanD" class="org.geomajas.plugin.admin.service.ConvertTestBean" />
+					<bean id="innerbeanD" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean" />
 				</entry>
 				<entry>
 					<key>
@@ -70,7 +70,7 @@
 			<map>
 				<entry>
 					<key>
-						<bean id="innerbeanF" class="org.geomajas.plugin.admin.service.ConvertTestBean" />
+						<bean id="innerbeanF" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean" />
 					</key>
 					<ref bean="beanB" />
 				</entry>
@@ -85,14 +85,14 @@
 
 		<property name="set">
 			<set>
-				<bean id="innerbeanE" class="org.geomajas.plugin.admin.service.ConvertTestBean" />
+				<bean id="innerbeanE" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean" />
 				<ref bean="beanB" />
 			</set>
 		</property>
 
 	</bean>
 
-	<bean id="beanB" class="org.geomajas.plugin.admin.service.ConvertTestBean">
+	<bean id="beanB" class="org.geomajas.plugin.runtimeconfig.service.ConvertTestBean">
 	</bean>
 
 </beans>

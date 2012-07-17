@@ -8,12 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.core.io.Resource;
@@ -33,33 +33,33 @@ public interface ContextConfiguratorService {
 	 * 
 	 * @param beanName the name of the bean
 	 * @param beanDefinition the bean definition
-	 * @throws AdminException oops
+	 * @throws RuntimeConfigException oops
 	 */
-	void configureBeanDefinition(String beanName, BeanDefinition beanDefinition) throws AdminException;
+	void configureBeanDefinition(String beanName, BeanDefinition beanDefinition) throws RuntimeConfigException;
 
 	/**
 	 * Configure a list of beans by adding the bean definitions and instantiating the beans if they are singletons.
 	 * 
 	 * @param holders list of bean holders
-	 * @throws AdminException oops
+	 * @throws RuntimeConfigException oops
 	 */
-	void configureBeanDefinitions(List<BeanDefinitionHolder> holders) throws AdminException;
+	void configureBeanDefinitions(List<BeanDefinitionHolder> holders) throws RuntimeConfigException;
 
 	/**
 	 * Configure all beans in the specified context location.
 	 * 
 	 * @param location location of context XML file.
-	 * @throws AdminException oops
+	 * @throws RuntimeConfigException oops
 	 */
-	void configureBeanDefinitions(String location) throws AdminException;
+	void configureBeanDefinitions(String location) throws RuntimeConfigException;
 
 	/**
 	 * Remove a bean definition from the application context.
 	 * 
 	 * @param beanName the name of the bean
-	 * @throws AdminException oops
+	 * @throws RuntimeConfigException oops
 	 */
-	void removeBeanDefinition(String beanName) throws AdminException;
+	void removeBeanDefinition(String beanName) throws RuntimeConfigException;
 
 	/**
 	 * Set the list of class names that support rewiring. Beans of these classes will be rewired when the context

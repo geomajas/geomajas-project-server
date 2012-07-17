@@ -18,11 +18,11 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>admin-documentation</artifactId>
+	<artifactId>runtimeconfig-documentation</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>admin documentation</name>
-	<description>admin documentation</description>
+	<name>runtimeconfig documentation</name>
+	<description>runtimeconfig documentation</description>
 
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

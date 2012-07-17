@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService.NamedObject;
-import org.geomajas.plugin.admin.service.BeanFactory;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService.NamedObject;
+import org.geomajas.plugin.runtimeconfig.service.BeanFactory;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -61,7 +61,7 @@ public abstract class BaseBeanFactory implements BeanFactory {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws AdminException {
+	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws RuntimeConfigException {
 		GenericBeanDefinition def = new GenericBeanDefinition();
 		def.setBeanClassName(className);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();

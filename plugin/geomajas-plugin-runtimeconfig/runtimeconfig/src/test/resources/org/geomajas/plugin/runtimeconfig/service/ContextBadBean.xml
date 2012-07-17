@@ -25,18 +25,18 @@
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 	<context:annotation-config />
 
-	<bean id="beanA" class="org.geomajas.plugin.admin.service.LifeCycleBean">
+	<bean id="beanA" class="org.geomajas.plugin.runtimeconfig.service.LifeCycleBean">
 		<property name="myString" value="a" />
 		<property name="innerBean">
-			<bean id="innerbeanA" class="org.geomajas.plugin.admin.service.AutowiredBean" />
+			<bean id="innerbeanA" class="org.geomajas.plugin.runtimeconfig.service.AutowiredBean" />
 		</property>
 	</bean>
 	
-	<bean id="autoA" class="org.geomajas.plugin.admin.service.AutowiredBean">
+	<bean id="autoA" class="org.geomajas.plugin.runtimeconfig.service.AutowiredBean">
 		<property name="name" value="autoA" />
 	</bean>
 
-	<bean id="beanB" class="org.geomajas.plugin.admin.service.LifeCycleBean">
+	<bean id="beanB" class="org.geomajas.plugin.runtimeconfig.service.LifeCycleBean">
 		<property name="missingString" value="b" />
 	</bean>
 	

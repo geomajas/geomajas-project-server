@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.awt.Color;
 import java.net.URL;
@@ -35,7 +35,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.geotools.GeoToolsLayer;
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.ResourceService;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -58,7 +58,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
- * Default implementation of {@link org.geomajas.plugin.admin.service.BeanFactory} for {@link GeoToolsLayer} objects.
+ * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for {@link GeoToolsLayer} objects.
  * 
  * @author Jan De Moerloose
  * 
@@ -101,14 +101,14 @@ public class GeoToolsLayerBeanFactory extends BaseVectorLayerBeanFactory {
 	}
 
 	@Override
-	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws AdminException {
+	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws RuntimeConfigException {
 		Resource resource = null;
 		if (checkString(LOCATION, parameters) != Priority.NONE) {
 			try {
 				resource = resourceService.find((String) parameters.get(LOCATION));
 				parameters.put(URL, resource.getURL().toExternalForm());
 			} catch (Exception e) {
-				throw new AdminException(AdminException.BAD_PARAMETER, LOCATION, e.getMessage());
+				throw new RuntimeConfigException(RuntimeConfigException.BAD_PARAMETER, LOCATION, e.getMessage());
 			}
 		}
 		if (checkClass(LAYER_INFO, VectorLayerInfo.class, parameters) == Priority.NONE) {
@@ -117,7 +117,7 @@ public class GeoToolsLayerBeanFactory extends BaseVectorLayerBeanFactory {
 				VectorLayerInfo info = generateDefaultInfo(resource.getURL());
 				parameters.put(LAYER_INFO, info);
 			} catch (Exception e) {
-				throw new AdminException(AdminException.BAD_PARAMETER, LOCATION, e.getMessage());
+				throw new RuntimeConfigException(RuntimeConfigException.BAD_PARAMETER, LOCATION, e.getMessage());
 			}
 		}
 		// add styles or replace them if they were passed to us

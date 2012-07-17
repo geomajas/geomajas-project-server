@@ -1,4 +1,4 @@
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class BeanFactoryServiceTest {
 	private BeanFactoryService beanFactoryService;
 
 	@Test
-	public void testCreateBeans() throws AdminException {
+	public void testCreateBeans() throws RuntimeConfigException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("test1", "value1");
 		params.put("test2", "value2");

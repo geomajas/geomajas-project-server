@@ -13,22 +13,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-admin-all</artifactId>
+		<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-admin-gwt-example</artifactId>
+	<artifactId>geomajas-plugin-runtimeconfig-gwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas GWT example</name>
-	<description>admin GWT example application</description>
+	<name>runtimeconfig GWT example</name>
+	<description>runtimeconfig GWT example application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-admin-gwt-example-jar</artifactId>
+			<artifactId>geomajas-plugin-runtimeconfig-gwt-example-jar</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->
@@ -106,7 +106,7 @@
 					<draftCompile>true</draftCompile>
 					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<module>org.geomajas.plugin.admin.gwt.example.AdminExampleStandalone</module>
+					<module>org.geomajas.plugin.runtimeconfig.gwt.example.RuntimeConfigExampleStandalone</module>
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.admin.dto.bean;
+package org.geomajas.plugin.runtimeconfig.dto.bean;
 
 import java.util.HashMap;
 

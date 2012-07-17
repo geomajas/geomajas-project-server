@@ -8,12 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.List;
 
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionInfo;
-import org.geomajas.plugin.admin.dto.bean.BeanMetadataElementInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanMetadataElementInfo;
 import org.springframework.beans.BeanMetadataElement;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;

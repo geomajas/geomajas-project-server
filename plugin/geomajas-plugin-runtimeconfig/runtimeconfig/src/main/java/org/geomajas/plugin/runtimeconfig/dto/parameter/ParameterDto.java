@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.dto.parameter;
+package org.geomajas.plugin.runtimeconfig.dto.parameter;
 
 import java.io.Serializable;
 

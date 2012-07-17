@@ -1,15 +1,15 @@
-package org.geomajas.plugin.admin.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.admin;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanRequest;
-import org.geomajas.plugin.admin.service.BeanFactory;
-import org.geomajas.plugin.admin.service.factory.ClientRasterLayerBeanFactory;
-import org.geomajas.plugin.admin.service.factory.ClientVectorLayerBeanFactory;
-import org.geomajas.plugin.admin.service.factory.WmsLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanRequest;
+import org.geomajas.plugin.runtimeconfig.service.BeanFactory;
+import org.geomajas.plugin.runtimeconfig.service.factory.ClientRasterLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.service.factory.ClientVectorLayerBeanFactory;
+import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
 import org.geomajas.security.SecurityManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -22,9 +22,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml","/org/geomajas/plugin/admin/command/admin/admin.xml",
-		"/org/geomajas/plugin/admin/command/admin/appAdmin.xml",
-		"/org/geomajas/plugin/admin/command/admin/mapAdmin.xml" })
+@ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml","/org/geomajas/plugin/admin/command/admin/runtimeconfig.xml",
+		"/org/geomajas/plugin/admin/command/admin/appRuntimeConfig.xml",
+		"/org/geomajas/plugin/admin/command/admin/mapRuntimeConfig.xml" })
 public class SaveOrUpdateBeanParameterCommandTest {
 
 	@Autowired
@@ -63,10 +63,10 @@ public class SaveOrUpdateBeanParameterCommandTest {
 		request = new SaveOrUpdateParameterBeanRequest();
 		request.addStringParameter(ClientVectorLayerBeanFactory.CLASS_NAME,
 				"org.geomajas.configuration.client.ClientVectorLayerInfo");
-		request.addStringParameter(ClientVectorLayerBeanFactory.BEAN_NAME, "clientAdminCountries");
+		request.addStringParameter(ClientVectorLayerBeanFactory.BEAN_NAME, "clientRuntimeConfigCountries");
 		request.addStringParameter(ClientVectorLayerBeanFactory.LABEL, "Countries");
 		request.addStringParameter(ClientVectorLayerBeanFactory.SERVER_LAYER_ID, "adminCountries");
-		request.addStringParameter(ClientVectorLayerBeanFactory.MAP_ID, "mapAdmin");
+		request.addStringParameter(ClientVectorLayerBeanFactory.MAP_ID, "mapRuntimeConfig");
 		response = commandDispatcher.execute(SaveOrUpdateParameterBeanRequest.COMMAND, request, null, null);
 		if (response.isError()) {
 			for (Throwable throwable : response.getErrors()) {
@@ -103,7 +103,7 @@ public class SaveOrUpdateBeanParameterCommandTest {
 		request.addStringParameter(ClientRasterLayerBeanFactory.BEAN_NAME, "clientWmsLayer");
 		request.addStringParameter(ClientRasterLayerBeanFactory.LABEL, "WMS");
 		request.addStringParameter(ClientRasterLayerBeanFactory.SERVER_LAYER_ID, "wmsLayer");
-		request.addStringParameter(ClientRasterLayerBeanFactory.MAP_ID, "mapAdmin");
+		request.addStringParameter(ClientRasterLayerBeanFactory.MAP_ID, "mapRuntimeConfig");
 		response = commandDispatcher.execute(SaveOrUpdateParameterBeanRequest.COMMAND, request, null, null);
 		if (response.isError()) {
 			for (Throwable throwable : response.getErrors()) {

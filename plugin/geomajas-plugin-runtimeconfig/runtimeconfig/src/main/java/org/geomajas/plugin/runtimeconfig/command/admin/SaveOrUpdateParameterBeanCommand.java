@@ -8,20 +8,20 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.admin;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanRequest;
-import org.geomajas.plugin.admin.command.dto.SaveOrUpdateParameterBeanResponse;
-import org.geomajas.plugin.admin.dto.parameter.ParameterDto;
-import org.geomajas.plugin.admin.service.BeanDefinitionWriterService;
-import org.geomajas.plugin.admin.service.BeanFactoryService;
-import org.geomajas.plugin.admin.service.ContextConfiguratorService;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanRequest;
+import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanResponse;
+import org.geomajas.plugin.runtimeconfig.dto.parameter.ParameterDto;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterService;
+import org.geomajas.plugin.runtimeconfig.service.BeanFactoryService;
+import org.geomajas.plugin.runtimeconfig.service.ContextConfiguratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.stereotype.Component;
@@ -59,7 +59,7 @@ public class SaveOrUpdateParameterBeanCommand implements
 		return new SaveOrUpdateParameterBeanResponse();
 	}
 
-	private void saveOrUpdateBean(List<BeanDefinitionHolder> holders) throws AdminException {
+	private void saveOrUpdateBean(List<BeanDefinitionHolder> holders) throws RuntimeConfigException {
 		if (holders.size() > 0) {
 			configuratorService.configureBeanDefinitions(holders);
 			// use first bean name as persistence key

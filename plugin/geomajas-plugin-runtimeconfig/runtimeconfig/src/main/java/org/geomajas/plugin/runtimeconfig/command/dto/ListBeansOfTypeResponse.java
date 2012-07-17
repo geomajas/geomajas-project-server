@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.dto;
+package org.geomajas.plugin.runtimeconfig.command.dto;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionInfo;
 
 /**
  * Response object for the fetching of bean types. In reality, this response contains a list of

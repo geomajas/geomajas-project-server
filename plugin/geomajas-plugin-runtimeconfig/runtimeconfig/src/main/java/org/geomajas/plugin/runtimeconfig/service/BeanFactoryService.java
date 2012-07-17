@@ -8,12 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 
 /**
@@ -29,8 +29,8 @@ public interface BeanFactoryService {
 	 * 
 	 * @param parameters
 	 * @return
-	 * @throws AdminException
+	 * @throws RuntimeConfigException
 	 */
-	List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws AdminException;
+	List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws RuntimeConfigException;
 
 }

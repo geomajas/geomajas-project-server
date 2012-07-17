@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.dto;
+package org.geomajas.plugin.runtimeconfig.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.plugin.admin.dto.bean.BeanDefinitionHolderInfo;
+import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionHolderInfo;
 
 /**
  * Bean context data, by default serialized to XML.

@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import org.geomajas.layer.wms.WmsLayer;
 import org.springframework.stereotype.Component;
 
 
 /**
- * Default implementation of {@link org.geomajas.plugin.admin.service.BeanFactory} for {@link WmsLayer} objects.
+ * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for {@link WmsLayer} objects.
  * 
  * @author Jan De Moerloose
  * 

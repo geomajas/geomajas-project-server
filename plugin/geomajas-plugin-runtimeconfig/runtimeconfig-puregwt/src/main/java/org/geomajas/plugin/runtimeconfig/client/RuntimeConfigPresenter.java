@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.admin.client;
+package org.geomajas.plugin.runtimeconfig.client;
 
 
 /**
@@ -17,6 +17,6 @@ package org.geomajas.plugin.admin.client;
  *
  * @author Jan De Moerloose
  */
-public class AdminPresenter  {
+public class RuntimeConfigPresenter  {
 
 }

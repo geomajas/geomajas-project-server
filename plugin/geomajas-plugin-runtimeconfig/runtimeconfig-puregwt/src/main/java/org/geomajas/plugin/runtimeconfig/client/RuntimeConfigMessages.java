@@ -9,18 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.admin.client;
+package org.geomajas.plugin.runtimeconfig.client;
 
-import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.i18n.client.Messages;
 
 /**
- * {@link EntryPoint} for the admin plug-in.
- *
+ * Messages for the RuntimeConfigWidget.
+ * 
  * @author Jan De Moerloose
  */
-public class AdminEntryPoint implements EntryPoint {
-
-	public void onModuleLoad() {
-	}
-
+public interface RuntimeConfigMessages extends Messages {
 }

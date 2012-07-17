@@ -1,4 +1,4 @@
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,8 +10,8 @@ import junit.framework.Assert;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.geotools.GeoToolsLayer;
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.service.BeanDefinitionWriterServiceImpl;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class GeoToolsLayerBeanFactoryTest {
 	private GeoToolsLayerBeanFactory beanFactory;
 
 	@Test
-	public void test() throws AdminException, IOException {
+	public void test() throws RuntimeConfigException, IOException {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(GeoToolsLayerBeanFactory.BEAN_NAME, "testLayer");
 		params.put(GeoToolsLayerBeanFactory.CLASS_NAME, GeoToolsLayer.class);

@@ -26,17 +26,17 @@
 	<context:annotation-config />
 
 	<bean id="test1"
-		class="org.geomajas.plugin.admin.service.BeanFactoryServiceTest.TestBeanFactory">
+		class="org.geomajas.plugin.runtimeconfig.service.BeanFactoryServiceTest.TestBeanFactory">
 		<property name="priority" value="NONE"/>
 	</bean>
 
 	<bean id="test2"
-		class="org.geomajas.plugin.admin.service.BeanFactoryServiceTest.TestBeanFactory">
+		class="org.geomajas.plugin.runtimeconfig.service.BeanFactoryServiceTest.TestBeanFactory">
 		<property name="priority" value="DEFAULT"/>
 	</bean>
 
 	<bean id="test3"
-		class="org.geomajas.plugin.admin.service.BeanFactoryServiceTest.TestBeanFactory">
+		class="org.geomajas.plugin.runtimeconfig.service.BeanFactoryServiceTest.TestBeanFactory">
 		<property name="priority" value="HIGH"/>
 	</bean>
 

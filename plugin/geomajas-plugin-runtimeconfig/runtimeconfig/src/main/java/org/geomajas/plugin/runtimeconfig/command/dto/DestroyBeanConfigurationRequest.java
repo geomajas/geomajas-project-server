@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.dto;
+package org.geomajas.plugin.runtimeconfig.command.dto;
 
 import java.util.List;
 

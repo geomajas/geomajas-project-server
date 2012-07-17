@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.admin.gwt.example.client;
+package org.geomajas.plugin.runtimeconfig.gwt.example.client;
 
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
@@ -17,9 +17,9 @@ import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
-import org.geomajas.plugin.admin.gwt.example.client.action.AddLayerShapeAction;
-import org.geomajas.plugin.admin.gwt.example.client.action.AddLayerWmsAction;
-import org.geomajas.plugin.admin.gwt.example.client.i18n.AdminMessages;
+import org.geomajas.plugin.runtimeconfig.gwt.example.client.action.AddLayerShapeAction;
+import org.geomajas.plugin.runtimeconfig.gwt.example.client.action.AddLayerWmsAction;
+import org.geomajas.plugin.runtimeconfig.gwt.example.client.i18n.RuntimeConfigMessages;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -29,15 +29,15 @@ import com.google.gwt.core.client.GWT;
  * 
  * @author Jan De Moerloose
  */
-public class AdminExample implements EntryPoint {
+public class RuntimeConfigExample implements EntryPoint {
 
-	public static final AdminMessages MESSAGES = GWT.create(AdminMessages.class);
+	public static final RuntimeConfigMessages MESSAGES = GWT.create(RuntimeConfigMessages.class);
 
 	public void onModuleLoad() {
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupPlugins(),
 				"[ISOMORPHIC]/geomajas/silk/plugin.png", "Plugins", "topLevel"));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.adminTitle(),
-				"[ISOMORPHIC]/geomajas/osgeo/admin.png", AdminPanel.TITLE, "Plugins", AdminPanel.FACTORY));
+				"[ISOMORPHIC]/geomajas/osgeo/runtimeconfig.png", RuntimeConfigPanel.TITLE, "Plugins", RuntimeConfigPanel.FACTORY));
 		ToolbarRegistry.put(AddLayerShapeAction.TOOL, new ToolCreator() {
 			
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {

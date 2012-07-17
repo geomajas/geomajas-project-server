@@ -11,7 +11,7 @@
 
 <module>
 	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
-	<inherits name="org.geomajas.plugin.admin.Admin"/>
+	<inherits name="org.geomajas.plugin.runtimeconfig.RuntimeConfig"/>
 
-    <entry-point class="org.geomajas.plugin.admin.gwt.example.client.AdminExample"/>
+    <entry-point class="org.geomajas.plugin.runtimeconfig.gwt.example.client.RuntimeConfigExample"/>
 </module>

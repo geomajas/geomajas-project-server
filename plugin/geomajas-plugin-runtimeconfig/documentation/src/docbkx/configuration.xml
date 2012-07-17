@@ -25,7 +25,7 @@
     <informalexample>
       <programlisting> &lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-admin-all&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-plugin-runtimeconfig-all&lt;/artifactId&gt;
     &lt;version&gt;1.0.0&lt;/version&gt;
     &lt;type&gt;pom&lt;/type&gt;
     &lt;scope&gt;import&lt;/scope&gt;
@@ -47,7 +47,7 @@
 
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-admin&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-plugin-runtimeconfig&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
 
@@ -59,7 +59,7 @@
 
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-admin-gwt&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-plugin-runtimeconfig-gwt&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
 

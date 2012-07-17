@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.admin;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.admin.command.dto.DestroyBeanConfigurationRequest;
-import org.geomajas.plugin.admin.command.dto.DestroyBeanConfigurationResponse;
-import org.geomajas.plugin.admin.service.BeanDefinitionWriterService;
-import org.geomajas.plugin.admin.service.ContextConfiguratorService;
+import org.geomajas.plugin.runtimeconfig.command.dto.DestroyBeanConfigurationRequest;
+import org.geomajas.plugin.runtimeconfig.command.dto.DestroyBeanConfigurationResponse;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterService;
+import org.geomajas.plugin.runtimeconfig.service.ContextConfiguratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

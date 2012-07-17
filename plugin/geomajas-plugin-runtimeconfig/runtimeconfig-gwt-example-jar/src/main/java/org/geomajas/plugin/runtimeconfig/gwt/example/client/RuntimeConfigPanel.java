@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.gwt.example.client;
+package org.geomajas.plugin.runtimeconfig.gwt.example.client;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.plugin.admin.gwt.example.client.i18n.AdminMessages;
+import org.geomajas.plugin.runtimeconfig.gwt.example.client.i18n.RuntimeConfigMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
@@ -26,16 +26,16 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  * 
  */
-public class AdminPanel extends SamplePanel {
+public class RuntimeConfigPanel extends SamplePanel {
 
-	public static final String TITLE = "Admininistration";
+	public static final String TITLE = "RuntimeConfiginistration";
 
-	public static final AdminMessages MESSAGES = GWT.create(AdminMessages.class);
+	public static final RuntimeConfigMessages MESSAGES = GWT.create(RuntimeConfigMessages.class);
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new AdminPanel();
+			return new RuntimeConfigPanel();
 		}
 	};
 
@@ -45,7 +45,7 @@ public class AdminPanel extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("mapAdmin", "appAdmin");
+		final MapWidget map = new MapWidget("mapRuntimeConfig", "appRuntimeConfig");
 		final Toolbar toolbar = new Toolbar(map);
 		layout.addMember(toolbar);
 		layout.addMember(map);
@@ -59,9 +59,9 @@ public class AdminPanel extends SamplePanel {
 
 	/** {@inheritDoc} */
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/plugin/geocoder/gwt/example/context/admin.xml",
-				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/appAdmin.xml",
-				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/mapAdmin.xml" };
+		return new String[] { "classpath:org/geomajas/plugin/geocoder/gwt/example/context/runtimeconfig.xml",
+				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/appRuntimeConfig.xml",
+				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/mapRuntimeConfig.xml" };
 	}
 
 	/** {@inheritDoc} */

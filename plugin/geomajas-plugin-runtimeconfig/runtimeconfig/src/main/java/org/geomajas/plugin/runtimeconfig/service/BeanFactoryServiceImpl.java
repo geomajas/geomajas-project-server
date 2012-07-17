@@ -8,15 +8,15 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service;
+package org.geomajas.plugin.runtimeconfig.service;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.service.BeanFactory.Priority;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.service.BeanFactory.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class BeanFactoryServiceImpl implements BeanFactoryService {
 	@Autowired(required = false)
 	private Map<String, BeanFactory> factories = new HashMap<String, BeanFactory>();
 
-	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws AdminException {
+	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws RuntimeConfigException {
 		Priority bestPriority = Priority.NONE;
 		BeanFactory bestFactory = null;
 		for (BeanFactory factory : factories.values()) {

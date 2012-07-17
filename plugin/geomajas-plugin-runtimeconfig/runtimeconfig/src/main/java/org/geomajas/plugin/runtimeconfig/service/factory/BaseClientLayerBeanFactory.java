@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.plugin.admin.AdminException;
-import org.geomajas.plugin.admin.service.BeanDefinitionDtoConverterService;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 
 /**
- * Base implementation of {@link org.geomajas.plugin.admin.service.BeanFactory} for all client layer beans.
+ * Base implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for all client layer beans.
  * 
  * @author Jan De Moerloose
  * 
@@ -56,7 +56,7 @@ public abstract class BaseClientLayerBeanFactory extends BaseBeanFactory {
 	}
 
 	@Override
-	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws AdminException {
+	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws RuntimeConfigException {
 		ClientLayerInfo clientLayerInfo = createBean();
 		clientLayerInfo.setId(getString(BEAN_NAME, parameters));
 		clientLayerInfo.setLabel(getString(LABEL, parameters));
@@ -68,7 +68,7 @@ public abstract class BaseClientLayerBeanFactory extends BaseBeanFactory {
 		if (checkString(MAP_ID, parameters) != Priority.NONE) {
 			String mapId = (String) parameters.get(MAP_ID);
 			if (!maps.containsKey(mapId)) {
-				throw new AdminException(AdminException.BAD_PARAMETER, MAP_ID, "No such map");
+				throw new RuntimeConfigException(RuntimeConfigException.BAD_PARAMETER, MAP_ID, "No such map");
 			} else {
 				maps.get(mapId).getLayers().add(clientLayerInfo);
 				BeanDefinitionHolder mapBean = new BeanDefinitionHolder(

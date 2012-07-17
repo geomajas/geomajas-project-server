@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.admin.service.factory;
+package org.geomajas.plugin.runtimeconfig.service.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,11 +17,11 @@ import java.util.Map;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.plugin.admin.AdminException;
+import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 
 /**
- * Base implementation of {@link org.geomajas.plugin.admin.service.BeanFactory} for all
+ * Base implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for all
  * {@link org.geomajas.layer.VectorLayer} beans.
  * 
  * @author Jan De Moerloose
@@ -52,7 +52,7 @@ public class BaseVectorLayerBeanFactory extends BaseBeanFactory {
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws AdminException {
+	public List<BeanDefinitionHolder> createBeans(Map<String, Object> parameters) throws RuntimeConfigException {
 		// we must have style info at this point !
 		if (checkCollection(STYLE_INFO, NamedStyleInfo.class, parameters) != Priority.NONE) {
 			Collection<NamedStyleInfo> styles = getCollection(STYLE_INFO, parameters);
@@ -70,7 +70,7 @@ public class BaseVectorLayerBeanFactory extends BaseBeanFactory {
 			bdh.addAll(super.createBeans(parameters));
 			return bdh;
 		} else {
-			throw new AdminException(AdminException.BAD_PARAMETER, "Missing style information for layer");
+			throw new RuntimeConfigException(RuntimeConfigException.BAD_PARAMETER, "Missing style information for layer");
 		}
 	}
 }
