@@ -27,7 +27,6 @@ import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.conversion.jts.GeometryConverterService;
 import org.geomajas.geometry.conversion.jts.JtsConversionException;
@@ -400,44 +399,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		} catch (JtsConversionException jce) {
 			throw new GeomajasException(jce, ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getGeometryType());
 		}
-	}
-
-	private Coordinate[] convertCoordinates(com.vividsolutions.jts.geom.Geometry geometry) {
-		Coordinate[] coordinates = new Coordinate[geometry.getCoordinates().length];
-		for (int i = 0; i < coordinates.length; i++) {
-			coordinates[i] = new Coordinate(geometry.getCoordinates()[i].x, geometry.getCoordinates()[i].y);
-		}
-		return coordinates;
-	}
-
-	private Geometry[] convertGeometries(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
-		Geometry[] geometries = new Geometry[geometry.getNumGeometries()];
-		for (int i = 0; i < geometries.length; i++) {
-			geometries[i] = toDto(geometry.getGeometryN(i));
-		}
-		return geometries;
-	}
-
-	// -------------------------------------------------------------------------
-	// Private functions converting from DTO to JTS:
-	// -------------------------------------------------------------------------
-
-	private com.vividsolutions.jts.geom.Coordinate[] convertCoordinates(Geometry geometry) {
-		com.vividsolutions.jts.geom.Coordinate[] coordinates = new com.vividsolutions.jts.geom.Coordinate[geometry
-				.getCoordinates().length];
-		for (int i = 0; i < coordinates.length; i++) {
-			coordinates[i] = new com.vividsolutions.jts.geom.Coordinate(geometry.getCoordinates()[i].getX(), geometry
-					.getCoordinates()[i].getY());
-		}
-		return coordinates;
-	}
-
-	private com.vividsolutions.jts.geom.Geometry[] convertGeometries(Geometry geometry,
-			com.vividsolutions.jts.geom.Geometry[] geometries) throws GeomajasException {
-		for (int i = 0; i < geometries.length; i++) {
-			geometries[i] = toInternal(geometry.getGeometries()[i]);
-		}
-		return geometries;
 	}
 
 	// -------------------------------------------------------------------------
