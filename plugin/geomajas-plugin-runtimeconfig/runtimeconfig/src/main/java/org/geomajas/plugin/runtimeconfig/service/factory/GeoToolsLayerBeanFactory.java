@@ -58,7 +58,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
- * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for {@link GeoToolsLayer} objects.
+ * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for
+ * {@link GeoToolsLayer} objects.
  * 
  * @author Jan De Moerloose
  * 

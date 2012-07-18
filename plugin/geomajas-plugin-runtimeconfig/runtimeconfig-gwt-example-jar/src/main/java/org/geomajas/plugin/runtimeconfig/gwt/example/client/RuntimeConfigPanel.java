@@ -59,7 +59,7 @@ public class RuntimeConfigPanel extends SamplePanel {
 
 	/** {@inheritDoc} */
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/plugin/geocoder/gwt/example/context/runtimeconfig.xml",
+		return new String[] { "classpath:org/geomajas/plugin/geocoder/gwt/example/context/runtimeConfig.xml",
 				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/appRuntimeConfig.xml",
 				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/mapRuntimeConfig.xml" };
 	}

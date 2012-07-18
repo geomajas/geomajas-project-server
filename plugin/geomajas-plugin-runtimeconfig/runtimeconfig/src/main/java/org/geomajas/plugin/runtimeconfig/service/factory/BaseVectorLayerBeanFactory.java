@@ -70,7 +70,8 @@ public class BaseVectorLayerBeanFactory extends BaseBeanFactory {
 			bdh.addAll(super.createBeans(parameters));
 			return bdh;
 		} else {
-			throw new RuntimeConfigException(RuntimeConfigException.BAD_PARAMETER, "Missing style information for layer");
+			throw new RuntimeConfigException(RuntimeConfigException.BAD_PARAMETER,
+					"Missing style information for layer");
 		}
 	}
 }

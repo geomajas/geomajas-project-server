@@ -17,8 +17,8 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.springframework.stereotype.Component;
 
 /**
- * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for {@link ClientRasterLayerInfo}
- * objects.
+ * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for
+ * {@link ClientRasterLayerInfo} objects.
  * 
  * @author Jan De Moerloose
  * 

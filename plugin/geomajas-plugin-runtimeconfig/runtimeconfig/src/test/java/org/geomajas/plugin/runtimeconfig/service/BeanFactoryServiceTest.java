@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/admin/service/TestBeanFactoryService.xml" })
+		"/org/geomajas/plugin/runtimeconfig/service/TestBeanFactoryService.xml" })
 public class BeanFactoryServiceTest {
 
 	@Autowired

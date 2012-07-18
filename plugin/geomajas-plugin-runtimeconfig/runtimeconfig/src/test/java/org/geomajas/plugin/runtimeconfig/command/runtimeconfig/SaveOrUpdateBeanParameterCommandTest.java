@@ -1,4 +1,4 @@
-package org.geomajas.plugin.runtimeconfig.command.admin;
+package org.geomajas.plugin.runtimeconfig.command.runtimeconfig;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
@@ -22,9 +22,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml","/org/geomajas/plugin/admin/command/admin/runtimeconfig.xml",
-		"/org/geomajas/plugin/admin/command/admin/appRuntimeConfig.xml",
-		"/org/geomajas/plugin/admin/command/admin/mapRuntimeConfig.xml" })
+@ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/runtimeconfig/command/runtimeconfig/runtimeConfig.xml",
+		"/org/geomajas/plugin/runtimeconfig/command/runtimeconfig/appRuntimeConfig.xml",
+		"/org/geomajas/plugin/runtimeconfig/command/runtimeconfig/mapRuntimeConfig.xml" })
 public class SaveOrUpdateBeanParameterCommandTest {
 
 	@Autowired

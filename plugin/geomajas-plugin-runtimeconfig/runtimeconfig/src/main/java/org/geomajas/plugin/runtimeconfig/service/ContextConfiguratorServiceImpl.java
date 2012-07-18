@@ -61,7 +61,7 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 
 	private static final String PROTOTYPE_PREFIX = "Proto";
 
-	private static final String REWIRE_CONFIG_XML_PATH = "org/geomajas/plugin/admin/service/rewireConfig.xml";
+	private static final String REWIRE_CONFIG_XML_PATH = "org/geomajas/plugin/runtimeconfig/service/rewireConfig.xml";
 
 	private final Logger log = LoggerFactory.getLogger(ContextConfiguratorServiceImpl.class);
 
@@ -230,7 +230,8 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 		}
 	}
 
-	private void restoreContext(Map<String, BeanDefinition> toAdd, List<String> toRemove) throws RuntimeConfigException {
+	private void restoreContext(Map<String, BeanDefinition> toAdd, List<String> toRemove)
+			throws RuntimeConfigException {
 		try {
 			for (String name : toAdd.keySet()) {
 				BeanDefinition beanDefinition = toAdd.get(name);

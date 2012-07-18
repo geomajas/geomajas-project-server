@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for {@link ClientVectorLayerInfo}
- * objects.
+ * Default implementation of {@link org.geomajas.plugin.runtimeconfig.service.BeanFactory} for
+ * {@link ClientVectorLayerInfo} objects.
  * 
  * @author Jan De Moerloose
  * 

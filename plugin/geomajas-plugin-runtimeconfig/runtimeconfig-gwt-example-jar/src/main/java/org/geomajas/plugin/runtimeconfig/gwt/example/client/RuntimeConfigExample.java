@@ -37,7 +37,8 @@ public class RuntimeConfigExample implements EntryPoint {
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupPlugins(),
 				"[ISOMORPHIC]/geomajas/silk/plugin.png", "Plugins", "topLevel"));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.adminTitle(),
-				"[ISOMORPHIC]/geomajas/osgeo/runtimeconfig.png", RuntimeConfigPanel.TITLE, "Plugins", RuntimeConfigPanel.FACTORY));
+				"[ISOMORPHIC]/geomajas/osgeo/runtimeconfig.png", RuntimeConfigPanel.TITLE, "Plugins",
+				RuntimeConfigPanel.FACTORY));
 		ToolbarRegistry.put(AddLayerShapeAction.TOOL, new ToolCreator() {
 			
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {

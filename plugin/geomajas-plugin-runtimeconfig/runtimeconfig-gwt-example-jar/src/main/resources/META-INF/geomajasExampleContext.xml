@@ -19,8 +19,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<import resource="classpath:org/geomajas/plugin/admin/gwt/example/context/appRuntimeConfig.xml"/>
-	<import resource="classpath:org/geomajas/plugin/admin/gwt/example/context/runtimeconfig.xml"/>
-	<import resource="classpath:org/geomajas/plugin/admin/gwt/example/context/mapRuntimeConfig.xml"/>
+	<import resource="classpath:org/geomajas/plugin/runtimeconfig/gwt/example/context/appRuntimeConfig.xml"/>
+	<import resource="classpath:org/geomajas/plugin/runtimeconfig/gwt/example/context/runtimeConfig.xml"/>
+	<import resource="classpath:org/geomajas/plugin/runtimeconfig/gwt/example/context/mapRuntimeConfig.xml"/>
 
 </beans>

@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = MultiRefreshContextLoader.class, locations = {
 		"classpath:org/geomajas/spring/geomajasContext.xml", "classpath*:META-INF/geomajasContext.xml",
-		"/org/geomajas/plugin/admin/service/ContextA.xml" })
+		"/org/geomajas/plugin/runtimeconfig/service/ContextA.xml" })
 public class ContextConfiguratorServiceTest {
 
 	@Autowired
@@ -43,8 +43,8 @@ public class ContextConfiguratorServiceTest {
 		Assert.assertEquals(LifeCycleBean.LifeCycle.INITIALIZED, a.getLifeCycle());
 		Assert.assertFalse(context.containsBean("beanB"));
 		Assert.assertFalse(context.containsBean("beanC"));
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextB.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextC.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextB.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextC.xml");
 		LifeCycleBean b = (LifeCycleBean) context.getBean("beanB");
 		LifeCycleBean c = (LifeCycleBean) context.getBean("beanC");
 		Assert.assertEquals(LifeCycleBean.LifeCycle.INITIALIZED, a.getLifeCycle());
@@ -57,7 +57,7 @@ public class ContextConfiguratorServiceTest {
 		LifeCycleBean a = (LifeCycleBean) context.getBean("beanA");
 		Assert.assertEquals(LifeCycleBean.LifeCycle.INITIALIZED, a.getLifeCycle());
 		try {
-			service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextBadDefinition.xml");
+			service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextBadDefinition.xml");
 			Assert.fail("Expected admin exception for bad bean definition");
 		} catch (RuntimeConfigException e) {
 			Assert.assertEquals(RuntimeConfigException.INVALID_BEAN_DEFINITION_LOCATION, e.getExceptionCode());
@@ -72,7 +72,7 @@ public class ContextConfiguratorServiceTest {
 		LifeCycleBean a = (LifeCycleBean) context.getBean("beanA");
 		Assert.assertEquals(LifeCycleBean.LifeCycle.INITIALIZED, a.getLifeCycle());
 		try {
-			service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextBadBean.xml");
+			service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextBadBean.xml");
 			Assert.fail("Expected admin exception for bad bean definition");
 		} catch (RuntimeConfigException e) {
 			Assert.assertEquals(RuntimeConfigException.BEAN_CREATION_FAILED_LOCATION, e.getExceptionCode());
@@ -86,8 +86,8 @@ public class ContextConfiguratorServiceTest {
 
 	@Test
 	public void testBeanDestruction() throws RuntimeConfigException {
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextB.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextC.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextB.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextC.xml");
 		LifeCycleBean a = (LifeCycleBean) context.getBean("beanA");
 		LifeCycleBean b = (LifeCycleBean) context.getBean("beanB");
 		LifeCycleBean c = (LifeCycleBean) context.getBean("beanC");
@@ -107,8 +107,8 @@ public class ContextConfiguratorServiceTest {
 	public void testAutowiringParentToChild() throws RuntimeConfigException {
 		LifeCycleBean a = (LifeCycleBean) context.getBean("beanA");
 		Assert.assertEquals(LifeCycleBean.LifeCycle.INITIALIZED, a.getLifeCycle());
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextB.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextC.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextB.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextC.xml");
 		LifeCycleBean b = (LifeCycleBean) context.getBean("beanB");
 		LifeCycleBean c = (LifeCycleBean) context.getBean("beanC");
 		Assert.assertEquals(3, a.getBeans().size());
@@ -118,8 +118,8 @@ public class ContextConfiguratorServiceTest {
 
 	@Test
 	public void testRewiringChildToParent() throws RuntimeConfigException {
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextB.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextC.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextB.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextC.xml");
 		LifeCycleBean a = (LifeCycleBean) context.getBean("beanA");
 		LifeCycleBean b = (LifeCycleBean) context.getBean("beanB");
 		LifeCycleBean c = (LifeCycleBean) context.getBean("beanC");
@@ -137,8 +137,8 @@ public class ContextConfiguratorServiceTest {
 
 	@Test
 	public void testNoRewiringForNestedBeans() throws RuntimeConfigException {
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextB.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextC.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextB.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextC.xml");
 		LifeCycleBean a = (LifeCycleBean) context.getBean("beanA");
 		LifeCycleBean b = (LifeCycleBean) context.getBean("beanB");
 		LifeCycleBean c = (LifeCycleBean) context.getBean("beanC");
@@ -150,7 +150,7 @@ public class ContextConfiguratorServiceTest {
 	@Test
 	public void testAutowiringForNestedBeans() {
 		ClassPathXmlApplicationContext contextABC = new ClassPathXmlApplicationContext(
-				"/org/geomajas/plugin/admin/service/ContextABC.xml");
+				"/org/geomajas/plugin/runtimeconfig/service/ContextABC.xml");
 		LifeCycleBean a = (LifeCycleBean) contextABC.getBean("beanA");
 		LifeCycleBean b = (LifeCycleBean) contextABC.getBean("beanB");
 		LifeCycleBean c = (LifeCycleBean) contextABC.getBean("beanC");
@@ -162,12 +162,12 @@ public class ContextConfiguratorServiceTest {
 	@Test
 	public void testSetters() throws BeansException, RuntimeConfigException {
 		GenericApplicationContext context = new GenericApplicationContext(new ClassPathXmlApplicationContext(
-				"/org/geomajas/plugin/admin/service/ContextConfiguratorService.xml"));
+				"/org/geomajas/plugin/runtimeconfig/service/ContextConfiguratorService.xml"));
 		ContextConfiguratorService service = (ContextConfiguratorService) context.getBean("contextConfiguratorService");
 		// configure some beans
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextA.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextB.xml");
-		service.configureBeanDefinitions("/org/geomajas/plugin/admin/service/ContextC.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextA.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextB.xml");
+		service.configureBeanDefinitions("/org/geomajas/plugin/runtimeconfig/service/ContextC.xml");
 		// get test rewirable
 		TestRewirable testRewirable = (TestRewirable) context.getBean("testRewirable");
 		// check rewiring

@@ -14,7 +14,7 @@ package org.geomajas.plugin.runtimeconfig.client;
 import com.google.gwt.core.client.EntryPoint;
 
 /**
- * {@link EntryPoint} for the admin plug-in.
+ * {@link EntryPoint} for the runtimeconfig plug-in.
  *
  * @author Jan De Moerloose
  */

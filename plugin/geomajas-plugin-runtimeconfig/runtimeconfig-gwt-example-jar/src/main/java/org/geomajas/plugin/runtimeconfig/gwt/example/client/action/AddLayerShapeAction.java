@@ -70,7 +70,8 @@ public class AddLayerShapeAction extends ToolbarAction {
 						SaveOrUpdateParameterBeanRequest request = new SaveOrUpdateParameterBeanRequest();
 						request.addStringParameter(ClientVectorLayerBeanFactory.CLASS_NAME,
 								"org.geomajas.configuration.client.ClientVectorLayerInfo");
-						request.addStringParameter(ClientVectorLayerBeanFactory.BEAN_NAME, "clientRuntimeConfigCountries");
+						request.addStringParameter(ClientVectorLayerBeanFactory.BEAN_NAME,
+								"clientRuntimeConfigCountries");
 						request.addStringParameter(ClientVectorLayerBeanFactory.LABEL, "Countries");
 						request.addStringParameter(ClientVectorLayerBeanFactory.SERVER_LAYER_ID, "adminCountries");
 						request.addStringParameter(ClientVectorLayerBeanFactory.MAP_ID, "mapRuntimeConfig");
