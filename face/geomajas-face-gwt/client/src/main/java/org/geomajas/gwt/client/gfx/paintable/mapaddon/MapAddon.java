@@ -49,6 +49,8 @@ public abstract class MapAddon implements Paintable {
 	private int horizontalMargin;
 
 	private int verticalMargin;
+	
+	private boolean repaintOnMapViewChange;
 
 	// -------------------------------------------------------------------------
 	// Protected constructor:
@@ -233,4 +235,16 @@ public abstract class MapAddon implements Paintable {
 	public Coordinate getUpperLeftCorner() {
 		return upperLeftCorner;
 	}
+
+	
+	public boolean isRepaintOnMapViewChange() {
+		return repaintOnMapViewChange;
+	}
+
+	
+	public void setRepaintOnMapViewChange(boolean repaintOnMapViewChange) {
+		this.repaintOnMapViewChange = repaintOnMapViewChange;
+	}
+	
+	
 }

@@ -97,13 +97,14 @@ public class ScaleBar extends MapAddon {
 	 */
 	public ScaleBar(String id, MapWidget map) {
 		super(id, MAX_SIZE_IN_PIXELS, MARKER_HEIGHT + VERTICAL_PADDING * 2);
+		setRepaintOnMapViewChange(true);
 		this.map = map;
 	}
 
 	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		map.getVectorContext().drawGroup(group, this);
-
+		adjustScale(map.getMapModel().getMapView().getCurrentScale());
 		// Draw a dummy at 0,0 so that Internet Explorer knows where coordinate 0,0 is. If this is not drawn, the text
 		// will disappear, because the parent group will have coordinate 0,0 at the upper left corner of the union of
 		// all the rectangles that are drawn here.
@@ -193,7 +194,7 @@ public class ScaleBar extends MapAddon {
 	 * 
 	 * @param scale scale
 	 */
-	public void adjustScale(double scale) {
+	private void adjustScale(double scale) {
 		if (null == unitType) {
 			throw new IllegalStateException("Please initialize scalebar before using");
 		}
@@ -222,7 +223,6 @@ public class ScaleBar extends MapAddon {
 		rightMarker.getBounds().setY(getUpperLeftCorner().getY() + VERTICAL_PADDING);
 		distance.setPosition(new Coordinate(getUpperLeftCorner().getX() + HORIZONTAL_PADDING + 6,
 				getUpperLeftCorner().getY() + VERTICAL_PADDING));
-		updatePaintables();
 	}
 
 	// ----------------------------------------------------------

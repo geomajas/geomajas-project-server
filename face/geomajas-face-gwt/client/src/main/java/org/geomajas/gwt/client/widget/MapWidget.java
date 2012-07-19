@@ -547,8 +547,10 @@ public class MapWidget extends VLayout {
 	public void registerMapAddon(MapAddon addon) {
 		if (addon != null && !addons.containsKey(addon.getId())) {
 			addons.put(addon.getId(), addon);
+		}
+		if (graphics.isReady() && mapModelRenderer.isReadyToDraw()) {
 			addon.setMapSize(getWidth(), getHeight());
-			render(addon, RenderGroup.SCREEN, RenderStatus.ALL);
+			render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 			addon.onDraw();
 		}
 	}
@@ -688,7 +690,6 @@ public class MapWidget extends VLayout {
 			scalebar.setVerticalMargin(2);
 			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
 					graphics.getHeight() - 25));
-			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 			registerMapAddon(scalebar);
 		} else {
 			unregisterMapAddon(addons.get(scaleBarId));
@@ -1109,6 +1110,13 @@ public class MapWidget extends VLayout {
 			ClientMapInfo info = getMapModel().getMapInfo();
 			setNavigationAddonEnabled(info.isPanButtonsEnabled());
 			setScalebarEnabled(info.isScaleBarEnabled());
+			for (MapAddon addon : addons.values()) {
+				addon.setMapSize(getWidth(), getHeight());
+				render(addon, RenderGroup.SCREEN, RenderStatus.ALL);
+				if (graphics.isReady()) {
+					addon.onDraw();
+				}
+			}
 		}
 	}
 
@@ -1186,11 +1194,10 @@ public class MapWidget extends VLayout {
 		public void onMapViewChanged(MapViewChangedEvent event) {
 			viewPortKnown = true;
 			if (graphics.isReady() && mapModelRenderer.isReadyToDraw()) {
-				if (scaleBarEnabled) {
-					ScaleBar scalebar = (ScaleBar) addons.get("scalebar");
-					if (scalebar != null) {
-						scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
-						render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
+				for (String addonId : addons.keySet()) {
+					MapAddon addon = addons.get(addonId);
+					if (addon.isRepaintOnMapViewChange()) {
+						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 					}
 				}
 				if (event != null && event.isPanDragging()) {
