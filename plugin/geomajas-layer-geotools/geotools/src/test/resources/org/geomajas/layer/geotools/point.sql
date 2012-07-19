@@ -1,3 +1,5 @@
+DROP TABLE POINT IF EXISTS;
+DROP TABLE POINT_HATBOX IF EXISTS;
 CREATE TABLE POINT
 (
         ID integer identity primary key,

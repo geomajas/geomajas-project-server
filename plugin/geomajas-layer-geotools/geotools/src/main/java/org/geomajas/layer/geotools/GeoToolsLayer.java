@@ -35,6 +35,7 @@ import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -266,10 +267,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			if (null == super.getDataStore()) {
 				Map<String, Object> params = new HashMap<String, Object>();
 				if (null != url) {
-					params.put("url", url);
+					params.put(ShapefileDataStoreFactory.URLP.key, url);
 				}
 				if (null != dbtype) {
-					params.put("dbtype", dbtype);
+					params.put(JDBCDataStoreFactory.DBTYPE.key, dbtype);
 				}
 				if (null != parameters) {
 					for (Parameter parameter : parameters) {

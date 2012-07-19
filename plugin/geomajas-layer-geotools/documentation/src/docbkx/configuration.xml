@@ -330,6 +330,64 @@
     </section>
   </section>
 
+  <section>
+    <title>Non-typed feature ids</title>
+
+    <para>Geomajas always uses the id returned by the feature model. For
+    geotools layers, this is the same id as returned by the datastore and
+    therefore follows any conventions that geotools is imposing. For the
+    next-generation JDBC datastores (gt-jdbc-xxx), this means that the id is
+    <code>typed</code>, i.e. constructed as a combination of the type name
+    (table or view name) and the primary key, and separated with a dot:
+    <code>mytable.1</code>, <code>mytable.2</code>, etc.... </para>
+
+    <para>For first-generation JDBC datastores (gt-xxx), which support
+    non-typed fids, a special configuration parameter
+    <code>useTypedFids</code> has been added. This parameter defaults to true,
+    but can be set to false if one needs the primary key without prefixes as
+    fid:</para>
+
+    <programlisting>&lt;bean name="layerPointNonTyped" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
+    &lt;property name="layerInfo" ref="layerPointNonTypedInfo" /&gt;
+    &lt;property name="parameters"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="namespace" /&gt;
+                &lt;property name="value" value="postgis" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="dbtype" /&gt;
+                &lt;property name="value" value="postgis" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="database" /&gt;
+                &lt;property name="value" value="test" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="user" /&gt;
+                &lt;property name="value" value="postgres" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="passwd" /&gt;
+                &lt;property name="value" value="postgis" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="host" /&gt;
+                &lt;property name="value" value="localhost" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="port" /&gt;
+                &lt;property name="value" value="5432" /&gt;
+            &lt;/bean&gt;
+<emphasis role="bold">            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="useTypedFids" /&gt;
+                &lt;property name="value" value="false" /&gt;
+            &lt;/bean&gt;
+ </emphasis>       &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+  </section>
+
   <section id="shape">
     <title>Shape in memory layer</title>
 

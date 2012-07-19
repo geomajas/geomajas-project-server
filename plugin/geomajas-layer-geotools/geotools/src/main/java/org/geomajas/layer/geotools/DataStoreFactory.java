@@ -14,9 +14,14 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.jdbc.JDBCDataStore;
+import org.geotools.data.jdbc.fidmapper.DefaultFIDMapperFactory;
+import org.geotools.data.jdbc.fidmapper.FIDMapperFactory;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
@@ -25,8 +30,19 @@ import org.springframework.util.ResourceUtils;
  * A simple utility factory which creates a GeoTools data store from a parameter map.
  * 
  * @author Jan De Moerloose
+ * @since 1.10.0
  */
+@Api
 public final class DataStoreFactory {
+
+	/**
+	 * Boolean parameter that indicates that so-called typed feature ids should be used (feature id prefixed with
+	 * typename). Defaults to "true". Add this parameter with value "false" to the parameter map to let first generation
+	 * JDBC datastores generate non-typed fids.
+	 * @since 1.10.0
+	 */
+	@Api
+	public static final String USE_TYPED_FIDS = "useTypedFids";
 
 	/**
 	 * Protect construction.
@@ -42,16 +58,32 @@ public final class DataStoreFactory {
 	 * @throws IOException could not create data store
 	 */
 	public static DataStore create(Map<String, Object> parameters) throws IOException {
-		Object url = parameters.get("url");
+		Object url = parameters.get(ShapefileDataStoreFactory.URLP.key);
+		Logger log = LoggerFactory.getLogger(DataStoreFactory.class);
 		if (url instanceof String) {
-			parameters.put("url", ResourceUtils.getURL((String) url).toExternalForm());
+			parameters.put(ShapefileDataStoreFactory.URLP.key, ResourceUtils.getURL((String) url).toExternalForm());
 		}
 		DataStore store = DataStoreFinder.getDataStore(parameters);
+		Object typed = parameters.get(USE_TYPED_FIDS);
+		if (typed instanceof String) {
+			Boolean t = Boolean.valueOf((String) typed);
+			if (store instanceof JDBCDataStore) {
+				JDBCDataStore jdbcStore = (JDBCDataStore) store;
+				FIDMapperFactory fidMapperFactory = jdbcStore.getFIDMapperFactory();
+				if (fidMapperFactory instanceof DefaultFIDMapperFactory) {
+					((DefaultFIDMapperFactory) fidMapperFactory).setReturningTypedFIDMapper(t);
+				}
+			} else if (!t) {
+				if (store != null) {
+					log.warn("Non-typed FIDs are only supported by first-generation JDBC datastores, "
+							+ "using default fid format for datastore class " + store.getClass().getName());
+				}
+			}
+		}
 		if (null == store) {
 			StringBuilder availableStr = new StringBuilder();
 			StringBuilder missingStr = new StringBuilder();
 			Iterator<DataStoreFactorySpi> all = DataStoreFinder.getAllDataStores();
-			Logger log = LoggerFactory.getLogger(DataStoreFactory.class);
 			while (all.hasNext()) {
 				DataStoreFactorySpi factory = all.next();
 				if (!factory.isAvailable()) {
@@ -77,4 +109,5 @@ public final class DataStoreFactory {
 		}
 		return store;
 	}
+
 }
