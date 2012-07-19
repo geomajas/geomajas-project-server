@@ -20,8 +20,6 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon;
-import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
-import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
@@ -41,20 +39,26 @@ import com.smartgwt.client.types.VerticalAlignment;
  * This MapAddon does not allow center positioning. Also it takes in the whole width of the map, so setting the
  * horizontal alignment is of little use. By default, this MapAddon will be placed 20 pixels from the bottom of the map.
  * </p>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.8.0
  */
 @Api
-public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
+public class GoogleAddon extends MapAddon {
 
 	private static final String EPSG_900913 = "EPSG:900913";
+
 	private static final String EPSG_3857 = "EPSG:3857";
+
 	private static final String EPSG_4326 = "EPSG:4326";
-	
+
 	private static final double HALF_CIRCLE = 180.0;
+
 	private static final double MERCATOR_WIDTH = Math.PI * 6378137.0;
+
 	private static final int VERTICAL_MARGIN = 20;
+
+	private static final double LN2 = Math.log(2.0);
 
 	private final MapWidget map;
 
@@ -100,10 +104,11 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	@Deprecated
 	public GoogleAddon(String id, MapWidget map, MapType type, boolean showMap) {
 		super(id, 0, 0);
+		setRepaintOnMapViewChange(true);
 		this.map = map;
 		this.type = type;
 		this.showMap = showMap;
-		this.map.getMapModel().getMapView().addMapViewChangedHandler(this);
+		// this.map.getMapModel().getMapView().addMapViewChangedHandler(this);
 
 		// Default placement:
 		setVerticalAlignment(VerticalAlignment.BOTTOM);
@@ -114,22 +119,63 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
 	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		// assume google coordinates here
+		System.out.println("map view bounds :" + bounds);
+		int zoomLevel = calcZoomLevel(map.getMapModel().getMapView().getCurrentScale());
+		if (googleMap != null) {
+			String sourceCrs = map.getMapModel().getCrs();
+			if (isGoogleProjection(sourceCrs)) {
+				Bbox latLon = convertToLatLon(bounds);
+				fitGoogleMapBounds(googleMap, latLon.getCenterPoint(), zoomLevel);
+			} else {
+				// transform on server
+				TransformGeometryRequest request = new TransformGeometryRequest();
+				request.setBounds(new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(),
+						bounds.getHeight()));
+				request.setSourceCrs(map.getMapModel().getCrs());
+				request.setTargetCrs(EPSG_3857);
+				GwtCommand command = new GwtCommand(TransformGeometryRequest.COMMAND);
+				command.setCommandRequest(request);
+				GwtCommandDispatcher.getInstance().execute(command,
+						new AbstractCommandCallback<TransformGeometryResponse>() {
+
+							public void execute(TransformGeometryResponse response) {
+								Bbox google = new Bbox(response.getBounds());
+								int zoomLevel = calcZoomLevelFromBounds(google);
+								fitGoogleMapBounds(googleMap, convertToLatLon(google.getCenterPoint()), zoomLevel);
+							}
+						});
+			}
+		}
+	}
+
+	private int calcZoomLevel(double scale) {
+		int calc = (int) Math.round(Math.log(scale * MERCATOR_WIDTH / 180) / LN2);
+		return calc;
+	}
+
+	private int calcZoomLevelFromBounds(Bbox google) {
+		return calcZoomLevel(map.getWidth() / google.getWidth());
+	}
+
+	private void fitGoogleMapBounds(JavaScriptObject object, Coordinate center, int zoomLevel) {
+		doFitGoogleMapBounds(object, center.getX(), center.getY(), zoomLevel);
+	}
+
+	/** {@inheritDoc} */
+	public void onDraw() {
 		if (googleMap == null) {
 			// create as first child of raster group
-			map.getRasterContext().drawGroup(null, this);			
+			map.getRasterContext().drawGroup(null, this);
 			String id = map.getRasterContext().getId(this);
 			// move to first position
 			Element mapDiv = DOM.getElementById(id);
 			Element rasterGroup = DOM.getElementById(map.getRasterContext().getId(map.getGroup(RenderGroup.RASTER)));
 			DOM.insertBefore(DOM.getParent(rasterGroup), mapDiv, rasterGroup);
-				String graphicsId = map.getVectorContext().getId();
+			String graphicsId = map.getVectorContext().getId();
 			googleMap = createGoogleMap(id, graphicsId, type.name(), showMap, getVerticalMargin(),
 					getHorizontalMargin(), getVerticalAlignmentString());
 		}
-	}
-
-	/** {@inheritDoc} */
-	public void onDraw() {
 	}
 
 	/** {@inheritDoc} */
@@ -151,40 +197,6 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		}
 
 		googleMap = null;
-	}
-
-	/** {@inheritDoc} */
-	public void onMapViewChanged(MapViewChangedEvent event) {
-		// assume google coordinates here
-		if (googleMap != null) {
-			String sourceCrs = map.getMapModel().getCrs();
-			if (isGoogleProjection(sourceCrs)) {
-				Bbox latLon = convertToLatLon(event.getBounds());
-				fitGoogleMapBounds(googleMap, latLon.getX(), latLon.getY(), latLon.getMaxX(), latLon.getMaxY());
-			} else {
-				// transform on server
-				Bbox latLon = convertToLatLon(event.getBounds());
-				fitGoogleMapBounds(googleMap, latLon.getX(), latLon.getY(), latLon.getMaxX(), latLon.getMaxY());
-
-				TransformGeometryRequest request = new TransformGeometryRequest();
-				Bbox mapBounds = event.getBounds();
-				request.setBounds(new org.geomajas.geometry.Bbox(mapBounds.getX(), mapBounds.getY(), mapBounds
-						.getWidth(), mapBounds.getHeight()));
-				request.setSourceCrs(map.getMapModel().getCrs());
-				request.setTargetCrs(EPSG_4326);
-				GwtCommand command = new GwtCommand(TransformGeometryRequest.COMMAND);
-				command.setCommandRequest(request);
-				GwtCommandDispatcher.getInstance().execute(command,
-						new AbstractCommandCallback<TransformGeometryResponse>() {
-
-							public void execute(TransformGeometryResponse response) {
-								Bbox latLon = new Bbox(response.getBounds());
-								fitGoogleMapBounds(googleMap, latLon.getY(), latLon.getX(), latLon.getMaxY(),
-										latLon.getMaxX());
-							}
-						});
-			}
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -219,12 +231,11 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		return map;
 	}-*/;
 
-	private native void fitGoogleMapBounds(JavaScriptObject map, double xmin, double ymin, double xmax, double ymax)
+	private native Bbox doFitGoogleMapBounds(JavaScriptObject map, double xCenter, double yCenter, int zoomLevel)
 	/*-{
-		var sw = new $wnd.google.maps.LatLng(xmin, ymin);
-		var ne = new $wnd.google.maps.LatLng(xmax, ymax);
-		var bounds = new $wnd.google.maps.LatLngBounds(sw,ne);
-		map.fitBounds(bounds); 
+		var center = new $wnd.google.maps.LatLng(xCenter, yCenter);
+		map.setZoom(zoomLevel);
+		map.setCenter(center);
 	}-*/;
 
 	private Bbox convertToLatLon(Bbox bounds) {
