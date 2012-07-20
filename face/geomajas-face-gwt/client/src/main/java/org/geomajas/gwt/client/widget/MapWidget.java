@@ -684,13 +684,15 @@ public class MapWidget extends VLayout {
 		final String scaleBarId = "scalebar";
 
 		if (scaleBarEnabled) {
-			ScaleBar scalebar = new ScaleBar("scalebar", this);
-			scalebar.setVerticalAlignment(VerticalAlignment.BOTTOM);
-			scalebar.setHorizontalMargin(2);
-			scalebar.setVerticalMargin(2);
-			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
-					graphics.getHeight() - 25));
-			registerMapAddon(scalebar);
+			if (!getMapAddons().containsKey(scaleBarId)) {
+				ScaleBar scalebar = new ScaleBar(scaleBarId, this);
+				scalebar.setVerticalAlignment(VerticalAlignment.BOTTOM);
+				scalebar.setHorizontalMargin(2);
+				scalebar.setVerticalMargin(2);
+				scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
+						graphics.getHeight() - 25));
+				registerMapAddon(scalebar);
+			}
 		} else {
 			unregisterMapAddon(addons.get(scaleBarId));
 		}
@@ -718,20 +720,26 @@ public class MapWidget extends VLayout {
 		final String zoomRectId = "zoomRectAddon";
 
 		if (enabled) {
-			PanButtonCollection panButtons = new PanButtonCollection(panId, this);
-			panButtons.setHorizontalMargin(5);
-			panButtons.setVerticalMargin(5);
-			registerMapAddon(panButtons);
+			if (!getMapAddons().containsKey(panId)) {
+				PanButtonCollection panButtons = new PanButtonCollection(panId, this);
+				panButtons.setHorizontalMargin(5);
+				panButtons.setVerticalMargin(5);
+				registerMapAddon(panButtons);
+			}
 
-			ZoomAddon zoomAddon = new ZoomAddon(zoomId, this);
-			zoomAddon.setHorizontalMargin(20);
-			zoomAddon.setVerticalMargin(65);
-			registerMapAddon(zoomAddon);
+			if (!getMapAddons().containsKey(zoomId)) {
+				ZoomAddon zoomAddon = new ZoomAddon(zoomId, this);
+				zoomAddon.setHorizontalMargin(20);
+				zoomAddon.setVerticalMargin(65);
+				registerMapAddon(zoomAddon);
+			}
 
-			ZoomToRectangleAddon zoomToRectangleAddon = new ZoomToRectangleAddon(zoomRectId, this);
-			zoomToRectangleAddon.setHorizontalMargin(20);
-			zoomToRectangleAddon.setVerticalMargin(135);
-			registerMapAddon(zoomToRectangleAddon);
+			if (!getMapAddons().containsKey(zoomRectId)) {
+				ZoomToRectangleAddon zoomToRectangleAddon = new ZoomToRectangleAddon(zoomRectId, this);
+				zoomToRectangleAddon.setHorizontalMargin(20);
+				zoomToRectangleAddon.setVerticalMargin(135);
+				registerMapAddon(zoomToRectangleAddon);
+			}
 		} else {
 			unregisterMapAddon(addons.get(panId));
 			unregisterMapAddon(addons.get(zoomId));
