@@ -12,14 +12,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="introduction">
-  <title>Introduction</title>
-
-  <section id="section-about-this-document">
-    <title>About this document</title>
-
-    <para>Documentation for developer who want to use and extend the Geomajas
-    GIS framework.</para>
-  </section>
+  <title>About</title>
 
   <section id="section-about-this-project">
     <title>About this project</title>
@@ -27,12 +20,13 @@
     <para>Geomajas is a free and open source GIS application framework for
     building rich internet applications. It has sophisticated capabilities for
     displaying and managing geospatial information. The modular design makes
-    it easily extendable. The stateless client-server architecture guarantees
+    it easily extensible. The stateless client-server architecture guarantees
     endless scalability. The focus of Geomajas is to provide a platform for
     server-side integration of geospatial data, allowing multiple users to
-    control and manage the data from within their own browsers. In essence,
+    control and manage the data from within their own browser. In essence,
     Geomajas provides a set of powerful building blocks, from which the most
-    complex GIS applications can easily be built. Key features include:</para>
+    advanced GIS applications can easily be built. Key features
+    include:</para>
 
     <para><itemizedlist>
         <listitem>
@@ -119,6 +113,10 @@
 
         <listitem>
           <para>Frank Wynants</para>
+        </listitem>
+
+        <listitem>
+          <para>Frank Maes</para>
         </listitem>
       </itemizedlist></para>
   </section>
