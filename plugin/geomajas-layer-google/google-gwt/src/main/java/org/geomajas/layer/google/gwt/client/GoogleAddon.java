@@ -25,6 +25,8 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -67,6 +69,8 @@ public class GoogleAddon extends MapAddon {
 	private final MapType type;
 
 	private final boolean showMap;
+	
+	private Element tosGroup;
 
 	/**
 	 * Google map types as defined by the API.
@@ -119,14 +123,12 @@ public class GoogleAddon extends MapAddon {
 
 	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
-		// assume google coordinates here
-		System.out.println("map view bounds :" + bounds);
-		int zoomLevel = calcZoomLevel(map.getMapModel().getMapView().getCurrentScale());
 		if (googleMap != null) {
 			String sourceCrs = map.getMapModel().getCrs();
 			if (isGoogleProjection(sourceCrs)) {
-				Bbox latLon = convertToLatLon(bounds);
-				fitGoogleMapBounds(googleMap, latLon.getCenterPoint(), zoomLevel);
+				int zoomLevel = calcZoomLevel(map.getMapModel().getMapView().getCurrentScale());
+				Coordinate latLon = convertToLatLon(bounds.getCenterPoint());
+				fitGoogleMapBounds(googleMap, latLon, zoomLevel);
 			} else {
 				// transform on server
 				TransformGeometryRequest request = new TransformGeometryRequest();
@@ -160,6 +162,14 @@ public class GoogleAddon extends MapAddon {
 
 	private void fitGoogleMapBounds(JavaScriptObject object, Coordinate center, int zoomLevel) {
 		doFitGoogleMapBounds(object, center.getX(), center.getY(), zoomLevel);
+	}
+
+	@Override
+	public void setMapSize(int mapWidth, int mapHeight) {
+		super.setMapSize(mapWidth, mapHeight);
+		if (googleMap != null) {
+			triggerResize(googleMap);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -198,6 +208,30 @@ public class GoogleAddon extends MapAddon {
 
 		googleMap = null;
 	}
+	
+	private void moveTosCopyRight() {
+		// move the ToS and copyright to the top
+		// create a div group in the graphics context
+		if (tosGroup == null) {
+			String graphicsId = map.getVectorContext().getId();
+			Element graphics = DOM.getElementById(graphicsId);
+			tosGroup = DOM.createDiv();
+			tosGroup.setId(map.getID() + "-googleAddon");
+			tosGroup.getStyle().setBottom(VERTICAL_MARGIN, Unit.PX);
+			graphics.appendChild(tosGroup);
+		}
+		String mapsId = map.getRasterContext().getId(this);
+		Element gmap = DOM.getElementById(mapsId);
+		if (gmap.getChildCount() > 0) {
+			Node baseMap = gmap.getChild(0);
+			if (baseMap.getChildCount() > 2) {
+				Node copyright = baseMap.getChild(1);
+				Node tos = baseMap.getChild(2);
+				tosGroup.appendChild(copyright);
+				tosGroup.appendChild(tos);
+			}
+		}
+	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
@@ -207,31 +241,43 @@ public class GoogleAddon extends MapAddon {
 		return EPSG_900913.equals(sourceCrs) || EPSG_3857.equals(sourceCrs);
 	}
 
+	private native void triggerResize(JavaScriptObject map)
+	/*-{
+		$wnd.google.maps.event.trigger(map, "resize");
+	}-*/;
+
 	private native JavaScriptObject createGoogleMap(String mapId, String graphicsId, String mapType, boolean showMap,
 			int verticalMargin, int horizontalMargin, String verticalAlignment)
 	/*-{
+	 	var _me = this;
 	 	var mapDiv = $doc.getElementById(mapId);
+	 	var options = {disableDefaultUI: true};
 		if (mapType == "NORMAL") {
-			var options = {mapTypeId: $wnd.google.maps.MapTypeId.ROADMAP};
+			options.mapTypeId = $wnd.google.maps.MapTypeId.ROADMAP;
 		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		} else if (mapType == "SATELLITE") {
-			var options = {mapTypeId: $wnd.google.maps.MapTypeId.SATELLITE};
+			options.mapTypeId = $wnd.google.maps.MapTypeId.SATELLITE;
 		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		} else if (mapType == "HYBRID") {
-			var options = {mapTypeId: $wnd.google.maps.MapTypeId.HYBRID};
+			options.mapTypeId = $wnd.google.maps.MapTypeId.HYBRID;
 		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		} else if (mapType == "PHYSICAL") {
-			var options = {mapTypeId: $wnd.google.maps.MapTypeId.TERRAIN};
+			options.mapTypeId = $wnd.google.maps.MapTypeId.TERRAIN;
 		 	var map = new $wnd.google.maps.Map(mapDiv, options)
 		}  
 		if(!showMap) {
 			mapDiv.style.visibility = "hidden";
 		}
+		$wnd.google.maps.event.addListener(map, 'tilesloaded', 
+			function(){
+				_me.@org.geomajas.layer.google.gwt.client.GoogleAddon::moveTosCopyRight()();
+			}
+		); 
 
 		return map;
 	}-*/;
 
-	private native Bbox doFitGoogleMapBounds(JavaScriptObject map, double xCenter, double yCenter, int zoomLevel)
+	private native void doFitGoogleMapBounds(JavaScriptObject map, double xCenter, double yCenter, int zoomLevel)
 	/*-{
 		var center = new $wnd.google.maps.LatLng(xCenter, yCenter);
 		map.setZoom(zoomLevel);
