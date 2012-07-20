@@ -15,591 +15,202 @@
   <title>Starting a new GWT based Geomajas project</title>
 
   <para>Geomajas uses the Apache Maven project management tool for its build
-  and documentation process. Thanks to Maven , the easiest way to start using
-  Geomajas is by creating a new project using the Maven archetype. This will
-  create a simple working project that you can use as starting point.</para>
+  and documentation process. The easiest way to start using Geomajas is by
+  creating a new project using the Maven archetype. This will create a simple
+  working project that you can use as a starting point.</para>
 
   <section id="prereq">
     <title>Prerequisites / Command line</title>
 
-    <para>As the simple project is created using the Maven archetype, you will
-    need to install Maven on your system, which can be downloaded from <ulink
+    <para>To create the simple project with the Maven archetype, you need to
+    install Maven on your system. Maven can be downloaded from <ulink
     url="http://maven.apache.org/">http://maven.apache.org/</ulink>. We
     recommend using the latest stable version (2.2.1 at the time of writing).
-    Installing Maven is quite simple: just unzip the distribution file in the
-    directory of your choice and make some environment changes so you can
-    access the executable. More information for your specific OS can be found
-    at the bottom of <ulink
+    Installing Maven is quite simple: unzip the distribution file in the
+    directory of your choice and make some environment changes so you can run
+    the executable <code>mvn</code>. More information for your specific OS can
+    be found at the bottom of <ulink
     url="http://maven.apache.org/download.html">http://maven.apache.org/download.html</ulink>.</para>
+  </section>
 
-    <section id="templ">
-      <title>Creating the template project</title>
+  <section id="createArchetype">
+    <title>Create your Geomajas project</title>
 
-      <para>At this point it is assumed that Maven has been successfully
-      installed. Using Maven, you can now create a template project, called
-      the Geomajas GWT Application Archetype.</para>
+    <para>At this point it is assumed that Maven has been successfully
+    installed. Using Maven, you can now create your Geomajas project, called
+    the Geomajas GWT Application archetype.</para>
 
-      <orderedlist>
-        <listitem>
-          <para><emphasis>Step1</emphasis>: Go to the folder you want to
-          create this application in, and execute the following
-          command:</para>
-
-          <example>
-            <title>Create project using GWT Maven archetype</title>
-            <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
-          </example>
-
-          <para>This will create the template project, using the latest stable
-          release. If you want to use the latest snapshot, use the following
-          command instead:</para>
-
-          <example>
-            <title>Create project using GWT Maven archetype</title>
-            <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting>
-          </example>
-
-          <para>Maven will now prompt the user for input.</para>
-
-          <note>
-            <para>If anything fails with these maven commands, you need to
-            check the output to check the problem. One typical problem is the
-            need to define a proxy to allow maven to access sites in the
-            outside world. See the <ulink
-            url="http://maven.apache.org/guides/mini/guide-proxies.html">http://maven.apache.org/guides/mini/guide-proxies.html</ulink>
-            for details.</para>
-          </note>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>Step2</emphasis>: Maven will display the full list
-          of available archetypes. Make sure you select the correct one:
-          <emphasis role="bold">geomajas-gwt-archetype</emphasis>. In the
-          image below, the correct number would be 36:</para>
-
-          <figure>
-            <title>Choose the correct archetype</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/select-archetype.png" width="75%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>Step3</emphasis>: Next maven asks for the <emphasis
-          role="bold">groupId</emphasis>. Often the package name is used.
-          (foo.bar)</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>Step4</emphasis>: Next maven asks for the <emphasis
-          role="bold">artifactId</emphasis>. This represents the name for your
-          application. (i.e. my-app)</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>Step5</emphasis>: Next maven asks for the first
-          version for your application. 1.0-SNAPSHOT is a good first
-          version.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>Step6</emphasis>: Next maven asks for the base
-          package wherein to place Java files. By default this is the same as
-          the groupId. Just hit "enter" to continue.</para>
-
-          <figure>
-            <title>Screenshot when building the Geomajas GWT archetype</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/run-archetype.png" width="75%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-      </orderedlist>
-
-      <tip>
-        <para>You have now create a Geomajas template project! It is best to
-        continue by testing if everything went well.</para>
-      </tip>
-    </section>
-
-    <section id="testtempl">
-      <title>Testing the template project</title>
-
-      <para>From the project root, you can immediately compile, test (using
-      jetty as servlet container), or run the application in development mode
-      using the following commands.</para>
-
-      <section id="crefubi">
-        <title>Creating a full build</title>
-
-        <para>You now have several options to actually test your application.
-        First of all, you could compile it, and create a build. This can be
-        done using the following command:</para>
+    <orderedlist>
+      <listitem>
+        <para><emphasis>Step1</emphasis>: Go to the folder you want to create
+        the Geomajas application in, and execute the following command:</para>
 
         <example>
-          <title>Creating a build from your project</title>
+          <title>Create project using Maven archetype</title>
 
-          <para><programlisting>mvn install</programlisting></para>
+          <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
         </example>
 
-        <para>The "install" target will create a .war file for the project in
-        the <code>target</code> directory. This web archive can be dropped
-        into a Java application container such as Tomcat.</para>
-      </section>
+        <para>Maven will now prompt the user for input.</para>
 
-      <section id="runapp">
-        <title>Running the compiled template application (full speed)</title>
+        <note>
+          <para>If anything fails with these Maven commands, you need to check
+          the output to check the problem. One typical problem is the need to
+          define a proxy to allow Maven to access external repository
+          websites. See the <ulink
+          url="http://maven.apache.org/guides/mini/guide-proxies.html">http://maven.apache.org/guides/mini/guide-proxies.html</ulink>
+          for details.</para>
+        </note>
+      </listitem>
 
-        <para>Secondly, if you don't have a Java application container ready
-        or want a quick test, then you can use mvn to run the application
-        for you, using the following commands:</para>
+      <listitem>
+        <para><emphasis>Step2</emphasis>: Maven will display the full list of
+        available archetypes. Make sure you select the correct one: <emphasis
+        role="bold">geomajas-gwt-archetype</emphasis>. In the image below, the
+        correct number would be 36:</para>
+
+        <figure>
+          <title>Choose the correct archetype</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/select-archetype.png" width="75%"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Step3</emphasis>: Next Maven asks for the <emphasis
+        role="bold">groupId</emphasis>. Often the package name is used, but
+        any other name will do (e.g. myGroupId).</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Step4</emphasis>: Next Maven asks for the <emphasis
+        role="bold">artifactId</emphasis>. This represents the name for your
+        application (e.g. myApp).</para>
+
+        <note>
+          <para>The artifactId cannot contain special characters!</para>
+        </note>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Step5</emphasis>: Next Maven asks for the first
+        version for your application. 1.0-SNAPSHOT is a good first
+        version.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Step6</emphasis>: Next Maven asks for the base package
+        wherein to place Java files. By default this is the same as the
+        groupId. Just hit "enter" to continue with the default or enter
+        another package name (e.g. my.app).</para>
+
+        <figure>
+          <title>Screenshot when building the Geomajas GWT archetype</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/run-archetype.png" width="75%"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </listitem>
+    </orderedlist>
+
+    <tip>
+      <para>You have now created a Geomajas project! Now you are ready to run
+      it.</para>
+    </tip>
+  </section>
+
+  <section id="runArchetype">
+    <title>Run your Geomajas project</title>
+
+    <orderedlist>
+      <listitem>
+        <para><emphasis>Step1</emphasis>: Go to the folder with the artifactId
+        name (myApp in the example above) and execute the following
+        command:</para>
 
         <example>
-          <title>Create a build, then run it</title>
+          <title>Build the project and run it</title>
 
-          <para><programlisting>mvn jetty:run</programlisting></para>
+          <programlisting>mvn install jetty:run</programlisting>
         </example>
 
-        <para>The "jetty:run" variant will immediately start a jetty server
-        and start the application. This way, you can test your application at
-        full speed (as when deployed). The application can be accessed at
-        <ulink
+        <para>The "install" target will create a web archive (.war file) for
+        the project in the <code>target</code> directory. This .war file can
+        be dropped into a Java application container such as Tomcat.</para>
+
+        <para>The "jetty:run" target will immediately start a jetty server and
+        start the application in it. Jetty is a Java application container
+        that can run your project without the need to install a separate Java
+        application.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Step2</emphasis>: Open a web browser and access your
+        Geomajas application at <ulink
         url="http://localhost:8080/">http://localhost:8080/</ulink>.</para>
-      </section>
-
-      <section id="rundevapp">
-        <title>Running the template application in development mode</title>
-
-        <para>Another option is to start up the application in GWT development
-        mode, using the following command lines:</para>
-
-        <example>
-          <title>Run the template application in development mode</title>
-
-          <para><programlisting>mvn gwt:run</programlisting></para>
-        </example>
-
-        <para>The "gwt:run" option allows you to start the application in GWT
-        development mode. A console will appear which allows starting your
-        application (from the browser). Amongst other things, this allows you
-        to see the messages GWT generates and see the output of the
-        "<code>GWT.log</code>" commands.</para>
-      </section>
-    </section>
+      </listitem>
+    </orderedlist>
   </section>
 
-  <section id="eclipse">
-    <title>Eclipse</title>
+  <section id="ConfigureArchetype">
+    <title>Configure your Geomajas project</title>
 
-    <para>The combination of Eclipse, maven and GWT is not quite trivial,
-    especially for complex multi-module projects like Geomajas. There are 2
-    approaches possible for integrating eclipse with maven:</para>
+    <para>Once you have your Geomajas project running, you might want to make
+    some modifications to the Geomajas configuration and customize it. More
+    details about the Geomajas configuration can be found in the <ulink
+    url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#part-configuration">developer's
+    guide</ulink>.</para>
+
+    <para>Here you find the most important configuration files used in your
+    Geomajas project:</para>
 
     <itemizedlist>
       <listitem>
-        <para>Eclipse plug-in for maven, avoiding the use of the maven
-        command-line interface: m2eclipse (<ulink
-        url="http://m2eclipse.sonatype.org/">http://m2eclipse.sonatype.org/</ulink>)
-        is the most mature project here</para>
+        <para>main configuration :
+        src/main/webapp/WEB-INF/applicationContext.xml</para>
       </listitem>
 
       <listitem>
-        <para>Maven plug-in to generate eclipse project configurations:
-        maven-eclipse-plugin (<ulink
-        url="http://maven.apache.org/plugins/maven-eclipse-plugin/">http://maven.apache.org/plugins/maven-eclipse-plugin/</ulink>)</para>
+        <para>map configuration : src/main/webapp/WEB-INF/mapMain.xml</para>
+      </listitem>
+
+      <listitem>
+        <para>overview map configuration :
+        src/main/webapp/WEB-INF/mapOverview.xml</para>
+      </listitem>
+
+      <listitem>
+        <para>countries layer configuration :
+        src/main/webapp/WEB-INF/clientLayerCountries.xml and
+        src/main/webapp/WEB-INF/layerCountries.xml</para>
+      </listitem>
+
+      <listitem>
+        <para>OpenStreetMap layer configuration :
+        src/main/webapp/WEB-INF/clientLayerOsm.xml and
+        src/main/webapp/WEB-INF/layerOsm.xml</para>
+      </listitem>
+
+      <listitem>
+        <para>GWT configuration file :
+        src/main/java/Application.gwt.xml</para>
+      </listitem>
+
+      <listitem>
+        <para>web.xml: src/main/webapp/WEB-INF/web.xml</para>
       </listitem>
     </itemizedlist>
 
-    <para>It is clear that an IDE integrated solution like m2eclipse offers
-    considerable advantages over manually generating Eclipse project
-    configurations:</para>
-
-    <itemizedlist>
-      <listitem>
-        <para>direct import of maven projects</para>
-      </listitem>
-
-      <listitem>
-        <para>support for maven properties and filtering</para>
-      </listitem>
-
-      <listitem>
-        <para>In-place editing of poms</para>
-      </listitem>
-
-      <listitem>
-        <para>full dependency support</para>
-      </listitem>
-    </itemizedlist>
-
-    <para>For a functional Geomajas setup, the following Eclipse plug-ins
-    should be installed on a fresh Galileo download (<ulink
-    url="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</ulink>):</para>
-
-    <itemizedlist>
-      <listitem>
-        <para>m2eclipse: update site
-        http://m2eclipse.sonatype.org/sites/m2e</para>
-      </listitem>
-
-      <listitem>
-        <para>m2eclipse extras (especially WTP extension):
-        http://m2eclipse.sonatype.org/sites/m2e-extras</para>
-      </listitem>
-
-      <listitem>
-        <para>checkstyle: update site http://eclipse-cs.sf.net/update/</para>
-      </listitem>
-
-      <listitem>
-        <para>SVN team provider: update site
-        http://download.eclipse.org/releases/helios, choose Collaboration
-        -&gt;Subversive SVN Team Provider (Incubation)</para>
-      </listitem>
-
-      <listitem>
-        <para>Google's GWT Eclipse plug-in:
-        http://dl.google.com/eclipse/plugin/3.6 (Plugin and SDK)</para>
-      </listitem>
-    </itemizedlist>
-
-    <section>
-      <title>Running/debugging with the Google Plug-in for Eclipse (embedded
-      Jetty option)</title>
-
-      <para>There is a classpath issue with the Google Plug-in for Eclipse
-      (GPE) that prevents us from using it in a reliable way when there are
-      multiple versions of artifacts in the maven dependency tree:<ulink
-      url="http://code.google.com/p/google-web-toolkit/issues/detail?id=5033">
-      http://code.google.com/p/google-web-toolkit/issues/detail?id=5033</ulink></para>
-
-      <para>On top of that, GPE forces the use of the built-in jetty launcher,
-      which has problems with loading libraries from the maven repository.
-      Recent development by Google points in the direction of better maven
-      support, but a as far as we know a stable solution which does not
-      require explicit user interaction is not available. (see <ulink
-      url="http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html">http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html</ulink>).</para>
-
-      <para>In view of these problems, the following workaround seems to be
-      the most reliable way of using the GWT plugin for us:</para>
-
-      <itemizedlist>
-        <listitem>
-          <para>Run the GWT plug-in with the no-server option (this can be
-          done straight from the project since GWT 2.1</para>
-        </listitem>
-
-        <listitem>
-          <para>Run an embedded Jetty server to replace the GWT server</para>
-        </listitem>
-      </itemizedlist>
-
-      <para>The following series of steps have to be performed to achieve a
-      working project.</para>
-
-      <itemizedlist>
-        <listitem>
-          <para>Import the project as a maven project</para>
-
-          <figure>
-            <title>Import project as Maven project</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-wtp-import.png" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>After the project has been imported and the workspace has been
-          built, you should now manually mark the project as a GWT project in
-          the project properties dialog. Open the Google -&gt; Web Toolkit
-          section and mark the checkbox. If the eclipse GWT version differs
-          from the project version, the "Use specific SDK" checkbox will be
-          enabled:</para>
-
-          <figure>
-            <title>Eclipse project properties dialog, Google Web
-            Toolkit</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-gwt-modules.png"
-                           width="60%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>In the Google -&gt; Web Application section, the WAR directory
-          should be changed to the default maven war sources directory
-          (src/main/webapp)<figure>
-              <title>Eclipse project properties dialog, Google Web
-              Application</title>
-
-              <mediaobject>
-                <imageobject>
-                  <imagedata fileref="images/eclipse-gwt-webapp.png"
-                             width="70%" />
-                </imageobject>
-              </mediaobject>
-            </figure></para>
-        </listitem>
-
-        <listitem>
-          <para>Open the debug configurations dialog and create a new Java
-          application:</para>
-
-          <figure>
-            <title>Debug configurations dialog</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-debug-configurations.png"
-                           width="60%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>Search for JettyRunner as the main class. JettyRunner is a
-          specially prepared main class that starts up Jetty with the correct
-          parameters (port 8888 and src/main/webapp as webapp
-          directory)</para>
-
-          <figure>
-            <title>JettyRunner as main class</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-jetty-runner.png"
-                           width="60%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>Run the new Jetty server configuration (in debug mode):</para>
-
-          <figure>
-            <title>Running Jetty</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-jetty-console.png"
-                           width="50%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>Now, run the GWT plug-in in no-server mode by by
-          right-clicking on the project and selecting Debug As -&gt; Web
-          Application (running on an external server):</para>
-
-          <figure>
-            <title>Running the GWT application</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-gwt-debug.png" width="70%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>Click ok on the dialog screen</para>
-        </listitem>
-
-        <listitem>
-          <para>You can now add breakpoints and debug your application as if
-          it was a normal Java application.</para>
-        </listitem>
-
-        <listitem>
-          <para>If you have multiple versions of GWT in your project
-          workspace, make sure that the gwt-dev jar is in front of the default
-          classpath (reported GWT issue):</para>
-
-          <figure>
-            <title>Classpath of GWT plug-in (no-server mode)</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-gwt-runner-classpath.png"
-                           width="60%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-      </itemizedlist>
-    </section>
-
-    <section id="eclipwtp">
-      <title>Running/debugging with the Google Plug-in for Eclipse</title>
-
-      <para>If you want to run your application directly with GPE, some extra
-      actions are needed to avoid classpath problems. You will have to change
-      your web.xml by adding a special context listener that allows Spring
-      component scanning and circumvents a GeoTools problem with the builtin
-      Jetty classloader:</para>
-
-      <programlisting>&lt;listener&gt;
- &lt;listener-class&gt;org.geomajas.servlet.PrepareScanningContextListener&lt;/listener-class&gt;
-&lt;/listener&gt;</programlisting>
-
-      <para>This solves most of the classpath problems but does not cure the
-      problem of having multiple artifact versions in the classpath! This is
-      usually only a problem when you have several Geomajas projects opened in
-      your workspace. If this is the case, run the GWT plug-in with an
-      embedded Jetty server as explained in the previous chapter and you
-      should be fine. Note that this should be the first listener in your
-      web.xm files, before the spring listeners.</para>
-
-      <para>The following steps are needed to run GPE directly:</para>
-
-      <para><itemizedlist>
-          <listitem>
-            <para>Follow the configuration steps of the indirect mode, right
-            up to the Jetty part</para>
-          </listitem>
-
-          <listitem>
-            <para>Run the project as a GWT Web application by right-clicking
-            on the project and selecting <code>Run as -&gt; Web
-            Application</code>.</para>
-          </listitem>
-
-          <listitem>
-            <para>For debugging, debug the project as a GWT Web application by
-            right-clicking on the project and selecting <code>Debug as -&gt;
-            Web Application</code>.</para>
-          </listitem>
-        </itemizedlist></para>
-    </section>
-  </section>
-
-  <section id="idea">
-    <title>IntelliJ IDEA</title>
-
-    <para>The setup in IntelliJ IDEA is quite straightforward and does not
-    require running a separate Maven command. Just open the project from IDEA
-    by selecting the pom in the root directory.</para>
-
-    <figure>
-      <title>Open project using pom</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/IDEA-open-project.png" width="50%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>IDEA will recognize this as a GWT project and assign the correct
-    facet but as always you will have to make your own run configuration
-    (which is fortunately trivial). You will need version 9.0 or later for the
-    GWT 2.0 support.</para>
-
-    <figure>
-      <title>IDEA GWT run configuration</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/IDEA-run-configuration.png" width="90%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>Before being able to use this configuration, you need to invoke the
-    gwt:i18n Maven target to assure the files which are used for
-    internationalisation are available (otherwise, you will get compilation
-    errors). You can do this from the "Maven projects" tab.</para>
-
-    <figure>
-      <title>run gwt:i18 target</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/IDEA-maven-targets.png" width="60%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>Some additional settings have to be done in the "project structure"
-    dialog. Apart from specifying the GWT installation directory, there is a
-    specific project setting which has to be done manually, which is setting
-    the target Web facet to "Web". The project structure for the simple GWT
-    project should look as follows:</para>
-
-    <figure>
-      <title>Project structure for simple GWT project</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/IDEA-project-structure.png" width="80%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>After this, you should be able to run the project. Any changes in
-    the source code will be automatically detected, and debugging is
-    possible.</para>
-
-    <note>
-      <para>When creating GWT run configurations, it is recommended to
-      increase the amount of memory given to the process. You can do this by
-      entering a higher -Xmx value in the VM parameters field, for example
-      "-Xmx768m".</para>
-    </note>
-  </section>
-
-  <section id="netbeans">
-    <title>NetBeans</title>
-
-    <para>You can both create the project from the archetype or open directly
-    the Maven project in NetBeans. See <ulink
-    url="http://wiki.netbeans.org/MavenBestPractices">http://wiki.netbeans.org/MavenBestPractices</ulink>
-    for more details.</para>
-  </section>
-
-  <section>
-    <title>Using a Hibernate layer</title>
-
-    <para>The template project can easily be modified to use a layer stored in
-    PostGIS. You should do the following;</para>
-
-    <para><itemizedlist>
-        <listitem>
-          <para>In the pom.xml, uncomment block marked with "uncomment if you
-          want to use Hibernate with postgis, for another db you will need
-          similar dependencies".</para>
-        </listitem>
-
-        <listitem>
-          <para>In the web.xml file (src/main/webapp/WEB-INF/web.xml)
-          uncomment the block marked with "To use Roads layer stored in
-          PostGIS through hibernate layer, uncomment the following".</para>
-        </listitem>
-      </itemizedlist>To create the database, you can use the following command
-    which will create the database (named "app") with some sample data (just a
-    couple of roads):</para>
-
-    <para><programlisting>psql -d app &lt;src/main/webapp/WEB-INF/example/road.sql</programlisting></para>
+    <para>If you have the jetty server running and you make changes to the
+    configuration, press ENTER to reload the application without stopping the
+    server.</para>
   </section>
 
   <section id="cont">
@@ -614,52 +225,7 @@
     using this URL: <ulink
     url="http://repo.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep">http://repo.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep</ulink>.</para>
 
-    <para>The most important configuration files in the project are the
-    following:</para>
-
-    <para><itemizedlist>
-        <listitem>
-          <para>main configuration :
-          <code>src/main/webapp/WEB-INF/applicationContext.xml</code></para>
-        </listitem>
-
-        <listitem>
-          <para>map configuration :
-          <code>src/main/webapp/WEB-INF/mapMain.xml</code></para>
-        </listitem>
-
-        <listitem>
-          <para>overview map configuration:
-          <code>src/main/webapp/WEB-INF/mapOverview.xml</code></para>
-        </listitem>
-
-        <listitem>
-          <para>countries layer configuration :
-          <code>src/main/webapp/WEB-INF/clientLayerCountries.xml</code> and
-          <code>src/main/webapp/WEB-INF/layerCountries.xml</code></para>
-        </listitem>
-
-        <listitem>
-          <para>OpenStreetMap layer configuration :
-          <code>src/main/webapp/WEB-INF/clientLayerOsm.xml</code> and
-          <code>src/main/webapp/WEB-INF/layerOsm.xml</code></para>
-        </listitem>
-
-        <listitem>
-          <para>GWT configuration file :
-          <code>src/main/java/Application.gwt.xml</code></para>
-        </listitem>
-
-        <listitem>
-          <para>web.xml:
-          <code>src/main/webapp/WEB-INF/WEB-INF/web.xml</code></para>
-        </listitem>
-      </itemizedlist>More details about the Geomajas configuration are found
-    in the <ulink
-    url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#part-configuration">developer's
-    guide</ulink>.</para>
-
-    <para>Reference which may be interesting to read:</para>
+    <para>References which may be interesting to read:</para>
 
     <para><itemizedlist>
         <listitem>
@@ -676,23 +242,23 @@
           <para>DZone's GWT refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js">http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js</ulink>.</para>
 
-          <para></para>
+          <para/>
         </listitem>
 
         <listitem>
-          <para>spring documentation: <ulink
+          <para>Spring documentation: <ulink
           url="http://www.springsource.org/documentation">http://www.springsource.org/documentation</ulink>.</para>
         </listitem>
 
         <listitem>
-          <para>DZone's spring configuration refcardz: <ulink
+          <para>DZone's Spring configuration refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/spring-configuration">http://refcardz.dzone.com/refcardz/spring-configuration</ulink>.</para>
 
-          <para></para>
+          <para/>
         </listitem>
 
         <listitem>
-          <para>maven project: <ulink
+          <para>Maven project: <ulink
           url="http://maven.apache.org/">http://maven.apache.org/</ulink>.</para>
         </listitem>
 
@@ -702,7 +268,7 @@
         </listitem>
 
         <listitem>
-          <para>maven reference book: <ulink
+          <para>Maven reference book: <ulink
           url="http://www.sonatype.com/books/mvnref-book/reference/public-book.html">http://www.sonatype.com/books/mvnref-book/reference/public-book.html</ulink>.</para>
         </listitem>
 
