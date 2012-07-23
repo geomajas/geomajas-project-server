@@ -98,7 +98,7 @@
 					<execution>
 						<id>verify-projects</id>
 						<goals>
-							<goal>run</goal>
+							<goal>verify</goal>
 						</goals>
 						<configuration>
 							<goals>
