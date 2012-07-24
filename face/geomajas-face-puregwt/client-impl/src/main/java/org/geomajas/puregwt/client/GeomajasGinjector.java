@@ -43,14 +43,14 @@ public interface GeomajasGinjector extends Ginjector {
 
 	/**
 	 * Get the {@link EndPointService} singleton. Has pointers to the Geomajas services on the back-end, and allows
-	 * those end-points to be altered in case your server lies elsewhere (or behind a proxy, or...).
+	 * those end-points to be altered in case your server is somewhere else (for example behind a proxy).
 	 * 
 	 * @return The {@link EndPointService} singleton.
 	 */
 	EndPointService getEndPointService();
 
 	/**
-	 * Get the {@link EndPointService} singleton. This service allows for executing commands on the back-end. It is the
+	 * Get the {@link CommandService} singleton. This service allows for executing commands on the back-end. It is the
 	 * base for all Geomajas client-server communication.
 	 * 
 	 * @return The {@link EndPointService} singleton.
