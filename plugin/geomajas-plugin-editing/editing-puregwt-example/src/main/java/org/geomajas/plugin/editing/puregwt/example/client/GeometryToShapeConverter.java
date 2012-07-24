@@ -33,7 +33,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 
 /**
  * Responsible for the conversion of {@link Geometry} to a {@link Shape} on the map.
- * 
+ *
  * @author Emiel Ackermann
  *
  */

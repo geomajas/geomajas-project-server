@@ -208,7 +208,7 @@ public abstract class MapAddon implements Paintable {
 	 * Set a vertical margin. Depending on the vertical alignment, this margin will be applied to the top or bottom of
 	 * this map add-on.
 	 * 
-	 * @param horizontalMargin
+	 * @param verticalMargin
 	 *            The new vertical margin, expressed in pixels.
 	 */
 	public void setVerticalMargin(int verticalMargin) {
