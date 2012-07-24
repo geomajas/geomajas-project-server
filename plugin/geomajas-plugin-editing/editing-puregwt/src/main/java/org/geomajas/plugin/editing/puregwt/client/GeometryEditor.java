@@ -39,7 +39,7 @@ public interface GeometryEditor extends BaseGeometryEditor {
 	/**
 	 * Set the base controller that handles the editing interaction on the map.
 	 * 
-	 * @param base controller
+	 * @param baseController controller
 	 */
 	void getBaseController(EditGeometryBaseController baseController);
 }
