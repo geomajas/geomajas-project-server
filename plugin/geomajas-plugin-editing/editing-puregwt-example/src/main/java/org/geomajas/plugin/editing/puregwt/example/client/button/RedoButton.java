@@ -54,10 +54,12 @@ public class RedoButton extends Button implements GeometryEditStopHandler, Geome
 		this.setEnabled(editService.canRedo());
 	}
 
+	@Override
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		this.setEnabled(false);
 	}
 
+	@Override
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
 		if (editService.canRedo()) {
 			setEnabled(true);

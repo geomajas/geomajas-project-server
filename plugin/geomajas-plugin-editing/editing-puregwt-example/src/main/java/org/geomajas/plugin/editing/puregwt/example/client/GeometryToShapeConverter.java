@@ -35,7 +35,6 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  * Responsible for the conversion of {@link Geometry} to a {@link Shape} on the map.
  *
  * @author Emiel Ackermann
- *
  */
 public class GeometryToShapeConverter {
 	
@@ -49,11 +48,8 @@ public class GeometryToShapeConverter {
 	
 	private final GeometryEditService editService;
 
-	private final MapPresenter mapPresenter;
-
 	public GeometryToShapeConverter(GeometryEditService editService, MapPresenter mapPresenter) {
 		this.editService = editService;
-		this.mapPresenter = mapPresenter;
 		gfxUtil = INJECTOR.getGfxUtil();
 		shapeContainer = mapPresenter.addWorldContainer();
 	}
@@ -166,11 +162,19 @@ public class GeometryToShapeConverter {
 		}
 	}
 
+	/**
+	 * Clear the geometries.
+	 */
 	public void clear() {
 		shapeContainer.clear();
 		geometries.clear();
 	}
 
+	/**
+	 * Get the edit service.
+	 *
+	 * @return edit service
+	 */
 	public GeometryEditService getEditService() {
 		return editService;
 	}

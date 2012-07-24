@@ -25,24 +25,31 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LegendDisclosureGadgetPanel extends ContentPanel {
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapPresenter map presenter
+	 */
 	public LegendDisclosureGadgetPanel(MapPresenter mapPresenter) {
 		super(mapPresenter);
 	}
 
+	@Override
 	public String getTitle() {
 		return "Legend MapGadget";
 	}
 
+	@Override
 	public String getDescription() {
 		return "Showcase that show the layer legend view.";
 	}
 
+	@Override
 	public Widget getContentWidget() {
 		// Create the MapPresenter:
 		mapPresenter.initialize("puregwt-app", "mapLegend");
 		ResizableMapLayout mapLayout = new ResizableMapLayout(mapPresenter);
 
-		
 		LegendDropDownGadget mapGadget = new LegendDropDownGadget();
 		mapPresenter.addMapGadget(mapGadget);
 

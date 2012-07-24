@@ -20,10 +20,10 @@ import com.google.gwt.inject.client.GinModules;
  * Ginjector for the showcase.
  * 
  * @author Jan De Moerloose
- * 
  */
 @GinModules(GeomajasEditorModule.class)
 public interface ShowCaseGinjector extends GeomajasGinjector {
 
+	/** Geometry editor factory. */
 	GeometryEditorFactory getGeometryEditorFactory();
 }

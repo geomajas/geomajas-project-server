@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Showcase that show the layer legend view.
+ * Showcase panel to show the layer legend view.
  * 
  * @author Pieter De Graef
  */
@@ -38,14 +38,17 @@ public class LayerLegendViewPanel extends ContentPanel {
 		super(mapPresenter);
 	}
 
+	@Override
 	public String getTitle() {
 		return "Legend";
 	}
 
+	@Override
 	public String getDescription() {
 		return "Showcase that show the layer legend view.";
 	}
 
+	@Override
 	public Widget getContentWidget() {
 		DockLayoutPanel layout = new DockLayoutPanel(Unit.PX);
 		layout.setSize("100%", "100%");

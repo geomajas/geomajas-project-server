@@ -48,10 +48,12 @@ public class CancelButton extends Button implements GeometryEditStartHandler, Ge
 		this.setEnabled(editService.getGeometry() != null);
 	}
 
+	@Override
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		this.setEnabled(false);
 	}
 
+	@Override
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
 		this.setEnabled(true);
 	}

@@ -38,7 +38,7 @@ public class BufferAllButton extends Button {
 			public void onClick(ClickEvent event) {
 				BufferInfo bufferInfo = new BufferInfo();
 				String value = bufferDistance.getValue();
-				if (!"".equals(bufferDistance) && !"0".equals(bufferDistance)) {
+				if (!"".equals(value) && !"0".equals(value)) {
 					bufferInfo.setDistance(Double.valueOf(value));
 					final List<Geometry> geometries = converter.getGeometries();
 					final GeometryEditService editService = converter.getEditService();

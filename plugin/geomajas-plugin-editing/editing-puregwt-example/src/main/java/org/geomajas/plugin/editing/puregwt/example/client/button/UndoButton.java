@@ -53,10 +53,12 @@ public class UndoButton extends Button implements GeometryEditStopHandler, Geome
 		this.setEnabled(editService.canUndo());
 	}
 
+	@Override
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		this.setEnabled(false);
 	}
 
+	@Override
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
 		if (editService.canUndo()) {
 			setEnabled(true);
