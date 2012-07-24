@@ -111,15 +111,15 @@ public class ScaleBar extends MapAddon {
 		map.getVectorContext().drawRectangle(this, dummy.getId(), dummy.getBounds(), (ShapeStyle) dummy.getStyle());
 
 		map.getVectorContext().drawRectangle(this, backGround.getId(), backGround.getBounds(),
-				(ShapeStyle) backGround.getStyle());
+				backGround.getStyle());
 		map.getVectorContext().drawRectangle(this, bottomLine.getId(), bottomLine.getBounds(),
-				(ShapeStyle) bottomLine.getStyle());
+				bottomLine.getStyle());
 		map.getVectorContext().drawRectangle(this, leftMarker.getId(), leftMarker.getBounds(),
-				(ShapeStyle) leftMarker.getStyle());
+				leftMarker.getStyle());
 		map.getVectorContext().drawRectangle(this, rightMarker.getId(), rightMarker.getBounds(),
-				(ShapeStyle) rightMarker.getStyle());
+				rightMarker.getStyle());
 		map.getVectorContext().drawText(this, distance.getId(), distance.getContent(), distance.getPosition(),
-				(FontStyle) distance.getStyle());
+				distance.getStyle());
 	}
 
 	/** {@inheritDoc} */
