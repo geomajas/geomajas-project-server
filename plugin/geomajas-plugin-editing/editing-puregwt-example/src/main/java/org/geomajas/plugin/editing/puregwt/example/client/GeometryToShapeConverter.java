@@ -71,12 +71,13 @@ public class GeometryToShapeConverter {
 	
 	/**
 	 * Process the given geometry into a {@link Shape} and place it into a {@link VectorContainer}.
-	 * @param geometry
+	 *
+	 * @param geometry geometry to process
 	 */
 	public void processGeometry(Geometry geometry) {
 		if (null != geometry) {
 			getGeometries().add(geometry);
-			Shape shape = null;
+			Shape shape;
 			if (Geometry.POINT.equals(geometry.getGeometryType())) {
 				Coordinate[] coordinates = geometry.getCoordinates();
 				shape = new Circle(coordinates[0].getX(), coordinates[0].getY(), 5);
@@ -96,11 +97,21 @@ public class GeometryToShapeConverter {
 			}
 		}
 	}
-	
+
+	/**
+	 * Get the geometries.
+	 *
+	 * @return geometries
+	 */
 	public List<Geometry> getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Get container for the shapes.
+	 *
+	 * @return vector container
+	 */
 	public VectorContainer getShapeContainer() {
 		return shapeContainer;
 	}
@@ -121,7 +132,8 @@ public class GeometryToShapeConverter {
 			this.geometry = geometry;
 			this.shape = shape;
 		}
-		
+
+		@Override
 		public void onClick(ClickEvent event) {
 			if (editService.getEditingState() == GeometryEditState.IDLE) {
 				processCurrentGeometry();
@@ -131,6 +143,7 @@ public class GeometryToShapeConverter {
 			}
 		}
 
+		@Override
 		public void onMouseOver(MouseOverEvent event) {
 			if (editService.getEditingState() == GeometryEditState.IDLE) {
 				shape.setStrokeWidth(4);
@@ -142,7 +155,8 @@ public class GeometryToShapeConverter {
 				}
 			}
 		}
-		
+
+		@Override
 		public void onMouseOut(MouseOutEvent event) {
 			if (editService.getEditingState() == GeometryEditState.IDLE) {
 				shape.setStrokeWidth(3);
