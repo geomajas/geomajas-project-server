@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 		<!--
 		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
@@ -21,7 +21,18 @@
         <link type="text/css" rel="stylesheet" href="geomajas.css">
         <title>PureGWT web application using Geomajas</title>
 
-        <!-- Name defined in the module xml (=geomajas). -->
+		<!-- style needed to make scaling of map work -->
+		<style type="text/css">
+			body {
+				overflow: hidden;
+				height:100%;
+			}
+			html {
+				height:100%;
+			}
+		</style>
+
+		<!-- Name defined in the module xml (=geomajas). -->
         <script type="text/javascript" language="javascript">var isomorphicDir = "${artifactId}/sc/";</script>
         <script type="text/javascript" language="javascript" src="${artifactId}/${artifactId}.nocache.js"></script>
     </head>
