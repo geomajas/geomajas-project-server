@@ -41,6 +41,7 @@ public class ToolSecuritySample extends SamplePanel {
 		}
 	};
 
+	@Override
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
 		layout.setMembersMargin(10);
@@ -69,16 +70,19 @@ public class ToolSecuritySample extends SamplePanel {
 		return layout;
 	}
 
+	@Override
 	public String getDescription() {
 		return MESSAGES.toolSecurityDescription();
 	}
 
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/security.xml",
 				"WEB-INF/mapToolbarSecurity.xml",
 				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml" };
 	}
 
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

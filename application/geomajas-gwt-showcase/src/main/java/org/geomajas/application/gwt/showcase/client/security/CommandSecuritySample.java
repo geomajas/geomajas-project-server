@@ -48,6 +48,7 @@ public class CommandSecuritySample extends SamplePanel {
 		}
 	};
 
+	@Override
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
 		layout.setMembersMargin(10);
@@ -111,14 +112,17 @@ public class CommandSecuritySample extends SamplePanel {
 		return layout;
 	}
 
+	@Override
 	public String getDescription() {
 		return MESSAGES.commandSecurityDescription();
 	}
 
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/security.xml" };
 	}
 
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

@@ -53,6 +53,7 @@ public class ShowcaseEntryPoint implements EntryPoint {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
+	@Override
 	public void onModuleLoad() {
 		SampleTree.setTreeTitle(MESSAGES.treeTitle());
 

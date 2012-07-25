@@ -41,6 +41,7 @@ public class LayerSecuritySample extends SamplePanel {
 		}
 	};
 
+	@Override
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
 		layout.setMembersMargin(10);
@@ -67,10 +68,12 @@ public class LayerSecuritySample extends SamplePanel {
 		return layout;
 	}
 
+	@Override
 	public String getDescription() {
 		return MESSAGES.layerSecurityDescription();
 	}
 
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/security.xml",
 				"WEB-INF/mapVectorSecurity.xml",
@@ -78,6 +81,7 @@ public class LayerSecuritySample extends SamplePanel {
 				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml" };
 	}
 
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

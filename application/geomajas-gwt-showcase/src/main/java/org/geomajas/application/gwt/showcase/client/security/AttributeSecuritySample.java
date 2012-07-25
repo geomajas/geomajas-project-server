@@ -126,21 +126,25 @@ public class AttributeSecuritySample extends SamplePanel {
 		layout.addMember(editFeatureButton);
 		return layout;
 	}
-	
+
+	@Override
 	public void onDraw() {
 		mapModel.init();
 	}
 
+	@Override
 	public String getDescription() {
 		return MESSAGES.attributeSecurityDescription();
 	}
 
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/security.xml",
 				"classpath:org/geomajas/gwt/example/layerBeans.xml",
 				"classpath:org/geomajas/gwt/example/mapBeans.xml" };
 	}
 
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}
