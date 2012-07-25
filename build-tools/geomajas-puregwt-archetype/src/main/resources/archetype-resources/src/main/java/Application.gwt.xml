@@ -13,8 +13,9 @@
 <module rename-to="${artifactId}">
 	<inherits name='com.google.gwt.user.User'/>
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
-    <inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
-    <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+	<inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
+	<inherits name="org.geomajas.puregwt.theme.GeomajasDefaultTheme" />
+	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
