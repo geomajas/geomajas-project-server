@@ -182,6 +182,7 @@ public interface MapEventBus {
 	
 	/**
 	 * Add a handler of this type to the map.
+	 *
 	 * @param type type of handler
 	 * @param handler handler
 	 * @return the handler registration

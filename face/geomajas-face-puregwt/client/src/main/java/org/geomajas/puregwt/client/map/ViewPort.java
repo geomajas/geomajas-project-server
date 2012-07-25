@@ -176,7 +176,7 @@ public interface ViewPort {
 	 * <p>
 	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
 	 * bounding box may differ from that of the map, the fit is "as good as possible". This method is equivalent to
-	 * {@link #applyBounds(Bbox, ZoomOption.LEVEL_FIT)}.
+	 * {@link #applyBounds(Bbox, ZoomOption)} with ZoomOption.LEVEL_FIT.
 	 * </p>
 	 * <p>
 	 * Also this function will almost certainly change the scale on the map, so if there have been resolutions defined,

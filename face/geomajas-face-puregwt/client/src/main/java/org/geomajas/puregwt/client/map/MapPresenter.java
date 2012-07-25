@@ -122,7 +122,7 @@ public interface MapPresenter extends IsWidget {
 	 * 
 	 * @param container
 	 *            The vector container to bring to the front. This container must be acquired either through the
-	 *            <code>addScreenContainer</code> or the <code>addWorldContainer</code> methods.
+	 *            {@link #addScreenContainer()} or the {@link #addWorldContainer()} methods.
 	 * @return Could the container be successfully brought to the front or not?
 	 */
 	boolean bringToFront(VectorContainer container);
