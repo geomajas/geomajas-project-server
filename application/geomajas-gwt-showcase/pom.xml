@@ -327,6 +327,13 @@
 					<exclude>org/geomajas/application/gwt/showcase/client/i18n/**</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.java</include>
+				</includes>
+			</resource>
 		</resources>
 
 		<plugins>
