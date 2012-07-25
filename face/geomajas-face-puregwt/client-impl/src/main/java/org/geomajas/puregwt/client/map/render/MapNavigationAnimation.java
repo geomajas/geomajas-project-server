@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map.render;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.animation.client.Animation;
 
@@ -182,7 +183,7 @@ public class MapNavigationAnimation extends Animation {
 			MapScalesRenderer presenter = mapScalesRenderers.get(i);
 			TiledScaleRenderer scalePresenter = presenter.getVisibleScale();
 			if (scalePresenter != null) {
-				if (i < nrAnimatedLayers) {
+				if (i < nrAnimatedLayers && !Dom.isIE()) {
 					scalePresenter.getHtmlContainer().applyScale(currentScale, 0, 0);
 					scalePresenter.getHtmlContainer().setLeft((int) Math.round(currentX));
 					scalePresenter.getHtmlContainer().setTop((int) Math.round(currentY));
