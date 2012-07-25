@@ -15,8 +15,8 @@
   <title>PureGWT face architecture</title>
 
   <para>This part of the documentation describes the main architecture and API
-  of the PureGWT face for Geomajas. For actual code examples or more detail
-  on how to use them, visit the "HowTo" guide.</para>
+  of the PureGWT face for Geomajas. For actual code examples or more detail on
+  how to use them, visit the "HowTo" guide.</para>
 
   <section>
     <title>The central Map API</title>
@@ -94,8 +94,8 @@
     handlers. Note that the term <code>Handler</code> is used, not listener,
     as we try to follow the GWT naming conventions. As of GWT 2.x, the use of
     a central <code>EventBus</code> has been promoted to work together with an
-    MVP approach. The PureGWT face has incorporated this train of thought,
-    and provides a map-centric <code>EventBus</code>. In other words, every
+    MVP approach. The PureGWT face has incorporated this train of thought, and
+    provides a map-centric <code>EventBus</code>. In other words, every
     <code>MapPresenter</code> governs it's own <code>EventBus</code>.</para>
 
     <para>This means that for <code>Handlers</code> that are registered on
@@ -251,7 +251,7 @@
 
               <entry>Event that is fired when a layer is selected. Only one
               layer can be selected at any time, so these events often go
-              together with layer deselect events. </entry>
+              together with layer deselect events.</entry>
             </row>
 
             <row>
@@ -360,7 +360,7 @@
 
     <para>This section will handle all rendering related topics, explaining
     the different render spaces (WorldSpace versus ScreenSpace), and how to
-    make full advangtage of them when trying to render objects on the map.
+    make full advantage of them when trying to render objects on the map.
     Finally, the MapGadget will be introduced, which is an experimental
     interface for defining functional gadgets at a fixed location on the
     map.</para>
@@ -416,11 +416,10 @@
       These VectorObjects in turn are the individual objects (such as
       Rectangle, Circle, Path, ...) that can be drawn on the map.</para>
 
-      <para>The PureGWT face has extended the VectorObjectContainer to
-      provide a ScreenContainer and a WorldContainer. As you might have
-      guessed, the ScreenContainer allows you to render objects in ScreenSpace
-      while the WorldContainer allows you to render objects in
-      WorldSpace.</para>
+      <para>The PureGWT face has extended the VectorObjectContainer to provide
+      a ScreenContainer and a WorldContainer. As you might have guessed, the
+      ScreenContainer allows you to render objects in ScreenSpace while the
+      WorldContainer allows you to render objects in WorldSpace.</para>
 
       <para>In order to acquire a ScreenContainer or WorldContainer, all one
       has to do is request such a container with the MapPresenter. This can be
@@ -447,6 +446,10 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
       at a fixed position on the map. Examples are the navigation buttons and
       the scalebar. MapGadgets are notified of map navigation events, because
       they often require updating on those events.</para>
+
+      <para>The position of a MapGadget is maintained by the face, but you
+      have to make sure that the container has a "position: absolute"
+      style.</para>
     </section>
   </section>
 
@@ -531,7 +534,7 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
     <para>This section will handle the basics of interacting with the map, by
     listening and responding to the mouse events that are generated from the
     map. Instead of dealing with those mouse events directly, 2 interfaces
-    have been created to shield you from having to attach the corrent handlers
+    have been created to shield you from having to attach the correct handlers
     to the correct DOM elements in the HTML tree.</para>
 
     <note>
@@ -545,7 +548,7 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
     </note>
 
     <para>The next 2 sections will cover the following 2 basic interfaces: the
-    MapController and the MapListener. </para>
+    MapController and the MapListener.</para>
 
     <section>
       <title>MapController</title>
@@ -554,15 +557,15 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
       events that comes from the map (mouse up, mouse down, mouse move, ...)
       and has the possibility to react directly onto receiving such events.
       The MapController basically has all the freedom in the world to
-      manipulate and manage the state of the map as events are being received.
-      </para>
+      manipulate and manage the state of the map as events are being
+      received.</para>
 
       <para>For example, it could prevent the default mouse event behaviour or
       even prevent event bubbling. But because the MapController has such
       freedom only one can be active at a time.</para>
 
       <para>An example of a MapController is the NavigationController which
-      allows the user to navigate all around the map. </para>
+      allows the user to navigate all around the map.</para>
 
       <para></para>
     </section>

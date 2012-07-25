@@ -26,6 +26,10 @@ import com.google.gwt.user.client.ui.IsWidget;
  * <p>
  * The goal of this interface is to provide an easy way to have the gadget positioned.
  * </p>
+ * <p>
+ * The position of a MapGadget is maintained by the face, but you have to make sure that the container has a
+ * "position: absolute" style.
+ * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
