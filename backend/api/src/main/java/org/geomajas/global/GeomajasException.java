@@ -115,7 +115,11 @@ public class GeomajasException extends Exception {
 		try {
 			obj = bundle.getObject(message);
 		} catch (MissingResourceException mre) {
-			obj = bundleEn.getObject(message);
+			try {
+				obj = bundleEn.getObject(message);
+			} catch (MissingResourceException mre2) {
+				obj = message; // still can't find, use kay as translation
+			}
 		}
 		if (null != obj && obj instanceof String) {
 			return (String) obj;
