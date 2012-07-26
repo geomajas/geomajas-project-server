@@ -19,7 +19,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<bean name="layerOsmInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -33,8 +33,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         <property name="tileHeight" value="256"/>
  	</bean>
 
-	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer" >
-		<property name="layerInfo" ref="osmInfo" />
+	<bean name="layerOsm" class="org.geomajas.layer.osm.OsmLayer" >
+		<property name="layerInfo" ref="layerOsmInfo" />
 	</bean>
 
 </beans>

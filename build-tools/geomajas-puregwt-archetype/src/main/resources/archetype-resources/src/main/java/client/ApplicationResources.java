@@ -18,7 +18,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
- * Resource bundle for everything that is used in the showcase examples.
+ * Resource bundle for everything that is used in the application.
  * 
  * @author Pieter De Graef
  */

@@ -90,9 +90,6 @@
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/d/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
         <url-pattern>/${artifactId}/*</url-pattern>
     </servlet-mapping>
 

@@ -51,7 +51,7 @@ public class ApplicationLayout extends Composite {
 	public ApplicationLayout() {
 		initWidget(UI_BINDER.createAndBindUi(this));
 		mapPresenter = INJECTOR.getMapPresenter();
-		mapPresenter.initialize("puregwt-app", "mapOsm");
+		mapPresenter.initialize("app", "mapOsm");
 		mapPresenter.getMapRenderer().setAnimationMillis(300);
 		ResizableMapLayout mapLayout = new ResizableMapLayout(mapPresenter);
 		contentPanel.setWidget(mapLayout);

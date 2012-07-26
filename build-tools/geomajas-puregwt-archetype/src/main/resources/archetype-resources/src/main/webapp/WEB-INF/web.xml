@@ -16,12 +16,17 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
-	<display-name>Geomajas GWT face example application</display-name>
+	<display-name>Geomajas application</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+			<!-- framework context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
+
+			<!-- use rasterizing -->
 			classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml
+
+			<!-- application context -->
 			WEB-INF/applicationContext.xml
 			WEB-INF/layerOsm.xml
 			WEB-INF/mapOsm.xml
@@ -37,6 +42,11 @@
 		<filter-name>CacheFilter</filter-name>
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
+
+	<!-- only needed for direct GWT -->
+	<listener>
+		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
+	</listener>
 
 	<listener>
  		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
