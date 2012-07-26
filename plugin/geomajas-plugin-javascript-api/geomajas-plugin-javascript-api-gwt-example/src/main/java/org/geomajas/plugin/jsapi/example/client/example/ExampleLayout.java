@@ -40,7 +40,7 @@ public class ExampleLayout extends Widget {
 	interface ExampleLayoutUiBinder extends UiBinder<DivElement, ExampleLayout> {
 	}
 
-	private static final ExampleLayoutUiBinder UIBINDER = GWT.create(ExampleLayoutUiBinder.class);
+	private static final ExampleLayoutUiBinder UI_BINDER = GWT.create(ExampleLayoutUiBinder.class);
 
 	@UiField
 	protected DivElement titleDiv;
@@ -49,7 +49,7 @@ public class ExampleLayout extends Widget {
 	protected DivElement explanationDiv;
 
 	public ExampleLayout(final Example example) {
-		setElement(UIBINDER.createAndBindUi(this));
+		setElement(UI_BINDER.createAndBindUi(this));
 		setTitle(example.getTitle());
 		setExplanation(example.getExplanation());
 

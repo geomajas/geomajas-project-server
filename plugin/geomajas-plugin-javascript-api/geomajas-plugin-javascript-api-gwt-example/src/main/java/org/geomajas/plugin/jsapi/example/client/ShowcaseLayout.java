@@ -38,13 +38,13 @@ public class ShowcaseLayout extends Composite {
 	interface ShowcaseLayoutUiBinder extends UiBinder<Widget, ShowcaseLayout> {
 	}
 
-	private static final ShowcaseLayoutUiBinder UIBINDER = GWT.create(ShowcaseLayoutUiBinder.class);
+	private static final ShowcaseLayoutUiBinder UI_BINDER = GWT.create(ShowcaseLayoutUiBinder.class);
 
 	@UiField
 	protected ScrollPanel contentPanel;
 
 	public ShowcaseLayout() {
-		initWidget(UIBINDER.createAndBindUi(this));
+		initWidget(UI_BINDER.createAndBindUi(this));
 
 		FlowPanel flowPanel = new FlowPanel();
 		for (Example example : Examples.EXAMPLES) {

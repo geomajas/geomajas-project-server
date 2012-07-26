@@ -39,7 +39,7 @@ public class ApplicationLayout extends Composite {
 	interface ApplicationLayoutUiBinder extends UiBinder<Widget, ApplicationLayout> {
 	}
 
-	private static final ApplicationLayoutUiBinder UIBINDER = GWT.create(ApplicationLayoutUiBinder.class);
+	private static final ApplicationLayoutUiBinder UI_BINDER = GWT.create(ApplicationLayoutUiBinder.class);
 
 	private static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
 
@@ -49,7 +49,7 @@ public class ApplicationLayout extends Composite {
 	protected SimplePanel contentPanel;
 
 	public ApplicationLayout() {
-		initWidget(UIBINDER.createAndBindUi(this));
+		initWidget(UI_BINDER.createAndBindUi(this));
 		mapPresenter = INJECTOR.getMapPresenter();
 		mapPresenter.initialize("puregwt-app", "mapOsm");
 		mapPresenter.getMapRenderer().setAnimationMillis(300);

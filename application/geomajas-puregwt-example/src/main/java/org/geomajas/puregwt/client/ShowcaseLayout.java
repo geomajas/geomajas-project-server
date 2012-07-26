@@ -39,7 +39,7 @@ public class ShowcaseLayout extends Composite {
 	interface ShowcaseLayoutUiBinder extends UiBinder<Widget, ShowcaseLayout> {
 	}
 
-	private static final ShowcaseLayoutUiBinder UIBINDER = GWT.create(ShowcaseLayoutUiBinder.class);
+	private static final ShowcaseLayoutUiBinder UI_BINDER = GWT.create(ShowcaseLayoutUiBinder.class);
 
 	@UiField
 	protected ScrollPanel leftPanel;
@@ -52,7 +52,7 @@ public class ShowcaseLayout extends Composite {
 	private ContentPanel content;
 
 	public ShowcaseLayout(TreeViewModel treeModel) {
-		initWidget(UIBINDER.createAndBindUi(this));
+		initWidget(UI_BINDER.createAndBindUi(this));
 
 		// Left panel - the show case tree view:
 		mainMenu = new CellTree(treeModel, null);
