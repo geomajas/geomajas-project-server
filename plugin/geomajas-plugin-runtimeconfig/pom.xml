@@ -177,7 +177,7 @@
 	</profiles>
 
 	<properties>
-		<admin-backend-version>1.11.1-SNAPSHOT</admin-backend-version>
+		<admin-backend-version>1.11.0</admin-backend-version>
 		<admin-gwt-face-version>1.11.1-SNAPSHOT</admin-gwt-face-version>
 		<admin-puregwt-face-version>1.0.0-SNAPSHOT</admin-puregwt-face-version>
 		<admin-gwt-version>2.4.0</admin-gwt-version>
