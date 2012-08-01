@@ -72,7 +72,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	}
 
 	protected void buildWidget() {
-		disabledBtn = new MenuItem(NOTHEME_ICON, MESSAGES.expandingThemeWidgetNoThemeSelected(), null,
+		disabledBtn = new MenuItem(NOTHEME_ICON, MESSAGES.expandingThemeWidgetNoThemeAvailableTitle(), null,
 				new ClickHandler() {
 
 					public void onClick(ClickEvent event) {
