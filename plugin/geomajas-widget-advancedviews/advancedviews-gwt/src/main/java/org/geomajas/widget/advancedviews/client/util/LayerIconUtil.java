@@ -117,7 +117,18 @@ public final class LayerIconUtil {
 		return new Img(GavLayout.layerLabelOverlayUrl);
 	}
 
+
+	public static Img getOpacityUnderlayImg() {
+		return new Img(GavLayout.layerOpacityUnderlayUrl);
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @deprecated use getOpacityUnderlayImg()
+	 */
+	@Deprecated
 	public static Img getTransparencyUnderlayImg() {
-		return new Img(GavLayout.layerTransparencyUnderlayUrl);
+		return new Img(GavLayout.layerOpacityUnderlayUrl);
 	}
 }

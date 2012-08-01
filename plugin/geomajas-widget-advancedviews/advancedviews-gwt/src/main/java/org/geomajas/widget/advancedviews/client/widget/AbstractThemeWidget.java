@@ -139,7 +139,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 			if (layer != null) {
 				layer.setVisible(layerConfig.isVisible());
 				if (layer instanceof RasterLayer) {
-					((RasterLayer) layer).setOpacity(layerConfig.getTransparency());
+					((RasterLayer) layer).setOpacity(layerConfig.getOpacity());
 				}
 			} else {
 				GWT.log("ThemeWidget: could not find layer: " + layerConfig.getLayer().getId());

@@ -61,7 +61,7 @@ public class LayerActions extends Window {
 
 	private Img layerImg;
 	private Img layerLabelOverlay;
-	private Slider transparencySlider;
+	private Slider opacitySlider;
 	private CheckboxItem layerlabels;
 	private final CheckboxItem layerShow;
 	private final Layer<?> layer;
@@ -139,7 +139,7 @@ public class LayerActions extends Window {
 			form.setFields(layerlabels, layerShow);
 
 		} else {
-			transparencySlider = new Slider(MESSAGES.layerActionsOpacity());
+			opacitySlider = new Slider(MESSAGES.layerActionsOpacity());
 			String raw = rasterLayer.getLayerInfo().getStyle();
 			double opacity = 1d;
 			if (raw != null && !"".equals(raw)) {
@@ -150,7 +150,7 @@ public class LayerActions extends Window {
 				}
 			}
 			initSlider((int) Math.round(opacity * 100));
-			actiesLayout.addMember(transparencySlider);
+			actiesLayout.addMember(opacitySlider);
 			form.setFields(layerShow);
 		}
 		actiesLayout.addMember(form);
@@ -214,10 +214,10 @@ public class LayerActions extends Window {
 			sampleMap.addChild(layerImg);
 			sampleMap.addChild(layerLabelOverlay);
 		} else {
-			Img layerTransparencyUnderlay = LayerIconUtil.getTransparencyUnderlayImg();
-			layerTransparencyUnderlay.setImageType(ImageStyle.NORMAL);
+			Img layerOpacityUnderlay = LayerIconUtil.getOpacityUnderlayImg();
+			layerOpacityUnderlay.setImageType(ImageStyle.NORMAL);
 			layerImg.setUseOpacityFilter(true);
-			sampleMap.addChild(layerTransparencyUnderlay);
+			sampleMap.addChild(layerOpacityUnderlay);
 			sampleMap.addChild(layerImg);
 		}
 
@@ -263,18 +263,18 @@ public class LayerActions extends Window {
 	}
 
 	private void initSlider(int initialValue) {
-		transparencySlider.setValue(initialValue);
-		transparencySlider.setMinValue(0);
-		transparencySlider.setMaxValue(100);
-		transparencySlider.setNumValues(101);
-		transparencySlider.setMaxValueLabel("100%");
-		transparencySlider.setVertical(false);
-		transparencySlider.setWidth(230);
-		transparencySlider.setLabelWidth(Integer.parseInt(MESSAGES.layerActionsOpacitySliderLabelWidth()));
-		transparencySlider.addValueChangedHandler(new ValueChangedHandler() {
+		opacitySlider.setValue(initialValue);
+		opacitySlider.setMinValue(0);
+		opacitySlider.setMaxValue(100);
+		opacitySlider.setNumValues(101);
+		opacitySlider.setMaxValueLabel("100%");
+		opacitySlider.setVertical(false);
+		opacitySlider.setWidth(230);
+		opacitySlider.setLabelWidth(Integer.parseInt(MESSAGES.layerActionsOpacitySliderLabelWidth()));
+		opacitySlider.addValueChangedHandler(new ValueChangedHandler() {
 
 			public void onValueChanged(ValueChangedEvent event) {
-				double val = transparencySlider.getValue();
+				double val = opacitySlider.getValue();
 				layerImg.setOpacity((int) val);
 				if (val > 0) {
 					val /= 100;
