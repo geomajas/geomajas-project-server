@@ -30,7 +30,7 @@ public class LayerConfig implements Serializable {
 	private boolean visible;
 	
 	/**
-	 * What is the opacity level of this layer [0-100].
+	 * What is the opacity level of this layer, value between 0 and 1.
 	 */
 	private double opacity;
 
@@ -56,7 +56,7 @@ public class LayerConfig implements Serializable {
 
 	
 	/**
-	 * @return the opacity
+	 * @return the opacity, a value between 0 and 1.
 	 */
 	public double getOpacity() {
 		return opacity;
@@ -64,14 +64,14 @@ public class LayerConfig implements Serializable {
 
 	
 	/**
-	 * @param opacity the opacity to set
+	 * @param opacity the opacity to set, a value between 0 and 1.
 	 */
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
 	}
 
 	/**
-	 * @return the opacity
+	 * @return the opacity, a value between 0 and 1.
 	 * @deprecated use getOpacity()
 	 */
 	@Deprecated
@@ -81,7 +81,7 @@ public class LayerConfig implements Serializable {
 
 	
 	/**
-	 * @param opacity the opacity to set
+	 * @param opacity the opacity to set, a value between 0 and 1.
 	 * @deprecated use setOpacity()
 	 */
 	@Deprecated
