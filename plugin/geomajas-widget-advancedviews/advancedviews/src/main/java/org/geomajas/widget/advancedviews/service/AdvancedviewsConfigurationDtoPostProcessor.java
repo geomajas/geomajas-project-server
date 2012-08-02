@@ -40,7 +40,6 @@ public class AdvancedviewsConfigurationDtoPostProcessor {
 
 	@PostConstruct
 	protected void processConfiguration() {
-		System.out.println("processConfiguration");
 		if (mapInfos != null) {
 			for (ClientMapInfo map : mapInfos.values()) {
 				double pixPerUnit = map.getUnitLength() / map.getPixelLength();
