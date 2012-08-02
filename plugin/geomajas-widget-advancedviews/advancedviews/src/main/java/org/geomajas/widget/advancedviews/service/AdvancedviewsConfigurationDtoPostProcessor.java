@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.internal.configuration.ConfigurationDtoPostProcessor;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
 public class AdvancedviewsConfigurationDtoPostProcessor {
 
 	@Autowired
-	protected org.geomajas.internal.configuration.ConfigurationDtoPostProcessor geomajasPostProcessor;
+	protected ConfigurationDtoPostProcessor geomajasPostProcessor;
 	
 	@Autowired(required = false)
 	protected Map<String, ClientMapInfo> mapInfos;
