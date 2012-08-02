@@ -89,17 +89,6 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 
 	protected RangeConfig getRangeConfigForCurrentScale(ViewConfig viewConfig, double scale) {
 		for (RangeConfig config : viewConfig.getRangeConfigs()) {
-			// @todo: We convert pixelperunit, but this should be done elsewhere.
-			if (config.getMaximumScale().getPixelPerUnit() == 0) {
-				config.getMaximumScale().setPixelPerUnit(
-						config.getMaximumScale().getNumerator()
-								/ (config.getMaximumScale().getDenominator() * mapWidget.getPixelPerUnit()));
-			}
-			if (config.getMinimumScale().getPixelPerUnit() == 0) {
-				config.getMinimumScale().setPixelPerUnit(
-						config.getMinimumScale().getNumerator()
-								/ (config.getMinimumScale().getDenominator() * mapWidget.getPixelPerUnit()));
-			}
 			double scaleMax = config.getMaximumScale().getPixelPerUnit();
 			double scaleMin = config.getMinimumScale().getPixelPerUnit();
 			if (scale <= scaleMax && scale >= scaleMin) {

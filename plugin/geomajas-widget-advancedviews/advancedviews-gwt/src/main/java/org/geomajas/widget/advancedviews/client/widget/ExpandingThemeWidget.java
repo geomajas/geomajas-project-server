@@ -105,12 +105,13 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 				final ViewConfigItem item = new ViewConfigItem();
 				item.setViewConfig(viewConfig);
-				final MenuItem button = new MenuItem(icon, viewConfig.getDescription(), null, new ClickHandler() {
+				final MenuItem button = new MenuItem(icon, viewConfig.getTitle(), viewConfig.getDescription(),
+						new ClickHandler() {
 
-					public void onClick(ClickEvent event) {
-						activateViewConfig(item);
-					}
-				});
+							public void onClick(ClickEvent event) {
+								activateViewConfig(item);
+							}
+						});
 				item.setButton(button);
 				viewConfigItems.add(item);
 			}
@@ -262,7 +263,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			addMember(img);
 
 			// -- description
-			StringBuffer labeltext = new StringBuffer(title);
+			StringBuffer labeltext = new StringBuffer("<b>" + title + "</b>");
 			if (description != null) {
 				labeltext.append("<br />" + description);
 			}
