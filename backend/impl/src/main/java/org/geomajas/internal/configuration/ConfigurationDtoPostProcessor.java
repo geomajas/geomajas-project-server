@@ -40,6 +40,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
+import org.geomajas.global.ConfigurationDtoPostProcess;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
@@ -112,6 +113,10 @@ public class ConfigurationDtoPostProcessor {
 
 	@Autowired(required = true)
 	private ApplicationContext applicationContext;
+	
+	@Autowired(required = false)
+	private Map<String, ConfigurationDtoPostProcess> postProcessMap = 
+		new LinkedHashMap<String, ConfigurationDtoPostProcess>();
 
 	public ConfigurationDtoPostProcessor() {
 
@@ -131,6 +136,9 @@ public class ConfigurationDtoPostProcessor {
 			}
 			for (NamedStyleInfo style : namedStyleMap.values()) {
 				postProcess(style);
+			}
+			for (ConfigurationDtoPostProcess postProcess : postProcessMap.values()) {
+				postProcess.processConfiguration();
 			}
 		} catch (LayerException e) {
 			throw new BeanInitializationException("Invalid configuration", e);
