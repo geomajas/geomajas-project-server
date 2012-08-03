@@ -11,6 +11,7 @@
 package org.geomajas.widget.advancedviews.configuration.client.themes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ScaleInfo;
@@ -43,7 +44,7 @@ public class RangeConfig implements Serializable {
 	/**
 	 * Configuration of layers within this range.
 	 */
-	private List<LayerConfig> layerConfigs;
+	private List<LayerConfig> layerConfigs = new ArrayList<LayerConfig>(0);
 
 	/**
 	 * @return the icon

@@ -11,6 +11,7 @@
 package org.geomajas.widget.advancedviews.configuration.client.themes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,7 +37,7 @@ public class ViewConfig implements Serializable {
 	/**
 	 * Different ranges defined in this Viewconfig.
 	 */
-	private List<RangeConfig> rangeConfigs;
+	private List<RangeConfig> rangeConfigs = new ArrayList<RangeConfig>(0);
 
 	/**
 	 * Human readable description of this range.
