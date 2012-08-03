@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
@@ -32,23 +33,21 @@ import org.springframework.stereotype.Component;
 public class AdvancedviewsConfigurationDtoPostProcessor {
 
 	@Autowired(required = false)
-	protected Map<String, ClientMapInfo> mapInfos;
-
-	public AdvancedviewsConfigurationDtoPostProcessor() {
-
-	}
+	protected Map<String, ClientApplicationInfo> applicationMap;
 
 	@PostConstruct
 	protected void processConfiguration() {
-		if (mapInfos != null) {
-			for (ClientMapInfo map : mapInfos.values()) {
-				double pixPerUnit = map.getUnitLength() / map.getPixelLength();
-				ThemesInfo info = (ThemesInfo) map.getWidgetInfo(ThemesInfo.IDENTIFIER);
-				if (info != null) {
-					for (ViewConfig view : info.getThemeConfigs()) {
-						for (RangeConfig range : view.getRangeConfigs()) {
-							completeScale(range.getMaximumScale(), pixPerUnit);
-							completeScale(range.getMinimumScale(), pixPerUnit);
+		if (applicationMap != null) {
+			for (ClientApplicationInfo applicationInfo : applicationMap.values()) {
+				for (ClientMapInfo map : applicationInfo.getMaps()) {
+					double pixPerUnit = map.getUnitLength() / map.getPixelLength();
+					ThemesInfo info = (ThemesInfo) map.getWidgetInfo(ThemesInfo.IDENTIFIER);
+					if (info != null) {
+						for (ViewConfig view : info.getThemeConfigs()) {
+							for (RangeConfig range : view.getRangeConfigs()) {
+								completeScale(range.getMaximumScale(), pixPerUnit);
+								completeScale(range.getMinimumScale(), pixPerUnit);
+							}
 						}
 					}
 				}
@@ -59,8 +58,10 @@ public class AdvancedviewsConfigurationDtoPostProcessor {
 	/**
 	 * Convert the scale in pixels per unit or relative values, which ever is missing.
 	 * 
-	 * @param scaleInfo scaleInfo object which needs to be completed
-	 * @param mapUnitInPixels the number of pixels in a map unit
+	 * @param scaleInfo
+	 *            scaleInfo object which needs to be completed
+	 * @param mapUnitInPixels
+	 *            the number of pixels in a map unit
 	 */
 	public void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels) {
 		if (0 == mapUnitInPixels) {
