@@ -19,6 +19,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
 
+	<bean class="org.geomajas.widget.advancedviews.service.AdvancedviewsConfigurationDtoPostProcessor" />
 
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">

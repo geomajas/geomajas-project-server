@@ -12,16 +12,14 @@ package org.geomajas.widget.advancedviews.service;
 
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.global.ConfigurationDtoPostProcess;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Post-processes configuration DTOs.
@@ -29,14 +27,12 @@ import org.springframework.stereotype.Component;
  * @author Oliver May
  * 
  */
-@Component
-public class AdvancedviewsConfigurationDtoPostProcessor {
+public class AdvancedviewsConfigurationDtoPostProcessor implements ConfigurationDtoPostProcess {
 
 	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap;
-
-	@PostConstruct
-	protected void processConfiguration() {
+	
+	public void processConfiguration() {
 		if (applicationMap != null) {
 			for (ClientApplicationInfo applicationInfo : applicationMap.values()) {
 				for (ClientMapInfo map : applicationInfo.getMaps()) {
