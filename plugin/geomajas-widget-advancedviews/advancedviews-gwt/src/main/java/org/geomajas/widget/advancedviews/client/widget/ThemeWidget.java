@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.advancedviews.client.widget;
 
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
@@ -56,9 +57,9 @@ public class ThemeWidget extends AbstractThemeWidget {
 			button.setActionType(SelectionType.RADIO);
 			button.setRadioGroup(getID() + THEME_RADIO_GROUP);
 			if (rangeConfig != null) {
-				button.setIcon("[ISOMORPHIC]/" + rangeConfig.getIcon());
+				button.setIcon(Geomajas.getDispatcherUrl() + rangeConfig.getIcon());
 			} else {
-				button.setIcon("[ISOMORPHIC]/" + viewConfig.getIcon());
+				button.setIcon(Geomajas.getDispatcherUrl() + viewConfig.getIcon());
 			}
 			button.setIconWidth(IMAGE_SIZE);
 			button.setIconHeight(IMAGE_SIZE);
@@ -112,7 +113,7 @@ public class ThemeWidget extends AbstractThemeWidget {
 			RangeConfig config = getRangeConfigForCurrentScale(item.getViewConfig(),
 					mapWidget.getMapModel().getMapView().getCurrentScale());
 			if (null != config && null != config.getIcon()) {
-				item.getButton().setIcon("[ISOMORPHIC]/" + config.getIcon());
+				item.getButton().setIcon(Geomajas.getDispatcherUrl() + config.getIcon());
 			}
 		}
 	}

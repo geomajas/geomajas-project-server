@@ -11,6 +11,7 @@
 
 package org.geomajas.widget.advancedviews.client.widget;
 
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
@@ -98,9 +99,9 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 				String icon;
 				if (rangeConfig != null) {
-					icon = "[ISOMORPHIC]/" + rangeConfig.getIcon();
+					icon = Geomajas.getDispatcherUrl() + rangeConfig.getIcon();
 				} else {
-					icon = "[ISOMORPHIC]/" + viewConfig.getIcon();
+					icon = Geomajas.getDispatcherUrl() + viewConfig.getIcon();
 				}
 
 				final ViewConfigItem item = new ViewConfigItem();
@@ -206,7 +207,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			RangeConfig config = getRangeConfigForCurrentScale(item.getViewConfig(), mapWidget.getMapModel()
 					.getMapView().getCurrentScale());
 			if (null != config && null != config.getIcon()) {
-				((MenuItem) item.getButton()).setIcon("[ISOMORPHIC]/" + config.getIcon());
+				((MenuItem) item.getButton()).setIcon(Geomajas.getDispatcherUrl() + config.getIcon());
 			}
 		}
 
