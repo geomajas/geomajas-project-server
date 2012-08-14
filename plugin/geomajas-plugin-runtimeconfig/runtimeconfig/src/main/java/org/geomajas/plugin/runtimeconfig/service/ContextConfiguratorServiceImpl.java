@@ -22,8 +22,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.global.ConfigurationHelper;
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
-import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -78,7 +78,7 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 
 	public ContextConfiguratorServiceImpl() {
 		rewireContextLocations = new Resource[] { new ClassPathResource(REWIRE_CONFIG_XML_PATH) };
-		rewireClassNames = new String[] { Rewirable.class.getName(), ConfigurationService.class.getName() };
+		rewireClassNames = new String[] { Rewirable.class.getName(), ConfigurationHelper.class.getName() };
 	}
 
 	public void configureBeanDefinition(String beanName, BeanDefinition beanDefinition) throws RuntimeConfigException {
