@@ -26,6 +26,8 @@ public interface ConfigurationDtoPostProcess {
 	
 	/**
 	 * This method is called by the geomajas postprocessor after it's own processing.
+	 * 
+	 * @param configurationHelper helper for common post-processing tasks.
 	 */
-	void processConfiguration();
+	void processConfiguration(ConfigurationHelper configurationHelper);
 }
