@@ -19,7 +19,7 @@
   plug-in jar on your class path, and configuring a TMS layer using the
   Geomajas configuration.</para>
 
-  <sect1>
+  <section>
     <title>Java dependencies</title>
 
     <para>If you are using Maven, you're in luck. All you have to do is add
@@ -41,7 +41,7 @@
     version of JaxB (2.x) on your class path. Normally the Geomajas server has
     already required this, but we're mentioning it just in case.</para>
 
-    <sect2>
+    <section>
       <title>Configuring a TMS layer</title>
 
       <para>When configuring a TMS layer, there are 2 basic options to chose
@@ -51,10 +51,10 @@
       TileMap resource in the <ulink
       url="http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS
       specification</ulink>).</para>
-    </sect2>
+    </section>
 
-    <sect2>
-      <title>Option1: using the TMS layer description (TileMap)</title>
+    <section>
+      <title>Option 1: using the TMS layer description (TileMap)</title>
 
       <para>This option is the easiest one, but only works if your TMS
       actually has a TileMap description. If no such description is available,
@@ -69,10 +69,18 @@
       <programlisting>&lt;bean name="layerTms" class="org.geomajas.layer.tms.TmsLayer" &gt;
     &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
 &lt;/bean&gt;</programlisting>
-    </sect2>
 
-    <sect2>
-      <title>Option2: configuring a RasterLayerInfo</title>
+      <note>
+        <para>While this is the easiest way to configure a TMS layer, it can
+        cause application startup to fail if the specified URL cannot be read
+        or parsed. To prevent application startup failure when the TMS service
+        is down during application startup, use the RasterLayerInfo
+        configuration option mentioned below.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>Option 2: configuring a RasterLayerInfo</title>
 
       <para>This option would can be used in case there is no TMS description
       available, or in case you wish to use different configuration options.
@@ -122,6 +130,6 @@
       will generate tiles like:</para>
 
       <programlisting>http://tms.osgeo.org/1.0.0/landsat/0/0/0.jpg</programlisting>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 </chapter>
