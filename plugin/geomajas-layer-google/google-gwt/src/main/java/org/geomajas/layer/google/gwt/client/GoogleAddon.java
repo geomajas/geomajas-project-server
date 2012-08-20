@@ -29,6 +29,7 @@ import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.UIObject;
 import com.smartgwt.client.types.VerticalAlignment;
 
 /**
@@ -71,10 +72,15 @@ public class GoogleAddon extends MapAddon {
 	private final boolean showMap;
 	
 	private Element tosGroup;
+	
+	private boolean visible = true;
 
 	/**
 	 * Google map types as defined by the API.
+	 * 
+	 * @since 1.9.0
 	 */
+	@Api
 	public enum MapType {
 		NORMAL, SATELLITE, HYBRID, PHYSICAL
 	}
@@ -219,6 +225,7 @@ public class GoogleAddon extends MapAddon {
 			tosGroup.setId(map.getID() + "-googleAddon");
 			tosGroup.getStyle().setBottom(VERTICAL_MARGIN, Unit.PX);
 			graphics.appendChild(tosGroup);
+			UIObject.setVisible(tosGroup, visible);
 		}
 		String mapsId = map.getRasterContext().getId(this);
 		Element gmap = DOM.getElementById(mapsId);
@@ -232,10 +239,57 @@ public class GoogleAddon extends MapAddon {
 			}
 		}
 	}
+	
+	/**
+	 * Set the visibility of the Google map.
+	 * 
+	 * @param visible
+	 * @since 1.9.0
+	 */
+	@Api
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+		if (googleMap != null) {
+			String mapsId = map.getRasterContext().getId(this);
+			Element gmap = DOM.getElementById(mapsId);
+			UIObject.setVisible(gmap, visible);
+			if (tosGroup != null) {
+				UIObject.setVisible(tosGroup, visible);
+			}
+			if (visible) {
+				triggerResize(googleMap);
+			}
+		}
+	}
+	
+	/**
+	 * Set the type of the Google map.
+	 * 
+	 * @param type the map type
+	 */
+	@Api
+	public void setMapType(MapType type) {
+		if (googleMap != null) {
+			setMapType(googleMap, type.toString());
+		}
+	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
+
+	private native void setMapType(JavaScriptObject map, String mapType)
+	/*-{
+		if (mapType == "NORMAL") {
+		 	map.setMapTypeId($wnd.google.maps.MapTypeId.ROADMAP);
+		} else if (mapType == "SATELLITE") {
+		 	map.setMapTypeId($wnd.google.maps.MapTypeId.SATELLITE);
+		} else if (mapType == "HYBRID") {
+		 	map.setMapTypeId($wnd.google.maps.MapTypeId.HYBRID);
+		} else if (mapType == "PHYSICAL") {
+		 	map.setMapTypeId($wnd.google.maps.MapTypeId.TERRAIN);
+		}  
+	}-*/;
 
 	private boolean isGoogleProjection(String sourceCrs) {
 		return EPSG_900913.equals(sourceCrs) || EPSG_3857.equals(sourceCrs);
