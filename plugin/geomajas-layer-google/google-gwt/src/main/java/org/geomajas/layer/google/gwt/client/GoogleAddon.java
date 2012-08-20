@@ -266,6 +266,7 @@ public class GoogleAddon extends MapAddon {
 	 * Set the type of the Google map.
 	 * 
 	 * @param type the map type
+	 * @since 1.9.0
 	 */
 	@Api
 	public void setMapType(MapType type) {
