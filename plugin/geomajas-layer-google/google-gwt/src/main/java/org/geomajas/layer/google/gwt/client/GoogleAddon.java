@@ -67,7 +67,7 @@ public class GoogleAddon extends MapAddon {
 
 	private JavaScriptObject googleMap;
 
-	private final MapType type;
+	private MapType type;
 
 	private final boolean showMap;
 	
@@ -270,10 +270,23 @@ public class GoogleAddon extends MapAddon {
 	 */
 	@Api
 	public void setMapType(MapType type) {
+		this.type = type;
 		if (googleMap != null) {
 			setMapType(googleMap, type.toString());
 		}
 	}
+	
+	/**
+	 * Get the type of the Google map.
+	 * 
+	 * @return
+	 * @since 1.9.0
+	 */
+	@Api
+	public MapType getMapType() {
+		return type;
+	}	
+	
 
 	// ------------------------------------------------------------------------
 	// Private methods:
