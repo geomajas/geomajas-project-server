@@ -238,7 +238,7 @@ public class MultiRefreshContextLoader implements ContextLoader {
 		}
 
 		public void stop() {
-			currentContext.stop();
+			//currentContext.stop();
 		}
 
 	}

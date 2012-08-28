@@ -25,6 +25,10 @@ public class WmsLayerBeanFactory extends BaseRasterLayerBeanFactory {
 
 	public static final String BASE_WMS_URL = "baseWmsUrl";
 
+	public static final String WMS_USERNAME = "userName";
+
+	public static final String WMS_PASSWORD = "password";
+
 	public static final String PARAMETERS = "parameters";
 
 	protected WmsLayerBeanFactory() {
