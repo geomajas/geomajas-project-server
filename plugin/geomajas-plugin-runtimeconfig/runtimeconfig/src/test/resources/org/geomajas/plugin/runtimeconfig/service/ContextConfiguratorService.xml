@@ -34,7 +34,7 @@
 		</property>
 		<property name="RewireContextLocations">
 			<list>
-				<value>classpath:org/geomajas/plugin/admin/service/TestRewireContext.xml</value>
+				<value>classpath:org/geomajas/plugin/runtimeconfig/service/TestRewireContext.xml</value>
 			</list>
 		</property>
 	</bean>

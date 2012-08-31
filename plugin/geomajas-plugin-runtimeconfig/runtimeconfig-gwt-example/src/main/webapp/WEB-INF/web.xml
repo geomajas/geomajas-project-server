@@ -73,7 +73,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/adminExample/*</url-pattern>
+		<url-pattern>/runtimeconfigExample/*</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
