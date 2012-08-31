@@ -27,8 +27,10 @@ import org.geomajas.layer.LayerException;
 public interface ConfigurationHelper {
 
 	/**
-	 * Complete the scale information using the given map unit in pixels. 
-	 * @param scaleInfo scale info
+	 * Complete the scale information using the given map unit in pixels.
+	 * Convert the scale in pixels per unit or relative values, which ever is missing.
+	 *
+	 * @param scaleInfo scaleInfo object which needs to be completed
 	 * @param mapUnitInPixels map unit in pixels
 	 */
 	void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels);

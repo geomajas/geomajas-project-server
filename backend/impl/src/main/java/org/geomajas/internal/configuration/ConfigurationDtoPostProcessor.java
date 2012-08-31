@@ -520,12 +520,6 @@ public class ConfigurationDtoPostProcessor implements ConfigurationHelper {
 		}
 	}
 
-	/**
-	 * Convert the scale in pixels per unit or relative values, which ever is missing.
-	 * 
-	 * @param scaleInfo scaleInfo object which needs to be completed
-	 * @param mapUnitInPixels the number of pixels in a map unit
-	 */
 	@Override
 	public void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels) {
 		if (0 == mapUnitInPixels) {
