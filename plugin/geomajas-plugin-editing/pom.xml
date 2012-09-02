@@ -59,14 +59,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
+<!-- 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
 				<version>${geomajas-plugin-editing-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
+ -->			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-puregwt</artifactId>
 				<version>${geomajas-plugin-editing-puregwt-face-version}</version>
@@ -138,8 +138,8 @@
 		<module>editing-gwt-example-jar</module>
 		<module>editing-gwt-example</module>
  -->		<module>editing-puregwt</module>
-		<module>editing-puregwt-example</module>
-<!-- 		<module>editing-javascript-api</module>
+<!-- 		<module>editing-puregwt-example</module>
+ 		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
 		<module>editing-javascript-gwt-example</module>
  -->	</modules>
