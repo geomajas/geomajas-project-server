@@ -134,15 +134,15 @@
 	
 	<modules>
 		<module>editing</module>
-<!-- 		<module>editing-gwt</module>
+ 		<module>editing-gwt</module>
 		<module>editing-gwt-example-jar</module>
 		<module>editing-gwt-example</module>
- -->		<module>editing-puregwt</module>
-<!-- 		<module>editing-puregwt-example</module>
+		<module>editing-puregwt</module>
+ 		<module>editing-puregwt-example</module>
  		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
 		<module>editing-javascript-gwt-example</module>
- -->	</modules>
+	</modules>
 
 	<profiles>
 		<profile>
