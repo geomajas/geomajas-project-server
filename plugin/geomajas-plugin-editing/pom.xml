@@ -20,16 +20,16 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-editing-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.9.0</version>
 	<packaging>pom</packaging>
 
 	<name>Geomajas Editing plugin - Parent</name>
 	<description>Parent pom for the Geomajas Editing plugin</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-editing</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-editing</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-editing</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/0.9.0</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/0.9.0</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/0.9.0</url>
 	</scm>
 
 	<developers>
