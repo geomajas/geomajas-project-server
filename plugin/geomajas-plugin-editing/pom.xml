@@ -59,14 +59,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-<!-- 			<dependency>
+ 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
 				<version>${geomajas-plugin-editing-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
- -->			<dependency>
+			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-puregwt</artifactId>
 				<version>${geomajas-plugin-editing-puregwt-face-version}</version>
@@ -176,7 +176,7 @@
 		<geomajas-plugin-editing-backend-version>1.11.0</geomajas-plugin-editing-backend-version>
 		<geomajas-plugin-editing-common-gwt-face-version>1.1.0</geomajas-plugin-editing-common-gwt-face-version>
 		<geomajas-plugin-editing-gwt-face-version>1.11.0</geomajas-plugin-editing-gwt-face-version>
-		<geomajas-plugin-editing-puregwt-face-version>0.9.0</geomajas-plugin-editing-puregwt-face-version>
+		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
 		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
 		<gwt-exporter-version>2.3.1-GEOMAJAS</gwt-exporter-version>
 	</properties>
