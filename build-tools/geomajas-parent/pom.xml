@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-parent</artifactId>
-	<version>1.0.7</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas parent module, contains some maven settings</name>
 	<description>
