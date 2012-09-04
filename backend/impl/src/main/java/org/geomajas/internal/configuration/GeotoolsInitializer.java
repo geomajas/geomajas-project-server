@@ -12,7 +12,6 @@ package org.geomajas.internal.configuration;
 
 import javax.annotation.PostConstruct;
 
-import org.geotools.util.logging.Log4JLoggerFactory;
 import org.geotools.util.logging.Logging;
 
 /**
