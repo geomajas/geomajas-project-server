@@ -17,9 +17,12 @@
 		</encoder>
 	</appender>
 
-	<!--
-	<logger name="org.geomajas.internal.service.pipeline" level="DEBUG"/>
-	-->
+	<logger name="org.geotools.SLF4JLoggerTestDebug" level="DEBUG"/>
+	<logger name="org.geotools.SLF4JLoggerTestTrace" level="TRACE"/>
+	<logger name="org.geotools.SLF4JLoggerTestInfo" level="INFO"/>
+	<logger name="org.geotools.SLF4JLoggerTestWarn" level="WARN"/>
+	<logger name="org.geotools.SLF4JLoggerTestError" level="ERROR"/>
+	<logger name="org.geotools.SLF4JLoggerTestOff" level="OFF"/>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>

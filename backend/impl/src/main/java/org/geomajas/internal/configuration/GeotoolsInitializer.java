@@ -25,6 +25,6 @@ public class GeotoolsInitializer {
 
 	@PostConstruct
 	public void postConstruct() {
-		Logging.GEOTOOLS.setLoggerFactory(Log4JLoggerFactory.getInstance());
+		Logging.GEOTOOLS.setLoggerFactory(Slf4jLoggerFactory.getInstance());
 	}
 }

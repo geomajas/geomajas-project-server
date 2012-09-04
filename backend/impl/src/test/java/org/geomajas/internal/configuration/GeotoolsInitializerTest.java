@@ -2,7 +2,6 @@ package org.geomajas.internal.configuration;
 
 import junit.framework.Assert;
 
-import org.geotools.util.logging.Log4JLoggerFactory;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,7 +15,7 @@ public class GeotoolsInitializerTest {
 		context.setDisplayName("test");
 		context.setConfigLocation("/org/geomajas/spring/geomajasContext.xml ");
 		context.refresh();
-		Assert.assertSame(Logging.GEOTOOLS.getLoggerFactory(), Log4JLoggerFactory.getInstance());
+		Assert.assertSame(Logging.GEOTOOLS.getLoggerFactory(), Slf4jLoggerFactory.getInstance());
 	}
 
 }
