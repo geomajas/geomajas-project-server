@@ -134,15 +134,15 @@
 	
 	<modules>
 		<module>editing</module>
-<!--  		<module>editing-gwt</module>
+  		<module>editing-gwt</module>
 		<module>editing-gwt-example-jar</module>
 		<module>editing-gwt-example</module>
- -->		<module>editing-puregwt</module>
-<!--  		<module>editing-puregwt-example</module>
+		<module>editing-puregwt</module>
+  		<module>editing-puregwt-example</module>
  		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
 		<module>editing-javascript-gwt-example</module>
- -->	</modules>
+	</modules>
 
 	<profiles>
 		<profile>
@@ -176,7 +176,7 @@
 		<geomajas-plugin-editing-backend-version>1.11.0</geomajas-plugin-editing-backend-version>
 		<geomajas-plugin-editing-common-gwt-face-version>1.1.0</geomajas-plugin-editing-common-gwt-face-version>
 		<geomajas-plugin-editing-gwt-face-version>1.11.1-SNAPSHOT</geomajas-plugin-editing-gwt-face-version>
-		<geomajas-plugin-editing-puregwt-face-version>1.0.0-M1</geomajas-plugin-editing-puregwt-face-version>
+		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
 		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
 		<gwt-exporter-version>2.3.1-GEOMAJAS</gwt-exporter-version>
 	</properties>
