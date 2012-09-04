@@ -40,8 +40,6 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.global.ConfigurationDtoPostProcess;
-import org.geomajas.global.ConfigurationHelper;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
@@ -82,7 +80,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jan De Moerloose
  */
 @Component
-public class ConfigurationDtoPostProcessor implements ConfigurationHelper {
+public class ConfigurationDtoPostProcessor {
 
 	private static final double METER_PER_INCH = 0.0254;
 
@@ -114,10 +112,6 @@ public class ConfigurationDtoPostProcessor implements ConfigurationHelper {
 
 	@Autowired(required = true)
 	private ApplicationContext applicationContext;
-	
-	@Autowired(required = false)
-	private Map<String, ConfigurationDtoPostProcess> postProcessMap = 
-		new LinkedHashMap<String, ConfigurationDtoPostProcess>();
 
 	public ConfigurationDtoPostProcessor() {
 
@@ -137,9 +131,6 @@ public class ConfigurationDtoPostProcessor implements ConfigurationHelper {
 			}
 			for (NamedStyleInfo style : namedStyleMap.values()) {
 				postProcess(style);
-			}
-			for (ConfigurationDtoPostProcess postProcess : postProcessMap.values()) {
-				postProcess.processConfiguration(this);
 			}
 		} catch (LayerException e) {
 			throw new BeanInitializationException("Invalid configuration", e);
@@ -442,34 +433,28 @@ public class ConfigurationDtoPostProcessor implements ConfigurationHelper {
 			}
 			completeScale(map.getScaleConfiguration().getMaximumScale(), pixPerUnit);
 			for (ClientLayerInfo layer : map.getLayers()) {
-				postProcess(layer, map.getCrs(), pixPerUnit);
+				String layerId = layer.getServerLayerId();
+				Layer<?> serverLayer = layerMap.get(layerId);
+				if (serverLayer == null) {
+					throw new LayerException(ExceptionCode.LAYER_NOT_FOUND, layerId);
+				}
+				LayerInfo layerInfo = serverLayer.getLayerInfo();
+				layer.setLayerInfo(layerInfo);
+				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layerInfo.getMaxExtent(), layerId));
+				completeScale(layer.getMaximumScale(), pixPerUnit);
+				completeScale(layer.getMinimumScale(), pixPerUnit);
+				completeScale(layer.getZoomToPointScale(), pixPerUnit);
+				log.debug("Layer {} has scale range : {}, {}", new Object[] {layer.getId(),
+						layer.getMinimumScale().getPixelPerUnit(), layer.getMaximumScale().getPixelPerUnit()});
+				log.debug("Layer {} has zoom-to-point scale : {}", layer.getId(),
+						layer.getZoomToPointScale().getPixelPerUnit());
+				if (layer instanceof ClientVectorLayerInfo) {
+					postProcess((ClientVectorLayerInfo) layer);
+				}
 			}
 			checkLayerTree(map);
 		}
 		return client;
-	}
-	
-	
-	@Override
-	public void postProcess(ClientLayerInfo layer, String mapCrs, double mapUnitInPixels) throws LayerException {
-		String layerId = layer.getServerLayerId();
-		Layer<?> serverLayer = layerMap.get(layerId);
-		if (serverLayer == null) {
-			throw new LayerException(ExceptionCode.LAYER_NOT_FOUND, layerId);
-		}
-		LayerInfo layerInfo = serverLayer.getLayerInfo();
-		layer.setLayerInfo(layerInfo);
-		layer.setMaxExtent(getClientMaxExtent(mapCrs, layer.getCrs(), layerInfo.getMaxExtent(), layerId));
-		completeScale(layer.getMaximumScale(), mapUnitInPixels);
-		completeScale(layer.getMinimumScale(), mapUnitInPixels);
-		completeScale(layer.getZoomToPointScale(), mapUnitInPixels);
-		log.debug("Layer {} has scale range : {}, {}", new Object[] {layer.getId(),
-				layer.getMinimumScale().getPixelPerUnit(), layer.getMaximumScale().getPixelPerUnit()});
-		log.debug("Layer {} has zoom-to-point scale : {}", layer.getId(),
-				layer.getZoomToPointScale().getPixelPerUnit());
-		if (layer instanceof ClientVectorLayerInfo) {
-			postProcess((ClientVectorLayerInfo) layer);
-		}
 	}
 
 	private ClientVectorLayerInfo postProcess(ClientVectorLayerInfo layer) throws LayerException {
@@ -520,7 +505,12 @@ public class ConfigurationDtoPostProcessor implements ConfigurationHelper {
 		}
 	}
 
-	@Override
+	/**
+	 * Convert the scale in pixels per unit or relative values, which ever is missing.
+	 * 
+	 * @param scaleInfo scaleInfo object which needs to be completed
+	 * @param mapUnitInPixels the number of pixels in a map unit
+	 */
 	public void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels) {
 		if (0 == mapUnitInPixels) {
 			throw new IllegalArgumentException("ScaleInfo.completeScale mapUnitInPixels should never be zero.");

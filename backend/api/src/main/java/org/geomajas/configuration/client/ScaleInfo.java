@@ -10,6 +10,8 @@
  */
 package org.geomajas.configuration.client;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.IsInfo;
 
@@ -30,6 +32,14 @@ public class ScaleInfo implements IsInfo {
 	private double numerator;
 
 	private double denominator;
+	
+	private boolean pixelPerUnitBased;
+
+	/**
+	 * Default conversion factor between map unit and pixel size (based on meter and 96 DPI).
+	 * @since 1.11.1
+	 */
+	public static final double PIXEL_PER_METER = 96 / 0.0254;
 
 	/**
 	 * A minimum pixelPerUnit value which is suitable for all purposes but avoids zero and is in float range.
@@ -45,7 +55,7 @@ public class ScaleInfo implements IsInfo {
 	 * Default constructor for GWT serialization.
 	 */
 	public ScaleInfo() {
-		pixelPerUnit = MINIMUM_PIXEL_PER_UNIT;
+		this(MINIMUM_PIXEL_PER_UNIT);
 	}
 
 	/**
@@ -64,6 +74,7 @@ public class ScaleInfo implements IsInfo {
 			pixelPerUnit = MAXIMUM_PIXEL_PER_UNIT;
 		}
 		this.pixelPerUnit = pixelPerUnit;
+		pixelPerUnitBased = true;
 	}
 
 	/**
@@ -81,6 +92,7 @@ public class ScaleInfo implements IsInfo {
 		if (denominator <= 0) {
 			throw new IllegalArgumentException("Scale denominator must be positive");
 		}
+		pixelPerUnitBased = false;
 	}
 	
 	/**
@@ -118,6 +130,28 @@ public class ScaleInfo implements IsInfo {
 			pixelPerUnit = MAXIMUM_PIXEL_PER_UNIT;
 		}
 		this.pixelPerUnit = pixelPerUnit;
+	}
+	
+	/**
+	 * Returns whether this scale is based on pixel per unit. If true, recalculations should use {@link #pixelPerUnit}
+	 * instead of nominator/denominator.
+	 * 
+	 * @return true if in pixel per unit, false otherwise
+	 * @since 1.11.1
+	 */
+	public boolean isPixelPerUnitBased() {
+		return pixelPerUnitBased;
+	}
+
+	/**
+	 * Set this scale to be based on pixel per unit. If true, recalculations should use {@link #pixelPerUnit} instead of
+	 * nominator/denominator.
+	 * 
+	 * @param pixelPerUnitBased true if based on {@link #pixelPerUnit}
+	 * @since 1.11.1
+	 */
+	public void setPixelPerUnitBased(boolean pixelPerUnitBased) {
+		this.pixelPerUnitBased = pixelPerUnitBased;
 	}
 
 	/**
@@ -158,4 +192,21 @@ public class ScaleInfo implements IsInfo {
 		this.denominator = denominator;
 	}
 	
+	/** Finish configuration. */
+	@PostConstruct
+	protected void postConstruct() {
+		if (denominator != 0) {
+			setPixelPerUnit(numerator / denominator * PIXEL_PER_METER);
+			setPixelPerUnitBased(true);
+		} else {
+			if (pixelPerUnit > PIXEL_PER_METER) {
+				setNumerator(pixelPerUnit / PIXEL_PER_METER);
+				setDenominator(1);
+			} else {
+				setNumerator(1);
+				setDenominator(PIXEL_PER_METER / pixelPerUnit);
+			}
+			setPixelPerUnitBased(false);
+		}
+	}
 }
