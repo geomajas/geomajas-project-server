@@ -427,23 +427,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/** {@inheritDoc} */
 	public Envelope getBounds() throws LayerException {
-		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
-		if (source instanceof FeatureStore<?, ?>) {
-			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			if (transactionManager != null) {
-				store.setTransaction(transactionManager.getTransaction());
-			}
-		}
-		try {
-			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures();
-			FeatureIterator<SimpleFeature> it = fc.features();
-			if (transactionManager != null) {
-				transactionManager.addIterator(it);
-			}
-			return fc.getBounds();
-		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
-			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
-		}
+		return getBounds(null);
 	}
 
 	/** {@inheritDoc} */
@@ -456,10 +440,19 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 		}
 		try {
-			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
+			FeatureCollection<SimpleFeatureType, SimpleFeature> fc;
+			if (null == filter) {
+				fc = source.getFeatures();
+			} else {
+				fc = source.getFeatures(filter);
+			}
 			FeatureIterator<SimpleFeature> it = fc.features();
-			if (transactionManager != null) {
-				transactionManager.addIterator(it);
+			try {
+				if (transactionManager != null) {
+					transactionManager.addIterator(it);
+				}
+			} finally {
+				it.close();
 			}
 			return fc.getBounds();
 		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
