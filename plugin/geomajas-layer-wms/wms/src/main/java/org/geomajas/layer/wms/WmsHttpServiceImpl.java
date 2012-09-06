@@ -11,28 +11,48 @@
 
 package org.geomajas.layer.wms;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 /**
  * Implementation of {@link WmsHttpService}.
  *
  * @author Joachim Van der Auwera
+ * @author Kristof Heirwegh
  */
 @Component
 public class WmsHttpServiceImpl implements WmsHttpService {
+
+	private final Logger log = LoggerFactory.getLogger(WmsHttpServiceImpl.class);
 
 	private static final String URL_PARAM_START = "?";
 	private static final String URL_PARAM_SEPARATOR = "&";
 	private static final String URL_PARAM_IS = "=";
 	private static final String URL_PROTOCOL_SEPARATOR = "://";
 	private static final int TIMEOUT = 5000;
+	private static final int URL_DEFAULT_SECURE_PORT = 443;
+
+	@Autowired
+	private ApplicationContext appContext;
 
 	public String addCredentialsToUrl(final String url, final WmsAuthentication authentication) {
 		if (null != authentication && WmsAuthenticationMethod.URL.equals(authentication.getAuthenticationMethod())) {
@@ -56,31 +76,39 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 
 	public InputStream getStream(final String baseUrl, final WmsAuthentication authentication) throws IOException {
 		// Create a HTTP client object, which will initiate the connection:
-		HttpClient client = new HttpClient();
-		client.setConnectionTimeout(TIMEOUT);
+		final HttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT);
+		DefaultHttpClient client = new DefaultHttpClient(httpParams);
 
 		String url = addCredentialsToUrl(baseUrl, authentication);
 
+		// -- add basic authentication
 		if (null != authentication && WmsAuthenticationMethod.BASIC.equals(authentication.getAuthenticationMethod())) {
-			// Preemptive: In this mode HttpClient will send the basic authentication response even before the server
-			// gives an unauthorized response in certain situations, thus reducing the overhead of making the
-			// connection.
-			client.getState().setAuthenticationPreemptive(true);
-
 			// Set up the WMS credentials:
-			Credentials credentials = new UsernamePasswordCredentials(authentication.getUser(),
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(authentication.getUser(),
 					authentication.getPassword());
-			client.getState().setCredentials(authentication.getRealm(), parseDomain(url), credentials);
+			AuthScope scope = new AuthScope(parseDomain(url), parsePort(url), authentication.getRealm());
+			client.getCredentialsProvider().setCredentials(scope, creds);
+		}
+
+		// -- add interceptors if any --
+		Map<String, HttpRequestInterceptor> requestInterceptors = appContext
+				.getBeansOfType(HttpRequestInterceptor.class);
+		if (requestInterceptors != null) {
+			for (HttpRequestInterceptor interceptor : requestInterceptors.values()) {
+				client.addRequestInterceptor(interceptor);
+			}
 		}
 
 		// Create the GET method with the correct URL:
-		GetMethod get = new GetMethod(url);
-		get.setDoAuthentication(true);
+		HttpGet get = new HttpGet(url);
 
 		// Execute the GET:
-		client.executeMethod(get);
+		HttpResponse response = client.execute(get);
+		log.debug("Response: {} - {}", response.getStatusLine().getStatusCode(), response.getStatusLine()
+				.getReasonPhrase());
 
-		return new WmsHttpServiceStream(get);
+		return new WmsHttpServiceStream(response, client);
 	}
 
 	/**
@@ -101,19 +129,34 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	}
 
 	/**
+	 * Get the domain out of a full URL.
+	 *
+	 * @param url base url
+	 * @return domain name
+	 */
+	private int parsePort(String url) {
+		try {
+			URL u = new URL(url);
+			return (u.getPort() == -1 ? URL_DEFAULT_SECURE_PORT : u.getPort());
+		} catch (MalformedURLException e) {
+			return URL_DEFAULT_SECURE_PORT;
+		}
+	}
+
+	/**
 	 * Delegating input stream which also closes the HTTP connection when closing the stream.
 	 *
 	 * @author Joachim Van der Auwera
 	 */
 	private static class WmsHttpServiceStream extends InputStream {
 
-		private final GetMethod get;
+		private final HttpClient client;
 		private final InputStream inputStream;
 
-		public WmsHttpServiceStream(GetMethod getMethod) throws IOException {
+		public WmsHttpServiceStream(HttpResponse response, HttpClient client) throws IOException {
 			super();
-			this.get = getMethod;
-			this.inputStream = get.getResponseBodyAsStream();
+			this.client = client;
+			this.inputStream = response.getEntity().getContent();
 		}
 
 		@Override
@@ -144,7 +187,7 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 		@Override
 		public void close() throws IOException {
 			inputStream.close();
-			get.releaseConnection();
+			client.getConnectionManager().shutdown(); // reuse would be better
 		}
 
 		@Override
