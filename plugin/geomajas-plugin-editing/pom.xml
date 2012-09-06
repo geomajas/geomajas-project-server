@@ -73,7 +73,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-javascript-api-all</artifactId>
@@ -81,7 +80,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			-->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-editing</artifactId>
@@ -141,11 +139,9 @@
 		<module>editing-gwt-example</module>
 		<module>editing-puregwt</module>
   		<module>editing-puregwt-example</module>
-		<!--
  		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
 		<module>editing-javascript-gwt-example</module>
-		-->
 	</modules>
 
 	<profiles>
