@@ -29,7 +29,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="GeoTools layer" />
-					<property name="version" value="1.10.0-SNAPSHOT" />
+					<property name="version" value="1.10.0" />
 				</bean>
 			</list>
 		</property>
