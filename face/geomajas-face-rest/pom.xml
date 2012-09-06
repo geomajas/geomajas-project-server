@@ -93,7 +93,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-rest-backend-version>1.11.1-SNAPSHOT</geomajas-face-rest-backend-version>
+		<geomajas-face-rest-backend-version>1.11.1</geomajas-face-rest-backend-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 </project>

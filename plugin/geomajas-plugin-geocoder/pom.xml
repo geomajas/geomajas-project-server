@@ -142,8 +142,8 @@
 	</profiles>
 
 	<properties>
-		<geocoder-backend-version>1.11.1-SNAPSHOT</geocoder-backend-version>
-		<geocoder-gwt-face-version>1.11.1-SNAPSHOT</geocoder-gwt-face-version>
+		<geocoder-backend-version>1.11.1</geocoder-backend-version>
+		<geocoder-gwt-face-version>1.11.1</geocoder-gwt-face-version>
 		<geocoder-puregwt-face-version>1.0.0-SNAPSHOT</geocoder-puregwt-face-version>
 		<geocoder-gwt-version>2.4.0</geocoder-gwt-version>
 	</properties>

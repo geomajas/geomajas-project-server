@@ -213,8 +213,8 @@
 	</profiles>
 
 	<properties>
-		<printing-backend-version>1.11.1-SNAPSHOT</printing-backend-version>
-		<printing-gwt-face-version>1.11.1-SNAPSHOT</printing-gwt-face-version>
+		<printing-backend-version>1.11.1</printing-backend-version>
+		<printing-gwt-face-version>1.11.1</printing-gwt-face-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<google-gwt-version>2.4.0</google-gwt-version>
 	</properties>

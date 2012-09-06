@@ -81,13 +81,13 @@ include "org.geomajas.documentation" "docbook-gettingstarted" "1.12.0-SNAPSHOT" 
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
-    "org.geomajas" "geomajas-command" "1.11.0"
+    "org.geomajas" "geomajas-command" "1.11.1"
 
 include "org.geomajas.documentation" "docbook-devuserguide" "1.12.0-SNAPSHOT" \
     "User guide for developers" \
     "Reference guide detailing architecture, implementation and extension possibilities of the back-end core." \
     "incubating" "User_Guide_for_Developers.pdf" \
-    "org.geomajas" "geomajas-api" "1.11.0"
+    "org.geomajas" "geomajas-api" "1.11.1"
 
 
 # projects
@@ -117,7 +117,7 @@ include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.12.0-S
     "GWT face" \
     "GWT face for building powerful AJAX web user interfaces in Java using SmartGWT." \
     "incubating" "gwt_face.pdf" \
-    "org.geomajas" "geomajas-gwt-client" "1.11.0"
+    "org.geomajas" "geomajas-gwt-client" "1.11.1"
 
 include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.0-SNAPSHOT" \
     "PureGWT face" \
@@ -146,11 +146,11 @@ include "org.geomajas.documentation" "geomajas-face-rest-documentation" "1.1.0-S
 
 # plug-ins
 
-include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.10.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.11.0-SNAPSHOT" \
     "Geotools layer" \
     "This is a layer which allows accessing GIS data through GeoTools, for example for accessing WFS data." \
     "graduated" "Geotools_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-geotools" "1.9.0"
+    "org.geomajas.plugin" "geomajas-layer-geotools" "1.10.0"
 
 include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.9.0-SNAPSHOT" \
     "Google layer" \

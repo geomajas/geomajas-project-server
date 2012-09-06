@@ -61,7 +61,6 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-javascript-api-gwt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Geomajas generic JS API for editing plugin -->

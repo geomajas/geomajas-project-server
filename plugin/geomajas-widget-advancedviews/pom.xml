@@ -126,8 +126,8 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-advancedviews-backend-version>1.11.1-SNAPSHOT</geomajas-widget-advancedviews-backend-version>
-		<geomajas-widget-advancedviews-gwt-face-version>1.11.1-SNAPSHOT</geomajas-widget-advancedviews-gwt-face-version>
+		<geomajas-widget-advancedviews-backend-version>1.11.1</geomajas-widget-advancedviews-backend-version>
+		<geomajas-widget-advancedviews-gwt-face-version>1.11.1</geomajas-widget-advancedviews-gwt-face-version>
 		<geomajas-widget-advancedviews-gwt-version>2.4.0</geomajas-widget-advancedviews-gwt-version>
 	</properties>
 </project>
