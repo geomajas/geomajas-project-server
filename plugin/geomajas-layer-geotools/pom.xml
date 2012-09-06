@@ -154,8 +154,8 @@
 	</profiles>
 
 	<properties>
-		<geotools-layer-backend-version>1.11.1-SNAPSHOT</geotools-layer-backend-version>
-		<geotools-gwt-face-version>1.11.1-SNAPSHOT</geotools-gwt-face-version>
+		<geotools-layer-backend-version>1.11.1</geotools-layer-backend-version>
+		<geotools-gwt-face-version>1.11.1</geotools-gwt-face-version>
 		<geotools-version>2.7.5</geotools-version>
 		<geotools-extras-version>2.7.5</geotools-extras-version>
 		<geodb-version>0.7</geodb-version>
