@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-gwt</artifactId>
-	<version>1.11.1-SNAPSHOT</version>
+	<version>1.11.1</version>
 	<packaging>pom</packaging>
 	<name>Geomajas gwt face</name>
 	<description>Geomajas gwt face</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-gwt</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-gwt</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-gwt</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.11.1</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.11.1</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-gwt-1.11.1</url>
 	</scm>
 
 	<developers>
