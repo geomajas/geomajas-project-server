@@ -11,6 +11,22 @@
 
 package org.geomajas.plugin.staticsecurity.ldap;
 
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.validation.constraints.NotNull;
+
+import org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo;
+import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
+import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
+import org.geomajas.plugin.staticsecurity.security.AuthenticationService;
+import org.geomajas.plugin.staticsecurity.security.UserDirectoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.unboundid.ldap.sdk.BindResult;
 import com.unboundid.ldap.sdk.Filter;
 import com.unboundid.ldap.sdk.LDAPConnection;
@@ -21,24 +37,13 @@ import com.unboundid.ldap.sdk.SearchResultEntry;
 import com.unboundid.ldap.sdk.SearchScope;
 import com.unboundid.util.ssl.SSLUtil;
 import com.unboundid.util.ssl.TrustAllTrustManager;
-import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
-import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
-import org.geomajas.plugin.staticsecurity.security.AuthenticationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.constraints.NotNull;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * {@link AuthenticationService} for linking to an LDAP store of users.
  *
  * @author Joachim Van der Auwera
  */
-public class LdapAuthenticationService implements AuthenticationService {
+public class LdapAuthenticationService implements AuthenticationService, UserDirectoryService {
 
 	private final Logger log = LoggerFactory.getLogger(LdapAuthenticationService.class);
 
@@ -52,6 +57,8 @@ public class LdapAuthenticationService implements AuthenticationService {
 	@NotNull
 	private String userDnTemplate;
 
+	private String allUsersDn;
+
 	private String givenNameAttribute;
 	private String surNameAttribute;
 	private String localeAttribute;
@@ -61,6 +68,8 @@ public class LdapAuthenticationService implements AuthenticationService {
 
 	private List<AuthorizationInfo> defaultRole;
 	private Map<String, List<AuthorizationInfo>> roles;
+	
+	public static final String DEFAULT_ROLE_NAME = "ROLE_DEFAULT";
 
 	/**
 	 * Set the server host for the LDAP service.
@@ -97,6 +106,15 @@ public class LdapAuthenticationService implements AuthenticationService {
 	 */
 	public void setUserDnTemplate(String userDnTemplate) {
 		this.userDnTemplate = userDnTemplate;
+	}
+
+	/**
+	 * Set the template to build the DN for querying all users.
+	 * 
+	 * @param allUsersDn all users DN
+	 */
+	public void setAllUsersDn(String allUsersDn) {
+		this.allUsersDn = allUsersDn;
 	}
 
 	/**
@@ -188,6 +206,78 @@ public class LdapAuthenticationService implements AuthenticationService {
 	/** {@inheritDoc} */
 	public UserInfo isAuthenticated(String user, String password) {
 		String userDn = userDnTemplate.replace("{}", user);
+		SearchRequest request = createSearchRequest(userDn);
+		SearchResult result;
+		result = execute(request, userDn, password);
+		if (result != null && !result.getSearchEntries().isEmpty()) {
+			return getUserInfo(result.getSearchEntries().get(0));
+		} else {
+			return null;
+		}
+	}
+	
+	
+
+	@Override
+	public List<UserInfo> getUsers(Set<String> roles, Map<String, String> parameters) {
+		List<UserInfo> users = new ArrayList<UserInfo>();
+		if (allUsersDn == null) {
+			log.warn("Getting users from LDAP requires configuration of allUsersDn property");
+		} else {
+			SearchRequest request = createSearchRequest(allUsersDn);
+			if (roles != null && !roles.isEmpty()) {
+				List<Filter> roleFilters = new ArrayList<Filter>();
+				for (String role : roles) {
+					roleFilters.add(Filter.createEqualityFilter(rolesAttribute, role));
+				}
+				Filter f = request.getFilter();
+				request.setFilter(Filter.createANDFilter(f, Filter.createORFilter(roleFilters)));
+			}
+			SearchResult result = execute(request, null, null);
+			if (result != null) {
+				for (SearchResultEntry entry : result.getSearchEntries()) {
+					users.add(getUserInfo(entry));
+				}
+			}
+		}
+		return users;
+	}
+
+	private SearchRequest createSearchRequest(String searchDN) {
+		List<String> attributes = new ArrayList<String>();
+		attributes.add("cn");
+		addAttribute(attributes, givenNameAttribute);
+		addAttribute(attributes, surNameAttribute);
+		addAttribute(attributes, localeAttribute);
+		addAttribute(attributes, organizationAttribute);
+		addAttribute(attributes, divisionAttribute);
+		addAttribute(attributes, rolesAttribute);
+		SearchRequest request = new SearchRequest(searchDN, SearchScope.SUB, Filter.createEqualityFilter(
+				"objectclass", "person"), attributes.toArray(new String[attributes.size()]));
+		return request;
+	}
+
+	private UserInfo getUserInfo(SearchResultEntry entry) {
+		UserInfo result = new UserInfo();
+		result.setUserId(entry.getAttributeValue("cn"));		
+		String name = entry.getAttributeValue(givenNameAttribute);
+		String name2 = entry.getAttributeValue(surNameAttribute);
+		if (null != name) {
+			if (null != name2) {
+				name = name + " " + name2;
+			}
+		} else {
+			name = name2;
+		}
+		result.setUserName(name);
+		result.setUserLocale(entry.getAttributeValue(localeAttribute));
+		result.setUserOrganization(entry.getAttributeValue(organizationAttribute));
+		result.setUserDivision(entry.getAttributeValue(divisionAttribute));
+		result.setAuthorities(getAuthorities(entry));
+		return result;
+	}
+	
+	private SearchResult execute(SearchRequest request, String bindDN, String password) {
 		LDAPConnection connection = null;
 		try {
 			if (allowAllSocketFactory) {
@@ -196,22 +286,13 @@ public class LdapAuthenticationService implements AuthenticationService {
 			} else {
 				connection = new LDAPConnection(serverHost, serverPort);
 			}
-
-			BindResult auth = connection.bind(userDn, password);
-			if (auth.getResultCode().isConnectionUsable()) {
-				List<String> attributes = new ArrayList<String>();
-				attributes.add("cn");
-				addAttribute(attributes, givenNameAttribute);
-				addAttribute(attributes, surNameAttribute);
-				addAttribute(attributes, localeAttribute);
-				addAttribute(attributes, organizationAttribute);
-				addAttribute(attributes, divisionAttribute);
-				addAttribute(attributes, rolesAttribute);
-				SearchRequest request = new SearchRequest(userDn, SearchScope.SUB,
-						Filter.createEqualityFilter("objectclass", "person"),
-						attributes.toArray(new String[attributes.size()]));
-				return getUserInfo(user, connection.search(request));
+			if (bindDN != null) {
+				BindResult auth = connection.bind(bindDN, password);
+				if (!auth.getResultCode().isConnectionUsable()) {
+					log.error("Connection not usable, result code : " + auth.getResultCode());
+				}
 			}
+			return connection.search(request);
 		} catch (LDAPException le) {
 			String message = le.getMessage();
 			if (!message.startsWith("Unable to bind as user ")) {
@@ -224,44 +305,26 @@ public class LdapAuthenticationService implements AuthenticationService {
 				connection.close();
 			}
 		}
-		return null; // not logged in
-	}
-
-	private UserInfo getUserInfo(String userId, SearchResult search) {
-		if (search.getEntryCount() > 0) {
-			SearchResultEntry entry = search.getSearchEntries().get(0);
-			UserInfo result = new UserInfo();
-			result.setUserId(userId);
-			String name = entry.getAttributeValue(givenNameAttribute);
-			String name2 = entry.getAttributeValue(surNameAttribute);
-			if (null != name) {
-				if (null != name2) {
-					name = name + " " + name2;
-				}
-			} else {
-				name = name2;
-			}
-			result.setUserName(name);
-			result.setUserLocale(entry.getAttributeValue(localeAttribute));
-			result.setUserOrganization(entry.getAttributeValue(organizationAttribute));
-			result.setUserDivision(entry.getAttributeValue(divisionAttribute));
-			result.setAuthorizations(getAuthorizations(entry));
-			return result;
-		}
 		return null;
 	}
 
-	private List<AuthorizationInfo> getAuthorizations(SearchResultEntry entry) {
-		List<AuthorizationInfo> auths = new ArrayList<AuthorizationInfo>();
+	private List<AuthorityInfo> getAuthorities(SearchResultEntry entry) {
+		List<AuthorityInfo> auths = new ArrayList<AuthorityInfo>();
 		if (null != defaultRole) {
-			auths.addAll(defaultRole);
+			AuthorityInfo defaultAuthority = new AuthorityInfo();
+			defaultAuthority.setName(DEFAULT_ROLE_NAME);
+			defaultAuthority.setAuthorizations(defaultRole);
+			auths.add(defaultAuthority);
 		}
 		String[] attributes = entry.getAttributeValues(rolesAttribute);
 		if (null != attributes) {
 			for (String attr : attributes) {
 				List<AuthorizationInfo> auth = roles.get(attr);
 				if (null != auth) {
-					auths.addAll(auth);
+					AuthorityInfo authority = new AuthorityInfo();
+					authority.setName(attr);
+					authority.setAuthorizations(auth);
+					auths.add(authority);
 				}
 			}
 		}

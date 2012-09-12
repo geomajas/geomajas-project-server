@@ -11,20 +11,21 @@
 
 package org.geomajas.plugin.staticsecurity.ldap;
 
-import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
-import org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo;
-import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo;
+import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
+import org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo;
+import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test for {@link LdapAuthenticationService}.
@@ -41,6 +42,7 @@ public class LdapAuthenticationServiceTest extends LdapServerProvider {
 		service.setServerPort(PORT);
 		service.setAllowAllSocketFactory(false);
 		service.setUserDnTemplate("cn={},dc=staticsecurity,dc=geomajas,dc=org");
+		service.setAllUsersDn("dc=staticsecurity,dc=geomajas,dc=org");
 		service.setGivenNameAttribute("givenName");
 		service.setSurNameAttribute("sn");
 		service.setOrganizationAttribute("cn");
@@ -75,6 +77,18 @@ public class LdapAuthenticationServiceTest extends LdapServerProvider {
 		assertThat(authResult.getUserDivision()).isEqualTo("person");
 		List<AuthorizationInfo> auths = authResult.getAuthorizations();
 		assertThat(auths).hasSize(1);
+		List<AuthorityInfo> authits = authResult.getAuthorities();
+		assertThat(authits).hasSize(1);
+		assertThat(authits.get(0).getName()).isEqualTo("cn=testgroup,dc=roles,dc=geomajas,dc=org");
+	}
+
+	@Test
+	public void testUserService() throws Exception {
+		List<UserInfo> users = service.getUsers(Collections.singleton("cn=testgroup,dc=roles,dc=geomajas,dc=org"),
+				Collections.<String, String> emptyMap());
+		assertThat(users).isNotNull();
+		assertThat(users.size()).isEqualTo(1);
+		assertThat(users.get(0).getUserName()).isEqualTo("Joe Tester");
 	}
 
 }

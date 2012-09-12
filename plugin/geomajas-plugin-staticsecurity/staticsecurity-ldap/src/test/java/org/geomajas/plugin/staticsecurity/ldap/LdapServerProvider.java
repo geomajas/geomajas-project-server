@@ -38,7 +38,6 @@ public class LdapServerProvider {
 		server = new InMemoryDirectoryServer(config);
 		server.startListening();
 		server.add("dn: dc=org", "objectClass: top", "objectClass: domain", "dc: org");
-
 		server.add("dn: dc=geomajas,dc=org", "objectClass: top", "objectClass: domain", "dc: geomajas");
 		server.add("dn: dc=roles,dc=geomajas,dc=org", "objectClass: top", "objectClass: domain",
 				"dc: roles");
@@ -46,8 +45,12 @@ public class LdapServerProvider {
 				"dc: staticsecurity");
 		server.add("dn: cn=testgroup,dc=roles,dc=geomajas,dc=org", "objectClass: groupOfUniqueNames",
 				"cn: testgroup");
+		server.add("dn: cn=devgroup,dc=roles,dc=geomajas,dc=org", "objectClass: groupOfUniqueNames",
+				"cn: devgroup");
 		server.add("dn: cn=test,dc=staticsecurity,dc=geomajas,dc=org", "objectClass: person", "locale: nl_BE",
 				"sn: Tester", "givenName: Joe", "cn: test", "memberOf: cn=testgroup,dc=roles,dc=geomajas,dc=org");
+		server.add("dn: cn=jill,dc=staticsecurity,dc=geomajas,dc=org", "objectClass: person", "locale: nl_BE",
+				"sn: Developer", "givenName: Jill", "cn: dev", "memberOf: cn=devgroup,dc=roles,dc=geomajas,dc=org");
 	}
 
 	@After
