@@ -11,16 +11,20 @@
 
 package org.geomajas.plugin.staticsecurity.command.staticsecurity;
 
+import java.util.HashSet;
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersResponse;
+import org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo;
 import org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo;
 import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
+import org.geomajas.plugin.staticsecurity.security.AuthenticationService;
+import org.geomajas.plugin.staticsecurity.security.UserDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
 
 /**
  * Command which allows you to know which users exist. This can be useful to show a select box in a login screen, to be
@@ -30,6 +34,7 @@ import java.util.HashSet;
  * probably should not allow access to everybody!
  *
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  * @since 1.9.0
  */
 @Api
@@ -47,9 +52,31 @@ public class GetUsersCommand implements Command<GetUsersRequest, GetUsersRespons
 	/** {@inheritDoc} */
 	public void execute(GetUsersRequest request, GetUsersResponse response) throws Exception {
 		HashSet<String> users = new HashSet<String>();
+		// check the user directories
+		for (AuthenticationService authenticationService : securityServiceInfo.getAuthenticationServices()) {
+			if (authenticationService instanceof UserDirectoryService) {
+				UserDirectoryService userService = (UserDirectoryService) authenticationService;
+				List<UserInfo> userInfos = userService.getUsers(request.getRoles(), request.getParameters());
+				for (UserInfo userInfo : userInfos) {
+					users.add(userInfo.getUserId());
+				}
+			}
+		}
+		// check the static users, can check on role only !
 		for (UserInfo userInfo : securityServiceInfo.getUsers()) {
-			users.add(userInfo.getUserId());
+			if (request.getRoles().isEmpty()) {
+				users.add(userInfo.getUserId());
+			} else {
+				for (AuthorityInfo authority : userInfo.getAuthorities()) {
+					String name = authority.getName();
+					if (request.getRoles().contains(name)) {
+						users.add(userInfo.getUserId());
+						break;
+					}
+				}
+			}
 		}
 		response.setUsers(users);
 	}
+
 }

@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -52,6 +54,17 @@ public class GetUsersCommandTest {
 		command.execute(request, response);
 		checkResult(response);
 
+	}
+
+	@Test
+	public void roleTest() throws Exception {
+		GetUsersRequest request = new GetUsersRequest();
+		request.setRoles(Collections.singleton("someRole"));
+		GetUsersResponse response = command.getEmptyCommandResponse();
+		command.execute(request, response);
+		Set<String> users = response.getUsers();
+		Assert.assertEquals(1, users.size());
+		Assert.assertTrue(users.contains("marino"));
 	}
 
 	private void checkResult(GetUsersResponse response) {
