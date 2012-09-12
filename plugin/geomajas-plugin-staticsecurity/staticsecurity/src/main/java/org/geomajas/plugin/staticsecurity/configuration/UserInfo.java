@@ -11,10 +11,11 @@
 
 package org.geomajas.plugin.staticsecurity.configuration;
 
-import org.geomajas.annotation.Api;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.geomajas.annotation.Api;
 
 /**
  * User security configuration information.
@@ -31,6 +32,7 @@ public class UserInfo extends RoleInfo implements org.geomajas.security.UserInfo
 	private String userOrganization;
 	private String userDivision;
 	private String password;
+	private List<AuthorityInfo> authorities = new ArrayList<AuthorityInfo>();
 
 	/**
 	 * Get user name.
@@ -81,6 +83,31 @@ public class UserInfo extends RoleInfo implements org.geomajas.security.UserInfo
 
 	@Override // need for @Api
 	public void setAuthorizations(List<AuthorizationInfo> authorizations) {
+		super.setAuthorizations(authorizations);
+	}
+	
+	/**
+	 * Get authority info for this user. If present this will be a partitioning of the user's authorizations in roles.
+	 * 
+	 * @return authority info
+	 * @since 1.10.0
+	 */
+	public List<AuthorityInfo> getAuthorities() {
+		return authorities;
+	}
+	
+	/**
+	 * Set the authority info for this user. If set, this will override the user's authorizations.
+	 * 
+	 * @param authorities the authorities
+	 * @since 1.10.0
+	 */
+	public void setAuthorities(List<AuthorityInfo> authorities) {
+		this.authorities = authorities;
+		List<AuthorizationInfo> authorizations = new ArrayList<AuthorizationInfo>();
+		for (AuthorityInfo authority : authorities) {
+			authorizations.addAll(authority.getAuthorizations());
+		}
 		super.setAuthorizations(authorizations);
 	}
 
