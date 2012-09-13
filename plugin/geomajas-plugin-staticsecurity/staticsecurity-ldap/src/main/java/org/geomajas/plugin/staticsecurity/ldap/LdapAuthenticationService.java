@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo;
 import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
 import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
@@ -42,7 +43,9 @@ import com.unboundid.util.ssl.TrustAllTrustManager;
  * {@link AuthenticationService} for linking to an LDAP store of users.
  *
  * @author Joachim Van der Auwera
+ * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
  */
+@Api
 public class LdapAuthenticationService implements AuthenticationService, UserDirectoryService {
 
 	private final Logger log = LoggerFactory.getLogger(LdapAuthenticationService.class);
@@ -75,7 +78,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Set the server host for the LDAP service.
 	 *
 	 * @param serverHost server host
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setServerHost(String serverHost) {
 		this.serverHost = serverHost;
 	}
@@ -84,7 +89,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Set the port on which the LDAP server can be found.
 	 *
 	 * @param serverPort server port
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setServerPort(int serverPort) {
 		this.serverPort = serverPort;
 	}
@@ -103,7 +110,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Set the template to build the DN for the user. Any "{}" in the string is replaced by the user name.
 	 *
 	 * @param userDnTemplate template to build the user DN
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setUserDnTemplate(String userDnTemplate) {
 		this.userDnTemplate = userDnTemplate;
 	}
@@ -121,7 +130,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Attribute for the given name (if any).
 	 *
 	 * @param givenNameAttribute attribute name
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setGivenNameAttribute(String givenNameAttribute) {
 		this.givenNameAttribute = givenNameAttribute;
 	}
@@ -130,7 +141,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Attribute for the surname (if any).
 	 *
 	 * @param surNameAttribute attribute name
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setSurNameAttribute(String surNameAttribute) {
 		this.surNameAttribute = surNameAttribute;
 	}
@@ -139,7 +152,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Attribute for locale (if any).
 	 *
 	 * @param localeAttribute attribute name
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setLocaleAttribute(String localeAttribute) {
 		this.localeAttribute = localeAttribute;
 	}
@@ -148,7 +163,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Attribute for the organization (if any).
 	 *
 	 * @param organizationAttribute attribute name
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setOrganizationAttribute(String organizationAttribute) {
 		this.organizationAttribute = organizationAttribute;
 	}
@@ -157,7 +174,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Attribute for the division (if any).
 	 *
 	 * @param divisionAttribute attribute name
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setDivisionAttribute(String divisionAttribute) {
 		this.divisionAttribute = divisionAttribute;
 	}
@@ -166,7 +185,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Attribute for the roles (if any).
 	 *
 	 * @param rolesAttribute attribute name
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setRolesAttribute(String rolesAttribute) {
 		this.rolesAttribute = rolesAttribute;
 	}
@@ -184,7 +205,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Set the authorizations which apply for all users who can successfully authenticate using LDAP.
 	 *
 	 * @param defaultRole list of authentications for all users who can authenticate through LDAP
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setDefaultRole(List<AuthorizationInfo> defaultRole) {
 		this.defaultRole = defaultRole;
 	}
@@ -193,7 +216,9 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	 * Set the authorizations for the roles which may be defined.
 	 *
 	 * @param roles map with roles, keys are the values for {@link #rolesAttribute}, probably DN values
+	 * @since 1.10.0 (actually already from 1.9.0 but annotations was missing)
 	 */
+	@Api
 	public void setRoles(Map<String, List<AuthorizationInfo>> roles) {
 		this.roles = roles;
 	}
