@@ -292,7 +292,7 @@
 									<outputDirectory>${docdir}/caching</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.geomajas</groupId> <!-- should be org.geomajas.plugin -->
+									<groupId>org.geomajas.plugin</groupId>
 									<artifactId>geomajas-plugin-editing-documentation</artifactId>
 									<version>1.0.0-M2</version>
 									<outputDirectory>${docdir}/editing</outputDirectory>
