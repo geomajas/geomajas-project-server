@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dist</artifactId>
-	<version>1.12.30-SNAPSHOT</version>
+	<version>1.12.36-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas distribution</name>
 	<description>
@@ -38,7 +38,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.28</version>
+				<version>1.12.36</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -204,7 +204,7 @@
 								<artifactItem>
 									<groupId>org.geomajas.documentation</groupId>
 									<artifactId>geomajas-face-gwt-documentation</artifactId>
-									<version>1.10.0</version>
+									<version>1.11.1</version>
 									<outputDirectory>${docdir}/gwt-face</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -212,6 +212,12 @@
 									<artifactId>common-gwt-documentation</artifactId>
 									<version>1.1.0</version>
 									<outputDirectory>${docdir}/common-gwt-face</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.geomajas.documentation</groupId>
+									<artifactId>geomajas-face-puregwt-documentation</artifactId>
+									<version>1.0.0-M1</version>
+									<outputDirectory>${docdir}/puregwt-face</outputDirectory>
 								</artifactItem>
 								<!--
 								<artifactItem>
@@ -246,7 +252,7 @@
 								<artifactItem>
 									<groupId>org.geomajas.plugin</groupId>
 									<artifactId>geomajas-layer-geotools-documentation</artifactId>
-									<version>1.9.0</version>
+									<version>1.10.0</version>
 									<outputDirectory>${docdir}/geotools</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -288,7 +294,7 @@
 								<artifactItem>
 									<groupId>org.geomajas</groupId> <!-- should be org.geomajas.plugin -->
 									<artifactId>geomajas-plugin-editing-documentation</artifactId>
-									<version>1.0.0-M1</version>
+									<version>1.0.0-M2</version>
 									<outputDirectory>${docdir}/editing</outputDirectory>
 								</artifactItem>
 								<artifactItem>

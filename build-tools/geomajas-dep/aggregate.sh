@@ -124,7 +124,7 @@ include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.
     "GWT face for building powerful AJAX web user interfaces without depending on a widget library. Ideal for mobile." \
     "incubating" "master.pdf" \
     "" "" ""
-#    "org.geomajas" "geomajas-puregwt-client" "1.0.0"
+    "org.geomajas" "geomajas-puregwt-client" "1.0.0-M1"
 
 include "org.geomajas.documentation" "common-gwt-documentation" "1.2.0-SNAPSHOT" \
     "Common-GWT " \
@@ -252,7 +252,13 @@ include "org.geomajas.plugin" "geomajas-plugin-editing-documentation" "1.0.0-SNA
     "Editing plug-in" \
     "Geomajas extension for more powerful editing." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-editing" "1.0.0-M1"
+    "org.geomajas.plugin" "geomajas-plugin-editing" "1.0.0-M2"
+
+include "org.geomajas.plugin" "geomajas-puregwt-widget-documentation" "1.0.0-SNAPSHOT" \
+    "Core widgets for the PureGWT face" \
+    "Set of widgets which alow you to make a PureGWT map more expressive." \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-widget-puregwt-core" "1.0.0-M1"
 
 
 # contributors guide

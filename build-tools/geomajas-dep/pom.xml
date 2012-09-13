@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dep</artifactId>
-	<version>1.12.30-SNAPSHOT</version>
+	<version>1.12.36-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas dependencies</name>
 	<description>
@@ -38,7 +38,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.11.0</version>
+				<version>1.11.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -52,7 +52,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.10.0</version>
+				<version>1.11.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -90,7 +90,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.9.1</version>
+				<version>1.10.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -174,7 +174,7 @@
 				<scope>import</scope>
 			</dependency>
 			-->
-			<!-- no stable release yet, only 1.0.0-M1
+			<!-- no stable release yet, only 1.0.0-M2
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-editing-all</artifactId>
