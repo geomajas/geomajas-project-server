@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dist</artifactId>
-	<version>1.12.36</version>
+	<version>1.12.38-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas distribution</name>
 	<description>
@@ -28,9 +28,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dist-1.12.36</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dist-1.12.36</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-dist-1.12.36</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dist</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dist</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-dist</url>
 	</scm>
 
 	<dependencyManagement>
