@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
@@ -30,7 +31,6 @@ import org.apache.http.params.HttpParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -51,8 +51,8 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	private static final int TIMEOUT = 5000;
 	private static final int URL_DEFAULT_SECURE_PORT = 443;
 
-	@Autowired
-	private ApplicationContext appContext;
+	@Autowired(required = false)
+	private WmsHttpServiceInterceptors wmsInterceptors;
 
 	public String addCredentialsToUrl(final String url, final WmsAuthentication authentication) {
 		if (null != authentication && WmsAuthenticationMethod.URL.equals(authentication.getAuthenticationMethod())) {
@@ -92,14 +92,8 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 		}
 
 		// -- add interceptors if any --
-		Map<String, HttpRequestInterceptor> requestInterceptors = appContext
-				.getBeansOfType(HttpRequestInterceptor.class);
-		if (requestInterceptors != null) {
-			for (HttpRequestInterceptor interceptor : requestInterceptors.values()) {
-				client.addRequestInterceptor(interceptor);
-			}
-		}
-
+		addInterceptors(client, baseUrl);
+		
 		// Create the GET method with the correct URL:
 		HttpGet get = new HttpGet(url);
 
@@ -111,6 +105,28 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 		return new WmsHttpServiceStream(response, client);
 	}
 
+	/**
+	 * Check if there are interceptors & add to client if any.
+	 * 
+	 * @param client
+	 * @param baseUrl
+	 */
+	private void addInterceptors(DefaultHttpClient client, String baseUrl) {
+		try {
+			if (wmsInterceptors != null && baseUrl != null) {
+				for (Entry<String, List<HttpRequestInterceptor>> entry : wmsInterceptors.getMap().entrySet()) {
+					if ("".equals(entry.getKey()) || baseUrl.startsWith(entry.getKey())) {
+						for (HttpRequestInterceptor inter : entry.getValue()) {
+							client.addRequestInterceptor(inter);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.warn("Error adding interceptors: " + e.getMessage());
+		}
+	}
+	
 	/**
 	 * Get the domain out of a full URL.
 	 *

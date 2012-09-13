@@ -85,10 +85,12 @@
       developer guide</ulink> to learn more about it. This guide will focus on
       the WMS specific configuration options.</para>
 
-      <para><remark>The most important parameter here, is the dataSourceName,
-      which must point to a layer name as specified by the WMS server. Note
-      that comma separated values are supported, as the layer name is
-      literally used in the WMS requests.</remark></para>
+      <para>
+        <remark>The most important parameter here, is the dataSourceName,
+        which must point to a layer name as specified by the WMS server. Note
+        that comma separated values are supported, as the layer name is
+        literally used in the WMS requests.</remark>
+      </para>
 
       <para>As you can see, the bean class refers to the actual layer type:
       <code>org.geomajas.layer.wms.WmsLayer</code>. The layer object contains
@@ -113,8 +115,10 @@
 
           <tbody>
             <row>
-              <entry><emphasis role="bold">baseWmsUrl
-              <emphasis>(required)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">baseWmsUrl
+                <emphasis>(required)</emphasis></emphasis>
+              </entry>
 
               <entry>The base url of the WMS server. This is the base part
               (excluding the request parameters) of the url that would be
@@ -122,8 +126,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">version<emphasis>
-              (optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">version<emphasis>
+                (optional)</emphasis></emphasis>
+              </entry>
 
               <entry>Version of the WMS protocol which should be used. Check
               your server configuration for possible values. This defaults to
@@ -131,8 +137,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">format
-              <emphasis>(optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">format
+                <emphasis>(optional)</emphasis></emphasis>
+              </entry>
 
               <entry>The mime type in which the images should be returned, for
               example "image/gif". Check your server configuration for
@@ -140,8 +148,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">styles
-              <emphasis>(optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">styles
+                <emphasis>(optional)</emphasis></emphasis>
+              </entry>
 
               <entry>Some WMS servers support multiple styles for their
               layers. Check your server configuration for possible
@@ -149,8 +159,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">parameters<emphasis>
-              (optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">parameters<emphasis>
+                (optional)</emphasis></emphasis>
+              </entry>
 
               <entry>You can define additional parameters which can be passed
               to the WMS server for each GetMap request. These are name/value
@@ -188,9 +200,10 @@
               <entry><emphasis role="bold">useCache</emphasis>
               (optional)</entry>
 
-              <entry>Allows you to force caching of WMS tiles.This can be useful
-              if you want to unload the used WMS server. This automatically enables
-              the useProxy property to be able to cache the images.</entry>
+              <entry>Allows you to force caching of WMS tiles.This can be
+              useful if you want to unload the used WMS server. This
+              automatically enables the useProxy property to be able to cache
+              the images.</entry>
             </row>
 
             <row>
@@ -332,6 +345,36 @@
           </tbody>
         </tgroup>
       </table>
+    </section>
+
+    <section>
+      <title>Using the proxy</title>
+
+      <para>When using the optional Proxy setting you can provide extra
+      HttpRequest interceptors which will be used by the proxy to further
+      customise your requests (add extra parameters / headers for security or
+      do some logging). To add interceptors add a bean of type
+      WmsHttpServiceInterceptors to your spring configuration. This contains a
+      map of HttpRequestInterceptor lists. The key is a prefix to the baseUrl
+      property of the wmsLayerInfo object.</para>
+
+      <para>To add an interceptor to all Wms layers use an empty key (eg. "").
+      To add an interceptor to a specific layer use the complete baseUrl of
+      this layer.</para>
+
+      <para>Sample bean configuration:</para>
+
+      <para><programlisting>&lt;bean name="wmsInterceptors" class="org.geomajas.layer.wms.WmsHttpServiceInterceptors"&gt;
+   &lt;property name="map"&gt;
+      &lt;map&gt;
+         &lt;entry key=""&gt;
+            &lt;list&gt;
+               &lt;bean class="org.geomajas.layer.wms.sample.AddSomeLeetHeadersHttpRequestInterceptor" /&gt;
+            &lt;/list&gt;
+         &lt;/entry&gt;
+      &lt;/map&gt;
+   &lt;/property&gt;
+&lt;/bean&gt;</programlisting></para>
     </section>
   </section>
 </chapter>
