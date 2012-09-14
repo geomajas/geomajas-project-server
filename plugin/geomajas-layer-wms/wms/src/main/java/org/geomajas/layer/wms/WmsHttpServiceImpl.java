@@ -49,6 +49,7 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	private static final String URL_PARAM_IS = "=";
 	private static final String URL_PROTOCOL_SEPARATOR = "://";
 	private static final int TIMEOUT = 5000;
+	private static final int URL_DEFAULT_PORT = 80;
 	private static final int URL_DEFAULT_SECURE_PORT = 443;
 
 	@Autowired(required = false)
@@ -145,15 +146,19 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	}
 
 	/**
-	 * Get the domain out of a full URL.
-	 *
+	 * Get the port out of a full URL.
+	 * <p>
+	 * Note that we only take https & http into account if you are using a non-default port/protocol you will need to
+	 * add the port to your baseUrl.
+	 * 
 	 * @param url base url
 	 * @return domain name
 	 */
 	private int parsePort(String url) {
 		try {
 			URL u = new URL(url);
-			return (u.getPort() == -1 ? URL_DEFAULT_SECURE_PORT : u.getPort());
+			int defaultport = "https".equalsIgnoreCase(u.getProtocol()) ? URL_DEFAULT_SECURE_PORT : URL_DEFAULT_PORT;
+			return (u.getPort() == -1 ? defaultport : u.getPort());
 		} catch (MalformedURLException e) {
 			return URL_DEFAULT_SECURE_PORT;
 		}
