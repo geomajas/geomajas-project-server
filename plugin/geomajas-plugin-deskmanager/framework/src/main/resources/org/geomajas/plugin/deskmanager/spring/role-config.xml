@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/util	http://www.springframework.org/schema/util/spring-util-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		">
+
+	<!-- Replace security context by our implementation. -->
+	<bean name="security.SecurityManager"
+		  class="org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityManager" />
+	<bean name="security.SecurityContext" scope="thread"
+		  class="org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext">
+		<aop:scoped-proxy/>
+  	</bean>
+
+	<util:map id="security.roles" key-type="java.lang.String"
+		value-type="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<entry key="GUEST" value-ref="GastAuthorizationInfo" />
+
+		<entry key="DESK_MANAGER" value-ref="BeherendAuthorizationInfo" />
+ 		<entry key="ADMINISTRATOR" value-ref="SuperBeherendAuthorizationInfo" />
+
+		<entry key="EDITING_USER" value-ref="ConsulterendAuthorizationInfo" />
+		<entry key="CONSULTING_USER" value-ref="ConsulterendAuthorizationInfo" />
+
+	</util:map>
+
+	<bean id="GastAuthorizationInfo"
+		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<property name="commandsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="commandsExclude">
+			<list>
+				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
+				<!-- FIXME: hoe gaan we dit op een goeie manier overriden vanuit specifieke configuraties??? -->
+				<value>command.vkbo.SearchByGeometriesToCsv</value>
+				<value>command.vkbo.SearchFeatureToCsv</value>
+				<value>command.magdageo.beheer.*</value>
+			</list>
+		</property>
+		<property name="toolsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="visibleLayersInclude">
+			<list>
+				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="visibleLayersExclude">
+			<list>
+				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="createAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+		<property name="updateAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ConsulterendAuthorizationInfo"
+		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<property name="commandsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="commandsExclude">
+			<list>
+				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
+				<value>command.magdageo.beheer.*</value>
+			</list>
+		</property>
+		<property name="toolsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="visibleLayersInclude">
+			<list>
+				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="visibleLayersExclude">
+			<list>
+				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+				<value>googleNormalLayerModel</value>
+				<value>googleTerrainLayerModel</value>
+				<value>googleSatelliteLayerModel</value>
+			</list>
+		</property>
+		<property name="createAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+		<property name="updateAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="BeherendAuthorizationInfo"
+		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<property name="commandsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="toolsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="visibleLayersInclude">
+			<list>
+				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="visibleLayersExclude">
+			<list>
+				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+				<value>googleNormalLayerModel</value>
+				<value>googleTerrainLayerModel</value>
+				<value>googleSatelliteLayerModel</value>
+			</list>
+		</property>
+		<property name="createAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+		<property name="updateAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="SuperBeherendAuthorizationInfo"
+		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<property name="commandsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="toolsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="visibleLayersInclude">
+			<list>
+				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="visibleLayersExclude">
+			<list>
+				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+				<value>googleNormalLayerModel</value>
+				<value>googleTerrainLayerModel</value>
+				<value>googleSatelliteLayerModel</value>
+			</list>
+		</property>
+		<property name="createAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+		<property name="updateAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

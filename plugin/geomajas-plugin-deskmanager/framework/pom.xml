@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-deskmanager-all</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas.plugin</groupId>
+	<artifactId>geomajas-plugin-deskmanager-framework</artifactId>
+	<packaging>jar</packaging>
+	<name>Geomajas Deskmanager consolidated framework</name>
+	<version>1.0.0-SNAPSHOT</version>
+	<description>Geomajas deskmanager is a dynamic configuration framework for geomajas.</description>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.jdbc</groupId>
+			<artifactId>gt-jdbc-h2</artifactId>
+			<version>2.7.5</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-3cpo</artifactId> 
+			</dependency> -->
+		<!-- Specifiek voor beheer / shared) -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wms</artifactId>
+		</dependency>
+		<!-- Specifiek voor loketten -->
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
+		</dependency>
+		<!-- ao webservice -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<!-- javascript API -->
+		<!-- <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-javascript-api-gwt</artifactId> 
+			</dependency> <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-javascript-api</artifactId> 
+			</dependency> -->		<!-- Specifiek voor backend -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<!-- use Hibernate with postgis, for another db you will need similar dependencies -->
+		<dependency>
+			<groupId>org.hibernatespatial</groupId>
+			<artifactId>hibernate-spatial-postgis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgis</groupId>
+			<artifactId>postgis-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<!-- dependencies for uploading -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+		<!-- Voor import -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+		</dependency>
+		<!-- Cross domain scripting jetty -->
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<!-- Geomajas dependencies -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-staticsecurity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-rasterizing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-utility-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-editing-gwt</artifactId>
+		</dependency>
+		<!-- wfs support -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wfs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-postgis</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.postgis</groupId>
+					<artifactId>postgis-driver</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.geomajas</groupId> <artifactId>geomajas-testdata</artifactId> 
+			</dependency> -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing-gwt</artifactId>
+		</dependency>
+		<!-- extra functionality -->
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-advancedviews</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-advancedviews-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-featureinfo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-searchandfilter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
+		</dependency>
+		<!-- Hibernate layer can be removed if not needed, but the "Road" class 
+			needs the Hibernate stuff -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-hibernate</artifactId>
+		</dependency>
+		<!-- uncomment if you want to use Hibernate with postgis, for another db 
+			you will need similar dependencies -->
+		<!-- <dependency> <groupId>org.hibernatespatial</groupId> <artifactId>hibernate-spatial-postgis</artifactId> 
+			</dependency> <dependency> <groupId>org.postgis</groupId> <artifactId>postgis-jdbc</artifactId> 
+			</dependency> <dependency> <groupId>postgresql</groupId> <artifactId>postgresql</artifactId> 
+			</dependency> -->
+		<!-- Google dependencies -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- logging dependencies, delegate all to slf4j and use logback -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<!-- GEGIS -->
+		<!-- FIXME: Should be updated in cadmap -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+		</dependency>
+		<!-- Testing -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.geomajas.plugin.deskmanager</groupId> -->
+<!-- 			<artifactId>sleevemonkey-example</artifactId> -->
+<!-- 			<version>${project.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Test case voor AcmIdmTest -->
+		<!-- FIXME indien enkel voor test, test-scope toevoegen -->
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin> <!-- Bytecode instrumentation for hibernate: enables lazy loading of properties 
+					(http://tricksdev.blogspot.be/2009/03/hibernate-bytecode-instrumentation.html) -->
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>Instrument domain classes</id>
+						<configuration>
+							<tasks>
+								<taskdef name="instrument"
+									classname="org.hibernate.tool.instrument.javassist.InstrumentTask">
+									<classpath>
+										<path refid="maven.dependency.classpath" />
+										<path refid="maven.plugin.classpath" />
+									</classpath>
+								</taskdef>
+								<instrument verbose="true">
+									<fileset dir="${project.build.outputDirectory}">
+										<include name="**/domain/**/*.class" />
+									</fileset>
+								</instrument>
+							</tasks>
+						</configuration>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<includePom>true</includePom>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- checkstyle configuration -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.5-DF</version>
+				<configuration>
+					<configLocation>config/geomajas-checkstyle.xml</configLocation>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.geomajas</groupId>
+						<artifactId>geomajas-checkstyle</artifactId>
+						<version>1.0.7</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>META-INF/geomajasContext.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>META-INF/geomajasContext.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.3,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<profiles>
+		<!-- include sources in build -->
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.java</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<!-- no sources needed in eclipse -->
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+</project>
+

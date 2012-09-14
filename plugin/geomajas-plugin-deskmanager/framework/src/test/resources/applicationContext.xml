@@ -1,0 +1,111 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:component-scan base-package="org.geomajas.plugin.deskmanager" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
+
+	<bean class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExampleDatabaseProvisioningService" />
+	<bean class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExamplePostConstructService" />
+	<bean class="org.geomajas.plugin.deskmanager.test.service.StubProfileService" />
+	
+	<import resource="commonBeans.xml"/>
+	<import resource="defaultLoketClientInfo.xml"/>
+	<import resource="defaultLoketLayout.xml"/>
+	<import resource="mavenInjectedProperties.xml"/>
+	<import resource="osm.xml"/>
+	<import resource="ribbon.xml"/>
+	<import resource="userApplications.xml"/>
+	<import resource="datastore.xml"/>
+	
+	<!-- Instructs Spring to perform declarative transaction management on annotated classes -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Hibernate SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>classpath:/hibernate.cfg.xml</value>
+		</property>
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>org.geomajas.plugin.deskmanager.domain</value>
+			</list>
+		</property>
+		<property name="lobHandler">
+			<bean class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+		</property>
+	</bean>
+	
+	
+	<bean name="postGisDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
+	   <constructor-arg ref="postGisDatastoreParams" />
+	</bean>	
+
+	
+	<!-- Override some beans to allow configuration from database -->
+	<bean class="org.geomajas.plugin.deskmanager.command.common.GetConfigurationCommand" id="command.configuration.Get" />
+	<bean class="org.geomajas.plugin.deskmanager.service.common.DeskmanagerPrintConfigurationService" id="plugin.printing.component.service.PrintConfigurationService" />
+  
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<!-- Deze hack heeft te maken met SPRINT-19,  -->
+		<property name="placeholderPrefix" value="$mg{"/>
+		<property name="placeholderSuffix" value="}" />
+ 		<property name="locations">
+			<list>
+				<value>classpath:/deskmanager.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- =========== -->
+	<!-- TODO REMOVE -->
+	<!-- =========== -->
+	
+	
+	<bean
+		class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
+		<!-- not used, we are using an acmIdm service, but needed not to break 
+			geomajas-plugin-springsecurity -->
+	</bean>
+
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false" />
+		<property name="securityServices">
+			<list>
+				<ref bean="DeskManagerSecurityService" />
+<!-- 				<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />
+ -->			</list>
+		</property>
+	</bean>
+<!-- 
+	<bean name="securityHelper" class="be.vo.corve.magdageo.common.security.SecurityHelper" />
+ -->
+	<!-- for GWT-Beheer to open sample loket-->
+	<bean name="loket.url" class="java.lang.String">
+		<constructor-arg value="${loket.url}" />
+	</bean>
+	
+	<task:annotation-driven scheduler="myScheduler" />
+
+	<task:scheduler id="myScheduler" pool-size="1" />
+
+
+
+</beans>

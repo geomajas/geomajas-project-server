@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- main application configuration -->
+	<bean name="defaultLoketLayout" class="org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo">
+		<property name="title">
+			<value>Magdageo default loket</value>
+		</property>
+		<property name="titleColor">
+			<value>#EE3333</value>
+		</property>
+		<property name="bgColor">
+			<value>#FBFBFB</value>
+		</property>
+		<property name="logoUrl">
+			<value>default_banner</value>
+		</property>
+		<property name="logoAlt">
+			<value>Uw startpagina voor de vlaamse overheid</value>
+		</property>
+		<property name="titleBarColor">
+			<value>#E5E6E7</value>
+		</property>
+		<property name="borderColor">
+			<value>#E5E6E7</value>
+		</property>
+		<property name="logoHref">
+			<value>http://www.vlaanderen.be/</value>
+		</property>
+		<property name="bannerUrl">
+			<value>default_banner</value>
+		</property>
+	</bean>
+
+</beans>
