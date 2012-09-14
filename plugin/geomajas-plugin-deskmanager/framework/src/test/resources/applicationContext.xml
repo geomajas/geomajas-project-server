@@ -89,7 +89,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="loopAllServices" value="false" />
 		<property name="securityServices">
 			<list>
-				<ref bean="DeskManagerSecurityService" />
+				<ref bean="DeskmanagerSecurityService" />
 <!-- 				<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />
  -->			</list>
 		</property>
