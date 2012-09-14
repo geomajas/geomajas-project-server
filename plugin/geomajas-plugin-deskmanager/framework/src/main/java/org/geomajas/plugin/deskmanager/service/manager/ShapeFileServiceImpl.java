@@ -128,7 +128,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		return true;
 	}
 
-	@SuppressWarnings( {"rawtypes", "deprecation"} )  // see GBE-321
+	@SuppressWarnings( { "rawtypes", "deprecation" } )  // see GBE-321
 	public File toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception {
 		if (features.size() == 0) {
 			return null;

@@ -68,9 +68,11 @@ public class DefaultFeatureInfoCanvasBuilder implements FeatureDetailWidgetBuild
 
 	private final DateTimeFormat dateFormatter = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm");
 
-	private final Map<String, ValueFormatter> valueFormatters = new HashMap<String, DefaultFeatureInfoCanvasBuilder.ValueFormatter>();
+	private final Map<String, ValueFormatter> valueFormatters = 
+		new HashMap<String, DefaultFeatureInfoCanvasBuilder.ValueFormatter>();
 
-	private final Map<String, TitleFormatter> titleFormatters = new HashMap<String, DefaultFeatureInfoCanvasBuilder.TitleFormatter>();
+	private final Map<String, TitleFormatter> titleFormatters = 
+		new HashMap<String, DefaultFeatureInfoCanvasBuilder.TitleFormatter>();
 
 	// ----------------------------------------------------------
 
@@ -89,7 +91,8 @@ public class DefaultFeatureInfoCanvasBuilder implements FeatureDetailWidgetBuild
 	}
 
 	/**
-	 * Add a valueformatter to the feature info canvas
+	 * Add a valueformatter to the feature info canvas.
+	 * 
 	 * @param attributeName
 	 * @param formatter
 	 */
@@ -98,7 +101,8 @@ public class DefaultFeatureInfoCanvasBuilder implements FeatureDetailWidgetBuild
 	}
 
 	/**
-	 * Add a titleformatter to the feature info canvas
+	 * Add a titleformatter to the feature info canvas.
+	 * 
 	 * @param attributeName
 	 * @param formatter
 	 */

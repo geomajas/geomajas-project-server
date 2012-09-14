@@ -44,7 +44,8 @@ public class DeskmanagerPrintConfigurationService extends PrintConfigurationServ
 
 	// TODO: this is a hack for the pdf printing performance, for every feature the map configuration is fetched,
 	// we must cache this to get any performance!
-	private Map<Geodesk, CachedClientApplicationInfo> geodeskConfigurations = new HashMap<Geodesk, CachedClientApplicationInfo>();
+	private Map<Geodesk, CachedClientApplicationInfo> geodeskConfigurations = 
+		new HashMap<Geodesk, CachedClientApplicationInfo>();
 
 	/*
 	 * (non-Javadoc)

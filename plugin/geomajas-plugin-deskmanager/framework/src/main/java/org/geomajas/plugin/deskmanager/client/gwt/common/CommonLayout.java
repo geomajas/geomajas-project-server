@@ -13,8 +13,6 @@ package org.geomajas.plugin.deskmanager.client.gwt.common;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.util.WidgetLayout;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 
 /**
  * 
