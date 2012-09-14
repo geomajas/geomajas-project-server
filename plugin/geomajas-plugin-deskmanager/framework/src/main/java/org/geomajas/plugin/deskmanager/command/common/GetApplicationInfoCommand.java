@@ -60,9 +60,6 @@ public class GetApplicationInfoCommand implements Command<CommandRequest, GetApp
 		response.setDeskmanagerVersion(deskmanagerVersion);
 
 		String id = loketIdService.getGeodeskIdentifier();
-		if (id == null) {
-			return;
-		}
 		Geodesk loket = null;
 		loket = loketService.getGeodeskByPublicId(id); // this checks if loket is allowed
 		if (loket != null) {

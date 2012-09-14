@@ -11,10 +11,10 @@
 	<inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources" />
 	<inherits name="org.geomajas.layer.wms.GeomajasWms" />
 
-	<source path="client" />
+	<source path="client/gwt/common" />
+	<source path="client/gwt/geodesk" />
 
 	<source path="command/common/dto" />
-	<source path="command/manager/dto" />
 	<source path="command/geodesk/dto" />
 	<source path="command/security/dto" />
 
@@ -23,5 +23,5 @@
 
 	<source path="configuration" />
 
-	<entry-point class='org.geomajas.plugin.deskmanager.client.DeskmanagerEntryPoint' />
+	<entry-point class='org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskEntryPoint' />
 </module>

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client;
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import java.util.List;
 
@@ -33,13 +33,12 @@ import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry.Ribbon
 
 import com.google.gwt.core.client.EntryPoint;
 
+
 /**
  * @author Oliver May
- * 
+ *
  */
-//FIXME: class shouldn't be here, move geodesk stuff to geodesk entrypoint
-public class DeskmanagerEntryPoint implements EntryPoint {
-
+public class GeodeskEntryPoint implements EntryPoint {
 	// FIXME: move keys to Actions
 	public static final String MOUSELOCATION_KEY = "MouseLocationColumn";
 
@@ -115,4 +114,5 @@ public class DeskmanagerEntryPoint implements EntryPoint {
 			}
 		});
 	}
+
 }
