@@ -32,6 +32,7 @@
 		<module>geomajas-layer-tms</module>
 		<module>geomajas-layer-wms</module>
 		<module>geomajas-plugin-caching</module>
+		<module>geomajas-plugin-deskmanager</module>
 		<module>geomajas-plugin-editing</module>
 		<module>geomajas-plugin-geocoder</module>
 		<module>geomajas-plugin-javascript-api</module>
