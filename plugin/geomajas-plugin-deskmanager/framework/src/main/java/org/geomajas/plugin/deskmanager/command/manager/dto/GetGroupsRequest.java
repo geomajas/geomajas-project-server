@@ -22,7 +22,7 @@ public class GetGroupsRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.GetGroups";
+	public static final String COMMAND = "command.deskmanager.beheer.GetGroups";
 
 	public String toString() {
 		return COMMAND;

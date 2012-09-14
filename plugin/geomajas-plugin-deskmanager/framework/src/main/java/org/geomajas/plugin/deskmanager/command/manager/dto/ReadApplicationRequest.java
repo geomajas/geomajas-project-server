@@ -21,7 +21,7 @@ public class ReadApplicationRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.management.ReadApplicationCommand";
+	public static final String COMMAND = "command.deskmanager.management.ReadApplicationCommand";
 
 	private String uuid;
 

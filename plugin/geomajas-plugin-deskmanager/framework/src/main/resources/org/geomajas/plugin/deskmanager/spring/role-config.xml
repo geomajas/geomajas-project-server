@@ -41,7 +41,7 @@
 				<!-- FIXME: hoe gaan we dit op een goeie manier overriden vanuit specifieke configuraties??? -->
 				<value>command.vkbo.SearchByGeometriesToCsv</value>
 				<value>command.vkbo.SearchFeatureToCsv</value>
-				<value>command.magdageo.beheer.*</value>
+				<value>command.deskmanager.beheer.*</value>
 			</list>
 		</property>
 		<property name="toolsInclude">
@@ -81,7 +81,7 @@
 		<property name="commandsExclude">
 			<list>
 				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
-				<value>command.magdageo.beheer.*</value>
+				<value>command.deskmanager.beheer.*</value>
 			</list>
 		</property>
 		<property name="toolsInclude">

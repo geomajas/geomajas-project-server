@@ -19,7 +19,7 @@ public class GetGeodeskUrlBaseRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.GetLoketUrlBase";
+	public static final String COMMAND = "command.deskmanager.beheer.GetLoketUrlBase";
 
 	public String toString() {
 		return COMMAND;

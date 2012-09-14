@@ -32,7 +32,7 @@ public class SaveGeodeskRequest implements CommandRequest {
 
 	public static final int SAVE_CLIENTWIDGETINFO = 32;
 
-	public static final String COMMAND = "command.magdageo.beheer.SaveLoket";
+	public static final String COMMAND = "command.deskmanager.beheer.SaveLoket";
 
 
 	private int saveWhat;

@@ -30,7 +30,7 @@ public class SaveBlueprintRequest implements CommandRequest {
 
 	public static final int SAVE_CLIENTWIDGETINFO = SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO;
 	
-	public static final String COMMAND = "command.magdageo.beheer.SaveBlueprint";
+	public static final String COMMAND = "command.deskmanager.beheer.SaveBlueprint";
 
 	private int saveWhat;
 

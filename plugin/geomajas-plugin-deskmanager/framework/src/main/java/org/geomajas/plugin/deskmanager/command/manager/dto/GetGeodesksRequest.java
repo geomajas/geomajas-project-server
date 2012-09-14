@@ -22,7 +22,7 @@ public class GetGeodesksRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.GetLoketten";
+	public static final String COMMAND = "command.deskmanager.beheer.GetLoketten";
 
 	public String toString() {
 		return COMMAND;

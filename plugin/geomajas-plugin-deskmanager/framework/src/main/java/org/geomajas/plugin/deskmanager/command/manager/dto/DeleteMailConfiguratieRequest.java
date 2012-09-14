@@ -22,7 +22,7 @@ public class DeleteMailConfiguratieRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.DeleteMailConfiguratie";
+	public static final String COMMAND = "command.deskmanager.beheer.DeleteMailConfiguratie";
 
 	private String uuid;
 

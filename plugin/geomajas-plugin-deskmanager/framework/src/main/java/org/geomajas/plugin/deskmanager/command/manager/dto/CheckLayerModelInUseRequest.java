@@ -19,7 +19,7 @@ public class CheckLayerModelInUseRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.CheckLayerModelInUse";
+	public static final String COMMAND = "command.deskmanager.beheer.CheckLayerModelInUse";
 
 	private String clientLayerId;
 

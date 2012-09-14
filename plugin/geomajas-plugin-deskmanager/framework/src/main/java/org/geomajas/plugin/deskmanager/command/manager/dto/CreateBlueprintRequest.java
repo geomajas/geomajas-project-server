@@ -22,7 +22,7 @@ public class CreateBlueprintRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.CreateBlueprint";
+	public static final String COMMAND = "command.deskmanager.beheer.CreateBlueprint";
 
 	private String userApplicationName;
 

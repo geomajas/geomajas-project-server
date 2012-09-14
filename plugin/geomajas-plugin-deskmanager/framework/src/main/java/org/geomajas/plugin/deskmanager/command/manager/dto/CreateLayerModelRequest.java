@@ -22,7 +22,7 @@ public class CreateLayerModelRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.CreateLayerModel";
+	public static final String COMMAND = "command.deskmanager.beheer.CreateLayerModel";
 
 	private LayerConfiguration configuration;
 

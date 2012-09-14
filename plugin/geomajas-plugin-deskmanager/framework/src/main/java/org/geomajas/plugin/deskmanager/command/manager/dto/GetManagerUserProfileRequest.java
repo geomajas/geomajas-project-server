@@ -22,7 +22,7 @@ public class GetManagerUserProfileRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.magdageo.beheer.GetBeheerUserProfile";
+	public static final String COMMAND = "command.deskmanager.beheer.GetBeheerUserProfile";
 
 	public String toString() {
 		return COMMAND;
