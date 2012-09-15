@@ -41,16 +41,16 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  * @author Oliver May
  */
-public class GeodeskApplicationEntryPoint implements UserApplicationHandler {
+public class GeodeskApplication implements UserApplicationHandler {
 
 	private UserApplication loket;
 
 	private LoadingScreen loadScreen;
 
 	/**
-	 * Constructor for the GeodeskApplicationEntryPoint, this will create a GWT entrypoint.
+	 * Constructor for the GeodeskApplication, this will create a GWT entrypoint.
 	 */
-	public GeodeskApplicationEntryPoint() {
+	public GeodeskApplication() {
 		// register Global layout stuff
 		GuwLayout.ribbonBarInternalMargin = 2;
 		GuwLayout.ribbonGroupInternalMargin = 4;
@@ -101,7 +101,7 @@ public class GeodeskApplicationEntryPoint implements UserApplicationHandler {
 
 						// Load geodesk from registry
 						loket = UserApplicationRegistry.getInstance().get(loketResponse.getGeodeskTypeIdentifier());
-						loket.addUserApplicationLoadedHandler(GeodeskApplicationEntryPoint.this);
+						loket.addUserApplicationLoadedHandler(GeodeskApplication.this);
 
 						loket.setApplicationId(loketResponse.getGeodeskIdentifier());
 						loket.setClientApplicationInfo(loketResponse.getClientApplicationInfo());

@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.loketten;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerApplicationEntryPoint;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.service.CommService;
@@ -109,7 +109,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 		blueprints.setDisabled(true); // ter info
 		blueprints.setTooltip("<nobr>De blauwbruk die als basis gebruikt wordt voor dit loket.</nobr>");
 
-		if (Role.ADMINISTRATOR.equals(ManagerApplicationEntryPoint.getInstance().getUserProfile()
+		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
 				.getRole())) {
 			loketId = new TextItem();
 			loketId.setRequired(true);

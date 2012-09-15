@@ -53,7 +53,7 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 		tabSet.addTab(lagenBeheerTab);
 
 		//FIXME: i18n
-		if (Role.ADMINISTRATOR.equals(ManagerApplicationEntryPoint.getInstance().getUserProfile()
+		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
 				.getRole())) {
 			Tab blueprintTab = new Tab("Blauwdrukken");
 			blueprintTab.setPane(new Blueprints());

@@ -29,13 +29,13 @@ import com.smartgwt.client.widgets.layout.Layout;
  * @author Oliver May
  *
  */
-public class ManagerApplicationEntryPoint {
+public class ManagerApplication {
 
 	public static final int LOADING_Z_INDEX = 300000;
 
-	private static ManagerApplicationEntryPoint instance;
+	private static ManagerApplication instance;
 
-	public static ManagerApplicationEntryPoint getInstance() {
+	public static ManagerApplication getInstance() {
 		return instance;
 	}
 
