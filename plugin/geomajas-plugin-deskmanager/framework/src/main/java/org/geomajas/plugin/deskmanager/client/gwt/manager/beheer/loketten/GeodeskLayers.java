@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.loketten;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.UserApplicationRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.common.LayerSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.common.SaveButtonBar;

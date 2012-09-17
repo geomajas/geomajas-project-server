@@ -21,7 +21,7 @@ import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.UserApplication;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;

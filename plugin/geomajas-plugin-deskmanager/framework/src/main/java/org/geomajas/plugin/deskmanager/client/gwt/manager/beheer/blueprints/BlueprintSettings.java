@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.blueprints;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.UserApplicationRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.service.CommService;

@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.blueprints;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.UserApplicationRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.service.DataCallback;
 
 import com.smartgwt.client.types.Overflow;

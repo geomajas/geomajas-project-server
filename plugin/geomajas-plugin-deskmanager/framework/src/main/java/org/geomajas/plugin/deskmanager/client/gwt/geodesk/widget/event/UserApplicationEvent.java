@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.UserApplication;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 
 import com.google.gwt.event.shared.GwtEvent;
 

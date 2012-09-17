@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
+package org.geomajas.plugin.deskmanager.client.gwt.common;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

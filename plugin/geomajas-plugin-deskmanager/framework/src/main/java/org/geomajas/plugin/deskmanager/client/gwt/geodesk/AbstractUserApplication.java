@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.GwtCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.service.DeskmanagerGwtCommandCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.FeatureSelectionInfoWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;

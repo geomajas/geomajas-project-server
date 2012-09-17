@@ -16,6 +16,8 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow.AskRoleCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.LoadingScreen;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
