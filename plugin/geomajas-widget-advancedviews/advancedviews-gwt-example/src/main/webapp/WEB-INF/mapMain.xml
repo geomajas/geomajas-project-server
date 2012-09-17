@@ -155,86 +155,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="widgetInfo">
 			<map>
 				<entry key="LayerTreeWithLegendInfo">
-					<bean class="org.geomajas.widget.advancedviews.configuration.client.LayerTreeWithLegendInfo">
+					<bean class="org.geomajas.widget.layertree.configuration.client.LayerTreeWithLegendInfo">
 						<property name="iconSize" value="22" />
-					</bean>
-				</entry>
-				
-				
-				<entry key="ThemesInfo">
-					<bean class="org.geomajas.widget.advancedviews.configuration.client.ThemesInfo">
-						<property name="themeConfigs">
-							<list>
-								<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig">
-									<property name="icon" value="/images/Google_theme.png" />
-									<property name="title" value="Google maps" />
-									<property name="description" value="Google maps" />
-									<property name="rangeConfigs">
-										<list>
-											<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig">
-												<property name="minimumScale" value="1:3420000000" />
-												<property name="maximumScale" value="1:342" />
-												<property name="icon" value="/images/Google_theme.png" />
-												<property name="layerConfigs">
-													<list>
-														<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
-															<property name="layer" ref="clientLayerOsm" />
-															<property name="visible" value="false" />
-															<property name="transparency" value="0.5" />
-														</bean>
-														<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
-															<property name="layer" ref="clientLayerGoogle" />
-															<property name="visible" value="true" />
-															<property name="transparency" value="1" />
-														</bean>
-														<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
-															<property name="layer" ref="clientLayerWms" />
-															<property name="visible" value="false" />
-															<property name="transparency" value="0.5" />
-														</bean>
-													</list>
-												</property>
-											</bean>
-										</list>
-									</property>
-								</bean>
-
-								<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig">
-									<property name="icon" value="/images/OSM_theme.png" />
-									<property name="title" value="OSM and WMS" />
-									<property name="description" value="OSM and WMS" />
-									<property name="rangeConfigs">
-										<list>
-											<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig">
-												<property name="minimumScale" value="1:1000000000" />
-												<property name="maximumScale" value="1:1" />
-												<property name="icon" value="/images/OSM_theme.png" />
-												<property name="layerConfigs">
-													<list>
-														<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
-															<property name="layer" ref="clientLayerOsm" />
-															<property name="visible" value="true" />
-															<property name="transparency" value="0.75" />
-														</bean>
-														<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
-															<property name="layer" ref="clientLayerGoogle" />
-															<property name="visible" value="false" />
-															<property name="transparency" value="1" />
-														</bean>
-														<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
-															<property name="layer" ref="clientLayerWms" />
-															<property name="visible" value="true" />
-															<property name="transparency" value="1" />
-														</bean>
-													</list>
-												</property>
-											</bean>
-										</list>
-									</property>
-								</bean>
-
-							</list>
-						</property>
 					</bean>
 				</entry>
 				

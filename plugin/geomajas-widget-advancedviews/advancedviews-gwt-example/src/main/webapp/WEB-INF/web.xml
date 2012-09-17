@@ -96,7 +96,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/org.geomajas.widget.advancedviews.gwt.example.Application/geomajasService</url-pattern>
+		<url-pattern>/org.geomajas.widget.layertree.gwt.example.Application/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
