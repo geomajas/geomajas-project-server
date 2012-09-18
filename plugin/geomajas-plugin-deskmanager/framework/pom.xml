@@ -128,6 +128,10 @@
 			<artifactId>geomajas-widget-utility-gwt</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-layer-gwt</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-editing-gwt</artifactId>
 		</dependency>
