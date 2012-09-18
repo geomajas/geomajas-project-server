@@ -9,38 +9,37 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.staticsecurity.configuration;
+package org.geomajas.plugin.staticsecurity.security.dto;
 
 import org.geomajas.annotation.Api;
 
 /**
- * An authority is a named role.
+ * {@link UserFilter} that allows all users.
  * 
  * @author Jan De Moerloose
  * @since 1.10.0
  * 
  */
 @Api(allMethods = true)
-public class AuthorityInfo extends RoleInfo {
+public class AllUserFilter extends AbstractUserFilter {
 
-	private String name;
+	private static final long serialVersionUID = 1100L;
 
-	/**
-	 * Get the name of the authority.
-	 * 
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
+	@Override
+	public Object accept(UserFilterVisitor visitor, Object data) {
+		return visitor.visit(this, data);
 	}
 
-	/**
-	 * Set the name of the authority.
-	 * 
-	 * @param name the name
-	 */
-	public void setName(String name) {
-		this.name = name;
+	@Override
+	public UserFilter and(UserFilter filter) {
+		return filter;
 	}
 
+	@Override
+	public UserFilter or(UserFilter filter) {
+		return this;
+	}
+	
+	
+	
 }

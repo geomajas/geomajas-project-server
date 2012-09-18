@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.staticsecurity.command;
 
+import java.util.Collections;
+
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.command.staticsecurity.LoginCommand;

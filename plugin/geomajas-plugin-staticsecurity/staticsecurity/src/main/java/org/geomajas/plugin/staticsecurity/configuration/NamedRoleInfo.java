@@ -8,29 +8,39 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.staticsecurity.security;
 
-import java.util.List;
+package org.geomajas.plugin.staticsecurity.configuration;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.plugin.staticsecurity.security.dto.UserFilter;
-import org.geomajas.security.UserInfo;
 
 /**
- * Implemented by {@link AuthenticationService} instances that provide access to their user directory.
+ * An authority is a named role.
  * 
  * @author Jan De Moerloose
- * @since 1.10
+ * @since 1.10.0
  * 
  */
 @Api(allMethods = true)
-public interface UserDirectoryService {
-	
+public class NamedRoleInfo extends RoleInfo {
+
+	private String name;
+
 	/**
-	 * Get the users in the specified roles, subject to the specified parameters.
+	 * Get the name of the authority.
 	 * 
-	 * @param filter filter to apply
-	 * @return the list of users
+	 * @return the name
 	 */
-	List<UserInfo> getUsers(UserFilter userFilter);
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Set the name of the authority.
+	 * 
+	 * @param name the name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

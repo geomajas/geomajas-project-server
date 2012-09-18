@@ -151,10 +151,25 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
+    <section>
+      <title>Static configuration of users (role-based)</title>
+
+      <para>The static security has limited support for role-based user
+      configuration. Particularly, the GetUsersCommand supports querying of
+      users based on the roles they have. To make use of this functionality,
+      static users should be configured by specifying a set of named roles and
+      assigning these roles to the users. This is done by configuring the
+      roles property (versus configuring the authorizations directly). A named
+      role is a named list of authorizations.</para>
+
+      <xi:include href="listing/ConfigureUserRoles.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
     <section id="confUsersDyn">
       <title>Dynamic configuration of users</title>
 
-      <para>The user information can also be determined dynamically by using
+      <para>The user information can also be determined dynamically by
       explicitly configuring authentication services. The statically defined
       users (see previous section) are always automatically included after the
       configured authentication services.</para>
@@ -190,6 +205,50 @@
 
       <xi:include href="listing/LdapAuthentication.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>User directories</title>
+
+      <para>Authentication services can provide support for querying their
+      user base. This is done by implementing the
+      <code>UserDirectoryService</code> interface. An authentication service
+      that behaves as a user directory should implement the following
+      method:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>List&lt;UserInfo&gt; getUsers(UserFilter
+          userFilter);</code></para>
+        </listitem>
+      </itemizedlist>
+
+      <para>This method accepts a user filter and returns a list of users that
+      comply with the filter. An allow-all filter
+      (<code>AllUserFilter</code>), logical filters
+      (<code>AndUserFilter</code>, <code>OrUserFilter</code>) and a role
+      filter (<code>RoleUserFilter</code>) are provided. Other filters can be
+      added by subclassing <code>AbstractUserFilter</code> and implementing
+      the actual filtering in the authentication service. </para>
+
+      <para>For the static authentication service, the following method must
+      be overridden:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>public boolean evaluate(UserFilter filter, UserInfo
+          userInfo)</code></para>
+        </listitem>
+      </itemizedlist>
+
+      <para>For the LDAP authentication service, the following method provides
+      a similar hook:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>public Filter convert(UserFilter filter)</code></para>
+        </listitem>
+      </itemizedlist>
     </section>
   </section>
 

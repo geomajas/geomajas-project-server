@@ -18,11 +18,10 @@ import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersResponse;
-import org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo;
 import org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo;
-import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
 import org.geomajas.plugin.staticsecurity.security.AuthenticationService;
 import org.geomajas.plugin.staticsecurity.security.UserDirectoryService;
+import org.geomajas.security.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,23 +55,9 @@ public class GetUsersCommand implements Command<GetUsersRequest, GetUsersRespons
 		for (AuthenticationService authenticationService : securityServiceInfo.getAuthenticationServices()) {
 			if (authenticationService instanceof UserDirectoryService) {
 				UserDirectoryService userService = (UserDirectoryService) authenticationService;
-				List<UserInfo> userInfos = userService.getUsers(request.getRoles(), request.getParameters());
+				List<UserInfo> userInfos = userService.getUsers(request.getFilter());
 				for (UserInfo userInfo : userInfos) {
 					users.add(userInfo.getUserId());
-				}
-			}
-		}
-		// check the static users, can check on role only !
-		for (UserInfo userInfo : securityServiceInfo.getUsers()) {
-			if (request.getRoles().isEmpty()) {
-				users.add(userInfo.getUserId());
-			} else {
-				for (AuthorityInfo authority : userInfo.getAuthorities()) {
-					String name = authority.getName();
-					if (request.getRoles().contains(name)) {
-						users.add(userInfo.getUserId());
-						break;
-					}
 				}
 			}
 		}

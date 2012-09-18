@@ -13,6 +13,7 @@ package org.geomajas.plugin.staticsecurity.configuration;
 
 import org.geomajas.annotation.Api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
 @Api(allMethods = true)
 public class RoleInfo {
 
-	private List<AuthorizationInfo> authorizations;
+	private List<AuthorizationInfo> authorizations = new ArrayList<AuthorizationInfo>();
 
 	/**
 	 * Get authorization info for role.

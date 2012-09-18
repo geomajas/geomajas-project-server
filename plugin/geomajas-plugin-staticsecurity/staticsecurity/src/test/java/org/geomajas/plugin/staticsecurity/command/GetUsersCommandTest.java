@@ -11,25 +11,24 @@
 
 package org.geomajas.plugin.staticsecurity.command;
 
+import java.util.Set;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.LogRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersResponse;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
 import org.geomajas.plugin.staticsecurity.command.staticsecurity.GetUsersCommand;
+import org.geomajas.plugin.staticsecurity.security.dto.RoleUserFilter;
+import org.geomajas.plugin.staticsecurity.security.dto.UserFilter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Verify the functioning of the {@link org.geomajas.plugin.staticsecurity.command.staticsecurity.LoginCommand} class.
@@ -38,7 +37,7 @@ import java.util.Set;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/staticsecurity/security.xml"})
+		"/org/geomajas/plugin/staticsecurity/securitywithroles.xml"})
 public class GetUsersCommandTest {
 
 	@Autowired
@@ -54,26 +53,6 @@ public class GetUsersCommandTest {
 		command.execute(request, response);
 		checkResult(response);
 
-	}
-
-	@Test
-	public void roleTest() throws Exception {
-		GetUsersRequest request = new GetUsersRequest();
-		request.setRoles(Collections.singleton("someRole"));
-		GetUsersResponse response = command.getEmptyCommandResponse();
-		command.execute(request, response);
-		Set<String> users = response.getUsers();
-		Assert.assertEquals(1, users.size());
-		Assert.assertTrue(users.contains("marino"));
-	}
-
-	private void checkResult(GetUsersResponse response) {
-		Assert.assertNotNull(response);
-		Set<String> users = response.getUsers();
-		Assert.assertEquals(3, users.size());
-		Assert.assertTrue(users.contains("luc"));
-		Assert.assertTrue(users.contains("marino"));
-		Assert.assertTrue(users.contains("empty"));
 	}
 
 	@Test
@@ -97,5 +76,35 @@ public class GetUsersCommandTest {
 		// now logout
 		dispatcher.execute(LogoutRequest.COMMAND, null, token, "en");
 	}
+
+	@Test
+	public void logicTest() throws Exception {
+		GetUsersRequest request = new GetUsersRequest();
+		UserFilter or = new RoleUserFilter("viewerA").or(new RoleUserFilter("viewerB"));
+		request.setFilter(or);
+		GetUsersResponse response = command.getEmptyCommandResponse();
+		command.execute(request, response);
+		Set<String> users = response.getUsers();
+		Assert.assertEquals(2, users.size());
+		Assert.assertTrue(users.contains("marino"));
+		Assert.assertTrue(users.contains("empty"));
+		UserFilter and = new RoleUserFilter("viewerA").and(new RoleUserFilter("viewerB"));
+		request.setFilter(and);
+		response = command.getEmptyCommandResponse();
+		command.execute(request, response);
+		users = response.getUsers();
+		Assert.assertEquals(1, users.size());
+		Assert.assertTrue(users.contains("empty"));
+	}
+
+	private void checkResult(GetUsersResponse response) {
+		Assert.assertNotNull(response);
+		Set<String> users = response.getUsers();
+		Assert.assertEquals(3, users.size());
+		Assert.assertTrue(users.contains("luc"));
+		Assert.assertTrue(users.contains("marino"));
+		Assert.assertTrue(users.contains("empty"));
+	}
+
 
 }

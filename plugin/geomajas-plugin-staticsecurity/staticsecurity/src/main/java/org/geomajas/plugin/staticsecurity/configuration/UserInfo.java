@@ -32,7 +32,7 @@ public class UserInfo extends RoleInfo implements org.geomajas.security.UserInfo
 	private String userOrganization;
 	private String userDivision;
 	private String password;
-	private List<AuthorityInfo> authorities = new ArrayList<AuthorityInfo>();
+	private List<NamedRoleInfo> roles = new ArrayList<NamedRoleInfo>();
 
 	/**
 	 * Get user name.
@@ -87,26 +87,26 @@ public class UserInfo extends RoleInfo implements org.geomajas.security.UserInfo
 	}
 	
 	/**
-	 * Get authority info for this user. If present this will be a partitioning of the user's authorizations in roles.
+	 * Get role info for this user. If present this will be a partitioning of the user's authorizations in roles.
 	 * 
-	 * @return authority info
+	 * @return list of roles
 	 * @since 1.10.0
 	 */
-	public List<AuthorityInfo> getAuthorities() {
-		return authorities;
+	public List<NamedRoleInfo> getRoles() {
+		return roles;
 	}
 	
 	/**
-	 * Set the authority info for this user. If set, this will override the user's authorizations.
+	 * Set the role info for this user. If set, this will be used to set the user's authorizations.
 	 * 
-	 * @param authorities the authorities
+	 * @param roles the roles
 	 * @since 1.10.0
 	 */
-	public void setAuthorities(List<AuthorityInfo> authorities) {
-		this.authorities = authorities;
+	public void setRoles(List<NamedRoleInfo> roles) {
+		this.roles = roles;
 		List<AuthorizationInfo> authorizations = new ArrayList<AuthorizationInfo>();
-		for (AuthorityInfo authority : authorities) {
-			authorizations.addAll(authority.getAuthorizations());
+		for (NamedRoleInfo role : roles) {
+			authorizations.addAll(role.getAuthorizations());
 		}
 		super.setAuthorizations(authorizations);
 	}

@@ -85,26 +85,18 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userId" value="marino"/>
 					<property name="password" value="kMSqVf2EMWilIKhZyV3dKA"/> <!-- "marino" -->
 					<property name="userName" value="Marino Van Hoenacker"/>
-					<property name="authorities">
+					<property name="authorizations">
 						<list>
-							<bean
-								class="org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo">
-								<property name="name" value="someRole" />
-								<property name="authorizations">
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+								<property name="commandsInclude">
 									<list>
-										<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
-											<property name="commandsInclude">
-												<list>
-													<value>.*</value>
-												</list>
-											</property>
-											<property name="visibleLayersInclude">
-												<list>
-													<value>roads</value>
-													<value>rivers</value>
-												</list>
-											</property>
-										</bean>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>roads</value>
+										<value>rivers</value>
 									</list>
 								</property>
 							</bean>

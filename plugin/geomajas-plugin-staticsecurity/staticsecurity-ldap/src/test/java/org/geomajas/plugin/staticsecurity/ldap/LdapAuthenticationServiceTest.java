@@ -14,16 +14,17 @@ package org.geomajas.plugin.staticsecurity.ldap;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.geomajas.plugin.staticsecurity.configuration.AuthorityInfo;
 import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
 import org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo;
-import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
+import org.geomajas.plugin.staticsecurity.configuration.NamedRoleInfo;
+import org.geomajas.plugin.staticsecurity.security.dto.AllUserFilter;
+import org.geomajas.plugin.staticsecurity.security.dto.RoleUserFilter;
+import org.geomajas.security.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,7 +57,14 @@ public class LdapAuthenticationServiceTest extends LdapServerProvider {
 		includes.add(".*");
 		auth.setCommandsInclude(includes);
 		auths.add(auth);
-		roles.put("cn=testgroup,dc=roles,dc=geomajas,dc=org", auths);
+		List<AuthorizationInfo> auths2 = new ArrayList<AuthorizationInfo>();
+		LayerAuthorizationInfo auth2 = new LayerAuthorizationInfo();
+		List<String> includes2 = new ArrayList<String>();
+		includes2.add(".*");
+		auth2.setCommandsInclude(includes2);
+		auths2.add(auth2);
+		roles.put("cn=devgroup,dc=roles,dc=geomajas,dc=org", auths);
+		roles.put("cn=testgroup,dc=roles,dc=geomajas,dc=org", auths2);		
 		service.setRoles(roles);
 	}
 
@@ -68,7 +76,7 @@ public class LdapAuthenticationServiceTest extends LdapServerProvider {
 		assertThat(service.isAuthenticated("wrong", "wrong")).isNull();
 
 		String userId = "test";
-		UserInfo authResult = service.isAuthenticated(userId, "cred");
+		org.geomajas.plugin.staticsecurity.configuration.UserInfo authResult = service.isAuthenticated(userId, "cred");
 		assertThat(authResult).isNotNull();
 		assertThat(authResult.getUserId()).isEqualTo(userId);
 		assertThat(authResult.getUserName()).isEqualTo("Joe Tester");
@@ -77,18 +85,22 @@ public class LdapAuthenticationServiceTest extends LdapServerProvider {
 		assertThat(authResult.getUserDivision()).isEqualTo("person");
 		List<AuthorizationInfo> auths = authResult.getAuthorizations();
 		assertThat(auths).hasSize(1);
-		List<AuthorityInfo> authits = authResult.getAuthorities();
+		List<NamedRoleInfo> authits = authResult.getRoles();
 		assertThat(authits).hasSize(1);
-		assertThat(authits.get(0).getName()).isEqualTo("cn=testgroup,dc=roles,dc=geomajas,dc=org");
+		assertThat(authits.get(0).getName()).isEqualTo("testgroup");
 	}
 
 	@Test
 	public void testUserService() throws Exception {
-		List<UserInfo> users = service.getUsers(Collections.singleton("cn=testgroup,dc=roles,dc=geomajas,dc=org"),
-				Collections.<String, String> emptyMap());
+		List<UserInfo> users = service.getUsers(new RoleUserFilter("testgroup"));
 		assertThat(users).isNotNull();
 		assertThat(users.size()).isEqualTo(1);
 		assertThat(users.get(0).getUserName()).isEqualTo("Joe Tester");
+		
+		users = service.getUsers(new AllUserFilter());
+		assertThat(users).isNotNull();
+		assertThat(users.size()).isEqualTo(2);
+		
 	}
 
 }

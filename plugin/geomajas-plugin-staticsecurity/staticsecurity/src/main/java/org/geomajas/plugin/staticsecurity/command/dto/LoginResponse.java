@@ -11,8 +11,11 @@
 
 package org.geomajas.plugin.staticsecurity.command.dto;
 
-import org.geomajas.command.CommandResponse;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.geomajas.annotation.Api;
+import org.geomajas.command.CommandResponse;
 
 /**
  * Response object for {@link org.geomajas.plugin.staticsecurity.command.staticsecurity.LoginCommand}.

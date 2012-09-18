@@ -14,6 +14,7 @@
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
 
 	<source path="client" />
+	<source path="security/dto" />
 	<source path="command/dto" />
 
 </module>
