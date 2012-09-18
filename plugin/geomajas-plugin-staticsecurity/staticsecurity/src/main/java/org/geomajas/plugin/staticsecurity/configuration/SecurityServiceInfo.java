@@ -32,6 +32,7 @@ public class SecurityServiceInfo {
 	private int tokenLifetime = 4 * 60 * 60; // 4 hours // NOSONAR
 	private List<UserInfo> users;
 	private List<AuthenticationService> authenticationServices;
+	private boolean excludeDefault = false;
 
 	@Autowired
 	private StaticAuthenticationService staticAuthenticationService;
@@ -93,6 +94,24 @@ public class SecurityServiceInfo {
 	public void setAuthenticationServices(List<AuthenticationService> authenticationServices) {
 		this.authenticationServices = authenticationServices;
 	}
+	
+	/**
+	 * Returns true if the default static authentication service at the end should be excluded.
+	 * @return true if excluded, false otherwise 
+	 * @since 1.10.0
+	 */
+	public boolean isExcludeDefault() {
+		return excludeDefault;
+	}
+	
+	/**
+	 * If set to true, the default static authentication service at the end will be excluded.  
+	 * @param excludeDefault
+	 * @since 1.10.0
+	 */
+	public void setExcludeDefault(boolean excludeDefault) {
+		this.excludeDefault = excludeDefault;
+	}
 
 	/**
 	 * Finish initialization of the configuration.
@@ -102,6 +121,8 @@ public class SecurityServiceInfo {
 		if (null == authenticationServices) {
 			authenticationServices = new ArrayList<AuthenticationService>();
 		}
-		authenticationServices.add(staticAuthenticationService);
+		if (!excludeDefault) {
+			authenticationServices.add(staticAuthenticationService);
+		}
 	}
 }
