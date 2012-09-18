@@ -35,16 +35,23 @@ public class GetUsersRequest extends EmptyCommandRequest {
 
 	private UserFilter filter = new AllUserFilter();
 
-	
+	/**
+	 * Get the user filter.
+	 * 
+	 * @return the filter
+	 */
 	public UserFilter getFilter() {
 		return filter;
 	}
 
-	
+	/**
+	 * Set the user filter.
+	 * 
+	 * @param filter
+	 */
 	public void setFilter(UserFilter filter) {
 		this.filter = filter;
-	}
-	
+	}	
 	
 
 

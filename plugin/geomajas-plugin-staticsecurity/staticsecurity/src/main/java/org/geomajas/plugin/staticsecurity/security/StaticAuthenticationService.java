@@ -38,6 +38,8 @@ import org.springframework.stereotype.Component;
  * {@link org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo}.
  * 
  * @author Joachim Van der Auwera
+ * @author Jand De Moerloose
+ * @since 1.10.0
  */
 @Component
 @Api(allMethods = true)

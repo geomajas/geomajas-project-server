@@ -11,9 +11,6 @@
 
 package org.geomajas.plugin.staticsecurity.command.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 

@@ -85,20 +85,20 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 	private Map<String, Set<String>> ldapRoleMapping;
 	
 	/**
-	 * Filter that allows all users
+	 * Filter that allows all users.
 	 */
 	@Api
 	public static final Filter ALL = Filter.createEqualityFilter("objectclass", "person");
 	
 	/**
-	 * Filter that allows no users
+	 * Filter that allows no users.
 	 */
 	@Api
 	public static final Filter NONE = Filter.createNOTFilter(ALL);
 
 	
 	/**
-	 * Default role name
+	 * Default role name.
 	 */
 	@Api
 	public static final String DEFAULT_ROLE_NAME = "ROLE_DEFAULT";

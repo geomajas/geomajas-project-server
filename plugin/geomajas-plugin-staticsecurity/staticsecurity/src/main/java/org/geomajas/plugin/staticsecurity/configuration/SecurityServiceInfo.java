@@ -32,7 +32,7 @@ public class SecurityServiceInfo {
 	private int tokenLifetime = 4 * 60 * 60; // 4 hours // NOSONAR
 	private List<UserInfo> users;
 	private List<AuthenticationService> authenticationServices;
-	private boolean excludeDefault = false;
+	private boolean excludeDefault;
 
 	@Autowired
 	private StaticAuthenticationService staticAuthenticationService;
