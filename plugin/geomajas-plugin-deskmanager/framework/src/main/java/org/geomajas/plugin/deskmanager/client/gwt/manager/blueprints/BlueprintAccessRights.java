@@ -8,13 +8,15 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
 import java.util.List;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GroupTreeGrid;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
@@ -28,7 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
+public class BlueprintAccessRights extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
 
 	private BlueprintDto blueprint;
 
@@ -94,4 +96,9 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
 		groupSelect.setDisabled(true);
 		return true;
 	}
+	
+	public void onBlueprintSelectionChange(BlueprintEvent bpe) {
+		setBlueprint(bpe.getBlueprint());
+	}
+
 }

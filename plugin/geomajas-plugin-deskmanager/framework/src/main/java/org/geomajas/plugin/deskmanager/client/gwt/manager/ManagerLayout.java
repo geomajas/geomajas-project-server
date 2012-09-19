@@ -11,12 +11,12 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.blueprints.Blueprints;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.datalayers.Datalayers;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.beheer.loketten.Geodesks;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints.Blueprints;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Datalayers;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk.Geodesks;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
 import com.smartgwt.client.widgets.layout.VLayout;

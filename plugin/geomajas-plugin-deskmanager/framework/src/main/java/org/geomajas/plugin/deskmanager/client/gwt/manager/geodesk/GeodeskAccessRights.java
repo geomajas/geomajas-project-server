@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
-import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
+import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
 import com.smartgwt.client.types.Overflow;
@@ -26,15 +26,18 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * @author Kristof Heirwegh
+ * TODO.
+ * 
+ * @author Jan De Moerloose
+ *
  */
-public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
+public class GeodeskAccessRights extends VLayout implements WoaEventHandler {
 
-	private BlueprintDto blueprint;
+	private GeodeskDto geodesk;
 
 	private GroupTreeGrid groupSelect;
 
-	public BlueprintAccessRights() {
+	public GeodeskAccessRights() {
 		super(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
@@ -66,10 +69,10 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
 		addMember(group);
 	}
 
-	public void setBlueprint(BlueprintDto blueprint) {
-		this.blueprint = blueprint;
-		if (blueprint != null) {
-			groupSelect.setValues(blueprint.getTerritories());
+	public void setGeodesk(GeodeskDto loket) {
+		this.geodesk = loket;
+		if (loket != null) {
+			groupSelect.setValues(loket.getTerritories());
 		} else {
 			groupSelect.setValues(null);
 		}
@@ -83,14 +86,14 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
-		blueprint.setGroups(groupSelect.getValues());
-		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_GROUPS);
+		geodesk.setGroups(groupSelect.getValues());
+		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_GROUPS);
 		groupSelect.setDisabled(true);
 		return true;
 	}
 
 	public boolean onCancelClick(ClickEvent event) {
-		setBlueprint(blueprint);
+		setGeodesk(geodesk);
 		groupSelect.setDisabled(true);
 		return true;
 	}
