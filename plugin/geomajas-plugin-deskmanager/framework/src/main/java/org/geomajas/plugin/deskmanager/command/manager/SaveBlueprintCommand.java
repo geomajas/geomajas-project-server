@@ -11,24 +11,16 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.BlueprintResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
-import org.geomajas.plugin.deskmanager.domain.LayerTree;
-import org.geomajas.plugin.deskmanager.domain.LayerTreeNode;
-import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.GroupService;
-import org.geomajas.plugin.deskmanager.service.common.LayerTreeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

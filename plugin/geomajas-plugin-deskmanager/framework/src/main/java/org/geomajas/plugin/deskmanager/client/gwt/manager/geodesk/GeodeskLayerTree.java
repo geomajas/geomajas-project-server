@@ -10,16 +10,10 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
-import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;

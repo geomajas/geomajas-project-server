@@ -39,7 +39,7 @@ public class Layer {
 	@ManyToOne
 	private LayerModel layerModel;
 	
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String clientLayerId;
 
 	/**
@@ -114,18 +114,23 @@ public class Layer {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Layer other = (Layer) obj;
 		if (clientLayerId == null) {
-			if (other.clientLayerId != null)
+			if (other.clientLayerId != null) {
 				return false;
-		} else if (!clientLayerId.equals(other.clientLayerId))
+			}
+		} else if (!clientLayerId.equals(other.clientLayerId)) {
 			return false;
+		}
 		return true;
 	}
 	

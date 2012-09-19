@@ -26,7 +26,6 @@ import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.geomajas.plugin.deskmanager.service.common.GroupService;
-import org.geomajas.plugin.deskmanager.service.common.LayerTreeService;
 import org.geomajas.security.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

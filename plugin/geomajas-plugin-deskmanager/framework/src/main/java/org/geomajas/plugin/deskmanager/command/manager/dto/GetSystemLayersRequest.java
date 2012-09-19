@@ -23,4 +23,8 @@ public class GetSystemLayersRequest implements CommandRequest {
 	
 	private static final long serialVersionUID = 100L;
 
+	public String toString() {
+		return COMMAND;
+	}
+
 }

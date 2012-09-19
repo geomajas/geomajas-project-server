@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
-import java.util.List;
 import java.util.Set;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
@@ -20,7 +19,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.SaveBlueprintCommand;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;

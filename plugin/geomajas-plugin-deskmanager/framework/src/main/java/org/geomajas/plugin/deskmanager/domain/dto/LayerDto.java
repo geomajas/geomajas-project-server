@@ -87,18 +87,23 @@ public class LayerDto implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		LayerDto other = (LayerDto) obj;
 		if (clientLayerId == null) {
-			if (other.clientLayerId != null)
+			if (other.clientLayerId != null) {
 				return false;
-		} else if (!clientLayerId.equals(other.clientLayerId))
+			}
+		} else if (!clientLayerId.equals(other.clientLayerId)) {
 			return false;
+		}
 		return true;
 	}
 	

@@ -20,22 +20,15 @@ import java.util.Set;
 import org.geomajas.command.configuration.GetMapConfigurationCommand;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
-import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.LayerTreeNode;
-import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.runtimeconfig.service.Rewirable;
 import org.geomajas.security.SecurityContext;
@@ -49,8 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * @author Kristof Heirwegh
@@ -196,125 +187,6 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			return null;
 		}
 	}
-
-	// -------------------------------------------------
-
-	@Deprecated
-	private void addLayers(String mapCrs, List<ClientLayerInfo> clientLayers, ClientLayerTreeNodeInfo nodeInfo,
-			LayerTreeNode blueprintRoot, LayerTreeNode node) throws Exception {
-		if (node.isLeaf()) {
-			// -- create layer
-			LayerView lv = findLayerViewForNode(blueprintRoot, node);
-			LayerModel model = layerModelService.getLayerModelByClientLayerIdInternal(node.getClientLayerId());
-			ClientLayerInfo cli = createClientLayerInfo(mapCrs, node, lv, model);
-			if (cli != null) {
-				if (configurationService.getLayer(cli.getServerLayerId()) != null) {
-					clientLayers.add(0, cli);
-					if (node.isShowInLegend(lv, model, cli)) {
-						nodeInfo.getLayers().add(cli);
-					}
-				} else {
-					log.warn("Server Layer not found! (Client: " + node.getClientLayerId() + ", Server: "
-							+ cli.getServerLayerId() + ")");
-				}
-			} else {
-				log.warn("Client Layer not found! (" + node.getClientLayerId() + ")");
-			}
-		} else {
-			// -- create node
-			ClientLayerTreeNodeInfo cltni = createClientLayerTreeNodeInfo(node);
-			nodeInfo.getTreeNodes().add(cltni);
-			for (LayerTreeNode ltn : node.getChildren()) {
-				addLayers(mapCrs, clientLayers, cltni, blueprintRoot, ltn);
-			}
-		}
-	}
-
-	/**
-	 * Can be null!! (there is no blueprint, or blueprint also didn't customize)
-	 * 
-	 * @param blueprintNode
-	 * @param node
-	 * @return
-	 */
-	@Deprecated
-	private LayerView findLayerViewForNode(LayerTreeNode blueprintNode, LayerTreeNode node) {
-		if (!node.isLeaf() || blueprintNode == null) {
-			return null;
-		}
-		if (blueprintNode.isLeaf() && blueprintNode.getClientLayerId().equals(node.getClientLayerId())) {
-			return blueprintNode.getView();
-		} else {
-			for (LayerTreeNode ltn : blueprintNode.getChildren()) {
-				LayerView lv = findLayerViewForNode(ltn, node);
-				if (lv != null) {
-					return lv;
-				}
-			}
-		}
-		return null;
-	}
-
-	@Deprecated
-	private ClientLayerTreeNodeInfo createClientLayerTreeNodeInfo(LayerTreeNode node) {
-		ClientLayerTreeNodeInfo cltni = new ClientLayerTreeNodeInfo();
-		cltni.setExpanded(node.isExpanded());
-		cltni.setLabel(node.getNodeName());
-		return cltni;
-	}
-
-	// only leafs!
-	@Deprecated
-	private ClientLayerInfo createClientLayerInfo(String mapCrs, LayerTreeNode node, LayerView view, LayerModel model) {
-		if (node == null) {
-			return null;
-		}
-		ClientLayerInfo cli = layerMap.get(node.getClientLayerId());
-
-		if (cli == null) {
-			cli = (ClientLayerInfo) applicationContext.getBean(node.getClientLayerId());
-		}
-
-		if (cli != null) {
-			cli = clone(cli);
-			Layer<?> serverLayer = (Layer<?>) applicationContext.getBean(cli.getServerLayerId());
-			try {
-				Envelope serverEnvelope = convertorService.toInternal(serverLayer.getLayerInfo().getMaxExtent());
-				Crs crs = layerService.getCrs(serverLayer);
-				cli.setMaxExtent(convertorService.toDto(geoService.transform(serverEnvelope, crs,
-						geoService.getCrs2(mapCrs))));
-			} catch (Exception e) {
-				// fall back to all, server will do the check...
-				cli.setMaxExtent(Bbox.ALL);
-			}
-			cli.setLayerInfo(serverLayer.getLayerInfo());
-			cli.setLabel(node.getName());
-			if (node.getMaximumScale(view, model, null) != null) {
-				cli.setMaximumScale(node.getMaximumScale(view, model, null));
-			}
-			if (node.getMinimumScale(view, model, null) != null) {
-				cli.setMinimumScale(node.getMinimumScale(view, model, null));
-			}
-			if (node.isDefaultVisible(view, model, null) != null) {
-				cli.setVisible(node.isDefaultVisible(view, model, null));
-			}
-			if (cli instanceof ClientVectorLayerInfo) {
-				updateClientVectorLayerInfo((ClientVectorLayerInfo) cli, node);
-			}
-			return cli;
-		} else {
-			log.warn("Could not find ClientLayerInfo: " + node.getClientLayerId());
-		}
-		return null;
-	}
-	
-	@Deprecated
-	private void updateClientVectorLayerInfo(ClientVectorLayerInfo cvli, LayerTreeNode node) {
-		// TODO update layerstyles
-		// cvli.getNamedStyleInfo().setSldStyleName(node.getStyleUuid());
-	}
-
-	// -------------------------------------------------
 
 	private ClientApplicationInfo clone(ClientApplicationInfo cai) {
 		return XmlConverterService.toClientApplicationInfo(XmlConverterService.toXml(cai));

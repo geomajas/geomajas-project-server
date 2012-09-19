@@ -45,8 +45,6 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetGroupsResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
@@ -108,23 +106,6 @@ public final class CommService {
 	}
 	
 	
-	@Deprecated
-	public static void getSystemLayerTreeNode(final DataCallback<GetSystemLayerTreeNodeResponse> onFinish) {
-		GetSystemLayerTreeNodeRequest request = new GetSystemLayerTreeNodeRequest();
-		GwtCommand command = new GwtCommand(GetSystemLayerTreeNodeRequest.COMMAND);
-		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetSystemLayerTreeNodeResponse>() {
-
-					public void execute(GetSystemLayerTreeNodeResponse response) {
-						if (onFinish != null) {
-							onFinish.execute(response);
-						}
-					}
-				});
-		def.addCallback(NotificationWindow.getInstance());
-	}
-
 	// -- Blueprint --------------------------------------------------------
 
 	public static void getBlueprint(String uuid, final DataCallback<BlueprintDto> onFinish) {

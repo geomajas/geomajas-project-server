@@ -10,19 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -36,8 +29,6 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 	private BlueprintDto blueprint;
 
 	private LayerTreeSelectPanel layerTreeSelect;
-
-	private LayerTreeNodeDto systemLayerTreeNode;
 
 	public BlueprintLayerTree() {
 		super(5);
