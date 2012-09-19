@@ -13,8 +13,10 @@ package org.geomajas.plugin.deskmanager.domain.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
@@ -53,12 +55,10 @@ public class BlueprintDto implements GeodeskInfo {
 	private boolean publiek;
 
 	private boolean deleted;
+	
+	private Set<LayerDto> mainMapLayers = new HashSet<LayerDto>();
 
-	/**
-	 * @deprecated use ClientWidgetInfo
-	 */
-	@Deprecated
-	private LayerTreeDto layerTree;
+	private Set<LayerDto> overviewMapLayers = new HashSet<LayerDto>();
 
 	private List<TerritoryDto> groups = new ArrayList<TerritoryDto>();
 	
@@ -168,14 +168,6 @@ public class BlueprintDto implements GeodeskInfo {
 		this.deleted = deleted;
 	}
 
-	public LayerTreeDto getLayerTree() {
-		return layerTree;
-	}
-
-	public void setLayerTree(LayerTreeDto layerTree) {
-		this.layerTree = layerTree;
-	}
-
 	public List<TerritoryDto> getTerritories() {
 		return groups;
 	}
@@ -246,5 +238,33 @@ public class BlueprintDto implements GeodeskInfo {
 	 */
 	public UserApplicationInfo getUserApplicationInfo() {
 		return userApplicationInfo;
+	}
+
+	/**
+	 * @param mainMapLayers the mainMapLayers to set
+	 */
+	public void setMainMapLayers(Set<LayerDto> mainMapLayers) {
+		this.mainMapLayers = mainMapLayers;
+	}
+
+	/**
+	 * @return the mainMapLayers
+	 */
+	public Set<LayerDto> getMainMapLayers() {
+		return mainMapLayers;
+	}
+
+	/**
+	 * @param overviewMapLayers the overviewMapLayers to set
+	 */
+	public void setOverviewMapLayers(Set<LayerDto> overviewMapLayers) {
+		this.overviewMapLayers = overviewMapLayers;
+	}
+
+	/**
+	 * @return the overviewMapLayers
+	 */
+	public Set<LayerDto> getOverviewMapLayers() {
+		return overviewMapLayers;
 	}
 }

@@ -13,8 +13,10 @@ package org.geomajas.plugin.deskmanager.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,6 +32,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -101,12 +104,15 @@ public class Geodesk implements GeodeskInfo {
 	@JoinColumn(name = "blueprint_id")
 	private Blueprint blueprint;
 
-	/**
-	 * @deprecated: use a list of layers instead with the configuration. Layertree will only configure the structure.
-	 */
-	@ManyToOne
-	@JoinColumn(name = "layertree_id")
-	private LayerTree layerTree;
+	@ElementCollection()
+	@OrderColumn(name = "sortorder")
+	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	private Set<Layer> mainMapLayers = new HashSet<Layer>();
+
+	@ElementCollection()
+	@OrderColumn(name = "sortorder")
+	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	private Set<Layer> overviewMapLayers = new HashSet<Layer>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@MapKeyClass(String.class)
@@ -236,14 +242,6 @@ public class Geodesk implements GeodeskInfo {
 
 	public void setBlueprint(Blueprint blueprint) {
 		this.blueprint = blueprint;
-	}
-
-	public LayerTree getLayerTree() {
-		return layerTree;
-	}
-
-	public void setLayerTree(LayerTree layerTree) {
-		this.layerTree = layerTree;
 	}
 
 	public String getGeodeskId() {
@@ -376,6 +374,34 @@ public class Geodesk implements GeodeskInfo {
 	 */
 	public Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfos() {
 		return overviewMapClientWidgetInfos;
+	}
+
+	/**
+	 * @param mainMapLayers the mainMapLayers to set
+	 */
+	public void setMainMapLayers(Set<Layer> layers) {
+		this.mainMapLayers = layers;
+	}
+
+	/**
+	 * @return the mainMapLayers
+	 */
+	public Set<Layer> getMainMapLayers() {
+		return mainMapLayers;
+	}
+	/**
+	 * @param mainMapLayers the mainMapLayers to set
+	 */
+
+	public void setOverviewMapLayers(Set<Layer> layers) {
+		this.overviewMapLayers = layers;
+	}
+
+	/**
+	 * @return the mainMapLayers
+	 */
+	public Set<Layer> getOverviewMapLayers() {
+		return overviewMapLayers;
 	}
 
 }

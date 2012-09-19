@@ -24,7 +24,7 @@ public class SaveGeodeskRequest implements CommandRequest {
 
 	public static final int SAVE_SETTINGS = 1;
 
-	public static final int SAVE_LAYERTREE = 2; // layers + layerstyles
+	public static final int SAVE_LAYERS = 2; // layers + layerstyles
 
 	public static final int SAVE_GROUPS = 4; // security
 

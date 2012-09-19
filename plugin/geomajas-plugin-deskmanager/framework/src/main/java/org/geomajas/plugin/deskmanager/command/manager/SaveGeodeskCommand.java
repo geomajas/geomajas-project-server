@@ -12,18 +12,13 @@ package org.geomajas.plugin.deskmanager.command.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
-import org.geomajas.plugin.deskmanager.domain.LayerTree;
-import org.geomajas.plugin.deskmanager.domain.LayerTreeNode;
-import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
@@ -57,9 +52,6 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 	private GeodeskService loketService;
 
 	@Autowired
-	private LayerTreeService layerTreeService;
-
-	@Autowired
 	private GroupService groupService;
 
 	@Autowired
@@ -84,9 +76,6 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 					}
 					if ((SaveGeodeskRequest.SAVE_GROUPS & request.getSaveWhat()) > 0) {
 						copyGroups(source, target);
-					}
-					if ((SaveGeodeskRequest.SAVE_LAYERTREE & request.getSaveWhat()) > 0) {
-						copyLayerTree(source, target);
 					}
 					if ((SaveGeodeskRequest.SAVE_NOTIFICATIONS & request.getSaveWhat()) > 0) {
 						copyNotifications(source, target);
@@ -201,113 +190,5 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		}
 
 		return res;
-	}
-
-	private void copyLayerTree(Geodesk source, Geodesk target) throws Exception {
-		// -- check LayerTree
-		if (source.getLayerTree() == null && target.getLayerTree() == null) {
-			return;
-
-		} else if (target.getLayerTree() == null && source.getLayerTree() != null) {
-			target.setLayerTree(new LayerTree());
-			layerTreeService.saveOrUpdateLayerTree(target.getLayerTree());
-			source.getLayerTree().getRootNode().setId(target.getLayerTree().getRootNode().getId());
-
-		} else if (target.getLayerTree() != null && source.getLayerTree() == null) {
-			LayerTree lt = target.getLayerTree();
-			target.setLayerTree(null);
-			layerTreeService.deleteLayerTree(lt);
-			return;
-		}
-
-		final LayerTreeNode sourceRootNode = source.getLayerTree().getRootNode();
-		final LayerTreeNode targetRootNode = target.getLayerTree().getRootNode();
-		final Map<Long, LayerTreeNode> olduns = new HashMap<Long, LayerTreeNode>();
-		final Set<LayerTreeNode> useduns = new HashSet<LayerTreeNode>();
-		final Map<LayerTreeNode, LayerTreeNode> mappings = new HashMap<LayerTreeNode, LayerTreeNode>();
-		mappings.put(sourceRootNode, targetRootNode);
-
-		// find all nodes, will be rebuilt later on
-		targetRootNode.visit(new LayerTree.LayerTreeNodeVisitor() {
-
-			public void visit(LayerTreeNode node) {
-				olduns.put(node.getId(), node);
-			}
-		});
-
-		// detach children
-		for (LayerTreeNode ltn : olduns.values()) {
-			if (!ltn.isLeaf()) {
-				ltn.getChildren().clear();
-			}
-			ltn.setParentNode(null);
-		}
-
-		// rebuild tree, use olduns where possible
-		sourceRootNode.visit(new LayerTree.LayerTreeNodeVisitor() {
-
-			public void visit(LayerTreeNode node) {
-				LayerTreeNode target;
-				if (node.getId() != null) {
-					// existing
-					target = olduns.get(node.getId());
-					if (target == null) {
-						throw new RuntimeException(
-								"Could not copy LayerTree (Should have persisted node ?! (did you set id manually ?)");
-					}
-					useduns.add(target);
-					copyLayerTreeNode(node, target);
-				} else {
-					// new
-					target = new LayerTreeNode();
-					copyLayerTreeNode(node, target);
-				}
-				mappings.put(node, target);
-
-				if (node.getParentNode() != null) {
-					target.setParentNode(mappings.get(node.getParentNode()));
-					target.getParentNode().getChildren().add(target);
-				}
-			}
-		});
-
-		// delete obsolete nodes (can't use cascade, then reparenting doesn't work)
-		olduns.values().removeAll(useduns);
-		for (LayerTreeNode ltn : olduns.values()) {
-			layerTreeService.deleteLayerTreeNode(ltn);
-		}
-
-		// persist (needed for new items, won't be persisted otherwise)
-		layerTreeService.saveOrUpdateLayerTree(target.getLayerTree());
-	}
-
-	/**
-	 * Only the node, not the children!
-	 */
-	private void copyLayerTreeNode(LayerTreeNode source, LayerTreeNode target) {
-		target.setExpanded(source.isExpanded());
-		target.setLeaf(source.isLeaf());
-		target.setName(source.getNodeName());
-		target.setClientLayerId(source.getClientLayerId());
-		target.setPublicLayer(source.isPublicLayer());
-
-		if (source.getView() == null && target.getView() != null) {
-			target.setView(null);
-			return;
-		} else if (source.getView() != null && target.getView() == null) {
-			target.setView(new LayerView());
-		}
-		copyLayerView(source.getView(), target.getView());
-	}
-
-	private void copyLayerView(LayerView source, LayerView target) {
-		if (source == null) {
-			return;
-		}
-		target.setDefaultVisible(source.isDefaultVisible());
-		target.setLabel(source.getLabel());
-		target.setMaximumScale(source.getMaximumScale());
-		target.setMinimumScale(source.getMinimumScale());
-		target.setShowInLegend(source.isShowInLegend());
 	}
 }

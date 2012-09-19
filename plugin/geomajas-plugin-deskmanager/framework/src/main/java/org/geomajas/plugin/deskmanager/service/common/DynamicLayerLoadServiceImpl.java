@@ -25,6 +25,7 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
@@ -64,6 +65,9 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	@Autowired(required = false)
 	private Map<String, ClientLayerInfo> layerMap = new LinkedHashMap<String, ClientLayerInfo>();
 
+	@Autowired(required = false)
+	private Map<String, Layer<LayerInfo>> serverLayerMap = new LinkedHashMap<String, Layer<LayerInfo>>();
+
 	@Autowired
 	private ContextConfiguratorService configService;
 
@@ -99,7 +103,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 						layerModelService.saveOrUpdateLayerModelInternal(lm);
 						log.info(" - added a new layermodel for: " + cli.getLabel());
 					} catch (Exception e) {
-						log.warn("Error creating layer, invalid configuration (service not available?): "
+						log.error("Error creating layer, invalid configuration (service not available?): "
 								+ cli.getLabel());
 					}
 				}
@@ -229,7 +233,14 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	private LayerModel toLayerModel(ClientLayerInfo cli) {
 		LayerModel lm = new LayerModel();
 		ExtraClientLayerInfo ecli = layerModelService.getExtraInfo(cli);
-		LayerInfo sli = cli.getLayerInfo();
+
+		//Get layerInfo via server layer
+		LayerInfo sli = null;
+		Layer<LayerInfo> layer = serverLayerMap.get(cli.getServerLayerId());
+		if (null != layer) {
+			sli = layer.getLayerInfo();
+		}
+		
 		lm.setActive(ecli.isActive());
 		lm.setClientLayerId(cli.getId());
 		lm.setName(ecli.getName() == null ? cli.getLabel() : ecli.getName());
@@ -240,10 +251,10 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 		lm.setShowInLegend(ecli.isShowInLegend());
 		lm.setReadOnly(true);
 
-		if (LayerType.RASTER.equals(sli.getLayerType())) {
+		if (null != layer && LayerType.RASTER.equals(sli.getLayerType())) {
 			lm.setLayerType("Raster");
 			lm.setLayerConfiguration(new RasterLayerConfiguration());
-		} else {
+		} else if (null != layer) {
 			lm.setLayerType(sli.getLayerType().getGeometryType());
 			lm.setLayerConfiguration(new VectorLayerConfiguration());
 		}

@@ -24,7 +24,7 @@ public class SaveBlueprintRequest implements CommandRequest {
 
 	public static final int SAVE_SETTINGS = SaveGeodeskRequest.SAVE_SETTINGS;
 
-	public static final int SAVE_LAYERTREE = SaveGeodeskRequest.SAVE_LAYERTREE; // layers + layerstyles
+	public static final int SAVE_LAYERS = SaveGeodeskRequest.SAVE_LAYERS; // layers + layerstyles
 
 	public static final int SAVE_GROUPS = SaveGeodeskRequest.SAVE_GROUPS; // security
 

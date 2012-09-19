@@ -53,9 +53,6 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 	private BlueprintService blueprintService;
 
 	@Autowired
-	private LayerTreeService layerTreeService;
-
-	@Autowired
 	private GroupService groupService;
 
 	public void execute(SaveBlueprintRequest request, BlueprintResponse response) throws Exception {
@@ -79,11 +76,11 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 					if ((SaveBlueprintRequest.SAVE_GROUPS & request.getSaveWhat()) > 0) {
 						copyGroups(source, target);
 					}
-					if ((SaveBlueprintRequest.SAVE_LAYERTREE & request.getSaveWhat()) > 0) {
-						copyLayerTree(source, target);
-					}
 					if ((SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO & request.getSaveWhat()) > 0) {
 						copyWidgetInfo(source, target);
+					}
+					if ((SaveBlueprintRequest.SAVE_LAYERS & request.getSaveWhat()) > 0) {
+						copyLayers(source, target);
 					}
 
 					blueprintService.saveOrUpdateBlueprint(target);
@@ -116,7 +113,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 		target.getApplicationClientWidgetInfos().putAll(source.getApplicationClientWidgetInfos());
 		target.getMainMapClientWidgetInfos().putAll(source.getMainMapClientWidgetInfos());
 		target.getOverviewMapClientWidgetInfos().putAll(source.getOverviewMapClientWidgetInfos());
-		
+
 	}
 
 	private void copyGroups(Blueprint source, Blueprint target) throws Exception {
@@ -145,111 +142,11 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 		}
 	}
 
-	private void copyLayerTree(Blueprint source, Blueprint target) throws Exception {
-		// -- check LayerTree
-		if (source.getLayerTree() == null && target.getLayerTree() == null) {
-			return;
+	private void copyLayers(Blueprint source, Blueprint target) throws Exception {
+		target.getMainMapLayers().clear();
+		target.getMainMapLayers().addAll(source.getMainMapLayers());
 
-		} else if (target.getLayerTree() == null && source.getLayerTree() != null) {
-			target.setLayerTree(new LayerTree());
-			layerTreeService.saveOrUpdateLayerTree(target.getLayerTree());
-			source.getLayerTree().getRootNode().setId(target.getLayerTree().getRootNode().getId());
-
-		} else if (target.getLayerTree() != null && source.getLayerTree() == null) {
-			LayerTree lt = target.getLayerTree();
-			target.setLayerTree(null);
-			layerTreeService.deleteLayerTree(lt);
-			return;
-		}
-
-		final LayerTreeNode sourceRootNode = source.getLayerTree().getRootNode();
-		final LayerTreeNode targetRootNode = target.getLayerTree().getRootNode();
-		final Map<Long, LayerTreeNode> olduns = new HashMap<Long, LayerTreeNode>();
-		final Set<LayerTreeNode> useduns = new HashSet<LayerTreeNode>();
-		final Map<LayerTreeNode, LayerTreeNode> mappings = new HashMap<LayerTreeNode, LayerTreeNode>();
-		mappings.put(sourceRootNode, targetRootNode);
-
-		// find all nodes, will be rebuilt later on
-		targetRootNode.visit(new LayerTree.LayerTreeNodeVisitor() {
-
-			public void visit(LayerTreeNode node) {
-				olduns.put(node.getId(), node);
-			}
-		});
-
-		// detach children
-		for (LayerTreeNode ltn : olduns.values()) {
-			if (!ltn.isLeaf()) {
-				ltn.getChildren().clear();
-			}
-			ltn.setParentNode(null);
-		}
-
-		// rebuild tree, use olduns where possible
-		sourceRootNode.visit(new LayerTree.LayerTreeNodeVisitor() {
-
-			public void visit(LayerTreeNode node) {
-				LayerTreeNode target;
-				if (node.getId() != null) {
-					// existing
-					target = olduns.get(node.getId());
-					if (target == null) {
-						throw new RuntimeException(
-								"Could not copy LayerTree (Should have persisted node ?! (did you set id manually ?)");
-					}
-					useduns.add(target);
-					copyLayerTreeNode(node, target);
-				} else {
-					// new
-					target = new LayerTreeNode();
-					copyLayerTreeNode(node, target);
-				}
-				mappings.put(node, target);
-
-				if (node.getParentNode() != null) {
-					target.setParentNode(mappings.get(node.getParentNode()));
-					target.getParentNode().getChildren().add(target);
-				}
-			}
-		});
-
-		// delete obsolete nodes (can't use cascade, then reparenting doesn't work)
-		olduns.values().removeAll(useduns);
-		for (LayerTreeNode ltn : olduns.values()) {
-			layerTreeService.deleteLayerTreeNode(ltn);
-		}
-
-		// persist (needed for new items, won't be persisted otherwise)
-		layerTreeService.saveOrUpdateLayerTree(target.getLayerTree());
-	}
-
-	/**
-	 * Only the node, not the children!
-	 */
-	private void copyLayerTreeNode(LayerTreeNode source, LayerTreeNode target) {
-		target.setExpanded(source.isExpanded());
-		target.setLeaf(source.isLeaf());
-		target.setName(source.getNodeName());
-		target.setClientLayerId(source.getClientLayerId());
-		target.setPublicLayer(source.isPublicLayer());
-
-		if (source.getView() == null && target.getView() != null) {
-			target.setView(null);
-			return;
-		} else if (source.getView() != null && target.getView() == null) {
-			target.setView(new LayerView());
-		}
-		copyLayerView(source.getView(), target.getView());
-	}
-
-	private void copyLayerView(LayerView source, LayerView target) {
-		if (source == null) {
-			return;
-		}
-		target.setDefaultVisible(source.isDefaultVisible());
-		target.setLabel(source.getLabel());
-		target.setMaximumScale(source.getMaximumScale());
-		target.setMinimumScale(source.getMinimumScale());
-		target.setShowInLegend(source.isShowInLegend());
+		target.getOverviewMapLayers().clear();
+		target.getOverviewMapLayers().addAll(source.getOverviewMapLayers());
 	}
 }

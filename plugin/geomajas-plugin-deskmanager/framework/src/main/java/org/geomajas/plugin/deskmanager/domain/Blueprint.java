@@ -13,8 +13,10 @@ package org.geomajas.plugin.deskmanager.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,8 +28,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -94,9 +97,15 @@ public class Blueprint implements GeodeskInfo {
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	@ManyToOne
-	@JoinColumn(name = "layertree_id")
-	private LayerTree layerTree;
+	@OneToMany(cascade = CascadeType.ALL)
+	@OrderColumn(name = "sortorder")
+	@JoinTable(name = "tt_blueprint_mainlayer")
+	private Set<Layer> mainMapLayers = new HashSet<Layer>();
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@OrderColumn(name = "sortorder")
+	@JoinTable(name = "tt_blueprint_overviewlayer")
+	private Set<Layer> overviewMapLayers = new HashSet<Layer>();
 
 	/**
 	 * The groups that can use this blueprint to create loketten
@@ -212,14 +221,6 @@ public class Blueprint implements GeodeskInfo {
 		this.groups = groups;
 	}
 
-	public LayerTree getLayerTree() {
-		return layerTree;
-	}
-
-	public void setLayerTree(LayerTree layerTree) {
-		this.layerTree = layerTree;
-	}
-
 	public boolean isDeleted() {
 		return deleted;
 	}
@@ -284,5 +285,33 @@ public class Blueprint implements GeodeskInfo {
 	 */
 	public Map<String, ClientWidgetInfo> getMainMapClientWidgetInfos() {
 		return mainMapClientWidgetInfos;
+	}
+
+	/**
+	 * @param mainMapLayers the mainMapLayers to set
+	 */
+	public void setMainMapLayers(Set<Layer> layers) {
+		this.mainMapLayers = layers;
+	}
+
+	/**
+	 * @return the mainMapLayers
+	 */
+	public Set<Layer> getMainMapLayers() {
+		return mainMapLayers;
+	}
+	/**
+	 * @param mainMapLayers the mainMapLayers to set
+	 */
+
+	public void setOverviewMapLayers(Set<Layer> layers) {
+		this.overviewMapLayers = layers;
+	}
+
+	/**
+	 * @return the mainMapLayers
+	 */
+	public Set<Layer> getOverviewMapLayers() {
+		return overviewMapLayers;
 	}
 }

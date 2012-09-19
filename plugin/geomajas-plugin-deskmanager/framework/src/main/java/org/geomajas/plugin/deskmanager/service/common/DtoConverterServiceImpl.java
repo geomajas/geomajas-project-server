@@ -13,12 +13,14 @@ package org.geomajas.plugin.deskmanager.service.common;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
+import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.LayerTree;
 import org.geomajas.plugin.deskmanager.domain.LayerTreeNode;
@@ -26,6 +28,7 @@ import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
@@ -68,7 +71,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bp.setId(dto.getId());
 		bp.setLastEditBy(dto.getLastEditBy());
 		bp.setLastEditDate(dto.getLastEditDate());
-		bp.setLayerTree(fromDto(dto.getLayerTree()));
 		bp.setLimitToLoketTerritory(dto.isLimitToCreatorTerritory());
 		bp.setLimitToUserTerritory(dto.isLimitToUserTerritory());
 		bp.setLokettenActive(dto.isLokettenActive());
@@ -78,9 +80,21 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bp.setMainMapClientWidgetInfos(dto.getMainMapClientWidgetInfos());
 		bp.setOverviewMapClientWidgetInfos(dto.getOverviewMapClientWidgetInfos());
 		List<Territory> territories = bp.getTerritories();
-		if (dto.getTerritories() != null && dto.getTerritories().size() > 0) {
+		if (dto.getTerritories() != null) {
 			for (TerritoryDto gDto : dto.getTerritories()) {
 				territories.add(fromDto(gDto, false, false));
+			}
+		}
+		Set<Layer> mainLayers = bp.getMainMapLayers();
+		if (dto.getMainMapLayers() != null) {
+			for (LayerDto layer : dto.getMainMapLayers()) {
+				mainLayers.add(fromDto(layer));
+			}
+		}
+		Set<Layer> overviewLayers = bp.getOverviewMapLayers();
+		if (dto.getOverviewMapLayers() != null) {
+			for (LayerDto layer : dto.getOverviewMapLayers()) {
+				overviewLayers.add(fromDto(layer));
 			}
 		}
 		return bp;
@@ -111,9 +125,18 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				getMainMapClientWidgetInfos()));
 		bpDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getOverviewMapClientWidgetInfos()));
+		if (blueprint.getMainMapLayers() != null) {
+			for (Layer layer : blueprint.getMainMapLayers()) {
+				bpDto.getMainMapLayers().add(toDto(layer));
+			}
+		}
+		if (blueprint.getOverviewMapLayers() != null) {
+			for (Layer layer : blueprint.getOverviewMapLayers()) {
+				bpDto.getOverviewMapLayers().add(toDto(layer));
+			}
+		}
 		if (includeReferences) {
 			List<TerritoryDto> territories = bpDto.getTerritories();
-			bpDto.setLayerTree(toDto(blueprint.getLayerTree()));
 			if (blueprint.getTerritories() != null && blueprint.getTerritories().size() > 0) {
 				for (Territory grp : blueprint.getTerritories()) {
 					territories.add(toDto(grp, false, false));
@@ -332,7 +355,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		l.setId(dto.getId());
 		l.setLastEditBy(dto.getLastEditBy());
 		l.setLastEditDate(dto.getLastEditDate());
-		l.setLayerTree(fromDto(dto.getLayerTree()));
 		l.setGeodeskId(dto.getLoketId());
 		l.setLimitToCreatorTerritory(dto.isLimitToCreatorTerritory());
 		l.setLimitToUserTerritory(dto.isLimitToUserTerritory());
@@ -354,45 +376,66 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				mails.add(fromDto(mad));
 			}
 		}
+		Set<Layer> mainLayers = l.getMainMapLayers();
+		if (dto.getMainMapLayers() != null) {
+			for (LayerDto layer : dto.getMainMapLayers()) {
+				mainLayers.add(fromDto(layer));
+			}
+		}
+		Set<Layer> overviewLayers = l.getOverviewMapLayers();
+		if (dto.getOverviewMapLayers() != null) {
+			for (LayerDto layer : dto.getOverviewMapLayers()) {
+				overviewLayers.add(fromDto(layer));
+			}
+		}
 		return l;
 	}
 
-	public GeodeskDto toDto(Geodesk loket, boolean includeReferences) throws GeomajasException {
-		if (loket == null) {
+	public GeodeskDto toDto(Geodesk geodesk, boolean includeReferences) throws GeomajasException {
+		if (geodesk == null) {
 			return null;
 		}
 		GeodeskDto lDto = new GeodeskDto();
-		lDto.setActive(loket.isActive());
-		lDto.setBlueprint(toDto(loket.getBlueprint(), includeReferences));
-		lDto.setCreationBy(loket.getCreationBy());
-		lDto.setCreationDate(loket.getCreationDate());
-		lDto.setId(loket.getId());
-		lDto.setLastEditBy(loket.getLastEditBy());
-		lDto.setLastEditDate(loket.getLastEditDate());
-		lDto.setLoketId(loket.getGeodeskId());
-		lDto.setLimitToLoketTerritory(loket.isLimitToCreatorTerritory());
-		lDto.setLimitToUserTerritory(loket.isLimitToUserTerritory());
-		lDto.setName(loket.getName());
-		lDto.setPublic(loket.isPublic());
+		lDto.setActive(geodesk.isActive());
+		lDto.setBlueprint(toDto(geodesk.getBlueprint(), includeReferences));
+		lDto.setCreationBy(geodesk.getCreationBy());
+		lDto.setCreationDate(geodesk.getCreationDate());
+		lDto.setId(geodesk.getId());
+		lDto.setLastEditBy(geodesk.getLastEditBy());
+		lDto.setLastEditDate(geodesk.getLastEditDate());
+		lDto.setLoketId(geodesk.getGeodeskId());
+		lDto.setLimitToLoketTerritory(geodesk.isLimitToCreatorTerritory());
+		lDto.setLimitToUserTerritory(geodesk.isLimitToUserTerritory());
+		lDto.setName(geodesk.getName());
+		lDto.setPublic(geodesk.isPublic());
 
-		lDto.setApplicationClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(loket
+		lDto.setApplicationClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(geodesk
 				.getApplicationClientWidgetInfos()));
-		lDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(loket.getMainMapClientWidgetInfos()));
-		lDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(loket
+		lDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(geodesk.getMainMapClientWidgetInfos()));
+		lDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(geodesk
 				.getOverviewMapClientWidgetInfos()));
+		if (geodesk.getMainMapLayers() != null) {
+			for (Layer layer : geodesk.getMainMapLayers()) {
+				lDto.getMainMapLayers().add(toDto(layer));
+			}
+		}
+		if (geodesk.getOverviewMapLayers() != null) {
+			for (Layer layer : geodesk.getOverviewMapLayers()) {
+				lDto.getOverviewMapLayers().add(toDto(layer));
+			}
+		}
 
 		if (includeReferences) {
 			List<TerritoryDto> territories = lDto.getTerritories();
 			List<MailAddressDto> mails = lDto.getMailAddresses();
-			lDto.setLayerTree(toDto(loket.getLayerTree()));
-			lDto.setOwner(toDto(loket.getOwner(), false, false));
-			if (loket.getTerritories() != null && loket.getTerritories().size() > 0) {
-				for (Territory grp : loket.getTerritories()) {
+			lDto.setOwner(toDto(geodesk.getOwner(), false, false));
+			if (geodesk.getTerritories() != null && geodesk.getTerritories().size() > 0) {
+				for (Territory grp : geodesk.getTerritories()) {
 					territories.add(toDto(grp, false, false));
 				}
 			}
-			if (loket.getMailAddresses() != null && loket.getMailAddresses().size() > 0) {
-				for (MailAddress ma : loket.getMailAddresses()) {
+			if (geodesk.getMailAddresses() != null && geodesk.getMailAddresses().size() > 0) {
+				for (MailAddress ma : geodesk.getMailAddresses()) {
 					mails.add(toDto(ma));
 				}
 			}
@@ -524,6 +567,28 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		dto.setId(mail.getId());
 		dto.setName(mail.getName());
 		return dto;
+	}
+	
+	public LayerDto toDto(Layer layer) throws GeomajasException {
+		if (layer == null) {
+			return null;
+		}
+		LayerDto dto = new LayerDto();
+		dto.setClientLayerId(layer.getClientLayerId());
+		dto.setCLientLayerInfo(layer.getClientLayerInfo());
+		dto.setLayerModel(toDto(layer.getLayerModel(), false));
+		return dto;
+	}
+
+	public Layer fromDto(LayerDto dto) throws GeomajasException {
+		if (dto == null) {
+			return null;
+		}
+		Layer layer = new Layer();
+		layer.setClientLayerId(dto.getClientLayerId());
+		layer.setClientLayerInfo(dto.getClientLayerInfo());
+		layer.setLayerModel(fromDto(dto.getLayerModel()));
+		return layer;
 	}
 
 }

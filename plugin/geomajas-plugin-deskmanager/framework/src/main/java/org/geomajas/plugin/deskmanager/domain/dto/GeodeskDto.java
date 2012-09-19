@@ -61,11 +61,9 @@ public class GeodeskDto implements GeodeskInfo {
 
 	private BlueprintDto blueprint;
 
-	/**
-	 * @deprecated use ClientWidgetInfo
-	 */
-	@Deprecated
-	private LayerTreeDto layerTree;
+	private List<LayerDto> mainMapLayers;
+
+	private List<LayerDto> overviewMapLayers;
 
 	private List<TerritoryDto> groups = new ArrayList<TerritoryDto>();
 
@@ -175,14 +173,6 @@ public class GeodeskDto implements GeodeskInfo {
 		this.loketId = loketId;
 	}
 
-	public LayerTreeDto getLayerTree() {
-		return layerTree;
-	}
-
-	public void setLayerTree(LayerTreeDto layerTree) {
-		this.layerTree = layerTree;
-	}
-
 	public List<TerritoryDto> getTerritories() {
 		return groups;
 	}
@@ -247,6 +237,34 @@ public class GeodeskDto implements GeodeskInfo {
 	 */
 	public Map<String, ClientWidgetInfo> getMainMapClientWidgetInfos() {
 		return mainMapClientWidgetInfos;
+	}
+
+	/**
+	 * @param mainMapLayers the mainMapLayers to set
+	 */
+	public void setMainMapLayers(List<LayerDto> mainMapLayers) {
+		this.mainMapLayers = mainMapLayers;
+	}
+
+	/**
+	 * @return the mainMapLayers
+	 */
+	public List<LayerDto> getMainMapLayers() {
+		return mainMapLayers;
+	}
+
+	/**
+	 * @param overviewMapLayers the overviewMapLayers to set
+	 */
+	public void setOverviewMapLayers(List<LayerDto> overviewMapLayers) {
+		this.overviewMapLayers = overviewMapLayers;
+	}
+
+	/**
+	 * @return the overviewMapLayers
+	 */
+	public List<LayerDto> getOverviewMapLayers() {
+		return overviewMapLayers;
 	}
 	
 }

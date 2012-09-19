@@ -10,20 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
-import java.util.Map;
-
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.SensibleScaleConverter;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeResponse;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerViewDto;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
-import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
@@ -45,13 +37,11 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 	private static final int FORMITEM_WIDTH = 300;
 
-	private LayerTreeNodeDto layer;
+	private LayerDto layer;
 
 	private BooleanCallback callback;
 
 	private DynamicForm form;
-
-	private Map<String, LayerModelDto> layerModels;
 
 	private TextItem label;
 
@@ -59,17 +49,19 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 	private CheckboxItem defaultVisible;
 
-	private CheckboxItem showInLegend;
-
 	private TextItem minScale;
 
 	private TextItem maxScale;
 
 	/**
 	 * @param layer
-	 * @param callback returns true if saved, false if cancelled.
+	 * @param callback
+	 *            returns true if saved, false if cancelled.
 	 */
-	public LayerConfigurationWindow() {
+	public LayerConfigurationWindow(LayerDto layerDto, BooleanCallback callback) {
+		this.layer = layerDto;
+		this.callback = callback;
+		
 		setAutoSize(true);
 		setCanDragReposition(true);
 		setCanDragResize(false);
@@ -109,11 +101,6 @@ public class LayerConfigurationWindow extends DockableWindow {
 		defaultVisible.setWrapTitle(false);
 		defaultVisible.setTooltip("Aangevinkt: De laag wordt standaard weergegeven.");
 
-		showInLegend = new CheckboxItem();
-		showInLegend.setTitle("Laag wordt getoond in legende");
-		showInLegend.setWrapTitle(false);
-		showInLegend.setTooltip("Aangevinkt: De laag wordt opgenomen in de legende.");
-
 		minScale = new TextItem();
 		minScale.setTitle("Minimum schaal");
 		minScale.setWidth(FORMITEM_WIDTH / 2);
@@ -128,7 +115,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 		maxScale.setValidators(new ScaleValidator());
 		maxScale.setTooltip("Maximum schaal waarop de laag zichtbaar is.");
 
-		form.setFields(label, publicLayer, defaultVisible, showInLegend, minScale, maxScale);
+		form.setFields(label, publicLayer, defaultVisible, minScale, maxScale);
 
 		// ----------------------------------------------------------
 
@@ -178,58 +165,22 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 		// ----------------------------------------------------------
 
-		CommService.getSystemLayerTreeNode(new DataCallback<GetSystemLayerTreeNodeResponse>() {
-
-			public void execute(GetSystemLayerTreeNodeResponse result) {
-				layerModels = result.getLayerModels();
-			}
-		});
 	}
 
-	public void show(final LayerTreeNodeDto layer, final BooleanCallback callback) {
-		if (layer == null || !layer.isLeaf()) {
-			throw new IllegalArgumentException("Please provide a leaf LayerTreeNode");
-		}
-
-		if (layerModels == null) {
-			NotificationWindow.showInfoMessage("Bezig met ophalen van eigenschappen...");
-			new Timer() {
-
-				public void run() {
-					show(layer, callback);
-				}
-			} .schedule(2000);
-			return;
-		}
-
-		this.callback = callback;
-		this.layer = layer;
-
+	public void show() {
 		form.clearValues();
-		publicLayer.setValue(layer.isPublicLayer());
-		if (layer.getView() != null) {
-			LayerViewDto lvd = layer.getView();
-
-			label.setValue(lvd.getLabel());
-			defaultVisible.setValue(lvd.isDefaultVisible());
-			showInLegend.setValue(lvd.isShowInLegend());
-			minScale.setValue(SensibleScaleConverter.scaleToString(lvd.getMinimumScale()));
-			maxScale.setValue(SensibleScaleConverter.scaleToString(lvd.getMaximumScale()));
-
-		} else {
-			label.setValue(layer.getName());
-			LayerModelDto lmd = layerModels.get(layer.getClientLayerId());
-			if (lmd != null) {
-				defaultVisible.setValue(lmd.isDefaultVisible());
-				showInLegend.setValue(lmd.isShowInLegend());
-				minScale.setValue(SensibleScaleConverter.scaleToString(lmd.getMinScale()));
-				maxScale.setValue(SensibleScaleConverter.scaleToString(lmd.getMaxScale()));
-			} else {
-				SC.logWarn("LayerModel not found ?!");
-			}
+		publicLayer.setValue(layer.getLayerModel().isPublic());
+		ClientLayerInfo cli = layer.getClientLayerInfo();
+		if (cli == null) {
+			// If layerInfo not set (yet), copy from model.
+			cli = layer.getLayerModel().getLayerConfiguration().getClientLayerInfo();
 		}
+		label.setValue(cli.getLabel());
+		defaultVisible.setValue(cli.isVisible());
+		minScale.setValue(SensibleScaleConverter.scaleToString(cli.getMinimumScale()));
+		maxScale.setValue(SensibleScaleConverter.scaleToString(cli.getMaximumScale()));
 
-		show();
+		super.show();
 	}
 
 	private void cancelled() {
@@ -241,17 +192,17 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 	private void saved() {
 		if (form.validate()) {
-			if (layer.getView() == null) {
-				layer.setView(new LayerViewDto());
+			if (layer.getClientLayerInfo() == null) {
+				layer.setCLientLayerInfo(layer.getLayerModel().getLayerConfiguration().getClientLayerInfo());
 			}
-			LayerViewDto lvd = layer.getView();
-			lvd.setDefaultVisible(defaultVisible.getValueAsBoolean());
-			lvd.setLabel(label.getValueAsString());
-			lvd.setShowInLegend(showInLegend.getValueAsBoolean());
-			lvd.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
-			lvd.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
+			ClientLayerInfo cli = layer.getClientLayerInfo();
+			cli.setVisible(defaultVisible.getValueAsBoolean());
+			cli.setLabel(label.getValueAsString());
+			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
+			cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
 
 			hide();
+			destroy();
 			if (callback != null) {
 				callback.execute(true);
 			}
@@ -259,13 +210,13 @@ public class LayerConfigurationWindow extends DockableWindow {
 	}
 
 	private void restored() {
-		if (layer.getView() != null) {
+		if (layer.getClientLayerInfo() != null) {
 			SC.ask("Wijzigingen verwerpen", "Gemaakte wijzigingen verwerpen en opnieuw instellen op default waarden?",
 					new BooleanCallback() {
 
 						public void execute(Boolean value) {
 							if (value) {
-								layer.setView(null);
+								layer.setCLientLayerInfo(null);
 								hide();
 								callback.execute(true);
 							}

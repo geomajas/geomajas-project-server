@@ -63,6 +63,8 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private GeodeskThemeConfig themeConfig;
 
+	private GeodeskLayerTree layerTree;
+
 	public GeodeskDetail() {
 		super(10);
 
@@ -82,6 +84,12 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		tab = new Tab("Datalagen");
 		tabset.addTab(tab);
 		tab.setPane(layers);
+		
+
+		layerTree = new GeodeskLayerTree();
+		tab = new Tab("Boomstructuur");
+		tabset.addTab(tab);
+		tab.setPane(layerTree);
 
 		accessrights = new GeodeskAccessRights();
 		accessrightsTab = new Tab("Gebruiksrechten");

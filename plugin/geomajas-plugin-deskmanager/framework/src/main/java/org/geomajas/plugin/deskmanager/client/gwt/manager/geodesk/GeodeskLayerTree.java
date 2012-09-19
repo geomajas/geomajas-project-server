@@ -10,10 +10,16 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
+import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
@@ -27,11 +33,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  *
  */
-public class GeodeskLayers extends VLayout implements WoaEventHandler {
+public class GeodeskLayerTree extends VLayout implements WoaEventHandler {
 
 	private GeodeskDto loket;
 
-	private LayerSelectPanel layerSelect;
+	private LayerTreeSelectPanel layerTreeSelect;
 
 	private LayerTreeNodeDto systemLayerTreeNode;
 
@@ -39,7 +45,7 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 
 	private boolean deferredEnable;
 
-	public GeodeskLayers() {
+	public GeodeskLayerTree() {
 		super(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
@@ -57,16 +63,16 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 
 		// ----------------------------------------------------------
 
-		layerSelect = new LayerSelectPanel();
-		layerSelect.setDisabled(true);
-		layerSelect.setWidth100();
-		layerSelect.setHeight100();
+		layerTreeSelect = new LayerTreeSelectPanel();
+		layerTreeSelect.setDisabled(true);
+		layerTreeSelect.setWidth100();
+		layerTreeSelect.setHeight100();
 
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
 		group.setGroupTitle("Datalagen");
-		group.addMember(layerSelect);
+		group.addMember(layerTreeSelect);
 		group.setOverflow(Overflow.AUTO);
 
 		addMember(group);
@@ -78,7 +84,7 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 //
 //			public void execute(GetSystemLayerTreeNodeResponse result) {
 //				systemLayerTreeNode = result.getSystemLayerTreeNode();
-//				layerSelect.clearValues();
+//				layerTreeSelect.clearValues();
 //				if (loket != null) {
 //					if (loket.getLayerTree() == null) {
 //						loket.setLayerTree(new LayerTreeDto());
@@ -95,10 +101,10 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 //								hasLayerTree = UserApplicationRegistry.getInstance()
 //										.get(loket.getBlueprint().getUserApplicationName()).hasLayerTree();
 //							}
-//							layerSelect.setValues(source, target, !(loket.isPublic()), hasLayerTree);
+//							layerTreeSelect.setValues(source, target, !(loket.isPublic()), hasLayerTree);
 //							loading = false;
 //							if (deferredEnable) {
-//								layerSelect.setDisabled(false);
+//								layerTreeSelect.setDisabled(false);
 //								deferredEnable = false;
 //							}
 //						}
@@ -115,7 +121,7 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 			NotificationWindow.showInfoMessage("Lagen worden nog geladen, even geduld.");
 			deferredEnable = true;
 		} else {
-			layerSelect.setDisabled(false);
+			layerTreeSelect.setDisabled(false);
 		}
 		return true;
 	}
@@ -126,14 +132,14 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 //			lt = new LayerTreeDto();
 //			loket.setLayerTree(lt);
 //		}
-//		lt.setRootNode(layerSelect.getValues());
-//		layerSelect.setDisabled(true);
+//		lt.setRootNode(layerTreeSelect.getValues());
+//		layerTreeSelect.setDisabled(true);
 //		CommService.saveGeodesk(loket, SaveGeodeskRequest.SAVE_LAYERS);
 		return true;
 	}
 
 	public boolean onCancelClick(ClickEvent event) {
-		layerSelect.setDisabled(true);
+		layerTreeSelect.setDisabled(true);
 		setGeodesk(loket);
 		return true;
 	}

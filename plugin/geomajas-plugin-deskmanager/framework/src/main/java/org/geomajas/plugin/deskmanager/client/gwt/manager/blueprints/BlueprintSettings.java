@@ -190,8 +190,9 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 			limitToLoketTerritory.setDisabled(!blueprint.isPublic());
 			limitToUserTerritory.setDisabled(blueprint.isPublic());
 
-			containsNonPublicLayers = (blueprint.getLayerTree() == null ? false : blueprint.getLayerTree()
-					.containsNonPublicLayers());
+			//FIXME
+//			containsNonPublicLayers = (blueprint.getLayerTree() == null ? false : blueprint.getLayerTree()
+//					.containsNonPublicLayers());
 		}
 	}
 

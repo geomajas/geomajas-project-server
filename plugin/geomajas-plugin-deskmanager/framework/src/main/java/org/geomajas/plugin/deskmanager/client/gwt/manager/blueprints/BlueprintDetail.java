@@ -45,6 +45,8 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 
 	private BlueprintLayers layers;
 
+	private BlueprintLayerTree layerTree;
+
 	private BlueprintAccessRights accessrights;
 
 	private BlueprintGeodeskLayout loketLayout;
@@ -78,6 +80,12 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		tab = new Tab("Datalagen");
 		tabset.addTab(tab);
 		tab.setPane(layers);
+
+		layerTree = new BlueprintLayerTree();
+		Whiteboard.registerHandler(layerTree);
+		tab = new Tab("Boomstructuur");
+		tabset.addTab(tab);
+		tab.setPane(layerTree);
 
 		accessrights = new BlueprintAccessRights();
 		Whiteboard.registerHandler(accessrights);

@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel.LayerTreeNode;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerTreeSelectPanel.LayerTreeNode;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
 
 import com.smartgwt.client.types.Alignment;
@@ -183,21 +183,21 @@ public class LayerTreeGrid extends TreeGrid {
 	// ----------------------------------------------------------
 
 	private void configureLayer(LayerTreeNode node, int rowNum) {
-		final LayerTreeNode innerNode = node;
-		final int rowNumber = rowNum;
-
-		if (layerConfWi == null) {
-			layerConfWi = new LayerConfigurationWindow();
-		}
-		layerConfWi.show(innerNode.getNode(), new BooleanCallback() {
-
-			public void execute(Boolean saved) {
-				if (saved) {
-					innerNode.setAttribute(LayerTreeNode.FLD_NAME, innerNode.getNode().getName());
-					refreshRow(rowNumber);
-				}
-			}
-		});
+//		final LayerTreeNode innerNode = node;
+//		final int rowNumber = rowNum;
+//
+//		if (layerConfWi == null) {
+//			layerConfWi = new LayerConfigurationWindow();
+//		}
+//		layerConfWi.show(innerNode.getNode(), new BooleanCallback() {
+//
+//			public void execute(Boolean saved) {
+//				if (saved) {
+//					innerNode.setAttribute(LayerTreeNode.FLD_NAME, innerNode.getNode().getName());
+//					refreshRow(rowNumber);
+//				}
+//			}
+//		});
 	}
 
 	private void configureLayerGroup(LayerTreeNode node, int rowNum) {

@@ -11,9 +11,11 @@
 package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.command.configuration.GetMapConfigurationCommand;
 import org.geomajas.configuration.client.ClientApplicationInfo;
@@ -88,10 +90,10 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 	@Autowired
 	private SessionFactory session;
-	
+
 	@Autowired
 	private GeoService geoService;
-	
+
 	@Autowired
 	private VectorLayerService layerService;
 
@@ -126,37 +128,27 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 					}
 				}
 
-				// Build layertree
-				LayerTreeNode root = null;
-				LayerTreeNode blueprintRoot = null;
-
-				if (geodesk.getLayerTree() != null && geodesk.getLayerTree().getRootNode() != null) {
-					root = geodesk.getLayerTree().getRootNode();
-					if (blueprint.getLayerTree() != null && blueprint.getLayerTree().getRootNode() != null) {
-						blueprintRoot = blueprint.getLayerTree().getRootNode();
-					}
-				} else if (blueprint.getLayerTree() != null && blueprint.getLayerTree().getRootNode() != null) {
-					root = blueprint.getLayerTree().getRootNode();
+				if (!geodesk.getMainMapLayers().isEmpty()) {
+					mainMap.getLayers().clear();
+					mainMap.getLayers().addAll(addLayers(geodesk.getMainMapLayers()));
+				} else if (!blueprint.getMainMapLayers().isEmpty()) {
+					mainMap.getLayers().clear();
+					mainMap.getLayers().addAll(addLayers(blueprint.getMainMapLayers()));
 				}
 
-				if (root != null) {
-					// -- clear the original map --
-					mainMap.getLayers().clear();
-					mainMap.getLayerTree().getTreeNode().getTreeNodes().clear();
-					mainMap.getLayerTree().getTreeNode().getLayers().clear();
-
-					// -- rebuild map --
-					for (LayerTreeNode ltn : root.getChildren()) {
-						addLayers(mainMap.getCrs(), mainMap.getLayers(), mainMap.getLayerTree().getTreeNode(),
-								blueprintRoot, ltn);
-					}
+				if (!geodesk.getOverviewMapLayers().isEmpty()) {
+					overviewMap.getLayers().clear();
+					overviewMap.getLayers().addAll(addLayers(geodesk.getOverviewMapLayers()));
+				} else if (!blueprint.getOverviewMapLayers().isEmpty()) {
+					overviewMap.getLayers().clear();
+					overviewMap.getLayers().addAll(addLayers(blueprint.getOverviewMapLayers()));
 				}
 
 				// Set bounds
 				if (geodesk.mustFilterByCreatorTerritory()) {
 					try {
-						Bbox bounds = GeometryService.getBounds(convertorService.toDto(geodesk.getOwner()
-								.getGeometry()));
+						Bbox bounds = GeometryService.getBounds(convertorService
+								.toDto(geodesk.getOwner().getGeometry()));
 						mainMap.setMaxBounds(bounds);
 						mainMap.setInitialBounds(bounds);
 						overviewMap.setMaxBounds(bounds);
@@ -207,6 +199,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 	// -------------------------------------------------
 
+	@Deprecated
 	private void addLayers(String mapCrs, List<ClientLayerInfo> clientLayers, ClientLayerTreeNodeInfo nodeInfo,
 			LayerTreeNode blueprintRoot, LayerTreeNode node) throws Exception {
 		if (node.isLeaf()) {
@@ -244,6 +237,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	 * @param node
 	 * @return
 	 */
+	@Deprecated
 	private LayerView findLayerViewForNode(LayerTreeNode blueprintNode, LayerTreeNode node) {
 		if (!node.isLeaf() || blueprintNode == null) {
 			return null;
@@ -261,6 +255,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		return null;
 	}
 
+	@Deprecated
 	private ClientLayerTreeNodeInfo createClientLayerTreeNodeInfo(LayerTreeNode node) {
 		ClientLayerTreeNodeInfo cltni = new ClientLayerTreeNodeInfo();
 		cltni.setExpanded(node.isExpanded());
@@ -269,6 +264,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	}
 
 	// only leafs!
+	@Deprecated
 	private ClientLayerInfo createClientLayerInfo(String mapCrs, LayerTreeNode node, LayerView view, LayerModel model) {
 		if (node == null) {
 			return null;
@@ -311,7 +307,8 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		}
 		return null;
 	}
-
+	
+	@Deprecated
 	private void updateClientVectorLayerInfo(ClientVectorLayerInfo cvli, LayerTreeNode node) {
 		// TODO update layerstyles
 		// cvli.getNamedStyleInfo().setSldStyleName(node.getStyleUuid());
@@ -343,5 +340,23 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		loketConfig.getMaps().addAll(cloned);
 
 		return loketConfig;
+	}
+
+	private Set<ClientLayerInfo> addLayers(Set<org.geomajas.plugin.deskmanager.domain.Layer> layers) {
+		Set<ClientLayerInfo> clientLayers = new HashSet<ClientLayerInfo>();
+		for (org.geomajas.plugin.deskmanager.domain.Layer layer : layers) {
+			if (layer.getClientLayerInfo() != null) {
+				clientLayers.add(layer.getClientLayerInfo());
+			} else {
+				ClientLayerInfo cli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
+						.getClientLayerId());
+				if (cli != null) {
+					clientLayers.add(cli);
+				} else {
+					log.error("Unknown client layer info for " + layer.getLayerModel().getClientLayerId());
+				}
+			}
+		}
+		return clientLayers;
 	}
 }

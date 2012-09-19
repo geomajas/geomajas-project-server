@@ -264,8 +264,9 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 			limitToLoketTerritory.setDisabled(!loket.isPublic());
 			limitToUserTerritory.setDisabled(loket.isPublic());
 
-			containsNonPublicLayers = (loket.getLayerTree() == null ? false : loket.getLayerTree()
-					.containsNonPublicLayers());
+			//FIXME
+//			containsNonPublicLayers = (loket.getLayerTree() == null ? false : loket.getLayerTree()
+//					.containsNonPublicLayers());
 
 			// -- constraints from blueprint --
 			publiek.setDisabled(!loket.getBlueprint().isPublic());

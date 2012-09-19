@@ -47,6 +47,8 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayerTreeNodeResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationRequest;
@@ -87,8 +89,26 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	// -- LayerTreeNode ----------------------------------------------------
+	// -- Layers ----------------------------------------------------
+	
+	public static void getSystemLayers(final DataCallback<GetSystemLayersResponse> onFinish) {
+		GetSystemLayersRequest request = new GetSystemLayersRequest();
+		GwtCommand command = new GwtCommand(GetSystemLayersRequest.COMMAND);
+		command.setCommandRequest(request);
+		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+				new AbstractCommandCallback<GetSystemLayersResponse>() {
 
+					public void execute(GetSystemLayersResponse response) {
+						if (onFinish != null) {
+							onFinish.execute(response);
+						}
+					}
+				});
+		def.addCallback(NotificationWindow.getInstance());
+	}
+	
+	
+	@Deprecated
 	public static void getSystemLayerTreeNode(final DataCallback<GetSystemLayerTreeNodeResponse> onFinish) {
 		GetSystemLayerTreeNodeRequest request = new GetSystemLayerTreeNodeRequest();
 		GwtCommand command = new GwtCommand(GetSystemLayerTreeNodeRequest.COMMAND);

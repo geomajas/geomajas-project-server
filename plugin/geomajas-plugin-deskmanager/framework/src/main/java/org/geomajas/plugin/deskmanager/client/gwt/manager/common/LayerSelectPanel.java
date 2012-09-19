@@ -10,21 +10,19 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
-import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.TransferImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.tree.Tree;
-import com.smartgwt.client.widgets.tree.TreeNode;
 
 /**
  * Contains two layertreepanels which are used to make a selection (target) of some layers (source).
@@ -33,6 +31,7 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class LayerSelectPanel extends HLayout {
 
+	// FIXME: i18n
 	private static final String HELP_TEXT = "<b>Beide lijsten:</b><br />"
 			+ "- Gebruik \"Drag &amp; Drop\" om items toe te voegen of te verwijderen, "
 			+ "of selecteer een item en gebruik een van de pijltjes om het item toe te voegen of te verwijderen.<br />"
@@ -42,28 +41,16 @@ public class LayerSelectPanel extends HLayout {
 
 	private static final String HELP_ICON = "osgeo/help.png";
 
-	private LayerTreeNodeDto source;
+	private LayerListGrid left;
 
-	private LayerTreeNodeDto target;
-
-	private LayerTreeGrid left;
-
-	private LayerTreeGrid right;
-
-	private Tree leftTree;
-
-	private Tree rightTree;
-
-	private boolean allowNonPublicLayers;
-
-	private boolean allowFolders;
+	private LayerListGrid right;
 
 	public LayerSelectPanel() {
 		super(10);
 
-		left = new LayerTreeGrid("Beschikbare lagen", false);
-		right = new LayerTreeGrid("Geselecteerde lagen", true);
-		right.setSourceTreeGrid(left);
+		left = new LayerListGrid("Beschikbare lagen", false);
+		right = new LayerListGrid("Geselecteerde lagen", true);
+		// right.setSourceListGrid(left);
 
 		TransferImgButton add = new TransferImgButton(TransferImgButton.RIGHT);
 		add.addClickHandler(new ClickHandler() {
@@ -99,153 +86,46 @@ public class LayerSelectPanel extends HLayout {
 	}
 
 	public void clearValues() {
-		source = null;
-		target = null;
-		leftTree = null;
-		rightTree = null;
-		left.setData((Tree) null);
-		right.setData((Tree) null);
+		left.selectAllRecords();
+		left.removeSelectedData();
+
+		right.selectAllRecords();
+		right.removeSelectedData();
 	}
 
-	public void setValues(LayerTreeNodeDto source, LayerTreeNodeDto target, boolean allowNonPublicLayers,
-			boolean allowFolders) {
-		if (target == null) {
-			throw new IllegalArgumentException("Target is niet gezet ??");
-		}
-
-		this.source = source.clone();
-		this.target = target;
-		this.allowNonPublicLayers = allowNonPublicLayers;
-		this.allowFolders = allowFolders;
-
-		// -- create trees
-		buildTrees();
-
-		// -- fill grids
-		left.setData(leftTree);
-		leftTree.openAll();
-
-		right.setData(rightTree);
-		right.setAllowFolders(allowFolders);
-		rightTree.openAll();
-	}
-
-	public LayerTreeNodeDto getValues() {
-		// updating domainobjects from tree
-		// -- remove old references (easier to just clear everything than trying to update)
-		if (target == null) {
-			throw new RuntimeException("Waarde is niet gezet ??");
-		}
-
-		target.getChildren().clear();
-		for (TreeNode node : rightTree.getAllNodes()) {
-			LayerTreeNode ltn = (LayerTreeNode) node;
-			if (!ltn.getNode().isLeaf()) {
-				ltn.getNode().getChildren().clear();
-			}
-		}
-
-		// -- wire nodes together
-		for (TreeNode node : rightTree.getAllNodes()) {
-			LayerTreeNodeDto dnode = ((LayerTreeNode) node).getNode();
-			LayerTreeNode parent = (LayerTreeNode) rightTree.getParent(node);
-			if (parent != null) {
-				dnode.setParentNode(parent.getNode());
-				parent.getNode().getChildren().add(dnode);
-			} else {
-				dnode.setParentNode(null);
-			}
-		}
-
-		return ((LayerTreeNode) rightTree.getRoot()).getNode();
-	}
-
-	// ----------------------------------------------------------
-
-	/**
-	 * TODO.
-	 * 
-	 * @author Jan De Moerloose
-	 *
-	 */
-	public static class LayerTreeNode extends TreeNode {
-
-		public static final String FLD_NAME = "name";
-
-		public static final String FLD_PUBLIC = "public";
-
-		private final LayerTreeNodeDto node;
-
-		public LayerTreeNode(LayerTreeNodeDto node) {
-			if (node == null) {
-				throw new IllegalArgumentException("Was expecting a node!");
-			}
-			this.node = node;
-			setName(node.getName());
-			setIsFolder(!node.isLeaf());
-		}
-
-		public LayerTreeNodeDto getNode() {
-			return node;
-		}
-	}
-
-	private void buildTrees() {
-		leftTree = new Tree();
-		leftTree.setIdField(LayerTreeNode.FLD_NAME);
-		leftTree.setModelType(TreeModelType.CHILDREN);
-		leftTree.setRoot(toTreeNode(source));
-		leftTree.setSeparateFolders(true);
-		leftTree.setSortFoldersBeforeLeaves(true);
-		rightTree = new Tree();
-		rightTree.setModelType(TreeModelType.CHILDREN);
-		rightTree.setRoot(toTreeNode(target));
-		rightTree.setSeparateFolders(true);
-		rightTree.setSortFoldersBeforeLeaves(true);
-		filterSourceTree();
-	}
-
-	private LayerTreeNode toTreeNode(LayerTreeNodeDto node) {
-		LayerTreeNode tn = new LayerTreeNode(node);
-		if (!node.isLeaf()) {
-			List<LayerTreeNode> children = new ArrayList<LayerSelectPanel.LayerTreeNode>();
-			for (LayerTreeNodeDto ltn : node.getChildren()) {
-				if (ltn != null) {
-					children.add(toTreeNode(ltn));
-				}
-			}
-			tn.setChildren(children.toArray(new LayerTreeNode[children.size()]));
-			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, true); // no such thing as non-public folders
-		} else {
-			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, node.isPublicLayer());
-		}
-		return tn;
-	}
-
-	private void filterSourceTree() {
-		for (TreeNode node : rightTree.getAllNodes()) {
-			TreeNode lefty = leftTree.findById(node.getName());
-			if (lefty != null) {
-				if (!leftTree.isLeaf(lefty)) {
-					leftTree.addList(leftTree.getChildren(lefty), leftTree.getRoot());
-				}
-				leftTree.remove(lefty);
-			}
-		}
-		if (!allowNonPublicLayers) {
-			for (TreeNode node : leftTree.getAllNodes()) {
-				if (leftTree.isLeaf(node) && !((LayerTreeNode) node).getNode().isPublicLayer()) {
-					leftTree.remove(node);
+	public void setValues(Set<LayerDto> availableLayers, Set<LayerDto> selectedLayers, boolean isPublic) {
+		clearValues();
+		if (availableLayers != null) {
+			for (LayerDto layer : availableLayers) {
+				if (isPublic && !layer.getLayerModel().isPublic()) {
+					// Ignore layer
+				} else {
+					if (!selectedLayers.contains(layer)) {
+						ListGridRecord record = new ListGridRecord();
+						record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
+						record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
+						left.addData(record);
+					}
 				}
 			}
 		}
-		if (!allowFolders) {
-			for (TreeNode node : leftTree.getAllNodes()) {
-				if (!leftTree.isLeaf(node) && !node.equals(leftTree.getRoot())) {
-					leftTree.addList(leftTree.getChildren(node), leftTree.getRoot());
-					leftTree.remove(node);
-				}
+		if (selectedLayers != null) {
+			for (LayerDto layer : selectedLayers) {
+				ListGridRecord record = new ListGridRecord();
+				record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+				record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
+				record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
+				right.addData(record);
 			}
 		}
+	}
+
+	public Set<LayerDto> getValues() {
+		Set<LayerDto> selectedLayers = new HashSet<LayerDto>();
+		for (ListGridRecord record : right.getRecords()) {
+			selectedLayers.add((LayerDto) record.getAttributeAsObject(LayerListGrid.FLD_OBJECT));
+		}
+		return selectedLayers;
 	}
 }
