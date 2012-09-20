@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
@@ -81,6 +82,9 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 					}
 					if ((SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO & request.getSaveWhat()) > 0) {
 						copyWidgetInfo(source, target);
+					}
+					if ((SaveBlueprintRequest.SAVE_LAYERS & request.getSaveWhat()) > 0) {
+						copyLayers(source, target);
 					}
 
 					loketService.saveOrUpdateLoket(target);
@@ -190,4 +194,13 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 
 		return res;
 	}
+
+	private void copyLayers(Geodesk source, Geodesk target) throws Exception {
+		target.getMainMapLayers().clear();
+		target.getMainMapLayers().addAll(source.getMainMapLayers());
+
+		target.getOverviewMapLayers().clear();
+		target.getOverviewMapLayers().addAll(source.getOverviewMapLayers());
+	}
+	
 }

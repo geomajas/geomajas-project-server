@@ -30,6 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class BlueprintLayers extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
 
@@ -42,17 +43,6 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);
-
-//		// ----------------------------------------------------------
-//
-//		CommService.getSystemLayerTreeNode(new DataCallback<GetSystemLayerTreeNodeResponse>() {
-//
-//			public void execute(GetSystemLayerTreeNodeResponse result) {
-//				systemLayerTreeNode = result.getSystemLayerTreeNode();
-//			}
-//		});
-//
-//		// ----------------------------------------------------------
 
 		layerSelect = new LayerSelectPanel();
 		layerSelect.setDisabled(true);

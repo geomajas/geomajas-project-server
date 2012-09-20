@@ -104,14 +104,14 @@ public class Geodesk implements GeodeskInfo {
 	@JoinColumn(name = "blueprint_id")
 	private Blueprint blueprint;
 
-	@ElementCollection()
+	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
-	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@JoinTable(name = "tt_geodesk_mainlayer")
 	private Set<Layer> mainMapLayers = new HashSet<Layer>();
 
-	@ElementCollection()
+	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
-	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@JoinTable(name = "tt_geodesk_overviewlayer")
 	private Set<Layer> overviewMapLayers = new HashSet<Layer>();
 
 	@ElementCollection(fetch = FetchType.EAGER)

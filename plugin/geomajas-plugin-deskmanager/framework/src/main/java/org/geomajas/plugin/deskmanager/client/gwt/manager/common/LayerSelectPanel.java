@@ -100,7 +100,7 @@ public class LayerSelectPanel extends HLayout {
 				if (isPublic && !layer.getLayerModel().isPublic()) {
 					// Ignore layer
 				} else {
-					if (!selectedLayers.contains(layer)) {
+					if (selectedLayers == null || !selectedLayers.contains(layer)) {
 						ListGridRecord record = new ListGridRecord();
 						record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
 						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
