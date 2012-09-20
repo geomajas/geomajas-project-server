@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 /**
  * TODO.

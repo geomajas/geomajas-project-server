@@ -14,6 +14,7 @@ import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 /**
  * @author Kristof Heirwegh

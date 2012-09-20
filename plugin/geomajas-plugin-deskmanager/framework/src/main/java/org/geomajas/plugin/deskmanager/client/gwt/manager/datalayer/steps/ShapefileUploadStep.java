@@ -15,7 +15,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.UploadShapefileForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

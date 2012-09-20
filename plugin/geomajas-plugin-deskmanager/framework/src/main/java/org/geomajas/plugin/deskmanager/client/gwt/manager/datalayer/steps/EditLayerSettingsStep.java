@@ -15,7 +15,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.LayerSettingsForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.MaxBoundsForm;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;

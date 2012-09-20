@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FloatItem;

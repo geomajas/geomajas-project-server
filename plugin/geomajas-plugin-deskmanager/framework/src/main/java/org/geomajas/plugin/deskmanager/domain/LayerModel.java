@@ -29,7 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;

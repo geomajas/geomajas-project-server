@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.smartgwt.client.widgets.form.DynamicForm;

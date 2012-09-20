@@ -16,11 +16,11 @@ import java.util.Map;
 
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 /**
  * @author Kristof Heirwegh

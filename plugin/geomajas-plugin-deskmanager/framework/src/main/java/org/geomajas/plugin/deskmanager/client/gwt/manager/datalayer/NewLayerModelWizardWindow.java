@@ -24,7 +24,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsCap
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsChooseLayerStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsPreviewLayerStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;

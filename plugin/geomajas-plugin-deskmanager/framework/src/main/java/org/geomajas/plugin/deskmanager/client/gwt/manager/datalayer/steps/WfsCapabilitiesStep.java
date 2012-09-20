@@ -21,7 +21,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;

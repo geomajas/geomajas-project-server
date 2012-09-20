@@ -17,7 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHand
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;

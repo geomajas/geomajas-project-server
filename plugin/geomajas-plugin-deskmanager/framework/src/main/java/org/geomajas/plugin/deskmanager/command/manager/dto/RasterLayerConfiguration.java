@@ -14,6 +14,7 @@ import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 /**
  * @author Kristof Heirwegh

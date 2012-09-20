@@ -47,7 +47,6 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
@@ -56,6 +55,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 

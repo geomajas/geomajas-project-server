@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.command.manager.dto;
+package org.geomajas.plugin.deskmanager.domain.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;

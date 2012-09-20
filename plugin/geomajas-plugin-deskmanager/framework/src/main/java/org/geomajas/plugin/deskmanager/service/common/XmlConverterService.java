@@ -30,12 +30,12 @@ import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.BitmapInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.sld.UserStyleInfo;
 
 import com.thoughtworks.xstream.XStream;

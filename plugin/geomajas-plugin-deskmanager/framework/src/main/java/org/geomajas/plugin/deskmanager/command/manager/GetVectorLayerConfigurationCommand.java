@@ -18,7 +18,7 @@ import org.geomajas.command.Command;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.LayerConfiguration;
 
 /**
  * @author Kristof Heirwegh
