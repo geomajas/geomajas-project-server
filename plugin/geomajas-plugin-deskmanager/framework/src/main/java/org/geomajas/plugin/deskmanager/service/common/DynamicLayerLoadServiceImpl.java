@@ -51,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kristof Heirwegh
  */
 @Component
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 	private final Logger log = LoggerFactory.getLogger(DynamicLayerLoadServiceImpl.class);
@@ -82,7 +82,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 	@Autowired
 	private BeanDefinitionWriterService bser;
-	
+
 	@PostConstruct
 	public void onApplicationStart() {
 		updateSystemLayers();
@@ -142,7 +142,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 			log.warn("Error loading dynamic layers: " + e.getMessage());
 		}
 	}
-	
+
 	// ---- Load -----------------------------------------------
 
 	/**
@@ -235,13 +235,13 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 		LayerModel lm = new LayerModel();
 		ExtraClientLayerInfo ecli = layerModelService.getExtraInfo(cli);
 
-		//Get layerInfo via server layer
+		// Get layerInfo via server layer
 		LayerInfo sli = null;
 		Layer<LayerInfo> layer = serverLayerMap.get(cli.getServerLayerId());
 		if (null != layer) {
 			sli = layer.getLayerInfo();
 		}
-		
+
 		lm.setActive(ecli.isActive());
 		lm.setClientLayerId(cli.getId());
 		lm.setName(ecli.getName() == null ? cli.getLabel() : ecli.getName());

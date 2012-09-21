@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.command.manager.GetSystemLayersCommand;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 

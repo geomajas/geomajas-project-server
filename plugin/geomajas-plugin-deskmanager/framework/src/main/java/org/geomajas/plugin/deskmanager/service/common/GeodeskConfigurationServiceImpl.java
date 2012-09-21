@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +23,6 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
@@ -32,9 +30,7 @@ import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.runtimeconfig.service.Rewirable;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.GeoService;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +54,6 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	@Autowired
 	private Map<String, UserApplicationInfo> userApplications;
 
-	@Autowired(required = false)
-	private Map<String, ClientLayerInfo> layerMap = new LinkedHashMap<String, ClientLayerInfo>();
-
-	@Autowired
-	private ConfigurationService configurationService;
-
 	@Autowired
 	private DtoConverterService convertorService;
 
@@ -77,16 +67,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	private GetMapConfigurationCommand mapConfigurationCommand;
 
 	@Autowired
-	private LayerModelService layerModelService;
-
-	@Autowired
 	private SessionFactory session;
-
-	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private VectorLayerService layerService;
 
 	// -------------------------------------------------
 
@@ -190,10 +171,6 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 	private ClientApplicationInfo clone(ClientApplicationInfo cai) {
 		return XmlConverterService.toClientApplicationInfo(XmlConverterService.toXml(cai));
-	}
-
-	private ClientLayerInfo clone(ClientLayerInfo cli) {
-		return XmlConverterService.toClientLayerInfo(XmlConverterService.toXml(cli));
 	}
 
 	/*

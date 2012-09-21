@@ -17,8 +17,6 @@ import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component(GetSystemLayersRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetSystemLayersCommand implements Command<GetSystemLayersRequest, GetSystemLayersResponse> {
-
-	private final Logger log = LoggerFactory.getLogger(GetSystemLayersCommand.class);
 
 	@Autowired
 	private LayerModelService layerModelService;

@@ -94,8 +94,8 @@ public class GeodeskServiceImpl implements GeodeskService {
 		if (loketExists(id)) {
 			if (((DeskmanagerSecurityContext) securityContext).isGeodeskUseAllowed(id)) {
 				Query q = factory.getCurrentSession().createQuery(
-						"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
-								+ "l.blueprint.geodesksActive = true");
+						"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " 
+						+ "l.active = true AND l.blueprint.geodesksActive = true");
 				q.setParameter("id", id);
 				q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 				Geodesk l = (Geodesk) q.uniqueResult();
