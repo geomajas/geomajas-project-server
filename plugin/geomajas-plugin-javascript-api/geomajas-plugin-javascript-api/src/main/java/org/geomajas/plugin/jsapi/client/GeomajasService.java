@@ -18,6 +18,7 @@ import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.client.map.controller.MapController;
 import org.geomajas.plugin.jsapi.client.spatial.BboxService;
 import org.geomajas.plugin.jsapi.client.spatial.GeometryService;
+import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -29,6 +30,7 @@ import org.timepedia.exporter.client.Exportable;
  * @since 1.0.0
  */
 @Api
+@Export
 public interface GeomajasService extends Exportable {
 
 	/**

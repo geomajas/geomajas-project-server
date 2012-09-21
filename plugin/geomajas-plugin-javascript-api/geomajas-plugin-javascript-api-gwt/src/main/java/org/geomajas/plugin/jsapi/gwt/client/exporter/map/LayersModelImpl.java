@@ -73,7 +73,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 	 *            The specified index.
 	 * @return Returns the layer, or null if the index can't be found.
 	 */
-	public org.geomajas.plugin.jsapi.client.map.layer.Layer getLayerAt(int index) {
+	public Layer getLayerAt(int index) {
 		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayers().get(index);
 		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
 			return new VectorLayer((org.geomajas.gwt.client.map.layer.VectorLayer) layer);

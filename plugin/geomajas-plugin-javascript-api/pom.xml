@@ -52,10 +52,10 @@
 	</modules>
 
 	<properties>
-		<geomajas-plugin-javascript-api-backend-version>1.10.0</geomajas-plugin-javascript-api-backend-version>
-		<geomajas-plugin-javascript-api-gwt-face-version>1.10.0</geomajas-plugin-javascript-api-gwt-face-version>
+		<geomajas-plugin-javascript-api-backend-version>1.11.1</geomajas-plugin-javascript-api-backend-version>
+		<geomajas-plugin-javascript-api-gwt-face-version>1.11.1</geomajas-plugin-javascript-api-gwt-face-version>
 		<geomajas-plugin-javascript-api-gwt-version>2.4.0</geomajas-plugin-javascript-api-gwt-version>
-		<gwt-exporter-version>2.3.1-GEOMAJAS</gwt-exporter-version>
+		<gwt-exporter-version>2.4.0</gwt-exporter-version>
 	</properties>	
 
 	<dependencyManagement>

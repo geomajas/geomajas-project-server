@@ -12,6 +12,7 @@
 package org.geomajas.plugin.jsapi.client.event;
 
 import org.geomajas.annotation.Api;
+import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -21,6 +22,7 @@ import org.timepedia.exporter.client.Exportable;
  * @since 1.0.0
  */
 @Api(allMethods = true)
+@Export
 public interface JsEventBus extends Exportable {
 
 	/** {@inheritDoc} */

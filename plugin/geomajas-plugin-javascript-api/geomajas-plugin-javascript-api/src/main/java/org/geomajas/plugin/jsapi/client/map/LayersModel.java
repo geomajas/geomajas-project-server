@@ -12,6 +12,7 @@ package org.geomajas.plugin.jsapi.client.map;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.jsapi.client.map.layer.Layer;
+import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -22,6 +23,7 @@ import org.timepedia.exporter.client.Exportable;
  * @since 1.0.0
  */
 @Api(allMethods = true)
+@Export
 public interface LayersModel extends Exportable {
 
 	/**
