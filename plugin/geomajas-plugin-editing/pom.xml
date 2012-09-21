@@ -124,11 +124,6 @@
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.timepedia.exporter</groupId>
-				<artifactId>gwtexporter</artifactId>
-				<version>${gwt-exporter-version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
@@ -173,12 +168,11 @@
 	</profiles>
 
 	<properties>
-		<geomajas-plugin-editing-backend-version>1.11.0</geomajas-plugin-editing-backend-version>
+		<geomajas-plugin-editing-backend-version>1.11.1</geomajas-plugin-editing-backend-version>
 		<geomajas-plugin-editing-common-gwt-face-version>1.1.0</geomajas-plugin-editing-common-gwt-face-version>
 		<geomajas-plugin-editing-gwt-face-version>1.11.1</geomajas-plugin-editing-gwt-face-version>
 		<geomajas-plugin-editing-puregwt-face-version>1.0.0-M1</geomajas-plugin-editing-puregwt-face-version>
 		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
-		<gwt-exporter-version>2.3.1-GEOMAJAS</gwt-exporter-version>
 	</properties>
 
 </project>
