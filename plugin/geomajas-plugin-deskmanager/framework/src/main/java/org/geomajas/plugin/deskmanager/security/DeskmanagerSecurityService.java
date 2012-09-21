@@ -37,7 +37,7 @@ public class DeskmanagerSecurityService implements SecurityService {
 	private AuthenticationTokenService tokenService;
 
 	@Autowired
-	private GeodeskIdService loketIdService;
+	private GeodeskIdService geodeskIdService;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -50,7 +50,7 @@ public class DeskmanagerSecurityService implements SecurityService {
 		if (authenticationToken == null || ("null").equals(authenticationToken)) {
 			DeskmanagerAuthentication auth = new DeskmanagerAuthentication(createGastProfile());
 			auth.setAuthorizations(new BaseAuthorization[] { new DeskmanagerAuthorization(auth.getProfile(),
-					loketIdService.getGeodeskIdentifier(), applicationContext) });
+					geodeskIdService.getGeodeskIdentifier(), applicationContext) });
 			return auth;
 		}
 		return tokenService.getAuthentication(authenticationToken);
@@ -59,7 +59,7 @@ public class DeskmanagerSecurityService implements SecurityService {
 	public String registerRole(Profile profile) {
 		DeskmanagerAuthentication auth = new DeskmanagerAuthentication(profile);
 		auth.setAuthorizations(new BaseAuthorization[] { new DeskmanagerAuthorization(auth.getProfile(),
-				loketIdService.getGeodeskIdentifier(), applicationContext) });
+				geodeskIdService.getGeodeskIdentifier(), applicationContext) });
 		String token = tokenService.login(auth);
 		return token;
 	}

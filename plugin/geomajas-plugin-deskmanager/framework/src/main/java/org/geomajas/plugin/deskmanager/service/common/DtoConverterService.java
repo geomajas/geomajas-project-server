@@ -13,6 +13,7 @@ package org.geomajas.plugin.deskmanager.service.common;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
+import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.LayerTree;
 import org.geomajas.plugin.deskmanager.domain.LayerTreeNode;
@@ -20,6 +21,7 @@ import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
@@ -62,6 +64,10 @@ public interface DtoConverterService {
 	LayerView fromDto(LayerViewDto dto) throws GeomajasException;
 
 	LayerViewDto toDto(LayerView layerView) throws GeomajasException;
+
+	Layer fromDto(LayerDto dto) throws GeomajasException;
+
+	LayerDto toDto(Layer layer) throws GeomajasException;
 
 	// ----------------------------------------------------------
 

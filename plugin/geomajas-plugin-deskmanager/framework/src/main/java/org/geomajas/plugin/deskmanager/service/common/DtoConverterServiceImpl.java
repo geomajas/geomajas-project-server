@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
@@ -40,7 +41,11 @@ import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.CategoryDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -52,8 +57,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DtoConverterServiceImpl implements DtoConverterService {
 
+	private final Logger log = LoggerFactory.getLogger(DtoConverterServiceImpl.class);
+
 	@Autowired
 	private List<UserApplicationInfo> userApplications;
+
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	// ----------------------------------------------------------
 
@@ -71,9 +81,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bp.setId(dto.getId());
 		bp.setLastEditBy(dto.getLastEditBy());
 		bp.setLastEditDate(dto.getLastEditDate());
-		bp.setLimitToLoketTerritory(dto.isLimitToCreatorTerritory());
+		bp.setLimitToCreatorTerritory(dto.isLimitToCreatorTerritory());
 		bp.setLimitToUserTerritory(dto.isLimitToUserTerritory());
-		bp.setLokettenActive(dto.isLokettenActive());
+		bp.setGeodesksActive(dto.isGeodesksActive());
 		bp.setName(dto.getName());
 		bp.setPublic(dto.isPublic());
 		bp.setApplicationClientWidgetInfos(dto.getApplicationClientWidgetInfos());
@@ -116,13 +126,12 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bpDto.setLastEditDate(blueprint.getLastEditDate());
 		bpDto.setLimitToLoketTerritory(blueprint.isLimitToCreatorTerritory());
 		bpDto.setLimitToUserTerritory(blueprint.isLimitToUserTerritory());
-		bpDto.setLokettenActive(blueprint.isLokettenActive());
+		bpDto.setGeodesksActive(blueprint.isGeodesksActive());
 		bpDto.setName(blueprint.getName());
 		bpDto.setPublic(blueprint.isPublic());
 		bpDto.setApplicationClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getApplicationClientWidgetInfos()));
-		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint.
-				getMainMapClientWidgetInfos()));
+		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint.getMainMapClientWidgetInfos()));
 		bpDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getOverviewMapClientWidgetInfos()));
 		if (blueprint.getMainMapLayers() != null) {
@@ -355,7 +364,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		l.setId(dto.getId());
 		l.setLastEditBy(dto.getLastEditBy());
 		l.setLastEditDate(dto.getLastEditDate());
-		l.setGeodeskId(dto.getLoketId());
+		l.setGeodeskId(dto.getGeodeskId());
 		l.setLimitToCreatorTerritory(dto.isLimitToCreatorTerritory());
 		l.setLimitToUserTerritory(dto.isLimitToUserTerritory());
 		l.setName(dto.getName());
@@ -403,7 +412,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lDto.setId(geodesk.getId());
 		lDto.setLastEditBy(geodesk.getLastEditBy());
 		lDto.setLastEditDate(geodesk.getLastEditDate());
-		lDto.setLoketId(geodesk.getGeodeskId());
+		lDto.setGeodeskId(geodesk.getGeodeskId());
 		lDto.setLimitToLoketTerritory(geodesk.isLimitToCreatorTerritory());
 		lDto.setLimitToUserTerritory(geodesk.isLimitToUserTerritory());
 		lDto.setName(geodesk.getName());
@@ -568,13 +577,19 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		dto.setName(mail.getName());
 		return dto;
 	}
-	
+
 	public LayerDto toDto(Layer layer) throws GeomajasException {
 		if (layer == null) {
 			return null;
 		}
 		LayerDto dto = new LayerDto();
-		dto.setClientLayerId(layer.getClientLayerId());
+		dto.setClientLayerIdReference(layer.getClientLayerIdReference());
+		try {
+			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getClientLayerIdReference()));
+		} catch (NoSuchBeanDefinitionException e) {
+			log.warn("ClientLayerInfo not found for layer: " + layer.getClientLayerIdReference()
+					+ ", not adding clientLayerinfo. You might need to remove these layers");
+		}
 		dto.setCLientLayerInfo(layer.getClientLayerInfo());
 		dto.setLayerModel(toDto(layer.getLayerModel(), false));
 		return dto;
@@ -585,7 +600,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		Layer layer = new Layer();
-		layer.setClientLayerId(dto.getClientLayerId());
+		layer.setClientLayerIdReference(dto.getClientLayerIdReference());
 		layer.setClientLayerInfo(dto.getClientLayerInfo());
 		layer.setLayerModel(fromDto(dto.getLayerModel()));
 		return layer;

@@ -115,8 +115,8 @@ public abstract class AbstractUserApplication implements UserApplication {
 	 * @param geodeskId
 	 *            the geodeskId to set
 	 */
-	public void setApplicationId(String loketId) {
-		this.geodeskId = loketId;
+	public void setApplicationId(String applicationId) {
+		this.geodeskId = applicationId;
 	}
 
 	/**

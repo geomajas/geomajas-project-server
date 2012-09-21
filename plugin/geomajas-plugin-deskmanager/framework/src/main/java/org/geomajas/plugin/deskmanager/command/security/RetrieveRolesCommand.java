@@ -51,7 +51,7 @@ public class RetrieveRolesCommand implements Command<CommandRequest, RetrieveRol
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private GeodeskIdService loketIdService;
+	private GeodeskIdService geodeskIdService;
 
 	public RetrieveRolesResponse getEmptyCommandResponse() {
 		return new RetrieveRolesResponse();
@@ -61,12 +61,12 @@ public class RetrieveRolesCommand implements Command<CommandRequest, RetrieveRol
 
 		HashMap<String, ProfileDto> profiles = new LinkedHashMap<String, ProfileDto>();
 
-		String loketId = loketIdService.getGeodeskIdentifier();
+		String geodeskId = geodeskIdService.getGeodeskIdentifier();
 
-		if (loketId != null) {
+		if (geodeskId != null) {
 			for (Profile profile : profileService.getProfiles()) {
-				DeskmanagerAuthorization auth = new DeskmanagerAuthorization(profile, loketId, applicationContext);
-				if (auth.isLoketUseAllowed(loketId)) {
+				DeskmanagerAuthorization auth = new DeskmanagerAuthorization(profile, geodeskId, applicationContext);
+				if (auth.isGeodeskUseAllowed(geodeskId)) {
 					String token = securityService.registerRole(profile);
 					profiles.put(token, dtoService.toDto(profile));
 				}

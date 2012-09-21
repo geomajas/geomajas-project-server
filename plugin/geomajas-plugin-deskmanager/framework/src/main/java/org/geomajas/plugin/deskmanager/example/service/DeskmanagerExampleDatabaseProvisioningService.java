@@ -168,9 +168,9 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		bluePrint.setGroups(Arrays.asList(adminGroup, beGroup)/*, nlGroup, deGroup)*/);
 		bluePrint.setLastEditBy("System");
 		bluePrint.setLastEditDate(new Date());
-		bluePrint.setLimitToLoketTerritory(false);
+		bluePrint.setLimitToCreatorTerritory(false);
 		bluePrint.setLimitToUserTerritory(false);
-		bluePrint.setLokettenActive(true);
+		bluePrint.setGeodesksActive(true);
 		bluePrint.setName(CLIENTAPPLICATION_NAME);
 		bluePrint.setPublic(true);
 		bluePrint.setUserApplicationKey(CLIENTAPPLICATION_ID);

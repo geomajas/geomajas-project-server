@@ -35,10 +35,10 @@ import org.springframework.stereotype.Component;
 public class GetApplicationInfoCommand implements Command<CommandRequest, GetApplicationInfoResponse> {
 
 	@Autowired
-	private GeodeskIdService loketIdService;
+	private GeodeskIdService geodeskIdService;
 
 	@Autowired
-	private GeodeskService loketService;
+	private GeodeskService geodeskService;
 
 	@Autowired
 	private GeodeskConfigurationService configurationService;
@@ -59,9 +59,9 @@ public class GetApplicationInfoCommand implements Command<CommandRequest, GetApp
 		response.setDeskmanagerBuild(deskmanagerBuild);
 		response.setDeskmanagerVersion(deskmanagerVersion);
 
-		String id = loketIdService.getGeodeskIdentifier();
+		String id = geodeskIdService.getGeodeskIdentifier();
 		Geodesk loket = null;
-		loket = loketService.getGeodeskByPublicId(id); // this checks if loket is allowed
+		loket = geodeskService.getGeodeskByPublicId(id); // this checks if loket is allowed
 		if (loket != null) {
 			response.setGeodeskIdentifier(id);
 			response.setGeodeskTypeIdentifier(loket.getBlueprint().getUserApplicationKey());

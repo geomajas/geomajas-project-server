@@ -97,9 +97,9 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		blueprint.setType(ListGridFieldType.TEXT);
 		blueprint.setWidth("*");
 
-		ListGridField loketId = new ListGridField(FLD_GEODESKID, "LoketId");
-		loketId.setType(ListGridFieldType.TEXT);
-		loketId.setWidth("*");
+		ListGridField geodeskId = new ListGridField(FLD_GEODESKID, "LoketId");
+		geodeskId.setType(ListGridFieldType.TEXT);
+		geodeskId.setWidth("*");
 
 		ListGridField author = new ListGridField(FLD_AUTHOR, "Auteur");
 		author.setType(ListGridFieldType.TEXT);
@@ -123,7 +123,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		actions.setWidth(60);
 		actions.setPrompt("Acties: Voorbeeld loket tonen en Geodesk verwijderen.");
 
-		setFields(name, blueprint, loketId, author, publicUse, active, actions);
+		setFields(name, blueprint, geodeskId, author, publicUse, active, actions);
 		setSortField(0);
 		setSortDirection(SortDirection.ASCENDING);
 
@@ -247,9 +247,9 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		record.setAttribute(FLD_BLUEPRINT, loket.getBlueprint().getName());
 		record.setAttribute(FLD_AUTHOR, loket.getLastEditBy());
 		record.setAttribute(FLD_PUBLIC, loket.isPublic());
-		record.setAttribute(FLD_ACTIVE, loket.isActive() && loket.getBlueprint().isLokettenActive());
+		record.setAttribute(FLD_ACTIVE, loket.isActive() && loket.getBlueprint().isGeodesksActive());
 		record.setAttribute(FLD_ACTIONS, " ");
-		record.setAttribute(FLD_GEODESKID, loket.getLoketId());
+		record.setAttribute(FLD_GEODESKID, loket.getGeodeskId());
 		record.setAttribute(FLD_OBJECT, loket);
 		return record;
 	}
@@ -278,7 +278,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			for (Record r : getDataAsRecordList().toArray()) {
 				GeodeskDto l = (GeodeskDto) r.getAttributeAsObject(FLD_OBJECT);
 				if (l.getBlueprint().getId().equals(bpe.getBlueprint().getId())) {
-					r.setAttribute(FLD_ACTIVE, l.isActive() && bpe.getBlueprint().isLokettenActive());
+					r.setAttribute(FLD_ACTIVE, l.isActive() && bpe.getBlueprint().isGeodesksActive());
 					refreshRow(getRecordIndex(r));
 					if (getSelectedRecord() != null && getSelectedRecord().equals(r)) {
 						deselectAllRecords();

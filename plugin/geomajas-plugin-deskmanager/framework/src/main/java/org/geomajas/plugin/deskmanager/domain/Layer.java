@@ -40,7 +40,7 @@ public class Layer {
 	private LayerModel layerModel;
 	
 	@Column(nullable = false)
-	private String clientLayerId;
+	private String clientLayerIdReference;
 
 	/**
 	 * @param clientLayerInfo the clientLayerInfo to set
@@ -85,17 +85,17 @@ public class Layer {
 	}
 
 	/**
-	 * @param clientLayerId the clientLayerId to set
+	 * @param clientLayerIdReference the clientLayerIdReference to set
 	 */
-	public void setClientLayerId(String clientLayerId) {
-		this.clientLayerId = clientLayerId;
+	public void setClientLayerIdReference(String clientLayerId) {
+		this.clientLayerIdReference = clientLayerId;
 	}
 
 	/**
-	 * @return the clientLayerId
+	 * @return the clientLayerIdReference
 	 */
-	public String getClientLayerId() {
-		return clientLayerId;
+	public String getClientLayerIdReference() {
+		return clientLayerIdReference;
 	}
 
 	/* (non-Javadoc)
@@ -105,7 +105,7 @@ public class Layer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((clientLayerId == null) ? 0 : clientLayerId.hashCode());
+		result = prime * result + ((clientLayerIdReference == null) ? 0 : clientLayerIdReference.hashCode());
 		return result;
 	}
 
@@ -124,11 +124,11 @@ public class Layer {
 			return false;
 		}
 		Layer other = (Layer) obj;
-		if (clientLayerId == null) {
-			if (other.clientLayerId != null) {
+		if (clientLayerIdReference == null) {
+			if (other.clientLayerIdReference != null) {
 				return false;
 			}
-		} else if (!clientLayerId.equals(other.clientLayerId)) {
+		} else if (!clientLayerIdReference.equals(other.clientLayerIdReference)) {
 			return false;
 		}
 		return true;

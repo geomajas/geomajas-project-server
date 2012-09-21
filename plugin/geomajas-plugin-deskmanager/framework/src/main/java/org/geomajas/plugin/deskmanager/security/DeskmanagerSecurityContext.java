@@ -216,22 +216,22 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 
 	// -- Geodesk --------------------------------------------------------
 
-	public boolean isLoketUseAllowed(String loketId) {
+	public boolean isGeodeskUseAllowed(String geodeskId) {
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerGeodeskAuthorization) {
-					return ((DeskmanagerGeodeskAuthorization) authorization).isLoketUseAllowed(loketId);
+					return ((DeskmanagerGeodeskAuthorization) authorization).isGeodeskUseAllowed(geodeskId);
 				}
 			}
 		}
 		return false;
 	}
 
-	public boolean readAllowed(Geodesk l) {
+	public boolean readAllowed(Geodesk geodesk) {
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerManagementAuthorization) {
-					return ((DeskmanagerManagementAuthorization) authorization).readAllowed(l);
+					return ((DeskmanagerManagementAuthorization) authorization).readAllowed(geodesk);
 				}
 			}
 		}

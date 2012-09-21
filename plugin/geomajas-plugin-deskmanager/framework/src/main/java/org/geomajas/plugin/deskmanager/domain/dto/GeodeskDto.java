@@ -33,7 +33,7 @@ public class GeodeskDto implements GeodeskInfo {
 	/**
 	 * Public loketid to be used in urls
 	 */
-	private String loketId; // UUID
+	private String geodeskId; // UUID
 
 	private String name;
 
@@ -50,7 +50,7 @@ public class GeodeskDto implements GeodeskInfo {
 	/**
 	 * Enkel te wijzigen indien niet true in blueprint.
 	 */
-	private boolean limitToLoketTerritory;
+	private boolean limitToCreatorTerritory;
 
 	/**
 	 * Enkel te wijzigen indien niet true in blueprint.
@@ -136,11 +136,11 @@ public class GeodeskDto implements GeodeskInfo {
 	}
 
 	public boolean isLimitToCreatorTerritory() {
-		return limitToLoketTerritory;
+		return limitToCreatorTerritory;
 	}
 
 	public void setLimitToLoketTerritory(boolean limitToLoketTerritory) {
-		this.limitToLoketTerritory = limitToLoketTerritory;
+		this.limitToCreatorTerritory = limitToLoketTerritory;
 	}
 
 	public boolean isLimitToUserTerritory() {
@@ -167,12 +167,12 @@ public class GeodeskDto implements GeodeskInfo {
 		this.blueprint = blueprint;
 	}
 
-	public String getLoketId() {
-		return loketId;
+	public String getGeodeskId() {
+		return geodeskId;
 	}
 
-	public void setLoketId(String loketId) {
-		this.loketId = loketId;
+	public void setGeodeskId(String loketId) {
+		this.geodeskId = loketId;
 	}
 
 	public List<TerritoryDto> getTerritories() {

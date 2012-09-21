@@ -11,15 +11,15 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
+import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,23 +33,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetSystemLayersCommand implements Command<GetSystemLayersRequest, GetSystemLayersResponse> {
 
-	@Autowired
-	private LayerModelService layerModelService;
+	private final Logger log = LoggerFactory.getLogger(GetSystemLayersCommand.class);
 
 	@Autowired
-	private ApplicationContext applicationContext;
+	private LayerModelService layerModelService;
 
 	@Autowired
 	private DtoConverterService converterService;
 
 	public void execute(GetSystemLayersRequest request, GetSystemLayersResponse response) throws Exception {
 		for (LayerModel model : layerModelService.getLayerModels()) {
-			LayerDto dto = new LayerDto();
-			dto.setLayerModel(converterService.toDto(model, false));
-			ClientLayerInfo cli = (ClientLayerInfo) applicationContext.getBean(model.getClientLayerId());
-			dto.setCLientLayerInfo(cli);
-			dto.setClientLayerId(model.getClientLayerId());
-			response.getLayers().add(dto);
+			Layer layer = new Layer();
+			layer.setClientLayerIdReference(model.getClientLayerId());
+			layer.setLayerModel(model);
+			response.getLayers().add(converterService.toDto(layer));
 		}
 	}
 

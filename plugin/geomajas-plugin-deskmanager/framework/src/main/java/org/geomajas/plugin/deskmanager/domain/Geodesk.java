@@ -33,7 +33,6 @@ import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
-import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskInfo;
@@ -48,7 +47,6 @@ import org.hibernate.annotations.Type;
  *
  */
 @Entity
-@Table(name = "config_loketten")
 public class Geodesk implements GeodeskInfo {
 
 	private static final long serialVersionUID = 1L;
@@ -58,11 +56,8 @@ public class Geodesk implements GeodeskInfo {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String id; // UUID
 
-	/**
-	 * Public loketid to be used in urls
-	 */
-	@Column(name = "pub_loket_id", unique = true)
-	private String loketId; // UUID
+	@Column(name = "geodeskId")
+	private String geodeskId; // UUID
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -85,7 +80,7 @@ public class Geodesk implements GeodeskInfo {
 	/**
 	 * Enkel te wijzigen indien niet true in blueprint.
 	 */
-	@Column(name = "limit_to_loket_territory")
+	@Column(name = "limit_to_creator_territory")
 	private boolean limitToCreatorTerritory;
 
 	/**
@@ -95,7 +90,7 @@ public class Geodesk implements GeodeskInfo {
 	private boolean limitToUserTerritory;
 
 	@Column(name = "public")
-	private boolean publiek;
+	private boolean publicc;
 
 	@Column(name = "deleted")
 	private boolean deleted;
@@ -134,18 +129,15 @@ public class Geodesk implements GeodeskInfo {
 	@JoinColumn(name = "owninggroup_id")
 	private Territory owner;
 
-	/**
-	 * The groups that can view this loket (if not public)
-	 */
 	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "tt_groups_loketten", 
-		joinColumns = @JoinColumn(name = "loket_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
+	@JoinTable(name = "tt_groups_geodesks", 
+		joinColumns = @JoinColumn(name = "geodesk_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	// @Fetch(FetchMode.JOIN) -- cannot use join because of the ManyToOne field 'owner' of the same type
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "tt_mails_loketten")
+	@JoinTable(name = "tt_mails_geodesks")
 	private List<MailAddress> mailAddresses = new ArrayList<MailAddress>();
 
 	// ------------------------------------------------------------------
@@ -207,14 +199,14 @@ public class Geodesk implements GeodeskInfo {
 	}
 
 	/**
-	 * This is just the property getter, do not use to test if filter should be set, use mustFilterByLoketTerritory().
+	 * This is just the property getter, do not use to test if filter should be set, use mustFilterByGeodeskTerritory().
 	 */
 	public boolean isLimitToCreatorTerritory() {
 		return limitToCreatorTerritory;
 	}
 
-	public void setLimitToCreatorTerritory(boolean limitToLoketTerritory) {
-		this.limitToCreatorTerritory = limitToLoketTerritory;
+	public void setLimitToCreatorTerritory(boolean limitToCreatorTerritory) {
+		this.limitToCreatorTerritory = limitToCreatorTerritory;
 	}
 
 	/**
@@ -229,11 +221,11 @@ public class Geodesk implements GeodeskInfo {
 	}
 
 	public boolean isPublic() {
-		return publiek;
+		return publicc;
 	}
 
 	public void setPublic(boolean publik) {
-		this.publiek = publik;
+		this.publicc = publik;
 	}
 
 	public Blueprint getBlueprint() {
@@ -245,11 +237,11 @@ public class Geodesk implements GeodeskInfo {
 	}
 
 	public String getGeodeskId() {
-		return loketId;
+		return geodeskId;
 	}
 
-	public void setGeodeskId(String loketId) {
-		this.loketId = loketId;
+	public void setGeodeskId(String geodeskId) {
+		this.geodeskId = geodeskId;
 	}
 
 	public List<Territory> getTerritories() {
@@ -303,7 +295,7 @@ public class Geodesk implements GeodeskInfo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((loketId == null) ? 0 : loketId.hashCode());
+		result = prime * result + ((geodeskId == null) ? 0 : geodeskId.hashCode());
 		return result;
 	}
 
@@ -324,11 +316,11 @@ public class Geodesk implements GeodeskInfo {
 			return false;
 		}
 		Geodesk other = (Geodesk) obj;
-		if (loketId == null) {
-			if (other.loketId != null) {
+		if (geodeskId == null) {
+			if (other.geodeskId != null) {
 				return false;
 			}
-		} else if (!loketId.equals(other.loketId)) {
+		} else if (!geodeskId.equals(other.geodeskId)) {
 			return false;
 		}
 		return true;

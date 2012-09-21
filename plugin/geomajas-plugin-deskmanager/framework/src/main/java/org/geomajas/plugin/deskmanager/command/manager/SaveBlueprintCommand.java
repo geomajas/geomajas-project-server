@@ -94,9 +94,9 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 	private void copySettings(Blueprint source, Blueprint target) throws Exception {
 		target.setActive(source.isActive());
 		target.setUserApplicationKey(source.getUserApplicationKey());
-		target.setLimitToLoketTerritory(source.isLimitToCreatorTerritory());
+		target.setLimitToCreatorTerritory(source.isLimitToCreatorTerritory());
 		target.setLimitToUserTerritory(source.isLimitToUserTerritory());
-		target.setLokettenActive(source.isLokettenActive());
+		target.setGeodesksActive(source.isGeodesksActive());
 		target.setName(source.getName());
 		target.setPublic(source.isPublic());
 	}

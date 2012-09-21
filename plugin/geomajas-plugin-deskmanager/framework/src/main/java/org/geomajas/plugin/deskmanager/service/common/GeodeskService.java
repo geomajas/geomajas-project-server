@@ -53,13 +53,13 @@ public interface GeodeskService {
 	 */
 	boolean loketExists(String publicId);
 
-	boolean isLoketUseAllowed(String id, Role role, Territory group);
+	boolean isGeodeskUseAllowed(String id, Role role, Territory group);
 
-	boolean isLoketReadAllowed(Geodesk gd, Role role, Territory group);
+	boolean isGeodeskReadAllowed(Geodesk gd, Role role, Territory group);
 
-	boolean isLoketSaveAllowed(Geodesk gd, Role role, Territory group);
+	boolean isGeodeskSaveAllowed(Geodesk gd, Role role, Territory group);
 
-	boolean isLoketDeleteAllowed(Geodesk gd, Role role, Territory group);
+	boolean isGeodeskDeleteAllowed(Geodesk gd, Role role, Territory group);
 
 	/**
 	 * This is slightly different than LoketExists, where the former will not check inactive & deleted loketten, this

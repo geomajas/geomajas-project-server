@@ -21,6 +21,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @author Oliver May
  * 
  */
+//FIXME: move to magdageo
 public class CrabData {
 
 	private final GeometryFactory gf = new GeometryFactory(new PrecisionModel(), 31300);

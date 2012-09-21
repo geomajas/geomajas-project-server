@@ -63,7 +63,8 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 		CommService.getSystemLayers(new DataCallback<GetSystemLayersResponse>() {
 
 			public void execute(GetSystemLayersResponse result) {
-				layerSelect.setValues(result.getLayers(), geodesk.getMainMapLayers(), geodesk.isPublic());
+				//FIXME: include own layers
+				layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), geodesk.getMainMapLayers(), geodesk.isPublic());
 			}
 
 		});

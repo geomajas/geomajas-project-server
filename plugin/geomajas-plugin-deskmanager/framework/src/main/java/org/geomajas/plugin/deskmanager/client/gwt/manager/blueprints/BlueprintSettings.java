@@ -60,7 +60,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 
 	private CheckboxItem active;
 
-	private CheckboxItem lokettenActive;
+	private CheckboxItem geodesksActive;
 
 	private CheckboxItem publiek;
 
@@ -114,10 +114,10 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 		active.setTooltip("Aan: nieuwe loketten kunnen aangemaakt worden op basis van deze blauwdruk."
 				+ " <br />Uit: er kunnen geen nieuwe loketten aangemaakt worden.");
 
-		lokettenActive = new CheckboxItem();
-		lokettenActive.setTitle("Geodesks actief");
-		lokettenActive.setWrapTitle(false);
-		lokettenActive.setTooltip("Uit: de loketten gebaseerd op deze blauwdruk kunnen niet gebruikt worden.");
+		geodesksActive = new CheckboxItem();
+		geodesksActive.setTitle("Geodesks actief");
+		geodesksActive.setWrapTitle(false);
+		geodesksActive.setTooltip("Uit: de loketten gebaseerd op deze blauwdruk kunnen niet gebruikt worden.");
 
 		publiek = new CheckboxItem();
 		publiek.setTitle("Publiek");
@@ -157,7 +157,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 		// ----------------------------------------------------------
 
 		form.setTitleOrientation(TitleOrientation.LEFT);
-		form.setFields(blueprintName, active, clientApplicationName, lokettenActive, new SpacerItem(),
+		form.setFields(blueprintName, active, clientApplicationName, geodesksActive, new SpacerItem(),
 				new SpacerItem(), publiek, lastEditBy, limitToLoketTerritory, lastEditDate, limitToUserTerritory);
 
 		VLayout group = new VLayout();
@@ -183,7 +183,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 			lastEditBy.setValue(blueprint.getLastEditBy());
 			lastEditDate.setValue(DATE_FORMATTER.format(blueprint.getLastEditDate()));
 			active.setValue(blueprint.isActive());
-			lokettenActive.setValue(blueprint.isLokettenActive());
+			geodesksActive.setValue(blueprint.isGeodesksActive());
 			publiek.setValue(blueprint.isPublic());
 			limitToLoketTerritory.setValue(blueprint.isLimitToCreatorTerritory());
 			limitToUserTerritory.setValue(blueprint.isLimitToUserTerritory());
@@ -208,7 +208,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 			blueprint.setName(blueprintName.getValueAsString());
 			blueprint.setUserApplicationName(clientApplicationName.getValueAsString());
 			blueprint.setActive(active.getValueAsBoolean());
-			blueprint.setLokettenActive(lokettenActive.getValueAsBoolean());
+			blueprint.setGeodesksActive(geodesksActive.getValueAsBoolean());
 			blueprint.setPublic(publiek.getValueAsBoolean());
 			if (blueprint.isPublic()) {
 				blueprint.setLimitToLoketTerritory(limitToLoketTerritory.getValueAsBoolean());

@@ -31,7 +31,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
-import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskInfo;
@@ -50,7 +49,6 @@ import org.hibernate.annotations.Type;
  * 
  */
 @Entity
-@Table(name = "config_blueprints")
 public class Blueprint implements GeodeskInfo {
 
 	private static final long serialVersionUID = 1L;
@@ -70,50 +68,46 @@ public class Blueprint implements GeodeskInfo {
 	@Column(name = "creation_date", nullable = false)
 	private Date creationDate;
 
-	@Column(name = "creation_by", nullable = false)
+	@Column(name = "creationBy", nullable = false)
 	private String creationBy; // naam
 
-	@Column(name = "lastedit_date", nullable = false)
+	@Column(name = "lastEditDate", nullable = false)
 	private Date lastEditDate;
 
-	@Column(name = "lastedit_by", nullable = false)
+	@Column(name = "lastEditBy", nullable = false)
 	private String lastEditBy; // naam
 
 	@Column(name = "active")
 	private boolean active = true;
 
-	@Column(name = "loketten_active")
-	private boolean lokettenActive = true;
+	@Column(name = "geodesksActive")
+	private boolean geodesksActive = true;
 
-	@Column(name = "limit_to_loket_territory")
-	private boolean limitToLoketTerritory;
+	private boolean limitToCreatorTerritory;
 
 	@Column(name = "limit_to_user_territory")
 	private boolean limitToUserTerritory;
 
-	@Column(name = "public")
-	private boolean publiek;
+	private boolean publicc;
 
-	@Column(name = "deleted")
 	private boolean deleted;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "tt_blueprint_mainlayer")
+	@JoinTable(name = "blueprint_mainlayer")
 	private Set<Layer> mainMapLayers = new HashSet<Layer>();
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "tt_blueprint_overviewlayer")
+	@JoinTable(name = "blueprint_overviewlayer")
 	private Set<Layer> overviewMapLayers = new HashSet<Layer>();
 
 	/**
 	 * The groups that can use this blueprint to create loketten
 	 */
 	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "tt_groups_blueprints", 
+	@JoinTable(name = "groups_blueprints", 
 		joinColumns = @JoinColumn(name = "blueprint_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
-//	@Fetch(FetchMode.JOIN)
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
 
@@ -190,11 +184,11 @@ public class Blueprint implements GeodeskInfo {
 	}
 
 	public boolean isLimitToCreatorTerritory() {
-		return limitToLoketTerritory;
+		return limitToCreatorTerritory;
 	}
 
-	public void setLimitToLoketTerritory(boolean limitToLoketTerritory) {
-		this.limitToLoketTerritory = limitToLoketTerritory;
+	public void setLimitToCreatorTerritory(boolean limitToCreatorTerritory) {
+		this.limitToCreatorTerritory = limitToCreatorTerritory;
 	}
 
 	public boolean isLimitToUserTerritory() {
@@ -206,11 +200,11 @@ public class Blueprint implements GeodeskInfo {
 	}
 
 	public boolean isPublic() {
-		return publiek;
+		return publicc;
 	}
 
 	public void setPublic(boolean publik) {
-		this.publiek = publik;
+		this.publicc = publik;
 	}
 
 	public List<Territory> getTerritories() {
@@ -229,12 +223,12 @@ public class Blueprint implements GeodeskInfo {
 		this.deleted = deleted;
 	}
 
-	public boolean isLokettenActive() {
-		return lokettenActive;
+	public boolean isGeodesksActive() {
+		return geodesksActive;
 	}
 
-	public void setLokettenActive(boolean lokettenActive) {
-		this.lokettenActive = lokettenActive;
+	public void setGeodesksActive(boolean geodesksActive) {
+		this.geodesksActive = geodesksActive;
 	}
 
 	public String getUserApplicationKey() {

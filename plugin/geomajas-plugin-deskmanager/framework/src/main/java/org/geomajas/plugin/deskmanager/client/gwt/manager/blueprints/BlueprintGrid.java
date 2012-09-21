@@ -48,7 +48,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 
 	public static final String FLD_PUBLIC = "public";
 
-	public static final String FLD_LOKETTENACTIVE = "lokettenActive";
+	public static final String FLD_GEODESKSACTIVE = "geodesksActive";
 
 	private ListGridRecord rollOverRecord;
 
@@ -90,13 +90,13 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 				+ " op deze blauwdruk.<br />Merk op dat dit geen invloed heeft op reeds bestaande"
 				+ " loketten gebaseerd op deze blauwdruk.");
 
-		ListGridField lokettenActive = new ListGridField(FLD_LOKETTENACTIVE, "Geodesks Actief");
-		lokettenActive.setType(ListGridFieldType.BOOLEAN);
-		lokettenActive.setWidth(135);
-		lokettenActive.setPrompt("Uit: betekent dat de loketten gebaseerd op deze blauwdruk"
+		ListGridField geodesksActive = new ListGridField(FLD_GEODESKSACTIVE, "Geodesks Actief");
+		geodesksActive.setType(ListGridFieldType.BOOLEAN);
+		geodesksActive.setWidth(135);
+		geodesksActive.setPrompt("Uit: betekent dat de loketten gebaseerd op deze blauwdruk"
 				+ " niet actief zijn (niet kunnen gebruikt worden).");
 
-		setFields(name, limitTerritory, publicUse, active, lokettenActive);
+		setFields(name, limitTerritory, publicUse, active, geodesksActive);
 		// initially sort on blueprint name
 		setSortField(0);
 		setSortDirection(SortDirection.ASCENDING);
@@ -189,7 +189,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 		record.setAttribute("limitToLoketTerritory", blueprint.isLimitToCreatorTerritory());
 		record.setAttribute(FLD_PUBLIC, blueprint.isPublic());
 		record.setAttribute("active", blueprint.isActive());
-		record.setAttribute(FLD_LOKETTENACTIVE, blueprint.isLokettenActive());
+		record.setAttribute(FLD_GEODESKSACTIVE, blueprint.isGeodesksActive());
 		return record;
 	}
 

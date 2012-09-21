@@ -33,10 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
 
 	@Autowired
-	private GeodeskIdService loketIdService;
+	private GeodeskIdService geodeskIdService;
 
 	@Autowired
-	private GeodeskService loketService;
+	private GeodeskService geodeskService;
 
 	@Autowired
 	private GeodeskConfigurationService configurationService;
@@ -52,8 +52,8 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
 		}
 
-		String id = loketIdService.getGeodeskIdentifier();
-		Geodesk loket = loketService.getGeodeskByPublicId(id); // this checks if loket is allowed
+		String id = geodeskIdService.getGeodeskIdentifier();
+		Geodesk loket = geodeskService.getGeodeskByPublicId(id); // this checks if loket is allowed
 
 		if (loket != null) {
 			ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);

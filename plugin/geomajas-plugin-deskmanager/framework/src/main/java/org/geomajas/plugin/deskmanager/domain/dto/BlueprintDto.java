@@ -46,7 +46,7 @@ public class BlueprintDto implements GeodeskInfo {
 
 	private boolean active = true;
 
-	private boolean lokettenActive = true;
+	private boolean geodesksActive = true;
 
 	private boolean limitToLoketTerritory;
 
@@ -176,12 +176,12 @@ public class BlueprintDto implements GeodeskInfo {
 		this.groups = groups;
 	}
 
-	public boolean isLokettenActive() {
-		return lokettenActive;
+	public boolean isGeodesksActive() {
+		return geodesksActive;
 	}
 
-	public void setLokettenActive(boolean lokettenActive) {
-		this.lokettenActive = lokettenActive;
+	public void setGeodesksActive(boolean geodesksActive) {
+		this.geodesksActive = geodesksActive;
 	}
 
 	/**

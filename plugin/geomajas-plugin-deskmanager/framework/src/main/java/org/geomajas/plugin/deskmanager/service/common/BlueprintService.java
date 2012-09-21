@@ -32,6 +32,8 @@ public interface BlueprintService {
 
 	List<Blueprint> getBlueprints() throws GeomajasSecurityException;
 
+	List<Blueprint> getBlueprintsInternal();
+
 	/**
 	 * Blueprints are never really deleted, but marked as deleted.
 	 */
@@ -39,4 +41,8 @@ public interface BlueprintService {
 
 	void saveOrUpdateBlueprint(Blueprint bp) throws GeomajasSecurityException;
 
+	/**
+	 * 
+	 */
+	void updateBluePrintFromUserApplication(Blueprint bp);
 }

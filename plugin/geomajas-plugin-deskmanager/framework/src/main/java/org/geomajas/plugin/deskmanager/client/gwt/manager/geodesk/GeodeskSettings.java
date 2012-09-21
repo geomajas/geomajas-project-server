@@ -55,13 +55,13 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 
 	private static final int FORMITEM_WIDTH = 300;
 
-	private GeodeskDto loket;
+	private GeodeskDto geodesk;
 
 	private DynamicForm form;
 
-	private TextItem loketName;
+	private TextItem geodeskName;
 
-	private FormItem loketId;
+	private FormItem geodeskId;
 
 	private SelectItem blueprints;
 
@@ -75,11 +75,11 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 
 	private CheckboxItem publiek;
 
-	private CheckboxItem limitToLoketTerritory;
+	private CheckboxItem limitToCreatorTerritory;
 
 	private CheckboxItem limitToUserTerritory;
 
-	private boolean loketIdValid;
+	private boolean geodeskIdValid;
 
 	private boolean containsNonPublicLayers;
 
@@ -97,32 +97,32 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 		form.setNumCols(4);
 		form.setDisabled(true);
 
-		loketName = new TextItem();
-		loketName.setTitle("Naam loket");
-		loketName.setRequired(true);
-		loketName.setWidth(FORMITEM_WIDTH);
-		loketName.setWrapTitle(false);
+		geodeskName = new TextItem();
+		geodeskName.setTitle("Naam geodesk");
+		geodeskName.setRequired(true);
+		geodeskName.setWidth(FORMITEM_WIDTH);
+		geodeskName.setWrapTitle(false);
 
 		blueprints = new SelectItem();
 		blueprints.setWidth(FORMITEM_WIDTH);
 		blueprints.setTitle("Blauwdruk");
 		blueprints.setDisabled(true); // ter info
-		blueprints.setTooltip("<nobr>De blauwbruk die als basis gebruikt wordt voor dit loket.</nobr>");
+		blueprints.setTooltip("<nobr>De blauwbruk die als basis gebruikt wordt voor dit geodesk.</nobr>");
 
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
 				.getRole())) {
-			loketId = new TextItem();
-			loketId.setRequired(true);
-			loketId.addChangedHandler(new ChangedHandler() {
+			geodeskId = new TextItem();
+			geodeskId.setRequired(true);
+			geodeskId.addChangedHandler(new ChangedHandler() {
 
 				public void onChanged(ChangedEvent event) {
-					String val = ((TextItem) loketId).getValueAsString();
+					String val = ((TextItem) geodeskId).getValueAsString();
 					if (val != null && !"".equals(val)) {
 						CommService.checkGeodeskIdExists(val, new DataCallback<Boolean>() {
 
 							public void execute(Boolean exists) {
-								loketIdValid = !exists;
-								loketId.validate();
+								geodeskIdValid = !exists;
+								geodeskId.validate();
 								if (exists) {
 									SC.warn("Geodesk Id bestaat reeds! Gelieve een ander Geodesk Id te kiezen.");
 								}
@@ -134,19 +134,19 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 			Validator v = new CustomValidator() {
 
 				protected boolean condition(Object value) {
-					return loketIdValid;
+					return geodeskIdValid;
 				}
 			};
 			v.setErrorMessage("Geodesk Id bestaat reeds!");
-			loketId.setValidators(v);
+			geodeskId.setValidators(v);
 		} else {
-			loketId = new StaticTextItem();
+			geodeskId = new StaticTextItem();
 		}
 
-		loketId.setTitle("Geodesk Id");
-		loketId.setWidth(FORMITEM_WIDTH);
-		loketId.setWrapTitle(false);
-		loketId.setTooltip("<nobr>Naam gebruikt in URL om loket op te roepen.</nobr>");
+		geodeskId.setTitle("Geodesk Id");
+		geodeskId.setWidth(FORMITEM_WIDTH);
+		geodeskId.setWrapTitle(false);
+		geodeskId.setTooltip("<nobr>Naam gebruikt in URL om geodesk op te roepen.</nobr>");
 
 		loketBeheerder = new StaticTextItem("loketBeheerder");
 		loketBeheerder.setTitle("Geodesk-Beheerder");
@@ -166,18 +166,18 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 		active = new CheckboxItem();
 		active.setTitle("Geodesk actief");
 		active.setWrapTitle(false);
-		active.setTooltip("Aan: loket kan geraadpleegd worden.");
+		active.setTooltip("Aan: geodesk kan geraadpleegd worden.");
 
 		publiek = new CheckboxItem();
 		publiek.setTitle("Publiek");
 		publiek.setWrapTitle(false);
-		publiek.setPrompt("Aan: loket kan geraadpleegd worden zonder aanmelden.<br />"
-				+ "Uit: loket kan enkel geraadpleegd worden na aanmelden (LB of VO).");
+		publiek.setPrompt("Aan: geodesk kan geraadpleegd worden zonder aanmelden.<br />"
+				+ "Uit: geodesk kan enkel geraadpleegd worden na aanmelden (LB of VO).");
 		publiek.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
 				if (containsNonPublicLayers) {
-					SC.warn("U kan dit loket niet publiek maken daar deze niet publieke lagen bevat!");
+					SC.warn("U kan dit geodesk niet publiek maken daar deze niet publieke lagen bevat!");
 					event.cancel();
 				}
 			}
@@ -186,12 +186,12 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 
 			public void onChanged(ChangedEvent event) {
 				boolean val = publiek.getValueAsBoolean();
-				if (loket.getBlueprint().isLimitToCreatorTerritory()) {
-					limitToLoketTerritory.setDisabled(true);
+				if (geodesk.getBlueprint().isLimitToCreatorTerritory()) {
+					limitToCreatorTerritory.setDisabled(true);
 				} else {
-					limitToLoketTerritory.setDisabled(!val);
+					limitToCreatorTerritory.setDisabled(!val);
 				}
-				if (loket.getBlueprint().isLimitToUserTerritory()) {
+				if (geodesk.getBlueprint().isLimitToUserTerritory()) {
 					limitToUserTerritory.setDisabled(true);
 				} else {
 					limitToUserTerritory.setDisabled(val);
@@ -199,23 +199,23 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 			}
 		});
 
-		limitToLoketTerritory = new CheckboxItem();
-		limitToLoketTerritory.setTitle("Beperk tot grondgebied Loketbeheerder");
-		limitToLoketTerritory.setWrapTitle(false);
-		limitToLoketTerritory
+		limitToCreatorTerritory = new CheckboxItem();
+		limitToCreatorTerritory.setTitle("Beperk tot grondgebied Loketbeheerder");
+		limitToCreatorTerritory.setWrapTitle(false);
+		limitToCreatorTerritory
 				.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied" +
 						" van de entiteit loketbeheerder.<br />Uit: geen beveiliging.");
 
 		limitToUserTerritory = new CheckboxItem();
 		limitToUserTerritory.setTitle("Beperk tot grondgebied Gebruiker");
 		limitToUserTerritory.setWrapTitle(false);
-		limitToLoketTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied"
+		limitToCreatorTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied"
 				+ " van de entiteit gebruiker.<br />Uit: geen beveiliging.");
 
 		// ----------------------------------------------------------
 
 		form.setTitleOrientation(TitleOrientation.LEFT);
-		form.setFields(loketName, active, blueprints, publiek, loketId, limitToLoketTerritory, loketBeheerder,
+		form.setFields(geodeskName, active, blueprints, publiek, geodeskId, limitToCreatorTerritory, loketBeheerder,
 				limitToUserTerritory, lastEditBy, new SpacerItem(), lastEditDate, new SpacerItem());
 
 		VLayout group = new VLayout();
@@ -248,24 +248,24 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 
 	public void setGeodesk(GeodeskDto loket) {
 		form.clearValues();
-		this.loket = loket;
-		loketIdValid = true;
+		this.geodesk = loket;
+		geodeskIdValid = true;
 		if (loket != null) {
-			loketName.setValue(loket.getName());
-			loketId.setValue(loket.getLoketId());
+			geodeskName.setValue(loket.getName());
+			geodeskId.setValue(loket.getGeodeskId());
 			blueprints.setValue(loket.getBlueprint().getId());
 			loketBeheerder.setValue(loket.getCreationBy());
 			lastEditBy.setValue(loket.getLastEditBy());
 			lastEditDate.setValue(DATE_FORMATTER.format(loket.getLastEditDate()));
 			active.setValue(loket.isActive());
 			publiek.setValue(loket.isPublic());
-			limitToLoketTerritory.setValue(loket.isLimitToCreatorTerritory());
+			limitToCreatorTerritory.setValue(loket.isLimitToCreatorTerritory());
 			limitToUserTerritory.setValue(loket.isLimitToUserTerritory());
-			limitToLoketTerritory.setDisabled(!loket.isPublic());
+			limitToCreatorTerritory.setDisabled(!loket.isPublic());
 			limitToUserTerritory.setDisabled(loket.isPublic());
 
 			//FIXME
-//			containsNonPublicLayers = (loket.getLayerTree() == null ? false : loket.getLayerTree()
+//			containsNonPublicLayers = (geodesk.getLayerTree() == null ? false : geodesk.getLayerTree()
 //					.containsNonPublicLayers());
 
 			// -- constraints from blueprint --
@@ -273,10 +273,10 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 			if (!limitToUserTerritory.isDisabled()) {
 				limitToUserTerritory.setDisabled(loket.getBlueprint().isLimitToUserTerritory());
 			}
-			if (!limitToLoketTerritory.isDisabled()) {
-				limitToLoketTerritory.setDisabled(loket.getBlueprint().isLimitToCreatorTerritory());
+			if (!limitToCreatorTerritory.isDisabled()) {
+				limitToCreatorTerritory.setDisabled(loket.getBlueprint().isLimitToCreatorTerritory());
 			}
-			if (!loket.getBlueprint().isLokettenActive()) {
+			if (!loket.getBlueprint().isGeodesksActive()) {
 				active.setDisabled(true);
 				active.setHint("<nobr> Geodesk gedesactiveerd door blauwdruk.</nobr>");
 			} else {
@@ -295,18 +295,18 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 
 	public boolean onSaveClick(ClickEvent event) {
 		if (validate()) {
-			loket.setName(loketName.getValueAsString());
-			if (loketId instanceof TextItem) {
-				loket.setLoketId(((TextItem) loketId).getValueAsString());
+			geodesk.setName(geodeskName.getValueAsString());
+			if (geodeskId instanceof TextItem) {
+				geodesk.setGeodeskId(((TextItem) geodeskId).getValueAsString());
 			}
-			loket.setActive(active.getValueAsBoolean());
-			loket.setPublic(publiek.getValueAsBoolean());
-			if (loket.isPublic()) {
-				loket.setLimitToLoketTerritory(limitToLoketTerritory.getValueAsBoolean());
+			geodesk.setActive(active.getValueAsBoolean());
+			geodesk.setPublic(publiek.getValueAsBoolean());
+			if (geodesk.isPublic()) {
+				geodesk.setLimitToLoketTerritory(limitToCreatorTerritory.getValueAsBoolean());
 			} else {
-				loket.setLimitToUserTerritory(limitToUserTerritory.getValueAsBoolean());
+				geodesk.setLimitToUserTerritory(limitToUserTerritory.getValueAsBoolean());
 			}
-			CommService.saveGeodesk(loket, SaveGeodeskRequest.SAVE_SETTINGS);
+			CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_SETTINGS);
 			form.setDisabled(true);
 			return true;
 		} else {
@@ -315,7 +315,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 	}
 
 	public boolean onCancelClick(ClickEvent event) {
-		setGeodesk(loket);
+		setGeodesk(geodesk);
 		form.setDisabled(true);
 		return true;
 	}

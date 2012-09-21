@@ -27,7 +27,9 @@ public class LayerDto implements Serializable {
 	
 	private ClientLayerInfo layerInfo;
 
-	private String clientLayerId;
+	private ClientLayerInfo refLayerInfo;
+	
+	private String clientLayerIdReference;
 
 	/**
 	 * @param layerModel the layerModel to set
@@ -58,17 +60,17 @@ public class LayerDto implements Serializable {
 	}
 
 	/**
-	 * @param clientLayerId the clientLayerId to set
+	 * @param clientLayerIdReference the clientLayerIdReference to set
 	 */
-	public void setClientLayerId(String clientLayerId) {
-		this.clientLayerId = clientLayerId;
+	public void setClientLayerIdReference(String clientLayerId) {
+		this.clientLayerIdReference = clientLayerId;
 	}
 
 	/**
-	 * @return the clientLayerId
+	 * @return the clientLayerIdReference
 	 */
-	public String getClientLayerId() {
-		return clientLayerId;
+	public String getClientLayerIdReference() {
+		return clientLayerIdReference;
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +80,7 @@ public class LayerDto implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((clientLayerId == null) ? 0 : clientLayerId.hashCode());
+		result = prime * result + ((clientLayerIdReference == null) ? 0 : clientLayerIdReference.hashCode());
 		return result;
 	}
 
@@ -97,14 +99,28 @@ public class LayerDto implements Serializable {
 			return false;
 		}
 		LayerDto other = (LayerDto) obj;
-		if (clientLayerId == null) {
-			if (other.clientLayerId != null) {
+		if (clientLayerIdReference == null) {
+			if (other.clientLayerIdReference != null) {
 				return false;
 			}
-		} else if (!clientLayerId.equals(other.clientLayerId)) {
+		} else if (!clientLayerIdReference.equals(other.clientLayerIdReference)) {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * @param refLayerInfo the refLayerInfo to set
+	 */
+	public void setReferencedLayerInfo(ClientLayerInfo refLayerInfo) {
+		this.refLayerInfo = refLayerInfo;
+	}
+
+	/**
+	 * @return the refLayerInfo
+	 */
+	public ClientLayerInfo getReferencedLayerInfo() {
+		return refLayerInfo;
 	}
 	
 	

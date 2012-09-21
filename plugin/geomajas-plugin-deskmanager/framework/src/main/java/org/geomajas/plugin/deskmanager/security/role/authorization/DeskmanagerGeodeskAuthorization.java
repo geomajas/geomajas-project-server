@@ -29,6 +29,6 @@ public interface DeskmanagerGeodeskAuthorization {
 	 * @param publicGeodeskId the public id of the geodesk.
 	 * @return true if the user may use the geodesk.
 	 */
-	boolean isLoketUseAllowed(String publicGeodeskId);
+	boolean isGeodeskUseAllowed(String publicGeodeskId);
 
 }

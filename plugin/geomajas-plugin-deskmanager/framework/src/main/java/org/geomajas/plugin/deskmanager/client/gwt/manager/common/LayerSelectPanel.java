@@ -13,6 +13,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 import com.smartgwt.client.widgets.Img;
@@ -39,8 +40,6 @@ public class LayerSelectPanel extends HLayout {
 			+ "- Gebruik het contextmenu om mappen toe te voegen of te verwijderen.<br />"
 			+ "- Gebruik de \"Roll-over\"-actie (knopje rechts van een item) om het item te wijzigen.";
 
-	private static final String HELP_ICON = "osgeo/help.png";
-
 	private LayerListGrid left;
 
 	private LayerListGrid right;
@@ -50,7 +49,7 @@ public class LayerSelectPanel extends HLayout {
 
 		left = new LayerListGrid("Beschikbare lagen", false);
 		right = new LayerListGrid("Geselecteerde lagen", true);
-		// right.setSourceListGrid(left);
+		right.setEmptyMessage("Geen lagen geselecteerd, de default configuratie wordt gebruikt.");
 
 		TransferImgButton add = new TransferImgButton(TransferImgButton.RIGHT);
 		add.addClickHandler(new ClickHandler() {
@@ -68,7 +67,7 @@ public class LayerSelectPanel extends HLayout {
 			}
 		});
 
-		Img help = new Img(HELP_ICON, 24, 24);
+		Img help = new Img(DeskmanagerIcon.HELP_ICON, 24, 24);
 		help.setTooltip(HELP_TEXT);
 		help.setHoverWidth(350);
 		help.setShowDisabled(false);
@@ -102,7 +101,11 @@ public class LayerSelectPanel extends HLayout {
 				} else {
 					if (selectedLayers == null || !selectedLayers.contains(layer)) {
 						ListGridRecord record = new ListGridRecord();
-						record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+						if (layer.getClientLayerInfo() != null) {
+							record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+						} else if (layer.getReferencedLayerInfo() != null) {
+							record.setAttribute(LayerListGrid.FLD_NAME, layer.getReferencedLayerInfo().getLabel());
+						}
 						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
 						record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
 						left.addData(record);
@@ -113,7 +116,11 @@ public class LayerSelectPanel extends HLayout {
 		if (selectedLayers != null) {
 			for (LayerDto layer : selectedLayers) {
 				ListGridRecord record = new ListGridRecord();
-				record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+				if (layer.getClientLayerInfo() != null) {
+					record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+				} else if (layer.getReferencedLayerInfo() != null) {
+					record.setAttribute(LayerListGrid.FLD_NAME, layer.getReferencedLayerInfo().getLabel());
+				}
 				record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
 				record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
 				right.addData(record);

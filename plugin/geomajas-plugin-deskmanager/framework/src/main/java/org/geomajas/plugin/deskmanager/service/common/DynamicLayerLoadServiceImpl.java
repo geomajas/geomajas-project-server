@@ -51,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kristof Heirwegh
  */
 @Component
-@Transactional(readOnly = true)
+@Transactional(readOnly=true)
 public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 	private final Logger log = LoggerFactory.getLogger(DynamicLayerLoadServiceImpl.class);
@@ -82,11 +82,12 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 	@Autowired
 	private BeanDefinitionWriterService bser;
-
+	
 	@PostConstruct
 	public void onApplicationStart() {
 		updateSystemLayers();
 		loadDynamicLayers();
+		log.info("Adding default layers to blueprints");
 	}
 
 	// -------------------------------------------------
@@ -141,7 +142,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 			log.warn("Error loading dynamic layers: " + e.getMessage());
 		}
 	}
-
+	
 	// ---- Load -----------------------------------------------
 
 	/**

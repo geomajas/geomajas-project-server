@@ -49,10 +49,15 @@ public class GeodeskServiceImpl implements GeodeskService {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private BlueprintService blueprintService;
+	
 	public Geodesk getLoketById(String uuid) throws GeomajasSecurityException {
 		Geodesk l = (Geodesk) factory.getCurrentSession().get(Geodesk.class, uuid);
 		if (l != null) {
 			if (((DeskmanagerSecurityContext) securityContext).readAllowed(l)) {
+				//make sure layers are set
+				blueprintService.updateBluePrintFromUserApplication(l.getBlueprint());
 				return l;
 			} else {
 				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Inlezen Geodesk",
@@ -65,9 +70,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 
 	public boolean loketExists(String publicId) {
 		Query q = factory.getCurrentSession().createQuery(
-				"select id from Geodesk l WHERE l.loketId = :id AND " + "l.deleted = false" // AND " +
-						// "l.active = true AND " +
-						// "l.blueprint.lokettenActive = true"
+				"select id from Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false"
 		);
 		q.setParameter("id", publicId);
 		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
@@ -77,7 +80,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	}
 
 	public boolean geodeskIdExists(String publicId) {
-		Query q = factory.getCurrentSession().createQuery("select id from Geodesk l WHERE l.loketId = :id");
+		Query q = factory.getCurrentSession().createQuery("select id from Geodesk l WHERE l.geodeskId = :id");
 		q.setParameter("id", publicId);
 		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		Object result = q.uniqueResult();
@@ -89,10 +92,10 @@ public class GeodeskServiceImpl implements GeodeskService {
 	 */
 	public Geodesk getGeodeskByPublicId(String id) throws GeomajasSecurityException {
 		if (loketExists(id)) {
-			if (((DeskmanagerSecurityContext) securityContext).isLoketUseAllowed(id)) {
+			if (((DeskmanagerSecurityContext) securityContext).isGeodeskUseAllowed(id)) {
 				Query q = factory.getCurrentSession().createQuery(
-						"FROM Geodesk l WHERE l.loketId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
-								+ "l.blueprint.lokettenActive = true");
+						"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
+								+ "l.blueprint.geodesksActive = true");
 				q.setParameter("id", id);
 				q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 				Geodesk l = (Geodesk) q.uniqueResult();
@@ -112,8 +115,8 @@ public class GeodeskServiceImpl implements GeodeskService {
 	public Geodesk getLoketByPublicIdUnsafe(String id) {
 		if (loketExists(id)) {
 			Query q = factory.getCurrentSession().createQuery(
-					"FROM Geodesk l WHERE l.loketId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
-							+ "l.blueprint.lokettenActive = true");
+					"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
+							+ "l.blueprint.geodesksActive = true");
 			q.setParameter("id", id);
 			q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 			return (Geodesk) q.uniqueResult();
@@ -166,7 +169,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	}
 
 	public String getLoketNameByPublicId(String id) throws GeomajasSecurityException {
-		Query q = factory.getCurrentSession().createQuery("SELECT name FROM Geodesk l WHERE l.loketId = :id");
+		Query q = factory.getCurrentSession().createQuery("SELECT name FROM Geodesk l WHERE l.geodeskId = :id");
 		q.setParameter("id", id);
 		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		String name = (String) q.uniqueResult();
@@ -176,7 +179,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	/**
 	 * group can be null, in which case the loket will need to be public.
 	 */
-	public boolean isLoketUseAllowed(String id, Role role, Territory group) {
+	public boolean isGeodeskUseAllowed(String id, Role role, Territory group) {
 		Query q;
 		switch (role) {
 			case ADMINISTRATOR:
@@ -187,13 +190,13 @@ public class GeodeskServiceImpl implements GeodeskService {
 			case EDITING_USER:
 				q = factory.getCurrentSession().createQuery(
 						"select l.id from Geodesk l join l.groups as g with g.code like :code WHERE"
-								+ " l.loketId = :id AND l.deleted = false");
+								+ " l.geodeskId = :id AND l.deleted = false");
 				q.setParameter("code", group.getCode());
 				break;
 			case GUEST:
 			default:
 				q = factory.getCurrentSession().createQuery(
-						"select id from Geodesk l WHERE l.loketId = :id AND " + "l.publiek = true AND "
+						"select id from Geodesk l WHERE l.geodeskId = :id AND " + "l.publicc = true AND "
 								+ "l.deleted = false");
 				break;
 		}
@@ -203,7 +206,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		return (result != null);
 	}
 
-	public boolean isLoketReadAllowed(Geodesk loket, Role role, Territory group) {
+	public boolean isGeodeskReadAllowed(Geodesk loket, Role role, Territory group) {
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;
@@ -213,7 +216,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		return false;
 	}
 
-	public boolean isLoketSaveAllowed(Geodesk loket, Role role, Territory group) {
+	public boolean isGeodeskSaveAllowed(Geodesk loket, Role role, Territory group) {
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;
@@ -223,7 +226,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		return false;
 	}
 
-	public boolean isLoketDeleteAllowed(Geodesk loket, Role role, Territory group) {
+	public boolean isGeodeskDeleteAllowed(Geodesk loket, Role role, Territory group) {
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;

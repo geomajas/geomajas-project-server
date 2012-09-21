@@ -13,6 +13,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
 
 import com.smartgwt.client.types.TreeModelType;
@@ -33,14 +34,13 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class LayerTreeSelectPanel extends HLayout {
 
+	//FIXME: i18n
 	private static final String HELP_TEXT = "<b>Beide lijsten:</b><br />"
 			+ "- Gebruik \"Drag &amp; Drop\" om items toe te voegen of te verwijderen, "
 			+ "of selecteer een item en gebruik een van de pijltjes om het item toe te voegen of te verwijderen.<br />"
 			+ "<b>Lijst Geselecteerde lagen:</b><br />" + "- Versleep items om de volgorde te wijzigen.<br />"
 			+ "- Gebruik het contextmenu om mappen toe te voegen of te verwijderen.<br />"
 			+ "- Gebruik de \"Roll-over\"-actie (knopje rechts van een item) om het item te wijzigen.";
-
-	private static final String HELP_ICON = "osgeo/help.png";
 
 	private LayerTreeNodeDto source;
 
@@ -81,7 +81,7 @@ public class LayerTreeSelectPanel extends HLayout {
 			}
 		});
 
-		Img help = new Img(HELP_ICON, 24, 24);
+		Img help = new Img(DeskmanagerIcon.HELP_ICON, 24, 24);
 		help.setTooltip(HELP_TEXT);
 		help.setHoverWidth(350);
 		help.setShowDisabled(false);

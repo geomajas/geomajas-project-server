@@ -141,31 +141,31 @@ public class GeodeskHtmlCode extends VLayout {
 		});
 	}
 
-	public void setGeodesk(final GeodeskDto loket) {
+	public void setGeodesk(final GeodeskDto geodesk) {
 		if (initialized) {
-			if (loket == null) {
+			if (geodesk == null) {
 				showPublicFields();
 				loketPublicHtml.setValue("");
 				loketPublicUrl.setValue("");
 			} else {
-				String loketId = loket.getLoketId();
-				if (loket.isPublic()) {
+				String geodeskId = geodesk.getGeodeskId();
+				if (geodesk.isPublic()) {
 					showPublicFields();
-					loketPublicUrl.setValue(createUrl(loketUrlBasePublic, loketId));
-					loketPublicHtml.setValue(createHtml(loketUrlBasePublic, loketId));
+					loketPublicUrl.setValue(createUrl(loketUrlBasePublic, geodeskId));
+					loketPublicHtml.setValue(createHtml(loketUrlBasePublic, geodeskId));
 				} else {
 					showPrivateFields();
-					loketVOUrl.setValue(createUrl(loketUrlBaseVO, loketId));
-					loketLOUrl.setValue(createUrl(loketUrlBaseLO, loketId));
-					loketVOHtml.setValue(createHtml(loketUrlBaseVO, loketId));
-					loketLOHtml.setValue(createHtml(loketUrlBaseLO, loketId));
+					loketVOUrl.setValue(createUrl(loketUrlBaseVO, geodeskId));
+					loketLOUrl.setValue(createUrl(loketUrlBaseLO, geodeskId));
+					loketVOHtml.setValue(createHtml(loketUrlBaseVO, geodeskId));
+					loketLOHtml.setValue(createHtml(loketUrlBaseLO, geodeskId));
 				}
 			}
 		} else {
 			GWT.runAsync(new RunAsyncCallback() {
 
 				public void onSuccess() {
-					setGeodesk(loket);
+					setGeodesk(geodesk);
 				}
 
 				public void onFailure(Throwable reason) {

@@ -75,16 +75,16 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	// Following fields are serialized thus determine the security key (for caching)
 	private Profile profile;
 
-	private String loketId;
+	private String geodeskId;
 
 	private DeskmanagerAuthorizationInfo magdageoAuthorizationInfo;
 	// End of serialized fields
 
-	private transient Geodesk loket;
+	private transient Geodesk geodesk;
 
 	private transient ApplicationContext applicationContext;
 
-	private transient GeodeskService loketService;
+	private transient GeodeskService geodeskService;
 
 	private transient LayerModelService layerModelService;
 
@@ -97,9 +97,9 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	 */
 	public DeskmanagerAuthorization() { }
 
-	public DeskmanagerAuthorization(Profile profile, String loketId, ApplicationContext applicationContext) {
+	public DeskmanagerAuthorization(Profile profile, String geodeskId, ApplicationContext applicationContext) {
 		this.profile = profile;
-		this.loketId = loketId;
+		this.geodeskId = geodeskId;
 		wire(applicationContext);
 	}
 
@@ -116,14 +116,14 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		magdageoAuthorizationInfo = (DeskmanagerAuthorizationInfo) magdageoAuthorizationInfos.get(
 				profile.getRole().toString()).clone();
 
-		// Add loket specific authorization
-		if (loketId != null && isLoketUseAllowed(loketId)) {
+		// Add geodesk specific authorization
+		if (geodeskId != null && isGeodeskUseAllowed(geodeskId)) {
 			try {
 				log.debug("building magdageoauthorizationinfo");
-				Geodesk geodesk = loketService.getGeodeskByPublicId(loketId);
+				Geodesk geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
 				ClientApplicationInfo geodeskInfo = applicationContext.getBean(GeodeskConfigurationService.class)
 						.createGeodeskConfiguration(geodesk, true);
-				// Add all layers visible in this loket
+				// Add all layers visible in this geodesk
 				if (geodeskInfo != null) {
 					for (ClientMapInfo map : geodeskInfo.getMaps()) {
 						for (ClientLayerInfo layer : map.getLayers()) {
@@ -142,7 +142,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	public void wire(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
-		this.loketService = applicationContext.getBean(GeodeskService.class);
+		this.geodeskService = applicationContext.getBean(GeodeskService.class);
 		this.magdageoAuthorizationInfos = applicationContext.getBean("security.roles", Map.class);
 		this.layerModelService = applicationContext.getBean(LayerModelService.class);
 		this.geoService = applicationContext.getBean(GeoService.class);
@@ -262,20 +262,20 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// -- Geodesk --------------------------------------------------------
 
-	public boolean isLoketUseAllowed(String loketId) {
-		return loketService.isLoketUseAllowed(loketId, getRole(), getGroup());
+	public boolean isGeodeskUseAllowed(String geodeskId) {
+		return geodeskService.isGeodeskUseAllowed(geodeskId, getRole(), getGroup());
 	}
 
-	public boolean readAllowed(Geodesk l) {
-		return loketService.isLoketReadAllowed(l, getRole(), getGroup());
+	public boolean readAllowed(Geodesk geodesk) {
+		return geodeskService.isGeodeskReadAllowed(geodesk, getRole(), getGroup());
 	}
 
-	public boolean saveAllowed(Geodesk l) {
-		return loketService.isLoketSaveAllowed(l, getRole(), getGroup());
+	public boolean saveAllowed(Geodesk geodesk) {
+		return geodeskService.isGeodeskSaveAllowed(geodesk, getRole(), getGroup());
 	}
 
-	public boolean deleteAllowed(Geodesk l) {
-		return loketService.isLoketDeleteAllowed(l, getRole(), getGroup());
+	public boolean deleteAllowed(Geodesk geodesk) {
+		return geodeskService.isGeodeskDeleteAllowed(geodesk, getRole(), getGroup());
 	}
 
 	public Criterion getFilterLoketten() {
@@ -398,14 +398,14 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	// ------ Accessors ------------------
 
 	private Geodesk getLoket() {
-		if (loket == null) {
+		if (geodesk == null) {
 			try {
-				loket = loketService.getGeodeskByPublicId(loketId);
+				geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
 			} catch (GeomajasSecurityException e) {
 				e.printStackTrace();
 			}
 		}
-		return loket;
+		return geodesk;
 	}
 
 	public Role getRole() {

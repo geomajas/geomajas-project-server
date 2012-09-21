@@ -13,7 +13,11 @@ package org.geomajas.plugin.deskmanager.service.common;
 import java.util.Date;
 import java.util.List;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.security.GeomajasSecurityException;
@@ -40,6 +44,12 @@ public class BlueprintServiceImpl implements BlueprintService {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private LayerModelService layerModelService;
+
+	@Autowired
+	private List<UserApplicationInfo> userApplications;
+
 	public Blueprint getBlueprintById(String uuid) throws GeomajasSecurityException {
 		Blueprint bp = getBlueprintByIdInternal(uuid);
 		if (bp != null) {
@@ -55,7 +65,9 @@ public class BlueprintServiceImpl implements BlueprintService {
 	}
 
 	public Blueprint getBlueprintByIdInternal(String uuid) {
-		return (Blueprint) factory.getCurrentSession().get(Blueprint.class, uuid);
+		Blueprint bluePrint = (Blueprint) factory.getCurrentSession().get(Blueprint.class, uuid);
+		updateBluePrintFromUserApplication(bluePrint);
+		return bluePrint;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,6 +81,14 @@ public class BlueprintServiceImpl implements BlueprintService {
 			crit.createAlias("groups", "groups");
 			crit.add(filter);
 		}
+		return crit.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Blueprint> getBlueprintsInternal() {
+		Criteria crit = factory.getCurrentSession().createCriteria(Blueprint.class);
+		crit.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
+		crit.add(Restrictions.eq("deleted", false));
 		return crit.list();
 	}
 
@@ -101,4 +121,77 @@ public class BlueprintServiceImpl implements BlueprintService {
 					securityContext.getUserName());
 		}
 	}
+
+	@Transactional(rollbackFor = { Exception.class })
+	public void updateBluePrintFromUserApplication(Blueprint bluePrint) {
+		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {
+			updateBluePrintMainMapFromUserApplication(bluePrint);
+			factory.getCurrentSession().saveOrUpdate(bluePrint);
+		}
+		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {
+			updateBluePrintOverviewMapFromUserApplication(bluePrint);
+			factory.getCurrentSession().saveOrUpdate(bluePrint);
+		}
+	}
+	
+	/**
+	 * Updates blueprint that has no layers set so that the layers configured in the userApplication are inserted into
+	 * the database.
+	 * 
+	 */
+	@Transactional(rollbackFor = { Exception.class })
+	private void updateBluePrintMainMapFromUserApplication(Blueprint bp) {
+		UserApplicationInfo uai = getUserApplication(bp.getUserApplicationKey());
+		if (uai != null) {
+			ClientMapInfo mainMap = null;
+			for (ClientMapInfo map : uai.getApplicationInfo().getMaps()) {
+				if (GeodeskLayout.MAPMAIN_ID.equals(map.getId())) {
+					mainMap = map;
+				}
+			}
+			for (ClientLayerInfo clientLayer : mainMap.getLayers()) {
+				org.geomajas.plugin.deskmanager.domain.Layer layer = new org.geomajas.plugin.deskmanager.domain.Layer();
+				layer.setClientLayerIdReference(clientLayer.getId());
+				layer.setLayerModel(layerModelService.getLayerModelByClientLayerIdInternal(clientLayer.getId()));
+				bp.getMainMapLayers().add(layer);
+			}
+		}
+	}
+
+	/**
+	 * Updates blueprint that has no layers set so that the layers configured in the userApplication are inserted into
+	 * the database.
+	 * 
+	 */
+	@Transactional(rollbackFor = { Exception.class })
+	private void updateBluePrintOverviewMapFromUserApplication(Blueprint bp) {
+		UserApplicationInfo uai = getUserApplication(bp.getUserApplicationKey());
+		if (uai != null) {
+			ClientMapInfo overviewMap = null;
+			for (ClientMapInfo map : uai.getApplicationInfo().getMaps()) {
+				if (GeodeskLayout.MAPOVERVIEW_ID.equals(map.getId())) {
+					overviewMap = map;
+				}
+			}
+			for (ClientLayerInfo clientLayer : overviewMap.getLayers()) {
+				org.geomajas.plugin.deskmanager.domain.Layer layer = new org.geomajas.plugin.deskmanager.domain.Layer();
+				layer.setClientLayerIdReference(clientLayer.getId());
+				layer.setLayerModel(layerModelService.getLayerModelByClientLayerIdInternal(clientLayer.getId()));
+				bp.getOverviewMapLayers().add(layer);
+			}
+		}
+	}
+
+	private UserApplicationInfo getUserApplication(String key) {
+		if (key == null) {
+			return null;
+		}
+		for (UserApplicationInfo uai : userApplications) {
+			if (key.equals(uai.getKey())) {
+				return uai;
+			}
+		}
+		return null;
+	}
+
 }
