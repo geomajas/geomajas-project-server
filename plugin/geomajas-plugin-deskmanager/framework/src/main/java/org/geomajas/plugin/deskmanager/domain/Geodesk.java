@@ -33,7 +33,6 @@ import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
-import javax.persistence.UniqueConstraint;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskInfo;
@@ -58,7 +57,7 @@ public class Geodesk implements GeodeskInfo {
 	private String id; // UUID
 
 	
-	@Column(name = "geodeskId", unique=true)
+	@Column(name = "geodeskId", unique = true)
 	private String geodeskId; // UUID
 
 	@Column(name = "name", nullable = false)
