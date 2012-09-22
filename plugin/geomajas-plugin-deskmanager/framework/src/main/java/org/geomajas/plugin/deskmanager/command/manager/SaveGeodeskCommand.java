@@ -26,7 +26,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
-import org.geomajas.plugin.deskmanager.service.common.GroupService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.geomajas.security.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 	private GeodeskService loketService;
 
 	@Autowired
-	private GroupService groupService;
+	private TerritoryService groupService;
 
 	@Autowired
 	private SecurityContext securityContext;

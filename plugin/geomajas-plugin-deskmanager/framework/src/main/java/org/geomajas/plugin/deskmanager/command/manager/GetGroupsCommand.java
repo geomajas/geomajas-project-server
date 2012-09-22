@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetGroupsResponse;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
-import org.geomajas.plugin.deskmanager.service.common.GroupService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GetGroupsCommand implements Command<GetGroupsRequest, GetGroupsResponse> {
 
 	@Autowired
-	private GroupService groupService;
+	private TerritoryService groupService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -43,7 +43,7 @@ public class GetGroupsCommand implements Command<GetGroupsRequest, GetGroupsResp
 	public void execute(GetGroupsRequest request, GetGroupsResponse response) throws Exception {
 		List<TerritoryDto> groups = new ArrayList<TerritoryDto>();
 		response.setGroups(groups);
-		List<Territory> gs = groupService.getGroups();
+		List<Territory> gs = groupService.getTerritories();
 
 		for (Territory g : gs) {
 			groups.add(converterService.toDto(g, false, false));

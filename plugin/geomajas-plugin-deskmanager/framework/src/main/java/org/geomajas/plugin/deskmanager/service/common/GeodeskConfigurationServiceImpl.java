@@ -164,6 +164,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			return appInfo;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.warn("Fout bij aanmaken configuratie: " + e.getMessage());
 			return null;
 		}

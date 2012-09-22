@@ -18,7 +18,7 @@ import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.service.common.GroupService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -31,7 +31,7 @@ public class StubProfileService implements ProfileService {
 
 	
 	@Autowired
-	private GroupService groupService;
+	private TerritoryService groupService;
 	
 	public List<Profile> getProfiles() {
 		ArrayList<Profile> profiles = new ArrayList<Profile>();

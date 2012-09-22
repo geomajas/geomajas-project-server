@@ -33,6 +33,7 @@ import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
+import javax.persistence.UniqueConstraint;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskInfo;
@@ -56,7 +57,8 @@ public class Geodesk implements GeodeskInfo {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String id; // UUID
 
-	@Column(name = "geodeskId")
+	
+	@Column(name = "geodeskId", unique=true)
 	private String geodeskId; // UUID
 
 	@Column(name = "name", nullable = false)
@@ -101,12 +103,12 @@ public class Geodesk implements GeodeskInfo {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "tt_geodesk_mainlayer")
+	@JoinTable(name = "geodesk_mainlayer")
 	private Set<Layer> mainMapLayers = new HashSet<Layer>();
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "tt_geodesk_overviewlayer")
+	@JoinTable(name = "geodesk_overviewlayer")
 	private Set<Layer> overviewMapLayers = new HashSet<Layer>();
 
 	@ElementCollection(fetch = FetchType.EAGER)

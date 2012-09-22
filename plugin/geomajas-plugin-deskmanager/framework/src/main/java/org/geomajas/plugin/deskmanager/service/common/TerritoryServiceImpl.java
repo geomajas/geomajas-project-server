@@ -27,16 +27,16 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Kristof Heirwegh
  */
-@Service("GroupService")
+@Service("TerritoryService")
 @Repository
 @Transactional(rollbackFor = { Exception.class })
-public class GroupServiceImpl implements GroupService {
+public class TerritoryServiceImpl implements TerritoryService {
 
 	@Autowired
 	private SessionFactory factory;
 
 	@SuppressWarnings("unchecked")
-	public List<Territory> getGroups() {
+	public List<Territory> getTerritories() {
 		Criteria critter = factory.getCurrentSession().createCriteria(Territory.class);
 		critter.createAlias("category", "cat");
 		critter.addOrder(Order.asc("cat.description"));
@@ -55,8 +55,8 @@ public class GroupServiceImpl implements GroupService {
 				.add(Restrictions.eq("code", code)).uniqueResult();
 	}
 
-	public void saveOrUpdateGroup(Territory group) {
-		factory.getCurrentSession().saveOrUpdate(group);
+	public void saveOrUpdateTerritory(Territory territory) {
+		factory.getCurrentSession().saveOrUpdate(territory);
 	}
 
 	public void saveOrUpdateCategory(TerritoryCategory category) {

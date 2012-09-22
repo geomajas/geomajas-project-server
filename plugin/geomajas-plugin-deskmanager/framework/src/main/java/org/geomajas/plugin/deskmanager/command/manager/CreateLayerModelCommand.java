@@ -21,7 +21,7 @@ import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.DynamicLayerLoadService;
-import org.geomajas.plugin.deskmanager.service.common.GroupService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.geomajas.security.SecurityContext;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 	private LayerModelService layerModelService;
 
 	@Autowired
-	private GroupService groupService;
+	private TerritoryService groupService;
 
 	@Autowired
 	private SecurityContext securityContext;

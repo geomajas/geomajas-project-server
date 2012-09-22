@@ -20,7 +20,7 @@ import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
-import org.geomajas.plugin.deskmanager.service.common.GroupService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 	private BlueprintService blueprintService;
 
 	@Autowired
-	private GroupService groupService;
+	private TerritoryService groupService;
 
 	public void execute(SaveBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {

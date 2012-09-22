@@ -22,15 +22,15 @@ import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
  * 
  * @author Kristof Heirwegh
  */
-public interface GroupService {
+public interface TerritoryService {
 
-	List<Territory> getGroups();
+	List<Territory> getTerritories();
 
 	Territory getById(long id);
 
 	Territory getByCode(String code);
 
-	void saveOrUpdateGroup(Territory group);
+	void saveOrUpdateTerritory(Territory group);
 
 	void saveOrUpdateCategory(TerritoryCategory category);
 
