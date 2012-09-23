@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.advancedviews.configuration.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -31,7 +32,7 @@ public class ThemesInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 100L;
 
-	private List<ViewConfig> themeConfigs;
+	private List<ViewConfig> themeConfigs = new ArrayList<ViewConfig>();
 
 	private boolean hideOtherlayers; // false
 
