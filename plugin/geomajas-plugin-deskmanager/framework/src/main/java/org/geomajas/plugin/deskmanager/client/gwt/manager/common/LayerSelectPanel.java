@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
@@ -95,7 +96,10 @@ public class LayerSelectPanel extends HLayout {
 	public void setValues(List<LayerDto> availableLayers, List<LayerDto> selectedLayers, boolean isPublic) {
 		clearValues();
 		if (availableLayers != null) {
-			for (LayerDto layer : availableLayers) {
+			//Reverse order
+			ListIterator<LayerDto> li = availableLayers.listIterator(availableLayers.size());
+			while (li.hasPrevious()) {
+				LayerDto layer = li.previous();
 				if (isPublic && !layer.getLayerModel().isPublic()) {
 					// Ignore layer
 				} else {
@@ -114,7 +118,10 @@ public class LayerSelectPanel extends HLayout {
 			}
 		}
 		if (selectedLayers != null) {
-			for (LayerDto layer : selectedLayers) {
+			//Reverse order
+			ListIterator<LayerDto> li = selectedLayers.listIterator(selectedLayers.size());
+			while (li.hasPrevious()) {
+				LayerDto layer = li.previous();
 				ListGridRecord record = new ListGridRecord();
 				if (layer.getClientLayerInfo() != null) {
 					record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
