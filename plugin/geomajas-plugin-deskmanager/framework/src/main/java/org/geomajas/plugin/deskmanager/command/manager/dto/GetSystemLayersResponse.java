@@ -10,10 +10,11 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.plugin.deskmanager.command.manager.GetSystemLayersCommand;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 
@@ -27,19 +28,19 @@ public class GetSystemLayersResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;
 	
-	private Set<LayerDto> layers = new HashSet<LayerDto>();
+	private List<LayerDto> layers = new ArrayList<LayerDto>();
 	
 	/**
 	 * @param layers the layers to set
 	 */
-	public void setLayers(Set<LayerDto> layers) {
+	public void setLayers(List<LayerDto> layers) {
 		this.layers = layers;
 	}
 
 	/**
 	 * @return the layers
 	 */
-	public Set<LayerDto> getLayers() {
+	public List<LayerDto> getLayers() {
 		return layers;
 	}
 }

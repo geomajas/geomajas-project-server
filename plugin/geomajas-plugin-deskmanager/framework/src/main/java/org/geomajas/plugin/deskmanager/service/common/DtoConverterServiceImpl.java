@@ -13,7 +13,6 @@ package org.geomajas.plugin.deskmanager.service.common;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -95,13 +94,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				territories.add(fromDto(gDto, false, false));
 			}
 		}
-		Set<Layer> mainLayers = bp.getMainMapLayers();
+		List<Layer> mainLayers = bp.getMainMapLayers();
 		if (dto.getMainMapLayers() != null) {
 			for (LayerDto layer : dto.getMainMapLayers()) {
 				mainLayers.add(fromDto(layer));
 			}
 		}
-		Set<Layer> overviewLayers = bp.getOverviewMapLayers();
+		List<Layer> overviewLayers = bp.getOverviewMapLayers();
 		if (dto.getOverviewMapLayers() != null) {
 			for (LayerDto layer : dto.getOverviewMapLayers()) {
 				overviewLayers.add(fromDto(layer));
@@ -386,13 +385,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				mails.add(fromDto(mad));
 			}
 		}
-		Set<Layer> mainLayers = l.getMainMapLayers();
+		List<Layer> mainLayers = l.getMainMapLayers();
 		if (dto.getMainMapLayers() != null) {
 			for (LayerDto layer : dto.getMainMapLayers()) {
 				mainLayers.add(fromDto(layer));
 			}
 		}
-		Set<Layer> overviewLayers = l.getOverviewMapLayers();
+		List<Layer> overviewLayers = l.getOverviewMapLayers();
 		if (dto.getOverviewMapLayers() != null) {
 			for (LayerDto layer : dto.getOverviewMapLayers()) {
 				overviewLayers.add(fromDto(layer));

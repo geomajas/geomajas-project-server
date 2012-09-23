@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
@@ -92,7 +92,7 @@ public class LayerSelectPanel extends HLayout {
 		right.removeSelectedData();
 	}
 
-	public void setValues(Set<LayerDto> availableLayers, Set<LayerDto> selectedLayers, boolean isPublic) {
+	public void setValues(List<LayerDto> availableLayers, List<LayerDto> selectedLayers, boolean isPublic) {
 		clearValues();
 		if (availableLayers != null) {
 			for (LayerDto layer : availableLayers) {
@@ -128,10 +128,13 @@ public class LayerSelectPanel extends HLayout {
 		}
 	}
 
-	public Set<LayerDto> getValues() {
-		Set<LayerDto> selectedLayers = new HashSet<LayerDto>();
+	public List<LayerDto> getValues() {
+		List<LayerDto> selectedLayers = new ArrayList<LayerDto>();
 		for (ListGridRecord record : right.getRecords()) {
-			selectedLayers.add((LayerDto) record.getAttributeAsObject(LayerListGrid.FLD_OBJECT));
+			LayerDto layer = (LayerDto) record.getAttributeAsObject(LayerListGrid.FLD_OBJECT);
+			if (!selectedLayers.contains(layer)) {
+				selectedLayers.add(layer);
+			}
 		}
 		return selectedLayers;
 	}

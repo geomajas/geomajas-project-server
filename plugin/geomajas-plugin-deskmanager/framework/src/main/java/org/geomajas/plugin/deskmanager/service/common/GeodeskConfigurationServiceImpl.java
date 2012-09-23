@@ -11,10 +11,8 @@
 package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.command.configuration.GetMapConfigurationCommand;
 import org.geomajas.configuration.client.ClientApplicationInfo;
@@ -192,8 +190,8 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		return loketConfig;
 	}
 
-	private Set<ClientLayerInfo> addLayers(Set<org.geomajas.plugin.deskmanager.domain.Layer> layers) {
-		Set<ClientLayerInfo> clientLayers = new HashSet<ClientLayerInfo>();
+	private List<ClientLayerInfo> addLayers(List<org.geomajas.plugin.deskmanager.domain.Layer> layers) {
+		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (org.geomajas.plugin.deskmanager.domain.Layer layer : layers) {
 			if (layer.getClientLayerInfo() != null) {
 				clientLayers.add(layer.getClientLayerInfo());

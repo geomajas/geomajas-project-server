@@ -13,10 +13,8 @@ package org.geomajas.plugin.deskmanager.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -95,12 +93,12 @@ public class Blueprint implements GeodeskInfo {
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
 	@JoinTable(name = "blueprint_mainlayer")
-	private Set<Layer> mainMapLayers = new HashSet<Layer>();
+	private List<Layer> mainMapLayers = new ArrayList<Layer>();
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "sortorder")
 	@JoinTable(name = "blueprint_overviewlayer")
-	private Set<Layer> overviewMapLayers = new HashSet<Layer>();
+	private List<Layer> overviewMapLayers = new ArrayList<Layer>();
 
 	/**
 	 * The groups that can use this blueprint to create loketten
@@ -284,28 +282,28 @@ public class Blueprint implements GeodeskInfo {
 	/**
 	 * @param mainMapLayers the mainMapLayers to set
 	 */
-	public void setMainMapLayers(Set<Layer> layers) {
+	public void setMainMapLayers(List<Layer> layers) {
 		this.mainMapLayers = layers;
 	}
 
 	/**
 	 * @return the mainMapLayers
 	 */
-	public Set<Layer> getMainMapLayers() {
+	public List<Layer> getMainMapLayers() {
 		return mainMapLayers;
 	}
 	/**
 	 * @param mainMapLayers the mainMapLayers to set
 	 */
 
-	public void setOverviewMapLayers(Set<Layer> layers) {
+	public void setOverviewMapLayers(List<Layer> layers) {
 		this.overviewMapLayers = layers;
 	}
 
 	/**
 	 * @return the mainMapLayers
 	 */
-	public Set<Layer> getOverviewMapLayers() {
+	public List<Layer> getOverviewMapLayers() {
 		return overviewMapLayers;
 	}
 }

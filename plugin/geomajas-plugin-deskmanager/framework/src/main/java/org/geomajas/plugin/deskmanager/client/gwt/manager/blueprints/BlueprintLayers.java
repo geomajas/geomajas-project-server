@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
@@ -78,7 +80,7 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
-		Set<LayerDto> layers = layerSelect.getValues();
+		List<LayerDto> layers = layerSelect.getValues();
 		blueprint.setMainMapLayers(layers);
 		
 		layerSelect.setDisabled(true);

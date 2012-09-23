@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
-import java.util.Set;
+import java.util.List;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
@@ -79,7 +79,7 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
-		Set<LayerDto> layers = layerSelect.getValues();
+		List<LayerDto> layers = layerSelect.getValues();
 		geodesk.setMainMapLayers(layers);
 		
 		layerSelect.setDisabled(true);
