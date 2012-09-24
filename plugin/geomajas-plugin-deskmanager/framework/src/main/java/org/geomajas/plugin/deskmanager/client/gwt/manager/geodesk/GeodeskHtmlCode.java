@@ -29,10 +29,11 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * @author Kristof Heirwegh FIXME: magdageo
+ * FIXME: must be moved to Magdageo specific project.
+ * 
+ * @author Kristof Heirwegh 
  */
 public class GeodeskHtmlCode extends VLayout implements GeodeskSelectionHandler {
-
 	private static final String PRE_HTML = "<iframe src=\"";
 
 	private static final String POST_HTML = "?type=static&i=yes\" width=\"1100\" height=\"650\" frameborder=\"0\""

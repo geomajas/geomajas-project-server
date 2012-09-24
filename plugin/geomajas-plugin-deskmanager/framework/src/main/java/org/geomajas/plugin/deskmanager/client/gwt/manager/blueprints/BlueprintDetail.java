@@ -16,10 +16,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintHandle
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
@@ -36,7 +38,8 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * @author Kristof Heirwegh
  */
 public class BlueprintDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, BlueprintHandler {
-
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private BlueprintDto blueprint;
 
 	private TabSet tabset;
@@ -102,6 +105,7 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		themeConfig = new BlueprintThemeConfig();
 		Whiteboard.registerHandler(themeConfig);
 		tab = new Tab("Themas");
+		
 		tabset.addTab(tab);
 		tab.setPane(themeConfig);
 

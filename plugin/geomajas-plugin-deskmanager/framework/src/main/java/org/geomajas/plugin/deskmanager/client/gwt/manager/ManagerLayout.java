@@ -17,8 +17,10 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEven
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk.Geodesks;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
@@ -29,7 +31,8 @@ import com.smartgwt.client.widgets.tab.TabSet;
  *
  */
 public class ManagerLayout extends VLayout implements EditSessionHandler {
-
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private TabSet tabSet;
 
 	public ManagerLayout() {
@@ -42,20 +45,17 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 		tabSet.setWidth100();
 		tabSet.setHeight100();
 
-		//FIXME: i18n
-		Tab loketten = new Tab("Geodesks");
+		Tab loketten = new Tab(MESSAGES.mainTabGeodesks());
 		loketten.setPane(new Geodesks());
 		tabSet.addTab(loketten);
 
-		//FIXME: i18n
-		Tab lagenBeheerTab = new Tab("Datalagen");
+		Tab lagenBeheerTab = new Tab(MESSAGES.mainTabDataLayers());
 		lagenBeheerTab.setPane(new Datalayers());
 		tabSet.addTab(lagenBeheerTab);
 
-		//FIXME: i18n
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
 				.getRole())) {
-			Tab blueprintTab = new Tab("Blauwdrukken");
+			Tab blueprintTab = new Tab(MESSAGES.mainTabBluePrints());
 			blueprintTab.setPane(new Blueprints());
 			tabSet.addTab(blueprintTab);
 		}

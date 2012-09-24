@@ -17,7 +17,7 @@ import com.google.gwt.i18n.client.Messages;
  *
  */
 public interface ManagerMessages extends Messages {
-	
+	// Configuration of Themes
 	String themeConfigThemeTitle();
 
 	String themeConfigThemeMouseOver();
@@ -93,4 +93,69 @@ public interface ManagerMessages extends Messages {
 	String themeConfigRangeAdd();
 
 	String themeConfigLayerSelect();
+
+	// Main section tabs
+	String mainTabGeodesks();
+	String mainTabDataLayers();
+	String mainTabBluePrints();
+
+	//Geodesks main Tab
+	String newGeodeskButtonText();
+	
+	String geodeskTableColumnName();
+	String geodeskTableColumnNameBlueprint();
+	String geodeskTableColumnDeskId();
+	String geodeskTableColumnAuthor();
+	String geodeskTableColumnAuthorTooltip();
+	String geodeskTableColumnPublic();
+	String geodeskPublicTooltip();
+	String geodeskTableColumnActiv();
+	String geodeskActivTooltip();
+	String geodeskTableColumnActions();
+	String geodeskTableColumnActionsTooltip();
+	String geodeskTableActionsColumnPreviewTooltip();
+	String geodeskTableActionsColumnRemoveTooltip();
+
+	String geodeskLabel();
+
+	String geodeskRemoveTitle();
+	String geodeskRemoveConfirmQuestion(String attribute);
+
+	String geodeskLoading();
+
+
+	String settingsNameGeodesk();
+
+	String settingsNameBlueprint();
+
+	String settingsGeodeskId();
+
+	String settingsNameBlueprintTooltip();
+
+	String warnGeodeskIdNotUnique();
+
+	String validatorWarnGeodeskIdNotUnique();
+
+	String settingsGeodeskIdTooltip();
+
+	String settingsGeodeskAdmin();
+
+	String settingsGeodeskLatestChangeBy();
+
+	String settingsGeodeskLatestChangeWhen();
+
+	String settingsGeodeskActiv();
+
+	String settingsGeodeskPublic();
+	String warnGeodeskCannotBePublic();
+
+	String settingsGeodeskLimitToTerritoryAdministrator();
+	String settingsGeodeskLimitToTerritoryAdministratorTooltip();
+	String settingsGeodeskLimitToTerritoryUser();
+	String settingsGeodeskLimitToTerritoryUserTooltip();
+
+	String datalagenGroup();
+	String layerTreeFormGroup();
+	String geodeskAccessRightsFormGroup();
+
 }

@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * TODO.
+ * Interface for i18n messages.
  * 
  * @author Jan De Moerloose
  *
@@ -49,5 +49,4 @@ public interface GeodeskMessages extends Messages {
 	String userFriendlySecurityErrorMessage();
 	
 	String userFriendlyCommunicationErrorMessage();
-
 }

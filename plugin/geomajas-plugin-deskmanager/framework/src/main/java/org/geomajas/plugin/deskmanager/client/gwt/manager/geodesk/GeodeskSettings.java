@@ -18,6 +18,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
@@ -25,6 +26,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.smartgwt.client.types.Overflow;
@@ -53,6 +55,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class GeodeskSettings extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	private static final DateTimeFormat DATE_FORMATTER = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 
 	private static final int FORMITEM_WIDTH = 300;
@@ -100,16 +103,16 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 		form.setDisabled(true);
 
 		geodeskName = new TextItem();
-		geodeskName.setTitle("Naam geodesk");
+		geodeskName.setTitle(MESSAGES.settingsNameGeodesk());
 		geodeskName.setRequired(true);
 		geodeskName.setWidth(FORMITEM_WIDTH);
 		geodeskName.setWrapTitle(false);
 
 		blueprints = new SelectItem();
 		blueprints.setWidth(FORMITEM_WIDTH);
-		blueprints.setTitle("Blauwdruk");
+		blueprints.setTitle(MESSAGES.settingsNameBlueprint());
 		blueprints.setDisabled(true); // ter info
-		blueprints.setTooltip("<nobr>De blauwbruk die als basis gebruikt wordt voor dit geodesk.</nobr>");
+		blueprints.setTooltip(MESSAGES.settingsNameBlueprintTooltip());
 
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile().getRole())) {
 			geodeskId = new TextItem();
@@ -125,7 +128,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 								geodeskIdValid = !exists;
 								geodeskId.validate();
 								if (exists) {
-									SC.warn("Geodesk Id bestaat reeds! Gelieve een ander Geodesk Id te kiezen.");
+									SC.warn(MESSAGES.warnGeodeskIdNotUnique());
 								}
 							}
 						});
@@ -138,47 +141,46 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 					return geodeskIdValid;
 				}
 			};
-			v.setErrorMessage("Geodesk Id bestaat reeds!");
+			v.setErrorMessage(MESSAGES.validatorWarnGeodeskIdNotUnique());
 			geodeskId.setValidators(v);
 		} else {
 			geodeskId = new StaticTextItem();
 		}
 
-		geodeskId.setTitle("Geodesk Id");
+		geodeskId.setTitle(MESSAGES.settingsGeodeskId());
 		geodeskId.setWidth(FORMITEM_WIDTH);
 		geodeskId.setWrapTitle(false);
-		geodeskId.setTooltip("<nobr>Naam gebruikt in URL om geodesk op te roepen.</nobr>");
+		geodeskId.setTooltip(MESSAGES.settingsGeodeskIdTooltip());
 
 		loketBeheerder = new StaticTextItem("loketBeheerder");
-		loketBeheerder.setTitle("Geodesk-Beheerder");
+		loketBeheerder.setTitle(MESSAGES.settingsGeodeskAdmin());
 		loketBeheerder.setWidth(FORMITEM_WIDTH);
 		loketBeheerder.setWrapTitle(false);
 
 		lastEditBy = new StaticTextItem("lastEditBy");
-		lastEditBy.setTitle("Laatste wijziging door");
+		lastEditBy.setTitle(MESSAGES.settingsGeodeskLatestChangeBy());
 		lastEditBy.setWidth(FORMITEM_WIDTH);
 		lastEditBy.setWrapTitle(false);
 
 		lastEditDate = new StaticTextItem("lastEditDate");
-		lastEditDate.setTitle("Laatste wijziging op");
+		lastEditDate.setTitle(MESSAGES.settingsGeodeskLatestChangeWhen());
 		lastEditDate.setWidth(FORMITEM_WIDTH);
 		lastEditDate.setWrapTitle(false);
 
 		active = new CheckboxItem();
-		active.setTitle("Geodesk actief");
+		active.setTitle(MESSAGES.settingsGeodeskActiv());
 		active.setWrapTitle(false);
-		active.setTooltip("Aan: geodesk kan geraadpleegd worden.");
+		active.setTooltip(MESSAGES.geodeskActivTooltip());
 
 		publiek = new CheckboxItem();
-		publiek.setTitle("Publiek");
+		publiek.setTitle(MESSAGES.settingsGeodeskPublic());
 		publiek.setWrapTitle(false);
-		publiek.setPrompt("Aan: geodesk kan geraadpleegd worden zonder aanmelden.<br />"
-				+ "Uit: geodesk kan enkel geraadpleegd worden na aanmelden (LB of VO).");
+		publiek.setPrompt(MESSAGES.geodeskPublicTooltip());
 		publiek.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
 				if (containsNonPublicLayers) {
-					SC.warn("U kan dit geodesk niet publiek maken daar deze niet publieke lagen bevat!");
+					SC.warn(MESSAGES.warnGeodeskCannotBePublic());
 					event.cancel();
 				}
 			}
@@ -201,16 +203,14 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 		});
 
 		limitToCreatorTerritory = new CheckboxItem();
-		limitToCreatorTerritory.setTitle("Beperk tot grondgebied Loketbeheerder");
+		limitToCreatorTerritory.setTitle(MESSAGES.settingsGeodeskLimitToTerritoryAdministrator());
 		limitToCreatorTerritory.setWrapTitle(false);
-		limitToCreatorTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied"
-				+ " van de entiteit loketbeheerder.<br />Uit: geen beveiliging.");
+		limitToCreatorTerritory.setPrompt(MESSAGES.settingsGeodeskLimitToTerritoryAdministratorTooltip());
 
 		limitToUserTerritory = new CheckboxItem();
-		limitToUserTerritory.setTitle("Beperk tot grondgebied Gebruiker");
+		limitToUserTerritory.setTitle(MESSAGES.settingsGeodeskLimitToTerritoryUser());
 		limitToUserTerritory.setWrapTitle(false);
-		limitToCreatorTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied"
-				+ " van de entiteit gebruiker.<br />Uit: geen beveiliging.");
+		limitToUserTerritory.setPrompt(MESSAGES.settingsGeodeskLimitToTerritoryUserTooltip());
 
 		// ----------------------------------------------------------
 

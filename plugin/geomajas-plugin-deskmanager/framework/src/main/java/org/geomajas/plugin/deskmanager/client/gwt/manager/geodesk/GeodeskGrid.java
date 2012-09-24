@@ -21,12 +21,14 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintHandle
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.BeheerConstants;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
@@ -53,7 +55,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
  *
  */
 public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHandler {
-
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	public static final String FLD_ID = "id";
 
 	private static final String FLD_NAME = "name";
@@ -89,39 +92,38 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 
 		// -- Fields --------------------------------------------------------
 
-		ListGridField name = new ListGridField(FLD_NAME, "Naam Geodesk");
+		ListGridField name = new ListGridField(FLD_NAME, MESSAGES.geodeskTableColumnName());
 		name.setWidth("*");
 		name.setType(ListGridFieldType.TEXT);
 
-		ListGridField blueprint = new ListGridField(FLD_BLUEPRINT, "Naam Blauwdruk");
+		ListGridField blueprint = new ListGridField(FLD_BLUEPRINT, MESSAGES.geodeskTableColumnNameBlueprint());
+				
 		blueprint.setType(ListGridFieldType.TEXT);
 		blueprint.setWidth("*");
 
-		ListGridField geodeskId = new ListGridField(FLD_GEODESKID, "LoketId");
+		ListGridField geodeskId = new ListGridField(FLD_GEODESKID, MESSAGES.geodeskTableColumnDeskId());
 		geodeskId.setType(ListGridFieldType.TEXT);
 		geodeskId.setWidth("*");
 
-		ListGridField author = new ListGridField(FLD_AUTHOR, "Auteur");
+		ListGridField author = new ListGridField(FLD_AUTHOR, MESSAGES.geodeskTableColumnAuthor());
 		author.setType(ListGridFieldType.TEXT);
 		author.setWidth("*");
-		author.setPrompt("De persoon die het laatst wijzigingen heeft aangebracht aan dit loket.");
+		author.setPrompt(MESSAGES.geodeskTableColumnAuthorTooltip());
 
-		ListGridField publicUse = new ListGridField(FLD_PUBLIC, "Publiek");
+		ListGridField publicUse = new ListGridField(FLD_PUBLIC, MESSAGES.geodeskTableColumnPublic());
 		publicUse.setType(ListGridFieldType.BOOLEAN);
 		publicUse.setWidth(70);
-		publicUse
-				.setPrompt("Aan: loket kan geraadpleegd worden zonder aanmelden.<br />" +
-						"Uit: loket kan enkel geraadpleegd worden na aanmelden (LB of VO).");
-
-		ListGridField active = new ListGridField(FLD_ACTIVE, "Actief");
+		publicUse.setPrompt(MESSAGES.geodeskPublicTooltip());
+				
+		ListGridField active = new ListGridField(FLD_ACTIVE, MESSAGES.geodeskTableColumnActiv());
 		active.setType(ListGridFieldType.BOOLEAN);
 		active.setWidth(70);
-		active.setPrompt("Aan: betekent dat loket kan geraadpleegd worden.");
+		active.setPrompt(MESSAGES.geodeskActivTooltip());
 
-		ListGridField actions = new ListGridField(FLD_ACTIONS, "Acties");
+		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.geodeskTableColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
 		actions.setWidth(60);
-		actions.setPrompt("Acties: Voorbeeld loket tonen en Geodesk verwijderen.");
+		actions.setPrompt(MESSAGES.geodeskTableColumnActionsTooltip());
 
 		setFields(name, blueprint, geodeskId, author, publicUse, active, actions);
 		setSortField(0);
@@ -164,14 +166,16 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			previewImg.setShowRollOver(false);
 			previewImg.setLayoutAlign(Alignment.CENTER);
 			previewImg.setSrc(BeheerConstants.ICON_OPENSAMPLELOKET);
-			previewImg.setPrompt("Open voorbeeld loket");
+			previewImg.setPrompt(MESSAGES.geodeskTableActionsColumnPreviewTooltip());
+					
 			previewImg.setHeight(16);
 			previewImg.setWidth(16);
 			previewImg.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
 					DockableWindow window = new DockableWindow();
-					window.setTitle("Geodesk: " + rollOverRecord.getAttribute(FLD_NAME));
+					window.setTitle(MESSAGES.geodeskLabel() + ": " + rollOverRecord.getAttribute(FLD_NAME));
+					
 					window.setAutoCenter(true);
 					window.setWidth("90%");
 					window.setHeight("90%");
@@ -186,15 +190,15 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			deleteImg.setShowRollOver(false);
 			deleteImg.setLayoutAlign(Alignment.CENTER);
 			deleteImg.setSrc(WidgetLayout.iconRemove);
-			deleteImg.setPrompt("Verwijder loket");
+			deleteImg.setPrompt(MESSAGES.geodeskTableActionsColumnRemoveTooltip());
 			deleteImg.setHeight(16);
 			deleteImg.setWidth(16);
 			deleteImg.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					SC.ask("Verwijderen", "Geodesk \"" + rollOverRecord.getAttribute("name")
-							+ "\" verwijderen?<br /><br />Deze actie kan niet ongedaan gemaakt worden.",
-							new BooleanCallback() {
+					
+					SC.ask(MESSAGES.geodeskRemoveTitle(), MESSAGES.geodeskRemoveConfirmQuestion(
+							rollOverRecord.getAttribute("name")), new BooleanCallback() {
 
 								public void execute(Boolean value) {
 									if (value) {
@@ -216,7 +220,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		clearData();
 
 		setShowEmptyMessage(true);
-		setEmptyMessage("<i>Geodesks worden geladen... <img src='" + Geomajas.getIsomorphicDir()
+		setEmptyMessage("<i>" + MESSAGES.geodeskLoading() + " <img src='" + Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		redraw();
 

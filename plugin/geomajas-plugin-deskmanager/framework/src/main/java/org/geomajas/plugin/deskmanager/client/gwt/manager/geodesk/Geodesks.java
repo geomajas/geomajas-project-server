@@ -14,9 +14,11 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -29,7 +31,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  *
  */
 public class Geodesks extends VLayout implements EditSessionHandler {
-
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private IButton buttonNew;
 
 	private GeodeskGrid grid;
@@ -50,7 +53,7 @@ public class Geodesks extends VLayout implements EditSessionHandler {
 		topContainer.setHeight("*");
 		topContainer.setLayoutBottomMargin(5);
 
-		buttonNew = new IButton("Nieuw Geodesk");
+		buttonNew = new IButton(MESSAGES.newGeodeskButtonText());
 		buttonNew.setIcon(WidgetLayout.iconAdd);
 		buttonNew.setAutoFit(true);
 		buttonNew.addClickHandler(new ClickHandler() {
