@@ -207,6 +207,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 			setDisabled(false);
 		}
 		setLoaded();
+		Whiteboard.fireChangeEvent(new GeodeskEvent(geodesk));
 	}
 
 	// -- EditSessionHandler --------------------------------------------------------
