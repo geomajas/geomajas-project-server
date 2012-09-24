@@ -131,7 +131,8 @@ public class Geodesk implements BaseGeodesk {
 	private Territory owner;
 
 	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "tt_groups_geodesks", joinColumns = @JoinColumn(name = "geodesk_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
+	@JoinTable(name = "tt_groups_geodesks", joinColumns = @JoinColumn(name = "geodesk_id"), 
+			inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	// @Fetch(FetchMode.JOIN) -- cannot use join because of the ManyToOne field 'owner' of the same type
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
