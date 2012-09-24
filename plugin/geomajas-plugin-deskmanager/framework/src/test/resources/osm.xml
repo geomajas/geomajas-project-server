@@ -16,7 +16,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="widgetInfo">
 			<map>
 				<entry key="ExtraLayerInfo">
-					<bean class="org.geomajas.widget.advancedviews.configuration.client.ExtraLayerInfo">
+					<bean class="org.geomajas.widget.layer.configuration.client.ClientExtraLayerInfo">
 						<property name="largeLayerIconUrl" value="rasterlayerIcons/osmLarge.jpg" />
 						<property name="legendImageUrl" value="rasterlayerLegends/osm.jpg" />
 						<property name="source" value="Open Streetmaps" />
