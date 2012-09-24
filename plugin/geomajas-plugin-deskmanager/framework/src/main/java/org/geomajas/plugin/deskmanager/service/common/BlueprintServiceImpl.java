@@ -127,11 +127,11 @@ public class BlueprintServiceImpl implements BlueprintService {
 	public void updateBluePrintFromUserApplication(BaseGeodesk bluePrint) {
 		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {
 			updateBluePrintMainMapFromUserApplication(bluePrint);
-			factory.getCurrentSession().saveOrUpdate(bluePrint);
+//			factory.getCurrentSession().saveOrUpdate(bluePrint);
 		}
-		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {
+		if (bluePrint.getOverviewMapLayers() == null || bluePrint.getOverviewMapLayers().isEmpty()) {
 			updateBluePrintOverviewMapFromUserApplication(bluePrint);
-			factory.getCurrentSession().saveOrUpdate(bluePrint);
+//			factory.getCurrentSession().saveOrUpdate(bluePrint);
 		}
 	}
 	

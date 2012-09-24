@@ -41,6 +41,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * TODO.
@@ -49,6 +50,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
+@Transactional(readOnly = true)
 public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private final Logger log = LoggerFactory.getLogger(DtoConverterServiceImpl.class);

@@ -20,21 +20,20 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.Type;
 
 /**
@@ -102,24 +101,28 @@ public class Blueprint implements BaseGeodesk {
 	/**
 	 * The groups that can use this blueprint to create loketten
 	 */
-	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class)
 	@JoinTable(name = "groups_blueprints", 
 		joinColumns = @JoinColumn(name = "blueprint_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection()
+	@MapKeyClass(String.class)
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	private Map<String, ClientWidgetInfo> applicationClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection()
+	@MapKeyClass(String.class)
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
-	@Fetch(FetchMode.SELECT)
 	private Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection()
+	@MapKeyClass(String.class)
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
-	@Fetch(FetchMode.SELECT)
 	private Map<String, ClientWidgetInfo> mainMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	// ------------------------------------------------------------------

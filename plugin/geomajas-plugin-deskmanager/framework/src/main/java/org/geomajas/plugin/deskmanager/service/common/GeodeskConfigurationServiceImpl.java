@@ -196,12 +196,11 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			if (layer.getClientLayerInfo() != null) {
 				clientLayers.add(layer.getClientLayerInfo());
 			} else {
-				ClientLayerInfo cli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
-						.getClientLayerId());
+				ClientLayerInfo cli = (ClientLayerInfo) applicationContext.getBean(layer.getClientLayerIdReference());
 				if (cli != null) {
 					clientLayers.add(cli);
 				} else {
-					log.error("Unknown client layer info for " + layer.getLayerModel().getClientLayerId());
+					log.error("Unknown client layer info for " + layer.getClientLayerIdReference());
 				}
 			}
 		}

@@ -35,13 +35,14 @@ import javax.persistence.OrderColumn;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.Type;
 
 /**
  * TODO.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
 @Entity
 public class Geodesk implements BaseGeodesk {
@@ -53,7 +54,6 @@ public class Geodesk implements BaseGeodesk {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String id; // UUID
 
-	
 	@Column(name = "geodeskId", unique = true)
 	private String geodeskId; // UUID
 
@@ -107,19 +107,22 @@ public class Geodesk implements BaseGeodesk {
 	@JoinTable(name = "geodesk_overviewlayer")
 	private List<Layer> overviewMapLayers = new ArrayList<Layer>();
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection()
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	private Map<String, ClientWidgetInfo> applicationClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection()
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	private Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
-	
-	@ElementCollection(fetch = FetchType.EAGER)
+
+	@ElementCollection()
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	private Map<String, ClientWidgetInfo> mainMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
 	// null == superuser
@@ -128,8 +131,7 @@ public class Geodesk implements BaseGeodesk {
 	private Territory owner;
 
 	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "tt_groups_geodesks", 
-		joinColumns = @JoinColumn(name = "geodesk_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
+	@JoinTable(name = "tt_groups_geodesks", joinColumns = @JoinColumn(name = "geodesk_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	// @Fetch(FetchMode.JOIN) -- cannot use join because of the ManyToOne field 'owner' of the same type
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
@@ -325,7 +327,8 @@ public class Geodesk implements BaseGeodesk {
 	}
 
 	/**
-	 * @param applicationClientWidgetInfos the applicationClientWidgetInfos to set
+	 * @param applicationClientWidgetInfos
+	 *            the applicationClientWidgetInfos to set
 	 */
 	public void setApplicationClientWidgetInfos(Map<String, ClientWidgetInfo> applicationClientWidgetInfos) {
 		this.applicationClientWidgetInfos = applicationClientWidgetInfos;
@@ -339,7 +342,8 @@ public class Geodesk implements BaseGeodesk {
 	}
 
 	/**
-	 * @param mainMapClientWidgetInfos the mainMapClientWidgetInfos to set
+	 * @param mainMapClientWidgetInfos
+	 *            the mainMapClientWidgetInfos to set
 	 */
 	public void setMainMapClientWidgetInfos(Map<String, ClientWidgetInfo> mainMapClientWidgetInfos) {
 		this.mainMapClientWidgetInfos = mainMapClientWidgetInfos;
@@ -353,7 +357,8 @@ public class Geodesk implements BaseGeodesk {
 	}
 
 	/**
-	 * @param overviewMapClientWidgetInfos the overviewMapClientWidgetInfos to set
+	 * @param overviewMapClientWidgetInfos
+	 *            the overviewMapClientWidgetInfos to set
 	 */
 	public void setOverviewMapClientWidgetInfos(Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos) {
 		this.overviewMapClientWidgetInfos = overviewMapClientWidgetInfos;
@@ -367,7 +372,8 @@ public class Geodesk implements BaseGeodesk {
 	}
 
 	/**
-	 * @param mainMapLayers the mainMapLayers to set
+	 * @param mainMapLayers
+	 *            the mainMapLayers to set
 	 */
 	public void setMainMapLayers(List<Layer> layers) {
 		this.mainMapLayers = layers;
@@ -379,8 +385,10 @@ public class Geodesk implements BaseGeodesk {
 	public List<Layer> getMainMapLayers() {
 		return mainMapLayers;
 	}
+
 	/**
-	 * @param mainMapLayers the mainMapLayers to set
+	 * @param mainMapLayers
+	 *            the mainMapLayers to set
 	 */
 
 	public void setOverviewMapLayers(List<Layer> layers) {

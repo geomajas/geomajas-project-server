@@ -60,7 +60,6 @@ public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, 
 
 		if (geodeskLayout == null) {
 			geodeskLayout = new GeodeskLayoutInfo();
-			blueprint.getApplicationClientWidgetInfos().put(GeodeskLayoutInfo.IDENTIFIER, geodeskLayout);
 		}
 		layout.setGeodeskLayout(geodeskLayout);
 	}
@@ -73,10 +72,8 @@ public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, 
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
-		// If we save and the clientwidgetinfo was not yet defined on the blueprint, overwrite it.
-		blueprint.getApplicationClientWidgetInfos().put(GeodeskLayoutInfo.IDENTIFIER,
-				GeodeskDtoUtil.getApplicationClientWidgetInfo(blueprint).get(GeodeskLayoutInfo.IDENTIFIER));
-		// blueprint.setLayout(themePanel.getLoketLayout());
+		blueprint.getApplicationClientWidgetInfos().put(GeodeskLayoutInfo.IDENTIFIER, layout.getGeodeskLayout());
+
 		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 		layout.setDisabled(true);
 		return true;

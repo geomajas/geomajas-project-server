@@ -88,7 +88,7 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	private LayerConfiguration layerConfiguration;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "tt_mails_layermodels")
 	private List<MailAddress> mailAddresses = new ArrayList<MailAddress>();
 

@@ -233,7 +233,7 @@ public class GeodeskLayoutPanel extends HLayout {
 		borderColor.setValue(geodeskLayout.getBorderColor());
 	}
 
-	public GeodeskLayoutInfo getLoketLayout() {
+	public GeodeskLayoutInfo getGeodeskLayout() {
 		return geodeskLayout;
 	}
 }
