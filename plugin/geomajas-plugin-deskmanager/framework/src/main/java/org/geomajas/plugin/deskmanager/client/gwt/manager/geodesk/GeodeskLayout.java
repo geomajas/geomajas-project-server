@@ -14,6 +14,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GeodeskLayoutPa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
@@ -29,7 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class GeodeskLayout extends VLayout implements WoaEventHandler {
+public class GeodeskLayout extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private GeodeskDto geodesk;
 
@@ -54,7 +55,11 @@ public class GeodeskLayout extends VLayout implements WoaEventHandler {
 		addMember(layout);
 	}
 
-	public void setGeodesk(GeodeskDto geodesk) {
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
+	}
+
+	private void setGeodesk(GeodeskDto geodesk) {
 		this.geodesk = geodesk;
 		GeodeskLayoutInfo geodeskLayout = (GeodeskLayoutInfo) GeodeskDtoUtil
 				.getApplicationClientWidgetInfo(geodesk).get(GeodeskLayoutInfo.IDENTIFIER);

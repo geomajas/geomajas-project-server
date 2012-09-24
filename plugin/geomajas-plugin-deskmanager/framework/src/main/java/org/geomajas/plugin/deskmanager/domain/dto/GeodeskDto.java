@@ -17,12 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
 /**
  * @author Kristof Heirwegh
  */
-public class GeodeskDto implements GeodeskInfo {
+public class GeodeskDto implements BaseGeodeskDto {
 
 	private static final long serialVersionUID = 1L;
 
@@ -265,6 +266,14 @@ public class GeodeskDto implements GeodeskInfo {
 	 */
 	public List<LayerDto> getOverviewMapLayers() {
 		return overviewMapLayers;
+	}
+
+	public UserApplicationInfo getUserApplicationInfo() {
+		return blueprint.getUserApplicationInfo();
+	}
+
+	public void setUserApplicationInfo(UserApplicationInfo userApplicationInfo) {
+		blueprint.setUserApplicationInfo(userApplicationInfo);
 	}
 	
 }

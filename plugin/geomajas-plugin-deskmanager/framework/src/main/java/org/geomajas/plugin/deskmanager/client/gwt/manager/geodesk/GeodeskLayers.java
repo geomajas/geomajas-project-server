@@ -10,11 +10,14 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
@@ -31,7 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class GeodeskLayers extends VLayout implements WoaEventHandler {
+public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private GeodeskDto geodesk;
 
@@ -58,14 +61,14 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 		addMember(group);
 	}
 
-	public void setGeodesk(final GeodeskDto newLoket) {
+	private void setGeodesk(final GeodeskDto newLoket) {
 		geodesk = newLoket;
 		CommService.getSystemLayers(new DataCallback<GetSystemLayersResponse>() {
 
 			public void execute(GetSystemLayersResponse result) {
-				//FIXME: include own layers
-				layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), 
-						geodesk.getMainMapLayers(), geodesk.isPublic());
+				List<LayerDto> sourceLayers = new ArrayList<LayerDto>(geodesk.getBlueprint().getMainMapLayers());
+				sourceLayers.addAll(result.getLayers());
+				layerSelect.setValues(sourceLayers, geodesk.getMainMapLayers(), geodesk.isPublic());
 			}
 
 		});
@@ -81,7 +84,7 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 	public boolean onSaveClick(ClickEvent event) {
 		List<LayerDto> layers = layerSelect.getValues();
 		geodesk.setMainMapLayers(layers);
-		
+
 		layerSelect.setDisabled(true);
 		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_LAYERS);
 		return true;
@@ -91,6 +94,10 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler {
 		layerSelect.setDisabled(true);
 		setGeodesk(geodesk);
 		return true;
+	}
+
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
 	}
 
 }

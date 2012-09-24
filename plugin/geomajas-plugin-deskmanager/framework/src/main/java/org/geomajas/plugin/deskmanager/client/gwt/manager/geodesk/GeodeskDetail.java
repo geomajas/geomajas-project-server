@@ -79,43 +79,57 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		Tab tab = new Tab("Instellingen");
 		tabset.addTab(tab);
 		tab.setPane(settings);
+		Whiteboard.registerHandler(settings);
 
 		layers = new GeodeskLayers();
 		tab = new Tab("Datalagen");
 		tabset.addTab(tab);
 		tab.setPane(layers);
+		Whiteboard.registerHandler(layers);
 		
 
 		layerTree = new GeodeskLayerTree();
 		tab = new Tab("Boomstructuur");
 		tabset.addTab(tab);
 		tab.setPane(layerTree);
+		Whiteboard.registerHandler(layerTree);
 
+		
 		accessrights = new GeodeskAccessRights();
 		accessrightsTab = new Tab("Gebruiksrechten");
 		tabset.addTab(accessrightsTab);
 		accessrightsTab.setPane(accessrights);
 		accessrightsTab.setDisabled(true);
+		Whiteboard.registerHandler(accessrights);
+		
 
 		notifications = new GeodeskNotifications();
 		tab = new Tab("Notificaties");
 		tabset.addTab(tab);
 		tab.setPane(notifications);
+		Whiteboard.registerHandler(notifications);
+		
 
 		geodeskLayout = new GeodeskLayout();
 		tab = new Tab("Opmaak");
 		tabset.addTab(tab);
 		tab.setPane(geodeskLayout);
+		Whiteboard.registerHandler(geodeskLayout);
+		
 
 		htmlCode = new GeodeskHtmlCode();
 		tab = new Tab("HTML Code");
 		tabset.addTab(tab);
 		tab.setPane(htmlCode);
+		Whiteboard.registerHandler(htmlCode);
+		
 
 		themeConfig = new GeodeskThemeConfig();
 		tab = new Tab("Themas");
 		tabset.addTab(tab);
 		tab.setPane(themeConfig);
+		Whiteboard.registerHandler(themeConfig);
+		
 
 		// loading widget
 		loadingLayout = new VLayout();
@@ -181,16 +195,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	public void setGeodesk(GeodeskDto geodesk) {
 		this.geodesk = geodesk;
-
-		//FIXME: let panels listen for an event instead of these setters
-		settings.setGeodesk(geodesk);
-		layers.setGeodesk(geodesk);
-		accessrights.setGeodesk(geodesk);
-		geodeskLayout.setGeodesk(geodesk);
-		htmlCode.setGeodesk(geodesk);
-		notifications.setGeodesk(geodesk);
-		themeConfig.setGeodesk(geodesk);
-		
 
 		if (geodesk == null) {
 			setDisabled(true);

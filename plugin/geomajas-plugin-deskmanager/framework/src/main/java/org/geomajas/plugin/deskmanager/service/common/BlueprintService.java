@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.List;
 
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.security.GeomajasSecurityException;
 
@@ -28,7 +29,7 @@ public interface BlueprintService {
 	/**
 	 * No security check, only for internal use!
 	 */
-	Blueprint getBlueprintByIdInternal(String uuid);
+	BaseGeodesk getBlueprintByIdInternal(String uuid);
 
 	List<Blueprint> getBlueprints() throws GeomajasSecurityException;
 
@@ -44,5 +45,5 @@ public interface BlueprintService {
 	/**
 	 * 
 	 */
-	void updateBluePrintFromUserApplication(Blueprint bp);
+	void updateBluePrintFromUserApplication(BaseGeodesk bp);
 }

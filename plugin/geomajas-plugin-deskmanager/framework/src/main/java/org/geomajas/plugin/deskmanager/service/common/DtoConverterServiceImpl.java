@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -22,16 +21,12 @@ import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.LayerTree;
-import org.geomajas.plugin.deskmanager.domain.LayerTreeNode;
 import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerViewDto;
 import org.geomajas.plugin.deskmanager.domain.dto.MailAddressDto;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
@@ -216,107 +211,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			}
 		}
 		return lmDto;
-	}
-
-	public LayerTree fromDto(LayerTreeDto dto) throws GeomajasException {
-		if (dto == null) {
-			return null;
-		}
-		LayerTree lt = new LayerTree();
-
-		lt.setId(dto.getId());
-		lt.setRootNode(fromDto(dto.getRootNode()));
-		return lt;
-	}
-
-	public LayerTreeDto toDto(LayerTree layerTree) throws GeomajasException {
-		if (layerTree == null) {
-			return null;
-		}
-		LayerTreeDto ltDto = new LayerTreeDto();
-
-		ltDto.setId(layerTree.getId());
-		ltDto.setRootNode(toDto(layerTree.getRootNode()));
-		return ltDto;
-	}
-
-	/**
-	 * NamedStyleInfo is not cloned but referenced !!
-	 */
-	public LayerTreeNode fromDto(LayerTreeNodeDto dto) throws GeomajasException {
-		return fromDto(dto, null);
-	}
-
-	private LayerTreeNode fromDto(LayerTreeNodeDto dto, Map<LayerTreeNodeDto, LayerTreeNode> done)
-			throws GeomajasException {
-		if (dto == null) {
-			return null;
-		}
-		if (done == null) {
-			done = new HashMap<LayerTreeNodeDto, LayerTreeNode>();
-		} else {
-			if (done.containsKey(dto)) {
-				return done.get(dto);
-			}
-		}
-		LayerTreeNode ltn = new LayerTreeNode();
-		done.put(dto, ltn);
-
-		ltn.setExpanded(dto.isExpanded());
-		ltn.setId(dto.getId());
-		ltn.setName(dto.getNodeName());
-		ltn.setLeaf(dto.isLeaf());
-		ltn.setClientLayerId(dto.getClientLayerId());
-		ltn.setParentNode(fromDto(dto.getParentNode(), done));
-		ltn.setStyleUuid(dto.getStyleUuid());
-		ltn.setPublicLayer(dto.isPublicLayer());
-		ltn.setView(fromDto(dto.getView()));
-		List<LayerTreeNode> children = ltn.getChildren();
-		if (dto.getChildren() != null && dto.getChildren().size() > 0) {
-			for (LayerTreeNodeDto ltnDto : dto.getChildren()) {
-				children.add(fromDto(ltnDto, done));
-			}
-		}
-
-		return ltn;
-	}
-
-	public LayerTreeNodeDto toDto(LayerTreeNode layerTreeNode) throws GeomajasException {
-		return toDto(layerTreeNode, null);
-	}
-
-	private LayerTreeNodeDto toDto(LayerTreeNode layerTreeNode, Map<LayerTreeNode, LayerTreeNodeDto> done)
-			throws GeomajasException {
-		if (layerTreeNode == null) {
-			return null;
-		}
-		if (done == null) {
-			done = new HashMap<LayerTreeNode, LayerTreeNodeDto>();
-		} else {
-			if (done.containsKey(layerTreeNode)) {
-				return done.get(layerTreeNode);
-			}
-		}
-		LayerTreeNodeDto ltnDto = new LayerTreeNodeDto();
-		done.put(layerTreeNode, ltnDto);
-
-		ltnDto.setExpanded(layerTreeNode.isExpanded());
-		ltnDto.setId(layerTreeNode.getId());
-		ltnDto.setName(layerTreeNode.getNodeName());
-		ltnDto.setLeaf(layerTreeNode.isLeaf());
-		ltnDto.setParentNode(toDto(layerTreeNode.getParentNode(), done));
-		ltnDto.setStyleUuid(layerTreeNode.getStyleUuid());
-		ltnDto.setPublicLayer(layerTreeNode.isPublicLayer());
-		ltnDto.setView(toDto(layerTreeNode.getView()));
-		ltnDto.setClientLayerId(layerTreeNode.getClientLayerId());
-		List<LayerTreeNodeDto> children = ltnDto.getChildren();
-		if (layerTreeNode.getChildren() != null && layerTreeNode.getChildren().size() > 0) {
-			for (LayerTreeNode ltn : layerTreeNode.getChildren()) {
-				children.add(toDto(ltn, done));
-			}
-		}
-
-		return ltnDto;
 	}
 
 	/**

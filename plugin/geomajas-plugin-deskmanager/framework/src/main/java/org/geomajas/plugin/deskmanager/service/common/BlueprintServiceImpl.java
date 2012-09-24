@@ -18,6 +18,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.security.GeomajasSecurityException;
@@ -123,7 +124,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 	}
 
 	@Transactional(rollbackFor = { Exception.class })
-	public void updateBluePrintFromUserApplication(Blueprint bluePrint) {
+	public void updateBluePrintFromUserApplication(BaseGeodesk bluePrint) {
 		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {
 			updateBluePrintMainMapFromUserApplication(bluePrint);
 			factory.getCurrentSession().saveOrUpdate(bluePrint);
@@ -140,7 +141,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 	 * 
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	private void updateBluePrintMainMapFromUserApplication(Blueprint bp) {
+	private void updateBluePrintMainMapFromUserApplication(BaseGeodesk bp) {
 		UserApplicationInfo uai = getUserApplication(bp.getUserApplicationKey());
 		if (uai != null) {
 			ClientMapInfo mainMap = null;
@@ -164,7 +165,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 	 * 
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	private void updateBluePrintOverviewMapFromUserApplication(Blueprint bp) {
+	private void updateBluePrintOverviewMapFromUserApplication(BaseGeodesk bp) {
 		UserApplicationInfo uai = getUserApplication(bp.getUserApplicationKey());
 		if (uai != null) {
 			ClientMapInfo overviewMap = null;

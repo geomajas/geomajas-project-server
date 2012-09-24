@@ -8,23 +8,18 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerTreeSelectPanel.LayerTreeNode;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerGroupConfigurationWindow;
+import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.util.ValueCallback;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.ImgButton;
-import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -57,8 +52,6 @@ public class LayerTreeGrid extends TreeGrid {
 	private LayerTreeNode rollOverNode;
 
 	private Integer rowNumber;
-
-	private boolean allowFolders;
 
 	public LayerTreeGrid(String title, boolean editable) {
 		super();
@@ -97,13 +90,6 @@ public class LayerTreeGrid extends TreeGrid {
 				mapAdd();
 			}
 		});
-		menuMapAdd.setEnableIfCondition(new MenuItemIfFunction() {
-
-			public boolean execute(Canvas target, Menu menu, MenuItem item) {
-				return allowFolders;
-			}
-		});
-
 		menuMapDelete.addClickHandler(new ClickHandler() {
 
 			public void onClick(MenuItemClickEvent event) {
@@ -130,89 +116,8 @@ public class LayerTreeGrid extends TreeGrid {
 		setContextMenu(menu);
 	}
 
-	@Override
-	protected Canvas getRollOverCanvas(Integer rowNum, Integer colNum) {
-		rollOverNode = (LayerTreeNode) this.getRecord(rowNum);
-		rowNumber = rowNum;
-
-		if (rollOverCanvas == null) {
-			rollOverCanvas = new HLayout(3);
-			rollOverCanvas.setSnapTo("TR");
-			rollOverCanvas.setWidth(22);
-			rollOverCanvas.setHeight(22);
-
-			ImgButton editProps = new ImgButton();
-			editProps.setShowDown(false);
-			editProps.setShowRollOver(false);
-			editProps.setLayoutAlign(Alignment.CENTER);
-			editProps.setSrc(DeskmanagerIcon.IMG_SRC_COG);
-			editProps.setPrompt("Configureren");
-			editProps.setShowDisabledIcon(false);
-			editProps.setHeight(16);
-			editProps.setWidth(16);
-			editProps.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					if (getTree().isLeaf(rollOverNode)) {
-						configureLayer(rollOverNode, rowNumber);
-					} else {
-						configureLayerGroup(rollOverNode, rowNumber);
-					}
-				}
-			});
-			rollOverCanvas.addMember(editProps);
-		}
-		return rollOverCanvas;
-	}
-
 	public void setSourceTreeGrid(TreeGrid treeGrid) {
 		this.sourceTreeGrid = treeGrid;
-	}
-
-	public boolean isAllowFolders() {
-		return allowFolders;
-	}
-
-	public void setAllowFolders(boolean allowFolders) {
-		this.allowFolders = allowFolders;
-	}
-
-	// ----------------------------------------------------------
-
-	private void configureLayer(LayerTreeNode node, int rowNum) {
-//		final LayerTreeNode innerNode = node;
-//		final int rowNumber = rowNum;
-//
-//		if (layerConfWi == null) {
-//			layerConfWi = new LayerConfigurationWindow();
-//		}
-//		layerConfWi.show(innerNode.getNode(), new BooleanCallback() {
-//
-//			public void execute(Boolean saved) {
-//				if (saved) {
-//					innerNode.setAttribute(LayerTreeNode.FLD_NAME, innerNode.getNode().getName());
-//					refreshRow(rowNumber);
-//				}
-//			}
-//		});
-	}
-
-	private void configureLayerGroup(LayerTreeNode node, int rowNum) {
-		final LayerTreeNode innerNode = node;
-		final int rowNumber = rowNum;
-
-		if (layerGroupConfWi == null) {
-			layerGroupConfWi = new LayerGroupConfigurationWindow();
-		}
-		layerGroupConfWi.show(innerNode.getNode(), new BooleanCallback() {
-
-			public void execute(Boolean saved) {
-				if (saved) {
-					innerNode.setAttribute(LayerTreeNode.FLD_NAME, innerNode.getNode().getNodeName());
-					refreshRow(rowNumber);
-				}
-			}
-		});
 	}
 
 	private void mapDelete() {
@@ -240,7 +145,9 @@ public class LayerTreeGrid extends TreeGrid {
 
 			public void execute(String value) {
 				if ((value != null) && (!"".equals(value.trim()))) {
-					LayerTreeNode mapNode = new LayerTreeNode(new LayerTreeNodeDto(value.trim(), false));
+					ClientBranchNodeInfo newNode = new ClientBranchNodeInfo();
+					newNode.setLabel(value);
+					LayerTreeNode mapNode = new LayerTreeNode(newNode);
 					mapNode.setAttribute(LayerTreeNode.FLD_PUBLIC, true);
 					getTree().add(mapNode, getClosestFolder((LayerTreeNode) getSelectedRecord()));
 				}

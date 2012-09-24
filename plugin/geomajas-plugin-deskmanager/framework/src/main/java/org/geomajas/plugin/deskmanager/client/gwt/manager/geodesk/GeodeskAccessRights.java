@@ -15,6 +15,8 @@ import java.util.List;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GroupTreeGrid;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
@@ -31,7 +33,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  *
  */
-public class GeodeskAccessRights extends VLayout implements WoaEventHandler {
+public class GeodeskAccessRights extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private GeodeskDto geodesk;
 
@@ -69,13 +71,17 @@ public class GeodeskAccessRights extends VLayout implements WoaEventHandler {
 		addMember(group);
 	}
 
-	public void setGeodesk(GeodeskDto loket) {
+	private void setGeodesk(GeodeskDto loket) {
 		this.geodesk = loket;
 		if (loket != null) {
 			groupSelect.setValues(loket.getTerritories());
 		} else {
 			groupSelect.setValues(null);
 		}
+	}
+	
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------

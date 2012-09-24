@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerTreeNodeDto;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 import com.smartgwt.client.types.Overflow;
@@ -33,7 +32,7 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 
 	private static final int FORMITEM_WIDTH = 300;
 
-	private LayerTreeNodeDto layerGroup;
+	// private LayerTreeNodeDto layerGroup;
 
 	private BooleanCallback callback;
 
@@ -45,7 +44,8 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 
 	/**
 	 * @param layerGroup
-	 * @param callback returns true if saved, false if cancelled.
+	 * @param callback
+	 *            returns true if saved, false if cancelled.
 	 */
 	public LayerGroupConfigurationWindow() {
 		setAutoSize(true);
@@ -93,7 +93,7 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 		save.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				saved();
+				// saved();
 			}
 		});
 		IButton cancel = new IButton("Annuleren");
@@ -117,20 +117,20 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 		addItem(vl);
 	}
 
-	public void show(LayerTreeNodeDto layerGroup, BooleanCallback callback) {
-		if (layerGroup == null || layerGroup.isLeaf()) {
-			throw new IllegalArgumentException("Please provide a non-leaf LayerTreeNode");
-		}
-
-		this.callback = callback;
-		this.layerGroup = layerGroup;
-
-		form.clearValues();
-		name.setValue(layerGroup.getNodeName());
-		expanded.setValue(layerGroup.isExpanded());
-
-		show();
-	}
+	// public void show(LayerTreeNodeDto layerGroup, BooleanCallback callback) {
+	// if (layerGroup == null || layerGroup.isLeaf()) {
+	// throw new IllegalArgumentException("Please provide a non-leaf LayerTreeNode");
+	// }
+	//
+	// this.callback = callback;
+	// this.layerGroup = layerGroup;
+	//
+	// form.clearValues();
+	// name.setValue(layerGroup.getNodeName());
+	// expanded.setValue(layerGroup.isExpanded());
+	//
+	// show();
+	// }
 
 	private void cancelled() {
 		hide();
@@ -139,15 +139,15 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 		}
 	}
 
-	private void saved() {
-		if (form.validate()) {
-			layerGroup.setName(name.getValueAsString());
-			layerGroup.setExpanded(expanded.getValueAsBoolean());
-
-			hide();
-			if (callback != null) {
-				callback.execute(true);
-			}
-		}
-	}
+	// private void saved() {
+	// if (form.validate()) {
+	// layerGroup.setName(name.getValueAsString());
+	// layerGroup.setExpanded(expanded.getValueAsBoolean());
+	//
+	// hide();
+	// if (callback != null) {
+	// callback.execute(true);
+	// }
+	// }
+	// }
 }

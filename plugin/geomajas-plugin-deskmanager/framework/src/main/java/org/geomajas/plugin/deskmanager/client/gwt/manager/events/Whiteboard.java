@@ -29,11 +29,15 @@ public final class Whiteboard {
 	private static final Set<BlueprintSelectionHandler> BLUEPRINT_SELECTION_HANDLERS = 
 		new LinkedHashSet<BlueprintSelectionHandler>();
 
-	private static final Set<GeodeskHandler> LOKET_HANDLERS = new LinkedHashSet<GeodeskHandler>();
+	private static final Set<GeodeskHandler> GEODESK_HANDLERS = new LinkedHashSet<GeodeskHandler>();
+
+	private static final Set<GeodeskSelectionHandler> GEODESK_SELECTION_HANDLERS = 
+		new LinkedHashSet<GeodeskSelectionHandler>();
 
 	private static final Set<LayerModelHandler> LAYER_MODEL_HANDLERS = new LinkedHashSet<LayerModelHandler>();
 
 	private static final Set<EditSessionHandler> EDIT_SESSION_HANDLERS = new LinkedHashSet<EditSessionHandler>();
+
 
 	// ----------------------------------------------------------
 
@@ -53,12 +57,20 @@ public final class Whiteboard {
 		BLUEPRINT_HANDLERS.remove(bph);
 	}
 
+	public static void registerHandler(GeodeskSelectionHandler gdh) {
+		GEODESK_SELECTION_HANDLERS.add(gdh);
+	}
+		
+	public static void unregisterHandler(GeodeskSelectionHandler gdh) {
+		GEODESK_SELECTION_HANDLERS.remove(gdh);
+	}
+
 	public static void registerHandler(GeodeskHandler lh) {
-		LOKET_HANDLERS.add(lh);
+		GEODESK_HANDLERS.add(lh);
 	}
 
 	public static void unregisterHandler(GeodeskHandler lh) {
-		LOKET_HANDLERS.remove(lh);
+		GEODESK_HANDLERS.remove(lh);
 	}
 
 	public static void registerHandler(LayerModelHandler lme) {
@@ -100,9 +112,19 @@ public final class Whiteboard {
 	}
 
 	public static void fireEvent(GeodeskEvent e) {
-		for (GeodeskHandler le : LOKET_HANDLERS) {
+		for (GeodeskHandler le : GEODESK_HANDLERS) {
 			try {
 				le.onGeodeskChange(e);
+			} catch (Exception e2) {
+				Log.logWarn("EventHandlerException (GeodeskEvent)", e2);
+			}
+		}
+	}
+	
+	public static void fireChangeEvent(GeodeskEvent e) {
+		for (GeodeskSelectionHandler gdh : GEODESK_SELECTION_HANDLERS) {
+			try {
+				gdh.onGeodeskSelectionChange(e);
 			} catch (Exception e2) {
 				Log.logWarn("EventHandlerException (GeodeskEvent)", e2);
 			}

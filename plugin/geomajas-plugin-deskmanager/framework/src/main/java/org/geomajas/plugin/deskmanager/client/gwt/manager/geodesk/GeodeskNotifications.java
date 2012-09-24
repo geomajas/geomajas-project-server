@@ -14,6 +14,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.Noti
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.MailManagePanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
@@ -28,7 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  *
  */
-public class GeodeskNotifications extends VLayout implements WoaEventHandler {
+public class GeodeskNotifications extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private GeodeskDto loket;
 
@@ -55,7 +57,11 @@ public class GeodeskNotifications extends VLayout implements WoaEventHandler {
 		addMember(group);
 	}
 
-	public void setGeodesk(final GeodeskDto loket) {
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
+	}
+
+	private void setGeodesk(final GeodeskDto loket) {
 		this.loket = loket;
 		if (loket != null) {
 			mailManage.setValues(loket.getMailAddresses());

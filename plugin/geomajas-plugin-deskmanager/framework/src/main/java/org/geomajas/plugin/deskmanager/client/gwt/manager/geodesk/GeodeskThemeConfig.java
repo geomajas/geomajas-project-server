@@ -14,6 +14,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig.ThemeConfigurationPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
@@ -31,7 +32,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class GeodeskThemeConfig extends VLayout implements WoaEventHandler {
+public class GeodeskThemeConfig extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private GeodeskDto geodesk;
 
@@ -55,7 +56,11 @@ public class GeodeskThemeConfig extends VLayout implements WoaEventHandler {
 		addMember(themePanel);
 	}
 
-	public void setGeodesk(GeodeskDto geodesk) {
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
+	}
+
+	private void setGeodesk(GeodeskDto geodesk) {
 		this.geodesk = geodesk;
 		if (geodesk != null) {
 			themePanel.setMainMap(GeodeskDtoUtil.getMainMap(geodesk));
@@ -63,6 +68,8 @@ public class GeodeskThemeConfig extends VLayout implements WoaEventHandler {
 			if (GeodeskDtoUtil.getMainMapClientWidgetInfo(geodesk).get(ThemesInfo.IDENTIFIER) != null) {
 				themePanel.setThemeConfig((ThemesInfo) GeodeskDtoUtil.getMainMapClientWidgetInfo(geodesk).get(
 						ThemesInfo.IDENTIFIER));
+			} else {
+				themePanel.setThemeConfig(new ThemesInfo());
 			}
 		}
 	}

@@ -23,7 +23,7 @@ import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
-import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.runtimeconfig.service.Rewirable;
@@ -85,7 +85,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 					.getUserApplicationKey());
 
 			ClientApplicationInfo appInfo = clone(userApplicationInfo.getApplicationInfo());
-			Blueprint blueprint = blueprintService.getBlueprintByIdInternal(geodesk.getBlueprint().getId());
+			BaseGeodesk blueprint = blueprintService.getBlueprintByIdInternal(geodesk.getBlueprint().getId());
 			if (includeMaps) {
 				ClientMapInfo mainMap = null;
 				ClientMapInfo overviewMap = null;

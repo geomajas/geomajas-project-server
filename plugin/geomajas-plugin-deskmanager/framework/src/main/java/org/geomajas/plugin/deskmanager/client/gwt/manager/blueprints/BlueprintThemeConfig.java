@@ -18,7 +18,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelect
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.util.BlueprintDtoUtil;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
@@ -59,7 +59,7 @@ public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, Bl
 	public void setBlueprint(BlueprintDto blueprint) {
 		this.blueprint = blueprint;
 		if (blueprint != null) {
-			themePanel.setMainMap(BlueprintDtoUtil.getMainMap(blueprint));
+			themePanel.setMainMap(GeodeskDtoUtil.getMainMap(blueprint));
 			
 			if (blueprint.getMainMapClientWidgetInfos().get(ThemesInfo.IDENTIFIER) != null
 					&& blueprint.getMainMapClientWidgetInfos().get(ThemesInfo.IDENTIFIER) instanceof ThemesInfo) {
@@ -70,7 +70,9 @@ public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, Bl
 					instanceof ThemesInfo) {
 				themePanel.setThemeConfig((ThemesInfo) blueprint.getUserApplicationInfo().getMainMapWidgetInfos()
 						.get(ThemesInfo.IDENTIFIER));
-			}		
+			} else {
+				themePanel.setThemeConfig(new ThemesInfo());
+			}
 		}
 	}
 

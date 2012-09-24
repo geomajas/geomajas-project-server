@@ -12,6 +12,8 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.util.CodeServer;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskUrlBaseResponse;
@@ -29,7 +31,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh FIXME: magdageo
  */
-public class GeodeskHtmlCode extends VLayout {
+public class GeodeskHtmlCode extends VLayout implements GeodeskSelectionHandler {
 
 	private static final String PRE_HTML = "<iframe src=\"";
 
@@ -141,7 +143,11 @@ public class GeodeskHtmlCode extends VLayout {
 		});
 	}
 
-	public void setGeodesk(final GeodeskDto geodesk) {
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
+	}
+	
+	private void setGeodesk(final GeodeskDto geodesk) {
 		if (initialized) {
 			if (geodesk == null) {
 				showPublicFields();

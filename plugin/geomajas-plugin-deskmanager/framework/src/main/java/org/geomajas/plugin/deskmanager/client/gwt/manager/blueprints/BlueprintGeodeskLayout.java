@@ -18,7 +18,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelect
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.util.BlueprintDtoUtil;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
@@ -55,8 +55,8 @@ public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, 
 	public void setBlueprint(BlueprintDto blueprint) {
 		this.blueprint = blueprint;
 
-		GeodeskLayoutInfo geodeskLayout = (GeodeskLayoutInfo) BlueprintDtoUtil
-				.getApplicationClientWidgetInfo(blueprint).get(GeodeskLayoutInfo.IDENTIFIER);
+		GeodeskLayoutInfo geodeskLayout = (GeodeskLayoutInfo) GeodeskDtoUtil.getApplicationClientWidgetInfo(blueprint)
+				.get(GeodeskLayoutInfo.IDENTIFIER);
 
 		if (geodeskLayout == null) {
 			geodeskLayout = new GeodeskLayoutInfo();
@@ -75,7 +75,7 @@ public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, 
 	public boolean onSaveClick(ClickEvent event) {
 		// If we save and the clientwidgetinfo was not yet defined on the blueprint, overwrite it.
 		blueprint.getApplicationClientWidgetInfos().put(GeodeskLayoutInfo.IDENTIFIER,
-				BlueprintDtoUtil.getApplicationClientWidgetInfo(blueprint).get(GeodeskLayoutInfo.IDENTIFIER));
+				GeodeskDtoUtil.getApplicationClientWidgetInfo(blueprint).get(GeodeskLayoutInfo.IDENTIFIER));
 		// blueprint.setLayout(themePanel.getLoketLayout());
 		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 		layout.setDisabled(true);

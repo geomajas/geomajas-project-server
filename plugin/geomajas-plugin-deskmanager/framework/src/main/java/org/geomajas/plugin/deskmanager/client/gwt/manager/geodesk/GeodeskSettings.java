@@ -16,6 +16,8 @@ import java.util.List;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
@@ -47,9 +49,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * 
  * @author Oliver May
- *
+ * 
  */
-public class GeodeskSettings extends VLayout implements WoaEventHandler {
+public class GeodeskSettings extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private static final DateTimeFormat DATE_FORMATTER = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 
@@ -109,8 +111,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 		blueprints.setDisabled(true); // ter info
 		blueprints.setTooltip("<nobr>De blauwbruk die als basis gebruikt wordt voor dit geodesk.</nobr>");
 
-		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
-				.getRole())) {
+		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile().getRole())) {
 			geodeskId = new TextItem();
 			geodeskId.setRequired(true);
 			geodeskId.addChangedHandler(new ChangedHandler() {
@@ -202,9 +203,8 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 		limitToCreatorTerritory = new CheckboxItem();
 		limitToCreatorTerritory.setTitle("Beperk tot grondgebied Loketbeheerder");
 		limitToCreatorTerritory.setWrapTitle(false);
-		limitToCreatorTerritory
-				.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied" +
-						" van de entiteit loketbeheerder.<br />Uit: geen beveiliging.");
+		limitToCreatorTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied"
+				+ " van de entiteit loketbeheerder.<br />Uit: geen beveiliging.");
 
 		limitToUserTerritory = new CheckboxItem();
 		limitToUserTerritory.setTitle("Beperk tot grondgebied Gebruiker");
@@ -246,7 +246,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 		});
 	}
 
-	public void setGeodesk(GeodeskDto loket) {
+	private void setGeodesk(GeodeskDto loket) {
 		form.clearValues();
 		this.geodesk = loket;
 		geodeskIdValid = true;
@@ -264,9 +264,9 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 			limitToCreatorTerritory.setDisabled(!loket.isPublic());
 			limitToUserTerritory.setDisabled(loket.isPublic());
 
-			//FIXME
-//			containsNonPublicLayers = (geodesk.getLayerTree() == null ? false : geodesk.getLayerTree()
-//					.containsNonPublicLayers());
+			// FIXME
+			// containsNonPublicLayers = (geodesk.getLayerTree() == null ? false : geodesk.getLayerTree()
+			// .containsNonPublicLayers());
 
 			// -- constraints from blueprint --
 			publiek.setDisabled(!loket.getBlueprint().isPublic());
@@ -326,5 +326,9 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler {
 			return false;
 		}
 		return true;
+	}
+
+	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		setGeodesk(geodeskEvent.getGeodesk());
 	}
 }

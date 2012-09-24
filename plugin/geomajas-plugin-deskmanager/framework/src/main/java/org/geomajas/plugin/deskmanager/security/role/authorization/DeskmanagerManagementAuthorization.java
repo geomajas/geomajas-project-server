@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.security.role.authorization;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.hibernate.criterion.Criterion;
@@ -69,7 +69,7 @@ public interface DeskmanagerManagementAuthorization {
 	 *            the blueprint.
 	 * @return true if the user may read the blueprint.
 	 */
-	boolean readAllowed(Blueprint blueprint);
+	boolean readAllowed(BaseGeodesk blueprint);
 
 	/**
 	 * Whether a user can save a blueprint.
@@ -78,7 +78,7 @@ public interface DeskmanagerManagementAuthorization {
 	 *            the blueprint.
 	 * @return true if the user may save the blueprint.
 	 */
-	boolean saveAllowed(Blueprint blueprint);
+	boolean saveAllowed(BaseGeodesk blueprint);
 
 	/**
 	 * Whether a user can delete a blueprint.
@@ -87,7 +87,7 @@ public interface DeskmanagerManagementAuthorization {
 	 *            the blueprint.
 	 * @return true if the user may delete the blueprint.
 	 */
-	boolean deleteAllowed(Blueprint blueprint);
+	boolean deleteAllowed(BaseGeodesk blueprint);
 
 	/**
 	 * The criterion to filter the blueprints that a user has access to.

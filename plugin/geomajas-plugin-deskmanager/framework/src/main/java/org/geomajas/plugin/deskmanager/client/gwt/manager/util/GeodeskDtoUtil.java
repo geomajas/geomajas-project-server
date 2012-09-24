@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 /**
@@ -25,49 +26,58 @@ import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
  */
 public final class GeodeskDtoUtil {
 
-	private GeodeskDtoUtil() {}
-	
+	private GeodeskDtoUtil() {
+	}
+
 	/**
-	 * Retrieve the list of ClientWidgetInfo's from the blueprint's and geodesks main map.
-	 * If clientWidgetInfo's are defined on both blueprint and geodesk level, that defined in the geodesk is
-	 * used.  
+	 * Retrieve the list of ClientWidgetInfo's from the blueprint's and geodesks main map. If clientWidgetInfo's are
+	 * defined on both blueprint and geodesk level, that defined in the geodesk is used.
 	 * 
-	 * @param geodesk the blueprint
+	 * @param geodesk
+	 *            the blueprint
 	 * @return List of ClientWidgetInfo as defined in the blueprint
 	 */
-	public static Map<String, ClientWidgetInfo> getMainMapClientWidgetInfo(GeodeskDto geodesk) {
+	public static Map<String, ClientWidgetInfo> getMainMapClientWidgetInfo(BaseGeodeskDto geodesk) {
 		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
-		widgetInfos.putAll(BlueprintDtoUtil.getMainMapClientWidgetInfo(geodesk.getBlueprint()));
+
+		if (geodesk instanceof GeodeskDto) {
+			widgetInfos.putAll(getMainMapClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
+		}
+
 		widgetInfos.putAll(geodesk.getMainMapClientWidgetInfos());
 		return widgetInfos;
 	}
 
 	/**
-	 * Retrieve the list of ClientWidgetInfo's from the blueprint's and geodesks overview map.
-	 * If clientWidgetInfo's are defined on both blueprint and geodesk level, that defined in the geodesk is
-	 * used.  
+	 * Retrieve the list of ClientWidgetInfo's from the blueprint's and geodesks overview map. If clientWidgetInfo's are
+	 * defined on both blueprint and geodesk level, that defined in the geodesk is used.
 	 * 
-	 * @param geodesk the blueprint
+	 * @param geodesk
+	 *            the blueprint
 	 * @return List of ClientWidgetInfo as defined in the blueprint
 	 */
-	public static Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfo(GeodeskDto geodesk) {
+	public static Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfo(BaseGeodeskDto geodesk) {
 		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
-		widgetInfos.putAll(BlueprintDtoUtil.getOverviewMapClientWidgetInfo(geodesk.getBlueprint()));
+		if (geodesk instanceof GeodeskDto) {
+			widgetInfos.putAll(getOverviewMapClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
+		}
 		widgetInfos.putAll(geodesk.getOverviewMapClientWidgetInfos());
 		return widgetInfos;
 	}
 
 	/**
-	 * Retrieve the list of ClientWidgetInfo's from the blueprint's and geodesks application info.
-	 * If clientWidgetInfo's are defined on both blueprint and geodesk level, that defined in the geodesk is
-	 * used.  
+	 * Retrieve the list of ClientWidgetInfo's from the blueprint's and geodesks application info. If clientWidgetInfo's
+	 * are defined on both blueprint and geodesk level, that defined in the geodesk is used.
 	 * 
-	 * @param geodesk the blueprint
+	 * @param geodesk
+	 *            the blueprint
 	 * @return List of ClientWidgetInfo as defined in the blueprint
 	 */
-	public static Map<String, ClientWidgetInfo> getApplicationClientWidgetInfo(GeodeskDto geodesk) {
+	public static Map<String, ClientWidgetInfo> getApplicationClientWidgetInfo(BaseGeodeskDto geodesk) {
 		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
-		widgetInfos.putAll(BlueprintDtoUtil.getApplicationClientWidgetInfo(geodesk.getBlueprint()));
+		if (geodesk instanceof GeodeskDto) {
+			widgetInfos.putAll(getApplicationClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
+		}
 		widgetInfos.putAll(geodesk.getApplicationClientWidgetInfos());
 		return widgetInfos;
 	}
@@ -75,10 +85,11 @@ public final class GeodeskDtoUtil {
 	/**
 	 * Retrieve the mapinfo from the geodesk's main map.
 	 * 
-	 * @param geodesk the geodesk
+	 * @param geodesk
+	 *            the geodesk
 	 * @return the mapInfo
 	 */
-	public static ClientMapInfo getMainMap(GeodeskDto geodesk) {
-		return BlueprintDtoUtil.getMainMap(geodesk.getBlueprint());
+	public static ClientMapInfo getMainMap(BaseGeodeskDto geodesk) {
+		return UserApplicationDtoUtil.getMainMap(geodesk.getUserApplicationInfo());
 	}
 }

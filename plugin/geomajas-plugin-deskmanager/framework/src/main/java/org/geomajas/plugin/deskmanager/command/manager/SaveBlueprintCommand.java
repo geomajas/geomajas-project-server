@@ -16,6 +16,7 @@ import java.util.List;
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.BlueprintResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
@@ -101,7 +102,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 		target.setPublic(source.isPublic());
 	}
 
-	private void copyWidgetInfo(Blueprint source, Blueprint target) throws Exception {
+	private void copyWidgetInfo(BaseGeodesk source, BaseGeodesk target) throws Exception {
 		target.getApplicationClientWidgetInfos().putAll(source.getApplicationClientWidgetInfos());
 		target.getMainMapClientWidgetInfos().putAll(source.getMainMapClientWidgetInfos());
 		target.getOverviewMapClientWidgetInfos().putAll(source.getOverviewMapClientWidgetInfos());
@@ -134,7 +135,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 		}
 	}
 
-	private void copyLayers(Blueprint source, Blueprint target) throws Exception {
+	private void copyLayers(BaseGeodesk source, BaseGeodesk target) throws Exception {
 		target.getMainMapLayers().clear();
 		target.getMainMapLayers().addAll(source.getMainMapLayers());
 

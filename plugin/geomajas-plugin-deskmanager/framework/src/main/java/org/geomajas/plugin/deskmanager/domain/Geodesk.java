@@ -33,7 +33,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.domain.dto.GeodeskInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -45,7 +44,7 @@ import org.hibernate.annotations.Type;
  *
  */
 @Entity
-public class Geodesk implements GeodeskInfo {
+public class Geodesk implements BaseGeodesk {
 
 	private static final long serialVersionUID = 1L;
 
@@ -393,6 +392,14 @@ public class Geodesk implements GeodeskInfo {
 	 */
 	public List<Layer> getOverviewMapLayers() {
 		return overviewMapLayers;
+	}
+
+	public String getUserApplicationKey() {
+		return getBlueprint().getUserApplicationKey();
+	}
+
+	public void setUserApplicationKey(String userApplicationKey) {
+		getBlueprint().setUserApplicationKey(userApplicationKey);
 	}
 
 }

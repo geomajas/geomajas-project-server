@@ -10,12 +10,15 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
+import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -36,17 +39,6 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);
 
-//		// ----------------------------------------------------------
-//
-//		CommService.getSystemLayerTreeNode(new DataCallback<GetSystemLayerTreeNodeResponse>() {
-//
-//			public void execute(GetSystemLayerTreeNodeResponse result) {
-//				systemLayerTreeNode = result.getSystemLayerTreeNode();
-//			}
-//		});
-//
-//		// ----------------------------------------------------------
-
 		layerTreeSelect = new LayerTreeSelectPanel();
 		layerTreeSelect.setDisabled(true);
 		layerTreeSelect.setWidth100();
@@ -64,26 +56,7 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 
 	public void setBlueprint(BlueprintDto newBluePrint) {
 		this.blueprint = newBluePrint;
-//		CommService.getSystemLayerTreeNode(new DataCallback<GetSystemLayerTreeNodeResponse>() {
-//
-//			public void execute(GetSystemLayerTreeNodeResponse result) {
-//				systemLayerTreeNode = result.getSystemLayerTreeNode();
-//				layerTreeSelect.clearValues();
-//				if (blueprint != null) {
-//					if (blueprint.getLayerTree() == null) {
-//						blueprint.setLayerTree(new LayerTreeDto());
-//					}
-//					LayerTreeNodeDto target = blueprint.getLayerTree().getRootNode();
-//					boolean hasLayerTree = false;
-//					if (blueprint.getUserApplicationName() != null) {
-//						hasLayerTree = UserApplicationRegistry.getInstance().get(blueprint.getUserApplicationName())
-//								.hasLayerTree();
-//					}
-//					layerTreeSelect.setValues(systemLayerTreeNode, target, !(blueprint.isPublic()), hasLayerTree);
-//				}
-//			}
-//		});
-
+		layerTreeSelect.setValues(newBluePrint);
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -94,14 +67,9 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
-//		LayerTreeDto lt = blueprint.getLayerTree();
-//		if (lt == null) {
-//			lt = new LayerTreeDto();
-//			blueprint.setLayerTree(lt);
-//		}
-//		lt.setRootNode(layerTreeSelect.getValues());
-//		layerTreeSelect.setDisabled(true);
-//		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_LAYERS);
+		ClientLayerTreeInfo cli = layerTreeSelect.getValues();
+		blueprint.getMainMapClientWidgetInfos().put(ClientLayerTreeInfo.IDENTIFIER, cli);
+		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 		return true;
 	}
 

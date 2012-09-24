@@ -23,7 +23,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 /**
  * @author Kristof Heirwegh
  */
-public class BlueprintDto implements GeodeskInfo {
+public class BlueprintDto implements BaseGeodeskDto {
 
 	private static final long serialVersionUID = 1L;
 

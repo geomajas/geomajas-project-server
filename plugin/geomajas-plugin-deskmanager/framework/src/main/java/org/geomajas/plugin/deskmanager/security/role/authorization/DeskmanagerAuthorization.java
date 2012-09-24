@@ -21,7 +21,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
-import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -184,7 +184,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// -- Blueprint --------------------------------------------------------
 
-	public boolean readAllowed(Blueprint bp) {
+	public boolean readAllowed(BaseGeodesk bp) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
 		} else if (getRole() == Role.DESK_MANAGER) { // must be able to read blueprints in beheer to get at
@@ -195,14 +195,14 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return false;
 	}
 
-	public boolean saveAllowed(Blueprint bp) {
+	public boolean saveAllowed(BaseGeodesk bp) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean deleteAllowed(Blueprint bp) {
+	public boolean deleteAllowed(BaseGeodesk bp) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
 		}

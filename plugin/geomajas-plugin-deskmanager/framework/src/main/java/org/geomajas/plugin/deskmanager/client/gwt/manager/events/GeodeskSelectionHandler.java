@@ -8,24 +8,21 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.command.manager.dto;
-
-import org.geomajas.command.CommandRequest;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.events;
 
 /**
- * TODO.
+ * Handler that listens to the selection of geodesks in the grid.
  * 
- * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * 
  */
-public class GetSystemLayerTreeNodeRequest implements CommandRequest {
+public interface GeodeskSelectionHandler {
 
-	private static final long serialVersionUID = 1L;
-
-	public static final String COMMAND = "command.deskmanager.beheer.GetSystemLayerTreeNode";
-
-	public String toString() {
-		return COMMAND;
-	}
+	/**
+	 * Called when the selection of the geodesk changes.
+	 * 
+	 * @param geodeskevent
+	 */
+	void onGeodeskSelectionChange(GeodeskEvent geodeskEvent);
 
 }

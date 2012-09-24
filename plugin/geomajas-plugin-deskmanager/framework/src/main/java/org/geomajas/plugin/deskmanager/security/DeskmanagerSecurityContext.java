@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.security;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.internal.security.DefaultSecurityContext;
-import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -162,7 +162,7 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 
 	// -- Blueprint --------------------------------------------------------
 
-	public boolean readAllowed(Blueprint bp) {
+	public boolean readAllowed(BaseGeodesk bp) {
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerManagementAuthorization) {
@@ -173,7 +173,7 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 		return false;
 	}
 
-	public boolean saveAllowed(Blueprint bp) {
+	public boolean saveAllowed(BaseGeodesk bp) {
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerManagementAuthorization) {
@@ -184,7 +184,7 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 		return false;
 	}
 
-	public boolean deleteAllowed(Blueprint bp) {
+	public boolean deleteAllowed(BaseGeodesk bp) {
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerManagementAuthorization) {

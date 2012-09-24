@@ -31,7 +31,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.domain.dto.GeodeskInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -47,7 +46,7 @@ import org.hibernate.annotations.Type;
  * 
  */
 @Entity
-public class Blueprint implements GeodeskInfo {
+public class Blueprint implements BaseGeodesk {
 
 	private static final long serialVersionUID = 1L;
 
@@ -125,18 +124,30 @@ public class Blueprint implements GeodeskInfo {
 	
 	// ------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getId()
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setId(java.lang.String)
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getName()
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setName(java.lang.String)
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -229,79 +240,85 @@ public class Blueprint implements GeodeskInfo {
 		this.geodesksActive = geodesksActive;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getUserApplicationKey()
+	 */
 	public String getUserApplicationKey() {
 		return userApplicationKey;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setUserApplicationKey(java.lang.String)
+	 */
 	public void setUserApplicationKey(String userApplicationName) {
 		this.userApplicationKey = userApplicationName;
 	}
 
-	/**
-	 * @param applicationClientWidgetInfos the applicationClientWidgetInfos to set
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setApplicationClientWidgetInfos(java.util.Map)
 	 */
 	public void setApplicationClientWidgetInfos(Map<String, ClientWidgetInfo> applicationClientWidgetInfos) {
 		this.applicationClientWidgetInfos = applicationClientWidgetInfos;
 	}
 
-	/**
-	 * @return the applicationClientWidgetInfos
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getApplicationClientWidgetInfos()
 	 */
 	public Map<String, ClientWidgetInfo> getApplicationClientWidgetInfos() {
 		return applicationClientWidgetInfos;
 	}
 
-	/**
-	 * @param overviewMapClientWidgetInfos the overviewMapClientWidgetInfos to set
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setOverviewMapClientWidgetInfos(java.util.Map)
 	 */
 	public void setOverviewMapClientWidgetInfos(Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos) {
 		this.overviewMapClientWidgetInfos = overviewMapClientWidgetInfos;
 	}
 
-	/**
-	 * @return the overviewMapClientWidgetInfos
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getOverviewMapClientWidgetInfos()
 	 */
 	public Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfos() {
 		return overviewMapClientWidgetInfos;
 	}
 
-	/**
-	 * @param mainMapClientWidgetInfos the mainMapClientWidgetInfos to set
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setMainMapClientWidgetInfos(java.util.Map)
 	 */
 	public void setMainMapClientWidgetInfos(Map<String, ClientWidgetInfo> mainMapClientWidgetInfos) {
 		this.mainMapClientWidgetInfos = mainMapClientWidgetInfos;
 	}
 
-	/**
-	 * @return the mainMapClientWidgetInfos
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getMainMapClientWidgetInfos()
 	 */
 	public Map<String, ClientWidgetInfo> getMainMapClientWidgetInfos() {
 		return mainMapClientWidgetInfos;
 	}
 
-	/**
-	 * @param mainMapLayers the mainMapLayers to set
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setMainMapLayers(java.util.List)
 	 */
 	public void setMainMapLayers(List<Layer> layers) {
 		this.mainMapLayers = layers;
 	}
 
-	/**
-	 * @return the mainMapLayers
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getMainMapLayers()
 	 */
 	public List<Layer> getMainMapLayers() {
 		return mainMapLayers;
 	}
-	/**
-	 * @param mainMapLayers the mainMapLayers to set
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setOverviewMapLayers(java.util.List)
 	 */
 
 	public void setOverviewMapLayers(List<Layer> layers) {
 		this.overviewMapLayers = layers;
 	}
 
-	/**
-	 * @return the mainMapLayers
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getOverviewMapLayers()
 	 */
 	public List<Layer> getOverviewMapLayers() {
 		return overviewMapLayers;

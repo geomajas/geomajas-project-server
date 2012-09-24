@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
@@ -56,7 +57,7 @@ public class LoadBlueprintsTest {
 
 		List<Blueprint> blueprints = blueprintService.getBlueprints();
 
-		for (Blueprint blueprint : blueprints) {
+		for (BaseGeodesk blueprint : blueprints) {
 			Map<String, ClientWidgetInfo> appWidgets = blueprint.getApplicationClientWidgetInfos();
 			Assert.assertNotNull(appWidgets);
 			Map<String, ClientWidgetInfo> mmapWidgets = blueprint.getMainMapClientWidgetInfos();
