@@ -21,49 +21,6 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface AdvancedViewsMessages extends Messages {
 
-	String layerTreeWithLegendLayerActionsToolTip();
-
-	String layerActionsWindowTitle();
-	String layerActionsOpacity();
-	String layerActionsOpacitySliderLabelWidth();
-	String layerActionsLabels();
-	String layerActionsLabelsToolTip();
-	String layerActionsShowLegend();
-	String layerActionsShowLegendAndFields();
-	String layerActionsRemoveFilter();
-	String layerActionsShowLayer();
-	String layerActionsShowLayerToolTip();
-
-	String layerInfoLayerInfo();
-	String layerInfoLayerActions();
-	String layerInfoLayerInfoValue();
-	String layerInfoLayerInfoSource();
-	String layerInfoLayerInfoDate();
-
-	String layerInfoWindowLegendTitle();
-
-	String layerInfoLayerInfoFldInfo();
-	String layerInfoLayerInfoFldLayer();
-	String layerInfoLayerInfoFldLayerType();
-	String layerInfoLayerInfoFldMaxViewScale();
-	String layerInfoLayerInfoFldMinViewScale();
-	String layerInfoLayerInfoFldVisible();
-	String layerInfoLayerInfoFldVisibleStatusVisible();
-	String layerInfoLayerInfoFldVisibleStatusHidden();
-	String layerInfoLayerInfoFldLayerTypeRaster();
-	String layerInfoLayerInfoFldLayerTypeVector();
-	String layerInfoLayerInfoAttAttribute();
-	String layerInfoLayerInfoAttLabel();
-	String layerInfoLayerInfoAttType();
-	String layerInfoLayerInfoAttEditable();
-	String layerInfoLayerInfoAttIdentifying();
-	String layerInfoLayerInfoAttHidden();
-	String layerInfoLayerInfoAttNumeric();
-	String layerInfoLayerInfoAttYes();
-	String layerInfoLayerInfoAttNo();
-	String layerInfoLayerInfoLegend();
-	String layerInfoLayerInfoLegendNoLegend();
-
 	String expandingThemeWidgetNoThemeAvailableTitle();
 	String expandingThemeWidgetTooltip();
 	String expandingThemeWidgetTitle();

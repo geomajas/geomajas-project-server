@@ -14,17 +14,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="label" value="Raster (OpenStreetMap)" />
 		<property name="visible" value="true" />
 		<property name="style" value="1" />
-		<property name="widgetInfo">
-			<map>
-				<entry key="ExtraLayerInfo">
-					<bean class="org.geomajas.widget.advancedviews.configuration.client.ExtraLayerInfo">
-						<property name="smallLayerIconUrl" value="OSM_icon_small.png" />
-						<property name="largeLayerIconUrl" value="OSM_icon_large.png" />
-						<property name="legendImageUrl" value="legendSample.png" />
-					</bean>
-				</entry>
-			</map>
-		</property>
 	</bean>
 
 </beans>

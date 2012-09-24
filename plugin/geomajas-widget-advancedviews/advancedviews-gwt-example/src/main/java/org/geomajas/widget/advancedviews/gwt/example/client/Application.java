@@ -26,7 +26,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.widget.advancedviews.client.widget.ExpandingThemeWidget;
-import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend;
 import org.geomajas.widget.advancedviews.client.widget.ThemeWidget;
 import org.geomajas.widget.advancedviews.gwt.example.client.i18n.ApplicationMessages;
 import org.geomajas.widget.advancedviews.gwt.example.client.pages.AbstractTab;
@@ -56,8 +55,6 @@ public class Application implements EntryPoint {
 
 	private OverviewMap overviewMap;
 	
-	private LayerTreeWithLegend layerTree;
-
 	private TabSet tabSet = new TabSet();
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
@@ -139,14 +136,6 @@ public class Application implements EntryPoint {
 		sectionStack.setCanResizeSections(false);
 		sectionStack.setSize("300px", "100%");
 
-		// LayerTree layout:
-		SectionStackSection section2 = new SectionStackSection("Layer tree with legend");
-		section2.setExpanded(true);
-		layerTree = new LayerTreeWithLegend(map);
-		section2.addItem(layerTree);
-		sectionStack.addSection(section2);
-
-		
 		// Putting the right side layouts together:
 		layout.addMember(sectionStack);
 
