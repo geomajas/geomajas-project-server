@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree;
 
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerGroupConfigurationWindow;
 import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 
 import com.smartgwt.client.types.DragDataAction;
@@ -20,7 +19,6 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.util.ValueCallback;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
@@ -37,10 +35,6 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class LayerTreeGrid extends TreeGrid {
 
-	private HLayout rollOverCanvas;
-
-	private LayerGroupConfigurationWindow layerGroupConfWi;
-
 	private final Menu menu = new Menu();
 
 	private final MenuItem menuMapAdd = new MenuItem("Nieuwe map maken");
@@ -48,10 +42,6 @@ public class LayerTreeGrid extends TreeGrid {
 	private final MenuItem menuMapDelete = new MenuItem("Map verwijderen");
 
 	private TreeGrid sourceTreeGrid;
-
-	private LayerTreeNode rollOverNode;
-
-	private Integer rowNumber;
 
 	public LayerTreeGrid(String title, boolean editable) {
 		super();
