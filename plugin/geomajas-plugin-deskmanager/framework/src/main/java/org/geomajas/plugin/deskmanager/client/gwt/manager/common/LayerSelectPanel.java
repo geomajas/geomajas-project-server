@@ -136,8 +136,10 @@ public class LayerSelectPanel extends HLayout {
 	}
 
 	public List<LayerDto> getValues() {
+		// reverse order!
 		List<LayerDto> selectedLayers = new ArrayList<LayerDto>();
-		for (ListGridRecord record : right.getRecords()) {
+		for (int i = right.getRecords().length -1; i >= 0; i--) {
+			ListGridRecord record = right.getRecord(i);
 			LayerDto layer = (LayerDto) record.getAttributeAsObject(LayerListGrid.FLD_OBJECT);
 			if (!selectedLayers.contains(layer)) {
 				selectedLayers.add(layer);
