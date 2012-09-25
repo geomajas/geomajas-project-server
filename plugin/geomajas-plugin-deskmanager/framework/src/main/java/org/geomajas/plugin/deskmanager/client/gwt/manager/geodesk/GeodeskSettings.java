@@ -56,6 +56,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class GeodeskSettings extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private static final DateTimeFormat DATE_FORMATTER = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 
 	private static final int FORMITEM_WIDTH = 300;
@@ -74,11 +75,11 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 
 	private StaticTextItem lastEditDate;
 
-	private StaticTextItem loketBeheerder;
+	private StaticTextItem geodeskAdministrator;
 
 	private CheckboxItem active;
 
-	private CheckboxItem publiek;
+	private CheckboxItem publicGeodesk;
 
 	private CheckboxItem limitToCreatorTerritory;
 
@@ -110,9 +111,9 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 
 		blueprints = new SelectItem();
 		blueprints.setWidth(FORMITEM_WIDTH);
-		blueprints.setTitle(MESSAGES.settingsNameBlueprint());
+		blueprints.setTitle(MESSAGES.geodeskSettingsNameBlueprint());
 		blueprints.setDisabled(true); // ter info
-		blueprints.setTooltip(MESSAGES.settingsNameBlueprintTooltip());
+		blueprints.setTooltip("<nobr>" + MESSAGES.settingsNameBlueprintTooltip() + "</nobr>");
 
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile().getRole())) {
 			geodeskId = new TextItem();
@@ -128,7 +129,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 								geodeskIdValid = !exists;
 								geodeskId.validate();
 								if (exists) {
-									SC.warn(MESSAGES.warnGeodeskIdNotUnique());
+									SC.warn(MESSAGES.settingGeodeskWarnGeodeskIdNotUnique());
 								}
 							}
 						});
@@ -147,48 +148,48 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 			geodeskId = new StaticTextItem();
 		}
 
-		geodeskId.setTitle(MESSAGES.settingsGeodeskId());
+		geodeskId.setTitle(MESSAGES.geodeskSettingsId());
 		geodeskId.setWidth(FORMITEM_WIDTH);
 		geodeskId.setWrapTitle(false);
-		geodeskId.setTooltip(MESSAGES.settingsGeodeskIdTooltip());
+		geodeskId.setTooltip("<nobr>" + MESSAGES.geodeskSettingsIdTooltip() + "</nobr>");
 
-		loketBeheerder = new StaticTextItem("loketBeheerder");
-		loketBeheerder.setTitle(MESSAGES.settingsGeodeskAdmin());
-		loketBeheerder.setWidth(FORMITEM_WIDTH);
-		loketBeheerder.setWrapTitle(false);
+		geodeskAdministrator = new StaticTextItem("geodeskAdministrator");
+		geodeskAdministrator.setTitle(MESSAGES.geodeskSettingsAdmin());
+		geodeskAdministrator.setWidth(FORMITEM_WIDTH);
+		geodeskAdministrator.setWrapTitle(false);
 
 		lastEditBy = new StaticTextItem("lastEditBy");
-		lastEditBy.setTitle(MESSAGES.settingsGeodeskLatestChangeBy());
+		lastEditBy.setTitle(MESSAGES.settingsLatestChangeBy());
 		lastEditBy.setWidth(FORMITEM_WIDTH);
 		lastEditBy.setWrapTitle(false);
 
 		lastEditDate = new StaticTextItem("lastEditDate");
-		lastEditDate.setTitle(MESSAGES.settingsGeodeskLatestChangeWhen());
+		lastEditDate.setTitle(MESSAGES.settingsLatestChangeWhen());
 		lastEditDate.setWidth(FORMITEM_WIDTH);
 		lastEditDate.setWrapTitle(false);
 
 		active = new CheckboxItem();
-		active.setTitle(MESSAGES.settingsGeodeskActiv());
+		active.setTitle(MESSAGES.geodeskSettingsActiv());
 		active.setWrapTitle(false);
 		active.setTooltip(MESSAGES.geodeskActivTooltip());
 
-		publiek = new CheckboxItem();
-		publiek.setTitle(MESSAGES.settingsGeodeskPublic());
-		publiek.setWrapTitle(false);
-		publiek.setPrompt(MESSAGES.geodeskPublicTooltip());
-		publiek.addChangeHandler(new ChangeHandler() {
+		publicGeodesk = new CheckboxItem();
+		publicGeodesk.setTitle(MESSAGES.geodeskSettingsPublic());
+		publicGeodesk.setWrapTitle(false);
+		publicGeodesk.setPrompt(MESSAGES.geodeskPublicTooltip());
+		publicGeodesk.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
 				if (containsNonPublicLayers) {
-					SC.warn(MESSAGES.warnGeodeskCannotBePublic());
+					SC.warn(MESSAGES.geodeskSettingsWarnCannotBePublic());
 					event.cancel();
 				}
 			}
 		});
-		publiek.addChangedHandler(new ChangedHandler() {
+		publicGeodesk.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				boolean val = publiek.getValueAsBoolean();
+				boolean val = publicGeodesk.getValueAsBoolean();
 				if (geodesk.getBlueprint().isLimitToCreatorTerritory()) {
 					limitToCreatorTerritory.setDisabled(true);
 				} else {
@@ -203,25 +204,26 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 		});
 
 		limitToCreatorTerritory = new CheckboxItem();
-		limitToCreatorTerritory.setTitle(MESSAGES.settingsGeodeskLimitToTerritoryAdministrator());
+		limitToCreatorTerritory.setTitle(MESSAGES.settingsLimitToTerritoryAdministrator());
 		limitToCreatorTerritory.setWrapTitle(false);
-		limitToCreatorTerritory.setPrompt(MESSAGES.settingsGeodeskLimitToTerritoryAdministratorTooltip());
+		limitToCreatorTerritory.setPrompt(MESSAGES.settingsLimitToTerritoryAdministratorTooltip());
 
 		limitToUserTerritory = new CheckboxItem();
-		limitToUserTerritory.setTitle(MESSAGES.settingsGeodeskLimitToTerritoryUser());
+		limitToUserTerritory.setTitle(MESSAGES.settingsLimitToTerritoryUser());
 		limitToUserTerritory.setWrapTitle(false);
-		limitToUserTerritory.setPrompt(MESSAGES.settingsGeodeskLimitToTerritoryUserTooltip());
+		limitToUserTerritory.setPrompt(MESSAGES.settingsLimitToTerritoryUserTooltip());
 
 		// ----------------------------------------------------------
 
 		form.setTitleOrientation(TitleOrientation.LEFT);
-		form.setFields(geodeskName, active, blueprints, publiek, geodeskId, limitToCreatorTerritory, loketBeheerder,
-				limitToUserTerritory, lastEditBy, new SpacerItem(), lastEditDate, new SpacerItem());
+		form.setFields(geodeskName, active, blueprints, publicGeodesk, geodeskId, limitToCreatorTerritory, 
+				geodeskAdministrator, limitToUserTerritory, lastEditBy, new SpacerItem(), lastEditDate,
+				new SpacerItem());
 
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Instellingen");
+		group.setGroupTitle(MESSAGES.settingsFormGroupSettings());
 		group.addMember(form);
 		group.setOverflow(Overflow.AUTO);
 
@@ -240,7 +242,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 					}
 					blueprints.setValueMap(valueMap);
 				} else {
-					SC.logWarn("Er zijn geen blauwdrukken beschikbaar!");
+					SC.logWarn(MESSAGES.geodeskSettingsWarnNoBlueprints());
 				}
 			}
 		});
@@ -254,11 +256,11 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 			geodeskName.setValue(loket.getName());
 			geodeskId.setValue(loket.getGeodeskId());
 			blueprints.setValue(loket.getBlueprint().getId());
-			loketBeheerder.setValue(loket.getCreationBy());
+			geodeskAdministrator.setValue(loket.getCreationBy());
 			lastEditBy.setValue(loket.getLastEditBy());
 			lastEditDate.setValue(DATE_FORMATTER.format(loket.getLastEditDate()));
 			active.setValue(loket.isActive());
-			publiek.setValue(loket.isPublic());
+			publicGeodesk.setValue(loket.isPublic());
 			limitToCreatorTerritory.setValue(loket.isLimitToCreatorTerritory());
 			limitToUserTerritory.setValue(loket.isLimitToUserTerritory());
 			limitToCreatorTerritory.setDisabled(!loket.isPublic());
@@ -269,7 +271,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 			// .containsNonPublicLayers());
 
 			// -- constraints from blueprint --
-			publiek.setDisabled(!loket.getBlueprint().isPublic());
+			publicGeodesk.setDisabled(!loket.getBlueprint().isPublic());
 			if (!limitToUserTerritory.isDisabled()) {
 				limitToUserTerritory.setDisabled(loket.getBlueprint().isLimitToUserTerritory());
 			}
@@ -278,7 +280,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 			}
 			if (!loket.getBlueprint().isGeodesksActive()) {
 				active.setDisabled(true);
-				active.setHint("<nobr> Geodesk gedesactiveerd door blauwdruk.</nobr>");
+				active.setHint("<nobr>" + MESSAGES.geodeskSettingsWarnGeodeskInactivedByBlueprint() + "</nobr>");
 			} else {
 				active.setDisabled(false);
 				active.setHint("");
@@ -300,7 +302,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 				geodesk.setGeodeskId(((TextItem) geodeskId).getValueAsString());
 			}
 			geodesk.setActive(active.getValueAsBoolean());
-			geodesk.setPublic(publiek.getValueAsBoolean());
+			geodesk.setPublic(publicGeodesk.getValueAsBoolean());
 			if (geodesk.isPublic()) {
 				geodesk.setLimitToLoketTerritory(limitToCreatorTerritory.getValueAsBoolean());
 			} else {
@@ -322,7 +324,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 
 	public boolean validate() {
 		if (!form.validate()) {
-			SC.say("Niet alle gegevens werden correct ingevuld.");
+			SC.say(MESSAGES.formWarnNotvalid());
 			return false;
 		}
 		return true;

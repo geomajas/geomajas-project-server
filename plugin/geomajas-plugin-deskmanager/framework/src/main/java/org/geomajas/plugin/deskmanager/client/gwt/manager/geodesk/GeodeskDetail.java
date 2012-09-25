@@ -16,10 +16,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHand
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
@@ -39,6 +41,10 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class GeodeskDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, GeodeskHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+
+	private static final String ID_ATTRIBUTE = "id";
+	
 	private GeodeskDto geodesk;
 
 	private TabSet tabset;
@@ -76,27 +82,27 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		tabset.setOverflow(Overflow.HIDDEN);
 
 		settings = new GeodeskSettings();
-		Tab tab = new Tab("Instellingen");
+		Tab tab = new Tab(MESSAGES.geodeskDetailTabSettings());
 		tabset.addTab(tab);
 		tab.setPane(settings);
 		Whiteboard.registerHandler(settings);
 
 		layers = new GeodeskLayers();
-		tab = new Tab("Datalagen");
+		tab = new Tab(MESSAGES.geodeskDetailTabDataLayers());
 		tabset.addTab(tab);
 		tab.setPane(layers);
 		Whiteboard.registerHandler(layers);
 		
 
 		layerTree = new GeodeskLayerTree();
-		tab = new Tab("Boomstructuur");
+		tab = new Tab(MESSAGES.geodeskDetailTabLayerTree());
 		tabset.addTab(tab);
 		tab.setPane(layerTree);
 		Whiteboard.registerHandler(layerTree);
 
 		
 		accessrights = new GeodeskAccessRights();
-		accessrightsTab = new Tab("Gebruiksrechten");
+		accessrightsTab = new Tab(MESSAGES.geodeskDetailTabAccessRights());
 		tabset.addTab(accessrightsTab);
 		accessrightsTab.setPane(accessrights);
 		accessrightsTab.setDisabled(true);
@@ -104,28 +110,28 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		
 
 		notifications = new GeodeskNotifications();
-		tab = new Tab("Notificaties");
+		tab = new Tab(MESSAGES.geodeskDetailTabNotifications());
 		tabset.addTab(tab);
 		tab.setPane(notifications);
 		Whiteboard.registerHandler(notifications);
 		
 
 		geodeskLayout = new GeodeskLayout();
-		tab = new Tab("Opmaak");
+		tab = new Tab(MESSAGES.geodeskDetailTabLayout());
 		tabset.addTab(tab);
 		tab.setPane(geodeskLayout);
 		Whiteboard.registerHandler(geodeskLayout);
 		
 
 		htmlCode = new GeodeskHtmlCode();
-		tab = new Tab("HTML Code");
+		tab = new Tab(MESSAGES.geodeskDetailTabHTMLCode());
 		tabset.addTab(tab);
 		tab.setPane(htmlCode);
 		Whiteboard.registerHandler(htmlCode);
 		
 
 		themeConfig = new GeodeskThemeConfig();
-		tab = new Tab("Themas");
+		tab = new Tab(MESSAGES.geodeskDetailTabThemes());
 		tabset.addTab(tab);
 		tab.setPane(themeConfig);
 		Whiteboard.registerHandler(themeConfig);
@@ -163,8 +169,8 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		setDisabled(true);
 		if (event.getState()) { // true == selected
 			ListGridRecord record = (ListGridRecord) event.getRecord();
-			if (record != null && record.getAttributeAsString("id") != null
-					&& record.getAttributeAsString("id").length() != 0) {
+			if (record != null && record.getAttributeAsString(ID_ATTRIBUTE) != null
+					&& record.getAttributeAsString(ID_ATTRIBUTE).length() != 0) {
 				loadRecord(record.getAttributeAsString(GeodeskGrid.FLD_ID));
 			} else {
 				setGeodesk(null);
@@ -173,7 +179,8 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	}
 
 	private void setLoading() {
-		loadingLabel.setContents("<B><i>Configuratie wordt opgehaald...</i> <img src='" + Geomajas.getIsomorphicDir()
+		loadingLabel.setContents("<B><i>" + MESSAGES.geodeskDetailLoadingConfig() + "</i> <img src='"
+				+ Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></B>");
 		loadingLayout.animateShow(AnimationEffect.FADE);
 	}

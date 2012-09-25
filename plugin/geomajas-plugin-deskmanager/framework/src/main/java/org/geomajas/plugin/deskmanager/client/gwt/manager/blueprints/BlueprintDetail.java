@@ -39,6 +39,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class BlueprintDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, BlueprintHandler {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final String ID_ATTRIBUTE = "id";
 	
 	private BlueprintDto blueprint;
 
@@ -74,37 +75,37 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		//This must become more generic...
 		settings = new BlueprintSettings();
 		Whiteboard.registerHandler(settings);
-		Tab tab = new Tab("Instellingen");
+		Tab tab = new Tab(MESSAGES.blueprintDetailTabSettings());
 		tabset.addTab(tab);
 		tab.setPane(settings);
 
 		layers = new BlueprintLayers();
 		Whiteboard.registerHandler(layers);
-		tab = new Tab("Datalagen");
+		tab = new Tab(MESSAGES.blueprintDetailTabDataLayers());
 		tabset.addTab(tab);
 		tab.setPane(layers);
 
 		layerTree = new BlueprintLayerTree();
 		Whiteboard.registerHandler(layerTree);
-		tab = new Tab("Boomstructuur");
+		tab = new Tab(MESSAGES.blueprintDetailTabLayerTree());
 		tabset.addTab(tab);
 		tab.setPane(layerTree);
 
 		accessrights = new BlueprintAccessRights();
 		Whiteboard.registerHandler(accessrights);
-		tab = new Tab("Gebruiksrechten");
+		tab = new Tab(MESSAGES.blueprintDetailTabAccessRights());
 		tabset.addTab(tab);
 		tab.setPane(accessrights);
 
 		loketLayout = new BlueprintGeodeskLayout();
 		Whiteboard.registerHandler(loketLayout);
-		tab = new Tab("Opmaak");
+		tab = new Tab(MESSAGES.blueprintDetailTabLayout());
 		tabset.addTab(tab);
 		tab.setPane(loketLayout);
 
 		themeConfig = new BlueprintThemeConfig();
 		Whiteboard.registerHandler(themeConfig);
-		tab = new Tab("Themas");
+		tab = new Tab(MESSAGES.blueprintDetailTabThemes());
 		
 		tabset.addTab(tab);
 		tab.setPane(themeConfig);
@@ -141,8 +142,8 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		setDisabled(true);
 		if (event.getState()) { // true == selected
 			ListGridRecord record = (ListGridRecord) event.getRecord();
-			if (record != null && record.getAttributeAsString("id") != null
-					&& record.getAttributeAsString("id").length() != 0) {
+			if (record != null && record.getAttributeAsString(ID_ATTRIBUTE) != null
+					&& record.getAttributeAsString(ID_ATTRIBUTE).length() != 0) {
 				loadRecord(record.getAttributeAsString(BlueprintGrid.FLD_ID));
 			} else {
 				setBlueprint(null);
@@ -151,7 +152,7 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 	}
 
 	private void setLoading() {
-		loadingLabel.setContents("<B><i>Configuratie wordt opgehaald...</i> " + "<img src='"
+		loadingLabel.setContents("<B><i>" + MESSAGES.blueprintDetailLoadingConfig() + "</i> " + "<img src='"
 				+ Geomajas.getIsomorphicDir() + "/images/circle.gif' style='height: 1em' /></B>");
 		loadingLayout.animateShow(AnimationEffect.FADE);
 	}

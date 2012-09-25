@@ -19,10 +19,12 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -43,10 +45,20 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * @author Kristof Heirwegh
  */
 public class BlueprintGrid extends ListGrid implements BlueprintHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	public static final String FLD_ID = "id";
+	
+	private static final String FLD_NAME = "name";
+	
+	private static final String FLD_LIMIT_TO_TERRITORY = "limitToLoketTerritory";
 
 	public static final String FLD_PUBLIC = "public";
+	
+	private static final String FLD_ACTIVE = "active";
+	
+	private static final String FLD_ACTIONS = "actions";
 
 	public static final String FLD_GEODESKSACTIVE = "geodesksActive";
 
@@ -67,36 +79,39 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 
 		// -- Fields --------------------------------------------------------
 
-		ListGridField name = new ListGridField("name", "Naam Blauwdruk");
+		ListGridField name = new ListGridField(FLD_NAME, MESSAGES.blueprintGridColumnName());
 		name.setWidth("*");
 		name.setType(ListGridFieldType.TEXT);
 
-		ListGridField limitTerritory = new ListGridField("limitToLoketTerritory", "Beveiliging grondgebied");
+		ListGridField limitTerritory = new ListGridField(FLD_LIMIT_TO_TERRITORY,
+				MESSAGES.blueprintGridColumnLimitToTerritory());
 		limitTerritory.setType(ListGridFieldType.BOOLEAN);
-		limitTerritory.setWidth(135);
-		limitTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied"
-				+ " van de entiteit loketbeheerder.<br />Uit: geen beveiliging.");
+		limitTerritory.setWidth(140);
+		limitTerritory.setPrompt(MESSAGES.settingsLimitToTerritoryAdministratorTooltip());
 
-		ListGridField publicUse = new ListGridField(FLD_PUBLIC, "Publiek");
+		ListGridField publicUse = new ListGridField(FLD_PUBLIC, MESSAGES.blueprintGridColumnPublic());
 		publicUse.setType(ListGridFieldType.BOOLEAN);
 		publicUse.setWidth(100);
-		publicUse.setPrompt("Aan: loket kan geraadpleegd worden zonder aanmelden.<br />"
-				+ "Uit: loket kan enkel geraadpleegd worden na aanmelden (LB of VO).");
+		publicUse.setPrompt(MESSAGES.blueprintAttributePublicTooltip());
 
-		ListGridField active = new ListGridField("active", "Actief");
+		ListGridField active = new ListGridField(FLD_ACTIVE, MESSAGES.blueprintGridColumnActiv());
 		active.setType(ListGridFieldType.BOOLEAN);
 		active.setWidth(100);
-		active.setPrompt("Aan: betekent dat er nieuwe lokketten kunnen gebouwd worden gebaseerd"
-				+ " op deze blauwdruk.<br />Merk op dat dit geen invloed heeft op reeds bestaande"
-				+ " loketten gebaseerd op deze blauwdruk.");
+		active.setPrompt(MESSAGES.blueprintActivTooltip());
 
-		ListGridField geodesksActive = new ListGridField(FLD_GEODESKSACTIVE, "Geodesks Actief");
+		ListGridField geodesksActive = new ListGridField(FLD_GEODESKSACTIVE,
+				MESSAGES.blueprintAttributeGeodesksActiv());
 		geodesksActive.setType(ListGridFieldType.BOOLEAN);
 		geodesksActive.setWidth(135);
-		geodesksActive.setPrompt("Uit: betekent dat de loketten gebaseerd op deze blauwdruk"
-				+ " niet actief zijn (niet kunnen gebruikt worden).");
+		geodesksActive.setPrompt(MESSAGES.blueprintAttributeGeodesksActivTooltip());
 
-		setFields(name, limitTerritory, publicUse, active, geodesksActive);
+		
+		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.blueprintGridColumnActions());
+		actions.setType(ListGridFieldType.TEXT);
+		actions.setWidth(40);
+		actions.setPrompt(MESSAGES.bleuprintGridColumnActionsTooltip());
+		
+		setFields(name, limitTerritory, publicUse, active, geodesksActive, actions);
 		// initially sort on blueprint name
 		setSortField(0);
 		setSortDirection(SortDirection.ASCENDING);
@@ -128,16 +143,14 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 			deleteImg.setShowRollOver(false);
 			deleteImg.setLayoutAlign(Alignment.CENTER);
 			deleteImg.setSrc(WidgetLayout.iconRemove);
-			deleteImg.setPrompt("Verwijder blauwdruk");
+			deleteImg.setPrompt(MESSAGES.blueprintGridActionsColumnRemoveTooltip());
 			deleteImg.setHeight(16);
 			deleteImg.setWidth(16);
 			deleteImg.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					SC.ask("Verwijderen", "Blauwdruk \"" + rollOverRecord.getAttribute("name")
-							+ "\" verwijderen?<br /><br />Deze actie heeft geen invloed op eventueel "
-							+ "bestaande loketten gebaseerd op deze blauwdruk."
-							+ "<br />Deze actie kan niet ongedaan gemaakt worden.", new BooleanCallback() {
+					SC.ask(MESSAGES.removeTitle(), MESSAGES.blueprintRemoveConfirmQuestion(
+							rollOverRecord.getAttribute(FLD_NAME)), new BooleanCallback() {
 
 						public void execute(Boolean value) {
 							if (value) {
@@ -158,7 +171,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 		clearData();
 
 		setShowEmptyMessage(true);
-		setEmptyMessage("<i>Blauwdrukken worden geladen... <img src='" + Geomajas.getIsomorphicDir()
+		setEmptyMessage("<i>" + MESSAGES.blueprintsLoading() + " <img src='" + Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		redraw();
 
@@ -185,10 +198,10 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 	private ListGridRecord toGridRecord(BlueprintDto blueprint) {
 		ListGridRecord record = new ListGridRecord();
 		record.setAttribute(FLD_ID, blueprint.getId());
-		record.setAttribute("name", blueprint.getName());
-		record.setAttribute("limitToLoketTerritory", blueprint.isLimitToCreatorTerritory());
+		record.setAttribute(FLD_NAME, blueprint.getName());
+		record.setAttribute(FLD_LIMIT_TO_TERRITORY, blueprint.isLimitToCreatorTerritory());
 		record.setAttribute(FLD_PUBLIC, blueprint.isPublic());
-		record.setAttribute("active", blueprint.isActive());
+		record.setAttribute(FLD_ACTIVE, blueprint.isActive());
 		record.setAttribute(FLD_GEODESKSACTIVE, blueprint.isGeodesksActive());
 		return record;
 	}

@@ -23,9 +23,11 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WfsCap
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsCapabilitiesStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsChooseLayerStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsPreviewLayerStep;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
@@ -41,7 +43,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class NewLayerModelWizardWindow extends Window implements Wizard {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	public static final String STEP_CHOOSE_TYPE = "choose_type";
 
 	public static final String STEP_WMS_PROPS = "wms_props";
@@ -170,7 +174,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 			}
 		});
 
-		cancel = new IButton("Annuleren");
+		cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
 		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {

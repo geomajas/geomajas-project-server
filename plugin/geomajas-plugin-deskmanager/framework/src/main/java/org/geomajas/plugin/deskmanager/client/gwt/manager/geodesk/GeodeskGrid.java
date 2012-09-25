@@ -92,38 +92,38 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 
 		// -- Fields --------------------------------------------------------
 
-		ListGridField name = new ListGridField(FLD_NAME, MESSAGES.geodeskTableColumnName());
+		ListGridField name = new ListGridField(FLD_NAME, MESSAGES.geodeskGridColumnName());
 		name.setWidth("*");
 		name.setType(ListGridFieldType.TEXT);
 
-		ListGridField blueprint = new ListGridField(FLD_BLUEPRINT, MESSAGES.geodeskTableColumnNameBlueprint());
+		ListGridField blueprint = new ListGridField(FLD_BLUEPRINT, MESSAGES.geodeskGridColumnNameBlueprint());
 				
 		blueprint.setType(ListGridFieldType.TEXT);
 		blueprint.setWidth("*");
 
-		ListGridField geodeskId = new ListGridField(FLD_GEODESKID, MESSAGES.geodeskTableColumnDeskId());
+		ListGridField geodeskId = new ListGridField(FLD_GEODESKID, MESSAGES.geodeskGridColumnDeskId());
 		geodeskId.setType(ListGridFieldType.TEXT);
 		geodeskId.setWidth("*");
 
-		ListGridField author = new ListGridField(FLD_AUTHOR, MESSAGES.geodeskTableColumnAuthor());
+		ListGridField author = new ListGridField(FLD_AUTHOR, MESSAGES.geodeskGridColumnAuthor());
 		author.setType(ListGridFieldType.TEXT);
 		author.setWidth("*");
-		author.setPrompt(MESSAGES.geodeskTableColumnAuthorTooltip());
+		author.setPrompt(MESSAGES.geodeskGridColumnAuthorTooltip());
 
-		ListGridField publicUse = new ListGridField(FLD_PUBLIC, MESSAGES.geodeskTableColumnPublic());
+		ListGridField publicUse = new ListGridField(FLD_PUBLIC, MESSAGES.geodeskGridColumnPublic());
 		publicUse.setType(ListGridFieldType.BOOLEAN);
 		publicUse.setWidth(70);
 		publicUse.setPrompt(MESSAGES.geodeskPublicTooltip());
 				
-		ListGridField active = new ListGridField(FLD_ACTIVE, MESSAGES.geodeskTableColumnActiv());
+		ListGridField active = new ListGridField(FLD_ACTIVE, MESSAGES.geodeskGridColumnActiv());
 		active.setType(ListGridFieldType.BOOLEAN);
 		active.setWidth(70);
 		active.setPrompt(MESSAGES.geodeskActivTooltip());
 
-		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.geodeskTableColumnActions());
+		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.geodeskGridColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
 		actions.setWidth(60);
-		actions.setPrompt(MESSAGES.geodeskTableColumnActionsTooltip());
+		actions.setPrompt(MESSAGES.geodeskGridColumnActionsTooltip());
 
 		setFields(name, blueprint, geodeskId, author, publicUse, active, actions);
 		setSortField(0);
@@ -166,7 +166,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			previewImg.setShowRollOver(false);
 			previewImg.setLayoutAlign(Alignment.CENTER);
 			previewImg.setSrc(BeheerConstants.ICON_OPENSAMPLELOKET);
-			previewImg.setPrompt(MESSAGES.geodeskTableActionsColumnPreviewTooltip());
+			previewImg.setPrompt(MESSAGES.geodeskGridActionsColumnPreviewTooltip());
 					
 			previewImg.setHeight(16);
 			previewImg.setWidth(16);
@@ -190,7 +190,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			deleteImg.setShowRollOver(false);
 			deleteImg.setLayoutAlign(Alignment.CENTER);
 			deleteImg.setSrc(WidgetLayout.iconRemove);
-			deleteImg.setPrompt(MESSAGES.geodeskTableActionsColumnRemoveTooltip());
+			deleteImg.setPrompt(MESSAGES.geodeskGridActionsColumnRemoveTooltip());
 			deleteImg.setHeight(16);
 			deleteImg.setWidth(16);
 			deleteImg.addClickHandler(new ClickHandler() {

@@ -15,10 +15,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.smartgwt.client.types.Overflow;
@@ -42,6 +44,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class BlueprintSettings extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private static final DateTimeFormat DATE_FORMATTER = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 
 	private static final int FORMITEM_WIDTH = 300;
@@ -85,50 +89,47 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 		form.setDisabled(true);
 
 		blueprintName = new TextItem("blueprintName");
-		blueprintName.setTitle("Naam blauwdruk");
+		blueprintName.setTitle(MESSAGES.blueprintSettingsNameBlueprint());
 		blueprintName.setRequired(true);
 		blueprintName.setWidth(FORMITEM_WIDTH);
 		blueprintName.setWrapTitle(false);
 
 		clientApplicationName = new SelectItem();
-		clientApplicationName.setTitle("Gebruikstoepassing");
+		clientApplicationName.setTitle(MESSAGES.blueprintSettingsClientApplicationName());
 		clientApplicationName.setWidth(FORMITEM_WIDTH);
 		clientApplicationName.setRequired(true);
 		clientApplicationName.setWrapTitle(false);
 		clientApplicationName.setValueMap(UserApplicationRegistry.getInstance().getLoketNames());
 
 		lastEditBy = new StaticTextItem("lastEditBy");
-		lastEditBy.setTitle("Laatste wijziging door");
+		lastEditBy.setTitle(MESSAGES.settingsLatestChangeBy());
 		lastEditBy.setWidth(FORMITEM_WIDTH);
 		lastEditBy.setWrapTitle(false);
 
 		lastEditDate = new StaticTextItem("lastEditDate");
-		lastEditDate.setTitle("Laatste wijziging op");
+		lastEditDate.setTitle(MESSAGES.settingsLatestChangeWhen());
 		lastEditDate.setWidth(FORMITEM_WIDTH);
 		lastEditDate.setWrapTitle(false);
 
 		active = new CheckboxItem();
-		active.setTitle("Blauwdruk actief");
+		active.setTitle(MESSAGES.blueprintSettingsActiv());
 		active.setWrapTitle(false);
-		// FIXME: i18n
-		active.setTooltip("Aan: nieuwe loketten kunnen aangemaakt worden op basis van deze blauwdruk."
-				+ " <br />Uit: er kunnen geen nieuwe loketten aangemaakt worden.");
+		active.setTooltip(MESSAGES.blueprintSettingsActivTooltip());
 
 		geodesksActive = new CheckboxItem();
-		geodesksActive.setTitle("Geodesks actief");
+		geodesksActive.setTitle(MESSAGES.blueprintAttributeGeodesksActiv());
 		geodesksActive.setWrapTitle(false);
-		geodesksActive.setTooltip("Uit: de loketten gebaseerd op deze blauwdruk kunnen niet gebruikt worden.");
+		geodesksActive.setTooltip(MESSAGES.blueprintAttributeGeodesksActivTooltip());
 
 		publiek = new CheckboxItem();
-		publiek.setTitle("Publiek");
+		publiek.setTitle(MESSAGES.blueprintSettingsPublic());
 		publiek.setWrapTitle(false);
-		publiek.setPrompt("Aan: loket kan geraadpleegd worden zonder aanmelden.<br />"
-				+ "Uit: loket kan enkel geraadpleegd worden na aanmelden (LB of VO).");
+		publiek.setPrompt(MESSAGES.blueprintAttributePublicTooltip());
 		publiek.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
 				if (containsNonPublicLayers) {
-					SC.warn("U kan deze blauwdruk niet publiek maken daar deze niet publieke lagen bevat!");
+					SC.warn(MESSAGES.blueprintSettingsWarnCannotBePublic());
 					event.cancel();
 				}
 			}
@@ -143,16 +144,14 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 		});
 
 		limitToLoketTerritory = new CheckboxItem();
-		limitToLoketTerritory.setTitle("Beperk tot grondgebied Loketbeheerder");
+		limitToLoketTerritory.setTitle(MESSAGES.settingsLimitToTerritoryAdministrator());
 		limitToLoketTerritory.setWrapTitle(false);
-		limitToLoketTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied van de entiteit"
-				+ " loketbeheerder.<br />Uit: geen beveiliging.");
+		limitToLoketTerritory.setPrompt(MESSAGES.settingsLimitToTerritoryAdministratorTooltip());
 
 		limitToUserTerritory = new CheckboxItem();
-		limitToUserTerritory.setTitle("Beperk tot grondgebied Gebruiker");
+		limitToUserTerritory.setTitle(MESSAGES.settingsLimitToTerritoryUser());
 		limitToUserTerritory.setWrapTitle(false);
-		limitToLoketTerritory.setPrompt("Aan: betekent dat beveiliging geldt voor het grondgebied van de entiteit"
-				+ " gebruiker.<br />Uit: geen beveiliging.");
+		limitToLoketTerritory.setPrompt(MESSAGES.settingsLimitToTerritoryUserTooltip());
 
 		// ----------------------------------------------------------
 
@@ -163,13 +162,14 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Instellingen");
+		group.setGroupTitle(MESSAGES.settingsFormGroupSettings());
 		group.addMember(form);
 		group.setOverflow(Overflow.AUTO);
 
 		addMember(group);
 	}
 
+	
 	public void onBlueprintSelectionChange(BlueprintEvent bpe) {
 		setBlueprint(bpe.getBlueprint());
 	}
@@ -233,7 +233,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 
 	public boolean validate() {
 		if (!form.validate()) {
-			SC.say("Niet alle gegevens werden correct ingevuld.");
+			SC.say(MESSAGES.formWarnNotvalid());
 			return false;
 		}
 		return true;

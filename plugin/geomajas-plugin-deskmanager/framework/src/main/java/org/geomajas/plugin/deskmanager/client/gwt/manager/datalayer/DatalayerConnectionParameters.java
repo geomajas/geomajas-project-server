@@ -21,11 +21,13 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -35,7 +37,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class DatalayerConnectionParameters extends VLayout implements WoaEventHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private LayerModelDto lmd;
 
 	private KeyValueForm form;
@@ -55,7 +59,7 @@ public class DatalayerConnectionParameters extends VLayout implements WoaEventHa
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Connectie parameters");
+		group.setGroupTitle(MESSAGES.datalayerConnectionParametersGroup());
 		group.addMember(form);
 		group.setOverflow(Overflow.AUTO);
 
@@ -101,7 +105,7 @@ public class DatalayerConnectionParameters extends VLayout implements WoaEventHa
 
 	public boolean validate() {
 		if (!form.validate()) {
-			SC.say("Niet alle gegevens werden correct ingevuld.");
+			SC.say(MESSAGES.formWarnNotvalid());
 			return false;
 		}
 		return true;
@@ -112,20 +116,27 @@ public class DatalayerConnectionParameters extends VLayout implements WoaEventHa
 	private List<FormElement> getFieldList(String type) {
 		List<FormElement> fields = new ArrayList<FormElement>();
 		if (LayerConfiguration.SOURCE_TYPE_WFS.equals(type)) {
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL, "Capabilities URL",
-					true));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME, "Gebruikersnaam", 150));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD, "Wachtwoord",
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL,
+					MESSAGES.datalayerConnectionParametersCapabilitiesURL(), true));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME, 
+					MESSAGES.datalayerConnectionParametersUserName(), 150));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD,
+						MESSAGES.datalayerConnectionParametersPassword(),
 					KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		} else if (LayerConfiguration.SOURCE_TYPE_DATABASE.equals(type)) {
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, "Host", true, "localhost"));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT, "Port", true, "5432"));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE, "Schema", true,
-					"public"));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, "Database", true));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_USER, "Gebruikersnaam", 150));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD, "Wachtwoord",
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, 
+					MESSAGES.datalayerConnectionParametersHost(), true, "localhost"));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT,
+					MESSAGES.datalayerConnectionParametersPort(), true, "5432"));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE,
+					MESSAGES.datalayerConnectionParametersScheme(), true, "public"));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE,
+					MESSAGES.datalayerConnectionParametersDatabase(), true));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_USER,
+					MESSAGES.datalayerConnectionParametersUserName(), 150));
+			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD,
+					MESSAGES.datalayerConnectionParametersPassword(),
 					KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		}

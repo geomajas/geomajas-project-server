@@ -17,12 +17,14 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -31,7 +33,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class BlueprintAccessRights extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
-
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private BlueprintDto blueprint;
 
 	private GroupTreeGrid groupSelect;
@@ -50,7 +53,7 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler, B
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Gebruiksrechten");
+		group.setGroupTitle(MESSAGES.geodeskAccessRightsFormGroup());
 		group.addMember(groupSelect);
 		group.setOverflow(Overflow.AUTO);
 

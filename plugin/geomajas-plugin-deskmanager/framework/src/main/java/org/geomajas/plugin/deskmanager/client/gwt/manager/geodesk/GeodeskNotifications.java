@@ -16,10 +16,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -31,7 +33,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  *
  */
 public class GeodeskNotifications extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private GeodeskDto loket;
 
 	private MailManagePanel mailManage;
@@ -50,7 +54,7 @@ public class GeodeskNotifications extends VLayout implements WoaEventHandler, Ge
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Mail notificaties");
+		group.setGroupTitle(MESSAGES.geodeskNotificationsFormGroup());
 		group.addMember(mailManage);
 		group.setOverflow(Overflow.AUTO);
 
@@ -81,14 +85,14 @@ public class GeodeskNotifications extends VLayout implements WoaEventHandler, Ge
 		if (loket != null) {
 			if (mailManage.hasChanged()) {
 				if (mailManage.hasErrors()) {
-					SC.warn("De lijst bevat foutieve waarden. Gelieve deze op te lossen vooraleer op te slaan.");
+					SC.warn(MESSAGES.geodeskNotificationsWarnInvalidList());
 					return false;
 				} else {
 					loket.setMailAddresses(mailManage.getValues());
 					CommService.saveGeodesk(loket, SaveGeodeskRequest.SAVE_NOTIFICATIONS);
 				}
 			} else {
-				NotificationWindow.showInfoMessage("Niets gewijzigd");
+				NotificationWindow.showInfoMessage(MESSAGES.geodeskNotificationsWarnNoChanges());
 			}
 		}
 		mailManage.setDisabled(true);

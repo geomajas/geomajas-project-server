@@ -13,9 +13,11 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.LayerSettingsForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -25,7 +27,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class DatalayerSettings extends VLayout implements WoaEventHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private LayerModelDto lmd;
 
 	private LayerSettingsForm form;
@@ -100,7 +104,7 @@ public class DatalayerSettings extends VLayout implements WoaEventHandler {
 
 	public boolean validate() {
 		if (!form.validate()) {
-			SC.say("Niet alle gegevens werden correct ingevuld.");
+			SC.say(MESSAGES.formWarnNotvalid());
 			return false;
 		}
 		return true;

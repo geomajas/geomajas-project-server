@@ -65,7 +65,7 @@ public class DatalayerStyle extends VLayout implements WoaEventHandler {
 
 	public boolean validate() {
 		// if (!form.validate()) {
-		// SC.say("Niet alle gegevens werden correct ingevuld.");
+		// SC.say(MESSAGES.formWarnNotvalid());
 		// return false;
 		// }
 		return true;

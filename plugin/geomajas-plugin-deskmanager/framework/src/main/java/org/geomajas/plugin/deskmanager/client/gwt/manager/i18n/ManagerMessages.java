@@ -14,9 +14,18 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * @author Oliver May
+ * @author BuyleA
  *
  */
 public interface ManagerMessages extends Messages {
+	
+	String cancelButtonText();
+	String removeTitle();
+	
+	String settingsLatestChangeBy();
+	String settingsLatestChangeWhen();
+
+	
 	// Configuration of Themes
 	String themeConfigThemeTitle();
 
@@ -97,24 +106,24 @@ public interface ManagerMessages extends Messages {
 	// Main section tabs
 	String mainTabGeodesks();
 	String mainTabDataLayers();
-	String mainTabBluePrints();
+	String mainTabBlueprints();
 
 	//Geodesks main Tab
 	String newGeodeskButtonText();
 	
-	String geodeskTableColumnName();
-	String geodeskTableColumnNameBlueprint();
-	String geodeskTableColumnDeskId();
-	String geodeskTableColumnAuthor();
-	String geodeskTableColumnAuthorTooltip();
-	String geodeskTableColumnPublic();
+	String geodeskGridColumnName();
+	String geodeskGridColumnNameBlueprint();
+	String geodeskGridColumnDeskId();
+	String geodeskGridColumnAuthor();
+	String geodeskGridColumnAuthorTooltip();
+	String geodeskGridColumnPublic();
 	String geodeskPublicTooltip();
-	String geodeskTableColumnActiv();
+	String geodeskGridColumnActiv();
 	String geodeskActivTooltip();
-	String geodeskTableColumnActions();
-	String geodeskTableColumnActionsTooltip();
-	String geodeskTableActionsColumnPreviewTooltip();
-	String geodeskTableActionsColumnRemoveTooltip();
+	String geodeskGridColumnActions();
+	String geodeskGridColumnActionsTooltip();
+	String geodeskGridActionsColumnPreviewTooltip();
+	String geodeskGridActionsColumnRemoveTooltip();
 
 	String geodeskLabel();
 
@@ -126,36 +135,101 @@ public interface ManagerMessages extends Messages {
 
 	String settingsNameGeodesk();
 
-	String settingsNameBlueprint();
+	String geodeskSettingsNameBlueprint();
 
-	String settingsGeodeskId();
+	String geodeskSettingsId();
 
 	String settingsNameBlueprintTooltip();
 
-	String warnGeodeskIdNotUnique();
+	String settingGeodeskWarnGeodeskIdNotUnique();
 
 	String validatorWarnGeodeskIdNotUnique();
+		
+	String geodeskSettingsIdTooltip();
 
-	String settingsGeodeskIdTooltip();
+	String geodeskSettingsAdmin();
 
-	String settingsGeodeskAdmin();
+	String geodeskSettingsActiv();
 
-	String settingsGeodeskLatestChangeBy();
-
-	String settingsGeodeskLatestChangeWhen();
-
-	String settingsGeodeskActiv();
-
-	String settingsGeodeskPublic();
-	String warnGeodeskCannotBePublic();
-
-	String settingsGeodeskLimitToTerritoryAdministrator();
-	String settingsGeodeskLimitToTerritoryAdministratorTooltip();
-	String settingsGeodeskLimitToTerritoryUser();
-	String settingsGeodeskLimitToTerritoryUserTooltip();
-
+	String geodeskSettingsPublic();
+	String geodeskSettingsWarnCannotBePublic();
+	String geodeskSettingsWarnGeodeskInactivedByBlueprint();
+	String formWarnNotvalid();
+	
+	String settingsLimitToTerritoryAdministrator();
+	String settingsLimitToTerritoryAdministratorTooltip();
+	String settingsLimitToTerritoryUser();
+	String settingsLimitToTerritoryUserTooltip();
+	
+	String settingsFormGroupSettings();
+	String geodeskSettingsWarnNoBlueprints();
 	String datalagenGroup();
 	String layerTreeFormGroup();
 	String geodeskAccessRightsFormGroup();
+	String geodeskNotificationsFormGroup();
+	String geodeskNotificationsWarnInvalidList();
+	String geodeskNotificationsWarnNoChanges();
+
+	String geodeskDetailTabSettings();
+	String geodeskDetailTabDataLayers();
+	String geodeskDetailTabLayerTree();
+	String geodeskDetailTabAccessRights();
+	String geodeskDetailTabNotifications();
+	String geodeskDetailTabLayout();
+
+	String geodeskDetailTabHTMLCode();
+
+	String geodeskDetailTabThemes();
+
+	String geodeskDetailLoadingConfig();
+
+	String chooseBlueprintTitle();
+	String chooseBlueprintRequired();
+	String chooseBlueprintLoading();
+	String chooseBlueprintTooltip();
+	String chooseBlueprintCreate();
+	String chooseBlueprinWarnNoBlueprints();
+
+	String datalayerConnectionParametersGroup();
+	String datalayerConnectionParametersCapabilitiesURL();
+	String datalayerConnectionParametersUserName();
+	String datalayerConnectionParametersPassword();
+	String datalayerConnectionParametersHost();
+	String datalayerConnectionParametersPort();
+	String datalayerConnectionParametersScheme();
+	String datalayerConnectionParametersDatabase();
+
+	String blueprintGridColumnName();
+	String blueprintGridColumnLimitToTerritory();
+	String blueprintGridColumnPublic();
+	String blueprintAttributePublicTooltip();
+	String blueprintGridColumnActiv();
+	String blueprintActivTooltip();
+	String blueprintAttributeGeodesksActiv();
+	String blueprintAttributeGeodesksActivTooltip();
+	String blueprintGridColumnActions();
+	String bleuprintGridColumnActionsTooltip();
+	String blueprintGridActionsColumnRemoveTooltip();
+	String blueprintRemoveConfirmQuestion(String attribute);
+	String blueprintsLoading();
+
+	String blueprintDetailTabSettings();
+	String blueprintDetailTabDataLayers();
+	String blueprintDetailTabLayerTree();
+	String blueprintDetailTabAccessRights();
+	String blueprintDetailTabLayout();
+	String blueprintDetailTabThemes();
+	String blueprintDetailLoadingConfig();
+
+	// Blueprint settings form in Blueprint Settings Tab of Blueprint detail panel
+	String blueprintSettingsNameBlueprint();
+	String blueprintSettingsClientApplicationName();
+	String blueprintSettingsActiv();
+	String blueprintSettingsActivTooltip();
+	String blueprintSettingsPublic();
+	String blueprintSettingsWarnCannotBePublic();
+
+
+	
 
 }

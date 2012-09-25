@@ -13,7 +13,9 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -25,6 +27,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
  */
 public class SaveButtonBar extends HLayout {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private final IButton edit;
 
 	private final IButton save;
@@ -82,7 +86,7 @@ public class SaveButtonBar extends HLayout {
 			}
 		});
 
-		cancel = new IButton("Annuleren");
+		cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
 		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {

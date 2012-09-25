@@ -11,8 +11,10 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
@@ -30,6 +32,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class LayerGroupConfigurationWindow extends DockableWindow {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private static final int FORMITEM_WIDTH = 300;
 
 	// private LayerTreeNodeDto layerGroup;
@@ -96,7 +100,7 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 				// saved();
 			}
 		});
-		IButton cancel = new IButton("Annuleren");
+		IButton cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
 		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {

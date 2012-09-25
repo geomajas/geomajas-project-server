@@ -55,7 +55,7 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
 				.getRole())) {
-			Tab blueprintTab = new Tab(MESSAGES.mainTabBluePrints());
+			Tab blueprintTab = new Tab(MESSAGES.mainTabBlueprints());
 			blueprintTab.setPane(new Blueprints());
 			tabSet.addTab(blueprintTab);
 		}

@@ -14,10 +14,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
@@ -34,10 +36,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * TODO.
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
  *
  */
 public class ChooseBlueprintWindow extends Window {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private static final int FORMITEM_WIDTH = 300;
 
 	private DataCallback<String> callback;
@@ -61,7 +66,7 @@ public class ChooseBlueprintWindow extends Window {
 		setKeepInParentRect(true);
 		setOverflow(Overflow.HIDDEN);
 		setAutoCenter(true);
-		setTitle("Selecteer blauwdruk");
+		setTitle(MESSAGES.chooseBlueprintTitle());
 		setShowCloseButton(false);
 		setShowMinimizeButton(false);
 		setShowMaximizeButton(false);
@@ -77,18 +82,18 @@ public class ChooseBlueprintWindow extends Window {
 		blueprints = new SelectItem();
 		blueprints.setRequired(true);
 		blueprints.setWidth(FORMITEM_WIDTH);
-		blueprints.setRequiredMessage("Gelieve een blauwdruk te selecteren.");
-		blueprints.setTitle("Selecteer een blauwdruk");
-		blueprints.setTooltip("<nobr>De blauwbruk die als basis zal genomen worden voor het nieuwe loket.</nobr>");
+		blueprints.setRequiredMessage(MESSAGES.chooseBlueprintRequired());
+		blueprints.setTitle(MESSAGES.chooseBlueprintTitle());
+		blueprints.setTooltip("<nobr>" + MESSAGES.chooseBlueprintTooltip() + "</nobr>");
 		blueprints.setDisabled(true);
-		blueprints.setValue("[blauwdrukken laden...]");
+		blueprints.setValue(MESSAGES.chooseBlueprintLoading());
 
 		form.setFields(blueprints);
 
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
-		save = new IButton("Aanmaken");
+		save = new IButton(MESSAGES.chooseBlueprintCreate());
 		save.setIcon(WidgetLayout.iconAdd);
 		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {
@@ -97,7 +102,7 @@ public class ChooseBlueprintWindow extends Window {
 				saved();
 			}
 		});
-		IButton cancel = new IButton("Annuleren");
+		IButton cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
 		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {
@@ -135,7 +140,7 @@ public class ChooseBlueprintWindow extends Window {
 					blueprints.clearValue();
 					blueprints.setDisabled(false);
 				} else {
-					SC.say("Er zijn geen blauwdrukken beschikbaar!");
+					SC.say(MESSAGES.chooseBlueprinWarnNoBlueprints());
 					save.setDisabled(true);
 				}
 			}
