@@ -480,6 +480,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		LayerDto dto = new LayerDto();
 		dto.setClientLayerIdReference(layer.getClientLayerIdReference());
+		// Are dynamic configurated layerInfo's beans or from database?
+//		dto.setReferencedLayerInfo(layer.getLayerModel().getLayerConfiguration().getClientLayerInfo());
 		try {
 			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getClientLayerIdReference()));
 		} catch (NoSuchBeanDefinitionException e) {

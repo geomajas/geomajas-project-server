@@ -173,7 +173,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 		ClientLayerInfo cli = layer.getClientLayerInfo();
 		if (cli == null) {
 			// If layerInfo not set (yet), copy from model.
-			cli = layer.getLayerModel().getLayerConfiguration().getClientLayerInfo();
+			cli = layer.getReferencedLayerInfo();
 		}
 		label.setValue(cli.getLabel());
 		defaultVisible.setValue(cli.isVisible());
@@ -193,7 +193,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 	private void saved() {
 		if (form.validate()) {
 			if (layer.getClientLayerInfo() == null) {
-				layer.setCLientLayerInfo(layer.getLayerModel().getLayerConfiguration().getClientLayerInfo());
+				layer.setCLientLayerInfo(layer.getReferencedLayerInfo());
 			}
 			ClientLayerInfo cli = layer.getClientLayerInfo();
 			cli.setVisible(defaultVisible.getValueAsBoolean());
