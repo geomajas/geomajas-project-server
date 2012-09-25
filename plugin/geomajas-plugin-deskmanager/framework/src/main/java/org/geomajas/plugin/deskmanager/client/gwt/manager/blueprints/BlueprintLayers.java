@@ -17,6 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
@@ -24,6 +25,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -33,7 +35,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  */
 public class BlueprintLayers extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private BlueprintDto blueprint;
 
 	private LayerSelectPanel layerSelect;
@@ -52,7 +56,7 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Datalagen");
+		group.setGroupTitle(MESSAGES.datalagenGroup());
 		group.addMember(layerSelect);
 		group.setOverflow(Overflow.AUTO);
 

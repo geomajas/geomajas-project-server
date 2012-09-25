@@ -15,11 +15,13 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -29,6 +31,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class BlueprintLayerTree extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private BlueprintDto blueprint;
 
 	private LayerTreeSelectPanel layerTreeSelect;
@@ -47,7 +51,7 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Datalagen");
+		group.setGroupTitle(MESSAGES.layerTreeFormGroup());
 		group.addMember(layerTreeSelect);
 		group.setOverflow(Overflow.AUTO);
 

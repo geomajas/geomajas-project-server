@@ -14,9 +14,11 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -27,7 +29,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class Blueprints extends VLayout implements EditSessionHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private IButton buttonNew;
 
 	private BlueprintGrid grid;
@@ -47,7 +51,7 @@ public class Blueprints extends VLayout implements EditSessionHandler {
 		topContainer.setHeight("60%");
 		topContainer.setLayoutBottomMargin(5);
 
-		buttonNew = new IButton("Nieuwe blauwdruk");
+		buttonNew = new IButton(MESSAGES.newBlueprintButtonText());
 		buttonNew.setIcon(WidgetLayout.iconAdd);
 		buttonNew.setAutoFit(true);
 		buttonNew.addClickHandler(new ClickHandler() {

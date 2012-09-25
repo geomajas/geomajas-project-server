@@ -183,12 +183,16 @@ public interface ManagerMessages extends Messages {
 
 	String geodeskDetailLoadingConfig();
 
+	
 	String chooseBlueprintTitle();
 	String chooseBlueprintRequired();
 	String chooseBlueprintLoading();
 	String chooseBlueprintTooltip();
 	String chooseBlueprintCreate();
 	String chooseBlueprinWarnNoBlueprints();
+
+	String newBlueprintButtonText();
+	String chooseAppTitle();
 
 	String datalayerConnectionParametersGroup();
 	String datalayerConnectionParametersCapabilitiesURL();
@@ -228,7 +232,11 @@ public interface ManagerMessages extends Messages {
 	String blueprintSettingsActivTooltip();
 	String blueprintSettingsPublic();
 	String blueprintSettingsWarnCannotBePublic();
-
+	
+	String chooseAppRequired();
+	String chooseAppTooltip();
+	String chooseAppCreate();
+	
 
 	
 

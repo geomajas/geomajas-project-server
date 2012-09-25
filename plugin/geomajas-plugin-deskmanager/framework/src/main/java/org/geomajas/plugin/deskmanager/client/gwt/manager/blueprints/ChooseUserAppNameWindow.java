@@ -59,7 +59,7 @@ public class ChooseUserAppNameWindow extends Window {
 		setKeepInParentRect(true);
 		setOverflow(Overflow.HIDDEN);
 		setAutoCenter(true);
-		setTitle("Selecteer Gebruikstoepassing");
+		setTitle(MESSAGES.chooseAppTitle());
 		setShowCloseButton(false);
 		setShowMinimizeButton(false);
 		setShowMaximizeButton(false);
@@ -74,18 +74,16 @@ public class ChooseUserAppNameWindow extends Window {
 		userappName = new SelectItem();
 		userappName.setRequired(true);
 		userappName.setWidth(FORMITEM_WIDTH);
-		userappName.setRequiredMessage("Gelieve een gebruikstoepassing te selecteren.");
-		userappName.setTitle("Selecteer een Gebruikstoepassing");
-		userappName.setTooltip("<nobr>De Gebruikstoepassing die gebruikt zal worden"
-				+ " voor loketten gebaseerd op deze blauwdruk.</nobr>");
+		userappName.setRequiredMessage(MESSAGES.chooseAppRequired());
+		userappName.setTitle(MESSAGES.chooseAppTitle());
+		userappName.setTooltip("<nobr>" + MESSAGES.chooseAppTooltip() + "</nobr>");
 		userappName.setValueMap(UserApplicationRegistry.getInstance().getLoketNames());
-
 		form.setFields(userappName);
 
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
-		save = new IButton("Aanmaken");
+		save = new IButton(MESSAGES.chooseAppCreate());
 		save.setIcon(WidgetLayout.iconAdd);
 		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {
