@@ -37,7 +37,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="tilesEnabled" value="true"/>
 		<property name="tileUrls">
 			<list>
-				<value>http://mt0.google.com/vt?v=w2.95&amp;x=${x}&amp;y=${y}&amp;z=${level}</value>
+				<value>http://maps.googleapis.com/maps/api/staticmap?center=${center}&amp;zoom=${level}</value>
 			</list>
 		</property>
 	</bean>
@@ -48,6 +48,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layerInfo">
 			<bean name="googleInfo" class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="crs" value="EPSG:4326"/>
+				<property name="tileHeight" value="640" />
+				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
 	</bean>
@@ -82,6 +84,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_NORMAL_MAP" />
 				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+				<property name="tileHeight" value="640" />
+				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
 	</bean>
@@ -93,6 +97,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_SATELLITE_MAP" />
 				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+				<property name="tileHeight" value="640" />
+				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
 	</bean>
@@ -104,6 +110,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_PHYSICAL_MAP" />
 				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+				<property name="tileHeight" value="640" />
+				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
 	</bean>
@@ -130,8 +138,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="40052752.787419834"/>
 			</bean>
 		</property>
-        <property name="tileWidth" value="256"/>
-        <property name="tileHeight" value="256"/>
+		<property name="tileHeight" value="640" />
+		<property name="tileWidth" value="640" />
  	</bean>
 	<!-- @extract-end -->
 

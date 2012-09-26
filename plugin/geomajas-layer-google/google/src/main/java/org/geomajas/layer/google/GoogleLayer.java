@@ -18,18 +18,26 @@ import javax.annotation.PostConstruct;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.CrsTransform;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.osm.TiledRasterLayerService;
-import org.geomajas.layer.osm.TiledRasterLayerServiceState;
+import org.geomajas.layer.osm.RoundRobinUrlSelectionStrategy;
 import org.geomajas.layer.osm.UrlSelectionStrategy;
 import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -48,26 +56,55 @@ import com.vividsolutions.jts.geom.Envelope;
 @Api
 public class GoogleLayer implements RasterLayer {
 
+	private final Logger log = LoggerFactory.getLogger(GoogleLayer.class);
+
 	public static final String DATA_SOURCE_GOOGLE_INDICATOR = "@GoogleLayer";
 
 	public static final String LAYER_NAME_NORMAL = "G_NORMAL_MAP";
+
 	public static final String LAYER_NAME_SATELLITE = "G_SATELLITE_MAP";
-	//public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP"; // doesn't seem to work
+
+	// public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP"; // doesn't seem to work
 	public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP";
 
 	public static final int DEFAULT_MAX_ZOOM_LEVEL = 19;
 
-	public static final int TILE_SIZE = 256; // tile size in pixels
+	public static final int DEFAULT_TILE_SIZE = 512; // tile size in pixels
 
 	public static final List<String> NORMAL_URLS = new ArrayList<String>();
+
 	public static final List<String> SATELLITE_URLS = new ArrayList<String>();
+
 	public static final List<String> PHYSICAL_URLS = new ArrayList<String>();
+
+	public static final String MERCATOR = "EPSG:900913";
+
+	public static final String WSG_84 = "EPSG:4326";
+
+	public static final double EQUATOR_IN_METERS = 40075016.686;
+
+	public static final double HALF_EQUATOR_IN_METERS = 40075016.686 / 2;
+
+	public static final double MAP_UNIT_PER_GOOGLE_METER_DEFAULT = 0.653;
+
+	private int tileSize = DEFAULT_TILE_SIZE;
+
+	private String apiKey;
 
 	private boolean satellite;
 
 	private boolean physical;
-	
+
 	private boolean tilesEnabled;
+
+	static {
+		NORMAL_URLS.add("http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false"
+				+ "&maptype=roadmap");
+		SATELLITE_URLS.add("http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false"
+				+ "&maptype=satellite");
+		PHYSICAL_URLS.add("http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false"
+				+ "&maptype=terrain");
+	}
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -75,102 +112,104 @@ public class GoogleLayer implements RasterLayer {
 	@Autowired
 	private GeoService geoService;
 
-	@Autowired
-	private TiledRasterLayerService tileService;
+	private String id;
 
-	private final TiledRasterLayerServiceState tileServiceState =
-			new TiledRasterLayerServiceState(NORMAL_URLS, TILE_SIZE, DEFAULT_MAX_ZOOM_LEVEL);
+	private CoordinateReferenceSystem crs;
 
-	static {
-		NORMAL_URLS.add("http://mt0.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
-		NORMAL_URLS.add("http://mt1.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
-		NORMAL_URLS.add("http://mt2.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
-		NORMAL_URLS.add("http://mt3.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm0.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm1.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm2.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm3.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt0.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt1.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt2.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt3.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
-	}
+	private int maxZoomlevel = DEFAULT_MAX_ZOOM_LEVEL;
+
+	private RasterLayerInfo layerInfo;
+
+	private List<String> tileUrls = new ArrayList<String>();
+
+	private UrlSelectionStrategy urlSelectionStrategy = new RoundRobinUrlSelectionStrategy();
+
+	private double[] resolutions;
+
+	private Envelope maxBounds;
 
 	public String getId() {
-		return tileServiceState.getId();
+		return id;
 	}
 
 	/**
 	 * Set the id for this layer.
-	 *
-	 * @param id id
+	 * 
+	 * @param id
+	 *            id
 	 * @since 1.8.0
 	 */
 	@Api
 	public void setId(String id) {
-		tileServiceState.setId(id);
+		this.id = id;
 	}
 
 	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs() {
-		return tileServiceState.getCrs();
+		return crs;
 	}
 
 	/**
 	 * Set the maximum zoom level which is supported by this layer. The levels are specific for this layer. The first
 	 * level has one tile for the world, the second four etc.
-	 *
-	 * @param maxZoomLevel max zoom level
+	 * 
+	 * @param maxZoomLevel
+	 *            max zoom level
 	 * @since 1.6.0
 	 */
 	@Api
 	public void setMaxZoomLevel(int maxZoomLevel) {
-		tileServiceState.setMaxZoomLevel(maxZoomLevel);
+		this.maxZoomlevel = maxZoomLevel;
 	}
 
 	/** {@inheritDoc} */
 	public RasterLayerInfo getLayerInfo() {
-		return tileServiceState.getLayerInfo();
+		return layerInfo;
 	}
 
 	/**
 	 * Set the layer configuration.
-	 *
-	 * @param layerInfo layer information
-	 * @throws LayerException oops
+	 * 
+	 * @param layerInfo
+	 *            layer information
+	 * @throws LayerException
+	 *             oops
 	 * @since 1.7.1
 	 */
 	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
-		tileServiceState.setLayerInfo(layerInfo);
+		this.layerInfo = layerInfo;
 	}
 
 	/**
-	 * Set a list of tile URLs. The zoom level, and tile coordinates can be indicated using ${level}, ${x} and ${y},
-	 * for example "http://a.tile.openstreetmap.org/${level}/${x}/${y}.png",
-	 *
-	 * @param tileUrls list of tile URLs
+	 * Set a list of tile URLs. The zoom level, and tile coordinates can be indicated using ${level} and ${center}, for
+	 * example:
+	 * "http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false&maptype=roadmap".
+	 * 
+	 * @param tileUrls
+	 *            list of tile URLs
 	 * @since 1.8.0
 	 */
 	@Api
 	public void setTileUrls(List<String> tileUrls) {
-		tileServiceState.setTileUrls(tileUrls);
+		this.tileUrls = tileUrls;
 	}
 
 	/**
 	 * Set the strategy ({@link UrlSelectionStrategy})for selecting the URL to use for the tiles.
-	 *
-	 * @param strategy a tile URL builder
+	 * 
+	 * @param strategy
+	 *            a tile URL builder
 	 * @since 1.8.0
 	 */
 	@Api
 	public void setUrlSelectionStrategy(UrlSelectionStrategy strategy) {
-		tileServiceState.setUrlSelectionStrategy(strategy);
+		this.urlSelectionStrategy = strategy;
 	}
 
 	/**
 	 * Check whether this should be satellite pictures.
-	 *
+	 * 
 	 * @return true when satellite images are requested
 	 */
 	public boolean isSatellite() {
@@ -179,8 +218,9 @@ public class GoogleLayer implements RasterLayer {
 
 	/**
 	 * Set whether to use satellite images.
-	 *
-	 * @param satellite use satellite ?
+	 * 
+	 * @param satellite
+	 *            use satellite ?
 	 * @since 1.6.0
 	 */
 	@Api
@@ -193,7 +233,7 @@ public class GoogleLayer implements RasterLayer {
 
 	/**
 	 * Check whether this should be physical pictures.
-	 *
+	 * 
 	 * @return true when physical images are requested
 	 */
 	public boolean isPhysical() {
@@ -202,8 +242,9 @@ public class GoogleLayer implements RasterLayer {
 
 	/**
 	 * Set whether to use physical images.
-	 *
-	 * @param physical use physical ?
+	 * 
+	 * @param physical
+	 *            use physical ?
 	 * @since 1.7.0
 	 */
 	@Api
@@ -213,69 +254,312 @@ public class GoogleLayer implements RasterLayer {
 		}
 		this.physical = physical;
 	}
-	
+
 	/**
-	 * Check whether tiles should be sent to the client. WARNING: deprecated because of change in <a
-	 * href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
+	 * Check whether tiles should be sent to the client.
 	 * 
 	 * @return true when tiles are enabled
 	 * @since 1.9.0
-	 * @deprecated use default setting of false
 	 */
-	@Deprecated
 	public boolean isTilesEnabled() {
 		return tilesEnabled;
 	}
-	
+
 	/**
-	 * Set whether tiles should be sent to the client. Defaults to false. WARNING: deprecated because of change in <a
-	 * href="https://developers.google.com/maps/terms">Google Maps Terms of Service</a>.
+	 * Set whether tiles should be sent to the client. Defaults to false.
 	 * 
-	 * @param tilesEnabled true when tiles should be sent to the client
+	 * @param tilesEnabled
+	 *            true when tiles should be sent to the client
 	 * @since 1.9.0
-	 * @deprecated use default setting of false
 	 */
-	@Deprecated
 	public void setTilesEnabled(boolean tilesEnabled) {
 		this.tilesEnabled = tilesEnabled;
 	}
 
+	/**
+	 * The google API key used to retrieve static images.
+	 * 
+	 * @param apiKey
+	 *            the apiKey to set
+	 * @since 1.9.0
+	 */
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	/**
+	 * The google API key used to retrieve static images.
+	 * 
+	 * @return the apiKey
+	 * @since 1.9.0
+	 */
+	public String getApiKey() {
+		return apiKey;
+	}
+
 	@PostConstruct
 	protected void postConstruct() throws GeomajasException {
-		tileServiceState.postConstruct(geoService, converterService);
+		String layerName = null;
+		if (getLayerInfo() != null) {
+			layerName = getLayerInfo().getDataSourceName();
+		}
+		crs = geoService.getCrs2(MERCATOR);
 
-		String layerName = getLayerInfo().getDataSourceName();
+		if (null == layerInfo) {
+			layerInfo = new RasterLayerInfo();
+			layerInfo.setTileHeight(tileSize);
+			layerInfo.setTileWidth(tileSize);
+		}
+		Bbox bbox = new Bbox(-20026376.393709917, -20026376.393709917, 40052752.787419834, 40052752.787419834);
+		layerInfo.setMaxExtent(bbox);
+		layerInfo.setCrs(MERCATOR);
+		maxBounds = converterService.toInternal(bbox);
+		if (layerInfo.getTileHeight() != 0) {
+			// We choose tile height, width and height should be the same anyway
+			tileSize = layerInfo.getTileHeight();
+		}
+
+		resolutions = new double[maxZoomlevel + 1];
+		double powerOfTwo = 1;
+		for (int zoomLevel = 0; zoomLevel <= maxZoomlevel; zoomLevel++) {
+			double resolution = (EQUATOR_IN_METERS) / (256 * powerOfTwo);
+			resolutions[zoomLevel] = resolution;
+			powerOfTwo *= 2;
+		}
+
+		List<String> urls = null;
+		// Init layer name and url's
 		if (null == layerName) {
 			if (isSatellite()) {
 				getLayerInfo().setDataSourceName(LAYER_NAME_SATELLITE + DATA_SOURCE_GOOGLE_INDICATOR);
-				tileServiceState.setTileUrls(SATELLITE_URLS);
+				urls = completeTileUrls(SATELLITE_URLS);
 			} else if (isPhysical()) {
 				getLayerInfo().setDataSourceName(LAYER_NAME_PHYSICAL + DATA_SOURCE_GOOGLE_INDICATOR);
-				tileServiceState.setTileUrls(PHYSICAL_URLS);
+				urls = completeTileUrls(PHYSICAL_URLS);
 			} else {
 				getLayerInfo().setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
+				urls = completeTileUrls(NORMAL_URLS);
 			}
 		} else if (!layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
 			getLayerInfo().setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
 			if (layerName.equals(LAYER_NAME_SATELLITE)) {
 				setSatellite(true);
-				tileServiceState.setTileUrls(SATELLITE_URLS);
-			}
-			if (layerName.equals(LAYER_NAME_PHYSICAL)) {
+				urls = completeTileUrls(SATELLITE_URLS);
+			} else if (layerName.equals(LAYER_NAME_PHYSICAL)) {
 				setPhysical(true);
-				tileServiceState.setTileUrls(PHYSICAL_URLS);
+				urls = completeTileUrls(PHYSICAL_URLS);
+			} else {
+				urls = completeTileUrls(NORMAL_URLS);
 			}
+		}
+		// If tileUrls is set, use it.
+		if (tileUrls != null && !tileUrls.isEmpty()) {
+			urlSelectionStrategy.setUrls(completeTileUrls(tileUrls));
+		} else {
+			urlSelectionStrategy.setUrls(urls);
 		}
 	}
 
+	private List<String> completeTileUrls(List<String> source) {
+		String sizeString = "&size=" + tileSize + "x" + tileSize;
+		String apiString = "";
+		if (apiKey != null) {
+			apiString = "&key=" + apiKey;
+		}
+		List<String> target = new ArrayList<String>(source.size());
+		for (String url : source) {
+			target.add(url + apiString + sizeString);
+		}
+		return target;
+	}
+
 	/** {@inheritDoc} */
-	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
+	public List<RasterTile> paint(CoordinateReferenceSystem targetCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		if (isTilesEnabled()) {
-			return tileService.paint(tileServiceState, boundsCrs, bounds, scale);
+			try {
+				CrsTransform layerToMap = geoService.getCrsTransform(crs, targetCrs);
+				CrsTransform mapToLayer = geoService.getCrsTransform(targetCrs, crs);
+				CrsTransform layerToWsg84 = geoService.getCrsTransform(crs, geoService.getCrs2(WSG_84));
+
+				// find the center of the map in map coordinates (positive y-axis)
+				Coordinate boundsCenter = new Coordinate((bounds.getMinX() + bounds.getMaxX()) / 2,
+						(bounds.getMinY() + bounds.getMaxY()) / 2);
+
+				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
+				Envelope layerBounds = geoService.transform(bounds, mapToLayer);
+				// double layerScale = bounds.getWidth() * scale / layerBounds.getWidth();
+				layerBounds = clipBounds(layerBounds);
+				if (layerBounds.isNull()) {
+					return new ArrayList<RasterTile>(0);
+				}
+
+				// find zoomlevel
+				// scale in pix/m should just above the given scale so we have at least one
+				// screen pixel per google pixel ! (otherwise text unreadable)
+				int zoomLevel = getBestZoomLevelForScaleInPixPerMeter(mapToLayer, boundsCenter, scale);
+				log.debug("zoomLevel={}", zoomLevel);
+
+				RasterGrid grid = getRasterGrid(layerBounds, tileSize * resolutions[zoomLevel], tileSize
+						* resolutions[zoomLevel]);
+
+				// We calculate the first tile's screen box with this assumption
+				List<RasterTile> result = new ArrayList<RasterTile>();
+				for (int i = grid.getXmin(); i < grid.getXmax(); i++) {
+					for (int j = grid.getYmin(); j < grid.getYmax(); j++) {
+						double x = grid.getLowerLeft().x + (i - grid.getXmin()) * grid.getTileWidth();
+						double y = grid.getLowerLeft().y + (j - grid.getYmin()) * grid.getTileHeight();
+						// layer coordinates
+						Bbox worldBox;
+						Bbox layerBox;
+						layerBox = new Bbox(x, y, grid.getTileWidth(), grid.getTileHeight());
+						// Transforming back to map coordinates will only result in a proper grid if the transformation
+						// is nearly affine
+						worldBox = geoService.transform(layerBox, layerToMap);
+
+						// Rounding to avoid white space between raster tiles lower-left becomes upper-left in inverted
+						// y-space
+						Bbox screenBox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale
+								* worldBox.getMaxY()), Math.round(scale * worldBox.getMaxX())
+								- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
+								- Math.round(scale * worldBox.getY()));
+
+						RasterTile image = new RasterTile(screenBox, getId() + "." + zoomLevel + "." + i + "," + j);
+
+						String url = urlSelectionStrategy.next();
+
+						Coordinate center = new Coordinate((layerBox.getX() + layerBox.getMaxX()) / 2,
+								(layerBox.getY() + layerBox.getMaxY()) / 2);
+						Coordinate centerInWsg84 = JTS.transform(center, new Coordinate(), layerToWsg84);
+						url = url.replace("${center}",
+								Double.toString(centerInWsg84.y) + "," + Double.toString(centerInWsg84.x));
+						url = url.replace("${level}", Integer.toString(zoomLevel));
+
+						image.setCode(new TileCode(zoomLevel, i, j));
+						image.setUrl(url);
+						log.debug("adding image {}", image);
+						result.add(image);
+					}
+				}
+
+				return result;
+
+			} catch (TransformException e) {
+				throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+			}
 		} else {
 			return Collections.emptyList();
 		}
 	}
 
+	private int getBestZoomLevelForScaleInPixPerMeter(CrsTransform layerToGoogle, Coordinate mapPosition, 
+			double scale) {
+		double scaleRatio = MAP_UNIT_PER_GOOGLE_METER_DEFAULT;
+		try {
+			Coordinate mercatorCenter = JTS.transform(mapPosition, new Coordinate(), layerToGoogle);
+			Coordinate dx = JTS.transform(new Coordinate(mapPosition.x + 1, mapPosition.y), new Coordinate(),
+					layerToGoogle);
+			scaleRatio = 1.0 / (dx.x - mercatorCenter.x);
+		} catch (TransformException e) {
+			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
+		}
+		double scaleInPixPerMeter = scale * scaleRatio;
+		double screenResolution = 1.0 / scaleInPixPerMeter;
+		if (screenResolution >= resolutions[0]) {
+			return 0;
+		} else if (screenResolution <= resolutions[maxZoomlevel]) {
+			return maxZoomlevel;
+		} else {
+			for (int i = 0; i < maxZoomlevel; i++) {
+				double upper = resolutions[i];
+				double lower = resolutions[i + 1];
+				if (screenResolution <= upper && screenResolution >= lower) {
+					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
+						return i + 1;
+					} else {
+						return i;
+					}
+				}
+			}
+		}
+		// should not occur !!!!
+		return maxZoomlevel;
+	}
+
+	private RasterGrid getRasterGrid(Envelope bounds, double width, double height) {
+		Bbox bbox = getLayerInfo().getMaxExtent();
+		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getY()) / height);
+		int ymax = (int) Math.ceil((bounds.getMaxY() - bbox.getY()) / height);
+		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getX()) / width);
+		int xmax = (int) Math.ceil((bounds.getMaxX() - bbox.getX()) / width);
+
+		Coordinate lowerLeft = new Coordinate(bbox.getX() + xmin * width, bbox.getY() + ymin * height);
+		return new RasterGrid(lowerLeft, xmin, ymin, xmax, ymax, width, height);
+	}
+
+	private Envelope clipBounds(Envelope bounds) {
+		return bounds.intersection(maxBounds);
+	}
+
+	/**
+	 * Grid definition for a WMS layer. It is used internally in the WMS layer.
+	 * 
+	 * @author Jan De Moerloose
+	 * @author Pieter De Graef
+	 */
+	private static class RasterGrid {
+
+		private final Coordinate lowerLeft;
+
+		private final int xmin;
+
+		private final int ymin;
+
+		private final int xmax;
+
+		private final int ymax;
+
+		private final double tileWidth;
+
+		private final double tileHeight;
+
+		RasterGrid(Coordinate lowerLeft, int xmin, int ymin, int xmax, int ymax, double tileWidth, double tileHeight) {
+			super();
+			this.lowerLeft = lowerLeft;
+			this.xmin = xmin;
+			this.ymin = ymin;
+			this.xmax = xmax;
+			this.ymax = ymax;
+			this.tileWidth = tileWidth;
+			this.tileHeight = tileHeight;
+		}
+
+		public Coordinate getLowerLeft() {
+			return lowerLeft;
+		}
+
+		public double getTileHeight() {
+			return tileHeight;
+		}
+
+		public double getTileWidth() {
+			return tileWidth;
+		}
+
+		public int getXmax() {
+			return xmax;
+		}
+
+		public int getXmin() {
+			return xmin;
+		}
+
+		public int getYmax() {
+			return ymax;
+		}
+
+		public int getYmin() {
+			return ymin;
+		}
+	}
 }

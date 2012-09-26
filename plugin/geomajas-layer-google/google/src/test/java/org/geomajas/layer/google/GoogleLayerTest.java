@@ -82,7 +82,7 @@ public class GoogleLayerTest {
 		List<RasterTile> tiles = google.paint(google.getCrs(),
 				new Envelope(-equator, equator, -equator, equator), 256 / equator);
 		Assert.assertEquals(1, tiles.size());
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=0&y=0&z=0", tiles.iterator().next().getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=85.05974795815024,180.10000000378653&zoom=0&size=512x512", tiles.iterator().next().getUrl());
 	}
 
 	@Test
@@ -108,11 +108,11 @@ public class GoogleLayerTest {
 		tiles = google.paint(google.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8196&y=8189&z=14", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.034082031132611657,0.07802734564300369&zoom=14&size=512x512", tile.getUrl());
 		tiles = googleMaxLevel.paint(googleMaxLevel.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=2049&y=2047&z=12", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.012109376802175874,0.012109376892328565&zoom=12&sensor=false&maptype=roadmap&size=512x512", tile.getUrl());
 	}
 
 	@Test
@@ -123,11 +123,11 @@ public class GoogleLayerTest {
 		tiles = googleStrategy.paint(googleStrategy.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		tile = tiles.get(0);
-		Assert.assertEquals("http://mt3.google.com/vt?v=w2.95&x=8196&y=8189&z=14", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.034082031132611657,0.07802734564300369&zoom=14&sensor=false&maptype=roadmap&size=512x512", tile.getUrl());
 		tiles = googleStrategy.paint(googleStrategy.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		tile = tiles.get(0);
-		Assert.assertEquals("http://mt3.google.com/vt?v=w2.95&x=8196&y=8189&z=14", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.034082031132611657,0.07802734564300369&zoom=14&sensor=false&maptype=roadmap&size=512x512", tile.getUrl());
 	}
 
 	@Test
@@ -136,14 +136,14 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=-21.850259740996247,-22.399999998343407&zoom=4&size=512x512", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
-		Assert.assertEquals(8, tile.getCode().getX());
-		Assert.assertEquals(7, tile.getCode().getY());
-		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(3, tile.getCode().getX());
+		Assert.assertEquals(3, tile.getCode().getY());
+		Assert.assertEquals(-500.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-1, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(501.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(501.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -151,19 +151,19 @@ public class GoogleLayerTest {
 		Envelope envelope = new Envelope(10000, 13000, 5000, 8000);
 		List<RasterTile> tiles = google.paint(google.getCrs(), envelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(4, tiles.size());
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8196&y=8188&z=14", tiles.get(0).getUrl());
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8196&y=8189&z=14", tiles.get(1).getUrl());
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8197&y=8188&z=14", tiles.get(2).getUrl());
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8197&y=8189&z=14", tiles.get(3).getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.034082031132611657,0.07802734564300369&zoom=14&size=512x512", tiles.get(0).getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.07802732152486058,0.07802734564300369&zoom=14&size=512x512", tiles.get(1).getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.034082031132611657,0.12197265814346592&zoom=14&size=512x512", tiles.get(2).getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.07802732152486058,0.12197265814346592&zoom=14&size=512x512", tiles.get(3).getUrl());
 		RasterTile tile = tiles.get(3);
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8197&y=8189&z=14", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=0.07802732152486058,0.12197265814346592&zoom=14&size=512x512", tile.getUrl());
 		Assert.assertEquals(14, tile.getCode().getTileLevel());
-		Assert.assertEquals(8197, tile.getCode().getX());
-		Assert.assertEquals(8189, tile.getCode().getY());
-		Assert.assertEquals(1223, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-733.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(245.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(245.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(4096, tile.getCode().getX());
+		Assert.assertEquals(4095, tile.getCode().getY());
+		Assert.assertEquals(1113.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-1113.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(489.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(489.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -172,14 +172,14 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://khm0.google.com/kh?v=87&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=-21.850259740996247,-22.399999998343407&zoom=4&sensor=false&maptype=satellite&size=512x512", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
-		Assert.assertEquals(8, tile.getCode().getX());
-		Assert.assertEquals(7, tile.getCode().getY());
-		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(3, tile.getCode().getX());
+		Assert.assertEquals(3, tile.getCode().getY());
+		Assert.assertEquals(-500.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-1.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(501.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(501.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -188,14 +188,14 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?lyrs=t@127,r@156000000&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=-21.850259740996247,-22.399999998343407&zoom=4&sensor=false&maptype=terrain&size=512x512", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
-		Assert.assertEquals(8, tile.getCode().getX());
-		Assert.assertEquals(7, tile.getCode().getY());
-		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(3, tile.getCode().getX());
+		Assert.assertEquals(3, tile.getCode().getY());
+		Assert.assertEquals(-500.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-1.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(501.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(501.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -204,14 +204,14 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=roadmap&size=640x640", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
-		Assert.assertEquals(8, tile.getCode().getX());
-		Assert.assertEquals(7, tile.getCode().getY());
-		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(3, tile.getCode().getX());
+		Assert.assertEquals(3, tile.getCode().getY());
+		Assert.assertEquals(-124.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-502.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(626.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(626.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -220,14 +220,14 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://khm0.google.com/kh?v=87&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=satellite&size=640x640", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
-		Assert.assertEquals(8, tile.getCode().getX());
-		Assert.assertEquals(7, tile.getCode().getY());
-		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(3, tile.getCode().getX());
+		Assert.assertEquals(3, tile.getCode().getY());
+		Assert.assertEquals(-124.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-502.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(626.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(626.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -236,14 +236,14 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?lyrs=t@127,r@156000000&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=terrain&size=640x640", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
-		Assert.assertEquals(8, tile.getCode().getX());
-		Assert.assertEquals(7, tile.getCode().getY());
-		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+		Assert.assertEquals(3, tile.getCode().getX());
+		Assert.assertEquals(3, tile.getCode().getY());
+		Assert.assertEquals(-124.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-502.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(626.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(626.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 }
