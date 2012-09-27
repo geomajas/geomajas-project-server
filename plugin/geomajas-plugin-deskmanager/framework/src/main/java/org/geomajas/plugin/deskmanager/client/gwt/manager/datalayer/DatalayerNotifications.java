@@ -14,9 +14,11 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.Noti
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.MailManagePanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -30,6 +32,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class DatalayerNotifications extends VLayout implements WoaEventHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private LayerModelDto lmd;
 
 	private MailManagePanel mailManage;
@@ -49,7 +53,7 @@ public class DatalayerNotifications extends VLayout implements WoaEventHandler {
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Mail notificaties");
+		group.setGroupTitle(MESSAGES.datalayerNotificationsFormGroup());
 		group.addMember(mailManage);
 		group.setOverflow(Overflow.AUTO);
 
@@ -76,14 +80,14 @@ public class DatalayerNotifications extends VLayout implements WoaEventHandler {
 		if (lmd != null) {
 			if (mailManage.hasChanged()) {
 				if (mailManage.hasErrors()) {
-					SC.warn("De lijst bevat foutieve waarden. Gelieve deze op te lossen vooraleer op te slaan.");
+					SC.warn(MESSAGES.datalayerNotificationsWarnInvalidFormData());
 					return false;
 				} else {
 					lmd.setMailAddresses(mailManage.getValues());
 					CommService.saveLayerModel(lmd);
 				}
 			} else {
-				NotificationWindow.showInfoMessage("Niets gewijzigd");
+				NotificationWindow.showInfoMessage(MESSAGES.datalayerNotificationsNoFormChanges());
 			}
 		}
 		mailManage.setDisabled(true);

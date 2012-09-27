@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 
 import com.google.gwt.core.client.GWT;
@@ -40,6 +41,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class UploadShapefileForm extends VLayout {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private Dialog loadDialog;
 
 	private FormPanel form;
@@ -97,7 +100,8 @@ public class UploadShapefileForm extends VLayout {
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		hp.setSpacing(3);
-		com.google.gwt.user.client.ui.Label lblUpload = new com.google.gwt.user.client.ui.Label("Shapefile opladen : ");
+		com.google.gwt.user.client.ui.Label lblUpload = new com.google.gwt.user.client.ui.Label(
+												MESSAGES.uploadShapefileLabelText() + " : ");
 		lblUpload.setStyleName("formTitle");
 		hp.add(lblUpload);
 		hp.add(upload);
@@ -171,7 +175,7 @@ public class UploadShapefileForm extends VLayout {
 	public void upload(DataCallback<String> onUploadFinished) {
 		this.onUploadFinished = onUploadFinished;
 		if (validate()) {
-			HTMLFlow msg = new HTMLFlow("Bezig met opladen en verwerken van het bestand...");
+			HTMLFlow msg = new HTMLFlow(MESSAGES.uploadShapefileUploadingFile());
 			msg.setWidth100();
 			msg.setHeight100();
 			msg.setAlign(Alignment.CENTER);
@@ -183,7 +187,7 @@ public class UploadShapefileForm extends VLayout {
 			loadDialog.setHeight(100);
 			loadDialog.setIsModal(true);
 			loadDialog.setShowModalMask(true);
-			loadDialog.setTitle("Even geduld aub...");
+			loadDialog.setTitle(MESSAGES.titlePleaseWait());
 			loadDialog.addItem(msg);
 			loadDialog.show();
 			hiddenLayerName.setValue(layerName);
@@ -196,25 +200,21 @@ public class UploadShapefileForm extends VLayout {
 		String dataSourceName = null;
 		loadDialog.hide();
 		if (RESPONSE_INVALID_FILE.equals(result)) {
-			SC.warn("Bestand beantwoordt niet aan de de datastandaarden en werd niet opgeladen.");
+			SC.warn(MESSAGES.uploadShapefileResponseInvalidFile());
 		} else if (RESPONSE_INVALID_LAYER.equals(result)) {
-			SC.warn("Laag niet gevonden ??");
+			SC.warn(MESSAGES.uploadShapefileResponseInvalidLayer());
 		} else if (RESPONSE_NO_RIGHTS.equals(result)) {
-			SC.warn("U beschikt niet over voldoende rechten om shapefiles te uploaden," +
-					" of om de huidige shapefile te overschrijven.");
+			SC.warn(MESSAGES.uploadShapefileResponseNoRights());
 		} else if (result.startsWith(RESPONSE_OK)) {
 			String[] res = result.split("_", 2);
 			if (res != null && res.length == 2) {
 				dataSourceName = res[1];
-				SC.say("Bestand werd opgeladen.");
+				SC.say(MESSAGES.uploadShapefileResponseOK());
 			} else {
-				SC.warn("Er heeft zich een fout voorgedaan bij het opladen" +
-						" van het bestand.<br />(Verkeerd antwoord?? : "
-						+ result + ")");
+				SC.warn(MESSAGES.uploadShapefileResponseOkButWrong(result));
 			}
 		} else {
-			SC.warn("Er heeft zich een fout voorgedaan bij het opladen" +
-					" van het bestand.<br />(" + result + ")");
+			SC.warn(MESSAGES.uploadShapefileResponseDeafultNOK(result));
 		}
 		if (onUploadFinished != null) {
 			onUploadFinished.execute(dataSourceName);

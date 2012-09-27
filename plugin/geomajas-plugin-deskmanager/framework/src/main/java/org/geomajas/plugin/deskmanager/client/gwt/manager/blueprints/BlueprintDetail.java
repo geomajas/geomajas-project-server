@@ -38,7 +38,9 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * @author Kristof Heirwegh
  */
 public class BlueprintDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, BlueprintHandler {
+	
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private static final String ID_ATTRIBUTE = "id";
 	
 	private BlueprintDto blueprint;

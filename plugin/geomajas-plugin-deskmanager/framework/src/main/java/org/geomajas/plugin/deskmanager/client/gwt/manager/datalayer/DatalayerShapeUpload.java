@@ -13,9 +13,11 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.UploadShapefileForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -27,6 +29,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class DatalayerShapeUpload extends VLayout implements WoaEventHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+
+	
 	private UploadShapefileForm form;
 
 	private SaveButtonBar buttonBar;
@@ -47,7 +52,7 @@ public class DatalayerShapeUpload extends VLayout implements WoaEventHandler {
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Data opladen");
+		group.setGroupTitle(MESSAGES.datalayerShapeUploadFormGroup());
 		group.addMember(form);
 		group.setOverflow(Overflow.AUTO);
 
@@ -67,8 +72,8 @@ public class DatalayerShapeUpload extends VLayout implements WoaEventHandler {
 
 	public boolean onSaveClick(ClickEvent event) {
 		if (validate()) {
-			SC.ask("Opslaan", "Hierbij worden alle gegevens in de laag overschreven.<br />"
-					+ "Deze actie kan niet ongedaan gemaakt worden.<br />Verder gaan?", new BooleanCallback() {
+			SC.ask(MESSAGES.datalayerShapeUploadOverwriteConfirmTitle(), 
+					MESSAGES.datalayerShapeUploadOverwriteConfirmQuestion(), new BooleanCallback() {
 
 				public void execute(Boolean value) {
 					if (value) {
@@ -93,7 +98,7 @@ public class DatalayerShapeUpload extends VLayout implements WoaEventHandler {
 
 	public boolean validate() {
 		if (!form.validate()) {
-			SC.say("Gelieve een bestand te selecteren.");
+			SC.say(MESSAGES.datalayerShapeUploadNoFileSelected());
 			return false;
 		}
 		return true;

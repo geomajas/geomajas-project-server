@@ -179,7 +179,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	}
 
 	private void setLoading() {
-		loadingLabel.setContents("<B><i>" + MESSAGES.geodeskDetailLoadingConfig() + "</i> <img src='"
+		loadingLabel.setContents("<B><i>" + MESSAGES.loadingConfig() + "</i> <img src='"
 				+ Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></B>");
 		loadingLayout.animateShow(AnimationEffect.FADE);

@@ -18,10 +18,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.Noti
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -43,7 +45,9 @@ import com.smartgwt.client.widgets.layout.LayoutSpacer;
  * @author Kristof Heirwegh
  */
 public class DatalayerGrid extends ListGrid implements LayerModelHandler {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	public static final String FLD_ID = "id";
 
 	private static final String FLD_NAME = "name";
@@ -75,32 +79,31 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 
 		// -- Fields --------------------------------------------------------
 
-		ListGridField name = new ListGridField(FLD_NAME, "Naam Laag");
+		ListGridField name = new ListGridField(FLD_NAME, MESSAGES.datalayerGridColumnLayerName());
 		name.setType(ListGridFieldType.TEXT);
 		name.setWidth("*");
 
-		ListGridField owner = new ListGridField(FLD_OWNER, "Groep");
+		ListGridField owner = new ListGridField(FLD_OWNER, MESSAGES.datalayerGridColumnGroup());
 		owner.setType(ListGridFieldType.TEXT);
 		owner.setWidth(150);
 
-		ListGridField type = new ListGridField(FLD_TYPE, "Type Laag");
+		ListGridField type = new ListGridField(FLD_TYPE, MESSAGES.datalayerGridColumnLayerType());
 		type.setType(ListGridFieldType.TEXT);
 		type.setWidth(100);
 
-		ListGridField publicUse = new ListGridField(FLD_PUBLIC, "Publiek");
+		ListGridField publicUse = new ListGridField(FLD_PUBLIC, MESSAGES.datalayerGridColumnPublic());
 		publicUse.setType(ListGridFieldType.BOOLEAN);
 		publicUse.setWidth(70);
-		publicUse.setPrompt("Aan: laag kan geraadpleegd worden zonder aanmelden.<br />"
-				+ "Uit: laag kan enkel geraadpleegd worden na aanmelden (LB of VO).");
+		publicUse.setPrompt(MESSAGES.datalayerGridColumnPublicTooltip());
 
-		ListGridField active = new ListGridField(FLD_ACTIVE, "Actief");
+		ListGridField active = new ListGridField(FLD_ACTIVE, MESSAGES.datalayerGridColumnActive());
 		active.setType(ListGridFieldType.BOOLEAN);
 		active.setWidth(70);
-		active.setPrompt("Aan: betekent dat deze laag kan gebruikt worden in loketconfiguratie.");
+		active.setPrompt(MESSAGES.datalayerGridColumnActiveTooltip());
 
-		ListGridField actions = new ListGridField(FLD_ACTIONS, "Acties");
+		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.datalayerGridColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
-		actions.setWidth(40);
+		actions.setWidth(60);
 
 		setFields(name, owner, type, publicUse, active, actions);
 		setSortField(0);
@@ -133,7 +136,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 			deleteImg.setShowRollOver(false);
 			deleteImg.setLayoutAlign(Alignment.CENTER);
 			deleteImg.setSrc(WidgetLayout.iconRemove);
-			deleteImg.setPrompt("Verwijder datalaag");
+			deleteImg.setPrompt(MESSAGES.datalayerGridActionsColumnRemoveTooltip());
 			deleteImg.setHeight(16);
 			deleteImg.setWidth(16);
 			deleteImg.addClickHandler(new ClickHandler() {
@@ -141,21 +144,18 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 				public void onClick(ClickEvent event) {
 					final LayerModelDto model = (LayerModelDto) rollOverRecord.getAttributeAsObject(FLD_OBJECT);
 					if (model.isReadOnly()) {
-						SC.warn("Deze laag is gemarkeerd als enkel lezen.<br />(en kan dus niet verwijderd worden)");
+						SC.warn(MESSAGES.datalayerGridWarnPublicCannotBeRemoved());
 					} else {
-						NotificationWindow.showInfoMessage("Controle gebruik laag");
+						NotificationWindow.showInfoMessage(MESSAGES.datalayerGridControlOnLayerUseBeforeRemove());
 						CommService.checkLayerModelInUse(model, new DataCallback<Boolean>() {
 
 							public void execute(Boolean result) {
 								NotificationWindow.clearMessages();
 								if (result) {
-									SC.warn("Laag is nog in gebruik!<br /><br />"
-											+ "Verwijder eerst alle referenties (in Blauwdrukken en Geodesks) "
-											+ "en probeer dan opnieuw.");
+									SC.warn(MESSAGES.datalayerGridCannotRemoveLayerInUse());
 								} else {
-									SC.ask("Verwijderen", "Laag \"" + model.getName() + "\" verwijderen?<br />"
-											+ "<br />Deze actie kan niet ongedaan gemaakt worden.",
-											new BooleanCallback() {
+									SC.ask(MESSAGES.removeTitle(), MESSAGES.datalayerGridRemoveConfirmQuestion(
+											model.getName()), new BooleanCallback() {
 
 												public void execute(Boolean value) {
 													if (value) {
@@ -182,7 +182,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 		clearData();
 
 		setShowEmptyMessage(true);
-		setEmptyMessage("<i>Datalagen worden geladen... <img src='" + Geomajas.getIsomorphicDir()
+		setEmptyMessage("<i>" + MESSAGES.datalayerGridLoading() + " <img src='" + Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		redraw();
 

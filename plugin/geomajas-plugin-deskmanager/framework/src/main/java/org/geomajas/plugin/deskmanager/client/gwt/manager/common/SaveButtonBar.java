@@ -66,7 +66,7 @@ public class SaveButtonBar extends HLayout {
 			control = parent;
 		}
 
-		edit = new IButton("Wijzigen");
+		edit = new IButton(MESSAGES.editButtonText());
 		edit.setIcon(WidgetLayout.iconEdit);
 		edit.setAutoFit(true);
 		edit.addClickHandler(new ClickHandler() {
@@ -76,7 +76,7 @@ public class SaveButtonBar extends HLayout {
 			}
 		});
 
-		save = new IButton("Opslaan");
+		save = new IButton(MESSAGES.saveButtonText());
 		save.setIcon(WidgetLayout.iconSave);
 		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {

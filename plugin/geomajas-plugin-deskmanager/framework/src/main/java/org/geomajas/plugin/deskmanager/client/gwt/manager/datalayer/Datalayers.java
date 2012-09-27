@@ -15,10 +15,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.Noti
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -30,6 +32,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class Datalayers extends VLayout implements EditSessionHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private IButton buttonNew;
 
 	private DatalayerGrid grid;
@@ -49,7 +53,7 @@ public class Datalayers extends VLayout implements EditSessionHandler {
 		topContainer.setHeight("60%");
 		topContainer.setLayoutBottomMargin(5);
 
-		buttonNew = new IButton("Nieuwe datalaag");
+		buttonNew = new IButton(MESSAGES.datalayersNewDatalayerButtonText());
 		buttonNew.setIcon(WidgetLayout.iconAdd);
 		buttonNew.setAutoFit(true);
 		buttonNew.addClickHandler(new ClickHandler() {
@@ -59,7 +63,7 @@ public class Datalayers extends VLayout implements EditSessionHandler {
 
 					public void execute(LayerConfiguration result) {
 						if (result != null && !"".equals(result)) {
-							NotificationWindow.showInfoMessage("Nieuw laag wordt opgeslagen");
+							NotificationWindow.showInfoMessage(MESSAGES.datalayersNewLayerIsBeingSaved());
 							CommService.createNewLayerModel(result);
 						}
 					}

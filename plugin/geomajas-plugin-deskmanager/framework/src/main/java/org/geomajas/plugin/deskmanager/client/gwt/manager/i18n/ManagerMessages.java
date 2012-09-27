@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.i18n;
 
+
 import com.google.gwt.i18n.client.Messages;
 
 /**
@@ -19,9 +20,18 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface ManagerMessages extends Messages {
 	
+	String editButtonText();
 	String cancelButtonText();
+	String saveButtonText();
 	String removeTitle();
 	
+	String wizardVorigeButtonText();
+	String wizardVolgendeButtonText();
+	
+	String formWarnNotvalid();
+	String loadingConfig();
+	String titlePleaseWait();
+
 	String settingsLatestChangeBy();
 	String settingsLatestChangeWhen();
 
@@ -154,7 +164,6 @@ public interface ManagerMessages extends Messages {
 	String geodeskSettingsPublic();
 	String geodeskSettingsWarnCannotBePublic();
 	String geodeskSettingsWarnGeodeskInactivedByBlueprint();
-	String formWarnNotvalid();
 	
 	String settingsLimitToTerritoryAdministrator();
 	String settingsLimitToTerritoryAdministratorTooltip();
@@ -180,8 +189,6 @@ public interface ManagerMessages extends Messages {
 	String geodeskDetailTabHTMLCode();
 
 	String geodeskDetailTabThemes();
-
-	String geodeskDetailLoadingConfig();
 
 	
 	String chooseBlueprintTitle();
@@ -236,6 +243,55 @@ public interface ManagerMessages extends Messages {
 	String chooseAppRequired();
 	String chooseAppTooltip();
 	String chooseAppCreate();
+
+	String datalayerDetailTabSettings();
+	String datalayerDetailTabUpload();
+	String datalayerDetailTabConnectionparameters();
+	String datalayerDetailTabNotifications();
+	String datalayerDetailTabStyle();
+
+	String datalayerGridColumnLayerName();
+	String datalayerGridColumnGroup();
+	String datalayerGridColumnLayerType();
+	String datalayerGridColumnPublic();
+	String datalayerGridColumnPublicTooltip();
+	String datalayerGridColumnActive();
+	String datalayerGridColumnActiveTooltip();
+	String datalayerGridColumnActions();
+	
+	String datalayerGridActionsColumnRemoveTooltip();
+	String datalayerGridWarnPublicCannotBeRemoved();
+	String datalayerGridControlOnLayerUseBeforeRemove();
+	String datalayerGridCannotRemoveLayerInUse();
+	String datalayerGridRemoveConfirmQuestion(String name);
+	String datalayerGridLoading();
+	
+	String datalayerNotificationsFormGroup();	
+	String datalayerNotificationsWarnInvalidFormData();
+	
+	String datalayerNotificationsNoFormChanges();
+	String datalayersNewDatalayerButtonText();
+	String datalayersNewLayerIsBeingSaved();
+	String datalayerShapeUploadFormGroup();
+	String datalayerShapeUploadOverwriteConfirmTitle();
+	String datalayerShapeUploadOverwriteConfirmQuestion();
+	String datalayerShapeUploadNoFileSelected();
+	String datalayerStyleFormGroup();
+	
+	
+	String newLayerModelWindowTitle();
+	String newLayerModelWizardCreateButtonText();
+	String newLayerModelWizardWarnNoPanel();
+
+	String uploadShapefileLabelText();
+	String uploadShapefileUploadingFile();
+	String uploadShapefileResponseInvalidFile();
+	String uploadShapefileResponseNoRights();
+	String uploadShapefileResponseOK();
+	String uploadShapefileResponseOkButWrong(String result);
+	String uploadShapefileResponseDeafultNOK(String result);
+	String uploadShapefileResponseInvalidLayer();
+	
 	
 
 	

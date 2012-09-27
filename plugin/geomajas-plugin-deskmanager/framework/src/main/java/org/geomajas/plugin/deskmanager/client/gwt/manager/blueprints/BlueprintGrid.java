@@ -108,7 +108,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 		
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.blueprintGridColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
-		actions.setWidth(40);
+		actions.setWidth(60);
 		actions.setPrompt(MESSAGES.bleuprintGridColumnActionsTooltip());
 		
 		setFields(name, limitTerritory, publicUse, active, geodesksActive, actions);

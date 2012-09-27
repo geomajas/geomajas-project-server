@@ -51,7 +51,7 @@ public class DatalayerSettings extends VLayout implements WoaEventHandler {
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Instellingen");
+		group.setGroupTitle(MESSAGES.settingsFormGroupSettings());
 		group.addMember(form);
 		group.setOverflow(Overflow.AUTO);
 

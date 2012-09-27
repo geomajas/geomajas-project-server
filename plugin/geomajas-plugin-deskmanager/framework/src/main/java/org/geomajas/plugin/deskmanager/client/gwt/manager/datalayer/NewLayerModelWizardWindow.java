@@ -43,7 +43,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class NewLayerModelWizardWindow extends Window implements Wizard {
-	
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
 	public static final String STEP_CHOOSE_TYPE = "choose_type";
@@ -67,8 +67,6 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 	public static final String STEP_WMS_PREVIEW_LAYER = "raster_preview_layer";
 
 	public static final String STEP_EDIT_LAYER_SETTINGS = "edit_layer_settings";
-
-	public static final String WINDOW_TITLE = "Nieuwe datalaag aanmaken";
 
 	private static final int WIDTH = 650;
 
@@ -135,7 +133,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 		HLayout buttons = new HLayout(10);
 		buttons.setWidth100();
 		buttons.setHeight(25);
-		prev = new IButton("Vorige");
+		prev = new IButton(MESSAGES.wizardVorigeButtonText());
 		prev.setIcon(WidgetLayout.iconZoomLast);
 		prev.setAutoFit(true);
 		prev.setDisabled(true);
@@ -146,7 +144,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 			}
 		});
 
-		next = new IButton("Volgende");
+		next = new IButton(MESSAGES.wizardVolgendeButtonText());
 		next.setIcon(WidgetLayout.iconZoomNext);
 		next.setAutoFit(true);
 		next.setDisabled(true);
@@ -162,7 +160,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 			}
 		});
 
-		save = new IButton("Aanmaken");
+		save = new IButton(MESSAGES.newLayerModelWizardCreateButtonText());
 		save.setIcon(WidgetLayout.iconAdd);
 		save.setAutoFit(true);
 		save.setDisabled(true);
@@ -224,7 +222,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 	private void setStep(WizardStepPanel step) {
 		if (step == null) {
-			SC.say("Gelieve een panel op te geven!");
+			SC.say(MESSAGES.newLayerModelWizardWarnNoPanel());
 			return;
 		}
 
@@ -233,9 +231,9 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 		}
 		currentStep = step;
 		if (currentStep.getWindowTitle() != null) {
-			setTitle(WINDOW_TITLE + ": " + currentStep.getWindowTitle());
+			setTitle(MESSAGES.newLayerModelWindowTitle() + ": " + currentStep.getWindowTitle());
 		} else {
-			setTitle(WINDOW_TITLE);
+			setTitle(MESSAGES.newLayerModelWindowTitle());
 		}
 		updateState();
 		currentStep.setVisible(true);

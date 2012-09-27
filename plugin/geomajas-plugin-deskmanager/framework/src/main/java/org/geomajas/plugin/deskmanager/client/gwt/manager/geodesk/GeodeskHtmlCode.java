@@ -34,6 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh 
  */
 public class GeodeskHtmlCode extends VLayout implements GeodeskSelectionHandler {
+	//FIXME i18n
 	private static final String PRE_HTML = "<iframe src=\"";
 
 	private static final String POST_HTML = "?type=static&i=yes\" width=\"1100\" height=\"650\" frameborder=\"0\""

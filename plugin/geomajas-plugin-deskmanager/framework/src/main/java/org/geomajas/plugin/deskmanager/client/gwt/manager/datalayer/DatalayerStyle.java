@@ -12,8 +12,10 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -22,6 +24,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class DatalayerStyle extends VLayout implements WoaEventHandler {
+
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private LayerModelDto lmd;
 
@@ -35,7 +39,7 @@ public class DatalayerStyle extends VLayout implements WoaEventHandler {
 		VLayout group = new VLayout();
 		group.setPadding(10);
 		group.setIsGroup(true);
-		group.setGroupTitle("Stijl");
+		group.setGroupTitle(MESSAGES.datalayerStyleFormGroup());
 		group.setOverflow(Overflow.AUTO);
 
 		// group.addMember(form);

@@ -16,11 +16,13 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHand
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
@@ -38,6 +40,10 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class DatalayerDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, LayerModelHandler {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
+	private static final String ID_ATTRIBUTE = "id";
+	
 	private LayerModelDto layerModel;
 
 	private TabSet tabset;
@@ -81,23 +87,23 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		tabset.setHeight100();
 		tabset.setOverflow(Overflow.HIDDEN);
 
-		settingsTab = new Tab("Instellingen");
+		settingsTab = new Tab(MESSAGES.datalayerDetailTabSettings());
 		settingsTab.setPane(settings);
 		tabset.addTab(settingsTab);
 
-		uploadTab = new Tab("Data opladen");
+		uploadTab = new Tab(MESSAGES.datalayerDetailTabUpload());
 		uploadTab.setPane(upload);
 		tabset.addTab(uploadTab);
 
-		connParTab = new Tab("Connectie parameters");
+		connParTab = new Tab(MESSAGES.datalayerDetailTabConnectionparameters());
 		connParTab.setPane(connPar);
 		tabset.addTab(connParTab);
 
-		notificationsTab = new Tab("Notificaties");
+		notificationsTab = new Tab(MESSAGES.datalayerDetailTabNotifications());
 		notificationsTab.setPane(notifications);
 		tabset.addTab(notificationsTab);
 
-		styleTab = new Tab("Stijl");
+		styleTab = new Tab(MESSAGES.datalayerDetailTabStyle());
 		styleTab.setPane(style);
 		tabset.addTab(styleTab);
 
@@ -135,8 +141,8 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		setDisabled(true);
 		if (event.getState()) { // true == selected
 			ListGridRecord record = (ListGridRecord) event.getRecord();
-			if (record != null && record.getAttributeAsString("id") != null
-					&& record.getAttributeAsString("id").length() != 0) {
+			if (record != null && record.getAttributeAsString(ID_ATTRIBUTE) != null
+					&& record.getAttributeAsString(ID_ATTRIBUTE).length() != 0) {
 				loadRecord(record.getAttributeAsLong(DatalayerGrid.FLD_ID));
 			} else {
 				setLayerModel(null);
@@ -145,8 +151,8 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 	}
 
 	private void setLoading() {
-		loadingLabel.setContents("<B><i>Configuratie wordt opgehaald...</i> <img src='" + Geomajas.getIsomorphicDir()
-				+ "/images/circle.gif' style='height: 1em' /></B>");
+		loadingLabel.setContents("<B><i>" + MESSAGES.loadingConfig() + "</i> " + "<img src='"
+				+ Geomajas.getIsomorphicDir() + "/images/circle.gif' style='height: 1em' /></B>");
 		loadingLayout.animateShow(AnimationEffect.FADE);
 	}
 
