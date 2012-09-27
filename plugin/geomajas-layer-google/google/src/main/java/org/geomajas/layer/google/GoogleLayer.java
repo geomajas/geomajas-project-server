@@ -435,6 +435,12 @@ public class GoogleLayer implements RasterLayer {
 								Double.toString(centerInWsg84.y) + "," + Double.toString(centerInWsg84.x));
 						url = url.replace("${level}", Integer.toString(zoomLevel));
 
+						//When we are trying to display the tiles on a different coordinate system, use double scaled
+						//images so that renderings are more smooth. This will return an image tileSize*2 x tileSize*2.
+						if (!layerToMap.isIdentity()) {
+							url += "&scale=2";
+						}
+						
 						image.setCode(new TileCode(zoomLevel, i, j));
 						image.setUrl(url);
 						log.debug("adding image {}", image);
