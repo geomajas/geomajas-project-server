@@ -321,45 +321,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<includePom>true</includePom>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- checkstyle configuration -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.5-DF</version>
-				<configuration>
-					<configLocation>config/geomajas-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.geomajas</groupId>
-						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.7</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 		</plugins>
 		<resources>
 			<resource>

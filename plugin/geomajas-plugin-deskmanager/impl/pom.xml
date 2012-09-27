@@ -284,30 +284,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- checkstyle configuration -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.5-DF</version>
-				<configuration>
-					<configLocation>config/geomajas-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.geomajas</groupId>
-						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.7</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -324,41 +300,6 @@
 				</excludes>
 			</resource>
 		</resources>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-antrun-plugin
-										</artifactId>
-										<versionRange>
-											[1.3,)
-										</versionRange>
-										<goals>
-											<goal>run</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 	<profiles>
 		<!-- include sources in build -->
