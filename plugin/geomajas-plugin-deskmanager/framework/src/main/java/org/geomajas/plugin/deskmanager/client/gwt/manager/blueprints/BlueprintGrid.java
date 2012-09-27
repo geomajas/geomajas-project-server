@@ -68,6 +68,8 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 
 	private Map<String, BlueprintDto> blueprints = new HashMap<String, BlueprintDto>();
 
+	private static final int FLD_ACTIONS_WIDTH = 60;
+
 	public BlueprintGrid() {
 		super();
 		setWidth100();
@@ -108,7 +110,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 		
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.blueprintGridColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
-		actions.setWidth(60);
+		actions.setWidth(FLD_ACTIONS_WIDTH);
 		actions.setPrompt(MESSAGES.bleuprintGridColumnActionsTooltip());
 		
 		setFields(name, limitTerritory, publicUse, active, geodesksActive, actions);
@@ -135,7 +137,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 		if (rollOverCanvas == null) {
 			rollOverCanvas = new HLayout(3);
 			rollOverCanvas.setSnapTo("TR");
-			rollOverCanvas.setWidth(22);
+			rollOverCanvas.setWidth(FLD_ACTIONS_WIDTH);
 			rollOverCanvas.setHeight(22);
 
 			ImgButton deleteImg = new ImgButton();

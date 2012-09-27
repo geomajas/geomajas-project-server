@@ -72,7 +72,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 		setKeepInParentRect(true);
 		setOverflow(Overflow.HIDDEN);
 		setAutoCenter(true);
-		setTitle("Configureer Laag");
+		setTitle(MESSAGES.layerConfigurationConfigureLayer());
 		setShowCloseButton(false);
 		setShowMinimizeButton(false);
 		setShowMaximizeButton(false);
@@ -81,50 +81,50 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 		form = new DynamicForm();
 		form.setIsGroup(true);
-		form.setGroupTitle("Laag Eigenschappen");
+		form.setGroupTitle(MESSAGES.layerConfigurationLayerProperties());
 		form.setPadding(5);
 		form.setAutoWidth();
 		form.setAutoFocus(true); /* Set focus on first field */
 		form.setNumCols(2);
 		form.setTitleOrientation(TitleOrientation.LEFT);
 
-		label = new TextItem("Naam");
-		label.setTitle("Naam");
+		label = new TextItem("Name");
+		label.setTitle(MESSAGES.layerConfigurationName());
 		label.setRequired(true);
 		label.setWidth(FORMITEM_WIDTH);
 		label.setWrapTitle(false);
-		label.setTooltip("Aangepaste naam voor de laag.");
+		label.setTooltip(MESSAGES.layerConfigurationNameTooltip());
 
 		publicLayer = new CheckboxItem();
-		publicLayer.setTitle("Publieke laag");
+		publicLayer.setTitle(MESSAGES.layerConfigurationPublicLayer());
 		publicLayer.setDisabled(true); // altijd readonly hier
 		publicLayer.setWrapTitle(false);
 
 		defaultVisible = new CheckboxItem();
-		defaultVisible.setTitle("Laag staat standaard aan");
+		defaultVisible.setTitle(MESSAGES.layerConfigurationLayerVisibleByDefault());
 		defaultVisible.setWrapTitle(false);
-		defaultVisible.setTooltip("Aangevinkt: De laag wordt standaard weergegeven.");
+		defaultVisible.setTooltip(MESSAGES.layerConfigurationLayerVisibleByDefaultTooltip());
 
 		minScale = new TextItem();
-		minScale.setTitle("Minimum schaal");
+		minScale.setTitle(MESSAGES.layerConfigurationMinimumScale());
 		minScale.setWidth(FORMITEM_WIDTH / 2);
 		minScale.setWrapTitle(false);
-		minScale.setTooltip("Minimum schaal waarop de laag zichtbaar is.");
+		minScale.setTooltip(MESSAGES.layerConfigurationMinimumScaleTooltip());
 		minScale.setValidators(new ScaleValidator());
 
 		maxScale = new TextItem();
-		maxScale.setTitle("Maximum schaal");
+		maxScale.setTitle(MESSAGES.layerConfigurationMaximumScale());
 		maxScale.setWidth(FORMITEM_WIDTH / 2);
 		maxScale.setWrapTitle(false);
 		maxScale.setValidators(new ScaleValidator());
-		maxScale.setTooltip("Maximum schaal waarop de laag zichtbaar is.");
+		maxScale.setTooltip(MESSAGES.layerConfigurationMaximumScaleTooltip());
 
 		form.setFields(label, publicLayer, defaultVisible, minScale, maxScale);
 
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
-		IButton save = new IButton("Opslaan");
+		IButton save = new IButton(MESSAGES.saveButtonText());
 		save.setIcon(WidgetLayout.iconSave);
 		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {
@@ -143,10 +143,10 @@ public class LayerConfigurationWindow extends DockableWindow {
 			}
 		});
 
-		IButton restore = new IButton("Herstel");
+		IButton restore = new IButton(MESSAGES.resetButtonText());
 		restore.setIcon(WidgetLayout.iconReset);
 		restore.setAutoFit(true);
-		restore.setTooltip("Herstel naar standaardwaarden");
+		restore.setTooltip(MESSAGES.resetButtonTooltip());
 		restore.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -215,8 +215,8 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 	private void restored() {
 		if (layer.getClientLayerInfo() != null) {
-			SC.ask("Wijzigingen verwerpen", "Gemaakte wijzigingen verwerpen en opnieuw instellen op default waarden?",
-					new BooleanCallback() {
+			SC.ask(MESSAGES.layerConfigConfirmRestoreTitle(), 
+					MESSAGES.layerConfigConfirmRestoreText(), new BooleanCallback() {
 
 						public void execute(Boolean value) {
 							if (value) {

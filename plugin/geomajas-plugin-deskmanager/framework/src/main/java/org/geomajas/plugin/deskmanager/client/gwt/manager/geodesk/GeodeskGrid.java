@@ -70,6 +70,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 	private static final String FLD_ACTIVE = "active";
 
 	private static final String FLD_ACTIONS = "actions";
+	private static final int FLD_ACTIONS_WIDTH = 60;
 
 	private static final String FLD_GEODESKID = "geodeskId";
 
@@ -122,7 +123,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.geodeskGridColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
-		actions.setWidth(60);
+		actions.setWidth(FLD_ACTIONS_WIDTH);
 		actions.setPrompt(MESSAGES.geodeskGridColumnActionsTooltip());
 
 		setFields(name, blueprint, geodeskId, author, publicUse, active, actions);
@@ -158,7 +159,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		if (rollOverCanvas == null) {
 			rollOverCanvas = new HLayout(3);
 			rollOverCanvas.setSnapTo("TR");
-			rollOverCanvas.setWidth(44);
+			rollOverCanvas.setWidth(FLD_ACTIONS_WIDTH);
 			rollOverCanvas.setHeight(22);
 
 			ImgButton previewImg = new ImgButton();

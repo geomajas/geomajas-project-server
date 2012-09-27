@@ -11,8 +11,10 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -31,13 +33,19 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
+ * @author An Buyle
  * 
  */
 public class LayerListGrid extends ListGrid {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	public static final String FLD_NAME = "name";
 
 	public static final String FLD_PUBLIC = "public";
+	
+	private static final String FLD_ACTIONS = "actions";
+	private static final int FLD_ACTIONS_WIDTH = 60;
 
 	public static final String FLD_OBJECT = "object";
 
@@ -49,6 +57,7 @@ public class LayerListGrid extends ListGrid {
 		super();
 		setWidth100();
 		setHeight100();
+		
 		if (editable) {
 			setShowRollOverCanvas(true);
 			setCanSort(false); // this messes things up
@@ -66,22 +75,31 @@ public class LayerListGrid extends ListGrid {
 		nameFld.setWidth("*");
 		nameFld.setTitle(title);
 
-		ListGridField publicFld = new ListGridField(FLD_PUBLIC, "Publiek");
+		ListGridField publicFld = new ListGridField(FLD_PUBLIC, MESSAGES.datalayerGridColumnPublic());
 		publicFld.setType(ListGridFieldType.BOOLEAN);
-		publicFld.setWidth(90);
-		publicFld.setPrompt("Aan: laag kan geraadpleegd worden in een publiek loket.");
+		publicFld.setWidth(70);
+		publicFld.setPrompt(MESSAGES.layerListGridColumnPublicTooltip());
 
-		setFields(nameFld, publicFld);
+		if (editable) {
+			ListGridField actionsFld = new ListGridField(FLD_ACTIONS, MESSAGES.gridColumnActions());
+			actionsFld.setType(ListGridFieldType.TEXT);
+			actionsFld.setWidth(FLD_ACTIONS_WIDTH);
+			setFields(nameFld, publicFld, actionsFld);
+		} else {
+			setFields(nameFld, publicFld);	
+		}
+		
 	}
 
 	@Override
 	protected Canvas getRollOverCanvas(Integer rowNum, Integer colNum) {
+		
 		rollOverRecord = getRecord(rowNum);
 
 		if (rollOverCanvas == null) {
 			rollOverCanvas = new HLayout(3);
 			rollOverCanvas.setSnapTo("TR");
-			rollOverCanvas.setWidth(22);
+			rollOverCanvas.setWidth(FLD_ACTIONS_WIDTH);
 			rollOverCanvas.setHeight(22);
 
 			ImgButton editProps = new ImgButton();
@@ -89,7 +107,7 @@ public class LayerListGrid extends ListGrid {
 			editProps.setShowRollOver(false);
 			editProps.setLayoutAlign(Alignment.CENTER);
 			editProps.setSrc(DeskmanagerIcon.IMG_SRC_COG);
-			editProps.setPrompt("Configureren");
+			editProps.setPrompt(MESSAGES.layerListGridConfigurate());
 			editProps.setShowDisabledIcon(false);
 			editProps.setHeight(16);
 			editProps.setWidth(16);

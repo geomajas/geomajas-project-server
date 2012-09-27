@@ -59,6 +59,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 	private static final String FLD_ACTIVE = "active";
 
 	private static final String FLD_ACTIONS = "actions";
+	private static final int FLD_ACTIONS_WIDTH = 60;
 
 	private static final String FLD_TYPE = "type";
 
@@ -103,7 +104,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.datalayerGridColumnActions());
 		actions.setType(ListGridFieldType.TEXT);
-		actions.setWidth(60);
+		actions.setWidth(FLD_ACTIONS_WIDTH);
 
 		setFields(name, owner, type, publicUse, active, actions);
 		setSortField(0);
@@ -128,7 +129,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 		if (rollOverCanvas == null) {
 			rollOverCanvas = new HLayout(3);
 			rollOverCanvas.setSnapTo("TR");
-			rollOverCanvas.setWidth(40);
+			rollOverCanvas.setWidth(FLD_ACTIONS_WIDTH);
 			rollOverCanvas.setHeight(22);
 
 			ImgButton deleteImg = new ImgButton();

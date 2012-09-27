@@ -23,6 +23,9 @@ public interface ManagerMessages extends Messages {
 	String editButtonText();
 	String cancelButtonText();
 	String saveButtonText();
+	String resetButtonText();
+	String resetButtonTooltip();
+	
 	String removeTitle();
 	
 	String wizardVorigeButtonText();
@@ -31,6 +34,8 @@ public interface ManagerMessages extends Messages {
 	String formWarnNotvalid();
 	String loadingConfig();
 	String titlePleaseWait();
+	
+	String gridColumnActions();
 
 	String settingsLatestChangeBy();
 	String settingsLatestChangeWhen();
@@ -291,6 +296,27 @@ public interface ManagerMessages extends Messages {
 	String uploadShapefileResponseOkButWrong(String result);
 	String uploadShapefileResponseDeafultNOK(String result);
 	String uploadShapefileResponseInvalidLayer();
+
+	String layerConfigurationConfigureLayer();
+	String layerConfigurationLayerProperties();
+	String layerConfigurationName();
+	String layerConfigurationNameTooltip();
+	String layerConfigurationPublicLayer();
+	String layerConfigurationLayerVisibleByDefault();
+	String layerConfigurationLayerVisibleByDefaultTooltip();
+	String layerConfigurationMinimumScale();
+	String layerConfigurationMinimumScaleTooltip();
+	String layerConfigurationMaximumScale();
+	String layerConfigurationMaximumScaleTooltip();
+	String layerConfigConfirmRestoreText();
+	String layerConfigConfirmRestoreTitle();
+
+	
+	String layerListGridColumnPublicTooltip();
+	String layerListGridConfigurate();
+
+
+
 	
 	
 
