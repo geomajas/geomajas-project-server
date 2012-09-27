@@ -11,14 +11,12 @@
 
 package org.geomajas.gwt.example.client.sample.mapwidget;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.gfx.paintable.Circle;
-import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
