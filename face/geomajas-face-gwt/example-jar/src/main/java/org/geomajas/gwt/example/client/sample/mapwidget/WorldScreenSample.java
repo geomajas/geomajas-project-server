@@ -11,15 +11,19 @@
 
 package org.geomajas.gwt.example.client.sample.mapwidget;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.gfx.paintable.Circle;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
+import org.geomajas.gwt.client.gfx.paintable.Text;
+import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -115,7 +119,7 @@ public class WorldScreenSample extends SamplePanel {
 		worldCircle.setPosition(new Coordinate(2000000, 2000000));
 		worldCircle.setRadius(500000);
 		worldCircle.setStyle(new ShapeStyle("#FF00FF", 0.5f, "#FF00FF", 1.0f, 2));
-		
+
 		// And some geometries
 		final GfxGeometry worldGeometry = new GfxGeometry("MultiPolygonInWorldSpace");
 		final GeometryFactory gf = new GeometryFactory(map.getMapModel().getSrid(), map.getMapModel().getPrecision());
@@ -137,6 +141,11 @@ public class WorldScreenSample extends SamplePanel {
 		worldGeometry2.setGeometry(gf.createMultiPoint(new Point[] { pt1, pt2, pt3 }));
 		worldGeometry2.setSymbolInfo(si);
 
+		// Some text
+		FontStyle fontStyle = new FontStyle("#FF0000", 20, "Verdana", "normal", "normal");
+		final Text worldText = new Text("TextInWorldSpace", "Sample scaling text",
+				new Coordinate(2500000, 2500000), fontStyle);
+
 		button2.addClickHandler(new ClickHandler() {
 
 			// Draw an image and some geometries in world space:
@@ -146,6 +155,7 @@ public class WorldScreenSample extends SamplePanel {
 				map.registerWorldPaintable(worldCircle);
 				map.registerWorldPaintable(worldGeometry);
 				map.registerWorldPaintable(worldGeometry2);
+				map.registerWorldPaintable(worldText);
 			}
 		});
 		buttonLayout.addMember(button2);
@@ -175,6 +185,7 @@ public class WorldScreenSample extends SamplePanel {
 				map.unregisterWorldPaintable(worldCircle);
 				map.unregisterWorldPaintable(worldGeometry);
 				map.unregisterWorldPaintable(worldGeometry2);
+				map.unregisterWorldPaintable(worldText);
 			}
 		});
 		buttonLayout2.addMember(button4);
