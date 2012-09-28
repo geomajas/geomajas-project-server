@@ -35,6 +35,7 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
 	private static final int FORMITEM_WIDTH = 300;
+	public static final String FLD_NAME = "Name";
 
 	// private LayerTreeNodeDto layerGroup;
 
@@ -58,7 +59,7 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 		setKeepInParentRect(true);
 		setOverflow(Overflow.HIDDEN);
 		setAutoCenter(true);
-		setTitle("Configureer Folder");
+		setTitle(MESSAGES.layerGroupConfigWindowTitle());
 		setShowCloseButton(false);
 		setShowMinimizeButton(false);
 		setShowMaximizeButton(false);
@@ -67,31 +68,31 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 
 		form = new DynamicForm();
 		form.setIsGroup(true);
-		form.setGroupTitle("Folder Eigenschappen");
+		form.setGroupTitle(MESSAGES.layerGroupConfigGroupTitleProperties());
 		form.setPadding(5);
 		form.setAutoWidth();
 		form.setAutoFocus(true); /* Set focus on first field */
 		form.setNumCols(2);
 		form.setTitleOrientation(TitleOrientation.LEFT);
 
-		name = new TextItem("Naam");
-		name.setTitle("Naam");
+		name = new TextItem(FLD_NAME);
+		name.setTitle(MESSAGES.layerGroupConfigName());
 		name.setRequired(true);
 		name.setWidth(FORMITEM_WIDTH);
 		name.setWrapTitle(false);
-		name.setTooltip("Naam van de folder.");
+		name.setTooltip(MESSAGES.layerGroupConfigNameTooltip());
 
 		expanded = new CheckboxItem();
-		expanded.setTitle("Start geopend");
+		expanded.setTitle(MESSAGES.layerGroupConfigOpenedAtStart());
 		expanded.setWrapTitle(false);
-		expanded.setTooltip("Aangevinkt: De folder wordt standaard geopend weergegeven.");
+		expanded.setTooltip(MESSAGES.layerGroupConfigOpenedAtStartTooltip());
 
 		form.setFields(name, expanded);
 
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
-		IButton save = new IButton("Opslaan");
+		IButton save = new IButton(MESSAGES.saveButtonText());
 		save.setIcon(WidgetLayout.iconSave);
 		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {

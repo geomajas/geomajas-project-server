@@ -15,8 +15,10 @@ import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.MailAddressDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridEditEvent;
@@ -42,6 +44,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
  *
  */
 public class MailGrid extends ListGrid {
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	// public static final String FLD_ID = "id";
 	private static final String FLD_NAME = "name";
@@ -49,6 +53,9 @@ public class MailGrid extends ListGrid {
 	private static final String FLD_EMAIL = "email";
 
 	private static final String FLD_OBJECT = "object";
+
+	public static final String FLD_ACTIONS = "actions";
+	private static final int FLD_ACTIONS_WIDTH = 60;
 
 	private ListGridRecord rollOverRecord;
 
@@ -76,23 +83,28 @@ public class MailGrid extends ListGrid {
 		});
 
 		RegExpValidator emailValidator = new RegExpValidator();
-		emailValidator.setErrorMessage("Geen geldig email adres");
+		emailValidator.setErrorMessage(MESSAGES.mailGridInvalidAddress());
 		emailValidator.setExpression("^([a-zA-Z0-9_.\\-+])+@(([a-zA-Z0-9\\-])+\\.)+[a-zA-Z0-9]{2,4}$");
 
 		// -- Fields ------------------------------------------------
 
-		ListGridField name = new ListGridField(FLD_NAME, "Naam");
+		ListGridField name = new ListGridField(FLD_NAME, MESSAGES.mailGridColumnName());
 		name.setWidth("*");
 		name.setType(ListGridFieldType.TEXT);
 		name.setRequired(true);
 
-		ListGridField email = new ListGridField(FLD_EMAIL, "Email adres");
+		ListGridField email = new ListGridField(FLD_EMAIL, MESSAGES.mailGridColumnAddress());
 		email.setType(ListGridFieldType.TEXT);
 		email.setWidth("*");
 		email.setRequired(true);
 		email.setValidators(emailValidator);
+		
+		ListGridField actionsFld = new ListGridField(FLD_ACTIONS, MESSAGES.gridColumnActions());
+		actionsFld.setType(ListGridFieldType.ICON);
+		actionsFld.setWidth(FLD_ACTIONS_WIDTH);
+		actionsFld.setCanEdit(false);
 
-		setFields(name, email);
+		setFields(name, email, actionsFld);
 		setSortField(0);
 		setSortDirection(SortDirection.ASCENDING);
 
@@ -108,7 +120,7 @@ public class MailGrid extends ListGrid {
 		if (rollOverCanvas == null) {
 			rollOverCanvas = new HLayout(3);
 			rollOverCanvas.setSnapTo("TR");
-			rollOverCanvas.setWidth(22);
+			rollOverCanvas.setWidth(FLD_ACTIONS_WIDTH);
 			rollOverCanvas.setHeight(22);
 
 			ImgButton deleteImg = new ImgButton();
@@ -116,14 +128,14 @@ public class MailGrid extends ListGrid {
 			deleteImg.setShowRollOver(false);
 			deleteImg.setLayoutAlign(Alignment.CENTER);
 			deleteImg.setSrc(WidgetLayout.iconRemove);
-			deleteImg.setPrompt("Verwijder email adres");
+			deleteImg.setPrompt(MESSAGES.mailGridActionDeleteTooltip());
 			deleteImg.setHeight(16);
 			deleteImg.setWidth(16);
 			deleteImg.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					SC.ask("Verwijderen", "Email adres \"" + rollOverRecord.getAttribute("name") + "\" verwijderen?",
-							new BooleanCallback() {
+					SC.ask(MESSAGES.mailGridConfirmDeleteTitle(), MESSAGES.mailGridConfirmDeleteText(
+							rollOverRecord.getAttribute(FLD_NAME)), new BooleanCallback() {
 
 								public void execute(Boolean value) {
 									if (value) {

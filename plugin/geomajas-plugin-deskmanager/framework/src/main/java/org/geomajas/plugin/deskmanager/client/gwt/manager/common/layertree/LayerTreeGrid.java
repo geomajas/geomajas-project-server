@@ -11,8 +11,10 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree;
 
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.SelectionStyle;
@@ -34,12 +36,14 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  * @author Kristof Heirwegh
  */
 public class LayerTreeGrid extends TreeGrid {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private final Menu menu = new Menu();
 
-	private final MenuItem menuMapAdd = new MenuItem("Nieuwe map maken");
+	private final MenuItem menuMapAdd = new MenuItem(MESSAGES.layerTreegridCreateMap());
 
-	private final MenuItem menuMapDelete = new MenuItem("Map verwijderen");
+	private final MenuItem menuMapDelete = new MenuItem(MESSAGES.layerTreegridRemoveMap());
 
 	private TreeGrid sourceTreeGrid;
 
@@ -65,10 +69,10 @@ public class LayerTreeGrid extends TreeGrid {
 		nameFld.setWidth("*");
 		nameFld.setTitle(title);
 
-		TreeGridField publicFld = new TreeGridField(LayerTreeNode.FLD_PUBLIC, "Publiek");
+		TreeGridField publicFld = new TreeGridField(LayerTreeNode.FLD_PUBLIC, MESSAGES.layerTreegridColumnPublic());
 		publicFld.setType(ListGridFieldType.BOOLEAN);
 		publicFld.setWidth(90);
-		publicFld.setPrompt("Aan: laag kan geraadpleegd worden in een publiek loket.");
+		publicFld.setPrompt(MESSAGES.layerTreegridColumnPublicTooltip());
 
 		setFields(nameFld, publicFld);
 
@@ -124,14 +128,13 @@ public class LayerTreeGrid extends TreeGrid {
 			}
 			getTree().remove(node);
 		} else {
-			NotificationWindow.showErrorMessage("Gelieve een map te selecteren vooraleer"
-					+ " de actie \"Map Verwijderen\" uit te voeren.");
+			NotificationWindow.showErrorMessage(MESSAGES.layerTreegridRemoveMapErrorNoSelection());
 		}
 	}
 
 	private void mapAdd() {
 		menu.hideContextMenu();
-		SC.askforValue("Gelieve de naam voor de nieuwe map in te geven.", new ValueCallback() {
+		SC.askforValue(MESSAGES.layerTreegridCreateMapAskValue(), new ValueCallback() {
 
 			public void execute(String value) {
 				if ((value != null) && (!"".equals(value.trim()))) {

@@ -103,8 +103,9 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 		active.setPrompt(MESSAGES.datalayerGridColumnActiveTooltip());
 
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.datalayerGridColumnActions());
-		actions.setType(ListGridFieldType.TEXT);
+		actions.setType(ListGridFieldType.ICON);
 		actions.setWidth(FLD_ACTIONS_WIDTH);
+		actions.setCanEdit(false);
 
 		setFields(name, owner, type, publicUse, active, actions);
 		setSortField(0);

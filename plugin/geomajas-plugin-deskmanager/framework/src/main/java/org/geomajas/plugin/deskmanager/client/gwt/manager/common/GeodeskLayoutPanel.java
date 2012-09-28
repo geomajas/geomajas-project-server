@@ -27,6 +27,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  * FIXME: this should no longer user {@link GeodeskLayoutDto} but use a clientwidgetinfo
+ * FIXME : Move to MGapp
  */
 public class GeodeskLayoutPanel extends HLayout {
 

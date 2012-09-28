@@ -96,7 +96,7 @@ public class ThemeConfigPanel extends Layout {
 		themeTitle.setTitle(MESSAGES.themeConfigThemeTitle());
 		themeTitle.setRequired(true);
 		themeTitle.setWidth(FORMITEM_WIDTH);
-		themeTitle.setValue("Really needed?");
+		themeTitle.setValue(MESSAGES.themeConfigThemeTitleText());
 		themeTitle.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -108,7 +108,7 @@ public class ThemeConfigPanel extends Layout {
 		mouseOverText = new TextAreaItem("themeMouseOver");
 		mouseOverText.setTitle(MESSAGES.themeConfigThemeMouseOver());
 		mouseOverText.setWidth(FORMITEM_WIDTH);
-		mouseOverText.setValue("Really needed?");
+		mouseOverText.setValue(MESSAGES.themeConfigThemeMouseOverText());
 		mouseOverText.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -224,7 +224,7 @@ public class ThemeConfigPanel extends Layout {
 			name.setType(ListGridFieldType.TEXT);
 			name.setRequired(true);
 
-			ListGridField delete = new ListGridField(FLD_DEL, "Add/Delete");
+			ListGridField delete = new ListGridField(FLD_DEL, MESSAGES.configAddDelete());
 			delete.setWidth(64);
 			delete.setAlign(Alignment.CENTER);
 

@@ -50,15 +50,15 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 	
 	public static final String FLD_ID = "id";
 	
-	private static final String FLD_NAME = "name";
+	public static final String FLD_NAME = "name";
 	
 	private static final String FLD_LIMIT_TO_TERRITORY = "limitToLoketTerritory";
 
 	public static final String FLD_PUBLIC = "public";
 	
-	private static final String FLD_ACTIVE = "active";
+	public static final String FLD_ACTIVE = "active";
 	
-	private static final String FLD_ACTIONS = "actions";
+	public static final String FLD_ACTIONS = "actions";
 
 	public static final String FLD_GEODESKSACTIVE = "geodesksActive";
 
@@ -109,8 +109,9 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 
 		
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.blueprintGridColumnActions());
-		actions.setType(ListGridFieldType.TEXT);
+		actions.setType(ListGridFieldType.ICON);
 		actions.setWidth(FLD_ACTIONS_WIDTH);
+		actions.setCanEdit(false);
 		actions.setPrompt(MESSAGES.bleuprintGridColumnActionsTooltip());
 		
 		setFields(name, limitTerritory, publicUse, active, geodesksActive, actions);

@@ -40,6 +40,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
 	private static final int FORMITEM_WIDTH = 300;
+	public static final String FLD_NAME = "Name";
 
 	private LayerDto layer;
 
@@ -56,6 +57,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 	private TextItem minScale;
 
 	private TextItem maxScale;
+
 
 	/**
 	 * @param layer
@@ -88,7 +90,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 		form.setNumCols(2);
 		form.setTitleOrientation(TitleOrientation.LEFT);
 
-		label = new TextItem("Name");
+		label = new TextItem(FLD_NAME );
 		label.setTitle(MESSAGES.layerConfigurationName());
 		label.setRequired(true);
 		label.setWidth(FORMITEM_WIDTH);

@@ -44,7 +44,7 @@ public class LayerListGrid extends ListGrid {
 
 	public static final String FLD_PUBLIC = "public";
 	
-	private static final String FLD_ACTIONS = "actions";
+	public static final String FLD_ACTIONS = "actions";
 	private static final int FLD_ACTIONS_WIDTH = 60;
 
 	public static final String FLD_OBJECT = "object";
@@ -82,8 +82,9 @@ public class LayerListGrid extends ListGrid {
 
 		if (editable) {
 			ListGridField actionsFld = new ListGridField(FLD_ACTIONS, MESSAGES.gridColumnActions());
-			actionsFld.setType(ListGridFieldType.TEXT);
+			actionsFld.setType(ListGridFieldType.ICON);
 			actionsFld.setWidth(FLD_ACTIONS_WIDTH);
+			actionsFld.setCanEdit(false);
 			setFields(nameFld, publicFld, actionsFld);
 		} else {
 			setFields(nameFld, publicFld);	

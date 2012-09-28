@@ -250,7 +250,7 @@ public class ViewConfigPanel extends Layout {
 			maxScalePpu.setHidden(true);
 			maxScalePpu.setType(ListGridFieldType.FLOAT);
 
-			ListGridField delete = new ListGridField(FLD_DEL, "Add/Delete");
+			ListGridField delete = new ListGridField(FLD_DEL, MESSAGES.configAddDelete());
 			delete.setWidth(64);
 			delete.setAlign(Alignment.CENTER);
 

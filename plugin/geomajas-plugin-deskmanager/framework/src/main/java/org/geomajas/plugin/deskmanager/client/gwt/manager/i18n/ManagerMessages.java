@@ -25,6 +25,8 @@ public interface ManagerMessages extends Messages {
 	String saveButtonText();
 	String resetButtonText();
 	String resetButtonTooltip();
+	String configAddDelete(); //TODO: needed?
+
 	
 	String removeTitle();
 	
@@ -43,8 +45,10 @@ public interface ManagerMessages extends Messages {
 	
 	// Configuration of Themes
 	String themeConfigThemeTitle();
+	String themeConfigThemeTitleText();
 
 	String themeConfigThemeMouseOver();
+	String themeConfigThemeMouseOverText();  //TODO: needed?
 
 	String themeConfigThemeImage();
 
@@ -314,12 +318,44 @@ public interface ManagerMessages extends Messages {
 	
 	String layerListGridColumnPublicTooltip();
 	String layerListGridConfigurate();
-
-
-
 	
+	String layerGroupConfigWindowTitle();
+	String layerGroupConfigGroupTitleProperties();
+	String layerGroupConfigName();
+	String layerGroupConfigNameTooltip();
+	String layerGroupConfigOpenedAtStart();
+	String layerGroupConfigOpenedAtStartTooltip();
+	String layerSelectPanelHelpText();
+	String layerSelectAvailableLayers();
+	String layerSelectSelectedLayers();
+	String layerSelectSelectedLayersTooltip();
+	String layerTreegridCreateMap();
+	String layerTreegridRemoveMap();
+	String layerTreegridColumnPublic();
+	String layerTreegridColumnPublicTooltip();
+	String layerTreegridRemoveMapErrorNoSelection();
+	String layerTreegridCreateMapAskValue();
 	
-
+	String mailGridInvalidAddress();
+	String mailGridColumnName();
+	String mailGridColumnAddress();
+	String mailGridActionDeleteTooltip();
+	String mailGridConfirmDeleteTitle();
+	String mailGridConfirmDeleteText(String attribute);
+	String mailManageNewButtonText();
 	
+	String layerAttributesGridLoadingText();
+	String layerAttributesGridColumnAttribute();
+	String layerAttributesGridColumnType();
+	String layerAttributesGridColumnCoreInfo();
+	String layerAttributesGridColumnCoreInfoTooltip();
+	String layerAttributesGridColumnIdField();
+	String layerAttributesGridColumnIdFieldTooltip();
+	String layerAttributesGridColumnLabelField();
+	String layerAttributesGridColumnLabelFieldTooltip();
+	String layerAttributesGridColumnName();
+	String layerAttributesGridColumnNameTooltip();
+	String layerAttributesGriDeselectIdAttribute();
+	String layerAttributesGriDeselectLabelAttribute();
 
 }

@@ -122,8 +122,9 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		active.setPrompt(MESSAGES.geodeskActivTooltip());
 
 		ListGridField actions = new ListGridField(FLD_ACTIONS, MESSAGES.geodeskGridColumnActions());
-		actions.setType(ListGridFieldType.TEXT);
+		actions.setType(ListGridFieldType.ICON);
 		actions.setWidth(FLD_ACTIONS_WIDTH);
+		actions.setCanEdit(false);
 		actions.setPrompt(MESSAGES.geodeskGridColumnActionsTooltip());
 
 		setFields(name, blueprint, geodeskId, author, publicUse, active, actions);

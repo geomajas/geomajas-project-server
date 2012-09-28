@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
@@ -24,6 +25,7 @@ import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 import org.geomajas.widget.layer.configuration.client.ClientLayerNodeInfo;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.TransferImgButton;
@@ -41,15 +43,9 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  * @author Kristof Heirwegh
  */
 public class LayerTreeSelectPanel extends HLayout {
-
-	// FIXME: i18n
-	private static final String HELP_TEXT = "<b>Beide lijsten:</b><br />"
-			+ "- Gebruik \"Drag &amp; Drop\" om items toe te voegen of te verwijderen, "
-			+ "of selecteer een item en gebruik een van de pijltjes om het item toe te voegen of te verwijderen.<br />"
-			+ "<b>Lijst Geselecteerde lagen:</b><br />" + "- Versleep items om de volgorde te wijzigen.<br />"
-			+ "- Gebruik het contextmenu om mappen toe te voegen of te verwijderen.<br />"
-			+ "- Gebruik de \"Roll-over\"-actie (knopje rechts van een item) om het item te wijzigen.";
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private LayerTreeGrid left;
 
 	private LayerTreeGrid right;
@@ -71,8 +67,8 @@ public class LayerTreeSelectPanel extends HLayout {
 	public LayerTreeSelectPanel() {
 		super(10);
 
-		left = new LayerTreeGrid("Beschikbare lagen", false);
-		right = new LayerTreeGrid("Geselecteerde lagen", true);
+		left = new LayerTreeGrid(MESSAGES.layerSelectAvailableLayers(), false);
+		right = new LayerTreeGrid(MESSAGES.layerSelectSelectedLayers(), true);
 		right.setSourceTreeGrid(left);
 
 		TransferImgButton add = new TransferImgButton(TransferImgButton.RIGHT);
@@ -92,7 +88,7 @@ public class LayerTreeSelectPanel extends HLayout {
 		});
 
 		Img help = new Img(DeskmanagerIcon.HELP_ICON, 24, 24);
-		help.setTooltip(HELP_TEXT);
+		help.setTooltip(MESSAGES.layerSelectPanelHelpText());
 		help.setHoverWidth(350);
 		help.setShowDisabled(false);
 		help.setShowDown(false);
@@ -150,7 +146,7 @@ public class LayerTreeSelectPanel extends HLayout {
 		// updating domainobjects from tree
 		// -- remove old references (easier to just clear everything than trying to update)
 		if (targetRootNode == null) {
-			throw new RuntimeException("Waarde is niet gezet ??");
+			throw new RuntimeException("Value has not been set ??");
 		}
 
 		ClientAbstractNodeInfo rootNode = fromTreeNode(rightTree, (LayerTreeNode) rightTree.getRoot());

@@ -14,8 +14,10 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -37,6 +39,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 @SuppressWarnings("deprecation")
 public class LayerAttributesGrid extends VLayout {
+
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private static final String FLD_NAME = "name";
 
@@ -75,15 +79,16 @@ public class LayerAttributesGrid extends VLayout {
 		grid.setEditEvent(ListGridEditEvent.CLICK);
 		grid.setEditByCell(true);
 		grid.setShowEmptyMessage(true);
-		grid.setEmptyMessage("<i>Opvragen gegevens van Server... <img src='" + Geomajas.getIsomorphicDir()
+		grid.setEmptyMessage("<i>" + MESSAGES.layerAttributesGridLoadingText() + 
+				" <img src='" + Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 
-		ListGridField nameFld = new ListGridField(FLD_NAME, "Attribuut");
+		ListGridField nameFld = new ListGridField(FLD_NAME, MESSAGES.layerAttributesGridColumnAttribute());
 		nameFld.setType(ListGridFieldType.TEXT);
 		nameFld.setWidth("*");
 		nameFld.setCanEdit(false);
 
-		ListGridField typeFld = new ListGridField(FLD_TYPE, "Type");
+		ListGridField typeFld = new ListGridField(FLD_TYPE, MESSAGES.layerAttributesGridColumnType());
 		typeFld.setType(ListGridFieldType.TEXT);
 		typeFld.setCanEdit(false);
 		typeFld.setWidth(55);
@@ -91,15 +96,15 @@ public class LayerAttributesGrid extends VLayout {
 		// editor.setValueMap(getTypes());
 		// typeFld.setEditorType(editor);
 
-		ListGridField identifyingFld = new ListGridField(FLD_IDENTIFYING, "Kerngegeven");
+		ListGridField identifyingFld = new ListGridField(FLD_IDENTIFYING, MESSAGES.layerAttributesGridColumnCoreInfo());
 		identifyingFld.setType(ListGridFieldType.BOOLEAN);
 		identifyingFld.setCanEdit(true);
-		identifyingFld.setPrompt("Aangevinkte velden worden opgenomen in lijsten (bv. zoekresultaat)");
+		identifyingFld.setPrompt(MESSAGES.layerAttributesGridColumnCoreInfoTooltip());
 
-		ListGridField idFieldFld = new ListGridField(FLD_IDFIELD, "Id veld");
+		ListGridField idFieldFld = new ListGridField(FLD_IDFIELD, MESSAGES.layerAttributesGridColumnIdField());
 		idFieldFld.setType(ListGridFieldType.BOOLEAN);
 		idFieldFld.setCanEdit(true);
-		idFieldFld.setPrompt("Kies het veld dat de unieke sleuten van de records bevat. (gebruikt bij bv. zoeken)");
+		idFieldFld.setPrompt(MESSAGES.layerAttributesGridColumnIdFieldTooltip());
 		idFieldFld.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
@@ -113,10 +118,10 @@ public class LayerAttributesGrid extends VLayout {
 			}
 		});
 
-		ListGridField labelFieldFld = new ListGridField(FLD_LABELFIELD, "Label veld");
+		ListGridField labelFieldFld = new ListGridField(FLD_LABELFIELD, MESSAGES.layerAttributesGridColumnLabelField());
 		labelFieldFld.setType(ListGridFieldType.BOOLEAN);
 		labelFieldFld.setCanEdit(true);
-		labelFieldFld.setPrompt("Kies het veld dat dient gebruikt te worden bij het weergeven van labels op de laag.");
+		labelFieldFld.setPrompt(MESSAGES.layerAttributesGridColumnLabelFieldTooltip());
 		labelFieldFld.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
@@ -130,10 +135,10 @@ public class LayerAttributesGrid extends VLayout {
 			}
 		});
 
-		ListGridField labelFld = new ListGridField(FLD_LABEL, "Naam");
+		ListGridField labelFld = new ListGridField(FLD_LABEL, MESSAGES.layerAttributesGridColumnName());
 		labelFld.setType(ListGridFieldType.TEXT);
 		labelFld.setCanEdit(true);
-		labelFld.setPrompt("Een gebruiksvriendelijke naam voor het veld.");
+		labelFld.setPrompt(MESSAGES.layerAttributesGridColumnNameTooltip());
 
 		grid.setFields(nameFld, typeFld, identifyingFld, idFieldFld, labelFieldFld, labelFld);
 		grid.setCanResizeFields(true);
@@ -144,13 +149,11 @@ public class LayerAttributesGrid extends VLayout {
 				if (!grid.isSelected(lgr)) { // deselected
 					if (lgr.equals(currentIdField)) {
 						warnings.setVisible(true);
-						warnings.setContents("Dit attribuut wordt gebruikt als Id-veld," +
-								" kies een nieuw Id-veld vooraleer het attribuut te deactiveren.");
+						warnings.setContents(MESSAGES.layerAttributesGriDeselectIdAttribute());
 						grid.selectRecord(lgr);
 					} else if (lgr.equals(currentLabelField)) {
 						warnings.setVisible(true);
-						warnings.setContents("Dit attribuut wordt gebruikt als Label-veld," +
-								" kies een nieuw Label-veld vooraleer het attribuut te deactiveren.");
+						warnings.setContents(MESSAGES.layerAttributesGriDeselectLabelAttribute());
 						grid.selectRecord(lgr);
 					}
 				}

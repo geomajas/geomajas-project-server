@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.TransferImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -33,14 +35,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class LayerSelectPanel extends HLayout {
 
-	// FIXME: i18n
-	private static final String HELP_TEXT = "<b>Beide lijsten:</b><br />"
-			+ "- Gebruik \"Drag &amp; Drop\" om items toe te voegen of te verwijderen, "
-			+ "of selecteer een item en gebruik een van de pijltjes om het item toe te voegen of te verwijderen.<br />"
-			+ "<b>Lijst Geselecteerde lagen:</b><br />" + "- Versleep items om de volgorde te wijzigen.<br />"
-			+ "- Gebruik het contextmenu om mappen toe te voegen of te verwijderen.<br />"
-			+ "- Gebruik de \"Roll-over\"-actie (knopje rechts van een item) om het item te wijzigen.";
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
+	
 	private LayerListGrid left;
 
 	private LayerListGrid right;
@@ -48,9 +45,9 @@ public class LayerSelectPanel extends HLayout {
 	public LayerSelectPanel() {
 		super(10);
 
-		left = new LayerListGrid("Beschikbare lagen", false);
-		right = new LayerListGrid("Geselecteerde lagen", true);
-		right.setEmptyMessage("Geen lagen geselecteerd, de default configuratie wordt gebruikt.");
+		left = new LayerListGrid(MESSAGES.layerSelectAvailableLayers(), false);
+		right = new LayerListGrid(MESSAGES.layerSelectSelectedLayers(), true);
+		right.setEmptyMessage(MESSAGES.layerSelectSelectedLayersTooltip());
 
 		TransferImgButton add = new TransferImgButton(TransferImgButton.RIGHT);
 		add.addClickHandler(new ClickHandler() {
@@ -69,7 +66,7 @@ public class LayerSelectPanel extends HLayout {
 		});
 
 		Img help = new Img(DeskmanagerIcon.HELP_ICON, 24, 24);
-		help.setTooltip(HELP_TEXT);
+		help.setTooltip(MESSAGES.layerSelectPanelHelpText());
 		help.setHoverWidth(350);
 		help.setShowDisabled(false);
 		help.setShowDown(false);

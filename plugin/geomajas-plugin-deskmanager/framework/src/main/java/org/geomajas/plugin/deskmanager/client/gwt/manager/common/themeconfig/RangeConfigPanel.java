@@ -232,7 +232,7 @@ public class RangeConfigPanel extends Layout {
 			opacity.setWidth("*");
 			opacity.setType(ListGridFieldType.TEXT);
 
-			ListGridField delete = new ListGridField(FLD_DEL, "Add/Delete");
+			ListGridField delete = new ListGridField(FLD_DEL, MESSAGES.configAddDelete());
 			delete.setWidth(64);
 			delete.setAlign(Alignment.CENTER);
 

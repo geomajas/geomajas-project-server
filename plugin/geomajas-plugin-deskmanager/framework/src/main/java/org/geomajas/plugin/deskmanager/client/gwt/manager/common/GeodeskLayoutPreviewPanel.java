@@ -19,6 +19,7 @@ import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
+ * FIXME : Move to MGapp?
  * @author Kristof Heirwegh
  */
 public class GeodeskLayoutPreviewPanel extends VLayout {
