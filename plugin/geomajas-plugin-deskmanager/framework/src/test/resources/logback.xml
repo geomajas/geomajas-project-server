@@ -19,10 +19,6 @@
         <level value="DEBUG"/>
     </logger>
 
-    <logger name="be.vo.corve.magdageo.common.security">
-        <level value="DEBUG"/>
-    </logger>
-
     <logger name="org.geomajas.printing">
         <level value="DEBUG"/>
     </logger>
