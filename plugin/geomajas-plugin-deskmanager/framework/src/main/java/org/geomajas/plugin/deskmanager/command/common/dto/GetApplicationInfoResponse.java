@@ -82,7 +82,7 @@ public class GetApplicationInfoResponse extends CommandResponse {
 	}
 
 	/**
-	 * @return the magdageo unique build string, injected by maven.
+	 * @return the unique application build string, injected by maven.
 	 */
 	public String getDeskmanagerBuild() {
 		return deskmanagerBuild;

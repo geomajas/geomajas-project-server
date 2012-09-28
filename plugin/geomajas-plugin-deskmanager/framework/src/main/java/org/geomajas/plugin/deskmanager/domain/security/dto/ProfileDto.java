@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.domain.security.dto;
 import java.io.Serializable;
 
 /**
- * Een gebruikersprofiel voor magdageo, bestaande uit een rol en een groep.
+ * A user profile for the deskmanager, consisting of a role and territory.
  * 
  * @author Oliver May
  * 
@@ -24,36 +24,36 @@ public class ProfileDto implements Serializable {
 
 	private Role role;
 
-	private TerritoryDto group;
+	private TerritoryDto territory;
 
-	private String familienaam;
+	private String surname;
 
-	private String voornaam;
+	private String name;
 
-	private String idmId;
+	private String id;
 
-	public String getFamilienaam() {
-		return familienaam;
+	public String getSurname() {
+		return surname;
 	}
 
-	public void setFamilienaam(String familienaam) {
-		this.familienaam = familienaam;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
-	public String getVoornaam() {
-		return voornaam;
+	public String getName() {
+		return name;
 	}
 
-	public void setVoornaam(String voornaam) {
-		this.voornaam = voornaam;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getIdmId() {
-		return idmId;
+	public String getId() {
+		return id;
 	}
 
-	public void setIdmId(String idmId) {
-		this.idmId = idmId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
@@ -71,25 +71,25 @@ public class ProfileDto implements Serializable {
 	}
 
 	/**
-	 * @return the group
+	 * @return the territory
 	 */
 	public TerritoryDto getTerritory() {
-		return group;
+		return territory;
 	}
 
 	/**
-	 * @param group the group to set
+	 * @param territory the territory to set
 	 */
 	public void setTerritory(TerritoryDto group) {
-		this.group = group;
+		this.territory = group;
 	}
 
 	/**
 	 * @return
 	 */
-	public String getRolBeschrijving() {
-		if (group != null) {
-			return "<b>" + role.getDescription() + "</b> (" + group.getName() + ")";
+	public String getRoleDescription() {
+		if (territory != null) {
+			return "<b>" + role.getDescription() + "</b> (" + territory.getName() + ")";
 		} else {
 			return "<b>" + role.getDescription() + "</b>";
 		}

@@ -16,7 +16,7 @@ import java.util.List;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
 /**
- * Een gebruikersprofiel voor magdageo, bestaande uit een rol en een groep.
+ * A user profile for the deskmanager, consisting of a role and territory.
  * 
  * @author Oliver May
  * 
@@ -27,38 +27,38 @@ public class Profile implements Serializable {
 
 	private Role role;
 
-	private Territory group;
+	private Territory territory;
 
-	private transient String familienaam;
+	private transient String surname;
 
-	private transient String voornaam;
+	private transient String name;
 
-	private transient String idmId;
+	private transient String id;
 
-	private transient List<String> loketten;
+	private transient List<String> geodesks;
 
 	public String getSurname() {
-		return familienaam;
+		return surname;
 	}
 
-	public void setFamilienaam(String familienaam) {
-		this.familienaam = familienaam;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
 	public String getFirstName() {
-		return voornaam;
+		return name;
 	}
 
-	public void setVoornaam(String voornaam) {
-		this.voornaam = voornaam;
+	public void setFirstName(String voornaam) {
+		this.name = voornaam;
 	}
 
-	public String getIdmId() {
-		return idmId;
+	public String getId() {
+		return id;
 	}
 
-	public void setIdmId(String idmId) {
-		this.idmId = idmId;
+	public void setId(String idmId) {
+		this.id = idmId;
 	}
 
 	/**
@@ -76,29 +76,29 @@ public class Profile implements Serializable {
 	}
 
 	/**
-	 * Return the group. 
+	 * Return the territory. 
 	 * Note that Profile is most probably retrieved from a serialized state, thus some properties of
-	 * Territory might not be loaded (lazy load). Use DeskmanagerSecurityContext.getGroup to retrieve the group rebound
+	 * Territory might not be loaded (lazy load). Use DeskmanagerSecurityContext.getGroup to retrieve the territory rebound
 	 * to the database session.
 	 * 
-	 * @return the group
+	 * @return the territory
 	 */
 	public Territory getTerritory() {
-		return group;
+		return territory;
 	}
 
 	/**
-	 * @param group the group to set
+	 * @param territory the territory to set
 	 */
 	public void setTerritory(Territory group) {
-		this.group = group;
+		this.territory = group;
 	}
 
 	/**
 	 * @return
 	 */
-	public String getRolBeschrijving() {
-		return role.getDescription()/* + " " + group.getBeschrijving() */;
+	public String getRoleDescription() {
+		return role.getDescription()/* + " " + territory.getBeschrijving() */;
 	}
 
 	/*
@@ -108,22 +108,22 @@ public class Profile implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Profile [role=" + role + ", group=" + group + ", familienaam=" + familienaam + ", voornaam=" + voornaam
-				+ ", idmId=" + idmId + "]";
+		return "Profile [role=" + role + ", territory=" + territory + ", surname=" + surname + ", name=" + name
+				+ ", id=" + id + "]";
 	}
 
 	/**
-	 * @param loketten the loketten to set
+	 * @param geodesks the geodesks to set
 	 */
-	public void setLoketten(List<String> loketten) {
-		this.loketten = loketten;
+	public void setGeodesks(List<String> loketten) {
+		this.geodesks = loketten;
 	}
 
 	/**
-	 * @return the loketten
+	 * @return the geodesks
 	 */
-	public List<String> getLoketten() {
-		return loketten;
+	public List<String> getGeodesks() {
+		return geodesks;
 	}
 
 }

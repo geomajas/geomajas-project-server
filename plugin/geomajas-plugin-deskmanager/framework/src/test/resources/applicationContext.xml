@@ -94,9 +94,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
  -->			</list>
 		</property>
 	</bean>
-<!-- 
-	<bean name="securityHelper" class="be.vo.corve.magdageo.common.security.SecurityHelper" />
- -->
 	<!-- for GWT-Beheer to open sample loket-->
 	<bean name="loket.url" class="java.lang.String">
 		<constructor-arg value="${loket.url}" />

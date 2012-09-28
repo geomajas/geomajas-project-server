@@ -77,7 +77,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	private String geodeskId;
 
-	private DeskmanagerAuthorizationInfo magdageoAuthorizationInfo;
+	private DeskmanagerAuthorizationInfo deskmanagerAuthorizationInfo;
 	// End of serialized fields
 
 	private transient Geodesk geodesk;
@@ -105,15 +105,15 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// Will this be done in multiple threads, I don't think so...
 	private synchronized DeskmanagerAuthorizationInfo getMagdageoAuthorizationInfo() {
-		if (magdageoAuthorizationInfo == null) {
+		if (deskmanagerAuthorizationInfo == null) {
 			buildMagdageoAuthorizationInfo();
 		}
-		return magdageoAuthorizationInfo;
+		return deskmanagerAuthorizationInfo;
 	}
 
 	private void buildMagdageoAuthorizationInfo() {
 		// Set basic authorization info (from configuration)
-		magdageoAuthorizationInfo = (DeskmanagerAuthorizationInfo) magdageoAuthorizationInfos.get(
+		deskmanagerAuthorizationInfo = (DeskmanagerAuthorizationInfo) magdageoAuthorizationInfos.get(
 				profile.getRole().toString()).clone();
 
 		// Add geodesk specific authorization
@@ -129,7 +129,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 						for (ClientLayerInfo layer : map.getLayers()) {
 							// TODO: Zouden we hier niet beter nog een extra check doen op publiek/private? --> if rol =
 							// publiek, enkel publieke lagen toevoegen
-							magdageoAuthorizationInfo.getVisibleLayersInclude().add(layer.getServerLayerId());
+							deskmanagerAuthorizationInfo.getVisibleLayersInclude().add(layer.getServerLayerId());
 						}
 					}
 				}

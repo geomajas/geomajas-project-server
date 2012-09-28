@@ -431,11 +431,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		Profile p = new Profile();
-		p.setFamilienaam(dto.getFamilienaam());
+		p.setSurname(dto.getSurname());
 		p.setTerritory(fromDto(dto.getTerritory(), false, false));
-		p.setIdmId(dto.getIdmId());
+		p.setId(dto.getId());
 		p.setRole(dto.getRole());
-		p.setVoornaam(dto.getVoornaam());
+		p.setFirstName(dto.getName());
 		return p;
 	}
 
@@ -444,11 +444,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		ProfileDto pDto = new ProfileDto();
-		pDto.setFamilienaam(profile.getSurname());
+		pDto.setSurname(profile.getSurname());
 		pDto.setTerritory(toDto(profile.getTerritory(), false, false));
-		pDto.setIdmId(profile.getIdmId());
+		pDto.setId(profile.getId());
 		pDto.setRole(profile.getRole());
-		pDto.setVoornaam(profile.getFirstName());
+		pDto.setName(profile.getFirstName());
 		return pDto;
 	}
 

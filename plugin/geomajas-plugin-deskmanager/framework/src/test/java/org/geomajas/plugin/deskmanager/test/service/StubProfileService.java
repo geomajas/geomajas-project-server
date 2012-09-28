@@ -39,36 +39,36 @@ public class StubProfileService implements ProfileService {
 		
 		Profile admin = new Profile();
 		admin.setRole(Role.ADMINISTRATOR);
-		admin.setIdmId(UUID.randomUUID().toString());
-		admin.setVoornaam("Peter");
-		admin.setFamilienaam("The Administrator");
+		admin.setId(UUID.randomUUID().toString());
+		admin.setFirstName("Peter");
+		admin.setSurname("The Administrator");
 		admin.setTerritory(groupService.getByCode("ADMIN"));
 		//profile.setLoketten();
 		profiles.add(admin);
 
 		Profile deskManager = new Profile();
 		deskManager.setRole(Role.DESK_MANAGER);
-		deskManager.setIdmId(UUID.randomUUID().toString());
-		deskManager.setVoornaam("Lois");
-		deskManager.setFamilienaam("The Deskmanager");
+		deskManager.setId(UUID.randomUUID().toString());
+		deskManager.setFirstName("Lois");
+		deskManager.setSurname("The Deskmanager");
 		deskManager.setTerritory(groupService.getByCode("BE"));
 		//profile.setLoketten();
 		profiles.add(deskManager);
 		
 		Profile deskConsulter = new Profile();
 		deskConsulter.setRole(Role.CONSULTING_USER);
-		deskConsulter.setIdmId(UUID.randomUUID().toString());
-		deskConsulter.setVoornaam("Stewart");
-		deskConsulter.setFamilienaam("The Consulter");
+		deskConsulter.setId(UUID.randomUUID().toString());
+		deskConsulter.setFirstName("Stewart");
+		deskConsulter.setSurname("The Consulter");
 		deskConsulter.setTerritory(groupService.getByCode("BE"));
 		//profile.setLoketten();
 		profiles.add(deskConsulter);
 		
 		Profile deskEditor = new Profile();
 		deskEditor.setRole(Role.EDITING_USER);
-		deskEditor.setIdmId(UUID.randomUUID().toString());
-		deskEditor.setVoornaam("Meg");
-		deskEditor.setFamilienaam("The Editor");
+		deskEditor.setId(UUID.randomUUID().toString());
+		deskEditor.setFirstName("Meg");
+		deskEditor.setSurname("The Editor");
 		deskEditor.setTerritory(groupService.getByCode("BE"));
 		//profile.setLoketten();
 		profiles.add(deskEditor);

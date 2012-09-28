@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Command that reads the application info. This checks security. The command also returns the version and build of this
- * magdageo instance.
+ * application instance.
  * 
  * @author Oliver May
  * 

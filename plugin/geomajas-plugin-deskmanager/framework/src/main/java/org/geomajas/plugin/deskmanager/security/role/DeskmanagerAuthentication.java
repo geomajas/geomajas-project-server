@@ -35,7 +35,7 @@ public class DeskmanagerAuthentication extends Authentication {
 		setValidUntil(new Date(System.currentTimeMillis() + EXTEND_VALID));
 		setInvalidAfter(new Date(System.currentTimeMillis() + EXTEND_VALID_LIMIT));
 
-		setUserId(profile.getIdmId());
+		setUserId(profile.getId());
 		setUserName(profile.getFirstName() + " " + profile.getSurname());
 
 		// guest doesn't have a group

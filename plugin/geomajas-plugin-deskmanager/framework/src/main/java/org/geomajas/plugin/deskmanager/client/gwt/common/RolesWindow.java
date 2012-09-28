@@ -123,15 +123,15 @@ public class RolesWindow {
 					|| Role.ADMINISTRATOR.equals(role.getValue().getRole())) {
 				if (first) {
 					first = false;
-					Label label = new Label("Welkom " + role.getValue().getVoornaam() + " "
-							+ role.getValue().getFamilienaam()
+					Label label = new Label("Welkom " + role.getValue().getName() + " "
+							+ role.getValue().getSurname()
 							+ ", gelieve uw rol te selecteren waarmee u dit loket wil openen.");
 					label.setAutoHeight();
 					layout.addMember(label);
 				}
 
 				final Button button = new Button();
-				button.setTitle(role.getValue().getRolBeschrijving());
+				button.setTitle(role.getValue().getRoleDescription());
 				button.setWidth100();
 				button.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
