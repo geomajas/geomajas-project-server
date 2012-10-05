@@ -46,11 +46,11 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  */
 public class GeometryIndexDragController extends AbstractGeometryIndexController {
 
-	private final Map<GeometryIndex, Coordinate> origins;
+	protected final Map<GeometryIndex, Coordinate> origins;
 
-	private GeometryIndex lastSelection;
+	protected GeometryIndex lastSelection;
 
-	private Coordinate origin;
+	protected Coordinate origin;
 
 	public GeometryIndexDragController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {

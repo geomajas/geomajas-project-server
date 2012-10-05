@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.puregwt.client.controller;
 
-import org.geomajas.gwt.client.controller.AbstractController;
+import org.geomajas.plugin.editing.client.controller.AbstractGeometryIndexController;
 import org.geomajas.plugin.editing.client.controller.GeometryIndexDragController;
 import org.geomajas.plugin.editing.client.controller.GeometryIndexInsertController;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
@@ -35,11 +35,11 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  */
 public class EditGeometryBaseController extends AbstractMapController {
 
-	private NavigationController idleController;
+	private AbstractMapController idleController;
 
-	private GeometryIndexDragController dragController;
+	private AbstractGeometryIndexController dragController;
 
-	private GeometryIndexInsertController insertController;
+	private AbstractGeometryIndexController insertController;
 
 	private GeometryEditService service;
 
@@ -152,27 +152,44 @@ public class EditGeometryBaseController extends AbstractMapController {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	public AbstractController getIdleController() {
+	public GeometryEditService getEditService() {
+		return service;
+	}
+
+	public AbstractMapController getIdleController() {
 		return idleController;
 	}
 
-	public GeometryIndexDragController getDragController() {
+	public AbstractGeometryIndexController getDragController() {
 		return dragController;
 	}
 
-	public GeometryIndexInsertController getInsertController() {
+	public AbstractGeometryIndexController getInsertController() {
 		return insertController;
 	}
-	
+
+	public void setIdleController(AbstractMapController idleController) {
+		this.idleController = idleController;
+	}
+
+	public void setDragController(AbstractGeometryIndexController dragController) {
+		this.dragController = dragController;
+	}
+
+	public void setInsertController(AbstractGeometryIndexController insertController) {
+		this.insertController = insertController;
+	}
+
 	/**
 	 * Set boolean that determines if a user can stop editing by clicking outside the geometry that is being edited.
 	 * 
-	 * @param isClickToStop true to stop, false otherwise.
+	 * @param isClickToStop
+	 *            true to stop, false otherwise.
 	 */
 	public void setClickToStop(boolean isClickToStop) {
 		this.isClickToStop = isClickToStop;
 	}
-	
+
 	/**
 	 * Get boolean that determines if a user can stop editing by clicking outside the geometry that is being edited.
 	 * 

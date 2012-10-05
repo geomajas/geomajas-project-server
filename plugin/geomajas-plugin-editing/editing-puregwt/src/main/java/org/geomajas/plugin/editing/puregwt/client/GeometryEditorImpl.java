@@ -141,7 +141,7 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 		return baseController;
 	}
 
-	public void getBaseController(EditGeometryBaseController baseController) {
+	public void setBaseController(EditGeometryBaseController baseController) {
 		this.baseController = baseController;
 	}
 }
