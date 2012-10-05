@@ -106,12 +106,11 @@ public class CommandServiceImpl implements CommandService {
 		public void onCommunicationException(Throwable error) {
 			if (null != error) {
 				String msg = messages.commandCommunicationError() + ":\n" + error.getMessage();
-				Log.logWarn(msg);
+				Log.logWarn(msg, error);
 				
-				StringBuilder stack = new StringBuilder();
-				processStackTrace(error.getStackTrace(), stack);
+				String stack = getDetails(error);
 				
-				showDialog(msg, stack.toString());
+				showDialog(msg, stack);
 			}
 		}
 		
@@ -137,6 +136,23 @@ public class CommandServiceImpl implements CommandService {
 			return content.toString();
 		}
 		
+		/**
+		 * Build details message for an exception.
+		 *
+		 * @param error error to build message for
+		 * @return string with details message
+		 */
+		private String getDetails(Throwable error) {
+			if (null == error) {
+				return "";
+			}
+			StringBuilder content = new StringBuilder();
+			content.append(error.getMessage());
+			processStackTrace(error.getStackTrace(), content);
+			content.append(getDetails(error.getCause()));
+			return content.toString();
+		}
+
 		private void processStackTrace(StackTraceElement[] stackTrace, StringBuilder content) {
 			for (StackTraceElement el : stackTrace) {
 				content.append("  ");
