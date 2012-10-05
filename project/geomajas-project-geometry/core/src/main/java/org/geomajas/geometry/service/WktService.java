@@ -34,7 +34,7 @@ public final class WktService {
 	}
 
 	/**
-	 * Parses a given WKT string into a geometry object.
+	 * Parses a given WKT (or EWKT) string into a geometry object.
 	 * 
 	 * @param wkt
 	 *            The Well Known Text to parse.
@@ -44,19 +44,14 @@ public final class WktService {
 	 */
 	public static Geometry toGeometry(String wkt) throws WktException {
 		if (wkt != null) {
-			String type = typeWktToGeom(wkt.substring(0, wkt.indexOf(' ')).trim());
-			if (type == null) {
-				throw new WktException(ERR_MSG + "type of geometry not supported");
+			// First we detect if the string is WKT or EWKT:
+			String[] parts = wkt.split(";");
+			if (parts.length == 2) { // We assume it is EWKT:
+				Geometry geometry = parseWkt(parts[1]);
+				recursiveSetSrid(geometry, parseSrid(parts[0]));
+				return geometry;
 			}
-			if (wkt.indexOf("EMPTY") >= 0) {
-				return new Geometry(type, 0, 0);
-			}
-			Geometry geometry = new Geometry(type, 0, 0);
-			String result = parse(wkt.substring(wkt.indexOf('(')), geometry);
-			if (result.length() != 0) {
-				throw new WktException(ERR_MSG + "unexpected ending \"" + result + "\"");
-			}
-			return geometry;
+			return parseWkt(wkt);
 		}
 		throw new WktException(ERR_MSG + "illegal argument; no WKT");
 	}
@@ -88,9 +83,69 @@ public final class WktService {
 		return "";
 	}
 
+	/**
+	 * Format a given geometry to EWKT. EWKT is an extension of WKT that adds the SRID into the returned string. The
+	 * result is something like: "SRID=4326;POINT(-44.3 60.1)"
+	 * 
+	 * @param geometry
+	 *            The geometry to format.
+	 * @return Returns the EWKT string.
+	 * @throws WktException
+	 *             In case something went wrong while formatting.
+	 * @since 1.1.0
+	 */
+	public static String toEwkt(Geometry geometry) throws WktException {
+		return "SRID=" + geometry.getSrid() + ";" + WktService.toWkt(geometry);
+	}
+
 	// ------------------------------------------------------------------------
 	// Private parsing methods:
 	// ------------------------------------------------------------------------
+
+	private static void recursiveSetSrid(Geometry geometry, int srid) {
+		if (geometry != null) {
+			geometry.setSrid(srid);
+		}
+		if (geometry.getGeometries() != null) {
+			for (Geometry childGeometry : geometry.getGeometries()) {
+				recursiveSetSrid(childGeometry, srid);
+			}
+		}
+	}
+
+	/** Get the SRID from a string like "SRDI=4326". Used in parsing EWKT. */
+	private static int parseSrid(String ewktPart) {
+		if (ewktPart != null && !"".equals(ewktPart)) {
+			String[] parts = ewktPart.split("=");
+			if (parts.length == 2) {
+				try {
+					return Integer.parseInt(parts[1]);
+				} catch (Exception e) {
+				}
+			}
+		}
+		return 0;
+	}
+
+	/** Parse a WKT string. No EWKT here! */
+	private static Geometry parseWkt(String wkt) throws WktException {
+		if (wkt != null) {
+			String type = typeWktToGeom(wkt.substring(0, wkt.indexOf(' ')).trim());
+			if (type == null) {
+				throw new WktException(ERR_MSG + "type of geometry not supported");
+			}
+			if (wkt.indexOf("EMPTY") >= 0) {
+				return new Geometry(type, 0, 0);
+			}
+			Geometry geometry = new Geometry(type, 0, 0);
+			String result = parse(wkt.substring(wkt.indexOf('(')), geometry);
+			if (result.length() != 0) {
+				throw new WktException(ERR_MSG + "unexpected ending \"" + result + "\"");
+			}
+			return geometry;
+		}
+		throw new WktException(ERR_MSG + "illegal argument; no WKT");
+	}
 
 	private static String parse(String wkt, Geometry geometry) throws WktException {
 		String childType = getChildType(geometry.getGeometryType());
