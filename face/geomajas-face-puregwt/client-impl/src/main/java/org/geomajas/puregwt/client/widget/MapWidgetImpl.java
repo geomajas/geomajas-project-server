@@ -14,13 +14,17 @@ package org.geomajas.puregwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.puregwt.client.gfx.CanvasContainer;
+import org.geomajas.puregwt.client.gfx.CanvasContainerImpl;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
+import org.geomajas.puregwt.client.gfx.Transparent;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.gfx.VectorGroup;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
+import org.vaadin.gwtgraphics.client.Transformable;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -74,11 +78,20 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// Parent container for all SVG/VML:
 	private DrawingArea drawingArea;
 
-	// List of all screen containers and world containers:
+	// Parent container for all canvases:
+	private AbsolutePanel canvasPanel;
+
+	// List of all screen containers:
 	private List<VectorContainer> screenContainers = new ArrayList<VectorContainer>();
 
-	// List of all screen containers and world containers:
+	// List of all world containers:
 	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
+	
+	// List of all world canvas containers:
+	private List<CanvasContainer> worldCanvases = new ArrayList<CanvasContainer>();
+
+	// List of all world transformables (canvas + vector):
+	private List<Transformable> worldTransformables = new ArrayList<Transformable>();
 
 	private Scaler scaler = new Scaler();
 
@@ -97,6 +110,10 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// Attach a DrawingArea inside the clipping area (used for vector rendering):
 		drawingArea = new DrawingArea(100, 100);
 		add(drawingArea, 0, 0);
+		
+		// Add a panel to hold the canvases
+		canvasPanel = new AbsolutePanel();
+		add(canvasPanel, 0, 0);
 
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
@@ -147,6 +164,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	/** {@inheritDoc} */
+	public List<Transformable> getWorldTransformables() {
+		return worldTransformables;
+	}
+
+	/** {@inheritDoc} */
 	public VectorContainer getNewScreenContainer() {
 		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
@@ -159,6 +181,16 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
 		worldContainers.add(container);
+		worldTransformables.add(container);
+		return container;
+	}
+
+	/** {@inheritDoc} */
+	public CanvasContainer getNewWorldCanvas() {
+		CanvasContainer container = new CanvasContainerImpl(getWidth(), getHeight());
+		canvasPanel.add(container);
+		worldCanvases.add(container);
+		worldTransformables.add(container);
 		return container;
 	}
 
@@ -168,6 +200,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 			if (worldContainers.contains(container)) {
 				drawingArea.remove((Group) container);
 				worldContainers.remove(container);
+				worldTransformables.remove(container);
 				return true;
 			} else if (screenContainers.contains(container)) {
 				drawingArea.remove((Group) container);
@@ -214,6 +247,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setPixelSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
+		canvasPanel.setPixelSize(width, height);
 		super.setPixelSize(width, height);
 	}
 
@@ -221,6 +255,8 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
+		canvasPanel.setWidth(width);
+		canvasPanel.setHeight(height);
 		super.setSize(width, height);
 	}
 
@@ -235,6 +271,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public void setWidth(String width) {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
+		canvasPanel.setWidth(width);
 		super.setWidth(width);
 	}
 
@@ -249,6 +286,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public void setHeight(String height) {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);
+		canvasPanel.setHeight(height);
 		super.setHeight(height);
 	}
 
@@ -285,17 +323,34 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	public void scheduleScale(double xx, double yy, int animationMillis) {
-		for (VectorContainer vectorContainer : getWorldVectorContainers()) {
-			vectorContainer.setOpacity(0.0);
+		for (Transformable t : getWorldTransformables()) {
+			if (t instanceof Transparent) {
+				((Transparent) t).setOpacity(0.0);
+			}
 		}
 		scaler.cancel();
 		scaler.setXx(xx);
 		scaler.setYy(yy);
 		scaler.schedule(animationMillis);
 	}
+	
+	@Override
+	public void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis) {
+		for (Transformable t : getWorldTransformables()) {
+			if (t instanceof Transparent) {
+				((Transparent) t).setOpacity(0.0);
+			}
+		}
+		scaler.cancel();
+		scaler.setDx(dx);
+		scaler.setDy(dy);
+		scaler.setXx(xx);
+		scaler.setYy(yy);
+		scaler.schedule(animationMillis);
+	}
 
 	/**
-	 * Timer for applying the scaling to world containers.
+	 * Timer for applying scheduled transformations to world containers.
 	 * 
 	 * @author Jan De Moerloose
 	 */
@@ -304,11 +359,16 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		private double xx = 1.0;
 
 		private double yy = 1.0;
+		
+		private double dx;
+
+		private double dy;
 
 		@Override
 		public void run() {
-			for (VectorContainer vectorContainer : getWorldVectorContainers()) {
-				vectorContainer.setScale(xx, yy);
+			for (Transformable transformable : getWorldTransformables()) {
+				transformable.setTranslation(dx, dy);
+				transformable.setScale(xx, yy);
 			}
 			Fader fader = new Fader();
 			fader.run(250);
@@ -321,6 +381,15 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		public void setYy(double yy) {
 			this.yy = yy;
 		}
+		
+		public void setDx(double dx) {
+			this.dx = dx;
+		}
+		
+		public void setDy(double dy) {
+			this.dy = dy;
+		}		
+		
 	}
 
 	/**
@@ -332,9 +401,21 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 		@Override
 		protected void onUpdate(double progress) {
-			for (VectorContainer vectorContainer : getWorldVectorContainers()) {
-				vectorContainer.setOpacity(progress);
+			for (Transformable t : getWorldTransformables()) {
+				if (t instanceof Transparent) {
+					((Transparent) t).setOpacity(progress);
+				}
+			}
+		}
+		
+		
+		protected void onComplete() {
+			for (Transformable t : getWorldTransformables()) {
+				if (t instanceof Transparent) {
+					((Transparent) t).setOpacity(1.0);
+				}
 			}
 		}
 	}
+
 }

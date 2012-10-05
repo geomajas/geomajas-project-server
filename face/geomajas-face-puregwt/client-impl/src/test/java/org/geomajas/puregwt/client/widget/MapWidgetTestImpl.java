@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
+import org.vaadin.gwtgraphics.client.Transformable;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -157,5 +159,19 @@ public class MapWidgetTestImpl implements MapWidget {
 
 	public void scheduleScale(double xx, double yy, int animationMillis) {
 
+	}
+
+	@Override
+	public List<Transformable> getWorldTransformables() {
+		return null;
+	}
+
+	@Override
+	public CanvasContainer getNewWorldCanvas() {
+		return null;
+	}
+
+	@Override
+	public void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis) {
 	}
 }

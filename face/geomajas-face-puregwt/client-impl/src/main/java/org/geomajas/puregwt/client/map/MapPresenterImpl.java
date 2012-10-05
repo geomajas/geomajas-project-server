@@ -46,6 +46,7 @@ import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
@@ -56,6 +57,7 @@ import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.service.CommandService;
+import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -109,11 +111,18 @@ public final class MapPresenterImpl implements MapPresenter {
 		VectorContainer getMapVectorContainer();
 
 		/**
-		 * Returns the list of user-defined containers for world-space objects.
+		 * Returns the list of user-defined vector containers for world-space objects.
 		 * 
 		 * @return the container
 		 */
 		List<VectorContainer> getWorldVectorContainers();
+
+		/**
+		 * Returns the list of user-defined containers (vector + canvas) for world-space objects.
+		 * 
+		 * @return the container
+		 */
+		List<Transformable> getWorldTransformables();
 
 		/**
 		 * Returns a new user-defined container for screen space objects.
@@ -189,6 +198,10 @@ public final class MapPresenterImpl implements MapPresenter {
 		 *            the animation time in millis
 		 */
 		void scheduleScale(double xx, double yy, int animationMillis);
+
+		CanvasContainer getNewWorldCanvas();
+
+		void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis);
 
 	}
 
@@ -352,6 +365,16 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	/** {@inheritDoc} */
+	public CanvasContainer addWorldCanvas() {
+		CanvasContainer container = display.getNewWorldCanvas();
+		// set transform parameters once, after that all is handled by WorldContainerRenderer
+		Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+		container.setScale(matrix.getXx(), matrix.getYy());
+		container.setTranslation(matrix.getDx(), matrix.getDy());
+		return container;
+	}
+
+	/** {@inheritDoc} */
 	public VectorContainer addScreenContainer() {
 		return display.getNewScreenContainer();
 	}
@@ -505,26 +528,20 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
-				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
-			}
-			display.scheduleScale(matrix.getXx(), matrix.getYy(), animationMillis);
+			display.scheduleTransform(matrix.getXx(), matrix.getYy(), matrix.getDx(), matrix.getDy(), animationMillis);
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			// We must translate as well because zooming and keeping the same center point
 			// also involves a translation (scale origin != center point) !!!
-			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
-				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
-			}
-			display.scheduleScale(matrix.getXx(), matrix.getYy(), animationMillis);
+			display.scheduleTransform(matrix.getXx(), matrix.getYy(), matrix.getDx(), matrix.getDy(), animationMillis);
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
-				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
+			for (Transformable transformable : display.getWorldTransformables()) {
+				transformable.setTranslation(matrix.getDx(), matrix.getDy());
 			}
 		}
 

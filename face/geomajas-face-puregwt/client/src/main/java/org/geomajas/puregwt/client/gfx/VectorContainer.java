@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public interface VectorContainer extends VectorObjectContainer, Transformable, IsWidget {
+public interface VectorContainer extends VectorObjectContainer, Transparent, Transformable, IsWidget {
 
 	/**
 	 * Determine container visibility.
@@ -42,11 +42,4 @@ public interface VectorContainer extends VectorObjectContainer, Transformable, I
 	 */
 	boolean isVisible();
 	
-	/**
-	 * Set container opacity.
-	 * 
-	 * @param opacity opacity
-	 */
-	void setOpacity(double opacity);
-
 }

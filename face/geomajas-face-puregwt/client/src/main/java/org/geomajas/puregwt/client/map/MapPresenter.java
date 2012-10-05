@@ -18,6 +18,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapController;
+import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
@@ -96,6 +97,8 @@ public interface MapPresenter extends IsWidget {
 	 * @return Returns the world vector container.
 	 */
 	VectorContainer addWorldContainer();
+	
+	CanvasContainer addWorldCanvas();
 
 	/**
 	 * Create a new container in screen space wherein one can render new vector objects and return it. Note that all
