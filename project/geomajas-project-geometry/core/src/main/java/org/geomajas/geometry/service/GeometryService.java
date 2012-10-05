@@ -527,6 +527,9 @@ public final class GeometryService {
 		for (int i = 0; i < geometry.getGeometries().length; i++) {
 			coordinates[i] = getCentroidPolygon(geometry.getGeometries()[i]);
 		}
+		if (coordinates.length == 1) {  // Fix for GEOM-14.
+			return coordinates[0];
+		}
 		for (int i = 0; i < coordinates.length - 1; i++) {
 			double length = coordinates[i].distance(coordinates[i + 1]);
 			totalLength += length;

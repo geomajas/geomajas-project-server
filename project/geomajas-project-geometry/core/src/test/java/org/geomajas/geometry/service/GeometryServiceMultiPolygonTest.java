@@ -37,9 +37,9 @@ public class GeometryServiceMultiPolygonTest {
 
 	private com.vividsolutions.jts.geom.GeometryFactory jtsFactory;
 
-	private Geometry gwt;
+	private Geometry gwt, singlePolygonMpGwt;
 
-	private com.vividsolutions.jts.geom.MultiPolygon jts;
+	private com.vividsolutions.jts.geom.MultiPolygon jts, singlePolygonMpJts;
 
 	// -------------------------------------------------------------------------
 	// Constructor, initializes the 2 MultiPolygon geometries:
@@ -61,6 +61,9 @@ public class GeometryServiceMultiPolygonTest {
 
 		gwt = new Geometry(Geometry.MULTI_POLYGON, SRID, 0);
 		gwt.setGeometries(new Geometry[] { gwtPolygon1, gwtPolygon2 });
+		
+		singlePolygonMpGwt = new Geometry(Geometry.MULTI_POLYGON, SRID, 0);
+		singlePolygonMpGwt.setGeometries(new Geometry[] { gwtPolygon1 });
 
 		jtsFactory = new com.vividsolutions.jts.geom.GeometryFactory(new PrecisionModel(), SRID);
 		com.vividsolutions.jts.geom.LinearRing jtsRing1 = jtsFactory
@@ -78,6 +81,7 @@ public class GeometryServiceMultiPolygonTest {
 						new com.vividsolutions.jts.geom.Coordinate(10.0, 20.0) });
 		com.vividsolutions.jts.geom.Polygon jtsPolygon2 = jtsFactory.createPolygon(jtsRing2, null);
 		jts = jtsFactory.createMultiPolygon(new com.vividsolutions.jts.geom.Polygon[] { jtsPolygon1, jtsPolygon2 });
+		singlePolygonMpJts = jtsFactory.createMultiPolygon(new com.vividsolutions.jts.geom.Polygon[] { jtsPolygon1 });
 	}
 
 	// -------------------------------------------------------------------------
@@ -88,6 +92,19 @@ public class GeometryServiceMultiPolygonTest {
 	public void getCentroid() {
 		Assert.assertTrue(jts.getCentroid().getCoordinate().x - GeometryService.getCentroid(gwt).getX() < DELTA);
 		Assert.assertTrue(jts.getCentroid().getCoordinate().y - GeometryService.getCentroid(gwt).getY() < DELTA);
+
+		// Corner case: A MultiPolygon with only one Polygon (JIRA GEOM-14):
+		Geometry gwtRing1 = new Geometry(Geometry.LINEAR_RING, SRID, 0);
+		gwtRing1.setCoordinates(new Coordinate[] { new Coordinate(10.0, 10.0), new Coordinate(20.0, 10.0),
+				new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });
+		Geometry gwtPolygon1 = new Geometry(Geometry.POLYGON, SRID, 0);
+		gwtPolygon1.setGeometries(new Geometry[] { gwtRing1 });
+		Geometry mp = new Geometry(Geometry.MULTI_POLYGON, SRID, 0);
+		mp.setGeometries(new Geometry[] { gwtPolygon1 });
+
+		Coordinate centroid = GeometryService.getCentroid(mp);
+		Assert.assertTrue(singlePolygonMpJts.getCentroid().getCoordinate().x - centroid.getX() < DELTA);
+		Assert.assertTrue(singlePolygonMpJts.getCentroid().getCoordinate().y - centroid.getY() < DELTA);
 	}
 
 	@Test
