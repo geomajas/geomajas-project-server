@@ -33,7 +33,7 @@ public class GwtCommandCallback implements CommandExceptionCallback, Communicati
 	 */
 	public void onCommunicationException(Throwable error) {
 		String msg = I18nProvider.getGlobal().commandCommunicationError() + ":\n" + error.getMessage();
-		Log.logWarn(msg);
+		Log.logWarn(msg, error);
 		SC.warn(msg, null);
 	}
 
