@@ -19,7 +19,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 
 /**
- * General service for Well-Known-Text to and from geometry conversion.
+ * General service for Well-Known-Text to and from geometry conversion. This services also supports the EWKT format.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
