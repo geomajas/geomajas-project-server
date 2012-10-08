@@ -11,7 +11,7 @@
   -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-<chapter id="getting-started">
+<chapter id="ide">
   <title>Using Geomajas in your IDE of choice</title>
 
   <para>This chapter is aimed at Java developers that whish to import the
