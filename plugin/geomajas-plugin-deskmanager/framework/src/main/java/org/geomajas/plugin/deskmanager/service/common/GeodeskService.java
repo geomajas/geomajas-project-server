@@ -43,7 +43,7 @@ public interface GeodeskService {
 
 	void deleteLoket(Geodesk gd) throws GeomajasSecurityException;
 
-	void saveOrUpdateLoket(Geodesk gd) throws GeomajasSecurityException;
+	void saveOrUpdateGeodesk(Geodesk gd) throws GeomajasSecurityException;
 
 	/**
 	 * No security check here.

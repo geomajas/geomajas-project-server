@@ -13,10 +13,9 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.CreateBlueprintCommand}.
  * 
- * @author Jan De Moerloose
- *
+ * @author Oliver May
  */
 public class CreateBlueprintRequest implements CommandRequest {
 
@@ -24,6 +23,8 @@ public class CreateBlueprintRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.deskmanager.beheer.CreateBlueprint";
 
+	private String name;
+	
 	private String userApplicationName;
 
 	public String getUserApplicationName() {
@@ -34,4 +35,16 @@ public class CreateBlueprintRequest implements CommandRequest {
 		this.userApplicationName = userApplicationName;
 	}
 
+	/**
+	 * The preferred name of the blueprint.
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

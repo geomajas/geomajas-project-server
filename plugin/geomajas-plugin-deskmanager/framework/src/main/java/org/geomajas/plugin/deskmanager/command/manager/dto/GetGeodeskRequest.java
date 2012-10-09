@@ -13,22 +13,31 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetGeodeskCommand}.
  * 
  * @author Oliver May
  *
  */
-public class ReadApplicationRequest implements CommandRequest {
+public class GetGeodeskRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.management.ReadApplicationCommand";
+	public static final String COMMAND = "command.manager.GetGeodesk";
 
 	private String uuid;
 
+	/**
+	 * The id of the geodesk to fetch.
+	 * @return the uuid.
+	 */
 	public String getUuid() {
 		return uuid;
 	}
 
+	/**
+	 * The id of the geodesk to fetch.
+	 * @param uuid the uuid.
+	 */
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}

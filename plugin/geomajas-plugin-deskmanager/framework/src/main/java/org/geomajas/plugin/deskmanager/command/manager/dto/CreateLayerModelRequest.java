@@ -14,16 +14,17 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.CreateLayerModelCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 public class CreateLayerModelRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.CreateLayerModel";
+	public static final String COMMAND = "command.manager.CreateLayerModel";
 
 	private LayerConfiguration configuration;
 

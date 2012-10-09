@@ -148,7 +148,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		}
 	}
 
-	public void saveOrUpdateLoket(Geodesk l) throws GeomajasSecurityException {
+	public void saveOrUpdateGeodesk(Geodesk l) throws GeomajasSecurityException {
 		if (((DeskmanagerSecurityContext) securityContext).saveAllowed(l)) {
 			Date date = new Date();
 			String fullName = ((DeskmanagerSecurityContext) securityContext).getFullName();

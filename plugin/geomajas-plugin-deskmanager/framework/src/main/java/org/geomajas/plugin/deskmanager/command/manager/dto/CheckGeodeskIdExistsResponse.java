@@ -13,10 +13,10 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandResponse;
 
 /**
- * TODO.
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.CheckGeodeskIdExistsCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
  */
 public class CheckGeodeskIdExistsResponse extends CommandResponse {
 

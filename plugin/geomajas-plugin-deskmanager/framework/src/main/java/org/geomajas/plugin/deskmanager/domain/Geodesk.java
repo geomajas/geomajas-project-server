@@ -269,10 +269,20 @@ public class Geodesk implements BaseGeodesk {
 		this.owner = owner;
 	}
 
+	/**
+	 * 
+	 * @deprecated don't use notifications as such, use clientwidgetinfo.
+	 */
+	@Deprecated
 	public List<MailAddress> getMailAddresses() {
 		return mailAddresses;
 	}
 
+	/**
+	 * 
+	 * @deprecated don't use notifications as such, use clientwidgetinfo.
+	 */
+	@Deprecated
 	public void setMailAddresses(List<MailAddress> mailAddresses) {
 		this.mailAddresses = mailAddresses;
 	}

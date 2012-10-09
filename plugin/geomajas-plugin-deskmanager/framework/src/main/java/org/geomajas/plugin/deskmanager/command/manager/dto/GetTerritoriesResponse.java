@@ -10,25 +10,30 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
 /**
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.GetTerritoriesCommand}.
  * 
- * @author Oliver May
+ * @author Jan De Moerloose
  *
  */
-public class ReadApplicationResponse extends CommandResponse {
+public class GetTerritoriesResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private GeodeskDto loket;
+	private List<TerritoryDto> territories = new ArrayList<TerritoryDto>();
 
-	public GeodeskDto getGeodesk() {
-		return loket;
+	public List<TerritoryDto> getTerritories() {
+		return territories;
 	}
 
-	public void setLoket(GeodeskDto loket) {
-		this.loket = loket;
+	public void setTerritories(List<TerritoryDto> territories) {
+		this.territories = territories;
 	}
+
 }

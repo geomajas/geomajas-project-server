@@ -23,10 +23,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that creates a new empty blueprint in the database, based on a user application.
  * 
- * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 @Component(CreateBlueprintRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
@@ -40,19 +40,23 @@ public class CreateBlueprintCommand implements Command<CreateBlueprintRequest, B
 	@Autowired
 	private DtoConverterService dtoService;
 
+	/** {@inheritDoc} */
 	public void execute(CreateBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			Blueprint bp = new Blueprint();
-			bp.setName("[Nieuwe blauwdruk]");
+			bp.setName(request.getName());
 			bp.setUserApplicationKey(request.getUserApplicationName());
 			blueprintService.saveOrUpdateBlueprint(bp);
 			response.setBlueprint(dtoService.toDto(bp, false));
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij opslaan blauwdruk: " + e.getMessage());
-			log.error("fout bij opslaan blauwdruk.", e);
+			//TODO: i18n
+			response.getErrorMessages().add("Error while saving new blueprint: " + e.getMessage());
+			//TODO: i18n
+			log.error("Error while saving new blueprint:", e);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public BlueprintResponse getEmptyCommandResponse() {
 		return new BlueprintResponse();
 	}

@@ -22,10 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command to delete a layer model given a layer id.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 @Component(DeleteLayerModelRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
@@ -36,24 +37,28 @@ public class DeleteLayerModelCommand implements Command<DeleteLayerModelRequest,
 	@Autowired
 	private LayerModelService layerModelService;
 
+	/** {@inheritDoc} */
 	public void execute(DeleteLayerModelRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getId() == null) {
-				response.getErrorMessages().add("Geen id opgegeven?");
+				//TODO: i18n
+				response.getErrorMessages().add("No id given?");
 			} else {
 				LayerModel bp = layerModelService.getLayerModelById(request.getId());
 				if (bp == null) {
-					response.getErrorMessages().add("Geen datalaag gevonden met id: " + request.getId());
+					//TODO: i18n
+					response.getErrorMessages().add("No datalayer found with the given id: " + request.getId());
 				} else {
 					layerModelService.deleteLayerModel(bp);
 				}
 			}
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij verwijderen datalaag: " + e.getMessage());
-			log.error("fout bij verwijderen datalaag.", e);
+			response.getErrorMessages().add("Unexpected error removing layer: " + e.getMessage());
+			log.error("Unexpected error removing layer.", e);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

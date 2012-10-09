@@ -14,10 +14,11 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
 /**
- * TODO.
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.CreateBlueprintCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 public class BlueprintResponse extends CommandResponse {
 

@@ -63,7 +63,8 @@ public class Geodesks extends VLayout implements EditSessionHandler {
 
 					public void execute(String result) {
 						if (result != null && !"".equals(result)) {
-							CommService.createNewGeodesk(result);
+							//TODO: i18n
+							CommService.createNewGeodesk(result, "[New Geodesk]");
 						}
 					}
 				});

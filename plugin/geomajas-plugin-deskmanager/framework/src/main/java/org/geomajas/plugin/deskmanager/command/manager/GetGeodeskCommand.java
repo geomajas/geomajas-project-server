@@ -11,8 +11,8 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.slf4j.Logger;
@@ -22,17 +22,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command that reads the application dto for display and manipulation in the management module.
+ * Command that reads the geodesk dto for display and manipulation in the management module.
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
- * 
  */
-@Component(ReadApplicationRequest.COMMAND)
+@Component(GetGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
-public class ReadApplicationCommand implements Command<ReadApplicationRequest, ReadApplicationResponse> {
+public class GetGeodeskCommand implements Command<GetGeodeskRequest, GetGeodeskResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(ReadApplicationCommand.class);
+	private final Logger log = LoggerFactory.getLogger(GetGeodeskCommand.class);
 
 	@Autowired
 	private GeodeskService loketService;
@@ -40,16 +39,18 @@ public class ReadApplicationCommand implements Command<ReadApplicationRequest, R
 	@Autowired
 	private DtoConverterService dtoService;
 
-	public void execute(ReadApplicationRequest request, ReadApplicationResponse response) throws Exception {
+	/** {@inheritDoc} */
+	public void execute(GetGeodeskRequest request, GetGeodeskResponse response) throws Exception {
 		try {
-			response.setLoket(dtoService.toDto(loketService.getLoketById(request.getUuid()), true));
+			response.setGeodesk(dtoService.toDto(loketService.getLoketById(request.getUuid()), true));
 		} catch (Exception e) {
 			response.getErrorMessages().add("Fout bij ophalen loket: " + e.getMessage());
 			log.error("fout bij ophalen loket.", e);
 		}
 	}
 
-	public ReadApplicationResponse getEmptyCommandResponse() {
-		return new ReadApplicationResponse();
+	/** {@inheritDoc} */
+	public GetGeodeskResponse getEmptyCommandResponse() {
+		return new GetGeodeskResponse();
 	}
 }

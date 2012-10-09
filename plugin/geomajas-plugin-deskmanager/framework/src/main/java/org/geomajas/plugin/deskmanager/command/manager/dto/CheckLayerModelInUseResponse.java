@@ -13,7 +13,10 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandResponse;
 
 /**
+ * Response for {@link org.geomajas.plugin.deskmanager.command.manager.CheckLayerModelInUseCommand}.
+ * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class CheckLayerModelInUseResponse extends CommandResponse {
 

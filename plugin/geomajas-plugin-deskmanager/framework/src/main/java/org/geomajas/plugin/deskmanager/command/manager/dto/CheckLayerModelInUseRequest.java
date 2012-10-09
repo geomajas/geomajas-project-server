@@ -13,13 +13,16 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
+ * Request for {@link org.geomajas.plugin.deskmanager.command.manager.CheckLayerModelInUseCommand}.
+ * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class CheckLayerModelInUseRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.CheckLayerModelInUse";
+	public static final String COMMAND = "command.manager.CheckLayerModelInUseCommand";
 
 	private String clientLayerId;
 

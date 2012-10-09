@@ -22,10 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that deletes a geodesk from the database.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 @Component(DeleteGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
@@ -36,6 +37,7 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 	@Autowired
 	private GeodeskService loketService;
 
+	/** {@inheritDoc} */
 	public void execute(DeleteGeodeskRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getUuid() == null) {
@@ -55,6 +57,7 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 		}
 	}
 
+	/** {@inheritDoc} */
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

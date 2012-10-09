@@ -78,7 +78,7 @@ public class SaveClientWidgetTest {
 		widgetInfo2.setDummy("Test client widget info 2");
 		geodesk.getApplicationClientWidgetInfos().put("2", widgetInfo2);
 
-		geodeskService.saveOrUpdateLoket(geodesk);
+		geodeskService.saveOrUpdateGeodesk(geodesk);
 
 		Geodesk desk = geodeskService.getGeodeskByPublicId(geodesk.getGeodeskId());
 

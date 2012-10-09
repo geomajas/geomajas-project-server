@@ -31,6 +31,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Command that creates a new layer model, based on the given configuration info.
+ * 
  * @author Kristof Heirwegh
  */
 @Component(CreateLayerModelRequest.COMMAND)
@@ -53,7 +55,8 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 
 	@Autowired
 	private DtoConverterService dtoService;
-
+	
+	/** {@inheritDoc} */
 	public void execute(CreateLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			if (request.getConfiguration() == null) {
@@ -104,6 +107,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 		}
 	}
 
+	/** {@inheritDoc} */
 	public LayerModelResponse getEmptyCommandResponse() {
 		return new LayerModelResponse();
 	}

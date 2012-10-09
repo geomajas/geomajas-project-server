@@ -17,10 +17,11 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 /**
- * TODO.
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.GetLayerModelsCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 public class GetLayerModelsResponse extends CommandResponse {
 

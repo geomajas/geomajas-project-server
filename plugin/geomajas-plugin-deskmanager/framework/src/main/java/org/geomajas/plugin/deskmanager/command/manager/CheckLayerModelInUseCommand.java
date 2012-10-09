@@ -20,24 +20,31 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Command that checks if a layer model is in use. Typically this command is called to check if a (dynamic) layer that 
+ * needs to be removed actually can be removed.
+ * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
-@Component(CheckLayerModelInUseRequest.COMMAND)
+@Component()
 @Transactional(readOnly = true)
 public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUseRequest, CheckLayerModelInUseResponse> {
 
 	@Autowired
 	private LayerModelService service;
 
+	/** {@inheritDoc} */
 	public void execute(CheckLayerModelInUseRequest request, CheckLayerModelInUseResponse response)
 			throws GeomajasSecurityException {
 		if (request.getClientLayerId() == null || "".equals(request.getClientLayerId())) {
-			response.getErrorMessages().add("Gelieve een clientlayerId op te geven.");
+			//TODO: i18n
+			response.getErrorMessages().add("Pleas provide a clientlayerid.");
 		} else {
 			response.setLayerModelInUse(service.isLayerModelInUse(request.getClientLayerId()));
 		}
 	}
 
+	/** {@inheritDoc} */
 	public CheckLayerModelInUseResponse getEmptyCommandResponse() {
 		return new CheckLayerModelInUseResponse();
 	}

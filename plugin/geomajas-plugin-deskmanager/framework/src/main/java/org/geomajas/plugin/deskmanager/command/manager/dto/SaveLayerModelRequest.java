@@ -14,15 +14,16 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 /**
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.SaveLayerModelCommand}.
  * 
  * @author Oliver May
- *
+ * @author Kristof Heirwegh
  */
 public class SaveLayerModelRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.SaveLayerModel";
+	public static final String COMMAND = "command.manager.SaveLayerModel";
 
 	private LayerModelDto layerModel;
 

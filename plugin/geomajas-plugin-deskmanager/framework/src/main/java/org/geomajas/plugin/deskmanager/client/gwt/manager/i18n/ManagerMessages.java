@@ -30,8 +30,8 @@ public interface ManagerMessages extends Messages {
 	
 	String removeTitle();
 	
-	String wizardVorigeButtonText();
-	String wizardVolgendeButtonText();
+	String wizardPreviousButtonText();
+	String wizardNextButtonText();
 	
 	String formWarnNotvalid();
 	String loadingConfig();
@@ -44,12 +44,6 @@ public interface ManagerMessages extends Messages {
 
 	
 	// Configuration of Themes
-	String themeConfigThemeTitle();
-	String themeConfigThemeTitleText();
-
-	String themeConfigThemeMouseOver();
-	String themeConfigThemeMouseOverText();  //TODO: needed?
-
 	String themeConfigThemeImage();
 
 	String themeConfigThemeTurnsOtherLayersOff();
@@ -290,7 +284,6 @@ public interface ManagerMessages extends Messages {
 	
 	String newLayerModelWindowTitle();
 	String newLayerModelWizardCreateButtonText();
-	String newLayerModelWizardWarnNoPanel();
 
 	String uploadShapefileLabelText();
 	String uploadShapefileUploadingFile();

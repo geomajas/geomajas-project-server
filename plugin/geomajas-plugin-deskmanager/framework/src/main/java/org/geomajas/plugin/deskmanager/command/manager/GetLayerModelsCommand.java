@@ -25,10 +25,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that retrieves layermodels where a user has access to. Typically used from the managements interface to 
+ * display a list of layers that a user can manage.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 @Component(GetLayerModelsRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
@@ -40,6 +42,7 @@ public class GetLayerModelsCommand implements Command<GetLayerModelsRequest, Get
 	@Autowired
 	private DtoConverterService converterService;
 
+	/** {@inheritDoc} */
 	public void execute(GetLayerModelsRequest request, GetLayerModelsResponse response) throws Exception {
 
 		List<LayerModelDto> layerModels = new ArrayList<LayerModelDto>();
@@ -52,6 +55,7 @@ public class GetLayerModelsCommand implements Command<GetLayerModelsRequest, Get
 		response.setLayerModels(layerModels);
 	}
 
+	/** {@inheritDoc} */
 	public GetLayerModelsResponse getEmptyCommandResponse() {
 		return new GetLayerModelsResponse();
 	}

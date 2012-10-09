@@ -29,7 +29,6 @@ import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.CanvasItem;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -92,31 +91,6 @@ public class ThemeConfigPanel extends Layout {
 		form.setWidth(FORMITEM_WIDTH + 100);
 		// form.setWrapItemTitles(false);
 
-		themeTitle = new TextItem("themeTitle");
-		themeTitle.setTitle(MESSAGES.themeConfigThemeTitle());
-		themeTitle.setRequired(true);
-		themeTitle.setWidth(FORMITEM_WIDTH);
-		themeTitle.setValue(MESSAGES.themeConfigThemeTitleText());
-		themeTitle.addChangedHandler(new ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				//TODO
-//				themeConfigurationPanel.getState().getThemesInfo().setTitle(themeTitle.getValueAsString());
-			}
-		});
-
-		mouseOverText = new TextAreaItem("themeMouseOver");
-		mouseOverText.setTitle(MESSAGES.themeConfigThemeMouseOver());
-		mouseOverText.setWidth(FORMITEM_WIDTH);
-		mouseOverText.setValue(MESSAGES.themeConfigThemeMouseOverText());
-		mouseOverText.addChangedHandler(new ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				//TODO
-//				themeConfigurationPanel.getState().getThemesInfo().setTooltip(mouseOverText.getValueAsString());
-			}
-		});
-
 		themeTurnsOtherLayersOff = new CheckboxItem();
 		themeTurnsOtherLayersOff.setTitle(MESSAGES.themeConfigThemeTurnsOtherLayersOff());
 		themeTurnsOtherLayersOff.setWidth(FORMITEM_WIDTH);
@@ -128,13 +102,7 @@ public class ThemeConfigPanel extends Layout {
 			}
 		});
 
-		uploadForm = new FileUploadForm();
-		CanvasItem uploadItem = new CanvasItem();
-		uploadItem.setCanvas(uploadForm);
-		uploadItem.setTitle(MESSAGES.themeConfigThemeImage());
-		uploadItem.setWidth(FORMITEM_WIDTH);
-		
-		form.setFields(/*themeTitle, mouseOverText, */themeTurnsOtherLayersOff/* ,uploadItem*/);
+		form.setFields(themeTurnsOtherLayersOff);
 
 		layout.addMember(form);
 

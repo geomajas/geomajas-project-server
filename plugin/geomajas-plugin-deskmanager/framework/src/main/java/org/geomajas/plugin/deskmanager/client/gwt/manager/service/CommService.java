@@ -40,16 +40,16 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskUrlBaseRequ
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskUrlBaseResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGroupsRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGroupsResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
@@ -156,8 +156,15 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	public static void createNewBlueprint(String userApplicationName) {
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.CreateBlueprintCommand}.
+	 * 
+	 * @param userApplicationName the user application to base the blueprint on.
+	 * @param name the preferred name for the blueprint.
+	 */
+	public static void createNewBlueprint(String userApplicationName, String name) {
 		CreateBlueprintRequest request = new CreateBlueprintRequest();
+		request.setName(name);
 		request.setUserApplicationName(userApplicationName);
 		GwtCommand command = new GwtCommand(CreateBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
@@ -206,6 +213,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetLayerModelsCommand}.
+	 * 
+	 * @param onFinish callback called when layermodels are retrieved.
+	 */
 	public static void getLayerModels(final DataCallback<List<LayerModelDto>> onFinish) {
 		GetLayerModelsRequest request = new GetLayerModelsRequest();
 		GwtCommand command = new GwtCommand(GetLayerModelsRequest.COMMAND);
@@ -222,6 +234,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.DeleteLayerModelCommand}.
+	 * 
+	 * @param layerModel the layerModel to delete.
+	 */
 	public static void deleteLayerModel(final LayerModelDto layerModel) {
 		DeleteLayerModelRequest request = new DeleteLayerModelRequest();
 		request.setId(layerModel.getId());
@@ -237,6 +254,12 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.CheckLayerModelInUseCommand}.
+	 * 
+	 * @param layerModel the layerModel to check.
+	 * @param onFinish callback called when answer is recieved.
+	 */
 	public static void checkLayerModelInUse(final LayerModelDto layerModel, final DataCallback<Boolean> onFinish) {
 		CheckLayerModelInUseRequest request = new CheckLayerModelInUseRequest();
 		request.setClientLayerId(layerModel.getClientLayerId());
@@ -254,6 +277,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.CreateLayerModelCommand}.
+	 * 
+	 * @param configuration the layerconfiguration to base the layermodel on.
+	 */
 	public static void createNewLayerModel(LayerConfiguration configuration) {
 		CreateLayerModelRequest request = new CreateLayerModelRequest();
 		request.setConfiguration(configuration);
@@ -269,6 +297,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.SaveLayerModelCommand}.
+	 * 
+	 * @param layerModel the layerModel to save.
+	 */
 	public static void saveLayerModel(LayerModelDto layerModel) {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
@@ -284,35 +317,41 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	// -- Territory --------------------------------------------------------
-
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetTerritoriesCommand}.
+	 * 
+	 * @param onFinish callback called when the groups are retrieved.
+	 */
 	public static void getGroups(final DataCallback<List<TerritoryDto>> onFinish) {
-		GetGroupsRequest request = new GetGroupsRequest();
-		GwtCommand command = new GwtCommand(GetGroupsRequest.COMMAND);
+		GetTerritoriesRequest request = new GetTerritoriesRequest();
+		GwtCommand command = new GwtCommand(GetTerritoriesRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetGroupsResponse>() {
+				new AbstractCommandCallback<GetTerritoriesResponse>() {
 
-					public void execute(GetGroupsResponse response) {
+					public void execute(GetTerritoriesResponse response) {
 						if (onFinish != null) {
-							onFinish.execute(response.getGroups());
+							onFinish.execute(response.getTerritories());
 						}
 					}
 				});
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	// -- Geodesk --------------------------------------------------------
-
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.getGeodesksCommand}.
+	 * 
+	 * @param onFinich callback called when the geodesk is retrieved.
+	 */
 	public static void getGeodesk(String uuid, final DataCallback<GeodeskDto> onFinish) {
-		ReadApplicationRequest request = new ReadApplicationRequest();
+		GetGeodeskRequest request = new GetGeodeskRequest();
 		request.setUuid(uuid);
-		GwtCommand command = new GwtCommand(ReadApplicationRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<ReadApplicationResponse>() {
+				new AbstractCommandCallback<GetGeodeskResponse>() {
 
-					public void execute(ReadApplicationResponse response) {
+					public void execute(GetGeodeskResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response.getGeodesk());
 						}
@@ -321,6 +360,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetGeodesksCommand}.
+	 * 
+	 * @param onFinish callback called when geodesks are retrieved.
+	 */
 	public static void getGeodesks(final DataCallback<List<GeodeskDto>> onFinish) {
 		GetGeodesksRequest request = new GetGeodesksRequest();
 		GwtCommand command = new GwtCommand(GetGeodesksRequest.COMMAND);
@@ -337,6 +381,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.DeleteGeodeskCommand}.
+	 * 
+	 * @param geodesk the geodesk to delete.
+	 */
 	public static void deleteGeodesk(final GeodeskDto geodesk) {
 		DeleteGeodeskRequest request = new DeleteGeodeskRequest();
 		request.setUuid(geodesk.getId());
@@ -352,37 +401,57 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	public static void createNewGeodesk(String blueprintId) {
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.CreateGeodeskCommand}.
+	 * 
+	 * @param blueprintId the id of the dependant blueprint.
+	 * @param geodeskName the preferred name of the new geodesk.
+	 */
+	public static void createNewGeodesk(String blueprintId, String geodeskName) {
 		CreateGeodeskRequest request = new CreateGeodeskRequest();
 		request.setBlueprintId(blueprintId);
+		request.setName(geodeskName);
 		GwtCommand command = new GwtCommand(CreateGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<ReadApplicationResponse>() {
+				new AbstractCommandCallback<GetGeodeskResponse>() {
 
-					public void execute(ReadApplicationResponse response) {
+					public void execute(GetGeodeskResponse response) {
 						Whiteboard.fireEvent(new GeodeskEvent(response.getGeodesk(), false, true));
 					}
 				});
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	public static void saveGeodesk(GeodeskDto geodesk, int saveWhat) {
+
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.SaveGeodeskCommand}.
+	 * 
+	 * @param geodesk the geodesk to save.
+	 * @param bitmask which attributes to save. 
+	 */
+	public static void saveGeodesk(GeodeskDto geodesk, int bitmask) {
 		SaveGeodeskRequest request = new SaveGeodeskRequest();
 		request.setGeodesk(geodesk);
-		request.setSaveWhat(saveWhat);
+		request.setSaveBitmask(bitmask);
 		GwtCommand command = new GwtCommand(SaveGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<ReadApplicationResponse>() {
+				new AbstractCommandCallback<GetGeodeskResponse>() {
 
-					public void execute(ReadApplicationResponse response) {
+					public void execute(GetGeodeskResponse response) {
 						Whiteboard.fireEvent(new GeodeskEvent(response.getGeodesk()));
 					}
 				});
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.CheckGeodeskIdExistsCommand}.
+	 * 
+	 * @param geodeskId the id to check.
+	 * @param onFinish DataCallback will be called when the command is executed.
+	 */
 	public static void checkGeodeskIdExists(String geodeskId, final DataCallback<Boolean> onFinish) {
 		CheckGeodeskIdExistsRequest request = new CheckGeodeskIdExistsRequest();
 		request.setGeodeskId(geodeskId);

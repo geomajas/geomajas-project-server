@@ -61,7 +61,8 @@ public class Blueprints extends VLayout implements EditSessionHandler {
 
 					public void execute(String result) {
 						if (result != null && !"".equals(result)) {
-							CommService.createNewBlueprint(result);
+							//TODO: i18n
+							CommService.createNewBlueprint(result, "[New Blueprint]");
 						}
 					}
 				});

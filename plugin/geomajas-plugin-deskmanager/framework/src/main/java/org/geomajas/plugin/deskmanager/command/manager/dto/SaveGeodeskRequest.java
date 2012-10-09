@@ -14,37 +14,55 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 /**
+ * Command object for {@link org.geomajas.plugin.deskmanager.command.manager.SaveGeodeskCommand}.
  * 
  * @author Oliver May
- *
+ * @author Kristof Heirwegh
  */
 public class SaveGeodeskRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Bitmask to save settings. 
+	 */
 	public static final int SAVE_SETTINGS = 1;
 
+	/**
+	 * Bitmask to save layers and layerstyles.
+	 */
 	public static final int SAVE_LAYERS = 2; // layers + layerstyles
 
-	public static final int SAVE_GROUPS = 4; // security
+	/**
+	 * Bitmask to save security Territories.
+	 */
+	public static final int SAVE_TERRITORIES = 4; // security
 
+	/**
+	 * Bitmask to save notifications.
+	 * @deprecated use clientwidgetinfo.
+	 */
+	@Deprecated
 	public static final int SAVE_NOTIFICATIONS = 16; // mailnotifications
 
+	/**
+	 * Bitmask to save all clientwidgetinfo's (application, mainmap, overviewmap).
+	 */
 	public static final int SAVE_CLIENTWIDGETINFO = 32;
 
-	public static final String COMMAND = "command.deskmanager.beheer.SaveLoket";
+	public static final String COMMAND = "command.manager.SaveGeodesk";
 
 
-	private int saveWhat;
+	private int saveBitmask;
 
 	private GeodeskDto loket;
 
-	public int getSaveWhat() {
-		return saveWhat;
+	public int getSaveBitmask() {
+		return saveBitmask;
 	}
 
-	public void setSaveWhat(int saveWhat) {
-		this.saveWhat = saveWhat;
+	public void setSaveBitmask(int saveBitmask) {
+		this.saveBitmask = saveBitmask;
 	}
 
 	public GeodeskDto getLoket() {

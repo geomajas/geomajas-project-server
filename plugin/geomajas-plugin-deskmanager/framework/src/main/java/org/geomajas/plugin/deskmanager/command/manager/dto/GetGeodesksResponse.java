@@ -17,23 +17,24 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 /**
- * TODO.
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.GetGeodesksCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 public class GetGeodesksResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<GeodeskDto> loketten = new ArrayList<GeodeskDto>();
+	private List<GeodeskDto> geodesks = new ArrayList<GeodeskDto>();
 
 	public List<GeodeskDto> getGeodesks() {
-		return loketten;
+		return geodesks;
 	}
 
-	public void setGeodesks(List<GeodeskDto> loketten) {
-		this.loketten = loketten;
+	public void setGeodesks(List<GeodeskDto> geodesks) {
+		this.geodesks = geodesks;
 	}
 
 }

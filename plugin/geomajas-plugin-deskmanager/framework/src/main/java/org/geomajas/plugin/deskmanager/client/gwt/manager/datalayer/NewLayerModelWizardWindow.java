@@ -133,7 +133,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 		HLayout buttons = new HLayout(10);
 		buttons.setWidth100();
 		buttons.setHeight(25);
-		prev = new IButton(MESSAGES.wizardVorigeButtonText());
+		prev = new IButton(MESSAGES.wizardPreviousButtonText());
 		prev.setIcon(WidgetLayout.iconZoomLast);
 		prev.setAutoFit(true);
 		prev.setDisabled(true);
@@ -144,7 +144,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 			}
 		});
 
-		next = new IButton(MESSAGES.wizardVolgendeButtonText());
+		next = new IButton(MESSAGES.wizardNextButtonText());
 		next.setIcon(WidgetLayout.iconZoomNext);
 		next.setAutoFit(true);
 		next.setDisabled(true);
@@ -222,8 +222,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 	private void setStep(WizardStepPanel step) {
 		if (step == null) {
-			SC.say(MESSAGES.newLayerModelWizardWarnNoPanel());
-			return;
+			throw new IllegalArgumentException("Step can not be null!");
 		}
 
 		if (currentStep != null) {

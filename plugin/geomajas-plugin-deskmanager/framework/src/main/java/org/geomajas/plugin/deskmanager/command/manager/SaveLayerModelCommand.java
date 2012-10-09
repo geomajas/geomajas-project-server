@@ -31,8 +31,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Command that saves changes to a layer model in the database. The layermodel is passed as dto.
  * 
  * @author Oliver May
+ * @author Kristof Heirwegh
  * 
  */
 @Component(SaveLayerModelRequest.COMMAND)
@@ -47,6 +49,7 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 	@Autowired
 	private LayerModelService layerModelService;
 
+	/** {@inheritDoc} */
 	public void execute(SaveLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			if (request.getLayerModel() == null) {
@@ -97,6 +100,7 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 		}
 	}
 
+	/** {@inheritDoc} */
 	public LayerModelResponse getEmptyCommandResponse() {
 		return new LayerModelResponse();
 	}

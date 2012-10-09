@@ -97,7 +97,7 @@ public class GeodeskAccessRights extends VLayout implements WoaEventHandler, Geo
 
 	public boolean onSaveClick(ClickEvent event) {
 		geodesk.setGroups(groupSelect.getValues());
-		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_GROUPS);
+		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_TERRITORIES);
 		groupSelect.setDisabled(true);
 		return true;
 	}

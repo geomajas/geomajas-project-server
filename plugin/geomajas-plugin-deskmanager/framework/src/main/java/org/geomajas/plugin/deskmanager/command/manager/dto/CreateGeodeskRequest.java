@@ -13,10 +13,11 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * TODO.
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.CreateGeodeskCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 public class CreateGeodeskRequest implements CommandRequest {
 
@@ -24,11 +25,13 @@ public class CreateGeodeskRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.deskmanager.beheer.CreateGeodesk";
 
+	private String name;
+	
+	private String blueprintId;
+
 	/**
 	 * The blueprint the new loket is to be based upon.
 	 */
-	private String blueprintId;
-
 	public String getBlueprintId() {
 		return blueprintId;
 	}
@@ -37,4 +40,24 @@ public class CreateGeodeskRequest implements CommandRequest {
 		this.blueprintId = blueprintId;
 	}
 
+	/**
+	 * The preferred name for this new geodesk.
+	 * 
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * The preferred name for this new geodesk.
+	 * 
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	
+	
 }

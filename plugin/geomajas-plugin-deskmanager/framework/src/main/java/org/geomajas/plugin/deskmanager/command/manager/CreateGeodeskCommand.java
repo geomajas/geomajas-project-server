@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -31,14 +31,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that creates a new empty geodesk in the database, based on a given blueprint.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 @Component(CreateGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
-public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, ReadApplicationResponse> {
+public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, GetGeodeskResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(CreateGeodeskCommand.class);
 
@@ -57,18 +58,19 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, ReadA
 	@Autowired
 	private DtoConverterService dtoService;
 
-	public void execute(CreateGeodeskRequest request, ReadApplicationResponse response) throws Exception {
+	/** {@inheritDoc} */
+	public void execute(CreateGeodeskRequest request, GetGeodeskResponse response) throws Exception {
 		try {
 			if (request.getBlueprintId() == null || "".equals(request.getBlueprintId())) {
-				response.getErrorMessages().add("Fout bij opslaan loket: BlueprintID is vereist.");
+				response.getErrorMessages().add("Error while saving geodesk: BlueprintID is required.");
 			} else {
 				Blueprint bp = blueprintService.getBlueprintById(request.getBlueprintId());
 				if (bp == null) {
 					response.getErrorMessages().add(
-							"Fout bij opslaan loket: Kon blueprint niet vinden? (" + request.getBlueprintId() + ")");
+							"Error while saving geodesk: Could not find blueprint. (" + request.getBlueprintId() + ")");
 				}
 				Geodesk l = new Geodesk();
-				l.setName("[Nieuwe loket]");
+				l.setName(request.getName());
 				l.setGeodeskId(UUID.randomUUID().toString());
 				l.setBlueprint(bp);
 				l.setPublic(bp.isPublic());
@@ -84,16 +86,17 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, ReadA
 						l.getTerritories().add(dbGrp);
 					}
 				}
-				geodeskService.saveOrUpdateLoket(l);
-				response.setLoket(dtoService.toDto(l, false));
+				geodeskService.saveOrUpdateGeodesk(l);
+				response.setGeodesk(dtoService.toDto(l, false));
 			}
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij opslaan loket: " + e.getMessage());
-			log.error("fout bij opslaan loket.", e);
+			response.getErrorMessages().add("Unexpected error while saving geodesk: " + e.getMessage());
+			log.error("Unexpected error while saving geodesk:", e);
 		}
 	}
 
-	public ReadApplicationResponse getEmptyCommandResponse() {
-		return new ReadApplicationResponse();
+	/** {@inheritDoc} */
+	public GetGeodeskResponse getEmptyCommandResponse() {
+		return new GetGeodeskResponse();
 	}
 }

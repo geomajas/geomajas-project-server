@@ -10,30 +10,22 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
+import org.geomajas.command.CommandRequest;
 
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetTerritoriesCommand}.
  * 
- * @author Jan De Moerloose
- *
+ * @author Kristof Heirwegh
+ * 
  */
-public class GetGroupsResponse extends CommandResponse {
+public class GetTerritoriesRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<TerritoryDto> groups = new ArrayList<TerritoryDto>();
+	public static final String COMMAND = "command.deskmanager.beheer.GetGroups";
 
-	public List<TerritoryDto> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(List<TerritoryDto> groups) {
-		this.groups = groups;
+	public String toString() {
+		return COMMAND;
 	}
 
 }

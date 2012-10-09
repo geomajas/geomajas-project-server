@@ -20,23 +20,27 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that checks if a geodesk id already exists in the database. Typically called when an administrator
+ * tries to override a geodesk id in the management interface.
  * 
  * @author Jan De Moerloose
- * 
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
-@Component(CheckGeodeskIdExistsRequest.COMMAND)
+@Component(/*CheckGeodeskIdExistsRequest.COMMAND*/)
 @Transactional(readOnly = true)
 public class CheckGeodeskIdExistsCommand implements Command<CheckGeodeskIdExistsRequest, CheckGeodeskIdExistsResponse> {
 
 	@Autowired
 	private GeodeskService geodeskService;
 
+	/** {@inheritDoc} */
 	public void execute(CheckGeodeskIdExistsRequest request, CheckGeodeskIdExistsResponse response)
 			throws GeomajasSecurityException {
 		response.setExists(geodeskService.geodeskIdExists(request.getGeodeskId()));
 	}
 
+	/** {@inheritDoc} */
 	public CheckGeodeskIdExistsResponse getEmptyCommandResponse() {
 		return new CheckGeodeskIdExistsResponse();
 	}

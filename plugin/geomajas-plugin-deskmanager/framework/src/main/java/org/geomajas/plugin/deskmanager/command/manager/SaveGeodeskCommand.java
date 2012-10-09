@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.ReadApplicationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
@@ -35,13 +35,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Command that saves a geodesk from a given dto.
  * 
  * @author Oliver May
- * 
+ * @author Kristof Heirwegh
  */
 @Component(SaveGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
-public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadApplicationResponse> {
+public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodeskResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SaveGeodeskCommand.class);
 
@@ -57,11 +58,12 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 	@Autowired
 	private SecurityContext securityContext;
 
-	public void execute(SaveGeodeskRequest request, ReadApplicationResponse response) throws Exception {
+	/** {@inheritDoc} */
+	public void execute(SaveGeodeskRequest request, GetGeodeskResponse response) throws Exception {
 		try {
 			if (request.getLoket() == null) {
 				response.getErrorMessages().add("Geen loket opgegeven ??");
-			} else if (request.getSaveWhat() < 1) {
+			} else if (request.getSaveBitmask() < 1) {
 				response.getErrorMessages().add("Niets te bewaren ??");
 			} else {
 				Geodesk target = loketService.getLoketById(request.getLoket().getId());
@@ -71,24 +73,24 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 				} else {
 					Geodesk source = dtoService.fromDto(request.getLoket());
 
-					if ((SaveGeodeskRequest.SAVE_SETTINGS & request.getSaveWhat()) > 0) {
+					if ((SaveGeodeskRequest.SAVE_SETTINGS & request.getSaveBitmask()) > 0) {
 						copySettings(source, target);
 					}
-					if ((SaveGeodeskRequest.SAVE_GROUPS & request.getSaveWhat()) > 0) {
+					if ((SaveGeodeskRequest.SAVE_TERRITORIES & request.getSaveBitmask()) > 0) {
 						copyGroups(source, target);
 					}
-					if ((SaveGeodeskRequest.SAVE_NOTIFICATIONS & request.getSaveWhat()) > 0) {
+					if ((SaveGeodeskRequest.SAVE_NOTIFICATIONS & request.getSaveBitmask()) > 0) {
 						copyNotifications(source, target);
 					}
-					if ((SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO & request.getSaveWhat()) > 0) {
+					if ((SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO & request.getSaveBitmask()) > 0) {
 						copyWidgetInfo(source, target);
 					}
-					if ((SaveBlueprintRequest.SAVE_LAYERS & request.getSaveWhat()) > 0) {
+					if ((SaveBlueprintRequest.SAVE_LAYERS & request.getSaveBitmask()) > 0) {
 						copyLayers(source, target);
 					}
 
-					loketService.saveOrUpdateLoket(target);
-					response.setLoket(dtoService.toDto(target, false));
+					loketService.saveOrUpdateGeodesk(target);
+					response.setGeodesk(dtoService.toDto(target, false));
 				}
 			}
 		} catch (Exception e) {
@@ -97,12 +99,16 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		}
 	}
 
-	public ReadApplicationResponse getEmptyCommandResponse() {
-		return new ReadApplicationResponse();
+	/** {@inheritDoc} */
+	public GetGeodeskResponse getEmptyCommandResponse() {
+		return new GetGeodeskResponse();
 	}
 
 	// ----------------------------------------------------------
 
+	/**
+	 * Helper method to copy all geodesk settings.
+	 */
 	private void copySettings(Geodesk source, Geodesk target) throws Exception {
 		target.setActive(source.isActive());
 		target.setLimitToCreatorTerritory(source.isLimitToCreatorTerritory());
@@ -114,6 +120,9 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		}
 	}
 
+	/**
+	 * Helper method to copy widget info.
+	 */
 	private void copyWidgetInfo(Geodesk source, Geodesk target) throws Exception {
 		target.getApplicationClientWidgetInfos().putAll(source.getApplicationClientWidgetInfos());
 		target.getMainMapClientWidgetInfos().putAll(source.getMainMapClientWidgetInfos());
@@ -121,6 +130,9 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		
 	}
 
+	/**
+	 * Helper method to copy groups.
+	 */
 	private void copyGroups(Geodesk source, Geodesk target) throws Exception {
 		List<Territory> toDelete = new ArrayList<Territory>();
 		List<Territory> toAdd = new ArrayList<Territory>();
@@ -147,6 +159,11 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		}
 	}
 
+	/**
+	 * Helper method to copy all notifications.
+	 * @deprecated don't use notifications as such, use clientwidgetinfo.
+	 */
+	@Deprecated
 	private void copyNotifications(Geodesk source, Geodesk target) throws Exception {
 		List<MailAddress> toDelete = new ArrayList<MailAddress>();
 		List<MailAddress> toAdd = new ArrayList<MailAddress>();
@@ -184,6 +201,11 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		}
 	}
 
+	/**
+	 * Helper method to copy all mail addresses.
+	 * @deprecated don't use notifications as such, use clientwidgetinfo.
+	 */
+	@Deprecated
 	private Map<Long, MailAddress> toMap(List<MailAddress> list) {
 		Map<Long, MailAddress> res = new HashMap<Long, MailAddress>();
 		for (MailAddress m : list) {
@@ -195,6 +217,9 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, ReadAppli
 		return res;
 	}
 
+	/**
+	 * Helper method to copy all layers.
+	 */
 	private void copyLayers(Geodesk source, Geodesk target) throws Exception {
 		target.getMainMapLayers().clear();
 		target.getMainMapLayers().addAll(source.getMainMapLayers());

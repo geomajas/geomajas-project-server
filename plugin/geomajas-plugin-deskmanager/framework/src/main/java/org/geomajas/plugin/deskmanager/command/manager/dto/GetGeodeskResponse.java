@@ -11,30 +11,28 @@
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
+import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 /**
- * Response object for commands that return layermodels. Such as:
- * {@link org.geomajas.plugin.deskmanager.command.manager.GetLayerModelCommand},
- * {@link org.geomajas.plugin.deskmanager.command.manager.CreateLayerModelCommand} and 
- * {@link org.geomajas.plugin.deskmanager.command.manager.SaveLayerModelCommand}
+ * Response object for commands that return geodesks. Such as:
+ * {@link org.geomajas.plugin.deskmanager.command.manager.CreateGeodeskCommand},
+ * {@link org.geomajas.plugin.deskmanager.command.manager.GetGeodeskCommand} and
+ * {@link org.geomajas.plugin.deskmanager.command.manager.SaveGeodeskCommand}.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */
-public class LayerModelResponse extends CommandResponse {
+public class GetGeodeskResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private LayerModelDto layerModel;
+	private GeodeskDto loket;
 
-	public LayerModelDto getLayerModel() {
-		return layerModel;
+	public GeodeskDto getGeodesk() {
+		return loket;
 	}
 
-	public void setLayerModel(LayerModelDto layerModel) {
-		this.layerModel = layerModel;
+	public void setGeodesk(GeodeskDto loket) {
+		this.loket = loket;
 	}
-
 }

@@ -25,33 +25,36 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command to fetch a list of geodesks, accessible by the current logged in user.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
+ * @author Kristof Heirwegh
  */
 @Component(GetGeodesksRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetGeodesksCommand implements Command<GetGeodesksRequest, GetGeodesksResponse> {
 
 	@Autowired
-	private GeodeskService loketService;
+	private GeodeskService geodeskService;
 
 	@Autowired
 	private DtoConverterService converterService;
 
+	/** {@inheritDoc} */
 	public void execute(GetGeodesksRequest request, GetGeodesksResponse response) throws Exception {
 
 		List<GeodeskDto> geodesks = new ArrayList<GeodeskDto>();
 
 		// no need to filter by group, this is done by security
-		for (Geodesk l : loketService.getLoketten()) {
+		for (Geodesk l : geodeskService.getLoketten()) {
 			geodesks.add(converterService.toDto(l, false));
 		}
 
 		response.setGeodesks(geodesks);
 	}
 
+	/** {@inheritDoc} */
 	public GetGeodesksResponse getEmptyCommandResponse() {
 		return new GetGeodesksResponse();
 	}

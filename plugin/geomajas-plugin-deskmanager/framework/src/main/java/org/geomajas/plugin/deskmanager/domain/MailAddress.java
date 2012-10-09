@@ -23,9 +23,13 @@ import org.hibernate.validator.constraints.Email;
 
 /**
  * @author Kristof Heirwegh
+ * 
+ * FIXME: deprecation
+ * @deprecated don't use Notifications as such, use clientwidgetinfo.
  */
 @Entity
 @Table(name = "config_mails")
+@Deprecated
 public class MailAddress implements Serializable {
 
 	private static final long serialVersionUID = 1L;
