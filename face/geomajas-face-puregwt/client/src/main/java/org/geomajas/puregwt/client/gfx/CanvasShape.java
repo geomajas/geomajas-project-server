@@ -13,6 +13,9 @@ package org.geomajas.puregwt.client.gfx;
 /**
  * An object that is able to paint itself on a canvas.
  */
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Matrix;
+
 import com.google.gwt.canvas.client.Canvas;
 
 /**
@@ -24,9 +27,17 @@ import com.google.gwt.canvas.client.Canvas;
 public interface CanvasShape {
 
 	/**
-	 * Called when the shape should be (re)painted.
+	 * Called when the shape should be (re)painted. Painting can be done in world coordinates directly.
 	 * 
 	 * @param canvas the canvas
+	 * @param matrix the matrix of the current world to screen transformation
 	 */
-	void paint(Canvas canvas);
+	void paint(Canvas canvas, Matrix matrix);
+
+	/**
+	 * Returns the bounds of the shape in world coordinates.
+	 * 
+	 * @return bounds
+	 */
+	Bbox getBounds();
 }
