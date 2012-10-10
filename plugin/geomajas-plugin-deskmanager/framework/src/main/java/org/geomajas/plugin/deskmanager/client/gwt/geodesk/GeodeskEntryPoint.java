@@ -35,24 +35,15 @@ import com.google.gwt.core.client.EntryPoint;
 
 
 /**
+ * Entry point for the geodesks, this loads all necessary widgets. For starting up an actual geodesk application, see 
+ * {@link GeodeskEntryPoint}.
+ * 
  * @author Oliver May
  *
  */
 public class GeodeskEntryPoint implements EntryPoint {
-	// FIXME: move keys to Actions
-	public static final String MOUSELOCATION_KEY = "MouseLocationColumn";
-
-	public static final String REFRESHLAYERS_KEY = "RefreshLayersButton";
-
-	public static final String SCALESELECT_KEY = "ScaleSelectColumn";
-
-	private static final String SEARCH_FAVORIET_ACTION_KEY = "SearchFavoriet";
-
-	private static final String SEARCH_GECOMBINEERD_ACTION_KEY = "SearchGecombineerd";
-
-	private static final String SEARCH_RUIMTELIJK_ACTION_KEY = "SearchRuimtelijk";
-
-	private static final String SEARCH_VRIJ_ACTION_KEY = "SearchVrij";
+	private static final String MOUSE_LOCATION_RIBBON_COLUMN_IDENTIFIER = "MouseLocationRibbonColumn";
+	private static final String SCLE_SELECT_RIBBON_COLUMN_IDENTIFIER = "ScaleSelectRibbonColumn";
 
 	/*
 	 * (non-Javadoc)
@@ -64,28 +55,28 @@ public class GeodeskEntryPoint implements EntryPoint {
 	}
 
 	public void initialize() {
-		ToolbarRegistry.put(SEARCH_FAVORIET_ACTION_KEY, new ToolCreator() {
+		ToolbarRegistry.put(FavouritesSearchAction.IDENTIFIER, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new FavouritesSearchAction();
 			}
 		});
 
-		ToolbarRegistry.put(SEARCH_GECOMBINEERD_ACTION_KEY, new ToolCreator() {
+		ToolbarRegistry.put(CombinedSearchAction.IDENTIFIER, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new CombinedSearchAction();
 			}
 		});
 
-		ToolbarRegistry.put(SEARCH_RUIMTELIJK_ACTION_KEY, new ToolCreator() {
+		ToolbarRegistry.put(SpatialSearchAction.IDENTIFIER, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new SpatialSearchAction();
 			}
 		});
 
-		ToolbarRegistry.put(SEARCH_VRIJ_ACTION_KEY, new ToolCreator() {
+		ToolbarRegistry.put(FreeSearchAction.IDENTIFIER, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new FreeSearchAction();
@@ -94,19 +85,19 @@ public class GeodeskEntryPoint implements EntryPoint {
 
 		FeatureDetailWidgetFactory.setDefaultVectorFeatureDetailWidgetBuilder(new DefaultFeatureInfoCanvasBuilder());
 
-		RibbonColumnRegistry.put(MOUSELOCATION_KEY, new RibbonColumnCreator() {
+		RibbonColumnRegistry.put(MOUSE_LOCATION_RIBBON_COLUMN_IDENTIFIER, new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				return new MouseLocationRibbonColumn(mapWidget);
 			}
 		});
-		RibbonColumnRegistry.put(SCALESELECT_KEY, new RibbonColumnCreator() {
+		RibbonColumnRegistry.put(SCLE_SELECT_RIBBON_COLUMN_IDENTIFIER, new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				return new ScaleSelectRibbonColumn(mapWidget);
 			}
 		});
-		RibbonColumnRegistry.put(REFRESHLAYERS_KEY, new RibbonColumnCreator() {
+		RibbonColumnRegistry.put(RefreshLayersAction.IDENTIFIER, new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				RibbonColumn rc = new RibbonButton(new RefreshLayersAction(mapWidget));

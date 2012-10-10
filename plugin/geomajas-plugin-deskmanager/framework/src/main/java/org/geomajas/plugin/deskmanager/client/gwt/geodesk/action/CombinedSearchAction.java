@@ -27,6 +27,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public class CombinedSearchAction extends ToolbarAction implements ConfigurableAction {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+	
+	public static final String IDENTIFIER = CombinedSearchCreator.IDENTIFIER;
 
 	public CombinedSearchAction() {
 		super(Icon.searchCombined, MESSAGES.searchGecombineerdTitle(), MESSAGES.searchGecombineerdTooltip());

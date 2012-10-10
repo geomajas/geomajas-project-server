@@ -26,6 +26,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class RefreshLayersAction extends AbstractButtonAction {
 
+	public static final String IDENTIFIER = "RefreshLayersAction";
+	
 	private MapWidget mapWidget;
 
 	public RefreshLayersAction(MapWidget mapWidget) {

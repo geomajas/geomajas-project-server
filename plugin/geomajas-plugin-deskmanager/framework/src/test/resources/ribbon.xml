@@ -107,7 +107,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="MouseLocationColumn" />
+								<property name="type" value="MouseLocationRibbonColumn" />
 							</bean>
 						</list>
 					</property>
@@ -139,7 +139,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="RefreshLayersButton" />
+								<property name="type">
+									<util:constant static-field="org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.ribbon.RefreshLayersAction.IDENTIFIER"/>
+								</property>
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
@@ -165,9 +167,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
-										<ref bean="SearchRuimtelijk" />
-										<ref bean="SearchVrij" />
-										<ref bean="SearchGecombineerd" />
+										<ref bean="GeometricSearch" />
+										<ref bean="AttributeSearch" />
+										<ref bean="CombinedSearch" />
 									</list>
 								</property>
 							</bean>
@@ -183,7 +185,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<list>
 							<bean
 								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ScaleSelectColumn" />
+								<property name="type" value="MouseLocationRibbonColumn" />
 							</bean>
 						</list>
 					</property>

@@ -24,6 +24,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class ScaleSelectRibbonColumn extends VLayout implements RibbonColumn {
 
+	public static final String IDENTIFIER = "SclaeSelectRibbonColumn";
 	private ScaleSelect scaleSelect;
 
 	public ScaleSelectRibbonColumn(MapWidget mapWidget) {

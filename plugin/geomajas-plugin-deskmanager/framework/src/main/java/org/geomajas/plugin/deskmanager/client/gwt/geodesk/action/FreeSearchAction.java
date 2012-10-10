@@ -27,6 +27,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public class FreeSearchAction extends ToolbarAction implements ConfigurableAction {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+	public static final String IDENTIFIER = AttributeSearchCreator.IDENTIFIER;
 
 	public FreeSearchAction() {
 		super(Icon.searchVrij, MESSAGES.searchVrijTitle(), MESSAGES.searchVrijTooltip());

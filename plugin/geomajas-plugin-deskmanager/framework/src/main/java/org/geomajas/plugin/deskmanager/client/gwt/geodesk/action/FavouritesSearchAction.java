@@ -26,6 +26,9 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public class FavouritesSearchAction extends ToolbarAction implements ConfigurableAction {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+	
+	public static final String IDENTIFIER = SearchFavouritesListCreator.IDENTIFIER;
+	
 
 	public FavouritesSearchAction() {
 		super(Icon.searchFavoriet, MESSAGES.searchFavorietTitle(), MESSAGES.searchFavorietTooltip());

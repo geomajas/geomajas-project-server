@@ -27,6 +27,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public class SpatialSearchAction extends ToolbarAction implements ConfigurableAction {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+	public static final String IDENTIFIER = GeometricSearchCreator.IDENTIFIER;
 
 	public SpatialSearchAction() {
 		super(Icon.searchRuimtelijk, MESSAGES.searchRuimtelijkTitle(), MESSAGES.searchRuimtelijkTooltip());

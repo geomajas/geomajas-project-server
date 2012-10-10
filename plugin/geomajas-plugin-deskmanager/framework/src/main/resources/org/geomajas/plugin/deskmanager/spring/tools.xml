@@ -11,10 +11,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<bean name="AddRemark" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="SearchFavoriet" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="SearchGecombineerd" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="SearchRuimtelijk" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="SearchVrij" class="org.geomajas.configuration.client.ClientToolInfo" />
+	<bean name="SearchFavourites" class="org.geomajas.configuration.client.ClientToolInfo" />
+	<bean name="CombinedSearch" class="org.geomajas.configuration.client.ClientToolInfo" />
+	<bean name="GeometricSearch" class="org.geomajas.configuration.client.ClientToolInfo" />
+	<bean name="AttributeSearch" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<!-- GEOMAJAS tools -->
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo" />
