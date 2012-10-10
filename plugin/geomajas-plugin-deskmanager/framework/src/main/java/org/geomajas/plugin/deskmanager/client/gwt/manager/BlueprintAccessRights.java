@@ -15,7 +15,7 @@ import java.util.List;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GroupTreeGrid;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
@@ -54,7 +54,7 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
 
 		// ----------------------------------------------------------
 
-		CommService.getGroups(new DataCallback<List<TerritoryDto>>() {
+		ManagerCommandService.getGroups(new DataCallback<List<TerritoryDto>>() {
 
 			public void execute(List<TerritoryDto> result) {
 				groupSelect.setGroups(result);
@@ -84,7 +84,7 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler {
 
 	public boolean onSaveClick(ClickEvent event) {
 		blueprint.setGroups(groupSelect.getValues());
-		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_GROUPS);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_TERRITORIES);
 		groupSelect.setDisabled(true);
 		return true;
 	}

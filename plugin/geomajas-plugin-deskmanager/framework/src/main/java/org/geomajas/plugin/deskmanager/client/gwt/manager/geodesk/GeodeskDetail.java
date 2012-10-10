@@ -17,8 +17,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 import com.google.gwt.core.client.GWT;
@@ -36,6 +36,8 @@ import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
  * TODO.
+ * 
+ * FIXME: the panels should come from a factory, see GDM-13.
  * 
  * @author Jan De Moerloose
  */
@@ -57,8 +59,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private GeodeskLayout geodeskLayout;
 
-	private GeodeskHtmlCode htmlCode;
-
 	private GeodeskNotifications notifications;
 
 	private Tab accessrightsTab;
@@ -73,7 +73,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	public GeodeskDetail() {
 		super(10);
-
 
 		tabset = new TabSet();
 		tabset.setTabBarPosition(Side.TOP);
@@ -121,13 +120,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		tabset.addTab(tab);
 		tab.setPane(geodeskLayout);
 		Whiteboard.registerHandler(geodeskLayout);
-		
-
-		htmlCode = new GeodeskHtmlCode();
-		tab = new Tab(MESSAGES.geodeskDetailTabHTMLCode());
-		tabset.addTab(tab);
-		tab.setPane(htmlCode);
-		Whiteboard.registerHandler(htmlCode);
 		
 
 		themeConfig = new GeodeskThemeConfig();
@@ -192,7 +184,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private void loadRecord(final String id) {
 		setLoading(); /* Clear edit form */
-		CommService.getGeodesk(id, new DataCallback<GeodeskDto>() {
+		ManagerCommandService.getGeodesk(id, new DataCallback<GeodeskDto>() {
 
 			public void execute(GeodeskDto result) {
 				setGeodesk(result);

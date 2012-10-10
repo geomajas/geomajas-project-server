@@ -29,9 +29,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Command that saves a geodesk from a given dto.
  * 
  * @author Oliver May
- * 
+ * @author Kristof Heirwegh
  */
 @Component(SaveBlueprintRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
@@ -48,31 +49,31 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 	@Autowired
 	private TerritoryService groupService;
 
+	/** {@inheritDoc} */
 	public void execute(SaveBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			if (request.getBlueprint() == null) {
-				response.getErrorMessages().add("Geen blauwdruk opgegeven ??");
-			} else if (request.getSaveWhat() < 1) {
-				response.getErrorMessages().add("Niets te bewaren ??");
+				//TODO: i18n
+				response.getErrorMessages().add("No blueprint was given.");
 			} else {
 				Blueprint target = blueprintService.getBlueprintById(request.getBlueprint().getId());
 				if (target == null) {
+					//TODO: i18n
 					response.getErrorMessages().add(
-							"Geen blauwdruk gevonden voor id: " + request.getBlueprint().getId()
-									+ " (Nieuwe blauwdruk?)");
+							"No blueprint found for id: " + request.getBlueprint().getId());
 				} else {
 					Blueprint source = dtoService.fromDto(request.getBlueprint());
 
-					if ((SaveBlueprintRequest.SAVE_SETTINGS & request.getSaveWhat()) > 0) {
+					if ((SaveBlueprintRequest.SAVE_SETTINGS & request.getSaveBitmask()) > 0) {
 						copySettings(source, target);
 					}
-					if ((SaveBlueprintRequest.SAVE_GROUPS & request.getSaveWhat()) > 0) {
+					if ((SaveBlueprintRequest.SAVE_TERRITORIES & request.getSaveBitmask()) > 0) {
 						copyGroups(source, target);
 					}
-					if ((SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO & request.getSaveWhat()) > 0) {
+					if ((SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO & request.getSaveBitmask()) > 0) {
 						copyWidgetInfo(source, target);
 					}
-					if ((SaveBlueprintRequest.SAVE_LAYERS & request.getSaveWhat()) > 0) {
+					if ((SaveBlueprintRequest.SAVE_LAYERS & request.getSaveBitmask()) > 0) {
 						copyLayers(source, target);
 					}
 
@@ -81,11 +82,13 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 				}
 			}
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij opslaan blauwdruk: " + e.getMessage());
-			log.error("fout bij opslaan blauwdruk.", e);
+			//TODO: i18n
+			response.getErrorMessages().add("Unexpected error while saving blueprint: " + e.getMessage());
+			log.error("Unexpected error while saving blueprint.", e);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public BlueprintResponse getEmptyCommandResponse() {
 		return new BlueprintResponse();
 	}

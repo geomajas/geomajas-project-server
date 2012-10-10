@@ -17,7 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
@@ -163,7 +163,7 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 
 	private void loadRecord(final long id) {
 		setLoading(); /* Clear edit form */
-		CommService.getLayerModel(id, new DataCallback<LayerModelDto>() {
+		ManagerCommandService.getLayerModel(id, new DataCallback<LayerModelDto>() {
 
 			public void execute(LayerModelDto result) {
 				setLayerModel(result);

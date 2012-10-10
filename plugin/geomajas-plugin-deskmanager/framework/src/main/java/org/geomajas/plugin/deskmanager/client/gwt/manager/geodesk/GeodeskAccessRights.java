@@ -18,7 +18,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
@@ -63,7 +63,7 @@ public class GeodeskAccessRights extends VLayout implements WoaEventHandler, Geo
 
 		// ----------------------------------------------------------
 
-		CommService.getGroups(new DataCallback<List<TerritoryDto>>() {
+		ManagerCommandService.getGroups(new DataCallback<List<TerritoryDto>>() {
 
 			public void execute(List<TerritoryDto> result) {
 				groupSelect.setGroups(result);
@@ -97,7 +97,7 @@ public class GeodeskAccessRights extends VLayout implements WoaEventHandler, Geo
 
 	public boolean onSaveClick(ClickEvent event) {
 		geodesk.setGroups(groupSelect.getValues());
-		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_TERRITORIES);
+		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_TERRITORIES);
 		groupSelect.setDisabled(true);
 		return true;
 	}

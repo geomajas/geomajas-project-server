@@ -17,7 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
@@ -89,7 +89,7 @@ public class GeodeskNotifications extends VLayout implements WoaEventHandler, Ge
 					return false;
 				} else {
 					loket.setMailAddresses(mailManage.getValues());
-					CommService.saveGeodesk(loket, SaveGeodeskRequest.SAVE_NOTIFICATIONS);
+					ManagerCommandService.saveGeodesk(loket, SaveGeodeskRequest.SAVE_NOTIFICATIONS);
 				}
 			} else {
 				NotificationWindow.showInfoMessage(MESSAGES.geodeskNotificationsWarnNoChanges());

@@ -13,16 +13,18 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetLayerModelCommand}.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 public class GetLayerModelRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.GetLayerModel";
+	public static final String COMMAND = "command.manager.GetLayerModel";
 
 	private Long id;
 

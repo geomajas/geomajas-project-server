@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
@@ -123,7 +123,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 				public void onChanged(ChangedEvent event) {
 					String val = ((TextItem) geodeskId).getValueAsString();
 					if (val != null && !"".equals(val)) {
-						CommService.checkGeodeskIdExists(val, new DataCallback<Boolean>() {
+						ManagerCommandService.checkGeodeskIdExists(val, new DataCallback<Boolean>() {
 
 							public void execute(Boolean exists) {
 								geodeskIdValid = !exists;
@@ -230,7 +230,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 		addMember(group);
 
 		// -- get data for dropdownbox
-		CommService.getBlueprints(new DataCallback<List<BlueprintDto>>() {
+		ManagerCommandService.getBlueprints(new DataCallback<List<BlueprintDto>>() {
 
 			public void execute(List<BlueprintDto> result) {
 				if (result.size() > 0) {
@@ -308,7 +308,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 			} else {
 				geodesk.setLimitToUserTerritory(limitToUserTerritory.getValueAsBoolean());
 			}
-			CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_SETTINGS);
+			ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_SETTINGS);
 			form.setDisabled(true);
 			return true;
 		} else {

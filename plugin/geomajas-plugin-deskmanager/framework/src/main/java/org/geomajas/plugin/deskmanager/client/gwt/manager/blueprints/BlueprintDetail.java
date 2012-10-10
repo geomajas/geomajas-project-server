@@ -17,7 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEven
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
@@ -35,6 +35,8 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
+ * FIXME: the panels should come from a factory, see GDM-13.
+ * 
  * @author Kristof Heirwegh
  */
 public class BlueprintDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, BlueprintHandler {
@@ -166,7 +168,7 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 
 	private void loadRecord(final String id) {
 		setLoading(); /* Clear edit form */
-		CommService.getBlueprint(id, new DataCallback<BlueprintDto>() {
+		ManagerCommandService.getBlueprint(id, new DataCallback<BlueprintDto>() {
 
 			public void execute(BlueprintDto result) {
 				setBlueprint(result);

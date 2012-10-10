@@ -16,7 +16,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig.The
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
@@ -90,7 +90,7 @@ public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, Bl
 					blueprint.getUserApplicationInfo().getMainMapWidgetInfos().get(ThemesInfo.IDENTIFIER));
 		}
 		// blueprint.setLayout(themePanel.getLoketLayout());
-		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 		themePanel.setDisabled(true);
 		return true;
 	}
@@ -99,7 +99,7 @@ public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, Bl
 		setBlueprint(blueprint);
 		themePanel.setDisabled(true);
 		//Reload the blueprint
-		CommService.getBlueprint(blueprint.getId(), new DataCallback<BlueprintDto>() {
+		ManagerCommandService.getBlueprint(blueprint.getId(), new DataCallback<BlueprintDto>() {
 			public void execute(BlueprintDto result) {
 				Whiteboard.fireEvent(new BlueprintEvent(result));
 			}

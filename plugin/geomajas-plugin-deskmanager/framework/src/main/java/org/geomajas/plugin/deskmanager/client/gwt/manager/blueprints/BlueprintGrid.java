@@ -20,7 +20,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
@@ -157,7 +157,8 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 
 						public void execute(Boolean value) {
 							if (value) {
-								CommService.deleteBlueprint(blueprints.get(rollOverRecord.getAttribute(FLD_ID)));
+								ManagerCommandService.deleteBlueprint(blueprints.get(
+										rollOverRecord.getAttribute(FLD_ID)));
 							}
 						}
 					});
@@ -178,7 +179,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		redraw();
 
-		CommService.getBlueprints(new DataCallback<List<BlueprintDto>>() {
+		ManagerCommandService.getBlueprints(new DataCallback<List<BlueprintDto>>() {
 
 			public void execute(List<BlueprintDto> result) {
 				for (BlueprintDto bp : result) {

@@ -22,9 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command to delete a blueprint from the database from a given ID.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 @Component(DeleteBlueprintRequest.COMMAND)
@@ -36,25 +38,30 @@ public class DeleteBlueprintCommand implements Command<DeleteBlueprintRequest, C
 	@Autowired
 	private BlueprintService blueprintService;
 
+	/** {@inheritDoc} */
 	public void execute(DeleteBlueprintRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getUuid() == null) {
-				response.getErrorMessages().add("Geen id opgegeven?");
+				//TODO: i18n
+				response.getErrorMessages().add("No blueprint id was given!");
 			} else {
 
 				Blueprint bp = blueprintService.getBlueprintById(request.getUuid());
 				if (bp == null) {
-					response.getErrorMessages().add("Geen blauwdruk gevonden met id: " + request.getUuid());
+					//TODO: i18n
+					response.getErrorMessages().add("No blueprint was found with id: " + request.getUuid());
 				} else {
 					blueprintService.deleteBlueprint(bp);
 				}
 			}
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij verwijderen blauwdruk: " + e.getMessage());
-			log.error("fout bij verwijderen blauwdruk.", e);
+			//TODO: i18n
+			response.getErrorMessages().add("Unexpected error while deleting blueprint: " + e.getMessage());
+			log.error("Unexpected error while deleting blueprint.", e);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

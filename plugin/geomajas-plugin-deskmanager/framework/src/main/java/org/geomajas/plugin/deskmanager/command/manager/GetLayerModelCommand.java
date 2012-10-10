@@ -22,9 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that retrieves a layermodel where a user has access to.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 @Component(GetLayerModelRequest.COMMAND)
@@ -39,15 +41,17 @@ public class GetLayerModelCommand implements Command<GetLayerModelRequest, Layer
 	@Autowired
 	private DtoConverterService dtoService;
 
+	/** {@inheritDoc} */
 	public void execute(GetLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			response.setLayerModel(dtoService.toDto(layerModelService.getLayerModelById(request.getId()), true));
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij ophalen datalaag: " + e.getMessage());
-			log.error("fout bij ophalen datalaag.", e);
+			response.getErrorMessages().add("Error while fetching layermodel: " + e.getMessage());
+			log.error("Error while fetching layermodel.", e);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public LayerModelResponse getEmptyCommandResponse() {
 		return new LayerModelResponse();
 	}

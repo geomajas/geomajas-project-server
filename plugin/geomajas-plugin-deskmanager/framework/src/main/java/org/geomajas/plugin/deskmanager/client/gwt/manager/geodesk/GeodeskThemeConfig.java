@@ -16,7 +16,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig.The
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
@@ -87,7 +87,7 @@ public class GeodeskThemeConfig extends VLayout implements WoaEventHandler, Geod
 				GeodeskDtoUtil.getMainMapClientWidgetInfo(geodesk).get(ThemesInfo.IDENTIFIER));
 
 		// geodesk.setLayout(themePanel.getLoketLayout());
-		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);
+		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);
 		themePanel.setDisabled(true);
 		return true;
 	}
@@ -96,7 +96,7 @@ public class GeodeskThemeConfig extends VLayout implements WoaEventHandler, Geod
 		setGeodesk(geodesk);
 		themePanel.setDisabled(true);
 		// Reload the geodesk
-		CommService.getGeodesk(geodesk.getId(), new DataCallback<GeodeskDto>() {
+		ManagerCommandService.getGeodesk(geodesk.getId(), new DataCallback<GeodeskDto>() {
 
 			public void execute(GeodeskDto result) {
 				Whiteboard.fireEvent(new GeodeskEvent(result));

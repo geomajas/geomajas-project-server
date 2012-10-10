@@ -15,7 +15,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEven
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 
 import com.google.gwt.core.client.GWT;
@@ -64,7 +64,7 @@ public class Geodesks extends VLayout implements EditSessionHandler {
 					public void execute(String result) {
 						if (result != null && !"".equals(result)) {
 							//TODO: i18n
-							CommService.createNewGeodesk(result, "[New Geodesk]");
+							ManagerCommandService.createNewGeodesk(result, "[New Geodesk]");
 						}
 					}
 				});

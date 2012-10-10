@@ -19,9 +19,9 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
@@ -66,9 +66,9 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSe
 
 	private void setGeodesk(final GeodeskDto newLoket) {
 		geodesk = newLoket;
-		CommService.getSystemLayers(new DataCallback<GetSystemLayersResponse>() {
+		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
 
-			public void execute(GetSystemLayersResponse result) {
+			public void execute(GetLayersResponse result) {
 				List<LayerDto> sourceLayers = new ArrayList<LayerDto>(geodesk.getBlueprint().getMainMapLayers());
 				sourceLayers.addAll(result.getLayers());
 				layerSelect.setValues(sourceLayers, geodesk.getMainMapLayers(), geodesk.isPublic());
@@ -89,7 +89,7 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSe
 		geodesk.setMainMapLayers(layers);
 
 		layerSelect.setDisabled(true);
-		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_LAYERS);
+		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_LAYERS);
 		return true;
 	}
 

@@ -26,7 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Command that retrieves layermodels where a user has access to. Typically used from the managements interface to 
- * display a list of layers that a user can manage.
+ * display a list of layers that a user can manage and/or use.
+ * 
+ * If you need to fetch the full layers including clientlayerinfo, use 
+ * {@link org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}. 
  * 
  * @author Jan De Moerloose
  * @author Oliver May

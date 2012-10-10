@@ -11,8 +11,8 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
 import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
@@ -22,14 +22,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Get a list of all allowed system layers.
+ * Get an ordered list of all allowed layers for the current user, including layerModel and layerInfo.
  * 
  * @author Oliver May
- * 
+ * @author Kristof Heirwegh
  */
-@Component(GetSystemLayersRequest.COMMAND)
+@Component(GetLayersRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class GetSystemLayersCommand implements Command<GetSystemLayersRequest, GetSystemLayersResponse> {
+public class GetLayersCommand implements Command<GetLayersRequest, GetLayersResponse> {
 
 	@Autowired
 	private LayerModelService layerModelService;
@@ -37,7 +37,8 @@ public class GetSystemLayersCommand implements Command<GetSystemLayersRequest, G
 	@Autowired
 	private DtoConverterService converterService;
 
-	public void execute(GetSystemLayersRequest request, GetSystemLayersResponse response) throws Exception {
+	/** {@inheritDoc} */
+	public void execute(GetLayersRequest request, GetLayersResponse response) throws Exception {
 		for (LayerModel model : layerModelService.getLayerModels()) {
 			Layer layer = new Layer();
 			layer.setClientLayerIdReference(model.getClientLayerId());
@@ -46,8 +47,9 @@ public class GetSystemLayersCommand implements Command<GetSystemLayersRequest, G
 		}
 	}
 
-	public GetSystemLayersResponse getEmptyCommandResponse() {
-		return new GetSystemLayersResponse();
+	/** {@inheritDoc} */
+	public GetLayersResponse getEmptyCommandResponse() {
+		return new GetLayersResponse();
 	}
 
 }

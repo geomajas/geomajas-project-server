@@ -16,7 +16,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
@@ -217,7 +217,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 				blueprint.setLimitToLoketTerritory(false);
 				blueprint.setLimitToUserTerritory(limitToUserTerritory.getValueAsBoolean());
 			}
-			CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_SETTINGS);
+			ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_SETTINGS);
 			form.setDisabled(true);
 			return true;
 		} else {

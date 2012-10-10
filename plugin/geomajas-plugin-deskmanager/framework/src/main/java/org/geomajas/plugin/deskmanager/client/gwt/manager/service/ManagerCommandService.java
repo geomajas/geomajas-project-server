@@ -36,20 +36,18 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteLayerModelReque
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskUrlBaseRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskUrlBaseResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
@@ -63,40 +61,29 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
  * Convenience class with helper methods for commands.
  * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
-public final class CommService {
+public final class ManagerCommandService {
 
 	/**
 	 * Utility class
 	 */
-	private CommService() {}
-
-	public static void getGeodeskUrlBase(final DataCallback<GetGeodeskUrlBaseResponse> onFinish) {
-		GetGeodeskUrlBaseRequest request = new GetGeodeskUrlBaseRequest();
-		GwtCommand command = new GwtCommand(GetGeodeskUrlBaseRequest.COMMAND);
-		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetGeodeskUrlBaseResponse>() {
-
-					public void execute(GetGeodeskUrlBaseResponse response) {
-						if (onFinish != null) {
-							onFinish.execute(response);
-						}
-					}
-				});
-		def.addCallback(NotificationWindow.getInstance());
-	}
+	private ManagerCommandService() {}
 
 	// -- Layers ----------------------------------------------------
-	
-	public static void getSystemLayers(final DataCallback<GetSystemLayersResponse> onFinish) {
-		GetSystemLayersRequest request = new GetSystemLayersRequest();
-		GwtCommand command = new GwtCommand(GetSystemLayersRequest.COMMAND);
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}.
+	 * 
+	 * @param onFinish callback called when system layers are retrieved.
+	 */
+	public static void getLayers(final DataCallback<GetLayersResponse> onFinish) {
+		GetLayersRequest request = new GetLayersRequest();
+		GwtCommand command = new GwtCommand(GetLayersRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetSystemLayersResponse>() {
+				new AbstractCommandCallback<GetLayersResponse>() {
 
-					public void execute(GetSystemLayersResponse response) {
+					public void execute(GetLayersResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response);
 						}
@@ -108,6 +95,12 @@ public final class CommService {
 	
 	// -- Blueprint --------------------------------------------------------
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetBlueprintCommand}.
+	 * 
+	 * @param uuid the uuid of the blueprint to fetch.
+	 * @param onFinish callback called when the blueprint is fetched.
+	 */
 	public static void getBlueprint(String uuid, final DataCallback<BlueprintDto> onFinish) {
 		GetBlueprintRequest request = new GetBlueprintRequest();
 		request.setUuid(uuid);
@@ -125,6 +118,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetBlueprintsCommand}.
+	 * 
+	 * @param onFinish callback called when blueprints are fetched.
+	 */
 	public static void getBlueprints(final DataCallback<List<BlueprintDto>> onFinish) {
 		GetBlueprintsRequest request = new GetBlueprintsRequest();
 		GwtCommand command = new GwtCommand(GetBlueprintsRequest.COMMAND);
@@ -141,6 +139,11 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.DeleteBlueprintCommand}.
+	 * 
+	 * @param blueprint the blueprint to delete.
+	 */
 	public static void deleteBlueprint(final BlueprintDto blueprint) {
 		DeleteBlueprintRequest request = new DeleteBlueprintRequest();
 		request.setUuid(blueprint.getId());
@@ -178,10 +181,16 @@ public final class CommService {
 		def.addCallback(NotificationWindow.getInstance());
 	}
 
-	public static void saveBlueprint(BlueprintDto blueprint, int saveWhat) {
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.SaveBlueprintCommand}.
+	 * 
+	 * @param blueprint the blueprint to save.
+	 * @param bitmask which attributes to save.
+	 */
+	public static void saveBlueprint(BlueprintDto blueprint, int bitmask) {
 		SaveBlueprintRequest request = new SaveBlueprintRequest();
 		request.setBlueprint(blueprint);
-		request.setSaveWhat(saveWhat);
+		request.setSaveBitmask(bitmask);
 		GwtCommand command = new GwtCommand(SaveBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
@@ -196,6 +205,12 @@ public final class CommService {
 
 	// -- LayerModel --------------------------------------------------------
 
+	/**
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetLayerModelCommand}.
+	 * 
+	 * @param id the id of the layer model to fetch
+	 * @param onFinish callback called when layermodel is retrieved.
+	 */
 	public static void getLayerModel(Long id, final DataCallback<LayerModelDto> onFinish) {
 		GetLayerModelRequest request = new GetLayerModelRequest();
 		request.setId(id);

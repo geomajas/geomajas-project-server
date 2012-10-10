@@ -13,23 +13,33 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.DeleteBlueprintCommand}.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 public class DeleteBlueprintRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.DeleteBlueprint";
+	public static final String COMMAND = "command.manager.DeleteBlueprint";
 
 	private String uuid;
 
+	/**
+	 * Get the uuid of the blueprint to delete.
+	 * @return the uuid
+	 */
 	public String getUuid() {
 		return uuid;
 	}
 
+	/**
+	 * Set the uuid of the blueprint to delete.
+	 * @param uuid the uuid
+	 */
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}

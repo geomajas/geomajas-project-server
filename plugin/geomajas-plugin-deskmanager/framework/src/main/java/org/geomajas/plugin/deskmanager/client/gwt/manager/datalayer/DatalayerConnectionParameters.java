@@ -22,7 +22,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
@@ -89,7 +89,7 @@ public class DatalayerConnectionParameters extends VLayout implements WoaEventHa
 		if (validate()) {
 			lmd.getLayerConfiguration().getParameters().clear();
 			lmd.getLayerConfiguration().getParameters().addAll(stringToParams(form.getData()));
-			CommService.saveLayerModel(lmd);
+			ManagerCommandService.saveLayerModel(lmd);
 			form.setDisabled(true);
 			return true;
 		} else {

@@ -14,12 +14,14 @@ import org.geomajas.command.CommandRequest;
 
 
 /**
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}.
+ * 
  * @author Oliver May
  *
  */
-public class GetSystemLayersRequest implements CommandRequest {
+public class GetLayersRequest implements CommandRequest {
 
-	public static final String COMMAND = "deskmanager.GetSystemLayersCommand";
+	public static final String COMMAND = "command.manager.GetLayers";
 	
 	private static final long serialVersionUID = 100L;
 

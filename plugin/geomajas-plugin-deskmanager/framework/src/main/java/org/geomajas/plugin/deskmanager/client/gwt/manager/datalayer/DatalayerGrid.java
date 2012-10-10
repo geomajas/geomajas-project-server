@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
@@ -149,7 +149,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 						SC.warn(MESSAGES.datalayerGridWarnPublicCannotBeRemoved());
 					} else {
 						NotificationWindow.showInfoMessage(MESSAGES.datalayerGridControlOnLayerUseBeforeRemove());
-						CommService.checkLayerModelInUse(model, new DataCallback<Boolean>() {
+						ManagerCommandService.checkLayerModelInUse(model, new DataCallback<Boolean>() {
 
 							public void execute(Boolean result) {
 								NotificationWindow.clearMessages();
@@ -161,7 +161,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 
 												public void execute(Boolean value) {
 													if (value) {
-														CommService.deleteLayerModel(model);
+														ManagerCommandService.deleteLayerModel(model);
 													}
 												}
 											});
@@ -188,7 +188,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		redraw();
 
-		CommService.getLayerModels(new DataCallback<List<LayerModelDto>>() {
+		ManagerCommandService.getLayerModels(new DataCallback<List<LayerModelDto>>() {
 
 			public void execute(List<LayerModelDto> result) {
 				for (LayerModelDto lmd : result) {

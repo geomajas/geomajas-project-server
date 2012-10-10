@@ -16,7 +16,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.Layer
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
@@ -73,7 +73,7 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 	public boolean onSaveClick(ClickEvent event) {
 		ClientLayerTreeInfo cli = layerTreeSelect.getValues();
 		blueprint.getMainMapClientWidgetInfos().put(ClientLayerTreeInfo.IDENTIFIER, cli);
-		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 		return true;
 	}
 

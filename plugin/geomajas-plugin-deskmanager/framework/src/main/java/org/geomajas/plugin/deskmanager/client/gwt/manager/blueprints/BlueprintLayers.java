@@ -18,9 +18,9 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetSystemLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
@@ -65,9 +65,9 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 
 	public void setBlueprint(BlueprintDto newBluePrint) {
 		this.blueprint = newBluePrint;
-		CommService.getSystemLayers(new DataCallback<GetSystemLayersResponse>() {
+		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
 
-			public void execute(GetSystemLayersResponse result) {
+			public void execute(GetLayersResponse result) {
 				layerSelect.setValues(result.getLayers(), blueprint.getMainMapLayers(), blueprint.isPublic());
 			}
 			
@@ -86,7 +86,7 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 		blueprint.setMainMapLayers(layers);
 		
 		layerSelect.setDisabled(true);
-		CommService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_LAYERS);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_LAYERS);
 		return true;
 	}
 

@@ -22,9 +22,10 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.BeheerConstants;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskUrlUtil;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
@@ -140,7 +141,8 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 		addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				String id = event.getRecord().getAttribute(FLD_GEODESKID);
-				String url = GeodeskHtmlCode.createPreviewUrl(id);
+				//FIXME: preview URL
+				String url = GeodeskUrlUtil.createPreviewUrl(id);
 				Window.open(url, "_blank", null);
 			}
 		});
@@ -181,7 +183,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 					window.setAutoCenter(true);
 					window.setWidth("90%");
 					window.setHeight("90%");
-					window.setSrc(GeodeskHtmlCode.createPreviewUrl(rollOverRecord.getAttribute(FLD_GEODESKID)));
+					window.setSrc(GeodeskUrlUtil.createPreviewUrl(rollOverRecord.getAttribute(FLD_GEODESKID)));
 					window.setContentsType("page");
 					window.show();
 				}
@@ -204,7 +206,8 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 
 								public void execute(Boolean value) {
 									if (value) {
-										CommService.deleteGeodesk(geodesks.get(rollOverRecord.getAttribute(FLD_ID)));
+										ManagerCommandService.deleteGeodesk(
+												geodesks.get(rollOverRecord.getAttribute(FLD_ID)));
 									}
 								}
 							});
@@ -226,7 +229,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		redraw();
 
-		CommService.getGeodesks(new DataCallback<List<GeodeskDto>>() {
+		ManagerCommandService.getGeodesks(new DataCallback<List<GeodeskDto>>() {
 
 			public void execute(List<GeodeskDto> result) {
 				for (GeodeskDto bp : result) {

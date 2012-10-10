@@ -14,7 +14,9 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
 /**
- * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.CreateBlueprintCommand}.
+ * Response object for commands that return a blueprint. Such as:
+ * {@link org.geomajas.plugin.deskmanager.command.manager.CreateBlueprintCommand} and
+ * {@link org.geomajas.plugin.deskmanager.command.manager.GetBlueprintCommand}.
  * 
  * @author Jan De Moerloose
  * @author Oliver May

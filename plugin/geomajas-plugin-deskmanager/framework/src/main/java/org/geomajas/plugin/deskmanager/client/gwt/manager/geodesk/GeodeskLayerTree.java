@@ -16,7 +16,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.Layer
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
@@ -78,7 +78,7 @@ public class GeodeskLayerTree extends VLayout implements WoaEventHandler, Geodes
 	public boolean onSaveClick(ClickEvent event) {
 		ClientLayerTreeInfo cli = layerTreeSelect.getValues();
 		geodesk.getMainMapClientWidgetInfos().put(ClientLayerTreeInfo.IDENTIFIER, cli);
-		CommService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);
+		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);
 		return true;
 	}
 

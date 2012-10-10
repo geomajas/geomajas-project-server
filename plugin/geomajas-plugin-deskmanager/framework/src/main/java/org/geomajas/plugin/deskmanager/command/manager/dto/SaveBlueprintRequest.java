@@ -14,34 +14,48 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
 /**
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.SaveBlueprintCommand}.
  * 
  * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 public class SaveBlueprintRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Bitmask to save settings. 
+	 */
 	public static final int SAVE_SETTINGS = SaveGeodeskRequest.SAVE_SETTINGS;
 
-	public static final int SAVE_LAYERS = SaveGeodeskRequest.SAVE_LAYERS; // layers + layerstyles
+	/**
+	 * Bitmask to save layers and layerstyles. 
+	 */
+	public static final int SAVE_LAYERS = SaveGeodeskRequest.SAVE_LAYERS;
 
-	public static final int SAVE_GROUPS = SaveGeodeskRequest.SAVE_TERRITORIES; // security
+	/**
+	 * Bitmask to save Territories. 
+	 */
+	public static final int SAVE_TERRITORIES = SaveGeodeskRequest.SAVE_TERRITORIES;
 
+	/**
+	 * Bitmask to save clientwidgetinfo's (application, mainmap, overviewmap). 
+	 */
 	public static final int SAVE_CLIENTWIDGETINFO = SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO;
 	
-	public static final String COMMAND = "command.deskmanager.beheer.SaveBlueprint";
+	public static final String COMMAND = "command.manager.SaveBlueprint";
 
-	private int saveWhat;
+	private int saveBitmask;
 
 	private BlueprintDto blueprint;
 
-	public int getSaveWhat() {
-		return saveWhat;
+	public int getSaveBitmask() {
+		return saveBitmask;
 	}
 
-	public void setSaveWhat(int saveWhat) {
-		this.saveWhat = saveWhat;
+	public void setSaveBitmask(int saveBitmask) {
+		this.saveBitmask = saveBitmask;
 	}
 
 	public BlueprintDto getBlueprint() {

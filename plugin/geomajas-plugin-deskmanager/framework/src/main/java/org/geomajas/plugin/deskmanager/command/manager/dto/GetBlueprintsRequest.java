@@ -13,16 +13,18 @@ package org.geomajas.plugin.deskmanager.command.manager.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetBlueprintsCommand}.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 public class GetBlueprintsRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.GetBlueprints";
+	public static final String COMMAND = "command.manager.GetBlueprints";
 
 	public String toString() {
 		return COMMAND;

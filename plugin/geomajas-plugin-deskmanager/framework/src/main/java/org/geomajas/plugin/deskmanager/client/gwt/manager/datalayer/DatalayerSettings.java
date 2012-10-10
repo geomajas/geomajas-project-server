@@ -14,7 +14,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.LayerSettingsForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.google.gwt.core.client.GWT;
@@ -88,7 +88,7 @@ public class DatalayerSettings extends VLayout implements WoaEventHandler {
 			}
 
 			// persist
-			CommService.saveLayerModel(lmd);
+			ManagerCommandService.saveLayerModel(lmd);
 			form.setDisabled(true);
 			return true;
 		} else {

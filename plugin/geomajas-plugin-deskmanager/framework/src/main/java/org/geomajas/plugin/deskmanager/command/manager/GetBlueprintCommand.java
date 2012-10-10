@@ -22,9 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
+ * Command that fetches a blueprint from the database using a given uuid.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
+ * @author Kristof Heirwegh
  *
  */
 @Component(GetBlueprintRequest.COMMAND)
@@ -39,15 +41,18 @@ public class GetBlueprintCommand implements Command<GetBlueprintRequest, Bluepri
 	@Autowired
 	private DtoConverterService dtoService;
 
+	/** {@inheritDoc} */
 	public void execute(GetBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			response.setBlueprint(dtoService.toDto(blueprintService.getBlueprintById(request.getUuid()), true));
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij ophalen blauwdruk: " + e.getMessage());
-			log.error("fout bij ophalen blauwdruk.", e);
+			//TODO: i18n
+			response.getErrorMessages().add("Unexpected error while fetching blueprint: " + e.getMessage());
+			log.error("Unexpected error while fetching blueprint.", e);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public BlueprintResponse getEmptyCommandResponse() {
 		return new BlueprintResponse();
 	}

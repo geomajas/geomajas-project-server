@@ -15,7 +15,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.MailManagePanel
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.CommService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.google.gwt.core.client.GWT;
@@ -84,7 +84,7 @@ public class DatalayerNotifications extends VLayout implements WoaEventHandler {
 					return false;
 				} else {
 					lmd.setMailAddresses(mailManage.getValues());
-					CommService.saveLayerModel(lmd);
+					ManagerCommandService.saveLayerModel(lmd);
 				}
 			} else {
 				NotificationWindow.showInfoMessage(MESSAGES.datalayerNotificationsNoFormChanges());
