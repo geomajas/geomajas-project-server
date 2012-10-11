@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.rasterizing.api;
 
+import java.util.Map;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.ExpectAlternatives;
 import org.geomajas.annotation.UserImplemented;
@@ -70,5 +72,15 @@ public interface LayerFactory {
 	 * @throws GeomajasException something went wrong
 	 */
 	Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
+
+	/**
+	 * Retrieves the userdata for the specified metadata. Especially {@link LayerFactory.USERDATA_KEY_SHOWING} is set.
+	 * 
+	 * @param mapContext the map context
+	 * @param clientLayerInfo the client layer metadata
+	 * @return the user data key values
+	 * @since 1.1.0
+	 */
+	Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo);
 }
 // @extract-end

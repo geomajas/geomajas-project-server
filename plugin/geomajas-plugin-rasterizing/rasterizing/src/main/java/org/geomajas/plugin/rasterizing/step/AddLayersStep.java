@@ -21,7 +21,6 @@ import org.geomajas.plugin.rasterizing.api.LayerFactoryService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -64,18 +63,19 @@ public class AddLayersStep extends AbstractRasterizingStep {
 		viewPort.setScreenArea(paintArea);
 		// add the configured layers
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {
-			clientLayerInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
-			Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
-			boolean showing = (Boolean) layer.getUserData().get(LayerFactory.USERDATA_KEY_SHOWING);
+			boolean showing = (Boolean) layerFactoryService.getLayerUserData(mapContext, clientLayerInfo).get(
+					LayerFactory.USERDATA_KEY_SHOWING);
 			if (showing) {
+				Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
 				mapContext.addLayer(layer);
 			}
 		}
 		// add the extra layers
 		for (ClientLayerInfo clientLayerInfo : mapRasterizingInfo.getExtraLayers()) {
-			Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
-			boolean showing = (Boolean) layer.getUserData().get(LayerFactory.USERDATA_KEY_SHOWING);
+			boolean showing = (Boolean) layerFactoryService.getLayerUserData(mapContext, clientLayerInfo).get(
+					LayerFactory.USERDATA_KEY_SHOWING);
 			if (showing) {
+				Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
 				mapContext.addLayer(layer);
 			}
 		}

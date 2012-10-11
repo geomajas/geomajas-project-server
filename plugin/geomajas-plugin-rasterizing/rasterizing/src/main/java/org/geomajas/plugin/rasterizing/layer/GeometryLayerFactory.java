@@ -11,7 +11,9 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
@@ -70,6 +72,13 @@ public class GeometryLayerFactory implements LayerFactory {
 		}
 		layer.getUserData().put(USERDATA_KEY_STYLE_RULES, ruleInfos);
 		return layer;
+	}
+
+	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+		Map<String, Object> userData = new HashMap<String, Object>();
+		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;
+		userData.put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
+		return userData;
 	}
 
 }

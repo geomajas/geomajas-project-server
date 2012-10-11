@@ -11,6 +11,7 @@
 package org.geomajas.plugin.rasterizing;
 
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.GeomajasException;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
  * Default implementation of {@link LayerFactoryService}. Iterates over all configured factories.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
  * 
  */
 @Component
@@ -43,4 +45,13 @@ public class LayerFactoryServiceImpl implements LayerFactoryService {
 		throw new RasterException(RasterException.MISSING_LAYER_FACTORY, clientLayerInfo.getLabel());
 	}
 
+	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo)
+			throws GeomajasException {
+		for (LayerFactory factory : factories) {
+			if (factory.canCreateLayer(mapContext, clientLayerInfo)) {
+				return factory.getLayerUserData(mapContext, clientLayerInfo);
+			}
+		}
+		throw new RasterException(RasterException.MISSING_LAYER_FACTORY, clientLayerInfo.getLabel());
+	}
 }

@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -421,5 +423,13 @@ public class VectorLayerFactory implements LayerFactory {
 			throw new GeomajasException(e, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}
+	
+	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+		Map<String, Object> userData = new HashMap<String, Object>();
+		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) clientLayerInfo
+		.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
+		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
+		return userData;
+	}	
 
 }

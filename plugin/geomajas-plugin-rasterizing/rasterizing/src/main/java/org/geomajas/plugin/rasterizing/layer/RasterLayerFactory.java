@@ -10,7 +10,9 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -66,6 +68,14 @@ public class RasterLayerFactory implements LayerFactory {
 		rasterLayer.getUserData().put(USERDATA_KEY_LAYER_ID, layer.getId());
 		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return rasterLayer;
+	}
+
+	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+		Map<String, Object> userData = new HashMap<String, Object>();
+		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) clientLayerInfo
+				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
+		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
+		return userData;
 	}
 
 }

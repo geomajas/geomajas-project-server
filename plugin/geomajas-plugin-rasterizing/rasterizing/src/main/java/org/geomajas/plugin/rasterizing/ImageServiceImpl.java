@@ -52,14 +52,12 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	private PipelineService<RasterizingContainer> pipelineService;
 
-	@Override
 	public void writeMap(Graphics2D graphics, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		context.put(RasterizingPipelineCode.GRAPHICS_2D, graphics);
 		callPipeline(clientMapInfo, context, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
 	}
 
-	@Override
 	public void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		RasterizingContainer container = callPipeline(clientMapInfo, context,
@@ -73,7 +71,6 @@ public class ImageServiceImpl implements ImageService {
 		}
 	}
 
-	@Override
 	public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		RasterizingContainer container = callPipeline(clientMapInfo, context,
