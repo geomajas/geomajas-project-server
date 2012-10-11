@@ -55,10 +55,10 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!--  TODO: replace with release version -->
+			<!--  TODO: replace with release version and uncomment snapshot repository -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-puregwt-client</artifactId>
+				<artifactId>geomajas-face-puregwt</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -72,7 +72,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.28</version>
+				<version>1.12.36</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -398,7 +398,7 @@
 		</repository>
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds -->
-		<!--
+		<!-- -->
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -407,7 +407,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		-->
+		<!-- -->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
