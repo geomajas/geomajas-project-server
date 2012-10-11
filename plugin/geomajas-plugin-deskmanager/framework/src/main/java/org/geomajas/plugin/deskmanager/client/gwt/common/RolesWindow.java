@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesResponse;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
@@ -34,41 +35,38 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class RolesWindow {
+public class RolesWindow implements ProfileSelectionWindow {
 
 	private boolean onlyAdminRoles;
 
 	/**
-	 * Default constructor.
-	 */
-	public RolesWindow() {
-	}
-
-	/**
 	 * Constructor for the roleswindow.
 	 * 
-	 * @param onlyAdminRoles is true the window will only ask for admin roles. This is introduced for the
-	 *        'beheersmodule'. TODO: make sure the getAvailableRolesCommand only returns the correct roles so that this
-	 *        constructor can be removed.
+	 * @param onlyAdminRoles
+	 *            is true the window will only ask for admin roles. This is introduced for the 'beheersmodule'. TODO:
+	 *            make sure the getAvailableRolesCommand only returns the correct roles so that this constructor can be
+	 *            removed.
 	 */
 	public RolesWindow(boolean onlyAdminRoles) {
 		this.onlyAdminRoles = onlyAdminRoles;
 	}
 
-	/**
-	 * Ask for the role. This message will actually open a window asking for the roll.
-	 * 
-	 * @param callback callback for when a role is selected.
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.client.gwt.common.ProfileSelectionWindow#askRole(java.lang.String, org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow.AskRoleCallback)
 	 */
-	public void askRole(final AskRoleCallback callback) {
+	public void askRole(String geodeskId, final AskRoleCallback callback) {
+		RetrieveRolesRequest request = new RetrieveRolesRequest();
+		request.setGeodeskId(geodeskId);
+		
 		GwtCommand command = new GwtCommand(RetrieveRolesResponse.COMMAND);
+		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<RetrieveRolesResponse>() {
 
 			public void execute(RetrieveRolesResponse response) {
 				// If only one role, use default
 				if (response.getRoles().size() == 1) {
-					for (String token : response.getRoles().keySet()) {
-						callback.execute(token);
+					for (Entry<String, ProfileDto> role : response.getRoles().entrySet()) {
+						callback.execute(role.getKey(), role.getValue());
 					}
 				} else if (response.getRoles().size() > 0) {
 					askRoleWindow(response.getRoles(), callback);
@@ -123,8 +121,7 @@ public class RolesWindow {
 					|| Role.ADMINISTRATOR.equals(role.getValue().getRole())) {
 				if (first) {
 					first = false;
-					Label label = new Label("Welkom " + role.getValue().getName() + " "
-							+ role.getValue().getSurname()
+					Label label = new Label("Welkom " + role.getValue().getName() + " " + role.getValue().getSurname()
 							+ ", gelieve uw rol te selecteren waarmee u dit loket wil openen.");
 					label.setAutoHeight();
 					layout.addMember(label);
@@ -136,7 +133,7 @@ public class RolesWindow {
 				button.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
 					public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-						callback.execute(role.getKey());
+						callback.execute(role.getKey(), role.getValue());
 						winModal.destroy();
 					}
 				});
@@ -169,9 +166,10 @@ public class RolesWindow {
 		/**
 		 * Callback when a role is selected.
 		 * 
-		 * @param token the selected token.
+		 * @param token
+		 *            the selected token.
 		 */
-		void execute(String token);
+		void execute(String token, ProfileDto profile);
 	}
 
 }

@@ -73,7 +73,7 @@ public class StubProfileService implements ProfileService {
 		//profile.setLoketten();
 		profiles.add(deskEditor);
 		
-		profiles.add(DeskmanagerSecurityService.createGastProfile());
+		profiles.add(DeskmanagerSecurityService.createGuestProfile());
 		
 		return profiles;
 	}

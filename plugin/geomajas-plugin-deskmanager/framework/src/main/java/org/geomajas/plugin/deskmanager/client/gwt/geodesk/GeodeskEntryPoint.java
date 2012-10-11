@@ -36,7 +36,7 @@ import com.google.gwt.core.client.EntryPoint;
 
 /**
  * Entry point for the geodesks, this loads all necessary widgets. For starting up an actual geodesk application, see 
- * {@link GeodeskEntryPoint}.
+ * {@link GeodeskApplication}.
  * 
  * @author Oliver May
  *

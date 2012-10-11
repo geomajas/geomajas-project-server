@@ -8,34 +8,32 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.command.common;
+package org.geomajas.plugin.deskmanager.command.geodesk;
 
 import org.geomajas.command.Command;
-import org.geomajas.command.CommandRequest;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.plugin.deskmanager.command.common.dto.GetApplicationInfoResponse;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
-import org.geomajas.plugin.deskmanager.service.common.GeodeskIdService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
+import org.geomajas.security.GeomajasSecurityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
  * Command that reads the application info. This checks security. The command also returns the version and build of this
- * application instance.
+ * application instance. This command is called when the geodesk is first loaded, so it also checks security and may 
+ * trigger a login screen.
  * 
  * @author Oliver May
  * 
  */
-@Component(GetApplicationInfoResponse.COMMAND)
-public class GetApplicationInfoCommand implements Command<CommandRequest, GetApplicationInfoResponse> {
-
-	@Autowired
-	private GeodeskIdService geodeskIdService;
+@Component(InitializeGeodeskResponse.COMMAND)
+public class InitializeGeodeskCommand implements Command<InitializeGeodeskRequest, InitializeGeodeskResponse> {
 
 	@Autowired
 	private GeodeskService geodeskService;
@@ -51,26 +49,29 @@ public class GetApplicationInfoCommand implements Command<CommandRequest, GetApp
 	@Qualifier("deskmanager.build")
 	private String deskmanagerBuild;
 
-	public GetApplicationInfoResponse getEmptyCommandResponse() {
-		return new GetApplicationInfoResponse();
+	public InitializeGeodeskResponse getEmptyCommandResponse() {
+		return new InitializeGeodeskResponse();
 	}
 
-	public void execute(CommandRequest request, GetApplicationInfoResponse response) throws Exception {
+	public void execute(InitializeGeodeskRequest request, InitializeGeodeskResponse response) throws Exception {
 		response.setDeskmanagerBuild(deskmanagerBuild);
 		response.setDeskmanagerVersion(deskmanagerVersion);
-
-		String id = geodeskIdService.getGeodeskIdentifier();
+		
 		Geodesk loket = null;
-		loket = geodeskService.getGeodeskByPublicId(id); // this checks if loket is allowed
+		try {
+			loket = geodeskService.getGeodeskByPublicId(request.getGeodeskId());
+		} catch (GeomajasSecurityException e) {
+			throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID);
+		}
 		if (loket != null) {
-			response.setGeodeskIdentifier(id);
+			response.setGeodeskIdentifier(request.getGeodeskId());
 			response.setGeodeskTypeIdentifier(loket.getBlueprint().getUserApplicationKey());
 
 			ClientApplicationInfo loketConfig = configurationService.createGeodeskConfiguration(loket, false);
 			response.setClientApplicationInfo(loketConfig);
 
 		} else {
-			throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, id);
+			throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, request.getGeodeskId());
 		}
 	}
 }

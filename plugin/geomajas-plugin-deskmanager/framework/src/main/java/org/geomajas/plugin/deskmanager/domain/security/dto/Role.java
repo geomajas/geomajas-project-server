@@ -13,12 +13,16 @@ package org.geomajas.plugin.deskmanager.domain.security.dto;
 import org.geomajas.annotation.Api;
 
 /**
- * TODO ...
+ * Definition of a user role in the geomajas deskmanager. The role defines <b>what</b> a user can do.
+ * 
  * @author Oliver May
- * @since 1.0.0
  */
 @Api
 public enum Role {
+	/**
+	 * User that is not assigned a role, only useful for the first commands.
+	 */
+	UNASSIGNED("Unassigned"),
 	/**
 	 * Guest.
 	 */

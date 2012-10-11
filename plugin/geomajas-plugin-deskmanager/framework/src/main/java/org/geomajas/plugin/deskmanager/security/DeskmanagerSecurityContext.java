@@ -61,6 +61,17 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 		}
 		return null;
 	}
+	
+	public String getGeodeskId() {
+		for (Authentication authentication : getSecurityServiceResults()) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if (authorization instanceof DeskmanagerAuthorization) {
+					return ((DeskmanagerAuthorization) authorization).getGeodeskId();
+				}
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Get a string representation of the full name of the authenticated user.

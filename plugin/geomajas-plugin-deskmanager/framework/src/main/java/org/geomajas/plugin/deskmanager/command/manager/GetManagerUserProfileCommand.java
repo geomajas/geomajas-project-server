@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 /**
  * TODO.
  * 
+ * FIXME: merge with RetrieveRolesCommand
  * @author Jan De Moerloose
  * 
  */

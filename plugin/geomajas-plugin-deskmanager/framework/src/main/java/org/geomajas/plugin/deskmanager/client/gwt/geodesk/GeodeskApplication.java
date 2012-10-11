@@ -10,25 +10,24 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.global.ExceptionDto;
-import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializer;
 import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
-import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow.AskRoleCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.util.GeodeskUrlUtil;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.LoadingScreen;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
-import org.geomajas.plugin.deskmanager.command.common.dto.GetApplicationInfoResponse;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.widget.search.DockableWindowSearchWidget.SearchWindowPositionType;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
@@ -36,8 +35,8 @@ import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * Entry point and main class for deskmanager applications. This entrypoint will show a loading screen and will load
- * the deskmanager application, if it's needed asking for a login role.
+ * Entry point and main class for deskmanager applications. This entrypoint will show a loading screen and will load the
+ * deskmanager application, if it's needed asking for a login role.
  * 
  * The entrypoint listens to Mapwidget and MapModel events to set some generic configuration options.
  * 
@@ -45,7 +44,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class GeodeskApplication implements UserApplicationHandler {
 
-	private UserApplication loket;
+	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+	
+	private UserApplication geodesk;
 
 	private LoadingScreen loadScreen;
 
@@ -69,7 +70,6 @@ public class GeodeskApplication implements UserApplicationHandler {
 
 		SearchCommService.searchResultSize = 500;
 
-		
 	}
 
 	/**
@@ -82,68 +82,50 @@ public class GeodeskApplication implements UserApplicationHandler {
 		loadScreen = new LoadingScreen();
 		loadScreen.setZIndex(GeodeskLayout.loadingZindex);
 		loadScreen.draw();
+		
+		String geodeskId = GeodeskUrlUtil.getGeodeskId();
+		if (geodeskId == null) {
+			SC.warn(MESSAGES.noGeodeskIdGivenError());
+			return;
+		}
 
-		// Ask for the correct user role. FIXME: extract to a specific class
-		// FIXME: change to TokenRequestHandler (see GwtCommandDispatcher)
-		RolesWindow panel = new RolesWindow();
-		panel.askRole(new AskRoleCallback() {
+		GeodeskInitializer initializer = new GeodeskInitializer();
+		initializer.addHandler(new GeodeskInitializationHandler() {
+			
+			public void initialized(InitializeGeodeskResponse response) {
+				GeodeskLayout.version = response.getDeskmanagerVersion();
+				GeodeskLayout.build = response.getDeskmanagerBuild();
 
-			public void execute(String token) {
-				// Load application with specific token
-				GwtCommandDispatcher.getInstance().setUserToken(token);
-				// Open het opgevraagde loket
-				GwtCommand openLoketCommandRequest = new GwtCommand(GetApplicationInfoResponse.COMMAND);
+				// Load geodesk from registry
+				geodesk = UserApplicationRegistry.getInstance().get(response.getGeodeskTypeIdentifier());
+				geodesk.addUserApplicationLoadedHandler(GeodeskApplication.this);
 
-				final AbstractCommandCallback<GetApplicationInfoResponse> openLoketCallback = 
-					new AbstractCommandCallback<GetApplicationInfoResponse>() {
+				geodesk.setApplicationId(response.getGeodeskIdentifier());
+				geodesk.setClientApplicationInfo(response.getClientApplicationInfo());
 
-					public void execute(GetApplicationInfoResponse loketResponse) {
-						GeodeskLayout.version = loketResponse.getDeskmanagerVersion();
-						GeodeskLayout.build = loketResponse.getDeskmanagerBuild();
+				// Register the geodesk to the loading screen (changes banner, and name), and set the page title
+				loadScreen.registerGeodesk(geodesk);
+				if (null != Document.get()) {
+					Document.get().setTitle(geodesk.getName());
+				}
 
-						// Load geodesk from registry
-						loket = UserApplicationRegistry.getInstance().get(loketResponse.getGeodeskTypeIdentifier());
-						loket.addUserApplicationLoadedHandler(GeodeskApplication.this);
+				// Load the geodesk
+				// Build main layout
+				VLayout layout = new VLayout();
+				layout.setWidth100();
+				layout.setHeight100();
+				layout.setMargin(0);
+				Layout loketLayout = geodesk.loadGeodesk();
+				// Finaly add the geodesk to the main layout and draw
+				layout.addMember(loketLayout);
 
-						loket.setApplicationId(loketResponse.getGeodeskIdentifier());
-						loket.setClientApplicationInfo(loketResponse.getClientApplicationInfo());
-						
-						// Register the geodesk to the loading screen (changes banner, and name), and set the page title
-						loadScreen.registerLoket(loket);
-						if (null != Document.get()) {
-							Document.get().setTitle(loket.getName());
-						}
-
-						// Load the geodesk
-						// Build main layout
-						VLayout layout = new VLayout();
-						layout.setWidth100();
-						layout.setHeight100();
-						layout.setMargin(0);
-						Layout loketLayout = loket.loadGeodesk();
-						// Finaly add the geodesk to the main layout and draw
-						layout.addMember(loketLayout);
-
-						GsfLayout.searchWindowParentElement = layout;
-						parentLayout.addMember(layout);
-					}
-
-					public void onCommandException(CommandResponse response) {
-						// Vraag welke rol
-						for (ExceptionDto exception : response.getExceptions()) {
-							if (GeodeskLayout.EXCEPTIONCODE_LOKETINACTIVE == exception.getExceptionCode()) {
-								SC.warn(exception.getMessage());
-							} else {
-								SC.warn("Er is een fout opgetreden: " + exception.getMessage());
-							}
-						}
-					}
-
-				};
-
-				GwtCommandDispatcher.getInstance().execute(openLoketCommandRequest, openLoketCallback);
+				GsfLayout.searchWindowParentElement = layout;
+				parentLayout.addMember(layout);
 			}
 		});
+		
+		// Get application info for the geodesk
+		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
 	}
 
 	/**
@@ -160,8 +142,8 @@ public class GeodeskApplication implements UserApplicationHandler {
 	}
 
 	public void onMapModelInitialized() {
-		if (loket != null) {
-			//MapWidget mapWidget = loket.getMainMapWidget();
+		if (geodesk != null) {
+			// MapWidget mapWidget = geodesk.getMainMapWidget();
 			// Register to Javascript api
 			// FIXME: re enable javascript api
 			// GeomajasServiceImpl.getInstance().registerMap(mapWidget.getApplicationId(), mapWidget.getID(),

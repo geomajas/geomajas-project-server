@@ -18,6 +18,7 @@
 
 	<util:map id="security.roles" key-type="java.lang.String"
 		value-type="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<entry key="UNASSIGNED" value-ref="UnassignedAuthorizationInfo" />
 		<entry key="GUEST" value-ref="GastAuthorizationInfo" />
 
 		<entry key="DESK_MANAGER" value-ref="BeherendAuthorizationInfo" />
@@ -27,6 +28,47 @@
 		<entry key="CONSULTING_USER" value-ref="ConsulterendAuthorizationInfo" />
 
 	</util:map>
+
+	<bean id="UnassignedAuthorizationInfo"
+		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
+		<property name="commandsInclude">
+			<list>
+				<value>command.security.*</value>
+				<value>command.general.Log</value>
+			</list>
+		</property>
+		<property name="commandsExclude">
+			<list>
+				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
+				<!-- FIXME: hoe gaan we dit op een goeie manier overriden vanuit specifieke configuraties??? -->
+			</list>
+		</property>
+		<property name="toolsInclude">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		<property name="visibleLayersInclude">
+			<list>
+				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="visibleLayersExclude">
+			<list>
+				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
+			</list>
+		</property>
+		<property name="createAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+		<property name="updateAuthorizedLayersInclude">
+			<list>
+				<value>remarks</value>
+			</list>
+		</property>
+	</bean>
 
 	<bean id="GastAuthorizationInfo"
 		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">

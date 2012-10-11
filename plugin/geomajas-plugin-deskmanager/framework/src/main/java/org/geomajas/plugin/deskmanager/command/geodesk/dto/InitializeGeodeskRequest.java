@@ -8,26 +8,34 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.command.manager.dto;
+package org.geomajas.plugin.deskmanager.command.geodesk.dto;
 
 import org.geomajas.command.CommandRequest;
 
+
 /**
- * TODO.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.common.InitializeGeodeskCommand}.
  * 
- * FIXME: merge with RetrieveRolesCommand
- * 
- * @author Jan De Moerloose
- *
+ * @author Oliver May
  */
-public class GetManagerUserProfileRequest implements CommandRequest {
+public class InitializeGeodeskRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
+	
+	private String geodeskId;
 
-	public static final String COMMAND = "command.deskmanager.beheer.GetBeheerUserProfile";
+	/**
+	 * @param geodeskId the geodeskId to set
+	 */
+	public void setGeodeskId(String geodeskId) {
+		this.geodeskId = geodeskId;
+	}
 
-	public String toString() {
-		return COMMAND;
+	/**
+	 * @return the geodeskId
+	 */
+	public String getGeodeskId() {
+		return geodeskId;
 	}
 	
 }

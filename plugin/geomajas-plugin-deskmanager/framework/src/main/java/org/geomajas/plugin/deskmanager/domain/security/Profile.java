@@ -16,8 +16,9 @@ import java.util.List;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
 /**
- * A user profile for the deskmanager, consisting of a role and territory.
- * 
+ * A user profile for the deskmanager, consisting of a role and territory. The role defines <b>what</b> a user can do, the
+ * territory defines <b>where</b>.
+ * It also contains extra information about the user such as name and first name.  
  * @author Oliver May
  * 
  */

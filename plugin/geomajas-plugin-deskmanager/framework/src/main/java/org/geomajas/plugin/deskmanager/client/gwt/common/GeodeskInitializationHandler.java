@@ -8,17 +8,22 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.service.common;
+package org.geomajas.plugin.deskmanager.client.gwt.common;
 
-//FIXME: move to other services
+import org.geomajas.annotation.Api;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
+
+
 
 /**
- * TODO.
+ * Handler that is called when a geodesk is loaded.
  * 
- * @author Jan De Moerloose
+ * @author Oliver May
  *
  */
-public interface GeodeskIdService {
+@Api
+public interface GeodeskInitializationHandler {
+	
+	public void initialized(InitializeGeodeskResponse response);
 
-	String getGeodeskIdentifier();
 }

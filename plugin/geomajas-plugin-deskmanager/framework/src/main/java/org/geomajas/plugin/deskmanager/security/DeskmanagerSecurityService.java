@@ -14,7 +14,6 @@ import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.security.role.DeskmanagerAuthentication;
 import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerAuthorization;
-import org.geomajas.plugin.deskmanager.service.common.GeodeskIdService;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityService;
@@ -23,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * Deelt authenticatie objecten uit op basis van een authenticationToken.
+ * Provides authentication objects based on an application token.
  * 
  * @author Oliver May
  * 
@@ -33,11 +32,10 @@ public class DeskmanagerSecurityService implements SecurityService {
 
 	public static final String SERVICE_ID = "DM_SECURITY_SERVICE";
 
-	@Autowired
-	private AuthenticationTokenService tokenService;
+	public static final String MANAGER_GEODESK_ID = "MaNaGeR";
 
 	@Autowired
-	private GeodeskIdService geodeskIdService;
+	private AuthenticationTokenService tokenService;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -48,26 +46,45 @@ public class DeskmanagerSecurityService implements SecurityService {
 
 	public Authentication getAuthentication(String authenticationToken) {
 		if (authenticationToken == null || ("null").equals(authenticationToken)) {
-			DeskmanagerAuthentication auth = new DeskmanagerAuthentication(createGastProfile());
+			DeskmanagerAuthentication auth = new DeskmanagerAuthentication(createUnassignedProfile());
 			auth.setAuthorizations(new BaseAuthorization[] { new DeskmanagerAuthorization(auth.getProfile(),
-					geodeskIdService.getGeodeskIdentifier(), applicationContext) });
+					null, applicationContext) });
 			return auth;
 		}
 		return tokenService.getAuthentication(authenticationToken);
 	}
 
-	public String registerRole(Profile profile) {
+	public String registerRole(String geodeskId, Profile profile) {
 		DeskmanagerAuthentication auth = new DeskmanagerAuthentication(profile);
-		auth.setAuthorizations(new BaseAuthorization[] { new DeskmanagerAuthorization(auth.getProfile(),
-				geodeskIdService.getGeodeskIdentifier(), applicationContext) });
+		auth.setAuthorizations(new BaseAuthorization[] { new DeskmanagerAuthorization(auth.getProfile(), geodeskId,
+				applicationContext) });
 		String token = tokenService.login(auth);
 		return token;
 	}
 
-	public static Profile createGastProfile() {
+	/**
+	 * Utility method to create a guest profile.
+	 * 
+	 * @return the guest profile.
+	 */
+	public static Profile createGuestProfile() {
 		Profile profile = new Profile();
 		profile.setRole(Role.GUEST);
 
 		return profile;
 	}
+	
+	/**
+	 * Utility method to create an unidentified profile. This means that the user has not chosen a role yet.
+	 * 
+	 * @return the guest profile.
+	 */
+	public static Profile createUnassignedProfile() {
+		Profile profile = new Profile();
+		profile.setRole(Role.UNASSIGNED);
+
+		return profile;
+	}
+	
+	
 }

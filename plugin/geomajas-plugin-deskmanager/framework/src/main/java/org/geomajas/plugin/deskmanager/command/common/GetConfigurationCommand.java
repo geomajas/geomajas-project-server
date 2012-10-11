@@ -18,7 +18,6 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
-import org.geomajas.plugin.deskmanager.service.common.GeodeskIdService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
-
-	@Autowired
-	private GeodeskIdService geodeskIdService;
 
 	@Autowired
 	private GeodeskService geodeskService;
@@ -52,8 +48,7 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
 		}
 
-		String id = geodeskIdService.getGeodeskIdentifier();
-		Geodesk loket = geodeskService.getGeodeskByPublicId(id); // this checks if loket is allowed
+		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId()); // this checks if loket is allowed
 
 		if (loket != null) {
 			ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);

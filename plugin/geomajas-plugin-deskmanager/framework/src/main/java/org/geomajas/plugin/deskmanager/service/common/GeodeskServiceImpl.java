@@ -104,6 +104,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 				}
 				return l;
 			} else {
+				//FIXME: i18n
 				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Geodesk openen",
 						securityContext.getUserName());
 			}
@@ -194,11 +195,12 @@ public class GeodeskServiceImpl implements GeodeskService {
 				q.setParameter("code", group.getCode());
 				break;
 			case GUEST:
-			default:
 				q = factory.getCurrentSession().createQuery(
 						"select id from Geodesk l WHERE l.geodeskId = :id AND " + "l.publicc = true AND "
 								+ "l.deleted = false");
 				break;
+			default:
+				return false;
 		}
 		q.setParameter("id", id);
 		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);

@@ -31,7 +31,7 @@ public class CombinedSearchAction extends ToolbarAction implements ConfigurableA
 	public static final String IDENTIFIER = CombinedSearchCreator.IDENTIFIER;
 
 	public CombinedSearchAction() {
-		super(Icon.searchCombined, MESSAGES.searchGecombineerdTitle(), MESSAGES.searchGecombineerdTooltip());
+		super(Icon.searchCombined, MESSAGES.searchCombinedTitle(), MESSAGES.searchCombinedTooltip());
 	}
 
 	public void configure(String key, String value) {

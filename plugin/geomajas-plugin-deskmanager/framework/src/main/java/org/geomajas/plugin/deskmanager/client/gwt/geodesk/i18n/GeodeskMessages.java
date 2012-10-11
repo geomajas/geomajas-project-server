@@ -26,21 +26,21 @@ public interface GeodeskMessages extends Messages {
 
 	String zoomFeatureButtonTooltip();
 
-	String searchFavorietTitle();
+	String searchFavoriteTitle();
 
-	String searchFavorietTooltip();
+	String searchFavoriteTooltip();
 
-	String searchGecombineerdTitle();
+	String searchCombinedTitle();
 
-	String searchGecombineerdTooltip();
+	String searchCombinedTooltip();
 
-	String searchRuimtelijkTitle();
+	String searchSpatialTitle();
 
-	String searchRuimtelijkTooltip();
+	String searchSpatialTooltip();
 
-	String searchVrijTitle();
+	String searchFreeTitle();
 
-	String searchVrijTooltip();
+	String searchFreeTooltip();
 
 	String loadingScreenMessage();
 	
@@ -49,4 +49,6 @@ public interface GeodeskMessages extends Messages {
 	String userFriendlySecurityErrorMessage();
 	
 	String userFriendlyCommunicationErrorMessage();
+
+	String noGeodeskIdGivenError();
 }

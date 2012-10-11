@@ -21,11 +21,12 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
+import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
+import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
@@ -50,7 +51,11 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
- * Authorization object for the deskmanager plugin. This object acts as a facade to the FIXME
+ * Authorization object for the deskmanager plugin. This object acts as a facade to the different instances of 
+ * {@link org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo}
+ * configured in the applicationContext. 
+ * 
+ * Thise objects get serialized by the cache. Only profile, geodeskId, and deskmanagerAuthorizationInfo get serialized.
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
@@ -97,13 +102,19 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	 */
 	public DeskmanagerAuthorization() { }
 
+	/**
+	 * Construct a Authorization object with the given parameters,
+	 * 
+	 * @param profile the user profile.
+	 * @param geodeskId the geodesk id this authorization is valid for.
+	 * @param applicationContext the applicationcontext (for wiring).
+	 */
 	public DeskmanagerAuthorization(Profile profile, String geodeskId, ApplicationContext applicationContext) {
 		this.profile = profile;
 		this.geodeskId = geodeskId;
 		wire(applicationContext);
 	}
 
-	// Will this be done in multiple threads, I don't think so...
 	private synchronized DeskmanagerAuthorizationInfo getMagdageoAuthorizationInfo() {
 		if (deskmanagerAuthorizationInfo == null) {
 			buildMagdageoAuthorizationInfo();
@@ -117,7 +128,8 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 				profile.getRole().toString()).clone();
 
 		// Add geodesk specific authorization
-		if (geodeskId != null && isGeodeskUseAllowed(geodeskId)) {
+		if (geodeskId != null && !RetrieveRolesRequest.MANAGER_ID.equals(geodeskId) 
+				&& isGeodeskUseAllowed(geodeskId)) {
 			try {
 				log.debug("building magdageoauthorizationinfo");
 				Geodesk geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
@@ -140,6 +152,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void wire(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 		this.geodeskService = applicationContext.getBean(GeodeskService.class);
@@ -337,12 +350,12 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		}
 		Geometry geometry = null;
 		String crs = null;
-		if (getLoket().mustFilterByUserTerritory()) {
+		if (getGeodesk().mustFilterByUserTerritory()) {
 			geometry = getProfile().getTerritory().getGeometry();
 			crs = getProfile().getTerritory().getCrs();
-		} else if (getLoket().mustFilterByCreatorTerritory()) {
-			geometry = getLoket().getOwner().getGeometry();
-			crs = getLoket().getOwner().getCrs();
+		} else if (getGeodesk().mustFilterByCreatorTerritory()) {
+			geometry = getGeodesk().getOwner().getGeometry();
+			crs = getGeodesk().getOwner().getCrs();
 		} else {
 			geometry = all;
 		}
@@ -397,7 +410,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// ------ Accessors ------------------
 
-	private Geodesk getLoket() {
+	private Geodesk getGeodesk() {
 		if (geodesk == null) {
 			try {
 				geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
@@ -418,6 +431,10 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	public Profile getProfile() {
 		return profile;
+	}
+	
+	public String getGeodeskId() {
+		return geodeskId;
 	}
 
 }

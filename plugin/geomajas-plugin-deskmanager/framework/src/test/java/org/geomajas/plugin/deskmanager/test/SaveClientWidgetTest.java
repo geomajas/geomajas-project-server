@@ -54,7 +54,8 @@ public class SaveClientWidgetTest {
 
 	public void login() {
 		// First profile in list is admin
-		String token = ((DeskmanagerSecurityService) securityService).registerRole(profileService.getProfiles().get(0));
+		String token = ((DeskmanagerSecurityService) securityService).registerRole(
+				DeskmanagerSecurityService.MANAGER_GEODESK_ID, profileService.getProfiles().get(0));
 		// Log in
 		securityManager.createSecurityContext(token);
 	}

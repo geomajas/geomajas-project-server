@@ -30,7 +30,7 @@ public class SpatialSearchAction extends ToolbarAction implements ConfigurableAc
 	public static final String IDENTIFIER = GeometricSearchCreator.IDENTIFIER;
 
 	public SpatialSearchAction() {
-		super(Icon.searchRuimtelijk, MESSAGES.searchRuimtelijkTitle(), MESSAGES.searchRuimtelijkTooltip());
+		super(Icon.searchRuimtelijk, MESSAGES.searchSpatialTitle(), MESSAGES.searchSpatialTooltip());
 	}
 
 	public void configure(String key, String value) {

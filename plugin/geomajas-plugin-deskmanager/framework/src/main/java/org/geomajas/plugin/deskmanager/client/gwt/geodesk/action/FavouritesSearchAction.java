@@ -31,7 +31,7 @@ public class FavouritesSearchAction extends ToolbarAction implements Configurabl
 	
 
 	public FavouritesSearchAction() {
-		super(Icon.searchFavoriet, MESSAGES.searchFavorietTitle(), MESSAGES.searchFavorietTooltip());
+		super(Icon.searchFavoriet, MESSAGES.searchFavoriteTitle(), MESSAGES.searchFavoriteTooltip());
 	}
 
 	public void configure(String key, String value) {

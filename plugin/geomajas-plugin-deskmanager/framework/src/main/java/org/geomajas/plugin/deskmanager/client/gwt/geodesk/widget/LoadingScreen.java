@@ -21,10 +21,12 @@ import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -60,7 +62,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @since 1.0.0
  */
 @Api
-public class LoadingScreen extends VLayout {
+public class LoadingScreen extends VLayout implements GeodeskInitializationHandler {
 
 	private int logoHeight = 226;
 
@@ -164,7 +166,7 @@ public class LoadingScreen extends VLayout {
 		addMember(inner);
 	}
 
-	public void registerLoket(final UserApplication geoDesk) {
+	public void registerGeodesk(final UserApplication geoDesk) {
 		if (geoDesk != null) {
 			onLoadLoketRegistration = geoDesk.addUserApplicationLoadedHandler(new UserApplicationHandler() {
 
@@ -220,7 +222,7 @@ public class LoadingScreen extends VLayout {
 		timer.schedule(50);
 	}
 
-	private void fadeOut() {
+	public void fadeOut() {
 		if (!fadingDone) {
 
 			Timer fadeOutDelay = new Timer() {
@@ -246,5 +248,12 @@ public class LoadingScreen extends VLayout {
 			// delay another second omdat' schoon moet zijn :)
 			fadeOutDelay.schedule(1000);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler#initialized(org.geomajas.plugin.deskmanager.command.common.dto.InitializeGeodeskResponse)
+	 */
+	public void initialized(InitializeGeodeskResponse response) {
+		//TODO
 	}
 }

@@ -30,7 +30,7 @@ public class FreeSearchAction extends ToolbarAction implements ConfigurableActio
 	public static final String IDENTIFIER = AttributeSearchCreator.IDENTIFIER;
 
 	public FreeSearchAction() {
-		super(Icon.searchVrij, MESSAGES.searchVrijTitle(), MESSAGES.searchVrijTooltip());
+		super(Icon.searchVrij, MESSAGES.searchFreeTitle(), MESSAGES.searchFreeTooltip());
 	}
 
 	public void configure(String key, String value) {

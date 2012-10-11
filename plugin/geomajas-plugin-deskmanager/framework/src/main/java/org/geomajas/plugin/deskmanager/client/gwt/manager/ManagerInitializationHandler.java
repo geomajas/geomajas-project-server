@@ -8,30 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.command.manager.dto;
+package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
-import org.geomajas.command.CommandResponse;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 
+
 /**
- * TODO.
+ * Handler that is called when the manager applicaiton is initialized.
  * 
- * FIXME: merge with RetrieveRolesCommand
- * @author Jan De Moerloose
+ * @author Oliver May
  *
  */
-public class GetManagerUserProfileResponse extends CommandResponse {
+@Api
+public interface ManagerInitializationHandler {
 
-	private static final long serialVersionUID = 1L;
-
-	private ProfileDto profile;
-
-	public ProfileDto getProfile() {
-		return profile;
-	}
-
-	public void setProfile(ProfileDto profile) {
-		this.profile = profile;
-	}
-
+	/**
+	 * Fired when the manager application is initialized.
+	 * 
+	 * @param profile the currently active user profile.
+	 */
+	public void initialized(ProfileDto profile);
+	
 }

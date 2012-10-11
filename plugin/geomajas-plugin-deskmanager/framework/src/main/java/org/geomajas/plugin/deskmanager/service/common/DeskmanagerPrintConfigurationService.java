@@ -29,9 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DeskmanagerPrintConfigurationService extends PrintConfigurationServiceImpl {
 
 	@Autowired
-	private GeodeskIdService geodeskIdService;
-
-	@Autowired
 	private GeodeskService geodeskService;
 
 	@Autowired
@@ -57,7 +54,7 @@ public class DeskmanagerPrintConfigurationService extends PrintConfigurationServ
 
 		try {
 			// FIXME: code duplication from GetConfigurationCommand. move to service!
-			String id = geodeskIdService.getGeodeskIdentifier();
+			String id = applicationId;
 			Geodesk geodesk = geodeskService.getGeodeskByPublicId(id); // this checks if geodesk is allowed
 			if (geodesk != null) {
 				// request from cache

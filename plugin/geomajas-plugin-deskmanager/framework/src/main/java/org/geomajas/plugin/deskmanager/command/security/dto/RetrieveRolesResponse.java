@@ -17,12 +17,14 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 
 /**
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.security.RetrieveRolesCommand}.
+ * 
  * @author Oliver May
  * 
  */
 public class RetrieveRolesResponse extends CommandResponse {
 
-	public static final String COMMAND = "command.acmidm.RetrieveRolesCommand";
+	public static final String COMMAND = "command.security.RetrieveRolesCommand";
 
 	private static final long serialVersionUID = 100L;
 

@@ -12,12 +12,17 @@ package org.geomajas.plugin.deskmanager.security;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 
 /**
+ * Provides a list of profiles that are valid for the current logged in user. These profiles can come from HTTP headers
+ * or another database like single sign on.
+ * 
  * @author Oliver May
  * 
  */
+@Api
 public interface ProfileService {
 
 	/**

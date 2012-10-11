@@ -8,22 +8,22 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.command.common.dto;
+package org.geomajas.plugin.deskmanager.command.geodesk.dto;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 
 /**
- * TODO.
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.geodesk.InitializeGeodeskCommand}.
  * 
  * @author Jan De Moerloose
- *
+ * @author Oliver May
  */
-public class GetApplicationInfoResponse extends CommandResponse {
+public class InitializeGeodeskResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 2L;
 
-	public static final String COMMAND = "command.deskmanager.application.getApplicationInfoCommand";
+	public static final String COMMAND = "command.geodesk.InitializeGeodesk";
 
 	private String geodeskIdentifier;
 
