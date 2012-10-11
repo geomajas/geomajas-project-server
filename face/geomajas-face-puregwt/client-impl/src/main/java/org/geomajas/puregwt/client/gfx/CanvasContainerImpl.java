@@ -84,8 +84,7 @@ public class CanvasContainerImpl implements CanvasContainer {
 	public void setScale(double scaleX, double scaleY) {
 		matrix = new Matrix(scaleX, 0.0, 0.0, scaleY, matrix.getDx(), matrix.getDy());
 		updateTransform();
-		repaintBuffer();
-		copyBufferToCanvas();
+		repaint();
 	}
 	
 	public void setBufferFactor(double bufferFactor) {
@@ -121,27 +120,29 @@ public class CanvasContainerImpl implements CanvasContainer {
 	@Override
 	public void addShape(CanvasShape shape) {
 		shapes.add(shape);
-		repaintBuffer();
-		copyBufferToCanvas();
+		repaint();
 	}
 
 	@Override
 	public void addAll(List<CanvasShape> all) {
 		shapes.addAll(all);
-		repaintBuffer();
-		copyBufferToCanvas();
+		repaint();
 	}
 
 	@Override
 	public void removeShape(CanvasShape shape) {
 		shapes.remove(shape);
-		repaintBuffer();
-		copyBufferToCanvas();
+		repaint();
 	}
 
 	@Override
 	public void clear() {
 		shapes.clear();
+		repaint();
+	}
+
+	@Override
+	public void repaint() {
 		repaintBuffer();
 		copyBufferToCanvas();
 	}

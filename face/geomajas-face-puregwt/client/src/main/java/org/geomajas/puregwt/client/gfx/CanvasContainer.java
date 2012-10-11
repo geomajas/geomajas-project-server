@@ -50,4 +50,9 @@ public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 	 * Removes all shapes from the container.
 	 */
 	void clear();
+
+	/**
+	 * Forces repaint
+	 */
+	void repaint();
 }

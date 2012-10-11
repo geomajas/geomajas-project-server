@@ -107,13 +107,14 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer = new HtmlGroup();
 		add(layerHtmlContainer, 0, 0);
 
+		// Add a panel to hold the canvases (this should come before vectors or it catches all events !)
+		canvasPanel = new AbsolutePanel();
+		add(canvasPanel, 0, 0);
+
 		// Attach a DrawingArea inside the clipping area (used for vector rendering):
 		drawingArea = new DrawingArea(100, 100);
 		add(drawingArea, 0, 0);
 		
-		// Add a panel to hold the canvases
-		canvasPanel = new AbsolutePanel();
-		add(canvasPanel, 0, 0);
 
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
