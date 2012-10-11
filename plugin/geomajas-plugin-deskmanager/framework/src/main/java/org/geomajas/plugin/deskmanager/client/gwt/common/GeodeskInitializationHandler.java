@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResp
  * Handler that is called when a geodesk is loaded.
  * 
  * @author Oliver May
- *
+ * @since 1.0.0
  */
 @Api
 public interface GeodeskInitializationHandler {

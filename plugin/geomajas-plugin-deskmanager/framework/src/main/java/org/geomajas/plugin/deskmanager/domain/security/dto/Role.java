@@ -16,6 +16,7 @@ import org.geomajas.annotation.Api;
  * Definition of a user role in the geomajas deskmanager. The role defines <b>what</b> a user can do.
  * 
  * @author Oliver May
+ * @since 1.0.0
  */
 @Api
 public enum Role {

@@ -25,7 +25,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * sso,...) so that only a specific role for the application has to be chosen.
  * 
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
 @Api
 public class DeskmanagerTokenRequestHandler implements TokenRequestHandler {

@@ -18,7 +18,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * Handler that is called when the manager applicaiton is initialized.
  * 
  * @author Oliver May
- *
+ * @since 1.0.0
  */
 @Api
 public interface ManagerInitializationHandler {

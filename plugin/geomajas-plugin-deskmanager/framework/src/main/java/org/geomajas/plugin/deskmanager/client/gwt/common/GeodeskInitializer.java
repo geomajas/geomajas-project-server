@@ -28,7 +28,7 @@ import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResp
  * {@link GeodeskInitializationHandler}.
  * 
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
 @Api
 public class GeodeskInitializer {

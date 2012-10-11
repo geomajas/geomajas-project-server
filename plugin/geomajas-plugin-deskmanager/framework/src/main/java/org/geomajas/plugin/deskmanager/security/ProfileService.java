@@ -20,7 +20,7 @@ import org.geomajas.plugin.deskmanager.domain.security.Profile;
  * or another database like single sign on.
  * 
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
 @Api
 public interface ProfileService {
