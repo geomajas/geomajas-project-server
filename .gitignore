@@ -8,4 +8,5 @@ classes/
 *~
 listing/
 *.versionsBackup
+*.patch
 
