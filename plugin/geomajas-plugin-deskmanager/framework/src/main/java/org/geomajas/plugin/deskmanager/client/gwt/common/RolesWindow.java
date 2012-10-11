@@ -51,9 +51,6 @@ public class RolesWindow implements ProfileSelectionWindow {
 		this.onlyAdminRoles = onlyAdminRoles;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.client.gwt.common.ProfileSelectionWindow#askRole(java.lang.String, org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow.AskRoleCallback)
-	 */
 	public void askRole(String geodeskId, final AskRoleCallback callback) {
 		RetrieveRolesRequest request = new RetrieveRolesRequest();
 		request.setGeodeskId(geodeskId);

@@ -47,8 +47,8 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
 		}
-
-		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId()); // this checks if loket is allowed
+		// this checks if geodesk is allowed
+		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId()); 
 
 		if (loket != null) {
 			ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);

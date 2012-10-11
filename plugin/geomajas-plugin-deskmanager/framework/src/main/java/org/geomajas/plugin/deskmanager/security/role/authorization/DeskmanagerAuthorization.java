@@ -103,7 +103,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	public DeskmanagerAuthorization() { }
 
 	/**
-	 * Construct a Authorization object with the given parameters,
+	 * Construct a Authorization object with the given parameters.
 	 * 
 	 * @param profile the user profile.
 	 * @param geodeskId the geodesk id this authorization is valid for.

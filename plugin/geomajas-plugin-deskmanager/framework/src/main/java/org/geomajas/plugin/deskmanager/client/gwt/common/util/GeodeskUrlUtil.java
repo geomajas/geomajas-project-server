@@ -41,7 +41,8 @@ public final class GeodeskUrlUtil {
 		if (!geodeskId.contains(CommonLayout.GEODESK_PREFIX)) {
 			return null;
 		}
-		geodeskId = geodeskId.substring(geodeskId.indexOf(CommonLayout.GEODESK_PREFIX) + CommonLayout.GEODESK_PREFIX.length()); 
+		geodeskId = geodeskId.substring(geodeskId.indexOf(CommonLayout.GEODESK_PREFIX) 
+				+ CommonLayout.GEODESK_PREFIX.length()); 
 		geodeskId = geodeskId.substring(0, geodeskId.indexOf('/'));
 		
 		return geodeskId;

@@ -250,9 +250,6 @@ public class LoadingScreen extends VLayout implements GeodeskInitializationHandl
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler#initialized(org.geomajas.plugin.deskmanager.command.common.dto.InitializeGeodeskResponse)
-	 */
 	public void initialized(InitializeGeodeskResponse response) {
 		//TODO
 	}

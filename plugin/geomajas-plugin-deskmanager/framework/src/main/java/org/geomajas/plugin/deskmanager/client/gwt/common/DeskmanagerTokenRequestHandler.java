@@ -31,23 +31,21 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 public class DeskmanagerTokenRequestHandler implements TokenRequestHandler {
 
 	private String geodeskId;
+
 	private ProfileSelectionWindow profileSelectionWindow;
+
 	protected String token;
+
 	protected ProfileDto profile;
-	
+
 	public DeskmanagerTokenRequestHandler(String geodeskId, ProfileSelectionWindow profileSelectionWindow) {
 		this.geodeskId = geodeskId;
 		this.profileSelectionWindow = profileSelectionWindow;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.geomajas.gwt.client.command.TokenRequestHandler#login(org.geomajas.gwt.client.command.event.TokenChangedHandler
-	 * )
-	 */
+
 	public void login(final TokenChangedHandler tokenChangedHandler) {
 		profileSelectionWindow.askRole(geodeskId, new AskRoleCallback() {
+
 			public void execute(String token, ProfileDto profile) {
 				DeskmanagerTokenRequestHandler.this.token = token;
 				DeskmanagerTokenRequestHandler.this.profile = profile;
@@ -55,21 +53,23 @@ public class DeskmanagerTokenRequestHandler implements TokenRequestHandler {
 			}
 		});
 	}
-	
+
 	/**
 	 * Get the token for the current active role.
+	 * 
 	 * @return the token
 	 */
 	public String getToken() {
 		return token;
 	}
-	
+
 	/**
 	 * Get the profile for the current active role.
+	 * 
 	 * @return the profile
 	 */
 	public ProfileDto getProfile() {
 		return profile;
 	}
-	
+
 }

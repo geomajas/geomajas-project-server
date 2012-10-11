@@ -16,9 +16,9 @@ import java.util.List;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
 /**
- * A user profile for the deskmanager, consisting of a role and territory. The role defines <b>what</b> a user can do, the
- * territory defines <b>where</b>.
- * It also contains extra information about the user such as name and first name.  
+ * A user profile for the deskmanager, consisting of a role and territory. The role defines <b>what</b> a user can do,
+ * the territory defines <b>where</b>. It also contains extra information about the user such as name and first name.
+ * 
  * @author Oliver May
  * 
  */
@@ -70,16 +70,16 @@ public class Profile implements Serializable {
 	}
 
 	/**
-	 * @param role the role to set
+	 * @param role
+	 *            the role to set
 	 */
 	public void setRole(Role role) {
 		this.role = role;
 	}
 
 	/**
-	 * Return the territory. 
-	 * Note that Profile is most probably retrieved from a serialized state, thus some properties of
-	 * Territory might not be loaded (lazy load). Use DeskmanagerSecurityContext.getGroup to retrieve the territory 
+	 * Return the territory. Note that Profile is most probably retrieved from a serialized state, thus some properties
+	 * of Territory might not be loaded (lazy load). Use DeskmanagerSecurityContext.getGroup to retrieve the territory
 	 * rebound to the database session.
 	 * 
 	 * @return the territory
@@ -89,7 +89,8 @@ public class Profile implements Serializable {
 	}
 
 	/**
-	 * @param territory the territory to set
+	 * @param territory
+	 *            the territory to set
 	 */
 	public void setTerritory(Territory group) {
 		this.territory = group;
@@ -114,7 +115,8 @@ public class Profile implements Serializable {
 	}
 
 	/**
-	 * @param geodesks the geodesks to set
+	 * @param geodesks
+	 *            the geodesks to set
 	 */
 	public void setGeodesks(List<String> loketten) {
 		this.geodesks = loketten;

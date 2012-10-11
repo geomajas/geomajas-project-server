@@ -28,6 +28,6 @@ public interface ManagerInitializationHandler {
 	 * 
 	 * @param profile the currently active user profile.
 	 */
-	public void initialized(ProfileDto profile);
+	void initialized(ProfileDto profile);
 	
 }

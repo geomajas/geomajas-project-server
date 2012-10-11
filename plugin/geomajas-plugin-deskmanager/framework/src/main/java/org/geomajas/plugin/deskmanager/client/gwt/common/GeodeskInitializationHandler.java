@@ -24,6 +24,6 @@ import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResp
 @Api
 public interface GeodeskInitializationHandler {
 	
-	public void initialized(InitializeGeodeskResponse response);
+	void initialized(InitializeGeodeskResponse response);
 
 }

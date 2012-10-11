@@ -24,6 +24,6 @@ public interface ProfileSelectionWindow {
 	 * @param callback
 	 *            callback for when a role is selected.
 	 */
-	public abstract void askRole(String geodeskId, final AskRoleCallback callback);
+	void askRole(String geodeskId, final AskRoleCallback callback);
 
 }

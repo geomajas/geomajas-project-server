@@ -24,7 +24,7 @@ import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResp
 /**
  * Loads a geodesk from the server, this command will get all geodesk information from the server, and check access for
  * the current user. Typically this is the first command to be executed when starting a deskmanager application. The
- * load command provides a callback where you may trigger custom geodesk implementations, handled by 
+ * load command provides a callback where you may trigger custom geodesk implementations, handled by
  * {@link GeodeskInitializationHandler}.
  * 
  * @author Oliver May
@@ -38,7 +38,8 @@ public class GeodeskInitializer {
 	/**
 	 * Load a geodesk. This will execute the InitializationCommand, and ask to select a valid user if needed.
 	 * 
-	 * @param geodeskId the geodesk to load
+	 * @param geodeskId
+	 *            the geodesk to load
 	 * @param tokenRequestHandler
 	 *            the login handler.
 	 */
@@ -46,7 +47,8 @@ public class GeodeskInitializer {
 		GwtCommandDispatcher.getInstance().setTokenRequestHandler(tokenRequestHandler);
 
 		GwtCommand initializeGeodeskCommand = new GwtCommand(InitializeGeodeskResponse.COMMAND);
-		final AbstractCommandCallback<InitializeGeodeskResponse> openLoketCallback = new AbstractCommandCallback<InitializeGeodeskResponse>() {
+		final AbstractCommandCallback<InitializeGeodeskResponse> openLoketCallback = 
+			new AbstractCommandCallback<InitializeGeodeskResponse>() {
 
 			public void execute(InitializeGeodeskResponse response) {
 				fireGeodeskInitialized(response);

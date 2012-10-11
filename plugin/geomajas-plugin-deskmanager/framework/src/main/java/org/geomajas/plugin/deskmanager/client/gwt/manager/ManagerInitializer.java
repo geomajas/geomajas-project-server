@@ -1,5 +1,3 @@
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
-
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -10,6 +8,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager;
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerTokenRequestHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
