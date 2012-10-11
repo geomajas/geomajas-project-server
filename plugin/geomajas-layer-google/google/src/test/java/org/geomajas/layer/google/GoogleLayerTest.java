@@ -15,7 +15,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.layer.osm.TiledRasterLayerService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
@@ -36,6 +35,7 @@ public class GoogleLayerTest {
 	private static final double ZOOMED_IN_SCALE = .0001;
 	private static final double MAX_LEVEL_SCALE = .1;
 	private static final double DELTA = 1e-10;
+	public static final double EQUATOR_IN_METERS = 40075016.686;
 
 	@Autowired
 	@Qualifier("googleSingle")
@@ -78,7 +78,7 @@ public class GoogleLayerTest {
 
 	@Test
 	public void testPaintOutOfBounds() throws Exception {
-		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
+		double equator = EQUATOR_IN_METERS;
 		List<RasterTile> tiles = google.paint(google.getCrs(),
 				new Envelope(-equator, equator, -equator, equator), 256 / equator);
 		Assert.assertEquals(1, tiles.size());
@@ -87,7 +87,7 @@ public class GoogleLayerTest {
 
 	@Test
 	public void testPaintToTheSide() throws Exception {
-		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
+		double equator = EQUATOR_IN_METERS;
 		List<RasterTile> tiles = google.paint(google.getCrs(),
 				new Envelope(equator * 2 / 3, (equator * 2 / 3) + 100, 0, 100), ZOOMED_IN_SCALE);
 		Assert.assertEquals(0, tiles.size());

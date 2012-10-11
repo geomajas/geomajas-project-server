@@ -24,8 +24,6 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.osm.RoundRobinUrlSelectionStrategy;
-import org.geomajas.layer.osm.UrlSelectionStrategy;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
@@ -71,11 +69,14 @@ public class GoogleLayer implements RasterLayer {
 
 	public static final int DEFAULT_TILE_SIZE = 512; // tile size in pixels
 
-	public static final List<String> NORMAL_URLS = new ArrayList<String>();
+	public static final String NORMAL_URL = "http://maps.googleapis.com/maps/api/staticmap?center=${center}"
+			+ "&zoom=${level}&sensor=false&maptype=roadmap";
 
-	public static final List<String> SATELLITE_URLS = new ArrayList<String>();
+	public static final String SATELLITE_URL = "http://maps.googleapis.com/maps/api/staticmap?center=${center}"
+			+ "&zoom=${level}&sensor=false&maptype=satellite";
 
-	public static final List<String> PHYSICAL_URLS = new ArrayList<String>();
+	public static final String PHYSICAL_URL = "http://maps.googleapis.com/maps/api/staticmap?center=${center}"
+			+ "&zoom=${level}&sensor=false&maptype=terrain";
 
 	public static final String MERCATOR = "EPSG:900913";
 
@@ -89,22 +90,14 @@ public class GoogleLayer implements RasterLayer {
 
 	private int tileSize = DEFAULT_TILE_SIZE;
 
-	private String apiKey;
+	//default api key, registered with geomajas.apikey@gmail.com.
+	private String apiKey = "AIzaSyDRzQiQFHTC6FZw4DAwD2-KIUT18u99fDE";
 
 	private boolean satellite;
 
 	private boolean physical;
 
-	private boolean tilesEnabled;
-
-	static {
-		NORMAL_URLS.add("http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false"
-				+ "&maptype=roadmap");
-		SATELLITE_URLS.add("http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false"
-				+ "&maptype=satellite");
-		PHYSICAL_URLS.add("http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false"
-				+ "&maptype=terrain");
-	}
+	private boolean tilesEnabled = true;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -120,9 +113,7 @@ public class GoogleLayer implements RasterLayer {
 
 	private RasterLayerInfo layerInfo;
 
-	private List<String> tileUrls = new ArrayList<String>();
-
-	private UrlSelectionStrategy urlSelectionStrategy = new RoundRobinUrlSelectionStrategy();
+	private String tileUrl;
 
 	private double[] resolutions;
 
@@ -186,25 +177,13 @@ public class GoogleLayer implements RasterLayer {
 	 * example:
 	 * "http://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${level}&sensor=false&maptype=roadmap".
 	 * 
-	 * @param tileUrls
+	 * @param tileUrl
 	 *            list of tile URLs
-	 * @since 1.8.0
+	 * @since 2.0.0
 	 */
 	@Api
-	public void setTileUrls(List<String> tileUrls) {
-		this.tileUrls = tileUrls;
-	}
-
-	/**
-	 * Set the strategy ({@link UrlSelectionStrategy})for selecting the URL to use for the tiles.
-	 * 
-	 * @param strategy
-	 *            a tile URL builder
-	 * @since 1.8.0
-	 */
-	@Api
-	public void setUrlSelectionStrategy(UrlSelectionStrategy strategy) {
-		this.urlSelectionStrategy = strategy;
+	public void setTileUrl(String tileUrls) {
+		this.tileUrl = tileUrls;
 	}
 
 	/**
@@ -259,30 +238,32 @@ public class GoogleLayer implements RasterLayer {
 	 * Check whether tiles should be sent to the client.
 	 * 
 	 * @return true when tiles are enabled
-	 * @since 1.9.0
+	 * @since 2.0.0
 	 */
 	public boolean isTilesEnabled() {
 		return tilesEnabled;
 	}
 
 	/**
-	 * Set whether tiles should be sent to the client. Defaults to false.
+	 * Set whether tiles should be sent to the client. Defaults to true.
 	 * 
 	 * @param tilesEnabled
 	 *            true when tiles should be sent to the client
-	 * @since 1.9.0
+	 * @since 2.0.0
 	 */
+	@Api
 	public void setTilesEnabled(boolean tilesEnabled) {
 		this.tilesEnabled = tilesEnabled;
 	}
 
 	/**
-	 * The google API key used to retrieve static images.
+	 * The google API key used to retrieve static images. If no API key is set, no static images will be retrieved.
 	 * 
 	 * @param apiKey
 	 *            the apiKey to set
-	 * @since 1.9.0
+	 * @since 2.0.0
 	 */
+	@Api
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
 	}
@@ -291,7 +272,7 @@ public class GoogleLayer implements RasterLayer {
 	 * The google API key used to retrieve static images.
 	 * 
 	 * @return the apiKey
-	 * @since 1.9.0
+	 * @since 2.0.0
 	 */
 	public String getApiKey() {
 		return apiKey;
@@ -327,50 +308,46 @@ public class GoogleLayer implements RasterLayer {
 			powerOfTwo *= 2;
 		}
 
-		List<String> urls = null;
+		String url = null;
 		// Init layer name and url's
 		if (null == layerName) {
 			if (isSatellite()) {
 				getLayerInfo().setDataSourceName(LAYER_NAME_SATELLITE + DATA_SOURCE_GOOGLE_INDICATOR);
-				urls = completeTileUrls(SATELLITE_URLS);
+				url = completeTileUrl(SATELLITE_URL);
 			} else if (isPhysical()) {
 				getLayerInfo().setDataSourceName(LAYER_NAME_PHYSICAL + DATA_SOURCE_GOOGLE_INDICATOR);
-				urls = completeTileUrls(PHYSICAL_URLS);
+				url = completeTileUrl(PHYSICAL_URL);
 			} else {
 				getLayerInfo().setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
-				urls = completeTileUrls(NORMAL_URLS);
+				url = completeTileUrl(NORMAL_URL);
 			}
 		} else if (!layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
 			getLayerInfo().setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
 			if (layerName.equals(LAYER_NAME_SATELLITE)) {
 				setSatellite(true);
-				urls = completeTileUrls(SATELLITE_URLS);
+				url = completeTileUrl(SATELLITE_URL);
 			} else if (layerName.equals(LAYER_NAME_PHYSICAL)) {
 				setPhysical(true);
-				urls = completeTileUrls(PHYSICAL_URLS);
+				url = completeTileUrl(PHYSICAL_URL);
 			} else {
-				urls = completeTileUrls(NORMAL_URLS);
+				url = completeTileUrl(NORMAL_URL);
 			}
 		}
-		// If tileUrls is set, use it.
-		if (tileUrls != null && !tileUrls.isEmpty()) {
-			urlSelectionStrategy.setUrls(completeTileUrls(tileUrls));
+		// If tileUrl is set, use it.
+		if (tileUrl != null) {
+			tileUrl = completeTileUrl(tileUrl);
 		} else {
-			urlSelectionStrategy.setUrls(urls);
+			tileUrl = url;
 		}
 	}
 
-	private List<String> completeTileUrls(List<String> source) {
+	private String completeTileUrl(String source) {
 		String sizeString = "&size=" + tileSize + "x" + tileSize;
 		String apiString = "";
-		if (apiKey != null) {
+		if (apiKey != null && !"".equals(apiKey)) {
 			apiString = "&key=" + apiKey;
 		}
-		List<String> target = new ArrayList<String>(source.size());
-		for (String url : source) {
-			target.add(url + apiString + sizeString);
-		}
-		return target;
+		return source + apiString + sizeString;
 	}
 
 	/** {@inheritDoc} */
@@ -426,7 +403,7 @@ public class GoogleLayer implements RasterLayer {
 
 						RasterTile image = new RasterTile(screenBox, getId() + "." + zoomLevel + "." + i + "," + j);
 
-						String url = urlSelectionStrategy.next();
+						String url = tileUrl;
 
 						Coordinate center = new Coordinate((layerBox.getX() + layerBox.getMaxX()) / 2,
 								(layerBox.getY() + layerBox.getMaxY()) / 2);
@@ -435,12 +412,13 @@ public class GoogleLayer implements RasterLayer {
 								Double.toString(centerInWsg84.y) + "," + Double.toString(centerInWsg84.x));
 						url = url.replace("${level}", Integer.toString(zoomLevel));
 
-						//When we are trying to display the tiles on a different coordinate system, use double scaled
-						//images so that renderings are more smooth. This will return an image tileSize*2 x tileSize*2.
-						if (!layerToMap.isIdentity()) {
-							url += "&scale=2";
-						}
-						
+						// When we are trying to display the tiles on a different coordinate system, use double scaled
+						// images so that renderings are more smooth. This will return an image tileSize*2 x tileSize*2.
+						// Disabled becausd the printing plugin can't handle this!
+						// if (!layerToMap.isIdentity()) {
+						// url += "&scale=2";
+						// }
+
 						image.setCode(new TileCode(zoomLevel, i, j));
 						image.setUrl(url);
 						log.debug("adding image {}", image);

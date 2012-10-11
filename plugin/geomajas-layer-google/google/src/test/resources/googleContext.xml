@@ -1,19 +1,13 @@
-<!--
-  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
-  ~
-  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
-  ~
-  ~ The program is available in open source according to the GNU Affero
-  ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
-  ~ details, see LICENSE.txt in the project root.
-  -->
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the GNU Affero ~ General 
+	Public License. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
 
-<beans
-		xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
-		xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
@@ -21,126 +15,131 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start SimpleGoogleConfig, Simple Google layer configuration -->
 	<bean name="google" class="org.geomajas.layer.google.GoogleLayer">
-		<property name="tilesEnabled" value="true"/>
+		<property name="tilesEnabled" value="true" />
+		<property name="apiKey" value="" />
 	</bean>
 	<!-- @extract-end -->
 
-	<!-- @extract-start GoogleMaxZoomLevelConfig, Google layer max zoom level configuration -->
+	<!-- @extract-start GoogleMaxZoomLevelConfig, Google layer max zoom level 
+		configuration -->
 	<bean name="googleMaxLevel" class="org.geomajas.layer.google.GoogleLayer">
-		<property name="tilesEnabled" value="true"/>
-		<property name="maxZoomLevel" value="12"/>
+		<property name="tilesEnabled" value="true" />
+		<property name="maxZoomLevel" value="12" />
+		<property name="apiKey" value="" />
 	</bean>
 	<!-- @extract-end -->
 
 	<!-- @extract-start GoogleCustomUrls, Using custom URLs -->
 	<bean name="googleSingle" class="org.geomajas.layer.google.GoogleLayer">
-		<property name="tilesEnabled" value="true"/>
-		<property name="tileUrls">
-			<list>
-				<value>http://maps.googleapis.com/maps/api/staticmap?center=${center}&amp;zoom=${level}</value>
-			</list>
-		</property>
+		<property name="tilesEnabled" value="true" />
+		<property name="tileUrl"
+			value="http://maps.googleapis.com/maps/api/staticmap?center=${center}&amp;zoom=${level}" />
+		<property name="apiKey" value="" />
 	</bean>
 	<!-- @extract-end -->
 
 	<bean name="googleWrongCrs" class="org.geomajas.layer.google.GoogleLayer">
-		<property name="tilesEnabled" value="true"/>
+		<property name="tilesEnabled" value="true" />
 		<property name="layerInfo">
 			<bean name="googleInfo" class="org.geomajas.configuration.RasterLayerInfo">
-				<property name="crs" value="EPSG:4326"/>
+				<property name="crs" value="EPSG:4326" />
 				<property name="tileHeight" value="640" />
 				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
+		<property name="apiKey" value="" />
 	</bean>
 
-	<!-- @extract-start GoogleCustomUrlStrategy, Using a custom URL selection strategy -->
+	<!-- @extract-start GoogleCustomUrlStrategy, Using a custom URL selection 
+		strategy -->
 	<bean name="googleStrategy" class="org.geomajas.layer.google.GoogleLayer">
-		<property name="tilesEnabled" value="true"/>
-		<property name="urlSelectionStrategy">
-			<bean class="org.geomajas.layer.google.LastUrlSelectionStrategy" />
-		</property>
+		<property name="apiKey" value="" />
 	</bean>
 	<!-- @extract-end -->
 
 
-	<!-- @extract-start GoogleSatellite, Configure to use satellite images and increase max zoom level -->
-	<bean name="satellite" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="tilesEnabled" value="true"/>
+	<!-- @extract-start GoogleSatellite, Configure to use satellite images and 
+		increase max zoom level -->
+	<bean name="satellite" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true" />
 		<property name="satellite" value="true" />
 		<property name="maxZoomLevel" value="21" />
+		<property name="apiKey" value="" />
 	</bean>
 	<!-- @extract-end -->
 
-	<bean name="physical" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="tilesEnabled" value="true"/>
+	<bean name="physical" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true" />
 		<property name="physical" value="true" />
 		<property name="maxZoomLevel" value="21" />
+		<property name="apiKey" value="" />
 	</bean>
 
 	<bean name="googleDs" class="org.geomajas.layer.google.GoogleLayer">
-		<property name="tilesEnabled" value="true"/>
+		<property name="tilesEnabled" value="true" />
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_NORMAL_MAP" />
-				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+				<property name="crs" value="EPSG:900913" /> <!-- required property -->
 				<property name="tileHeight" value="640" />
 				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
+		<property name="apiKey" value="" />
 	</bean>
 
-	<!-- @extract-start GoogleSatelliteDs, Configure to use satellite images and increase max zoom level -->
-	<bean name="satelliteDs" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="tilesEnabled" value="true"/>
+	<!-- @extract-start GoogleSatelliteDs, Configure to use satellite images 
+		and increase max zoom level -->
+	<bean name="satelliteDs" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true" />
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_SATELLITE_MAP" />
-				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+				<property name="crs" value="EPSG:900913" /> <!-- required property -->
 				<property name="tileHeight" value="640" />
 				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
+		<property name="apiKey" value="" />
 	</bean>
 	<!-- @extract-end -->
 
-	<bean name="physicalDs" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="tilesEnabled" value="true"/>
+	<bean name="physicalDs" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true" />
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="dataSourceName" value="G_PHYSICAL_MAP" />
-				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+				<property name="crs" value="EPSG:900913" /> <!-- required property -->
 				<property name="tileHeight" value="640" />
 				<property name="tileWidth" value="640" />
 			</bean>
 		</property>
+		<property name="apiKey" value="" />
 	</bean>
 
 	<!-- @extract-start GoogleLayerSample, Google layer configuration -->
-	<bean name="layerGoogle" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="tilesEnabled" value="true"/>
+	<bean name="layerGoogle" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tilesEnabled" value="true" />
 		<property name="layerInfo" ref="layerGoogleInfo" />
 		<property name="satellite" value="false" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>
 
 	<bean name="layerGoogleInfo" class="org.geomajas.configuration.RasterLayerInfo">
-		<property name="crs" value="EPSG:900913"/>
+		<property name="crs" value="EPSG:900913" />
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-				<!--
-				see http://cfis.savagexi.com/2006/05/03/google-maps-deconstructed
-				-20037508.342789, -20037508.342789 to 20037508.342789, 20037508.342789
-				-->
-				<property name="x" value="-20026376.393709917"/>
-				<property name="y" value="-20026376.393709917"/>
-				<property name="width" value="40052752.787419834"/>
-				<property name="height" value="40052752.787419834"/>
+				<!-- see http://cfis.savagexi.com/2006/05/03/google-maps-deconstructed 
+					-20037508.342789, -20037508.342789 to 20037508.342789, 20037508.342789 -->
+				<property name="x" value="-20026376.393709917" />
+				<property name="y" value="-20026376.393709917" />
+				<property name="width" value="40052752.787419834" />
+				<property name="height" value="40052752.787419834" />
 			</bean>
 		</property>
 		<property name="tileHeight" value="640" />
 		<property name="tileWidth" value="640" />
- 	</bean>
+	</bean>
 	<!-- @extract-end -->
 
 </beans>

@@ -1,9 +1,10 @@
-// geomajas-layer-google module, 1.8.0
+// geomajas-layer-google module, 2.0.0
 org.geomajas.layer.google.GoogleLayer::1.6.0
 org.geomajas.layer.google.GoogleLayer:void setId(String, ):1.8.0
 org.geomajas.layer.google.GoogleLayer:void setLayerInfo(RasterLayerInfo, ):1.7.1
 org.geomajas.layer.google.GoogleLayer:void setMaxZoomLevel(int, ):1.6.0
 org.geomajas.layer.google.GoogleLayer:void setPhysical(boolean, ):1.7.0
 org.geomajas.layer.google.GoogleLayer:void setSatellite(boolean, ):1.6.0
-org.geomajas.layer.google.GoogleLayer:void setTileUrls(List<String>, ):1.8.0
-org.geomajas.layer.google.GoogleLayer:void setUrlSelectionStrategy(UrlSelectionStrategy, ):1.8.0
+org.geomajas.layer.google.GoogleLayer:void setTileUrl(String, ):2.0.0
+org.geomajas.layer.google.GoogleLayer:void setApiKey(String, ):2.0.0
+org.geomajas.layer.google.GoogleLayer:void setTilesEnabled(boolean, ):2.0.0
