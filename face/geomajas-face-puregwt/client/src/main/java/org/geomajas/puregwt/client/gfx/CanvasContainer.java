@@ -52,7 +52,7 @@ public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 	void clear();
 
 	/**
-	 * Forces repaint
+	 * Forces repaint.
 	 */
 	void repaint();
 }
