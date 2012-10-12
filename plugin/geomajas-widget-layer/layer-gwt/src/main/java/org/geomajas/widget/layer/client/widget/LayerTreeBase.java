@@ -268,9 +268,11 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 		ClientLayerTreeInfo layerTreeInfo = (ClientLayerTreeInfo) mapModel.getMapInfo().getWidgetInfo(
 				ClientLayerTreeInfo.IDENTIFIER);
+		tree.setRoot(nodeRoot); // invisible ROOT node (ROOT node is required)
 		if (layerTreeInfo != null) {
-			ClientAbstractNodeInfo treeNode = layerTreeInfo.getTreeNode();
-			processNode(treeNode, nodeRoot, false);
+			for (ClientAbstractNodeInfo node : layerTreeInfo.getTreeNode().getTreeNodes()) {
+				processNode(node, nodeRoot, false);
+			}
 		}
 
 		treeGrid.setData(tree);
