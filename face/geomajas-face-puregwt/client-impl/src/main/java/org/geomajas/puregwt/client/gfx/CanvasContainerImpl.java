@@ -49,22 +49,14 @@ public class CanvasContainerImpl implements CanvasContainer {
 
 	public CanvasContainerImpl(int width, int height) {
 		matrix = new Matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+		// create a canvas
 		canvas = Canvas.createIfSupported();
 		if (canvas != null) {
-			// create a canvas
-			canvas.setWidth(width + "px");
-			canvas.setCoordinateSpaceWidth(width);
-			canvas.setHeight(height + "px");
-			canvas.setCoordinateSpaceHeight(height);
-			// create an off-screen buffer with 3x the size
+			// create an off-screen buffer with bufferFactor x the size
 			buffer = Canvas.createIfSupported();
-			buffer.setWidth(bufferFactor * width + "px");
-			buffer.setCoordinateSpaceWidth((int) (bufferFactor * width));
-			buffer.setHeight(bufferFactor * height + "px");
-			buffer.setCoordinateSpaceHeight((int) (bufferFactor * height));
 			buffer.setVisible(false);
 			RootPanel.get().add(buffer);
-			repaintBuffer();
+			setPixelSize(width, height);
 		} else {
 			throw new RuntimeException("canvas unsupported");
 		}
@@ -153,17 +145,31 @@ public class CanvasContainerImpl implements CanvasContainer {
 		copyBufferToCanvas();
 	}
 
+	@Override
+	public void setPixelSize(int width, int height) {
+		canvas.setWidth(width + "px");
+		canvas.setCoordinateSpaceWidth(width);
+		canvas.setHeight(height + "px");
+		canvas.setCoordinateSpaceHeight(height);
+		buffer.setWidth(bufferFactor * width + "px");
+		buffer.setCoordinateSpaceWidth((int) (bufferFactor * width));
+		buffer.setHeight(bufferFactor * height + "px");
+		buffer.setCoordinateSpaceHeight((int) (bufferFactor * height));
+		repaintBuffer();
+	}
+
 	protected void repaintBuffer() {
 		clearCanvas(buffer);
 		double bufferDx = matrix.getDx() + (bufferFactor - 1) * 0.5 * canvas.getCoordinateSpaceWidth();
 		double bufferDy = matrix.getDy() + (bufferFactor - 1) * 0.5 * canvas.getCoordinateSpaceHeight();
+		Matrix bufferMatrix = new Matrix(matrix.getXx(), 0, 0, matrix.getYy(), bufferDx, bufferDy);
 		buffer.getContext2d().setTransform(matrix.getXx(), 0, 0, matrix.getYy(), bufferDx, bufferDy);
 		double width = canvas.getCoordinateSpaceWidth();
 		double height = canvas.getCoordinateSpaceHeight();
 		bufferBounds = toWorld(new Bbox(-0.5 * (bufferFactor - 1) * width, -0.5 * (bufferFactor - 1) * height,
 				bufferFactor * width, bufferFactor * height));
 		for (CanvasShape shape : shapes) {
-			shape.paint(buffer, matrix);
+			shape.paint(buffer, bufferMatrix);
 		}
 	}
 

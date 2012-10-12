@@ -249,6 +249,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
 		canvasPanel.setPixelSize(width, height);
+		for (CanvasContainer container : worldCanvases) {
+			container.setPixelSize(width, height);
+		}
 		super.setPixelSize(width, height);
 	}
 
@@ -258,6 +261,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.setHeight(height);
 		canvasPanel.setWidth(width);
 		canvasPanel.setHeight(height);
+		for (CanvasContainer container : worldCanvases) {
+			container.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+		}
 		super.setSize(width, height);
 	}
 
@@ -273,6 +279,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
 		canvasPanel.setWidth(width);
+		for (CanvasContainer container : worldCanvases) {
+			container.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+		}
 		super.setWidth(width);
 	}
 
@@ -288,6 +297,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);
 		canvasPanel.setHeight(height);
+		for (CanvasContainer container : worldCanvases) {
+			container.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+		}
 		super.setHeight(height);
 	}
 

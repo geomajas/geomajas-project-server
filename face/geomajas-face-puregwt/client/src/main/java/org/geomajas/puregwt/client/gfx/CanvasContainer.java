@@ -55,4 +55,14 @@ public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 	 * Forces repaint.
 	 */
 	void repaint();
+
+	/**
+	 * Sets the size in pixels of this container. Coordinate space width/height is also set equal to width/height.
+	 * 
+	 * @param width
+	 * @param height
+	 */
+	void setPixelSize(int width, int height);
+	
+	
 }
