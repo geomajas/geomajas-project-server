@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
@@ -19,8 +18,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
@@ -37,8 +36,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  */
 public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private GeodeskDto geodesk;
 
 	private LayerSelectPanel layerSelect;
@@ -69,9 +69,8 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSe
 		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
 
 			public void execute(GetLayersResponse result) {
-				List<LayerDto> sourceLayers = new ArrayList<LayerDto>(geodesk.getBlueprint().getMainMapLayers());
-				sourceLayers.addAll(result.getLayers());
-				layerSelect.setValues(sourceLayers, geodesk.getMainMapLayers(), geodesk.isPublic());
+				layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),
+						geodesk.getMainMapLayers(), geodesk.isPublic());
 			}
 
 		});

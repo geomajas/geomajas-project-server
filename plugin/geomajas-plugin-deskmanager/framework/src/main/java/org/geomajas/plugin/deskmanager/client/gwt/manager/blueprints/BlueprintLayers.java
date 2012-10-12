@@ -18,8 +18,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.W
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
@@ -35,9 +35,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  */
 public class BlueprintLayers extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
-	
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private BlueprintDto blueprint;
 
 	private LayerSelectPanel layerSelect;
@@ -68,9 +68,10 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
 
 			public void execute(GetLayersResponse result) {
-				layerSelect.setValues(result.getLayers(), blueprint.getMainMapLayers(), blueprint.isPublic());
+				layerSelect.setValues(null, result.getLayers(), blueprint.getMainMapLayers(),
+						blueprint.isPublic());
 			}
-			
+
 		});
 	}
 
@@ -84,7 +85,7 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 	public boolean onSaveClick(ClickEvent event) {
 		List<LayerDto> layers = layerSelect.getValues();
 		blueprint.setMainMapLayers(layers);
-		
+
 		layerSelect.setDisabled(true);
 		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_LAYERS);
 		return true;

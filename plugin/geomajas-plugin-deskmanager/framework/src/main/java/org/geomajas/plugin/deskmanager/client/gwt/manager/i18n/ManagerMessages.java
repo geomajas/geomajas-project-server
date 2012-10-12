@@ -320,6 +320,7 @@ public interface ManagerMessages extends Messages {
 	String layerGroupConfigOpenedAtStartTooltip();
 	String layerSelectPanelHelpText();
 	String layerSelectAvailableLayers();
+	String layerSelectUserLayers();
 	String layerSelectSelectedLayers();
 	String layerSelectSelectedLayersTooltip();
 	String layerTreegridCreateMap();

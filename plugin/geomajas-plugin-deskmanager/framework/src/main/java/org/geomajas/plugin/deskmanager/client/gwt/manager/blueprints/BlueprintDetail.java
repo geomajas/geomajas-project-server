@@ -17,8 +17,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEven
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
 import com.google.gwt.core.client.GWT;
@@ -101,11 +101,12 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		tabset.addTab(tab);
 		tab.setPane(accessrights);
 
-		loketLayout = new BlueprintGeodeskLayout();
-		Whiteboard.registerHandler(loketLayout);
-		tab = new Tab(MESSAGES.blueprintDetailTabLayout());
-		tabset.addTab(tab);
-		tab.setPane(loketLayout);
+//FIXME: Disabled: should move to custom project
+//		loketLayout = new BlueprintGeodeskLayout();
+//		Whiteboard.registerHandler(loketLayout);
+//		tab = new Tab(MESSAGES.blueprintDetailTabLayout());
+//		tabset.addTab(tab);
+//		tab.setPane(loketLayout);
 
 		themeConfig = new BlueprintThemeConfig();
 		Whiteboard.registerHandler(themeConfig);

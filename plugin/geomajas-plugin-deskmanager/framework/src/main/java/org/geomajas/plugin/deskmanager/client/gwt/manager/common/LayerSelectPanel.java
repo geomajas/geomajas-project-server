@@ -38,22 +38,25 @@ public class LayerSelectPanel extends HLayout {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	
-	private LayerListGrid left;
+	private LayerListGrid sourceLayersGrid;
 
-	private LayerListGrid right;
+	private LayerListGrid targetLayersGrid;
+
+	private LayerListGrid userLayersGrid;
 
 	public LayerSelectPanel() {
 		super(10);
 
-		left = new LayerListGrid(MESSAGES.layerSelectAvailableLayers(), false);
-		right = new LayerListGrid(MESSAGES.layerSelectSelectedLayers(), true);
-		right.setEmptyMessage(MESSAGES.layerSelectSelectedLayersTooltip());
+		sourceLayersGrid = new LayerListGrid(MESSAGES.layerSelectAvailableLayers(), false);
+		userLayersGrid = new LayerListGrid(MESSAGES.layerSelectUserLayers(), false);
+		targetLayersGrid = new LayerListGrid(MESSAGES.layerSelectSelectedLayers(), true);
+		targetLayersGrid.setEmptyMessage(MESSAGES.layerSelectSelectedLayersTooltip());
 
 		TransferImgButton add = new TransferImgButton(TransferImgButton.RIGHT);
 		add.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				right.transferSelectedData(left);
+				targetLayersGrid.transferSelectedData(sourceLayersGrid);
 			}
 		});
 
@@ -61,7 +64,8 @@ public class LayerSelectPanel extends HLayout {
 		remove.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				left.transferSelectedData(right);
+				sourceLayersGrid.transferSelectedData(targetLayersGrid);
+				userLayersGrid.transferSelectedData(targetLayersGrid);
 			}
 		});
 
@@ -77,24 +81,43 @@ public class LayerSelectPanel extends HLayout {
 		buttons.addMember(new LayoutSpacer());
 		buttons.addMember(help);
 
-		addMember(left);
+		VLayout layout = new VLayout(10);
+		layout.setWidth("50%");
+		sourceLayersGrid.setCanDragResize(true);
+		layout.addMember(sourceLayersGrid);
+		layout.addMember(userLayersGrid);
+
+		
+		addMember(layout);
 		addMember(buttons);
-		addMember(right);
+		addMember(targetLayersGrid);
 	}
 
 	public void clearValues() {
-		left.selectAllRecords();
-		left.removeSelectedData();
+		sourceLayersGrid.selectAllRecords();
+		sourceLayersGrid.removeSelectedData();
 
-		right.selectAllRecords();
-		right.removeSelectedData();
+		userLayersGrid.selectAllRecords();
+		userLayersGrid.removeSelectedData();
+
+		targetLayersGrid.selectAllRecords();
+		targetLayersGrid.removeSelectedData();
 	}
 
-	public void setValues(List<LayerDto> availableLayers, List<LayerDto> selectedLayers, boolean isPublic) {
+	/**
+	 * Set data for the LayerSelectPanel.
+	 * 
+	 * @param sourceLayers the available layers from the blueprint or userapplication
+	 * @param userLayers the available layers for the user
+	 * @param selectedLayers the layers already selected
+	 * @param isPublic whether to include public layers.
+	 */
+	public void setValues(List<LayerDto> sourceLayers, List<LayerDto> userLayers, List<LayerDto> selectedLayers, 
+			boolean isPublic) {
 		clearValues();
-		if (availableLayers != null) {
+		if (sourceLayers != null) {
 			//Reverse order
-			ListIterator<LayerDto> li = availableLayers.listIterator(availableLayers.size());
+			ListIterator<LayerDto> li = sourceLayers.listIterator(sourceLayers.size());
 			while (li.hasPrevious()) {
 				LayerDto layer = li.previous();
 				if (isPublic && !layer.getLayerModel().isPublic()) {
@@ -109,11 +132,39 @@ public class LayerSelectPanel extends HLayout {
 						}
 						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
 						record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
-						left.addData(record);
+						sourceLayersGrid.addData(record);
 					}
 				}
 			}
+		} else {
+			sourceLayersGrid.hide();
 		}
+		
+		if (userLayers != null) {
+			//Reverse order
+			ListIterator<LayerDto> li = userLayers.listIterator(userLayers.size());
+			while (li.hasPrevious()) {
+				LayerDto layer = li.previous();
+				if (isPublic && !layer.getLayerModel().isPublic()) {
+					// Ignore layer
+				} else {
+					if (selectedLayers == null || !selectedLayers.contains(layer)) {
+						ListGridRecord record = new ListGridRecord();
+						if (layer.getClientLayerInfo() != null) {
+							record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
+						} else if (layer.getReferencedLayerInfo() != null) {
+							record.setAttribute(LayerListGrid.FLD_NAME, layer.getReferencedLayerInfo().getLabel());
+						}
+						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
+						record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
+						userLayersGrid.addData(record);
+					}
+				}
+			}
+		} else {
+			userLayersGrid.hide();
+		}
+		
 		if (selectedLayers != null) {
 			//Reverse order
 			ListIterator<LayerDto> li = selectedLayers.listIterator(selectedLayers.size());
@@ -127,7 +178,7 @@ public class LayerSelectPanel extends HLayout {
 				}
 				record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
 				record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
-				right.addData(record);
+				targetLayersGrid.addData(record);
 			}
 		}
 	}
@@ -135,8 +186,8 @@ public class LayerSelectPanel extends HLayout {
 	public List<LayerDto> getValues() {
 		// reverse order!
 		List<LayerDto> selectedLayers = new ArrayList<LayerDto>();
-		for (int i = right.getRecords().length - 1 ; i >= 0 ; i--) {
-			ListGridRecord record = right.getRecord(i);
+		for (int i = targetLayersGrid.getRecords().length - 1 ; i >= 0 ; i--) {
+			ListGridRecord record = targetLayersGrid.getRecord(i);
 			LayerDto layer = (LayerDto) record.getAttributeAsObject(LayerListGrid.FLD_OBJECT);
 			if (!selectedLayers.contains(layer)) {
 				selectedLayers.add(layer);

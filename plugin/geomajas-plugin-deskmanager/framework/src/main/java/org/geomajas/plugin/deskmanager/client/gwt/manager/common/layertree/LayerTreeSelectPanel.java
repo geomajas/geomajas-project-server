@@ -116,7 +116,7 @@ public class LayerTreeSelectPanel extends HLayout {
 		this.allowNonPublicLayers = geodesk.isPublic();
 
 		layers.clear();
-		for (LayerDto layer : geodesk.getMainMapLayers()) {
+		for (LayerDto layer : GeodeskDtoUtil.getMainMapLayers(geodesk)) {
 			layers.put(layer.getClientLayerIdReference(), layer);
 		}
 
@@ -165,7 +165,7 @@ public class LayerTreeSelectPanel extends HLayout {
 		sourceRootNode = new ClientBranchNodeInfo();
 		sourceRootNode.setLabel("ROOT");
 
-		for (LayerDto layer : geodesk.getMainMapLayers()) {
+		for (LayerDto layer : layers.values()) {
 			ClientLayerNodeInfo layerNode = new ClientLayerNodeInfo();
 			layerNode.setLayerId(layer.getClientLayerIdReference());
 			sourceRootNode.getTreeNodes().add(layerNode);

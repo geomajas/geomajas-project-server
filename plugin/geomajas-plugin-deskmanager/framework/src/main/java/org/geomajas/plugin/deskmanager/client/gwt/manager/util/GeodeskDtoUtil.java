@@ -11,12 +11,14 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 /**
  * Utility class that provides easy access to geodesk components.
@@ -91,5 +93,21 @@ public final class GeodeskDtoUtil {
 	 */
 	public static ClientMapInfo getMainMap(BaseGeodeskDto geodesk) {
 		return UserApplicationDtoUtil.getMainMap(geodesk.getUserApplicationInfo());
+	}
+	
+	/**
+	 * Retrieve the main map layers from the geodesk.
+	 * If it's a geodesk without layers, the layers from the blueprint are retrieved.
+	 * 
+	 * @param geodesk the geodesk
+	 * @return a list of layers
+	 */
+	public static List<LayerDto> getMainMapLayers(BaseGeodeskDto geodesk) {
+		if (geodesk  instanceof GeodeskDto) {
+			if (geodesk.getMainMapLayers() == null || geodesk.getMainMapLayers().isEmpty()) {
+				return getMainMapLayers(((GeodeskDto) geodesk).getBlueprint()); 
+			}
+		}
+		return geodesk.getMainMapLayers();
 	}
 }
