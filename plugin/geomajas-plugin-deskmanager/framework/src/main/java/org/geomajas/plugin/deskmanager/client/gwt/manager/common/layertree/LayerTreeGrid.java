@@ -36,16 +36,14 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  * @author Kristof Heirwegh
  */
 public class LayerTreeGrid extends TreeGrid {
-	
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private final Menu menu = new Menu();
 
 	private final MenuItem menuMapAdd = new MenuItem(MESSAGES.layerTreegridCreateMap());
 
 	private final MenuItem menuMapDelete = new MenuItem(MESSAGES.layerTreegridRemoveMap());
-
-	private TreeGrid sourceTreeGrid;
 
 	public LayerTreeGrid(String title, boolean editable) {
 		super();
@@ -110,21 +108,13 @@ public class LayerTreeGrid extends TreeGrid {
 		setContextMenu(menu);
 	}
 
-	public void setSourceTreeGrid(TreeGrid treeGrid) {
-		this.sourceTreeGrid = treeGrid;
-	}
-
 	private void mapDelete() {
 		menu.hideContextMenu();
 		LayerTreeNode node = (LayerTreeNode) getSelectedRecord();
 		if (node != null && !getTree().isLeaf(node)) {
 			TreeNode[] children = getTree().getChildren(node);
 			if (children != null && children.length > 0) {
-				if (sourceTreeGrid != null) {
-					sourceTreeGrid.getTree().addList(children, sourceTreeGrid.getTree().getRoot());
-				} else {
-					getTree().addList(children, getTree().getRoot());
-				}
+				getTree().addList(children, getTree().getRoot());
 			}
 			getTree().remove(node);
 		} else {

@@ -41,18 +41,19 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  * Contains two layertreepanels which are used to make a selection (target) of some layers (source).
  * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class LayerTreeSelectPanel extends HLayout {
 	
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
-	private LayerTreeGrid left;
+	private LayerTreeGrid sourceGrid;
 
-	private LayerTreeGrid right;
+	private LayerTreeGrid targetGrid;
 
-	private Tree leftTree;
+	private Tree sourceTree;
 
-	private Tree rightTree;
+	private Tree targetTree;
 
 	private boolean allowNonPublicLayers;
 
@@ -67,15 +68,14 @@ public class LayerTreeSelectPanel extends HLayout {
 	public LayerTreeSelectPanel() {
 		super(10);
 
-		left = new LayerTreeGrid(MESSAGES.layerSelectAvailableLayers(), false);
-		right = new LayerTreeGrid(MESSAGES.layerSelectSelectedLayers(), true);
-		right.setSourceTreeGrid(left);
+		sourceGrid = new LayerTreeGrid(MESSAGES.layerSelectAvailableLayers(), false);
+		targetGrid = new LayerTreeGrid(MESSAGES.layerSelectSelectedLayers(), true);
 
 		TransferImgButton add = new TransferImgButton(TransferImgButton.RIGHT);
 		add.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				right.transferSelectedData(left);
+				targetGrid.transferSelectedData(sourceGrid);
 			}
 		});
 
@@ -83,7 +83,7 @@ public class LayerTreeSelectPanel extends HLayout {
 		remove.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				left.transferSelectedData(right);
+				sourceGrid.transferSelectedData(targetGrid);
 			}
 		});
 
@@ -99,16 +99,16 @@ public class LayerTreeSelectPanel extends HLayout {
 		buttons.addMember(new LayoutSpacer());
 		buttons.addMember(help);
 
-		addMember(left);
+		addMember(sourceGrid);
 		addMember(buttons);
-		addMember(right);
+		addMember(targetGrid);
 	}
 
 	public void clearValues() {
-		leftTree = null;
-		rightTree = null;
-		left.setData((Tree) null);
-		right.setData((Tree) null);
+		sourceTree = null;
+		targetTree = null;
+		sourceGrid.setData((Tree) null);
+		targetGrid.setData((Tree) null);
 	}
 
 	public void setValues(BaseGeodeskDto geodesk) {
@@ -124,44 +124,58 @@ public class LayerTreeSelectPanel extends HLayout {
 		buildTrees();
 
 		// -- fill grids
-		left.setData(leftTree);
-		leftTree.openAll();
+		sourceGrid.setData(sourceTree);
+		sourceTree.openAll();
 
-		right.setData(rightTree);
-		rightTree.openAll();
+		targetGrid.setData(targetTree);
+		targetTree.openAll();
 	}
 
-	private ClientAbstractNodeInfo fromTreeNode(Tree tree, LayerTreeNode treeNode) {
-		ClientAbstractNodeInfo nodeInfo = treeNode.getNode();
-		
-		if (tree.hasChildren(treeNode)) {
-			for (TreeNode node : tree.getChildren(treeNode)) {
-				nodeInfo.getTreeNodes().add(fromTreeNode(tree, (LayerTreeNode) node));
+	/**
+	 * Recursively convert from smartgwt LayerTree into WidgetInfo layertree.
+	 * @param treeNode the treeNode to convert.
+	 * @return the converted treeNode.
+	 */
+	private ClientAbstractNodeInfo fromTreeNode(LayerTreeNode treeNode) {
+		if (treeNode.getNode() instanceof ClientBranchNodeInfo) {
+			//Create folder
+			ClientBranchNodeInfo branch = new ClientBranchNodeInfo();
+			branch.setLabel(((ClientBranchNodeInfo) treeNode.getNode()).getLabel());
+			branch.setExpanded(true);
+			
+			//Add children
+			for (TreeNode node : targetTree.getChildren(treeNode)) {
+				branch.getTreeNodes().add(fromTreeNode((LayerTreeNode) node));
 			}
+			return branch;
+		} else if (treeNode.getNode() instanceof ClientLayerNodeInfo) {
+			//Is leaf
+			ClientLayerNodeInfo layer = new ClientLayerNodeInfo();
+			layer.setLayerId(((ClientLayerNodeInfo) treeNode.getNode()).getLayerId());
+			return layer;
+		} else {
+			throw new RuntimeException("Wrong type of treeNode in tree!");
 		}
-		return nodeInfo;
-	}
+	}		
 	
 	public ClientLayerTreeInfo getValues() {
-		// updating domainobjects from tree
-		// -- remove old references (easier to just clear everything than trying to update)
 		if (targetRootNode == null) {
 			throw new RuntimeException("Value has not been set ??");
 		}
 
-		ClientAbstractNodeInfo rootNode = fromTreeNode(rightTree, (LayerTreeNode) rightTree.getRoot());
+		targetRootNode.getTreeNodes().clear();
+		ClientAbstractNodeInfo rootNode = fromTreeNode((LayerTreeNode) targetTree.getRoot());
 		
 		ClientLayerTreeInfo treeInfo = new ClientLayerTreeInfo();
 		treeInfo.setTreeNode(rootNode);
 		
 		return treeInfo;
-		
 	}
 
 	// ----------------------------------------------------------
 
 	private void buildTrees() {
-		// create flat tree for the left side.
+		// create flat tree for the sourceGrid side.
 		sourceRootNode = new ClientBranchNodeInfo();
 		sourceRootNode.setLabel("ROOT");
 
@@ -173,24 +187,25 @@ public class LayerTreeSelectPanel extends HLayout {
 
 		ClientLayerTreeInfo clientLayerTreeInfo = (ClientLayerTreeInfo) GeodeskDtoUtil.getMainMapClientWidgetInfo(
 				geodesk).get(ClientLayerTreeInfo.IDENTIFIER);
-		targetRootNode = new ClientBranchNodeInfo();
-		targetRootNode.setLabel("ROOT");
-		targetRootNode.setExpanded(true);
 		if (clientLayerTreeInfo != null) {
 			// FIXME: dangerous cast, ClientLayerTreeInfo rootnode should always be branch!
 			targetRootNode = (ClientBranchNodeInfo) clientLayerTreeInfo.getTreeNode();
+		} else {
+			targetRootNode = new ClientBranchNodeInfo();
+			targetRootNode.setLabel("ROOT");
+			targetRootNode.setExpanded(true);
 		}
 
-		leftTree = new Tree();
-		leftTree.setIdField(LayerTreeNode.FLD_NAME);
-		leftTree.setModelType(TreeModelType.CHILDREN);
-		leftTree.setRoot(toTreeNode(sourceRootNode));
+		sourceTree = new Tree();
+		sourceTree.setIdField(LayerTreeNode.FLD_NAME);
+		sourceTree.setModelType(TreeModelType.CHILDREN);
+		sourceTree.setRoot(toTreeNode(sourceRootNode));
 
-		rightTree = new Tree();
-		rightTree.setModelType(TreeModelType.CHILDREN);
-		rightTree.setRoot(toTreeNode(targetRootNode));
-		rightTree.setSeparateFolders(true);
-		rightTree.setSortFoldersBeforeLeaves(true);
+		targetTree = new Tree();
+		targetTree.setIdField(LayerTreeNode.FLD_NAME);
+		targetTree.setModelType(TreeModelType.CHILDREN);
+		targetTree.setRoot(toTreeNode(targetRootNode));
+		targetTree.setSortFoldersBeforeLeaves(false);
 		filterSourceTree();
 	}
 
@@ -215,20 +230,20 @@ public class LayerTreeSelectPanel extends HLayout {
 	}
 
 	private void filterSourceTree() {
-		for (TreeNode node : rightTree.getAllNodes()) {
-			TreeNode lefty = leftTree.findById(node.getName());
+		for (TreeNode node : targetTree.getAllNodes()) {
+			TreeNode lefty = sourceTree.findById(node.getName());
 			if (lefty != null) {
-				if (!leftTree.isLeaf(lefty)) {
-					leftTree.addList(leftTree.getChildren(lefty), leftTree.getRoot());
+				if (!sourceTree.isLeaf(lefty)) {
+					sourceTree.addList(sourceTree.getChildren(lefty), sourceTree.getRoot());
 				}
-				leftTree.remove(lefty);
+				sourceTree.remove(lefty);
 			}
 		}
 		if (!allowNonPublicLayers) {
-			for (TreeNode node : leftTree.getAllNodes()) {
+			for (TreeNode node : sourceTree.getAllNodes()) {
 
-				if (leftTree.isLeaf(node) && !((LayerTreeNode) node).getLayer().getLayerModel().isPublic()) {
-					leftTree.remove(node);
+				if (sourceTree.isLeaf(node) && !((LayerTreeNode) node).getLayer().getLayerModel().isPublic()) {
+					sourceTree.remove(node);
 				}
 			}
 		}

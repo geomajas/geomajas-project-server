@@ -57,6 +57,7 @@ public class LayerSelectPanel extends HLayout {
 
 			public void onClick(ClickEvent event) {
 				targetLayersGrid.transferSelectedData(sourceLayersGrid);
+				targetLayersGrid.transferSelectedData(userLayersGrid);
 			}
 		});
 
@@ -65,7 +66,6 @@ public class LayerSelectPanel extends HLayout {
 
 			public void onClick(ClickEvent event) {
 				sourceLayersGrid.transferSelectedData(targetLayersGrid);
-				userLayersGrid.transferSelectedData(targetLayersGrid);
 			}
 		});
 
