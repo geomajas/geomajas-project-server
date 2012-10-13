@@ -326,9 +326,6 @@ public class MapRendererImpl implements MapRenderer {
 
 		// Install a navigation animation:
 		if (animation.isRunning()) {
-			if (scale == previousScale) {
-				return;
-			}
 			currentScale = scale;
 
 			// Ensure the scale level after a certain delay:
