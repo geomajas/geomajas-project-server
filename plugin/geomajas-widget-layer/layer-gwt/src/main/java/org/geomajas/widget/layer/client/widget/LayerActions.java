@@ -142,7 +142,7 @@ public class LayerActions extends Window {
 				infoLayout.addMember(a);
 			}
 
-			if (eli.getLegendImageUrl() != null) {
+			if (eli.getLegendImageUrl() != null || layer instanceof VectorLayer) {
 				IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields()
 						: MESSAGES.layerActionsShowLegend());
 				legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
@@ -155,6 +155,18 @@ public class LayerActions extends Window {
 				});
 				infoLayout.addMember(legendInfo);
 			}
+		} else if (layer instanceof VectorLayer) {
+			IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields()
+					: MESSAGES.layerActionsShowLegend());
+			legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
+			legendInfo.setAutoFit(true);
+			legendInfo.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					showLegend();
+				}
+			});
+			infoLayout.addMember(legendInfo);
 		}
 
 		// -- create actions --
