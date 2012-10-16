@@ -12,9 +12,9 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
 import java.util.List;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -35,7 +35,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskLayers extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
@@ -69,11 +69,19 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSe
 		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
 
 			public void execute(GetLayersResponse result) {
-				layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),
-						geodesk.getMainMapLayers(), geodesk.isPublic());
+				if (geodesk.getMainMapLayers() == null || geodesk.getMainMapLayers().size() == 0) {
+					//If no layers is set, present default from blueprint
+					layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),
+							geodesk.getBlueprint().getMainMapLayers(), geodesk.isPublic());
+				} else {
+					layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),
+							geodesk.getMainMapLayers(), geodesk.isPublic());
+				}
+				fireChangedHandler();
 			}
 
 		});
+		
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -99,7 +107,17 @@ public class GeodeskLayers extends VLayout implements WoaEventHandler, GeodeskSe
 	}
 
 	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
+		layerSelect.setDisabled(true);
 		setGeodesk(geodeskEvent.getGeodesk());
 	}
 
+	public boolean onResetClick(ClickEvent event) {
+		geodesk.getMainMapLayers().clear();
+		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_LAYERS);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return geodesk.getMainMapLayers() == null || geodesk.getMainMapLayers().isEmpty();
+	}
 }

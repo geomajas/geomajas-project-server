@@ -12,14 +12,14 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
 import java.util.List;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GroupTreeGrid;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
@@ -35,7 +35,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  *
  */
-public class GeodeskAccessRights extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskAccessRights extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -82,6 +82,7 @@ public class GeodeskAccessRights extends VLayout implements WoaEventHandler, Geo
 		} else {
 			groupSelect.setValues(null);
 		}
+		fireChangedHandler();
 	}
 	
 	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
@@ -105,6 +106,16 @@ public class GeodeskAccessRights extends VLayout implements WoaEventHandler, Geo
 	public boolean onCancelClick(ClickEvent event) {
 		setGeodesk(geodesk);
 		groupSelect.setDisabled(true);
+		return true;
+	}
+	
+
+	public boolean onResetClick(ClickEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isDefault() {
 		return true;
 	}
 }

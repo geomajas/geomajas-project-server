@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class DatalayerStyle extends VLayout implements WoaEventHandler {
+public class DatalayerStyle extends AbstractConfigurationLayout {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
@@ -50,6 +50,7 @@ public class DatalayerStyle extends VLayout implements WoaEventHandler {
 	}
 
 	public void setLayerModel(LayerModelDto lmd) {
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -72,6 +73,17 @@ public class DatalayerStyle extends VLayout implements WoaEventHandler {
 		// SC.say(MESSAGES.formWarnNotvalid());
 		// return false;
 		// }
+		return true;
+	}
+	
+
+	public boolean onResetClick(ClickEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isDefault() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 }

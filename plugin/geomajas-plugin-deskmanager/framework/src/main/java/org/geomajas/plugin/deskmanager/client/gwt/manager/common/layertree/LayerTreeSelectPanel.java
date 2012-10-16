@@ -44,9 +44,9 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  * @author Oliver May
  */
 public class LayerTreeSelectPanel extends HLayout {
-	
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private LayerTreeGrid sourceGrid;
 
 	private LayerTreeGrid targetGrid;
@@ -133,31 +133,33 @@ public class LayerTreeSelectPanel extends HLayout {
 
 	/**
 	 * Recursively convert from smartgwt LayerTree into WidgetInfo layertree.
-	 * @param treeNode the treeNode to convert.
+	 * 
+	 * @param treeNode
+	 *            the treeNode to convert.
 	 * @return the converted treeNode.
 	 */
 	private ClientAbstractNodeInfo fromTreeNode(LayerTreeNode treeNode) {
 		if (treeNode.getNode() instanceof ClientBranchNodeInfo) {
-			//Create folder
+			// Create folder
 			ClientBranchNodeInfo branch = new ClientBranchNodeInfo();
 			branch.setLabel(((ClientBranchNodeInfo) treeNode.getNode()).getLabel());
 			branch.setExpanded(true);
-			
-			//Add children
+
+			// Add children
 			for (TreeNode node : targetTree.getChildren(treeNode)) {
 				branch.getTreeNodes().add(fromTreeNode((LayerTreeNode) node));
 			}
 			return branch;
 		} else if (treeNode.getNode() instanceof ClientLayerNodeInfo) {
-			//Is leaf
+			// Is leaf
 			ClientLayerNodeInfo layer = new ClientLayerNodeInfo();
 			layer.setLayerId(((ClientLayerNodeInfo) treeNode.getNode()).getLayerId());
 			return layer;
 		} else {
 			throw new RuntimeException("Wrong type of treeNode in tree!");
 		}
-	}		
-	
+	}
+
 	public ClientLayerTreeInfo getValues() {
 		if (targetRootNode == null) {
 			throw new RuntimeException("Value has not been set ??");
@@ -165,10 +167,10 @@ public class LayerTreeSelectPanel extends HLayout {
 
 		targetRootNode.getTreeNodes().clear();
 		ClientAbstractNodeInfo rootNode = fromTreeNode((LayerTreeNode) targetTree.getRoot());
-		
+
 		ClientLayerTreeInfo treeInfo = new ClientLayerTreeInfo();
 		treeInfo.setTreeNode(rootNode);
-		
+
 		return treeInfo;
 	}
 
@@ -216,14 +218,20 @@ public class LayerTreeSelectPanel extends HLayout {
 			List<LayerTreeNode> children = new ArrayList<LayerTreeNode>();
 			for (ClientAbstractNodeInfo ltn : node.getTreeNodes()) {
 				if (ltn != null) {
-					children.add(toTreeNode(ltn));
+					LayerTreeNode ltnn = toTreeNode(ltn);
+					if (ltnn != null) {
+						children.add(ltnn);
+					}
 				}
 			}
 			tn.setChildren(children.toArray(new LayerTreeNode[children.size()]));
 			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, true); // no such thing as non-public folders
 		} else if (node instanceof ClientLayerNodeInfo) {
 			LayerDto layerDto = layers.get(((ClientLayerNodeInfo) node).getLayerId());
-			tn = new LayerTreeNode(node, layerDto);
+			//Don't add if layerModel is null (layer is orphin)!
+			if (layerDto.getLayerModel() != null) {
+				tn = new LayerTreeNode(node, layerDto);
+			}
 			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, layerDto.getLayerModel().isPublic());
 		}
 		return tn;

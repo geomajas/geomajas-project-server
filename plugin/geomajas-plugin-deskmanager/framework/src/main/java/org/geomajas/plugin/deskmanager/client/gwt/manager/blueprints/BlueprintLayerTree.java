@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class BlueprintLayerTree extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
+public class BlueprintLayerTree extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -61,6 +61,7 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 	public void setBlueprint(BlueprintDto newBluePrint) {
 		this.blueprint = newBluePrint;
 		layerTreeSelect.setValues(newBluePrint);
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -87,4 +88,13 @@ public class BlueprintLayerTree extends VLayout implements WoaEventHandler, Blue
 		setBlueprint(bpe.getBlueprint());
 	}
 
+	public boolean onResetClick(ClickEvent event) {
+		blueprint.getMainMapClientWidgetInfos().remove(ClientLayerTreeInfo.IDENTIFIER);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return !blueprint.getMainMapClientWidgetInfos().containsKey(ClientLayerTreeInfo.IDENTIFIER);
+	}
 }

@@ -12,9 +12,9 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
 import java.util.List;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.LayerSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -22,6 +22,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
@@ -34,7 +35,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  * @author Oliver May
  */
-public class BlueprintLayers extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
+public class BlueprintLayers extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
@@ -70,6 +71,7 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 			public void execute(GetLayersResponse result) {
 				layerSelect.setValues(null, result.getLayers(), blueprint.getMainMapLayers(),
 						blueprint.isPublic());
+				fireChangedHandler();
 			}
 
 		});
@@ -101,4 +103,14 @@ public class BlueprintLayers extends VLayout implements WoaEventHandler, Bluepri
 		setBlueprint(bpe.getBlueprint());
 	}
 
+	public boolean onResetClick(ClickEvent event) {
+		blueprint.getMainMapLayers().clear();
+		ManagerCommandService.saveBlueprint(blueprint, SaveGeodeskRequest.SAVE_LAYERS);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return true;
+//		return blueprint.getMainMapLayers() == null || blueprint.getMainMapLayers().isEmpty();
+	}
 }

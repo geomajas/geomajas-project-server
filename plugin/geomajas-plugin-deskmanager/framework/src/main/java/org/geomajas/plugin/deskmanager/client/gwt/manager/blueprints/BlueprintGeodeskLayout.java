@@ -10,14 +10,14 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GeodeskLayoutPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
@@ -25,12 +25,13 @@ import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
+ * Define the layout of a geodesk.
+ * 
  * @author Kristof Heirwegh
  */
-public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
+public class BlueprintGeodeskLayout extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 
 	private BlueprintDto blueprint;
 
@@ -62,6 +63,7 @@ public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, 
 			geodeskLayout = new GeodeskLayoutInfo();
 		}
 		layout.setGeodeskLayout(geodeskLayout);
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -94,6 +96,17 @@ public class BlueprintGeodeskLayout extends VLayout implements WoaEventHandler, 
 
 	public void onBlueprintSelectionChange(BlueprintEvent bpe) {
 		setBlueprint(bpe.getBlueprint());
+	}
+
+	public boolean onResetClick(ClickEvent event) {
+		blueprint.getApplicationClientWidgetInfos().remove(GeodeskLayoutInfo.IDENTIFIER);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		layout.setDisabled(true);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return !blueprint.getApplicationClientWidgetInfos().containsKey(GeodeskLayoutInfo.IDENTIFIER);
 	}
 
 }

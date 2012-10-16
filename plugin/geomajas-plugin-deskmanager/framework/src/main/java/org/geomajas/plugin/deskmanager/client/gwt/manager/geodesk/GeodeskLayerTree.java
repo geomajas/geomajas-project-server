@@ -10,13 +10,14 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.LayerTreeSelectPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
@@ -31,13 +32,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class GeodeskLayerTree extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskLayerTree extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
 	private GeodeskDto geodesk;
 
 	private LayerTreeSelectPanel layerTreeSelect;
-
+	
 	public GeodeskLayerTree() {
 		super(5);
 
@@ -66,6 +67,7 @@ public class GeodeskLayerTree extends VLayout implements WoaEventHandler, Geodes
 	private void setGeodesk(final GeodeskDto newLoket) {
 		geodesk = newLoket;
 		layerTreeSelect.setValues(geodesk);
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -87,4 +89,15 @@ public class GeodeskLayerTree extends VLayout implements WoaEventHandler, Geodes
 		setGeodesk(geodesk);
 		return true;
 	}
+	
+
+	public boolean onResetClick(ClickEvent event) {
+		geodesk.getMainMapClientWidgetInfos().remove(ClientLayerTreeInfo.IDENTIFIER);
+		ManagerCommandService.saveGeodesk(geodesk, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return !geodesk.getMainMapClientWidgetInfos().containsKey(ClientLayerTreeInfo.IDENTIFIER);
+	}		
 }

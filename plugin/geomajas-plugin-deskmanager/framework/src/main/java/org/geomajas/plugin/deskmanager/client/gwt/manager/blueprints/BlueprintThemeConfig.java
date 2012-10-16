@@ -10,21 +10,20 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig.ThemeConfigurationPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Panel to allow theme configuration on the blueprint.
@@ -32,7 +31,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
+public class BlueprintThemeConfig extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 
 	private BlueprintDto blueprint;
 
@@ -74,6 +73,7 @@ public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, Bl
 				themePanel.setThemeConfig(new ThemesInfo());
 			}
 		}
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -110,5 +110,17 @@ public class BlueprintThemeConfig extends VLayout implements WoaEventHandler, Bl
 	public void onBlueprintSelectionChange(BlueprintEvent bpe) {
 		setBlueprint(bpe.getBlueprint());
 	}
+
+
+	public boolean onResetClick(ClickEvent event) {
+		blueprint.getMainMapClientWidgetInfos().remove(ThemesInfo.IDENTIFIER);
+		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		themePanel.setDisabled(true);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return !blueprint.getMainMapClientWidgetInfos().containsKey(ThemesInfo.IDENTIFIER);
+	}	
 
 }

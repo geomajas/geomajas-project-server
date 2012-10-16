@@ -42,13 +42,10 @@ public class LayerSelectPanel extends HLayout {
 
 	private LayerListGrid targetLayersGrid;
 
-	private LayerListGrid userLayersGrid;
-
 	public LayerSelectPanel() {
 		super(10);
 
 		sourceLayersGrid = new LayerListGrid(MESSAGES.layerSelectAvailableLayers(), false);
-		userLayersGrid = new LayerListGrid(MESSAGES.layerSelectUserLayers(), false);
 		targetLayersGrid = new LayerListGrid(MESSAGES.layerSelectSelectedLayers(), true);
 		targetLayersGrid.setEmptyMessage(MESSAGES.layerSelectSelectedLayersTooltip());
 
@@ -57,7 +54,6 @@ public class LayerSelectPanel extends HLayout {
 
 			public void onClick(ClickEvent event) {
 				targetLayersGrid.transferSelectedData(sourceLayersGrid);
-				targetLayersGrid.transferSelectedData(userLayersGrid);
 			}
 		});
 
@@ -81,14 +77,7 @@ public class LayerSelectPanel extends HLayout {
 		buttons.addMember(new LayoutSpacer());
 		buttons.addMember(help);
 
-		VLayout layout = new VLayout(10);
-		layout.setWidth("50%");
-		sourceLayersGrid.setCanDragResize(true);
-		layout.addMember(sourceLayersGrid);
-		layout.addMember(userLayersGrid);
-
-		
-		addMember(layout);
+		addMember(sourceLayersGrid);
 		addMember(buttons);
 		addMember(targetLayersGrid);
 	}
@@ -96,9 +85,6 @@ public class LayerSelectPanel extends HLayout {
 	public void clearValues() {
 		sourceLayersGrid.selectAllRecords();
 		sourceLayersGrid.removeSelectedData();
-
-		userLayersGrid.selectAllRecords();
-		userLayersGrid.removeSelectedData();
 
 		targetLayersGrid.selectAllRecords();
 		targetLayersGrid.removeSelectedData();
@@ -136,8 +122,6 @@ public class LayerSelectPanel extends HLayout {
 					}
 				}
 			}
-		} else {
-			sourceLayersGrid.hide();
 		}
 		
 		if (userLayers != null) {
@@ -148,7 +132,8 @@ public class LayerSelectPanel extends HLayout {
 				if (isPublic && !layer.getLayerModel().isPublic()) {
 					// Ignore layer
 				} else {
-					if (selectedLayers == null || !selectedLayers.contains(layer)) {
+					if ( (selectedLayers == null || !selectedLayers.contains(layer)) &&   
+							(sourceLayers == null || !sourceLayers.contains(layer)) ) {
 						ListGridRecord record = new ListGridRecord();
 						if (layer.getClientLayerInfo() != null) {
 							record.setAttribute(LayerListGrid.FLD_NAME, layer.getClientLayerInfo().getLabel());
@@ -157,12 +142,11 @@ public class LayerSelectPanel extends HLayout {
 						}
 						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
 						record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
-						userLayersGrid.addData(record);
+						record.setAttribute(LayerListGrid.FLD_USER, true);
+						sourceLayersGrid.addData(record);
 					}
 				}
 			}
-		} else {
-			userLayersGrid.hide();
 		}
 		
 		if (selectedLayers != null) {
@@ -180,6 +164,8 @@ public class LayerSelectPanel extends HLayout {
 				record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
 				targetLayersGrid.addData(record);
 			}
+		} else {
+			
 		}
 	}
 

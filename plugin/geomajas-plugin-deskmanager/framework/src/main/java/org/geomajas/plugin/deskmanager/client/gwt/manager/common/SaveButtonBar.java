@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout.ChangedHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -25,15 +26,17 @@ import com.smartgwt.client.widgets.layout.HLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class SaveButtonBar extends HLayout {
+public class SaveButtonBar extends HLayout implements ChangedHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private final IButton edit;
 
 	private final IButton save;
 
 	private final IButton cancel;
+
+	private final IButton reset;
 
 	private Canvas control;
 
@@ -42,7 +45,8 @@ public class SaveButtonBar extends HLayout {
 	/**
 	 * This is just a convenienceMethod.
 	 * 
-	 * @param eventHandler also needs to support Canvas
+	 * @param eventHandler
+	 *            also needs to support Canvas
 	 */
 	public SaveButtonBar(final WoaEventHandler eventHandler) {
 		this(eventHandler, null);
@@ -53,7 +57,8 @@ public class SaveButtonBar extends HLayout {
 
 	/**
 	 * @param eventHandler
-	 * @param parent control that is hosting the editsession.
+	 * @param parent
+	 *            control that is hosting the editsession.
 	 */
 	public SaveButtonBar(final WoaEventHandler eventHandler, Canvas parent) {
 		super(10);
@@ -96,7 +101,29 @@ public class SaveButtonBar extends HLayout {
 			}
 		});
 
+		reset = new IButton(MESSAGES.resetButtonText());
+		reset.setIcon(WidgetLayout.iconUndo);
+		reset.setAutoFit(true);
+		reset.setTooltip(MESSAGES.resetButtonTooltip());
+		reset.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				doResetClick(event);
+			}
+		});
+		eventHandler.registerChangedHandler(this);
+	}
+
+	private void resetState() {
+		if (hasMember(save)) {
+			removeMember(save);
+		}
+		if (hasMember(cancel)) {
+			removeMember(cancel);
+		}
 		addMember(edit);
+		addMember(reset);
+		reset.setDisabled(eventHandler.isDefault());
 	}
 
 	/**
@@ -105,6 +132,7 @@ public class SaveButtonBar extends HLayout {
 	public void doEditClick(ClickEvent event) {
 		if (eventHandler.onEditClick(event)) {
 			removeMember(edit);
+			removeMember(reset);
 			addMember(save);
 			addMember(cancel);
 			Whiteboard.fireEvent(new EditSessionEvent(true, control));
@@ -119,6 +147,8 @@ public class SaveButtonBar extends HLayout {
 			removeMember(save);
 			removeMember(cancel);
 			addMember(edit);
+			reset.setDisabled(eventHandler.isDefault());
+			addMember(reset);
 			Whiteboard.fireEvent(new EditSessionEvent(false, control));
 		}
 	}
@@ -131,11 +161,26 @@ public class SaveButtonBar extends HLayout {
 			removeMember(save);
 			removeMember(cancel);
 			addMember(edit);
+			reset.setDisabled(eventHandler.isDefault());
+			addMember(reset);
+			Whiteboard.fireEvent(new EditSessionEvent(false, control));
+		}
+	}
+
+	/**
+	 * mainly for internal use, but you can use this method to fake a button-click.
+	 */
+	public void doResetClick(ClickEvent event) {
+		if (eventHandler.onResetClick(event)) {
+			resetState();
 			Whiteboard.fireEvent(new EditSessionEvent(false, control));
 		}
 	}
 
 	// -------------------------------------------------
+	public void onChange() {
+		resetState();
+	}
 
 	/**
 	 * 
@@ -143,14 +188,50 @@ public class SaveButtonBar extends HLayout {
 	public interface WoaEventHandler {
 
 		/**
+		 * Trigger edit event, the handler should prepare to be edited (enable forms etc).
+		 * 
 		 * @return state of event. (eg. when event is save, return true when successfully saved, false if for instance
 		 *         some fields were invalid) a return value of false means the buttons will not change state and no
 		 *         editingSessionevents will be fired.
 		 */
 		boolean onEditClick(ClickEvent event);
 
+		/**
+		 * Trigger reset event, the handler should reset it's state to default values, reset all overridden values.
+		 * 
+		 * @param event
+		 * @return
+		 */
+		boolean onResetClick(ClickEvent event);
+
+		/**
+		 * Check if the current configuration is default, not overridden.
+		 * 
+		 * @return true if the configuration is the default configuration.
+		 */
+		boolean isDefault();
+
+		/**
+		 * Save the configuration.
+		 * 
+		 * @param event
+		 * @return
+		 */
 		boolean onSaveClick(ClickEvent event);
 
+		/**
+		 * Cancel the current edit session, reverting changes in the current edit session.
+		 * 
+		 * @param event
+		 * @return
+		 */
 		boolean onCancelClick(ClickEvent event);
+
+		/**
+		 * Register a change handler. Called when the waoeventhandler has changed.
+		 */
+		void registerChangedHandler(ChangedHandler handler);
+
 	}
+
 }

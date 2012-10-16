@@ -12,14 +12,14 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
 import java.util.List;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GroupTreeGrid;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
@@ -30,9 +30,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
+ * Configure the access rights for a blueprint.
+ * 
  * @author Kristof Heirwegh
  */
-public class BlueprintAccessRights extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
+public class BlueprintAccessRights extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
 	private BlueprintDto blueprint;
@@ -41,7 +43,7 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler, B
 
 	public BlueprintAccessRights() {
 		super(5);
-
+		
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);
 
@@ -78,6 +80,7 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler, B
 		} else {
 			groupSelect.setValues(null);
 		}
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -104,4 +107,12 @@ public class BlueprintAccessRights extends VLayout implements WoaEventHandler, B
 		setBlueprint(bpe.getBlueprint());
 	}
 
+	public boolean onResetClick(ClickEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isDefault() {
+		return true;
+	}
 }

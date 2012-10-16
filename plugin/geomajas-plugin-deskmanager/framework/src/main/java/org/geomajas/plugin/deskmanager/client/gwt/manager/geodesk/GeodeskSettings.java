@@ -14,13 +14,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerApplication;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
@@ -41,9 +41,7 @@ import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -53,7 +51,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class GeodeskSettings extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskSettings extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -118,8 +116,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile().getRole())) {
 			geodeskId = new TextItem();
 			geodeskId.setRequired(true);
-			geodeskId.addChangedHandler(new ChangedHandler() {
-
+			geodeskId.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {
 				public void onChanged(ChangedEvent event) {
 					String val = ((TextItem) geodeskId).getValueAsString();
 					if (val != null && !"".equals(val)) {
@@ -177,7 +174,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 		publicGeodesk.setTitle(MESSAGES.geodeskSettingsPublic());
 		publicGeodesk.setWrapTitle(false);
 		publicGeodesk.setPrompt(MESSAGES.geodeskPublicTooltip());
-		publicGeodesk.addChangeHandler(new ChangeHandler() {
+		publicGeodesk.addChangeHandler(new com.smartgwt.client.widgets.form.fields.events.ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
 				if (containsNonPublicLayers) {
@@ -186,7 +183,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 				}
 			}
 		});
-		publicGeodesk.addChangedHandler(new ChangedHandler() {
+		publicGeodesk.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
 				boolean val = publicGeodesk.getValueAsBoolean();
@@ -286,6 +283,7 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 				active.setHint("");
 			}
 		}
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -332,5 +330,15 @@ public class GeodeskSettings extends VLayout implements WoaEventHandler, Geodesk
 
 	public void onGeodeskSelectionChange(GeodeskEvent geodeskEvent) {
 		setGeodesk(geodeskEvent.getGeodesk());
+	}
+	
+
+	public boolean onResetClick(ClickEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isDefault() {
+		return true;
 	}
 }

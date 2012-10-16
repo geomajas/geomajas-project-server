@@ -10,21 +10,21 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig.ThemeConfigurationPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Panel to allow theme configuration on the geodesk.
@@ -32,7 +32,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class GeodeskThemeConfig extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskThemeConfig extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 
 	private GeodeskDto geodesk;
 
@@ -72,6 +72,7 @@ public class GeodeskThemeConfig extends VLayout implements WoaEventHandler, Geod
 				themePanel.setThemeConfig(new ThemesInfo());
 			}
 		}
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -104,4 +105,15 @@ public class GeodeskThemeConfig extends VLayout implements WoaEventHandler, Geod
 		});
 		return true;
 	}
+	
+
+	public boolean onResetClick(ClickEvent event) {
+		geodesk.getMainMapClientWidgetInfos().remove(ThemesInfo.IDENTIFIER);
+		ManagerCommandService.saveGeodesk(geodesk, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return !geodesk.getMainMapClientWidgetInfos().containsKey(ThemesInfo.IDENTIFIER);
+	}		
 }

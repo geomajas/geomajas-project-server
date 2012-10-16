@@ -11,8 +11,8 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -36,13 +36,12 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * @author Kristof Heirwegh
  */
-public class BlueprintSettings extends VLayout implements WoaEventHandler, BlueprintSelectionHandler {
+public class BlueprintSettings extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -134,7 +133,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 				}
 			}
 		});
-		publiek.addChangedHandler(new ChangedHandler() {
+		publiek.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
 				boolean val = publiek.getValueAsBoolean();
@@ -194,6 +193,7 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 //			containsNonPublicLayers = (blueprint.getLayerTree() == null ? false : blueprint.getLayerTree()
 //					.containsNonPublicLayers());
 		}
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -238,5 +238,16 @@ public class BlueprintSettings extends VLayout implements WoaEventHandler, Bluep
 		}
 		return true;
 	}
+
+
+	public boolean onResetClick(ClickEvent event) {
+		return false;
+	}
+
+
+	public boolean isDefault() {
+		return true;
+	}
+
 
 }

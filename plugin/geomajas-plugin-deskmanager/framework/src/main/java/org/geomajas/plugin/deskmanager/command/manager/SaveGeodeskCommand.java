@@ -124,8 +124,13 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodes
 	 * Helper method to copy widget info.
 	 */
 	private void copyWidgetInfo(Geodesk source, Geodesk target) throws Exception {
+		target.getApplicationClientWidgetInfos().clear();
 		target.getApplicationClientWidgetInfos().putAll(source.getApplicationClientWidgetInfos());
+		
+		target.getMainMapClientWidgetInfos().clear();
 		target.getMainMapClientWidgetInfos().putAll(source.getMainMapClientWidgetInfos());
+
+		target.getOverviewMapClientWidgetInfos().clear();
 		target.getOverviewMapClientWidgetInfos().putAll(source.getOverviewMapClientWidgetInfos());
 		
 	}

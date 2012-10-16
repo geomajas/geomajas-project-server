@@ -11,9 +11,9 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.MailManagePanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -32,7 +32,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  *
  */
-public class GeodeskNotifications extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskNotifications extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 	
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -72,6 +72,7 @@ public class GeodeskNotifications extends VLayout implements WoaEventHandler, Ge
 		} else {
 			mailManage.setValues(null);
 		}
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -102,6 +103,17 @@ public class GeodeskNotifications extends VLayout implements WoaEventHandler, Ge
 	public boolean onCancelClick(ClickEvent event) {
 		setGeodesk(loket);
 		mailManage.setDisabled(true);
+		return true;
+	}
+	
+
+	public boolean onResetClick(ClickEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isDefault() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 }

@@ -10,27 +10,27 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.GeodeskLayoutPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar.WoaEventHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * @author Kristof Heirwegh
  */
-public class GeodeskLayout extends VLayout implements WoaEventHandler, GeodeskSelectionHandler {
+public class GeodeskLayout extends AbstractConfigurationLayout implements GeodeskSelectionHandler {
 
 	private GeodeskDto geodesk;
 
@@ -68,6 +68,7 @@ public class GeodeskLayout extends VLayout implements WoaEventHandler, GeodeskSe
 			geodeskLayout = new GeodeskLayoutInfo();
 		}
 		layout.setGeodeskLayout(geodeskLayout);
+		fireChangedHandler();
 	}
 
 	// -- SaveButtonBar events --------------------------------------------------------
@@ -97,4 +98,14 @@ public class GeodeskLayout extends VLayout implements WoaEventHandler, GeodeskSe
 		});
 		return true;
 	}
+	
+	public boolean onResetClick(ClickEvent event) {
+		geodesk.getApplicationClientWidgetInfos().remove(GeodeskLayoutInfo.IDENTIFIER);
+		ManagerCommandService.saveGeodesk(geodesk, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		return true;
+	}
+
+	public boolean isDefault() {
+		return !geodesk.getApplicationClientWidgetInfos().containsKey(GeodeskLayoutInfo.IDENTIFIER);
+	}	
 }

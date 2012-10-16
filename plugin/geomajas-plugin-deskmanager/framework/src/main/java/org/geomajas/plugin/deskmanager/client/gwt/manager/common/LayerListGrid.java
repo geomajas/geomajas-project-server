@@ -48,6 +48,8 @@ public class LayerListGrid extends ListGrid {
 	private static final int FLD_ACTIONS_WIDTH = 60;
 
 	public static final String FLD_OBJECT = "object";
+	
+	public static final String FLD_USER = "userLayer";
 
 	private ListGridRecord rollOverRecord;
 
@@ -80,6 +82,11 @@ public class LayerListGrid extends ListGrid {
 		publicFld.setWidth(70);
 		publicFld.setPrompt(MESSAGES.layerListGridColumnPublicTooltip());
 
+		ListGridField userFld = new ListGridField(FLD_USER, MESSAGES.datalayerGridColumnUserLayer());
+		publicFld.setType(ListGridFieldType.BOOLEAN);
+		publicFld.setWidth(70);
+		publicFld.setPrompt(MESSAGES.datalayerGridColumnUserLayerTooltip());
+
 		if (editable) {
 			ListGridField actionsFld = new ListGridField(FLD_ACTIONS, MESSAGES.gridColumnActions());
 			actionsFld.setType(ListGridFieldType.ICON);
@@ -87,7 +94,7 @@ public class LayerListGrid extends ListGrid {
 			actionsFld.setCanEdit(false);
 			setFields(nameFld, publicFld, actionsFld);
 		} else {
-			setFields(nameFld, publicFld);	
+			setFields(nameFld, publicFld, userFld);	
 		}
 		
 	}

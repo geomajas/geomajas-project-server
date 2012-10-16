@@ -261,6 +261,8 @@ public interface ManagerMessages extends Messages {
 	String datalayerGridColumnActive();
 	String datalayerGridColumnActiveTooltip();
 	String datalayerGridColumnActions();
+	String datalayerGridColumnUserLayer();
+	String datalayerGridColumnUserLayerTooltip();
 	
 	String datalayerGridActionsColumnRemoveTooltip();
 	String datalayerGridWarnPublicCannotBeRemoved();
