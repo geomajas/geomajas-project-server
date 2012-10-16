@@ -17,6 +17,7 @@ import java.util.Map;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
+import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
@@ -45,7 +46,11 @@ public final class GeodeskDtoUtil {
 		if (geodesk instanceof GeodeskDto) {
 			widgetInfos.putAll(getMainMapClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
 		}
-
+		if (geodesk instanceof BlueprintDto) {
+			//Add from userapplication
+			widgetInfos.putAll(((BlueprintDto) geodesk).getUserApplicationInfo().getMainMapWidgetInfos());
+		}
+		
 		widgetInfos.putAll(geodesk.getMainMapClientWidgetInfos());
 		return widgetInfos;
 	}
@@ -63,6 +68,10 @@ public final class GeodeskDtoUtil {
 		if (geodesk instanceof GeodeskDto) {
 			widgetInfos.putAll(getOverviewMapClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
 		}
+		if (geodesk instanceof BlueprintDto) {
+			//Add from userapplication
+			widgetInfos.putAll(((BlueprintDto) geodesk).getUserApplicationInfo().getOverviewMapWidgetInfos());
+		}
 		widgetInfos.putAll(geodesk.getOverviewMapClientWidgetInfos());
 		return widgetInfos;
 	}
@@ -79,6 +88,10 @@ public final class GeodeskDtoUtil {
 		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
 		if (geodesk instanceof GeodeskDto) {
 			widgetInfos.putAll(getApplicationClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
+		}
+		if (geodesk instanceof BlueprintDto) {
+			//Add from userapplication
+			widgetInfos.putAll(((BlueprintDto) geodesk).getUserApplicationInfo().getApplicationWidgetInfos());
 		}
 		widgetInfos.putAll(geodesk.getApplicationClientWidgetInfos());
 		return widgetInfos;

@@ -11,26 +11,26 @@
 package org.geomajas.plugin.deskmanager.command.common;
 
 import org.geomajas.command.Command;
-import org.geomajas.command.dto.GetConfigurationRequest;
-import org.geomajas.command.dto.GetConfigurationResponse;
+import org.geomajas.command.dto.GetMapConfigurationRequest;
+import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * GetConfigurationCommand for the deskmanager. 
  * Fetches from the {@link org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService}.
  * 
  * @author Oliver May
- * @author Kristof Heirwegh
- * 
+ *
  */
-public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
+public class GetMapConfigurationCommand implements Command<GetMapConfigurationRequest, GetMapConfigurationResponse> {
 
 	@Autowired
 	private GeodeskService geodeskService;
@@ -38,25 +38,33 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 	@Autowired
 	private GeodeskConfigurationService configurationService;
 
-	public GetConfigurationResponse getEmptyCommandResponse() {
-		return new GetConfigurationResponse();
+	public GetMapConfigurationResponse getEmptyCommandResponse() {
+		return new GetMapConfigurationResponse();
 	}
 
-	@Transactional(readOnly = true)
-	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
-		// FIXME: is this needed for magdageo?
+	public void execute(GetMapConfigurationRequest request, GetMapConfigurationResponse response) throws Exception {
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
 		}
+		String mapId = request.getMapId();
+		if (null == mapId) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapId");
+		}
+
 		// this checks if geodesk is allowed
 		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId()); 
 
 		if (loket != null) {
 			ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);
-			response.setApplication(loketConfig);
+			for (ClientMapInfo mapInfo : loketConfig.getMaps()) {
+				if (request.getMapId().equals(mapInfo.getId())) {
+					response.setMapInfo(mapInfo);
+				}
+			}
 		} else {
 			throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, request.getApplicationId());
 		}
+		
 	}
 
 }

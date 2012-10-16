@@ -83,9 +83,9 @@ public class LayerListGrid extends ListGrid {
 		publicFld.setPrompt(MESSAGES.layerListGridColumnPublicTooltip());
 
 		ListGridField userFld = new ListGridField(FLD_USER, MESSAGES.datalayerGridColumnUserLayer());
-		publicFld.setType(ListGridFieldType.BOOLEAN);
-		publicFld.setWidth(70);
-		publicFld.setPrompt(MESSAGES.datalayerGridColumnUserLayerTooltip());
+		userFld.setType(ListGridFieldType.BOOLEAN);
+		userFld.setWidth(70);
+		userFld.setPrompt(MESSAGES.datalayerGridColumnUserLayerTooltip());
 
 		if (editable) {
 			ListGridField actionsFld = new ListGridField(FLD_ACTIONS, MESSAGES.gridColumnActions());
