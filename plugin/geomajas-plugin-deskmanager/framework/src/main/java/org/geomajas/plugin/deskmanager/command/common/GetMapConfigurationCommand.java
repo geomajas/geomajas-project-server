@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.command.common;
 
-import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
@@ -30,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Oliver May
  *
  */
-public class GetMapConfigurationCommand implements Command<GetMapConfigurationRequest, GetMapConfigurationResponse> {
+public class GetMapConfigurationCommand extends org.geomajas.command.configuration.GetMapConfigurationCommand {
 
 	@Autowired
 	private GeodeskService geodeskService;

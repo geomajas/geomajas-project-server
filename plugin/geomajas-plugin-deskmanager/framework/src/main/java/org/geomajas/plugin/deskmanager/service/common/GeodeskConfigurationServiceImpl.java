@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.configuration.GetMapConfigurationCommand;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -22,6 +21,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
