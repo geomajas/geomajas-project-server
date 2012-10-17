@@ -39,7 +39,8 @@ public class GeodeskThemeConfig extends AbstractConfigurationLayout implements G
 	private ThemeConfigurationPanel themePanel;
 
 	public GeodeskThemeConfig() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

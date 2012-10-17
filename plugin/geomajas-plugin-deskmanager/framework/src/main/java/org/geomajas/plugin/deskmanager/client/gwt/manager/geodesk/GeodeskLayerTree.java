@@ -40,7 +40,8 @@ public class GeodeskLayerTree extends AbstractConfigurationLayout implements Geo
 	private LayerTreeSelectPanel layerTreeSelect;
 	
 	public GeodeskLayerTree() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

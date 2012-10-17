@@ -35,7 +35,8 @@ public class DatalayerSettings extends AbstractConfigurationLayout {
 	private LayerSettingsForm form;
 
 	public DatalayerSettings() {
-		super(5);
+		super();
+		setMargin(5);
 		setWidth100();
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);

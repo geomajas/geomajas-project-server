@@ -38,7 +38,8 @@ public class BlueprintThemeConfig extends AbstractConfigurationLayout implements
 	private ThemeConfigurationPanel themePanel;
 
 	public BlueprintThemeConfig() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

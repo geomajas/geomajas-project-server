@@ -38,8 +38,8 @@ public class BlueprintGeodeskLayout extends AbstractConfigurationLayout implemen
 	private GeodeskLayoutPanel layout;
 
 	public BlueprintGeodeskLayout() {
-		super(5);
-
+		super();
+		setMargin(5);
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);
 

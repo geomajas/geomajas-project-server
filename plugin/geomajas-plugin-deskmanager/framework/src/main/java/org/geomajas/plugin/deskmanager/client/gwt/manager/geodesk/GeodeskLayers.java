@@ -44,7 +44,8 @@ public class GeodeskLayers extends AbstractConfigurationLayout implements Geodes
 	private LayerSelectPanel layerSelect;
 
 	public GeodeskLayers() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

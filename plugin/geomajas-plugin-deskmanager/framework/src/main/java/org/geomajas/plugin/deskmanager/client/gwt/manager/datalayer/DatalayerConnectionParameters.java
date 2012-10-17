@@ -45,7 +45,8 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 	private KeyValueForm form;
 
 	public DatalayerConnectionParameters() {
-		super(5);
+		super();
+		setMargin(5);
 		setWidth100();
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);

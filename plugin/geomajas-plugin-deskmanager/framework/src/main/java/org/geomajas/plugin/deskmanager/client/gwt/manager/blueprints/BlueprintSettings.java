@@ -74,7 +74,8 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 	private boolean containsNonPublicLayers;
 
 	public BlueprintSettings() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

@@ -39,7 +39,8 @@ public class DatalayerNotifications extends AbstractConfigurationLayout {
 	private MailManagePanel mailManage;
 
 	public DatalayerNotifications() {
-		super(5);
+		super();
+		setMargin(5);
 		setWidth100();
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);

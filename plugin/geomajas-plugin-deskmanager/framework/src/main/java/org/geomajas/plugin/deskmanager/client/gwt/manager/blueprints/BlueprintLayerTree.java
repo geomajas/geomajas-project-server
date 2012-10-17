@@ -38,7 +38,8 @@ public class BlueprintLayerTree extends AbstractConfigurationLayout implements B
 	private LayerTreeSelectPanel layerTreeSelect;
 
 	public BlueprintLayerTree() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

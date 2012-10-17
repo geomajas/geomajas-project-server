@@ -41,7 +41,8 @@ public class GeodeskNotifications extends AbstractConfigurationLayout implements
 	private MailManagePanel mailManage;
 
 	public GeodeskNotifications() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

@@ -37,7 +37,8 @@ public class DatalayerShapeUpload extends AbstractConfigurationLayout {
 	private SaveButtonBar buttonBar;
 
 	public DatalayerShapeUpload() {
-		super(5);
+		super();
+		setMargin(5);
 		setWidth100();
 
 		buttonBar = new SaveButtonBar(this);

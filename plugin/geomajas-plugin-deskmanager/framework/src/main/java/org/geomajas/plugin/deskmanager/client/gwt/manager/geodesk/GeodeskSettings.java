@@ -88,7 +88,8 @@ public class GeodeskSettings extends AbstractConfigurationLayout implements Geod
 	private boolean containsNonPublicLayers;
 
 	public GeodeskSettings() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

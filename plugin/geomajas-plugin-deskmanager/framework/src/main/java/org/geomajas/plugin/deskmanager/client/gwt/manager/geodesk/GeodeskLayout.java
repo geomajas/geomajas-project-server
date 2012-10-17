@@ -37,7 +37,8 @@ public class GeodeskLayout extends AbstractConfigurationLayout implements Geodes
 	private GeodeskLayoutPanel layout;
 
 	public GeodeskLayout() {
-		super(5);
+		super();
+		setMargin(5);
 
 		// setOverflow(Overflow.HIDDEN);
 

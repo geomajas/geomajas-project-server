@@ -42,8 +42,8 @@ public class BlueprintAccessRights extends AbstractConfigurationLayout implement
 	private GroupTreeGrid groupSelect;
 
 	public BlueprintAccessRights() {
-		super(5);
-		
+		super();
+		setMargin(5);
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);
 

@@ -30,7 +30,8 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 	private LayerModelDto lmd;
 
 	public DatalayerStyle() {
-		super(5);
+		super();
+		setMargin(5);
 		setWidth100();
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);

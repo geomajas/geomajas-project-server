@@ -44,7 +44,8 @@ public class GeodeskAccessRights extends AbstractConfigurationLayout implements 
 	private GroupTreeGrid groupSelect;
 
 	public GeodeskAccessRights() {
-		super(5);
+		super();
+		setMargin(5);
 
 		SaveButtonBar buttonBar = new SaveButtonBar(this);
 		addMember(buttonBar);

@@ -13,7 +13,6 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.smartgwt.client.widgets.layout.VLayout;
 
 
@@ -24,10 +23,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public abstract class AbstractConfigurationLayout extends VLayout implements WoaEventHandler {
 
 	private List<ChangedHandler> changedHandlers = new ArrayList<AbstractConfigurationLayout.ChangedHandler>(); 
-	
-	public AbstractConfigurationLayout(int space) {
-		super(space);
-	}
 	
 	public void registerChangedHandler(ChangedHandler handler) {
 		changedHandlers.add(handler);
