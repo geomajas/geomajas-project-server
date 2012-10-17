@@ -88,12 +88,12 @@ public class Blueprint implements BaseGeodesk {
 
 	private boolean deleted;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "sortorder")
 	@JoinTable(name = "blueprint_mainlayer")
 	private List<Layer> mainMapLayers = new ArrayList<Layer>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "sortorder")
 	@JoinTable(name = "blueprint_overviewlayer")
 	private List<Layer> overviewMapLayers = new ArrayList<Layer>();

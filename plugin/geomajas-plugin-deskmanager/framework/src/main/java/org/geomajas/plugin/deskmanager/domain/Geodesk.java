@@ -97,12 +97,12 @@ public class Geodesk implements BaseGeodesk {
 	@JoinColumn(name = "blueprint_id")
 	private Blueprint blueprint;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "sortorder")
 	@JoinTable(name = "geodesk_mainlayer")
 	private List<Layer> mainMapLayers = new ArrayList<Layer>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "sortorder")
 	@JoinTable(name = "geodesk_overviewlayer")
 	private List<Layer> overviewMapLayers = new ArrayList<Layer>();
