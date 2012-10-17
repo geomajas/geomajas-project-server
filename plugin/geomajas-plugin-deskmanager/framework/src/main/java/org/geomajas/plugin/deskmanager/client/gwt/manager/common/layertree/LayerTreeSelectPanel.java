@@ -229,9 +229,10 @@ public class LayerTreeSelectPanel extends HLayout {
 		} else if (node instanceof ClientLayerNodeInfo) {
 			LayerDto layerDto = layers.get(((ClientLayerNodeInfo) node).getLayerId());
 			//Don't add if layerModel is null (layer is orphin)!
-			if (layerDto.getLayerModel() != null) {
-				tn = new LayerTreeNode(node, layerDto);
+			if (layerDto == null || layerDto.getLayerModel() == null) {
+				return null;
 			}
+			tn = new LayerTreeNode(node, layerDto);
 			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, layerDto.getLayerModel().isPublic());
 		}
 		return tn;
