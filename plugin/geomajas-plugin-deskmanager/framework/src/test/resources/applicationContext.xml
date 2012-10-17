@@ -61,6 +61,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	
 	<!-- Override some beans to allow configuration from database -->
 	<bean class="org.geomajas.plugin.deskmanager.command.common.GetConfigurationCommand" id="command.configuration.Get" />
+	<bean class="org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand" id="command.configuration.GetMap" />
 	<bean class="org.geomajas.plugin.deskmanager.service.common.DeskmanagerPrintConfigurationService" id="plugin.printing.component.service.PrintConfigurationService" />
   
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
