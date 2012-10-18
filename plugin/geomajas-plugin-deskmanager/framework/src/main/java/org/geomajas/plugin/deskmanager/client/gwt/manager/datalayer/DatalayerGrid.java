@@ -145,9 +145,11 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 
 				public void onClick(ClickEvent event) {
 					final LayerModelDto model = (LayerModelDto) rollOverRecord.getAttributeAsObject(FLD_OBJECT);
-					if (model.isReadOnly()) {
-						SC.warn(MESSAGES.datalayerGridWarnPublicCannotBeRemoved());
-					} else {
+					//Also allow to remove system layers, they will however be recreated if they still exist after 
+					//server restart.
+//					if (model.isReadOnly()) {
+//						SC.warn(MESSAGES.datalayerGridWarnPublicCannotBeRemoved());
+//					} else {
 						NotificationWindow.showInfoMessage(MESSAGES.datalayerGridControlOnLayerUseBeforeRemove());
 						ManagerCommandService.checkLayerModelInUse(model, new DataCallback<Boolean>() {
 
@@ -168,7 +170,7 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 								}
 							}
 						});
-					}
+//					}
 				}
 			});
 			rollOverCanvas.addMember(new LayoutSpacer());

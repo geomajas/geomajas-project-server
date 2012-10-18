@@ -55,8 +55,6 @@ public class LayerTreeSelectPanel extends HLayout {
 
 	private Tree targetTree;
 
-	private boolean allowNonPublicLayers;
-
 	private BaseGeodeskDto geodesk;
 
 	protected Map<String, LayerDto> layers = new HashMap<String, LayerDto>();
@@ -113,7 +111,6 @@ public class LayerTreeSelectPanel extends HLayout {
 
 	public void setValues(BaseGeodeskDto geodesk) {
 		this.geodesk = geodesk;
-		this.allowNonPublicLayers = geodesk.isPublic();
 
 		layers.clear();
 		for (LayerDto layer : GeodeskDtoUtil.getMainMapLayers(geodesk)) {
@@ -228,7 +225,7 @@ public class LayerTreeSelectPanel extends HLayout {
 			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, true); // no such thing as non-public folders
 		} else if (node instanceof ClientLayerNodeInfo) {
 			LayerDto layerDto = layers.get(((ClientLayerNodeInfo) node).getLayerId());
-			//Don't add if layerModel is null (layer is orphin)!
+			// Don't add if layerModel is null (layer is orphin)!
 			if (layerDto == null || layerDto.getLayerModel() == null) {
 				return null;
 			}
@@ -246,14 +243,6 @@ public class LayerTreeSelectPanel extends HLayout {
 					sourceTree.addList(sourceTree.getChildren(lefty), sourceTree.getRoot());
 				}
 				sourceTree.remove(lefty);
-			}
-		}
-		if (!allowNonPublicLayers) {
-			for (TreeNode node : sourceTree.getAllNodes()) {
-
-				if (sourceTree.isLeaf(node) && !((LayerTreeNode) node).getLayer().getLayerModel().isPublic()) {
-					sourceTree.remove(node);
-				}
 			}
 		}
 	}
