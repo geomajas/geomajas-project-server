@@ -53,8 +53,8 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml", "mapBeans.xml",
 		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
-		ReloadContextTestExecutionListener.class })
+@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class })
 @ReloadContext(classMode=ClassMode.BEFORE_EACH_TEST_METHOD)
 public class LayersModelEventTest {
 

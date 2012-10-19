@@ -21,6 +21,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
  * Execution listener that forces a context reload before the test method is executed on methods/classes annotated with
  * {@link ReloadContext}.
  * 
+ * WARNING: if used in conjunction with {@link DependencyInjectionTestExecutionListener}, the
+ * {@link ReloadContextTestExecutionListener} should come first!
+ * 
  * @author Jan De Moerloose
  * 
  */

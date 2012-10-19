@@ -41,8 +41,8 @@ import java.util.List;
  * @author Jan De Moerloose
  * @author An Buyle
  */
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
-		ReloadContextTestExecutionListener.class })
+@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})

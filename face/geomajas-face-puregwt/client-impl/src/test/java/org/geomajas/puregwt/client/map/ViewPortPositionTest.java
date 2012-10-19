@@ -39,8 +39,8 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  * @author Pieter De Graef
  */
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
-		ReloadContextTestExecutionListener.class })
+@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
 		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })

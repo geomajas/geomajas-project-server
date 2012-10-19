@@ -27,8 +27,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
-		ReloadContextTestExecutionListener.class })
+@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/META-INF/geomajasContext.xml",
 		"/org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml", "/org/geomajas/testdata/beanContext.xml",

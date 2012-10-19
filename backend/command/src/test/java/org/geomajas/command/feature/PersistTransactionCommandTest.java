@@ -49,8 +49,8 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
-		ReloadContextTestExecutionListener.class })
+@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
 @ReloadContext
