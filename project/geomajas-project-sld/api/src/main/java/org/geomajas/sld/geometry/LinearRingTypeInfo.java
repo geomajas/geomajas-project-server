@@ -11,8 +11,8 @@
 package org.geomajas.sld.geometry;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
 import org.geomajas.annotation.Api;
 
 /**
@@ -56,7 +56,7 @@ public class LinearRingTypeInfo implements Serializable {
 
 	private static final int COORDINATES_CHOICE = 1;
 
-	private List<CoordTypeInfo> coordList = new ArrayList<CoordTypeInfo>();
+	private List<CoordTypeInfo> coordList;
 
 	private CoordinatesTypeInfo coordinates;
 

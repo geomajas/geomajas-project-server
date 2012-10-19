@@ -11,8 +11,8 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
 import org.geomajas.annotation.Api;
 
 /**
@@ -55,7 +55,7 @@ public class FilterTypeInfo implements Serializable {
 
 	private LogicOpsTypeInfo logicOps;
 
-	private List<FeatureIdTypeInfo> featureIdList = new ArrayList<FeatureIdTypeInfo>();
+	private List<FeatureIdTypeInfo> featureIdList;
 
 	private void setChoiceSelect(int choice) {
 		if (choiceSelect == -1) {
