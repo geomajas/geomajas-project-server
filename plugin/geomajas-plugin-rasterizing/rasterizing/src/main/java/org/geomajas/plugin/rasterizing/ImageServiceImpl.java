@@ -34,6 +34,7 @@ import org.geotools.map.DefaultMapContext;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default implementation of {@link ImageService}. Uses a pipeline to render the images.
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Component;
  * @author Jan De Moerloose
  */
 @Component
+@Transactional
 public class ImageServiceImpl implements ImageService {
 
 	@Autowired
