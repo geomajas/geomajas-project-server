@@ -183,6 +183,9 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private static final String MARK_SQUARE = "square";
 	private static final String MARK_CIRCLE = "circle";
 	
+	private static final String ASSOCIATION_DELIMITER_SOURCE = "/";
+	private static final String ASSOCIATION_DELIMITER_TARGET = ".";
+	
 	private static final String MISSING_RESOURCE = "missing resource {}";
 
 	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
@@ -745,10 +748,14 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return stringBuilder.toString();
 	}
 
+	private String toPropertyName(String propertyName) {
+		return propertyName.replaceAll(ASSOCIATION_DELIMITER_SOURCE, ASSOCIATION_DELIMITER_TARGET);
+	}
+	
 	private String toComparison(ComparisonOpsTypeInfo coOps, FeatureInfo featureInfo) {
 		if (coOps instanceof BinaryComparisonOpTypeInfo) {
 			BinaryComparisonOpTypeInfo binary = (BinaryComparisonOpTypeInfo) coOps;
-			String propertyName = binary.getExpressionList().get(0).getValue();
+			String propertyName = toPropertyName(binary.getExpressionList().get(0).getValue());
 			String propertyValue = binary.getExpressionList().get(1).getValue();
 			PrimitiveType type = PrimitiveType.STRING;
 			for (AbstractAttributeInfo attributeInfo : featureInfo.getAttributes()) {
@@ -799,11 +806,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				PropertyIsBetweenTypeInfo isBetween = (PropertyIsBetweenTypeInfo) coOps;
 				String lower = isBetween.getLowerBoundary().getExpression().getValue();
 				String upper = isBetween.getUpperBoundary().getExpression().getValue();
-				String propertyName = isBetween.getExpression().getValue();
+				String propertyName = toPropertyName(isBetween.getExpression().getValue());
 				return propertyName + " BETWEEN " + lower + " AND " + upper;
 			} else if (coOps instanceof PropertyIsLikeTypeInfo) {
 				PropertyIsLikeTypeInfo isLike = (PropertyIsLikeTypeInfo) coOps;
-				String propertyName = isLike.getPropertyName().getValue();
+				String propertyName = toPropertyName(isLike.getPropertyName().getValue());
 				return propertyName + " LIKE '" + isLike.getLiteral().getValue() + "'";
 			} else if (coOps instanceof PropertyIsNullTypeInfo) {
 				PropertyIsNullTypeInfo isNull = (PropertyIsNullTypeInfo) coOps;
