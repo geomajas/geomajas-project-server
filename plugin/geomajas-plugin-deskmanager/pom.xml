@@ -32,9 +32,6 @@
 
 	<modules>
 		<module>framework</module>
-		<module>api</module>
-		<module>impl</module>
-		<module>gwt</module>
 	</modules>
 
 	<dependencyManagement>
