@@ -70,21 +70,21 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${admin-backend-version}</version>
+				<version>${runtimeconfig-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${admin-gwt-face-version}</version>
+				<version>${runtimeconfig-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${admin-puregwt-face-version}</version>
+				<version>${runtimeconfig-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -92,7 +92,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>${admin-geotools-version}</version>
+				<version>${runtimeconfig-geotools-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -100,7 +100,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>${admin-wms-version}</version>
+				<version>${runtimeconfig-wms-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -177,11 +177,11 @@
 	</profiles>
 
 	<properties>
-		<admin-backend-version>1.12.0-SNAPSHOT</admin-backend-version>
-		<admin-gwt-face-version>1.11.1</admin-gwt-face-version>
-		<admin-puregwt-face-version>1.0.0-SNAPSHOT</admin-puregwt-face-version>
-		<admin-gwt-version>2.4.0</admin-gwt-version>
-		<admin-geotools-version>1.10.0</admin-geotools-version>
-		<admin-wms-version>1.10.0-SNAPSHOT</admin-wms-version>
+		<runtimeconfig-backend-version>1.12.0-SNAPSHOT</runtimeconfig-backend-version>
+		<runtimeconfig-gwt-face-version>1.11.1</runtimeconfig-gwt-face-version>
+		<runtimeconfig-puregwt-face-version>1.0.0-SNAPSHOT</runtimeconfig-puregwt-face-version>
+		<runtimeconfig-gwt-version>2.4.0</runtimeconfig-gwt-version>
+		<runtimeconfig-geotools-version>1.10.0</runtimeconfig-geotools-version>
+		<runtimeconfig-wms-version>1.10.0-SNAPSHOT</runtimeconfig-wms-version>
 	</properties>
 </project>

@@ -22,11 +22,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="admin" />
+				<property name="name" value="runtimeconfig" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${admin-backend-version}" />
+		<property name="backendVersion" value="${runtimeconfig-backend-version}" />
 		<property name="dependencies">
 			<list>
 				<!--

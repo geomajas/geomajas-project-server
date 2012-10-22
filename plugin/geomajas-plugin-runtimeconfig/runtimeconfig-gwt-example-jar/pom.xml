@@ -29,14 +29,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${admin-backend-version}</version>
+				<version>${runtimeconfig-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${admin-gwt-face-version}</version>
+				<version>${runtimeconfig-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -62,13 +62,13 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${admin-gwt-version}</version>
+			<version>${runtimeconfig-gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${admin-gwt-version}</version>
+			<version>${runtimeconfig-gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
