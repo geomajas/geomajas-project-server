@@ -85,8 +85,10 @@ public class GeodeskThemeConfig extends AbstractConfigurationLayout implements G
 
 	public boolean onSaveClick(ClickEvent event) {
 		// If we save and the clientwidgetinfo was not yet defined on the geodesk, overwrite it.
-		geodesk.getMainMapClientWidgetInfos().put(ThemesInfo.IDENTIFIER,
-				GeodeskDtoUtil.getMainMapClientWidgetInfo(geodesk).get(ThemesInfo.IDENTIFIER));
+		if (geodesk.getMainMapClientWidgetInfos().get(ThemesInfo.IDENTIFIER) == null) {
+			geodesk.getMainMapClientWidgetInfos().put(ThemesInfo.IDENTIFIER,
+					GeodeskDtoUtil.getMainMapClientWidgetInfo(geodesk).get(ThemesInfo.IDENTIFIER));
+		}
 
 		// geodesk.setLayout(themePanel.getLoketLayout());
 		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);
@@ -106,7 +108,6 @@ public class GeodeskThemeConfig extends AbstractConfigurationLayout implements G
 		});
 		return true;
 	}
-	
 
 	public boolean onResetClick(ClickEvent event) {
 		geodesk.getMainMapClientWidgetInfos().remove(ThemesInfo.IDENTIFIER);
@@ -116,5 +117,5 @@ public class GeodeskThemeConfig extends AbstractConfigurationLayout implements G
 
 	public boolean isDefault() {
 		return !geodesk.getMainMapClientWidgetInfos().containsKey(ThemesInfo.IDENTIFIER);
-	}		
+	}
 }
