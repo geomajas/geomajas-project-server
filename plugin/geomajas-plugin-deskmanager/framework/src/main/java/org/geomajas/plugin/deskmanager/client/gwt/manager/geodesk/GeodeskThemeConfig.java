@@ -85,12 +85,8 @@ public class GeodeskThemeConfig extends AbstractConfigurationLayout implements G
 
 	public boolean onSaveClick(ClickEvent event) {
 		// If we save and the clientwidgetinfo was not yet defined on the geodesk, overwrite it.
-		if (geodesk.getMainMapClientWidgetInfos().get(ThemesInfo.IDENTIFIER) == null) {
-			geodesk.getMainMapClientWidgetInfos().put(ThemesInfo.IDENTIFIER,
-					GeodeskDtoUtil.getMainMapClientWidgetInfo(geodesk).get(ThemesInfo.IDENTIFIER));
-		}
+		geodesk.getMainMapClientWidgetInfos().put(ThemesInfo.IDENTIFIER, themePanel.getThemeConfig());
 
-		// geodesk.setLayout(themePanel.getLoketLayout());
 		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);
 		themePanel.setDisabled(true);
 		return true;

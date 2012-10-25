@@ -122,7 +122,6 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 		// ----------------------------------------------------------
 
 		Whiteboard.registerHandler(this);
-		readData();
 	}
 
 	@Override
@@ -171,7 +170,7 @@ public class BlueprintGrid extends ListGrid implements BlueprintHandler {
 
 	// ----------------------------------------------------------
 
-	private void readData() {
+	public void readData() {
 		clearData();
 
 		setShowEmptyMessage(true);

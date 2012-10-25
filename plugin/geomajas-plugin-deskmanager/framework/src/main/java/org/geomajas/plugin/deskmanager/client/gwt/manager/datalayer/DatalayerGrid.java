@@ -114,7 +114,6 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 		// ----------------------------------------------------------
 
 		Whiteboard.registerHandler(this);
-		readData();
 	}
 
 	@Override

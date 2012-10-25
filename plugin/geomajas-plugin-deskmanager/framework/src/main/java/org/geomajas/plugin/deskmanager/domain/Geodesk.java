@@ -143,7 +143,7 @@ public class Geodesk implements BaseGeodesk {
 	private List<Territory> groups = new ArrayList<Territory>();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "tt_mails_geodesks")
+	@JoinTable(name = "config_tt_mails_geodesks")
 	private List<MailAddress> mailAddresses = new ArrayList<MailAddress>();
 
 	// ------------------------------------------------------------------

@@ -202,6 +202,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 				layer.setCLientLayerInfo(layer.getReferencedLayerInfo());
 			}
 			ClientLayerInfo cli = layer.getClientLayerInfo();
+			cli.setLayerInfo(null);
 			cli.setVisible(defaultVisible.getValueAsBoolean());
 			cli.setLabel(label.getValueAsString());
 			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));

@@ -11,12 +11,13 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerTab;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
@@ -30,7 +31,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  *
  */
-public class Geodesks extends VLayout implements EditSessionHandler {
+public class Geodesks extends VLayout implements EditSessionHandler, ManagerTab {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
 	private IButton buttonNew;
@@ -88,6 +89,10 @@ public class Geodesks extends VLayout implements EditSessionHandler {
 		addMember(detail);
 
 		Whiteboard.registerHandler(this);
+	}
+	
+	public void readData() {
+		grid.readData();
 	}
 
 	public void destroy() {

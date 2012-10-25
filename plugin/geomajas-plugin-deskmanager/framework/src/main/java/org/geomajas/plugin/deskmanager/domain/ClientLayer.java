@@ -52,6 +52,8 @@ public class ClientLayer {
 	}
 
 	/**
+	 * Returns the clientLayerInfo. This ClientLayerInfo does not contain the featureinfo.
+	 * 
 	 * @return the clientLayerInfo
 	 */
 	public ClientLayerInfo getClientLayerInfo() {

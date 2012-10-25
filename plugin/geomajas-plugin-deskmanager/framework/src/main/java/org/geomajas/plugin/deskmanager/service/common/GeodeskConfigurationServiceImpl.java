@@ -193,13 +193,16 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	private List<ClientLayerInfo> addLayers(List<org.geomajas.plugin.deskmanager.domain.ClientLayer> layers) {
 		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (org.geomajas.plugin.deskmanager.domain.ClientLayer layer : layers) {
+			ClientLayerInfo sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
+					.getClientLayerId());
 			if (layer.getClientLayerInfo() != null) {
 				clientLayers.add(layer.getClientLayerInfo());
+				//Set layerInfo from the source.
+				layer.getClientLayerInfo().setLayerInfo(sourceCli.getLayerInfo());
 			} else {
 				ClientLayerInfo cli = null;
 				if (layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {
-					cli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
-						.getClientLayerId());
+					cli = sourceCli;
 				}
 				if (cli != null) {
 					clientLayers.add(cli);

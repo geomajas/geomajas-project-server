@@ -88,53 +88,53 @@ public class GeodeskLayoutPanel extends HLayout {
 			}
 		});
 
-		titleColor = new ColorPickerItem();
-		titleColor.setTitle("Titel kleur");
-		titleColor.addChangedHandler(new ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				if (geodeskLayout != null) {
-					geodeskLayout.setTitleColor((String) titleColor.getValue());
-					preview.refresh();
-				}
-			}
-		});
-
-		titleBarColor = new ColorPickerItem();
-		titleBarColor.setTitle("Titel achtergrond kleur");
-		titleBarColor.addChangedHandler(new ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				if (geodeskLayout != null) {
-					geodeskLayout.setTitleBarColor((String) titleBarColor.getValue());
-					preview.refresh();
-				}
-			}
-		});
-
-		bgColor = new ColorPickerItem();
-		bgColor.setTitle("Achtergrond kleur");
-		bgColor.addChangedHandler(new ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				if (geodeskLayout != null) {
-					geodeskLayout.setBgColor((String) bgColor.getValue());
-					preview.refresh();
-				}
-			}
-		});
-
-		borderColor = new ColorPickerItem();
-		borderColor.setTitle("Kleur vensterranden");
-		borderColor.addChangedHandler(new ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				if (geodeskLayout != null) {
-					geodeskLayout.setBorderColor((String) borderColor.getValue());
-					preview.refresh();
-				}
-			}
-		});
+//		titleColor = new ColorPickerItem();
+//		titleColor.setTitle("Titel kleur");
+//		titleColor.addChangedHandler(new ChangedHandler() {
+//
+//			public void onChanged(ChangedEvent event) {
+//				if (geodeskLayout != null) {
+//					geodeskLayout.setTitleColor((String) titleColor.getValue());
+//					preview.refresh();
+//				}
+//			}
+//		});
+//
+//		titleBarColor = new ColorPickerItem();
+//		titleBarColor.setTitle("Titel achtergrond kleur");
+//		titleBarColor.addChangedHandler(new ChangedHandler() {
+//
+//			public void onChanged(ChangedEvent event) {
+//				if (geodeskLayout != null) {
+//					geodeskLayout.setTitleBarColor((String) titleBarColor.getValue());
+//					preview.refresh();
+//				}
+//			}
+//		});
+//
+//		bgColor = new ColorPickerItem();
+//		bgColor.setTitle("Achtergrond kleur");
+//		bgColor.addChangedHandler(new ChangedHandler() {
+//
+//			public void onChanged(ChangedEvent event) {
+//				if (geodeskLayout != null) {
+//					geodeskLayout.setBgColor((String) bgColor.getValue());
+//					preview.refresh();
+//				}
+//			}
+//		});
+//
+//		borderColor = new ColorPickerItem();
+//		borderColor.setTitle("Kleur vensterranden");
+//		borderColor.addChangedHandler(new ChangedHandler() {
+//
+//			public void onChanged(ChangedEvent event) {
+//				if (geodeskLayout != null) {
+//					geodeskLayout.setBorderColor((String) borderColor.getValue());
+//					preview.refresh();
+//				}
+//			}
+//		});
 
 		RegExpValidator regExpValidator = new RegExpValidator();
 		regExpValidator
@@ -172,7 +172,7 @@ public class GeodeskLayoutPanel extends HLayout {
 		});
 
 		form.setTitleOrientation(TitleOrientation.LEFT);
-		form.setFields(title, titleColor, titleBarColor, bgColor, borderColor, logoUrl, logoHref, logoAlt, bannerUrl);
+		form.setFields(title, /*titleColor, titleBarColor, bgColor, borderColor,*/ logoUrl, logoHref, logoAlt, bannerUrl);
 		form.setAutoHeight();
 
 		logoFileForm = new FileUploadForm("Logo :", "Ideale afmeting: 180 x 110px");

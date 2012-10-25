@@ -136,8 +136,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 
 		Whiteboard.registerHandler((GeodeskHandler) this);
 		Whiteboard.registerHandler((BlueprintHandler) this);
-		readData();
-		
+
 		addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				String id = event.getRecord().getAttribute(FLD_GEODESKID);

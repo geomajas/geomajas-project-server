@@ -21,9 +21,12 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
+import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
 /**
  * 
@@ -52,7 +55,6 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 		Tab lagenBeheerTab = new Tab(MESSAGES.mainTabDataLayers());
 		lagenBeheerTab.setPane(new Datalayers());
 		tabSet.addTab(lagenBeheerTab);
-
 		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
 				.getRole())) {
 			Tab blueprintTab = new Tab(MESSAGES.mainTabBlueprints());
@@ -65,6 +67,16 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 		NotificationWindow.getInstance().setWidth(300);
 		NotificationWindow.getInstance().init(this);
 
+		tabSet.addTabSelectedHandler(new TabSelectedHandler() {
+			
+			public void onTabSelected(TabSelectedEvent event) {
+				Canvas tab = event.getTab().getPane();
+				if (tab != null) {
+					((ManagerTab) tab).readData();
+				}
+			}
+		});
+		
 		Whiteboard.registerHandler(this);
 	}
 
