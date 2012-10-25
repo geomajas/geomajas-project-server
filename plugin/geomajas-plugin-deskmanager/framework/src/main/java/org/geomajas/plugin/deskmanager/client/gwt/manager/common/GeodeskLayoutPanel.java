@@ -172,7 +172,8 @@ public class GeodeskLayoutPanel extends HLayout {
 		});
 
 		form.setTitleOrientation(TitleOrientation.LEFT);
-		form.setFields(title, /*titleColor, titleBarColor, bgColor, borderColor,*/ logoUrl, logoHref, logoAlt, bannerUrl);
+		form.setFields(title, /*titleColor, titleBarColor, bgColor, borderColor,*/ 
+				logoUrl, logoHref, logoAlt, bannerUrl);
 		form.setAutoHeight();
 
 		logoFileForm = new FileUploadForm("Logo :", "Ideale afmeting: 180 x 110px");

@@ -199,6 +199,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 				clientLayers.add(layer.getClientLayerInfo());
 				//Set layerInfo from the source.
 				layer.getClientLayerInfo().setLayerInfo(sourceCli.getLayerInfo());
+				layer.getClientLayerInfo().setMaxExtent(sourceCli.getMaxExtent());
 			} else {
 				ClientLayerInfo cli = null;
 				if (layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {

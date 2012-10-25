@@ -102,11 +102,11 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		tab.setPane(accessrights);
 
 //FIXME: Disabled: should move to custom project
-//		loketLayout = new BlueprintGeodeskLayout();
-//		Whiteboard.registerHandler(loketLayout);
-//		tab = new Tab(MESSAGES.blueprintDetailTabLayout());
-//		tabset.addTab(tab);
-//		tab.setPane(loketLayout);
+		loketLayout = new BlueprintGeodeskLayout();
+		Whiteboard.registerHandler(loketLayout);
+		tab = new Tab(MESSAGES.blueprintDetailTabLayout());
+		tabset.addTab(tab);
+		tab.setPane(loketLayout);
 
 		themeConfig = new BlueprintThemeConfig();
 		Whiteboard.registerHandler(themeConfig);

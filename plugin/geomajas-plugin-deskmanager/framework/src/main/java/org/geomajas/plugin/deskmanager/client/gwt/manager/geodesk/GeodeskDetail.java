@@ -115,11 +115,11 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		Whiteboard.registerHandler(notifications);
 		
 // FIXME: Disabled -> should be moved to custom project
-//		geodeskLayout = new GeodeskLayout();
-//		tab = new Tab(MESSAGES.geodeskDetailTabLayout());
-//		tabset.addTab(tab);
-//		tab.setPane(geodeskLayout);
-//		Whiteboard.registerHandler(geodeskLayout);
+		geodeskLayout = new GeodeskLayout();
+		tab = new Tab(MESSAGES.geodeskDetailTabLayout());
+		tabset.addTab(tab);
+		tab.setPane(geodeskLayout);
+		Whiteboard.registerHandler(geodeskLayout);
 		
 
 		themeConfig = new GeodeskThemeConfig();
