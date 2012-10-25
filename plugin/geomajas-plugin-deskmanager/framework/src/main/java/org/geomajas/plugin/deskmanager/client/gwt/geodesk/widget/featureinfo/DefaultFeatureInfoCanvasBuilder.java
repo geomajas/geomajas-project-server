@@ -166,7 +166,7 @@ public class DefaultFeatureInfoCanvasBuilder implements FeatureDetailWidgetBuild
 				return;
 			}
 			if (feature.getLayer() == null) {
-				Log.logWarn("Layer of feature is not set!!");
+				Log.logWarn("ClientLayer of feature is not set!!");
 				return;
 			}
 			this.feature = feature;

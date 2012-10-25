@@ -31,6 +31,7 @@ import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -45,6 +46,7 @@ import org.hibernate.annotations.Type;
  * 
  */
 @Entity
+@Table(name = "config_geodesks")
 public class Geodesk implements BaseGeodesk {
 
 	private static final long serialVersionUID = 1L;
@@ -99,30 +101,33 @@ public class Geodesk implements BaseGeodesk {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "geodesk_mainlayer")
-	private List<Layer> mainMapLayers = new ArrayList<Layer>();
+	@JoinTable(name = "config_geodesk_mainlayer")
+	private List<ClientLayer> mainMapLayers = new ArrayList<ClientLayer>();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "geodesk_overviewlayer")
-	private List<Layer> overviewMapLayers = new ArrayList<Layer>();
+	@JoinTable(name = "config_geodesk_overviewlayer")
+	private List<ClientLayer> overviewMapLayers = new ArrayList<ClientLayer>();
 
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
+	@JoinTable(name = "config_geodesk_applicationclientwidgetinfos")
 	private Map<String, ClientWidgetInfo> applicationClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
+	@JoinTable(name = "config_geodesk_overviewmapclientwidgetinfos")
 	private Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
+	@JoinTable(name = "config_geodesk_mainmapclientwidgetinfos")
 	private Map<String, ClientWidgetInfo> mainMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
 	// null == superuser
@@ -131,8 +136,7 @@ public class Geodesk implements BaseGeodesk {
 	private Territory owner;
 
 	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "tt_groups_geodesks", joinColumns = @JoinColumn(name = "geodesk_id"), 
-			inverseJoinColumns = { @JoinColumn(name = "group_id") })
+	@JoinTable(name = "config_tt_geodesk_territory", joinColumns = @JoinColumn(name = "geodesk_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	// @Fetch(FetchMode.JOIN) -- cannot use join because of the ManyToOne field 'owner' of the same type
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
@@ -386,14 +390,14 @@ public class Geodesk implements BaseGeodesk {
 	 * @param mainMapLayers
 	 *            the mainMapLayers to set
 	 */
-	public void setMainMapLayers(List<Layer> layers) {
+	public void setMainMapLayers(List<ClientLayer> layers) {
 		this.mainMapLayers = layers;
 	}
 
 	/**
 	 * @return the mainMapLayers
 	 */
-	public List<Layer> getMainMapLayers() {
+	public List<ClientLayer> getMainMapLayers() {
 		return mainMapLayers;
 	}
 
@@ -402,14 +406,14 @@ public class Geodesk implements BaseGeodesk {
 	 *            the mainMapLayers to set
 	 */
 
-	public void setOverviewMapLayers(List<Layer> layers) {
+	public void setOverviewMapLayers(List<ClientLayer> layers) {
 		this.overviewMapLayers = layers;
 	}
 
 	/**
 	 * @return the mainMapLayers
 	 */
-	public List<Layer> getOverviewMapLayers() {
+	public List<ClientLayer> getOverviewMapLayers() {
 		return overviewMapLayers;
 	}
 

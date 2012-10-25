@@ -34,7 +34,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GetGeodeskR
 	private final Logger log = LoggerFactory.getLogger(GetGeodeskCommand.class);
 
 	@Autowired
-	private GeodeskService loketService;
+	private GeodeskService geodeskService;
 
 	@Autowired
 	private DtoConverterService dtoService;
@@ -42,7 +42,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GetGeodeskR
 	/** {@inheritDoc} */
 	public void execute(GetGeodeskRequest request, GetGeodeskResponse response) throws Exception {
 		try {
-			response.setGeodesk(dtoService.toDto(loketService.getLoketById(request.getUuid()), true));
+			response.setGeodesk(dtoService.toDto(geodeskService.getGeodeskById(request.getUuid()), true));
 		} catch (Exception e) {
 			response.getErrorMessages().add("Fout bij ophalen loket: " + e.getMessage());
 			log.error("fout bij ophalen loket.", e);

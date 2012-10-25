@@ -49,18 +49,13 @@ public class GeodeskServiceImpl implements GeodeskService {
 	@Autowired
 	private SecurityContext securityContext;
 
-	@Autowired
-	private BlueprintService blueprintService;
-	
-	public Geodesk getLoketById(String uuid) throws GeomajasSecurityException {
+	public Geodesk getGeodeskById(String uuid) throws GeomajasSecurityException {
 		Geodesk l = (Geodesk) factory.getCurrentSession().get(Geodesk.class, uuid);
 		if (l != null) {
 			if (((DeskmanagerSecurityContext) securityContext).readAllowed(l)) {
-				//make sure layers are set
-				blueprintService.updateBluePrintFromUserApplication(l.getBlueprint());
 				return l;
 			} else {
-				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Inlezen Geodesk",
+				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Read Geodesk",
 						securityContext.getUserName());
 			}
 		} else {
@@ -113,7 +108,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		}
 	}
 
-	public Geodesk getLoketByPublicIdUnsafe(String id) {
+	public Geodesk getGeodeskByPublicIdInternal(String id) {
 		if (loketExists(id)) {
 			Query q = factory.getCurrentSession().createQuery(
 					"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
@@ -180,7 +175,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	/**
 	 * group can be null, in which case the loket will need to be public.
 	 */
-	public boolean isGeodeskUseAllowed(String id, Role role, Territory group) {
+	public boolean isGeodeskUseAllowed(String id, Role role, Territory territory) {
 		Query q;
 		switch (role) {
 			case ADMINISTRATOR:
@@ -190,9 +185,9 @@ public class GeodeskServiceImpl implements GeodeskService {
 			case CONSULTING_USER:
 			case EDITING_USER:
 				q = factory.getCurrentSession().createQuery(
-						"select l.id from Geodesk l join l.groups as g with g.code like :code WHERE"
+						"select l.id from Geodesk l join l.groups as t with t.code like :code WHERE"
 								+ " l.geodeskId = :id AND l.deleted = false");
-				q.setParameter("code", group.getCode());
+				q.setParameter("code", territory.getCode());
 				break;
 			case GUEST:
 				q = factory.getCurrentSession().createQuery(

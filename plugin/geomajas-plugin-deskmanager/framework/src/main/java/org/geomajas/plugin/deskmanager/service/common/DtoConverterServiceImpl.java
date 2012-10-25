@@ -18,8 +18,8 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
-import org.geomajas.plugin.deskmanager.domain.Layer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
@@ -44,9 +44,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * TODO.
- * 
- * @author Jan De Moerloose
+ * Implementation for {@link DtoConverterService}.
+ *  
+ * @author Oliver May
  * 
  */
 @Component
@@ -91,13 +91,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				territories.add(fromDto(gDto, false, false));
 			}
 		}
-		List<Layer> mainLayers = bp.getMainMapLayers();
+		List<ClientLayer> mainLayers = bp.getMainMapLayers();
 		if (dto.getMainMapLayers() != null) {
 			for (LayerDto layer : dto.getMainMapLayers()) {
 				mainLayers.add(fromDto(layer));
 			}
 		}
-		List<Layer> overviewLayers = bp.getOverviewMapLayers();
+		List<ClientLayer> overviewLayers = bp.getOverviewMapLayers();
 		if (dto.getOverviewMapLayers() != null) {
 			for (LayerDto layer : dto.getOverviewMapLayers()) {
 				overviewLayers.add(fromDto(layer));
@@ -127,17 +127,16 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bpDto.setPublic(blueprint.isPublic());
 		bpDto.setApplicationClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getApplicationClientWidgetInfos()));
-		bpDto.setMainMapClientWidgetInfos(
-				new HashMap<String, ClientWidgetInfo>(blueprint.getMainMapClientWidgetInfos()));
+		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint.getMainMapClientWidgetInfos()));
 		bpDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getOverviewMapClientWidgetInfos()));
 		if (blueprint.getMainMapLayers() != null) {
-			for (Layer layer : blueprint.getMainMapLayers()) {
+			for (ClientLayer layer : blueprint.getMainMapLayers()) {
 				bpDto.getMainMapLayers().add(toDto(layer));
 			}
 		}
 		if (blueprint.getOverviewMapLayers() != null) {
-			for (Layer layer : blueprint.getOverviewMapLayers()) {
+			for (ClientLayer layer : blueprint.getOverviewMapLayers()) {
 				bpDto.getOverviewMapLayers().add(toDto(layer));
 			}
 		}
@@ -281,13 +280,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				mails.add(fromDto(mad));
 			}
 		}
-		List<Layer> mainLayers = l.getMainMapLayers();
+		List<ClientLayer> mainLayers = l.getMainMapLayers();
 		if (dto.getMainMapLayers() != null) {
 			for (LayerDto layer : dto.getMainMapLayers()) {
 				mainLayers.add(fromDto(layer));
 			}
 		}
-		List<Layer> overviewLayers = l.getOverviewMapLayers();
+		List<ClientLayer> overviewLayers = l.getOverviewMapLayers();
 		if (dto.getOverviewMapLayers() != null) {
 			for (LayerDto layer : dto.getOverviewMapLayers()) {
 				overviewLayers.add(fromDto(layer));
@@ -320,12 +319,12 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(geodesk
 				.getOverviewMapClientWidgetInfos()));
 		if (geodesk.getMainMapLayers() != null) {
-			for (Layer layer : geodesk.getMainMapLayers()) {
+			for (ClientLayer layer : geodesk.getMainMapLayers()) {
 				lDto.getMainMapLayers().add(toDto(layer));
 			}
 		}
 		if (geodesk.getOverviewMapLayers() != null) {
-			for (Layer layer : geodesk.getOverviewMapLayers()) {
+			for (ClientLayer layer : geodesk.getOverviewMapLayers()) {
 				lDto.getOverviewMapLayers().add(toDto(layer));
 			}
 		}
@@ -474,18 +473,17 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return dto;
 	}
 
-	public LayerDto toDto(Layer layer) throws GeomajasException {
+	public LayerDto toDto(ClientLayer layer) throws GeomajasException {
 		if (layer == null) {
 			return null;
 		}
 		LayerDto dto = new LayerDto();
-		dto.setClientLayerIdReference(layer.getClientLayerIdReference());
-		// Are dynamic configurated layerInfo's beans or from database?
-//		dto.setReferencedLayerInfo(layer.getLayerModel().getLayerConfiguration().getClientLayerInfo());
+		dto.setClientLayerIdReference(layer.getLayerModel().getClientLayerId());
 		try {
-			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getClientLayerIdReference()));
+			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
+					.getClientLayerId()));
 		} catch (NoSuchBeanDefinitionException e) {
-			log.warn("ClientLayerInfo not found for layer: " + layer.getClientLayerIdReference()
+			log.warn("ClientLayerInfo not found for layer: " + layer.getLayerModel().getClientLayerId()
 					+ ", not adding clientLayerinfo. You might need to remove these layers");
 		}
 		dto.setCLientLayerInfo(layer.getClientLayerInfo());
@@ -493,12 +491,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return dto;
 	}
 
-	public Layer fromDto(LayerDto dto) throws GeomajasException {
+	public ClientLayer fromDto(LayerDto dto) throws GeomajasException {
 		if (dto == null) {
 			return null;
 		}
-		Layer layer = new Layer();
-		layer.setClientLayerIdReference(dto.getClientLayerIdReference());
+		ClientLayer layer = new ClientLayer();
 		layer.setClientLayerInfo(dto.getClientLayerInfo());
 		layer.setLayerModel(fromDto(dto.getLayerModel()));
 		return layer;

@@ -211,7 +211,7 @@ public final class ManagerCommandService {
 	 * @param id the id of the layer model to fetch
 	 * @param onFinish callback called when layermodel is retrieved.
 	 */
-	public static void getLayerModel(Long id, final DataCallback<LayerModelDto> onFinish) {
+	public static void getLayerModel(String id, final DataCallback<LayerModelDto> onFinish) {
 		GetLayerModelRequest request = new GetLayerModelRequest();
 		request.setId(id);
 		GwtCommand command = new GwtCommand(GetLayerModelRequest.COMMAND);

@@ -66,22 +66,22 @@ public interface BaseGeodesk {
 	/**
 	 * @param mainMapLayers the mainMapLayers to set
 	 */
-	void setMainMapLayers(List<Layer> layers);
+	void setMainMapLayers(List<ClientLayer> layers);
 
 	/**
 	 * @return the mainMapLayers
 	 */
-	List<Layer> getMainMapLayers();
+	List<ClientLayer> getMainMapLayers();
 
 	/**
 	 * @param mainMapLayers the mainMapLayers to set
 	 */
 
-	void setOverviewMapLayers(List<Layer> layers);
+	void setOverviewMapLayers(List<ClientLayer> layers);
 
 	/**
 	 * @return the mainMapLayers
 	 */
-	List<Layer> getOverviewMapLayers();
+	List<ClientLayer> getOverviewMapLayers();
 
 }

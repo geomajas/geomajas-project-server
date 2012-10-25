@@ -53,7 +53,7 @@ public class UploadShapefileForm extends VLayout {
 
 	private static final String RESPONSE_INVALID_FILE = "Invalid file";
 
-	private static final String RESPONSE_INVALID_LAYER = "Invalid Layer";
+	private static final String RESPONSE_INVALID_LAYER = "Invalid ClientLayer";
 
 	private static final String RESPONSE_NO_RIGHTS = "No rights";
 

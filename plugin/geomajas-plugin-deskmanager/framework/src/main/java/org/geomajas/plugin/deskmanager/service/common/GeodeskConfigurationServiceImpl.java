@@ -190,17 +190,21 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		return loketConfig;
 	}
 
-	private List<ClientLayerInfo> addLayers(List<org.geomajas.plugin.deskmanager.domain.Layer> layers) {
+	private List<ClientLayerInfo> addLayers(List<org.geomajas.plugin.deskmanager.domain.ClientLayer> layers) {
 		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
-		for (org.geomajas.plugin.deskmanager.domain.Layer layer : layers) {
+		for (org.geomajas.plugin.deskmanager.domain.ClientLayer layer : layers) {
 			if (layer.getClientLayerInfo() != null) {
 				clientLayers.add(layer.getClientLayerInfo());
 			} else {
-				ClientLayerInfo cli = (ClientLayerInfo) applicationContext.getBean(layer.getClientLayerIdReference());
+				ClientLayerInfo cli = null;
+				if (layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {
+					cli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
+						.getClientLayerId());
+				}
 				if (cli != null) {
 					clientLayers.add(cli);
 				} else {
-					log.error("Unknown client layer info for " + layer.getClientLayerIdReference());
+					log.error("Unknown client layer info for " + layer.getId());
 				}
 			}
 		}

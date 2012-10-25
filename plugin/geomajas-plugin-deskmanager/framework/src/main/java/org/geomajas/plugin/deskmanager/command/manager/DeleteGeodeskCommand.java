@@ -44,7 +44,7 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 				response.getErrorMessages().add("Geen id opgegeven?");
 			} else {
 
-				Geodesk bp = loketService.getLoketById(request.getUuid());
+				Geodesk bp = loketService.getGeodeskById(request.getUuid());
 				if (bp == null) {
 					response.getErrorMessages().add("Geen loket gevonden met id: " + request.getUuid());
 				} else {

@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.command.manager;
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
-import org.geomajas.plugin.deskmanager.domain.Layer;
+import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
@@ -40,8 +40,7 @@ public class GetLayersCommand implements Command<GetLayersRequest, GetLayersResp
 	/** {@inheritDoc} */
 	public void execute(GetLayersRequest request, GetLayersResponse response) throws Exception {
 		for (LayerModel model : layerModelService.getLayerModels()) {
-			Layer layer = new Layer();
-			layer.setClientLayerIdReference(model.getClientLayerId());
+			ClientLayer layer = new ClientLayer();
 			layer.setLayerModel(model);
 			response.getLayers().add(converterService.toDto(layer));
 		}

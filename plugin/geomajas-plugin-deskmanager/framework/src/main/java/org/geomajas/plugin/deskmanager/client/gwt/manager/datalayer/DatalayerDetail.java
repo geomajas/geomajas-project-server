@@ -143,7 +143,7 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 			ListGridRecord record = (ListGridRecord) event.getRecord();
 			if (record != null && record.getAttributeAsString(ID_ATTRIBUTE) != null
 					&& record.getAttributeAsString(ID_ATTRIBUTE).length() != 0) {
-				loadRecord(record.getAttributeAsLong(DatalayerGrid.FLD_ID));
+				loadRecord(record.getAttributeAsString(DatalayerGrid.FLD_ID));
 			} else {
 				setLayerModel(null);
 			}
@@ -161,7 +161,7 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		loadingLabel.setContents("");
 	}
 
-	private void loadRecord(final long id) {
+	private void loadRecord(final String id) {
 		setLoading(); /* Clear edit form */
 		ManagerCommandService.getLayerModel(id, new DataCallback<LayerModelDto>() {
 

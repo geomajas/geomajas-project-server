@@ -66,7 +66,7 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodes
 			} else if (request.getSaveBitmask() < 1) {
 				response.getErrorMessages().add("Niets te bewaren ??");
 			} else {
-				Geodesk target = loketService.getLoketById(request.getLoket().getId());
+				Geodesk target = loketService.getGeodeskById(request.getLoket().getId());
 				if (target == null) {
 					response.getErrorMessages().add(
 							"Geen loket gevonden met id: " + request.getLoket().getId() + " (Nieuw loket?)");

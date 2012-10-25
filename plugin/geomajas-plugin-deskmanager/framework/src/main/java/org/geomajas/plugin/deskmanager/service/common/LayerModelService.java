@@ -30,7 +30,7 @@ public interface LayerModelService {
 
 	void deleteLayerModel(LayerModel lm) throws GeomajasSecurityException, HibernateException;
 
-	LayerModel getLayerModelById(Long id) throws GeomajasSecurityException;
+	LayerModel getLayerModelById(String id) throws GeomajasSecurityException;
 
 	LayerModel getLayerModelByClientLayerId(String id) throws GeomajasSecurityException;
 

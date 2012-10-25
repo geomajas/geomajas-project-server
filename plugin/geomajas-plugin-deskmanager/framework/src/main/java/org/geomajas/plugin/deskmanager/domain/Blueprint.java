@@ -29,6 +29,7 @@ import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -45,6 +46,7 @@ import org.hibernate.annotations.Type;
  * 
  */
 @Entity
+@Table(name="config_blueprints")
 public class Blueprint implements BaseGeodesk {
 
 	private static final long serialVersionUID = 1L;
@@ -88,21 +90,21 @@ public class Blueprint implements BaseGeodesk {
 
 	private boolean deleted;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL/*, orphanRemoval = true*/)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "blueprint_mainlayer")
-	private List<Layer> mainMapLayers = new ArrayList<Layer>();
+	@JoinTable(name = "config_blueprint_mainlayer")
+	private List<ClientLayer> mainMapLayers = new ArrayList<ClientLayer>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL/*, orphanRemoval = true*/)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "blueprint_overviewlayer")
-	private List<Layer> overviewMapLayers = new ArrayList<Layer>();
+	@JoinTable(name = "config_blueprint_overviewlayer")
+	private List<ClientLayer> overviewMapLayers = new ArrayList<ClientLayer>();
 
 	/**
 	 * The groups that can use this blueprint to create loketten
 	 */
 	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class)
-	@JoinTable(name = "groups_blueprints", 
+	@JoinTable(name = "config_blueprint_territory", 
 		joinColumns = @JoinColumn(name = "blueprint_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
@@ -111,18 +113,21 @@ public class Blueprint implements BaseGeodesk {
 	@MapKeyClass(String.class)
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@JoinTable(name = "config_blueprint_applicationclientwidgetinfos")
 	private Map<String, ClientWidgetInfo> applicationClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@JoinTable(name = "config_blueprint_overviewmapclientwidgetinfos")
 	private Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@JoinTable(name = "config_blueprint_mainmapclientwidgetinfos")
 	private Map<String, ClientWidgetInfo> mainMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	// ------------------------------------------------------------------
@@ -302,28 +307,28 @@ public class Blueprint implements BaseGeodesk {
 	/* (non-Javadoc)
 	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setMainMapLayers(java.util.List)
 	 */
-	public void setMainMapLayers(List<Layer> layers) {
+	public void setMainMapLayers(List<ClientLayer> layers) {
 		this.mainMapLayers = layers;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getMainMapLayers()
 	 */
-	public List<Layer> getMainMapLayers() {
+	public List<ClientLayer> getMainMapLayers() {
 		return mainMapLayers;
 	}
 	/* (non-Javadoc)
 	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setOverviewMapLayers(java.util.List)
 	 */
 
-	public void setOverviewMapLayers(List<Layer> layers) {
+	public void setOverviewMapLayers(List<ClientLayer> layers) {
 		this.overviewMapLayers = layers;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getOverviewMapLayers()
 	 */
-	public List<Layer> getOverviewMapLayers() {
+	public List<ClientLayer> getOverviewMapLayers() {
 		return overviewMapLayers;
 	}
 }

@@ -28,7 +28,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 public interface DiscoveryService {
 
 	/**
-	 * This will return a serverside Layer object (Geotools/WMS layer).
+	 * This will return a serverside ClientLayer object (Geotools/WMS layer).
 	 */
 	Layer<?> createLayer(LayerConfiguration lc) throws Exception;
 

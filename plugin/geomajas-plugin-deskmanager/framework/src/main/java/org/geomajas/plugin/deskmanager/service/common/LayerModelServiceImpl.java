@@ -50,7 +50,7 @@ public class LayerModelServiceImpl implements LayerModelService {
 		if (((DeskmanagerSecurityContext) securityContext).saveAllowed(lm)) {
 			factory.getCurrentSession().saveOrUpdate(lm);
 		} else {
-			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Opslaan LaagModel",
+			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Save layermodel",
 					securityContext.getUserName());
 		}
 	}
@@ -64,18 +64,18 @@ public class LayerModelServiceImpl implements LayerModelService {
 				throw new HibernateException("Layermodel is still in use.");
 			}
 		} else {
-			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Verwijderen LaagModel",
+			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Remove layermodel",
 					securityContext.getUserName());
 		}
 	}
 
-	public LayerModel getLayerModelById(Long id) throws GeomajasSecurityException {
+	public LayerModel getLayerModelById(String id) throws GeomajasSecurityException {
 		LayerModel l = (LayerModel) factory.getCurrentSession().get(LayerModel.class, id);
 		if (l != null) {
 			if (((DeskmanagerSecurityContext) securityContext).readAllowed(l)) {
 				return l;
 			} else {
-				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Inlezen LaagModel",
+				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Read layermodel",
 						securityContext.getUserName());
 			}
 		} else {
@@ -84,16 +84,13 @@ public class LayerModelServiceImpl implements LayerModelService {
 	}
 
 	public LayerModel getLayerModelByClientLayerId(String id) throws GeomajasSecurityException {
-		Query q = factory.getCurrentSession().createQuery("FROM LayerModel l WHERE l.clientLayerId = :id");
-		q.setParameter("id", id);
-		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
-		LayerModel l = (LayerModel) q.uniqueResult();
+		LayerModel l = getLayerModelByClientLayerIdInternal(id);
 
 		if (l != null) {
 			if (((DeskmanagerSecurityContext) securityContext).readAllowed(l)) {
 				return l;
 			} else {
-				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Inlezen LaagModel",
+				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Read layermodel",
 						securityContext.getUserName());
 			}
 		} else {
@@ -154,11 +151,9 @@ public class LayerModelServiceImpl implements LayerModelService {
 		return crit.list();
 	}
 	
+	@Transactional(readOnly=true)
 	public LayerModel getLayerModelByClientLayerIdInternal(String id) {
-		Query q = factory.getCurrentSession().createQuery("FROM LayerModel l WHERE l.clientLayerId = :id");
-		q.setParameter("id", id);
-		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
-		LayerModel l = (LayerModel) q.uniqueResult();
-		return l;
+		return (LayerModel) factory.getCurrentSession().createCriteria(LayerModel.class).
+			add(Restrictions.eq("clientLayerId", id)).uniqueResult();
 	}
 }

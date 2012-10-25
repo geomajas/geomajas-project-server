@@ -11,15 +11,17 @@
 package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
-import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
@@ -57,7 +59,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 			if (((DeskmanagerSecurityContext) securityContext).readAllowed(bp)) {
 				return bp;
 			} else {
-				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Inlezen Blauwdruk",
+				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Read blueprint",
 						securityContext.getUserName());
 			}
 		} else {
@@ -67,7 +69,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 
 	public Blueprint getBlueprintByIdInternal(String uuid) {
 		Blueprint bluePrint = (Blueprint) factory.getCurrentSession().get(Blueprint.class, uuid);
-		updateBluePrintFromUserApplication(bluePrint);
+		// updateBluePrintFromUserApplication(bluePrint);
 		return bluePrint;
 	}
 
@@ -98,50 +100,53 @@ public class BlueprintServiceImpl implements BlueprintService {
 			bp.setDeleted(true);
 			factory.getCurrentSession().saveOrUpdate(bp);
 		} else {
-			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Verwijderen Blauwdruk",
+			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Delete blueprint",
 					securityContext.getUserName());
 		}
 	}
 
 	public void saveOrUpdateBlueprint(Blueprint bp) throws GeomajasSecurityException {
 		if (((DeskmanagerSecurityContext) securityContext).saveAllowed(bp)) {
-			Date date = new Date();
-			String fullName = ((DeskmanagerSecurityContext) securityContext).getFullName();
-			if (bp.getCreationBy() == null) {
-				bp.setCreationBy(fullName);
-			}
-			if (bp.getCreationDate() == null) {
-				bp.setCreationDate(date);
-			}
-			bp.setLastEditDate(date);
-			bp.setLastEditBy(fullName);
-
-			factory.getCurrentSession().saveOrUpdate(bp);
+			saveOrUpdateBlueprintInternal(bp);
 		} else {
-			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Opslaan Blauwdruk",
+			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Save blueprint",
 					securityContext.getUserName());
 		}
 	}
 
+	public void saveOrUpdateBlueprintInternal(Blueprint bp) {
+		Date date = new Date();
+		String fullName = ((DeskmanagerSecurityContext) securityContext).getFullName();
+		if (bp.getCreationBy() == null) {
+			bp.setCreationBy(fullName);
+		}
+		bp.setLastEditBy(fullName);
+		if (bp.getCreationDate() == null) {
+			bp.setCreationDate(date);
+		}
+		bp.setLastEditDate(date);
+		updateBluePrintFromUserApplication(bp);
+		factory.getCurrentSession().saveOrUpdate(bp);
+	}
+
 	@Transactional(rollbackFor = { Exception.class })
-	public void updateBluePrintFromUserApplication(BaseGeodesk bluePrint) {
+	public void updateBluePrintFromUserApplication(Blueprint bluePrint) {
 		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {
 			updateBluePrintMainMapFromUserApplication(bluePrint);
-//			factory.getCurrentSession().saveOrUpdate(bluePrint);
 		}
 		if (bluePrint.getOverviewMapLayers() == null || bluePrint.getOverviewMapLayers().isEmpty()) {
 			updateBluePrintOverviewMapFromUserApplication(bluePrint);
-//			factory.getCurrentSession().saveOrUpdate(bluePrint);
 		}
+		factory.getCurrentSession().saveOrUpdate(bluePrint);
 	}
-	
+
 	/**
 	 * Updates blueprint that has no layers set so that the layers configured in the userApplication are inserted into
 	 * the database.
 	 * 
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	private void updateBluePrintMainMapFromUserApplication(BaseGeodesk bp) {
+	private void updateBluePrintMainMapFromUserApplication(Blueprint bp) {
 		UserApplicationInfo uai = getUserApplication(bp.getUserApplicationKey());
 		if (uai != null) {
 			ClientMapInfo mainMap = null;
@@ -150,10 +155,15 @@ public class BlueprintServiceImpl implements BlueprintService {
 					mainMap = map;
 				}
 			}
+			Map<String, LayerModel> layerModels = new HashMap<String, LayerModel>();
+			for (LayerModel lm : layerModelService.getLayerModelsInternal()) {
+				layerModels.put(lm.getClientLayerId(), lm);
+			}
+
 			for (ClientLayerInfo clientLayer : mainMap.getLayers()) {
-				org.geomajas.plugin.deskmanager.domain.Layer layer = new org.geomajas.plugin.deskmanager.domain.Layer();
-				layer.setClientLayerIdReference(clientLayer.getId());
-				layer.setLayerModel(layerModelService.getLayerModelByClientLayerIdInternal(clientLayer.getId()));
+				org.geomajas.plugin.deskmanager.domain.ClientLayer layer = 
+					new org.geomajas.plugin.deskmanager.domain.ClientLayer();
+				layer.setLayerModel(layerModels.get(clientLayer.getId()));
 				bp.getMainMapLayers().add(layer);
 			}
 		}
@@ -165,7 +175,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 	 * 
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	private void updateBluePrintOverviewMapFromUserApplication(BaseGeodesk bp) {
+	private void updateBluePrintOverviewMapFromUserApplication(Blueprint bp) {
 		UserApplicationInfo uai = getUserApplication(bp.getUserApplicationKey());
 		if (uai != null) {
 			ClientMapInfo overviewMap = null;
@@ -174,10 +184,15 @@ public class BlueprintServiceImpl implements BlueprintService {
 					overviewMap = map;
 				}
 			}
+			Map<String, LayerModel> models = new HashMap<String, LayerModel>();
+			for (LayerModel model : layerModelService.getLayerModelsInternal()) {
+				models.put(model.getClientLayerId(), model);
+			}
 			for (ClientLayerInfo clientLayer : overviewMap.getLayers()) {
-				org.geomajas.plugin.deskmanager.domain.Layer layer = new org.geomajas.plugin.deskmanager.domain.Layer();
-				layer.setClientLayerIdReference(clientLayer.getId());
-				layer.setLayerModel(layerModelService.getLayerModelByClientLayerIdInternal(clientLayer.getId()));
+				org.geomajas.plugin.deskmanager.domain.ClientLayer layer = 
+					new org.geomajas.plugin.deskmanager.domain.ClientLayer();
+				LayerModel model = models.get(clientLayer.getId());
+				layer.setLayerModel(model);
 				bp.getOverviewMapLayers().add(layer);
 			}
 		}

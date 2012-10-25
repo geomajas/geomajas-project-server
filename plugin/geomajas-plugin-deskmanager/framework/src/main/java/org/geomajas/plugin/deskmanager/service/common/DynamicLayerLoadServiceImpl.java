@@ -11,25 +11,15 @@
 package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.LayerType;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
@@ -62,12 +52,6 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	@Autowired
 	private DiscoveryService discoService;
 
-	@Autowired(required = false)
-	private Map<String, ClientLayerInfo> layerMap = new LinkedHashMap<String, ClientLayerInfo>();
-
-	@Autowired(required = false)
-	private Map<String, Layer<LayerInfo>> serverLayerMap = new LinkedHashMap<String, Layer<LayerInfo>>();
-
 	@Autowired
 	private ContextConfiguratorService configService;
 
@@ -83,36 +67,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	@Autowired
 	private BeanDefinitionWriterService bser;
 
-	@PostConstruct
-	public void onApplicationStart() {
-		updateSystemLayers();
-		loadDynamicLayers();
-		log.info("Adding default layers to blueprints");
-	}
-
 	// -------------------------------------------------
-
-	private void updateSystemLayers() {
-		log.info("Updating systemlayers");
-		try {
-			List<ClientLayerInfo> layers = getSystemLayers();
-			Map<String, LayerModel> models = toMap(layerModelService.getLayerModelsInternal());
-			for (ClientLayerInfo cli : layers) {
-				if (!models.containsKey(cli.getId())) {
-					try {
-						LayerModel lm = toLayerModel(cli);
-						layerModelService.saveOrUpdateLayerModelInternal(lm);
-						log.info(" - added a new layermodel for: " + cli.getLabel());
-					} catch (Exception e) {
-						log.error("Error creating layer, invalid configuration (service not available?): "
-								+ cli.getLabel());
-					}
-				}
-			}
-		} catch (Exception e) {
-			log.warn("Error updating system layers: " + e.getMessage());
-		}
-	}
 
 	public void loadDynamicLayers() {
 		log.info("Loading dynamic layers");
@@ -221,61 +176,4 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 		}
 	}
 
-	// ---- Update ---------------------------------------------
-
-	private Map<String, LayerModel> toMap(List<LayerModel> models) {
-		Map<String, LayerModel> map = new HashMap<String, LayerModel>();
-		for (LayerModel layerModel : models) {
-			map.put(layerModel.getClientLayerId(), layerModel);
-		}
-		return map;
-	}
-
-	private LayerModel toLayerModel(ClientLayerInfo cli) {
-		LayerModel lm = new LayerModel();
-		ExtraClientLayerInfo ecli = layerModelService.getExtraInfo(cli);
-
-		// Get layerInfo via server layer
-		LayerInfo sli = null;
-		Layer<LayerInfo> layer = serverLayerMap.get(cli.getServerLayerId());
-		if (null != layer) {
-			sli = layer.getLayerInfo();
-		}
-
-		lm.setActive(ecli.isActive());
-		lm.setClientLayerId(cli.getId());
-		lm.setName(ecli.getName() == null ? cli.getLabel() : ecli.getName());
-		lm.setPublic(ecli.isPublicLayer());
-		lm.setMinScale(cli.getMinimumScale());
-		lm.setMaxScale(cli.getMaximumScale());
-		lm.setDefaultVisible(cli.isVisible());
-		lm.setShowInLegend(ecli.isShowInLegend());
-		lm.setReadOnly(true);
-
-		if (null != layer && LayerType.RASTER.equals(sli.getLayerType())) {
-			lm.setLayerType("Raster");
-			lm.setLayerConfiguration(new RasterLayerConfiguration());
-		} else if (null != layer) {
-			lm.setLayerType(sli.getLayerType().getGeometryType());
-			lm.setLayerConfiguration(new VectorLayerConfiguration());
-		}
-		return lm;
-	}
-
-	/**
-	 * filter internal layers when necessary (mask/overview layers)
-	 */
-	private List<ClientLayerInfo> getSystemLayers() {
-		if (layerMap == null || layerMap.size() == 0) {
-			return new ArrayList<ClientLayerInfo>();
-		}
-		List<ClientLayerInfo> res = new ArrayList<ClientLayerInfo>();
-
-		for (ClientLayerInfo cli : layerMap.values()) {
-			if (!layerModelService.getExtraInfo(cli).isSystemLayer()) {
-				res.add(cli);
-			}
-		}
-		return res;
-	}
 }

@@ -50,10 +50,10 @@ public class LayerTreeNode extends TreeNode {
 			if (layer != null) {
 				if (layer.getClientLayerInfo() != null) {
 					setName(layer.getClientLayerInfo().getLabel());
+				} else if (layer.getReferencedLayerInfo() != null) {
+					setName(layer.getReferencedLayerInfo().getLabel());
 				} else if (layer.getLayerModel() != null) {
 					setName(layer.getLayerModel().getName());
-				} else {
-					setName(layer.getClientLayerIdReference());
 				}
 			}
 			setIsFolder(false);

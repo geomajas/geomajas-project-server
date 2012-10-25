@@ -42,8 +42,10 @@ public interface BlueprintService {
 
 	void saveOrUpdateBlueprint(Blueprint bp) throws GeomajasSecurityException;
 
+	void saveOrUpdateBlueprintInternal(Blueprint bp);
+	
 	/**
 	 * 
 	 */
-	void updateBluePrintFromUserApplication(BaseGeodesk bp);
+	void updateBluePrintFromUserApplication(Blueprint bp);
 }

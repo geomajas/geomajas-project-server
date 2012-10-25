@@ -79,6 +79,9 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 	 * @return the full name.
 	 */
 	public String getFullName() {
+		if (getProfile() == null) {
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getProfile().getFirstName());
 		sb.append(" ");

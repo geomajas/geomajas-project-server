@@ -25,7 +25,7 @@ import org.geomajas.security.GeomajasSecurityException;
  */
 public interface GeodeskService {
 
-	Geodesk getLoketById(String uuid) throws GeomajasSecurityException;
+	Geodesk getGeodeskById(String uuid) throws GeomajasSecurityException;
 
 	/**
 	 * This method will check all security, so not for internal use.
@@ -35,7 +35,7 @@ public interface GeodeskService {
 	/**
 	 * This method won't check security, so for internal use.
 	 */
-	Geodesk getLoketByPublicIdUnsafe(String id);
+	Geodesk getGeodeskByPublicIdInternal(String id);
 
 	String getLoketNameByPublicId(String id) throws GeomajasSecurityException;
 

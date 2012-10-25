@@ -30,7 +30,7 @@ public class ShapeFileUploadView extends AbstractView {
 
 	public static final String RESPONSE_INVALID_FILE = "Invalid file";
 
-	public static final String RESPONSE_INVALID_LAYER = "Invalid Layer";
+	public static final String RESPONSE_INVALID_LAYER = "Invalid ClientLayer";
 
 	public static final String RESPONSE_NO_RIGHTS = "No rights";
 
