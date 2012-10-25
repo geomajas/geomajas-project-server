@@ -30,7 +30,7 @@ import org.hibernate.annotations.Type;
  *
  */
 @Entity
-@Table(name="config_clientlayers")
+@Table(name = "config_clientlayers")
 public class ClientLayer {
 
 	@Id

@@ -46,7 +46,7 @@ import org.hibernate.annotations.Type;
  * 
  */
 @Entity
-@Table(name="config_blueprints")
+@Table(name = "config_blueprints")
 public class Blueprint implements BaseGeodesk {
 
 	private static final long serialVersionUID = 1L;

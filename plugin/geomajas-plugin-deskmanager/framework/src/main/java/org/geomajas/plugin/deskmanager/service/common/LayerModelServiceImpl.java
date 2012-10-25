@@ -151,7 +151,7 @@ public class LayerModelServiceImpl implements LayerModelService {
 		return crit.list();
 	}
 	
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public LayerModel getLayerModelByClientLayerIdInternal(String id) {
 		return (LayerModel) factory.getCurrentSession().createCriteria(LayerModel.class).
 			add(Restrictions.eq("clientLayerId", id)).uniqueResult();

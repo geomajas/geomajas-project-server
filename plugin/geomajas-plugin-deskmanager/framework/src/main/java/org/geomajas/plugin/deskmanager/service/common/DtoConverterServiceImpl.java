@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation for {@link DtoConverterService}.
- *  
+ * 
  * @author Oliver May
  * 
  */
@@ -127,7 +127,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bpDto.setPublic(blueprint.isPublic());
 		bpDto.setApplicationClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getApplicationClientWidgetInfos()));
-		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint.getMainMapClientWidgetInfos()));
+		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint.
+				getMainMapClientWidgetInfos()));
 		bpDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getOverviewMapClientWidgetInfos()));
 		if (blueprint.getMainMapLayers() != null) {
