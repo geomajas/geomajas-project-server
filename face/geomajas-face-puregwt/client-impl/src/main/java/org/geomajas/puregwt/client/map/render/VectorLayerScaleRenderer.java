@@ -109,7 +109,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	/** {@inheritDoc} */
 	public void render(Bbox bbox) {
 		// Only fetch when inside the layer bounds:
-		if (BboxService.intersects(bbox, layerBounds)) {
+		if (BboxService.intersects(bbox, layerBounds) && isLayerAvailable()) {
 
 			// Find needed tile codes:
 			List<TileCode> tempCodes = calcCodesForBounds(bbox);
@@ -241,6 +241,16 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 			tileLevel = 0;
 		}
 		return tileLevel;
+	}
+	
+	/**
+	 * Is the layer available for this scale?
+	 * 
+	 * @return if the layer is available on this layer.
+	 */
+	private boolean isLayerAvailable() {
+		return (getScale() >= vectorLayer.getLayerInfo().getMinimumScale().getPixelPerUnit()
+				&& getScale() <= vectorLayer.getLayerInfo().getMaximumScale().getPixelPerUnit());
 	}
 
 	// ------------------------------------------------------------------------
