@@ -12,10 +12,12 @@ package org.geomajas.plugin.vendorspecificpipeline.step;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Saves the combined layer filter in the context and replaces it by the non-security filter (tile bounds) before the
@@ -31,6 +33,9 @@ public class DelaySecurityFilterPreStep implements DelaySecurityFilterStep {
 	public static final String SECURITY_FILTER_KEY = "securityFilter";
 
 	private String id;
+	
+	@Autowired
+	private TestRecorder recorder;
 
 	@Override
 	public void execute(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
@@ -39,6 +44,7 @@ public class DelaySecurityFilterPreStep implements DelaySecurityFilterStep {
 		if (filter instanceof And) {
 			And and = (And) filter;
 			if (and.getChildren().size() == 2) {
+				recorder.record("layer", "removed security filter before layer");
 				context.put(PipelineCode.FILTER_KEY, and.getChildren().get(0));
 				context.put(SECURITY_FILTER_KEY, and.getChildren().get(1));
 			}

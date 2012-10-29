@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>The vendor specific pipeline plugin provides custom pipeline
+  definitions that work around some known limitations of vendor-specific data
+  sources. We currently know of the following limitations:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>ESRI WFS servers have no support for passing a composite spatial
+      filter consisting of multiple spatial subfilters within a WFS
+      GetFeatures request</para>
+    </listitem>
+
+    <listitem>
+      <para>Oracle spatial database shows poor performance when passing
+      multiple spatial restrictions in an SQL query. It seems that the Oracle
+      database is not as good as PostGIS in using the spatial index in an
+      optimal way by e.g. reordering filters.</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>The workaround for both cases turns out to be the same. The Geomajas
+  pipeline applies both a "tile bounds" filter and an "allowed area" filter to
+  the layer. By splitting this up in a two-stage process and only applying the
+  first stage when querying the layer, the spatial filter is reduced to a
+  single "tile bounds" filter. The "allowed area" or security filter has to be
+  applied in-memory in a second stage, of course.</para>
+
+  <para>This plugin has been successfully tested on a ESRI WFS server and
+  Oracle database.</para>
+</chapter>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <para>The configuration is limited to adding the dependency and configuring
+  the correct pipeline where needed.</para>
+
+  <section id="dependencies">
+    <title>Dependencies</title>
+
+    <para>Make sure your include the plug-in in your project. If you are using
+    Maven, add the following dependency to your pom:</para>
+
+    <example>
+      <title>Plug-in dependency</title>
+
+      <programlisting language="xml">&lt;dependency&gt;
+	  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+	  &lt;artifactId&gt;geomajas-plugin-vendorspecificpipeline&lt;/artifactId&gt;
+	  &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;/dependency&gt;</programlisting>
+    </example>
+  </section>
+
+  <section>
+    <title>Pipeline configuration</title>
+
+    <para>To override the default pipeline configuration for all non-cached
+    layers, add the following line to your contextConfigLocation (in
+    web.xml):</para>
+
+    <para><programlisting>&lt;context-param&gt;
+   &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+   &lt;param-value&gt;
+    &lt;!-- generic Geomajas context (normal pipeline defintions) --&gt;
+    classpath:org/geomajas/spring/geomajasContext.xml
+
+<emphasis role="bold">    &lt;!-- delay filtering --&gt;
+    classpath:org/geomajas/plugin/vendorspecificpipeline/DefaultDelaySecurityPipelines.xml
+</emphasis>    
+    &lt;!-- layers and maps included through geomajasExampleContext.xml --&gt;
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+</programlisting>To override the default pipeline configuration for all cached
+    layers, add the following line to your contextConfigLocation (in
+    web.xml):</para>
+
+    <para><programlisting>&lt;context-param&gt;
+   &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+   &lt;param-value&gt;
+    &lt;!-- generic Geomajas context (normal pipeline defintions) --&gt;
+    classpath:org/geomajas/spring/geomajasContext.xml
+
+<emphasis role="bold">    &lt;!-- delay filtering --&gt;
+    classpath:org/geomajas/plugin/vendorspecificpipeline/DefaultCachedAndDelaySecurityPipelines.xml
+</emphasis>    
+    &lt;!-- layers and maps included through geomajasExampleContext.xml --&gt;
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+</programlisting>To override a single layer pipeline definition for a
+    non-cached layer, add the following line to your contextConfigLocation (in
+    web.xml):</para>
+
+    <para><programlisting>&lt;context-param&gt;
+   &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+   &lt;param-value&gt;
+    &lt;!-- generic Geomajas context (normal pipeline defintions) --&gt;
+    classpath:org/geomajas/spring/geomajasContext.xml
+
+<emphasis role="bold">    &lt;!-- delay filtering --&gt;
+    classpath:org/geomajas/plugin/vendorspecificpipeline/DelaySecurityPipeline.xml
+</emphasis>    
+    &lt;!-- layers and maps included through geomajasExampleContext.xml --&gt;
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+
+
+</programlisting>and add the following bean to your Spring context:</para>
+
+    <para>To override a single layer pipeline definition for a cached layer,
+    add the following line to your contextConfigLocation (in web.xml):</para>
+
+    <para><programlisting>&lt;context-param&gt;
+   &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+   &lt;param-value&gt;
+    &lt;!-- generic Geomajas context (normal pipeline defintions) --&gt;
+    classpath:org/geomajas/spring/geomajasContext.xml
+
+<emphasis role="bold">    &lt;!-- delay filtering --&gt;
+    classpath:org/geomajas/plugin/vendorspecificpipeline/CachedAndDelaySecurityPipeline.xml
+</emphasis>    
+    &lt;!-- layers and maps included through geomajasExampleContext.xml --&gt;
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+
+
+</programlisting>and add the following bean to your Spring context:</para>
+
+    <para><programlisting>	&lt;bean class="org.geomajas.service.pipeline.PipelineInfo"&gt;
+		&lt;property name="pipelineName"&gt;&lt;util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/&gt;&lt;/property&gt;
+		&lt;property name="layerId" value="layerXxx" /&gt;
+		&lt;property name="delegatePipeline" ref="PIPELINE_CACHED_DELAY_SECURITY_GET_FEATURES" /&gt;
+	&lt;/bean&gt;
+</programlisting></para>
+  </section>
+</chapter>

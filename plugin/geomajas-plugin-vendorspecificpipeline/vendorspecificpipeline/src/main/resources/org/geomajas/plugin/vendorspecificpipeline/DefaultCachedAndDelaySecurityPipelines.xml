@@ -19,27 +19,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
 
-	<bean name="PIPELINE_CACHED_DELAY_SECURITY_GET_FEATURES" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_CACHED_DELAY_SECURITY_GET_FEATURES" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_FEATURES_CACHED" />
-		<property name="extensions">
-			<map>
-				<entry key="postLayerFilter">
-					<bean
-						class="org.geomajas.plugin.vendorspecificpipeline.step.DelaySecurityFilterPreStep">
-						<property name="id" value="DelaySecurityFilterPreStep" />
-					</bean>
-				</entry>
-				<entry key="postGetFeatures">
-					<bean
-						class="org.geomajas.plugin.vendorspecificpipeline.step.DelaySecurityFilterPostStep">
-						<property name="id" value="DelaySecurityFilterPostStep" />
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-
+ 	<import resource="CachedAndDelaySecurityPipeline.xml"/>
+ 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="delegatePipeline" ref="PIPELINE_CACHED_DELAY_SECURITY_GET_FEATURES" />

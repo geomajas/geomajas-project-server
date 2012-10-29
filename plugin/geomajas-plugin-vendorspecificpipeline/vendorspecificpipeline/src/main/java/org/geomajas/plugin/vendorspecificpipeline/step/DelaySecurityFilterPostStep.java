@@ -15,9 +15,11 @@ import java.util.ListIterator;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Applies the security filter and removes features that are not allowed.
@@ -28,6 +30,9 @@ import org.opengis.filter.Filter;
 public class DelaySecurityFilterPostStep implements DelaySecurityFilterStep {
 
 	private String id;
+	
+	@Autowired
+	private TestRecorder recorder;
 
 	@Override
 	public void execute(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
@@ -40,6 +45,7 @@ public class DelaySecurityFilterPostStep implements DelaySecurityFilterStep {
 					it.remove();
 				}
 			}
+			recorder.record("layer", "applied security filter after layer");
 		}
 	}
 

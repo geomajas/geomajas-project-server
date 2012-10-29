@@ -18,12 +18,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
-		
- 	<import resource="DelaySecurityPipeline.xml"/>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_DELAY_SECURITY_GET_FEATURES" />
+	<bean class="org.geomajas.global.PluginInfo">
+		<property name="version">
+			<bean class="org.geomajas.global.PluginVersionInfo">
+				<property name="name" value="vendorspecificpipeline" />
+				<property name="version" value="${project.version}" />
+			</bean>
+		</property>
+		<property name="backendVersion" value="${vendorspecificpipeline-backend-version}" />
+		<property name="copyrightInfo">
+			<list>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Geomajas"/>
+					<property name="copyright" value="(c) 2008-2011 Geosparc nv"/>
+					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 </beans>
+

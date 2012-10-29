@@ -88,6 +88,10 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
+		</dependency>
 		
 		<!-- Web -->
 		<dependency>

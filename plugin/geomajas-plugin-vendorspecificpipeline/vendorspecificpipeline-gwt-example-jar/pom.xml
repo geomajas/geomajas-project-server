@@ -24,14 +24,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${geomajas-plugin-vendorspecificpipeline-backend-version}</version>
+				<version>${vendorspecificpipeline-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-plugin-vendorspecificpipeline-gwt-face-version}</version>
+				<version>${vendorspecificpipeline-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

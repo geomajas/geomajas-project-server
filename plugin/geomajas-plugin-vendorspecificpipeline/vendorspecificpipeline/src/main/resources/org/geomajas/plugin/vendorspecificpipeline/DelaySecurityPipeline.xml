@@ -18,12 +18,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
-		
- 	<import resource="DelaySecurityPipeline.xml"/>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_DELAY_SECURITY_GET_FEATURES" />
+	<bean name="PIPELINE_DELAY_SECURITY_GET_FEATURES" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_DELAY_SECURITY_GET_FEATURES" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_FEATURES" />
+		<property name="extensions">
+			<map>
+				<entry key="postLayerFilter">
+					<bean
+						class="org.geomajas.plugin.vendorspecificpipeline.step.DelaySecurityFilterPreStep">
+						<property name="id" value="DelaySecurityFilterPreStep" />
+					</bean>
+				</entry>
+				<entry key="postGetFeatures">
+					<bean
+						class="org.geomajas.plugin.vendorspecificpipeline.step.DelaySecurityFilterPostStep">
+						<property name="id" value="DelaySecurityFilterPostStep" />
+					</bean>
+				</entry>
+			</map>
+		</property>
 	</bean>
 
 </beans>

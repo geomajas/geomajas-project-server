@@ -44,14 +44,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${geomajas-plugin-vendorspecificpipeline-backend-version}</version>
+				<version>${vendorspecificpipeline-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-plugin-vendorspecificpipeline-gwt-face-version}</version>
+				<version>${vendorspecificpipeline-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -83,12 +83,12 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${geomajas-plugin-vendorspecificpipeline-gwt-version}</version>
+				<version>${vendorspecificpipeline-gwt-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${geomajas-plugin-vendorspecificpipeline-gwt-version}</version>
+				<version>${vendorspecificpipeline-gwt-version}</version>
 			</dependency>
 
 			<dependency>
@@ -141,9 +141,9 @@
 	</profiles>
 
 	<properties>
-		<geomajas-plugin-vendorspecificpipeline-backend-version>1.11.1</geomajas-plugin-vendorspecificpipeline-backend-version>
-		<geomajas-plugin-vendorspecificpipeline-gwt-face-version>1.11.1</geomajas-plugin-vendorspecificpipeline-gwt-face-version>
-		<geomajas-plugin-vendorspecificpipeline-gwt-version>2.4.0</geomajas-plugin-vendorspecificpipeline-gwt-version>
+		<vendorspecificpipeline-backend-version>1.11.1</vendorspecificpipeline-backend-version>
+		<vendorspecificpipeline-gwt-face-version>1.11.1</vendorspecificpipeline-gwt-face-version>
+		<vendorspecificpipeline-gwt-version>2.4.0</vendorspecificpipeline-gwt-version>
 		<google-gwt-version>2.4.0</google-gwt-version>
 		<geodb-version>0.7</geodb-version>
 	</properties>
