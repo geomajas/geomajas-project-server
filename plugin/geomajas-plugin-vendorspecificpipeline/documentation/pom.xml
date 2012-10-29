@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-vendorspecificcpipeline-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>geomajas-pluginvendorspecificicpipeline documentation</name>
 	<description>geomajas-plugivendorspecificficpipeline documentation</description>
@@ -28,4 +28,10 @@
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
 	
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-vendorspecificpipeline-all-1.0.0/geomajas-plugin-vendorspecificcpipeline-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-vendorspecificpipeline-all-1.0.0/geomajas-plugin-vendorspecificcpipeline-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-vendorspecificpipeline-all-1.0.0/geomajas-plugin-vendorspecificcpipeline-documentation</url>
+  </scm>
 </project>
