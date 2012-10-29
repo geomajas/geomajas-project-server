@@ -21,15 +21,19 @@ import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContext.ClassMode;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -40,10 +44,11 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  * @author Pieter De Graef
  */
+@TestExecutionListeners({ReloadContextTestExecutionListener.class,DependencyInjectionTestExecutionListener.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml", "mapBeans.xml",
 		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
-@DirtiesContext
+@ReloadContext
 public class LayersModelTest {
 
 	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
