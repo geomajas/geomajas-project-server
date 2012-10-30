@@ -88,7 +88,7 @@ public class VectorLayerImpl extends AbstractLayer<ClientVectorLayerInfo> implem
 	/** {@inheritDoc} */
 	public void setFilter(String filter) {
 		this.filter = filter;
-		viewPort.applyBounds(viewPort.getBounds());
+		refresh();
 	}
 
 	/** {@inheritDoc} */
