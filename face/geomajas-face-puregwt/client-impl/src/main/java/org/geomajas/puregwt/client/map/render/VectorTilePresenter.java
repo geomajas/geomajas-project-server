@@ -94,7 +94,8 @@ public class VectorTilePresenter {
 	// -------------------------------------------------------------------------
 
 	public void render() {
-		render(true);
+		//render(true); // No support for sibling tiles, as we only support rasterized tiles.
+		render(false);
 	}
 
 	public void renderSiblings() {
@@ -190,7 +191,8 @@ public class VectorTilePresenter {
 						display = new RasterTileObject(tile.getFeatureContent(), tile.getScreenWidth(), tile
 								.getScreenHeight(), (int) Math.round(position.getY()),
 								(int) Math.round(position.getX()), onRendered);
-						display.setContent(tile.getFeatureContent());
+						// We don't want to fetch the images twice...
+						//display.setContent(tile.getFeatureContent());
 						renderer.getHtmlContainer().add((RasterTileObject) display);
 					}
 					if (renderSiblings) {
