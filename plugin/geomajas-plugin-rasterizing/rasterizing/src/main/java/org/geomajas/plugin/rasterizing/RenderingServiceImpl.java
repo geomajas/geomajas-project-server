@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JComponent;
 
@@ -62,7 +64,13 @@ public class RenderingServiceImpl implements RenderingService {
 	@Autowired
 	private LegendGraphicService legendGraphicService;
 
+	private ExecutorService threadPool;
+
 	private final Logger log = LoggerFactory.getLogger(RenderingServiceImpl.class);
+
+	public RenderingServiceImpl() {
+		threadPool = Executors.newCachedThreadPool();
+	}
 
 	@SuppressWarnings("unchecked")
 	public RenderedImage paintLegend(MapContext mapContext) {
@@ -197,7 +205,7 @@ public class RenderingServiceImpl implements RenderingService {
 	 * 
 	 * @author Jan De Moerloose
 	 */
-	public static class DirectRenderRequest implements RenderRequest {
+	public class DirectRenderRequest implements RenderRequest {
 
 		private final Graphics2D graphics;
 
@@ -223,7 +231,7 @@ public class RenderingServiceImpl implements RenderingService {
 	 * 
 	 * @author Jan De Moerloose
 	 */
-	public static class VectorRenderRequest implements RenderRequest {
+	public class VectorRenderRequest implements RenderRequest {
 
 		private final Graphics2D graphics;
 
@@ -244,6 +252,7 @@ public class RenderingServiceImpl implements RenderingService {
 		public void execute() {
 			StreamingRenderer renderer = new StreamingRenderer();
 			renderer.setContext(mapContext);
+			renderer.setThreadPool(threadPool);
 			if (!hints.containsKey(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY)) {
 				hints.put(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY, true);
 			}
