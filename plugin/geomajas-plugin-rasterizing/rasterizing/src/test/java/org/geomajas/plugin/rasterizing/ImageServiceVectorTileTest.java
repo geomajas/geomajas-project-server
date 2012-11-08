@@ -2,10 +2,7 @@ package org.geomajas.plugin.rasterizing;
 
 import java.io.OutputStream;
 
-import org.geomajas.configuration.CircleInfo;
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.ImageInfo;
-import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -26,7 +23,6 @@ import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.TextSymbolizerInfo;
 import org.geomajas.sld.UserStyleInfo;
-import org.geomajas.sld.WellKnownNameInfo;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.After;
@@ -37,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.style.StylerUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -64,10 +59,6 @@ public class ImageServiceVectorTileTest {
 	@Autowired
 	@Qualifier("layerBeansMultiLineStyleInfo")
 	private NamedStyleInfo layerBeansMultiLineStyleInfo;
-
-	@Autowired
-	@Qualifier("layerBeansMultiLineAssociationStyleInfo")
-	private NamedStyleInfo layerBeansMultiLineAssociationStyleInfo;
 
 	@Autowired
 	@Qualifier("layerBeansMultiPolygon")
@@ -143,9 +134,6 @@ public class ImageServiceVectorTileTest {
 		getMultiLineStyle().getStroke().setStrokeOpacity(0.5f);
 		checkMultiLine("multiline_black_1_semitransparent.png", false, true);
 		getMultiLineStyle().getStroke().setStrokeOpacity(1f);
-		// association
-		checkMultiLineAssociation("multiline_association.png", false, true);
-		
 	}
 
 	@Test
@@ -345,10 +333,6 @@ public class ImageServiceVectorTileTest {
 
 	private void checkMultiLine(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiLine, layerBeansMultiLineStyleInfo);
-	}
-
-	private void checkMultiLineAssociation(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
-		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiLine, layerBeansMultiLineAssociationStyleInfo);
 	}
 
 	private void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {

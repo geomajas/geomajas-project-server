@@ -14,6 +14,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -32,6 +33,7 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geotools.data.collection.CollectionFeatureSource;
@@ -40,6 +42,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.lite.MetaBufferEstimator;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.jboss.serial.io.JBossObjectOutputStream;
@@ -118,7 +121,10 @@ public class VectorLayerFactory implements LayerFactory {
 			Rule gtRule = styleConverterService.convert(selectionrule);
 			// filter on id
 			gtRule.setFilter(filterService.createFidFilter(rasterizingInfo.getSelectedFeatureIds()));
+			// copy to style
 			style.featureTypeStyles().get(0).rules().add(gtRule);
+			// copy to userStyle
+			userStyleInfo.getFeatureTypeStyleList().get(0).getRuleList().add(selectionrule);
 		}
 
 		// estimate the buffer
@@ -159,6 +165,24 @@ public class VectorLayerFactory implements LayerFactory {
 		featureLayer.setTitle(vectorInfo.getLabel());
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		featureLayer.getUserData().put(USERDATA_KEY_LAYER_ID, layer.getId());
+		
+		// filter out the rules that are never used
+		int fIndex = 0;
+		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+			FeatureTypeStyleInfo ftsInfo = userStyleInfo.getFeatureTypeStyleList().get(fIndex); 
+			ListIterator<RuleInfo> it1 = ftsInfo.getRuleList().listIterator();
+			for (ListIterator<Rule> it = fts.rules().listIterator(); it.hasNext();) {
+				Rule rule = it.next();
+				it1.next();
+				Filter f = (rule.getFilter() != null ? rule.getFilter() : Filter.INCLUDE);
+				if (gtFeatures.subCollection(f).isEmpty()) {
+					it.remove();
+					it1.remove();
+				}
+			}
+			fIndex++;
+		}
+		
 		featureLayer.getUserData().put(USERDATA_KEY_STYLE_RULES,
 				userStyleInfo.getFeatureTypeStyleList().get(0).getRuleList());
 		return featureLayer;
