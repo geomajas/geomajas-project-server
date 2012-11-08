@@ -177,8 +177,9 @@ public class MapRendererImpl implements MapRenderer {
 	public void onShow(LayerShowEvent event) {
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
-			HtmlContainer layerContainer = layerRenderers.get(layer).getHtmlContainer();
-			layerContainer.setVisible(true);
+			MapScalesRenderer layerRenderer = layerRenderers.get(layer);
+			layerRenderer.ensureScale(viewPort.getScale(), viewPort.getBounds());
+			layerRenderer.getHtmlContainer().setVisible(true);
 		}
 	}
 
