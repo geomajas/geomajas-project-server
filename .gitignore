@@ -9,4 +9,4 @@ classes/
 listing/
 *.versionsBackup
 *.patch
-
+.settings.xml
