@@ -66,7 +66,6 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 1.7.1
  */
 @Api
-@Transactional(rollbackFor = { Throwable.class })
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
@@ -309,6 +308,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/** {@inheritDoc} */
+	@Transactional(rollbackFor = { Throwable.class })
 	public Object create(Object feature) throws LayerException {
 		SimpleFeatureSource source = getFeatureSource();
 		if (source instanceof SimpleFeatureStore) {
@@ -379,6 +379,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/** {@inheritDoc} */
+	@Transactional(rollbackFor = { Throwable.class })
 	public void delete(String featureId) throws LayerException {
 		SimpleFeatureSource source = getFeatureSource();
 		if (source instanceof SimpleFeatureStore) {
@@ -405,6 +406,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/** {@inheritDoc} */
+	@Transactional(rollbackFor = { Throwable.class })
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		if (exists(getFeatureModel().getId(feature))) {
 			update(feature);
@@ -467,13 +469,16 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
-		if (source instanceof FeatureStore<?, ?>) {
-			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			if (transactionManager != null) {
-				store.setTransaction(transactionManager.getTransaction());
-			}
-		}
 		try {
+			if (source instanceof FeatureStore<?, ?>) {
+				SimpleFeatureStore store = (SimpleFeatureStore) source;
+				if (transactionManager != null) {
+					// only set the transaction if some state was set by a previous write operation
+					if (transactionManager.getTransaction().getState(getDataStore()) != null) {
+						store.setTransaction(transactionManager.getTransaction());
+					}
+				}
+			}
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
 			FeatureIterator<SimpleFeature> it = fc.features();
 			if (transactionManager != null) {

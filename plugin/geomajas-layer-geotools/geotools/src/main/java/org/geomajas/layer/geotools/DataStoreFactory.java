@@ -13,6 +13,7 @@ package org.geomajas.layer.geotools;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.geomajas.annotation.Api;
 import org.geotools.data.DataStore;
@@ -43,6 +44,9 @@ public final class DataStoreFactory {
 	 */
 	@Api
 	public static final String USE_TYPED_FIDS = "useTypedFids";
+	
+	private static final Map<Map<String, Object>, DataStore> DATASTORE_CACHE = 
+			new ConcurrentHashMap<Map<String, Object>, DataStore>();
 
 	/**
 	 * Protect construction.
@@ -62,6 +66,9 @@ public final class DataStoreFactory {
 		Logger log = LoggerFactory.getLogger(DataStoreFactory.class);
 		if (url instanceof String) {
 			parameters.put(ShapefileDataStoreFactory.URLP.key, ResourceUtils.getURL((String) url).toExternalForm());
+		}
+		if (DATASTORE_CACHE.containsKey(parameters)) {
+			return DATASTORE_CACHE.get(parameters);
 		}
 		DataStore store = DataStoreFinder.getDataStore(parameters);
 		Object typed = parameters.get(USE_TYPED_FIDS);
@@ -107,6 +114,7 @@ public final class DataStoreFactory {
 							+ "Unavailable factories : " + missingStr + "\n" + "Available factories : " + availableStr
 							+ "\n");
 		}
+		DATASTORE_CACHE.put(parameters, store);
 		return store;
 	}
 
