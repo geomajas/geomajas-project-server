@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import org.geomajas.configuration.SymbolInfo;
@@ -64,6 +66,8 @@ public class PdfContext {
 	private Stack<Float> prevOrigY = new Stack<Float>();
 
 	private final Logger log = LoggerFactory.getLogger(PdfContext.class);
+	
+	private Map<String, Color> predefinedColors = new HashMap<String, Color>();
 
 	/**
 	 * Constructs a context for the specified writer and application.
@@ -72,6 +76,19 @@ public class PdfContext {
 	 */
 	public PdfContext(PdfWriter writer) {
 		this.writer = writer;
+		predefinedColors.put("black", Color.BLACK);
+		predefinedColors.put("blue", Color.BLUE);
+		predefinedColors.put("cyan", Color.CYAN);
+		predefinedColors.put("darkgray", Color.DARK_GRAY);
+		predefinedColors.put("gray", Color.GRAY);
+		predefinedColors.put("green", Color.GREEN);
+		predefinedColors.put("lightgray", Color.LIGHT_GRAY);
+		predefinedColors.put("magenta", Color.MAGENTA);
+		predefinedColors.put("orange", Color.ORANGE);
+		predefinedColors.put("pink", Color.PINK);
+		predefinedColors.put("red", Color.RED);
+		predefinedColors.put("white", Color.WHITE);
+		predefinedColors.put("yellow", Color.YELLOW);
 	}
 
 	/**
@@ -294,7 +311,16 @@ public class PdfContext {
 		if (null == css) {
 			color = defaultColor;
 		} else {
-			color = Color.decode(css);
+			String lc = css.toLowerCase();
+			if (predefinedColors.containsKey(lc)) {
+				return predefinedColors.get(lc);
+			} else {
+				try {
+					color = Color.decode(css);
+				} catch (NumberFormatException e) {
+					color = defaultColor;
+				}
+			}
 		}
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (opacity * 255));
 	}

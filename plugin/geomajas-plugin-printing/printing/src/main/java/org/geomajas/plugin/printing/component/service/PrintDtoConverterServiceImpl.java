@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.printing.component.service;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
@@ -50,10 +49,6 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 			component.addComponent(childComponent);
 		}
 		return component;
-	}
-
-	public Color toInternal(String color) {
-		return Color.decode(color);
 	}
 
 	public Font toInternal(FontStyleInfo info) {

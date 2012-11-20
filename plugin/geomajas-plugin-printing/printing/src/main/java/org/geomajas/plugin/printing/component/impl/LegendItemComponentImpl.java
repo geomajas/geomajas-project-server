@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.printing.component.impl;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -45,7 +44,7 @@ public class LegendItemComponentImpl extends AbstractPrintComponent<LegendItemCo
 		icon.setStyleInfo(def);
 		icon.setLayerType(layerType);
 		this.addComponent(icon);
-		this.addComponent(new LabelComponentImpl(font, Color.black, label));
+		this.addComponent(new LabelComponentImpl(font, "black", label));
 	}
 
 	/**

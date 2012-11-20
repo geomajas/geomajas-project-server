@@ -13,7 +13,6 @@ package org.geomajas.plugin.printing.client.template;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -30,6 +29,7 @@ import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
 import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
 import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
@@ -39,6 +39,8 @@ import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.dto.RasterizedLayersComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
 
 /**
  * Default print template builder, parameters include title, size, raster DPI, orientation, etc...
@@ -157,21 +159,21 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 				VectorLayer vectorLayer = (VectorLayer) layer;
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
 				String label = layerInfo.getLabel();
-				List<FeatureStyleInfo> defs = layerInfo.getNamedStyleInfo().getFeatureStyles();
-				for (FeatureStyleInfo styleDefinition : defs) {
-					String text;
-					if (defs.size() > 1) {
-						text = label + "(" + styleDefinition.getName() + ")";
-					} else {
-						text = label;
+				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList().get(0);
+				for (RuleInfo rule : fts.getRuleList()) {
+					// use title if present, name if not
+					String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
+					// fall back to style name
+					if (title == null) {
+						title = layerInfo.getNamedStyleInfo().getName();
 					}
 					LegendItemComponentInfo item = new LegendItemComponentInfo();
-					LegendIconComponentInfo icon = new LegendIconComponentInfo();
-					icon.setLabel(text);
-					icon.setStyleInfo(styleDefinition);
-					icon.setLayerType(layerInfo.getLayerType());
-					item.addChild(icon);
-					item.addChild(getLegendLabel(legend, text));
+					LegendGraphicComponentInfo graphic = new LegendGraphicComponentInfo();
+					graphic.setLabel(title);
+					graphic.setRuleInfo(rule);
+					graphic.setLayerId(layerInfo.getServerLayerId());
+					item.addChild(graphic);
+					item.addChild(getLegendLabel(legend, title));
 					legend.addChild(item);
 				}
 			} else if (layer instanceof RasterLayer && layer.isShowing()) {

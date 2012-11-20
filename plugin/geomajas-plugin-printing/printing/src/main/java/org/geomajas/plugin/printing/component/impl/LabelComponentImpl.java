@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.printing.component.impl;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.plugin.printing.component.LabelComponent;
@@ -18,7 +17,6 @@ import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
-import org.geomajas.plugin.printing.parser.ColorConverter;
 import org.geomajas.plugin.printing.parser.FontConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -51,20 +49,17 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/**
 	 * Color of the text.
 	 */
-	@XStreamConverter(ColorConverter.class)
-	private Color fontColor;
+	private String fontColor;
 
 	/**
 	 * Background color.
 	 */
-	@XStreamConverter(ColorConverter.class)
-	private Color backgroundColor;
+	private String backgroundColor;
 
 	/**
 	 * Line color.
 	 */
-	@XStreamConverter(ColorConverter.class)
-	private Color borderColor;
+	private String borderColor;
 
 	/**
 	 * Only text, no border ?
@@ -87,14 +82,14 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 
 
 	public LabelComponentImpl() {
-		this(Color.white, Color.BLACK, new Font("Dialog", Font.PLAIN, 12), Color.black, "<missing text>", false, 1f);
+		this("white", "black", new Font("Dialog", Font.PLAIN, 12), "black", "<missing text>", false, 1f);
 	}
 
-	public LabelComponentImpl(Font font, Color fontColor, String text) {
-		this(Color.white, Color.BLACK, font, fontColor, text, true, 1f);
+	public LabelComponentImpl(Font font, String fontColor, String text) {
+		this("white", "black", font, fontColor, text, true, 1f);
 	}
 
-	public LabelComponentImpl(Color backgroundColor, Color borderColor, Font font, Color fontColor, String text,
+	public LabelComponentImpl(String backgroundColor, String borderColor, Font font, String fontColor, String text,
 			boolean textOnly, float lineWidth) {
 		this.backgroundColor = backgroundColor;
 		this.borderColor = borderColor;
@@ -114,42 +109,27 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 		visitor.visit(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getBackgroundColor()
-	 */
-	public Color getBackgroundColor() {
+	public String getBackgroundColor() {
 		return backgroundColor;
 	}
 
-	public void setBackgroundColor(Color backgroundColor) {
+	public void setBackgroundColor(String backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getBorderColor()
-	 */
-	public Color getBorderColor() {
+	public String getBorderColor() {
 		return borderColor;
 	}
 
-	public void setBorderColor(Color borderColor) {
+	public void setBorderColor(String borderColor) {
 		this.borderColor = borderColor;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getFontColor()
-	 */
-	public Color getFontColor() {
+	public String getFontColor() {
 		return fontColor;
 	}
 
-	public void setFontColor(Color fontColor) {
+	public void setFontColor(String fontColor) {
 		this.fontColor = fontColor;
 	}
 
@@ -207,11 +187,11 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 
 	public void render(PdfContext context) {
 		if (!isTextOnly()) {
-			context.fillRectangle(getSize(), getBackgroundColor());
-			context.strokeRectangle(getSize(), getBorderColor(), getLineWidth());
+			context.fillRectangle(getSize(), context.getColor(getBackgroundColor(), 1f));
+			context.strokeRectangle(getSize(), context.getColor(getBorderColor(), 1f), getLineWidth());
 		}
 		if (getText() != null) {
-			context.drawText(getText(), getFont(), getSize(), getFontColor());
+			context.drawText(getText(), getFont(), getSize(), context.getColor(getFontColor(), 1f));
 		}
 	}
 
@@ -224,10 +204,10 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 
 	public void fromDto(LabelComponentInfo labelInfo) {
 		super.fromDto(labelInfo);
-		setBackgroundColor(converterService.toInternal(labelInfo.getBackgroundColor()));
-		setBorderColor(converterService.toInternal(labelInfo.getBorderColor()));
+		setBackgroundColor(labelInfo.getBackgroundColor());
+		setBorderColor(labelInfo.getBorderColor());
 		setFont(converterService.toInternal(labelInfo.getFont()));
-		setFontColor(converterService.toInternal(labelInfo.getFontColor()));
+		setFontColor(labelInfo.getFontColor());
 		setLineWidth(labelInfo.getLineWidth());
 		setTextOnly(labelInfo.isTextOnly());
 		setText(labelInfo.getText());

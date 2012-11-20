@@ -126,7 +126,7 @@ public class DefaultDocumentTest {
 				LabelComponentInfo legendLabel = new LabelComponentInfo();
 				legendLabel.setFont(legend.getFont());
 				legendLabel.setBackgroundColor("0xFFFFFF");
-				legendLabel.setBorderColor("0x000000");
+				legendLabel.setBorderColor("black");
 				legendLabel.setFontColor("0x000000");
 				legendLabel.setText(layerInfo.getLabel());
 				legendLabel.setTextOnly(true);

@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.printing.service;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.StringReader;
@@ -279,9 +278,9 @@ public class PrintServiceImpl implements PrintService {
 	private LabelComponentImpl createTitle() {
 		LabelComponentImpl title = createInstance(LabelComponentImpl.class);
 		title.setFont(new Font("Dialog", Font.ITALIC, 14));
-		title.setBackgroundColor(Color.white);
-		title.setBorderColor(Color.BLACK);
-		title.setFontColor(Color.BLACK);
+		title.setBackgroundColor("white");
+		title.setBorderColor("BLACK");
+		title.setFontColor("BLACK");
 		title.setText("<Title>");
 		title.getConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
 		title.getConstraint().setAlignmentX(LayoutConstraintInfo.CENTER);
