@@ -15,7 +15,6 @@ import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
 
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
@@ -35,10 +34,6 @@ public class GeodeskLayoutPanel extends HLayout {
 
 	private TextItem title;
 
-	private ColorPickerItem titleColor;
-
-	private ColorPickerItem bgColor;
-
 	private DynamicForm form;
 
 	private FileUploadForm logoFileForm;
@@ -50,10 +45,6 @@ public class GeodeskLayoutPanel extends HLayout {
 	private HiddenItem bannerUrl;
 
 	private TextItem logoAlt;
-
-	private ColorPickerItem borderColor;
-
-	private ColorPickerItem titleBarColor;
 
 	private TextItem logoHref;
 
@@ -87,54 +78,6 @@ public class GeodeskLayoutPanel extends HLayout {
 				}
 			}
 		});
-
-//		titleColor = new ColorPickerItem();
-//		titleColor.setTitle("Titel kleur");
-//		titleColor.addChangedHandler(new ChangedHandler() {
-//
-//			public void onChanged(ChangedEvent event) {
-//				if (geodeskLayout != null) {
-//					geodeskLayout.setTitleColor((String) titleColor.getValue());
-//					preview.refresh();
-//				}
-//			}
-//		});
-//
-//		titleBarColor = new ColorPickerItem();
-//		titleBarColor.setTitle("Titel achtergrond kleur");
-//		titleBarColor.addChangedHandler(new ChangedHandler() {
-//
-//			public void onChanged(ChangedEvent event) {
-//				if (geodeskLayout != null) {
-//					geodeskLayout.setTitleBarColor((String) titleBarColor.getValue());
-//					preview.refresh();
-//				}
-//			}
-//		});
-//
-//		bgColor = new ColorPickerItem();
-//		bgColor.setTitle("Achtergrond kleur");
-//		bgColor.addChangedHandler(new ChangedHandler() {
-//
-//			public void onChanged(ChangedEvent event) {
-//				if (geodeskLayout != null) {
-//					geodeskLayout.setBgColor((String) bgColor.getValue());
-//					preview.refresh();
-//				}
-//			}
-//		});
-//
-//		borderColor = new ColorPickerItem();
-//		borderColor.setTitle("Kleur vensterranden");
-//		borderColor.addChangedHandler(new ChangedHandler() {
-//
-//			public void onChanged(ChangedEvent event) {
-//				if (geodeskLayout != null) {
-//					geodeskLayout.setBorderColor((String) borderColor.getValue());
-//					preview.refresh();
-//				}
-//			}
-//		});
 
 		RegExpValidator regExpValidator = new RegExpValidator();
 		regExpValidator
@@ -223,16 +166,12 @@ public class GeodeskLayoutPanel extends HLayout {
 		geodeskLayout = layout;
 		preview.setLoketLayout(geodeskLayout);
 		title.setValue(geodeskLayout.getTitle());
-		titleColor.setValue(geodeskLayout.getTitleColor());
-		bgColor.setValue(geodeskLayout.getBgColor());
 		logoUrl.setValue(geodeskLayout.getLogoUrl());
 		logoFileForm.setUrl(geodeskLayout.getLogoUrl());
 		logoAlt.setValue(geodeskLayout.getLogoAlt());
 		logoHref.setValue(geodeskLayout.getLogoHref());
 		bannerUrl.setValue(geodeskLayout.getBannerUrl());
 		bannerFileForm.setUrl(geodeskLayout.getBannerUrl());
-		titleBarColor.setValue(geodeskLayout.getTitleBarColor());
-		borderColor.setValue(geodeskLayout.getBorderColor());
 	}
 
 	public GeodeskLayoutInfo getGeodeskLayout() {

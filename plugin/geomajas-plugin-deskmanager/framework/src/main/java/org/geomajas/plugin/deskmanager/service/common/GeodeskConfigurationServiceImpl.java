@@ -193,11 +193,13 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	private List<ClientLayerInfo> addLayers(List<org.geomajas.plugin.deskmanager.domain.ClientLayer> layers) {
 		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (org.geomajas.plugin.deskmanager.domain.ClientLayer layer : layers) {
-			ClientLayerInfo sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
-					.getClientLayerId());
-			if (layer.getClientLayerInfo() != null) {
+			ClientLayerInfo sourceCli = null;
+			if (layer != null && layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {
+				sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel().getClientLayerId());
+			}
+			if (layer != null && layer.getClientLayerInfo() != null) {
 				clientLayers.add(layer.getClientLayerInfo());
-				//Set layerInfo from the source.
+				// Set layerInfo from the source.
 				layer.getClientLayerInfo().setLayerInfo(sourceCli.getLayerInfo());
 				layer.getClientLayerInfo().setMaxExtent(sourceCli.getMaxExtent());
 			} else {
