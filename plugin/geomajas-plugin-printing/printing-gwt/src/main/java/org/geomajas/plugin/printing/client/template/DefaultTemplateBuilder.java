@@ -159,7 +159,8 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 				VectorLayer vectorLayer = (VectorLayer) layer;
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
 				String label = layerInfo.getLabel();
-				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList().get(0);
+				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().
+					getFeatureTypeStyleList().get(0);
 				for (RuleInfo rule : fts.getRuleList()) {
 					// use title if present, name if not
 					String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());

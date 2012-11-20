@@ -32,31 +32,61 @@ public class LegendGraphicComponentInfo extends PrintComponentInfo {
 	private RuleInfo ruleInfo;
 
 	
+	/**
+	 * Get label string.
+	 *
+	 * @return label
+	 */
 	public String getLabel() {
 		return label;
 	}
 
 	
+	/**
+	 * Set label string.
+	 *
+	 * @param label label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
 	
+	/**
+	 * Get server layer id.
+	 *
+	 * @return id
+	 */
 	public String getLayerId() {
 		return layerId;
 	}
 
 	
+	/**
+	 * Set server layer id.
+	 *
+	 * @param layerId id
+	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}
 
 	
+	/**
+	 * Get SLD rule info.
+	 *
+	 * @return rule info
+	 */
 	public RuleInfo getRuleInfo() {
 		return ruleInfo;
 	}
 
 	
+	/**
+	 * Set SLD rule info.
+	 *
+	 * @param ruleInfo rule info
+	 */
 	public void setRuleInfo(RuleInfo ruleInfo) {
 		this.ruleInfo = ruleInfo;
 	}
