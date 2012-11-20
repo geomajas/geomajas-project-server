@@ -10,10 +10,12 @@
  */
 package org.geomajas.plugin.printing.component.service;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.plugin.printing.PrintingException;
+import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.springframework.beans.BeansException;
@@ -31,6 +33,8 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 
 	@Autowired
 	private ApplicationContext applicationContext;
+	
+	private PdfContext context = new PdfContext(null);
 
 	@SuppressWarnings("unchecked")
 	public <T extends PrintComponentInfo> PrintComponent<T> toInternal(T info) throws PrintingException {
@@ -49,6 +53,10 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 			component.addComponent(childComponent);
 		}
 		return component;
+	}
+
+	public Color toInternal(String color) {
+		return context.getColor(color, 1f);
 	}
 
 	public Font toInternal(FontStyleInfo info) {
