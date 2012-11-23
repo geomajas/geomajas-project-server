@@ -21,6 +21,7 @@ import org.geomajas.plugin.editing.jsapi.client.gfx.JsGeometryRenderer;
 import org.geomajas.plugin.editing.jsapi.client.merge.JsGeometryMergeService;
 import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
 import org.geomajas.plugin.editing.jsapi.client.split.JsGeometrySplitService;
+import org.geomajas.plugin.editing.jsapi.gwt.client.gfx.JsStyleService;
 import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
@@ -47,6 +48,8 @@ public class JsGeometryEditor implements Exportable {
 	private JsGeometrySplitService splitService;
 
 	private JsGeometryMergeService mergeService;
+
+	private JsStyleService styleService;
 	
 	private JsGeometryRenderer renderer;
 
@@ -61,7 +64,8 @@ public class JsGeometryEditor implements Exportable {
 		editingService = new JsGeometryEditService(delegate.getEditService());
 		splitService = new JsGeometrySplitService(delegate.getEditService());
 		mergeService = new JsGeometryMergeService();
-		renderer = new JsGeometryRenderer(delegate.getRenderer());		
+		renderer = new JsGeometryRenderer(delegate.getRenderer());
+		styleService = new JsStyleService(delegate.getStyleService());
 	}
 
 	/**
@@ -98,6 +102,10 @@ public class JsGeometryEditor implements Exportable {
 
 	public JsGeometryMergeService getMergeService() {
 		return mergeService;
+	}
+
+	public JsStyleService getStyleService() {
+		return styleService;
 	}
 
 	public boolean isZoomOnStart() {

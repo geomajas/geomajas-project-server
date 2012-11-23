@@ -79,7 +79,9 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent;
 import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler;
 import org.geomajas.plugin.editing.gwt.client.controller.CompositeGeometryIndexController;
+import org.geomajas.plugin.editing.gwt.client.handler.LabelDragLineHandler;
 import org.geomajas.plugin.editing.gwt.client.handler.EditingHandlerRegistry;
+import org.geomajas.plugin.editing.gwt.client.handler.InfoDragLineHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Cursor;
@@ -116,12 +118,16 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	private String baseName = "editing";
 
 	private HandlerRegistration mapViewRegistration;
-
-	private boolean closeRingWhileInserting;
+	
+	private LabelDragLineHandler dragLineLabelHandler;
+	
+	private InfoDragLineHandler infoWindowHandler;
 
 	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
+		dragLineLabelHandler = new LabelDragLineHandler(mapWidget, editingService);
+		infoWindowHandler = new InfoDragLineHandler(mapWidget, editingService);
 	}
 
 	// ------------------------------------------------------------------------
@@ -150,6 +156,21 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
 		// Also look at the map for changes in the MapView:
 		mapViewRegistration = mapWidget.getMapModel().getMapView().addMapViewChangedHandler(this);
+
+		// Register optional handlers
+		dragLineLabelHandler.unregister();
+		if (styleService.isShowDragLabels()) {
+			dragLineLabelHandler.register();
+		}
+
+		infoWindowHandler.unregister();
+		if (styleService.isShowInfo()) {
+			infoWindowHandler.register();
+			infoWindowHandler.onGeometryEditStart(event);
+			if (styleService.getInfoProvider() != null) {
+				infoWindowHandler.setInfoProvider(styleService.getInfoProvider());
+			}
+		}
 
 		// Render the geometry on the map:
 		groups.clear();
@@ -378,7 +399,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 						styleService.getEdgeTentativeMoveStyle());
 
 				// Line 2
-				if (closeRingWhileInserting) {
+				if (styleService.isCloseRingWhileInserting()) {
 					temp1 = vertices[vertices.length - 1];
 					c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp1);
 					edge = mapWidget.getMapModel().getGeometryFactory().createLineString(new Coordinate[] { c1, c2 });
@@ -425,6 +446,11 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// ------------------------------------------------------------------------
 	// Geometry rendering methods:
 	// ------------------------------------------------------------------------
+
+	
+	public StyleService getStyleService() {
+		return styleService;
+	}
 
 	private void update(Geometry geometry, GeometryIndex index) {
 		try {
@@ -627,7 +653,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 			// Draw individual edges:
 			int max = coordinates.length;
-			if (!closeRingWhileInserting && editingService.getEditingState() == GeometryEditState.INSERTING
+			if (!styleService.isCloseRingWhileInserting()
+					&& editingService.getEditingState() == GeometryEditState.INSERTING
 					&& editingService.getIndexService().isChildOf(parentIndex, editingService.getInsertIndex())) {
 				max--;
 			}

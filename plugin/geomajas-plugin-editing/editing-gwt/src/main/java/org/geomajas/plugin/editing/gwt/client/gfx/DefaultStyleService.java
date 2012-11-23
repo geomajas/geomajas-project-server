@@ -57,6 +57,14 @@ public class DefaultStyleService implements StyleService {
 	private ShapeStyle backgroundDisabledStyle = new ShapeStyle("#999999", 0.35f, "#999999", 0, 0);
 
 	private ShapeStyle snappedVertexStyle = new ShapeStyle("#888888", 1, "#CC0000", 1, 1);
+	
+	private boolean closeRingWhileInserting;
+
+	private boolean showDragLabels;
+
+	private boolean showInfo;
+
+	private InfoProvider infoProvider;
 
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
@@ -209,4 +217,44 @@ public class DefaultStyleService implements StyleService {
 	public void setSnappedVertexStyle(ShapeStyle snappedVertexStyle) {
 		this.snappedVertexStyle = snappedVertexStyle;
 	}
+	
+	public boolean isCloseRingWhileInserting() {
+		return closeRingWhileInserting;
+	}
+	
+	public void setCloseRingWhileInserting(boolean closeRingWhileInserting) {
+		this.closeRingWhileInserting = closeRingWhileInserting;
+	}
+	
+	@Override
+	public InfoProvider getInfoProvider() {
+		return infoProvider;
+	}
+	
+	@Override
+	public boolean isShowDragLabels() {
+		return showDragLabels;
+	}
+
+	
+	@Override
+	public boolean isShowInfo() {
+		return showInfo;
+	}
+
+	@Override
+	public void setShowDragLabels(boolean showDragLabels) {
+		this.showDragLabels = showDragLabels;
+	}
+
+	@Override
+	public void setShowInfo(boolean showInfo) {
+		this.showInfo = showInfo;
+	}
+
+	@Override
+	public void setInfoProvider(InfoProvider infoProvider) {
+		this.infoProvider = infoProvider;
+	}
+	
 }

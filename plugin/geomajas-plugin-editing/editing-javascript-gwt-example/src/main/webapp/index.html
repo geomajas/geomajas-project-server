@@ -16,6 +16,37 @@
 		<title>Geomajas Javascript API Showcase</title>
 		<link type="text/css" rel="stylesheet" href="geomajas.css" />
 
+		<style type="text/css">
+			.table-info {
+				background-color: whiteSmoke;
+				border-radius: 6px;
+				-webkit-border-radius: 6px;
+				-moz-border-radius: 6px;
+			}
+			.table-info td, .table-info th {
+			}
+			.table-info th {
+				color: #333;
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 16px;
+				font-style: normal;
+				font-weight: normal;
+				text-align: left;
+				padding: 0 20px;
+			}
+			.table-info td {
+				padding: 0 20px;
+				line-height: 20px;
+				color: #0084B4;
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 14px;
+				border-bottom: 1px solid #fff;
+				border-top: 1px solid #fff;
+			}
+			.table-info td:hover {
+				background-color: #fff;
+			}
+		</style>
 		<script type="text/javascript">var isomorphicDir = "showcase/sc/";</script>
 		<script type="text/javascript" src="showcase/showcase.nocache.js"></script>
 
@@ -77,6 +108,39 @@
 
 			function drawPolygon() {
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Polygon", 0, 0);
+				editor.getStyleService().setCloseRingWhileInserting(true);
+				editor.getStyleService().setShowDragLabels(true);
+				editor.getStyleService().setShowInfo(true);
+				var infoProvider = new org.geomajas.plugin.editing.gfx.InfoProvider();
+				infoProvider.setTitleCallBack(function() {
+					return "Geometrie eigenschappen";
+				});
+				infoProvider.setHtmlCallBack(function(geometry, cd, ca, cb) {
+					if(geometry) {
+						var type = geometry.getGeometryType();
+						var points = Geomajas().getGeometryService().getNumPoints(geometry);
+						var area = Geomajas().getGeometryService().getArea(geometry);
+						var length = Geomajas().getGeometryService().getLength(geometry);
+						var lengthA = "";
+						var lengthB = "";
+						if(ca) {
+							var lengthA = cd.distance(ca);
+						}
+						if(cb) {
+							var lengthB = cd.distance(cb);
+						}
+					}					
+					var content = "<table class='table-info'>";
+					content += "<tr><td>Type</td><td>"+type+"</td></tr>";
+					content += "<tr><td>Aantal punten</td><td>"+points+"</td></tr>";
+					content += "<tr><td>Oppervlakte</td><td>"+area+"m2</td></tr>";
+					content += "<tr><td>Lengte</td><td>"+length+"m</td></tr>";
+					content += "<tr><td>Lengte A</td><td>"+lengthA+"m</td></tr>";
+					content += "<tr><td>Lengte B</td><td>"+lengthB+"m</td></tr>";
+					content += "</table>";					
+					return content;
+				});
+				editor.getStyleService().setInfoProvider(infoProvider);
 				service.start(geometry);
 				service.addEmptyChild();
 				var index = service.getIndexService().create("vertex", [0, 0]);

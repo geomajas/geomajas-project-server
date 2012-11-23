@@ -138,7 +138,6 @@ public class MenuBar extends ToolStrip {
 
 			public void onClick(MenuItemClickEvent event) {
 				Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
-
 				editor.getEditService().start(polygon);
 				try {
 					GeometryIndex index = editor.getEditService().addEmptyChild();

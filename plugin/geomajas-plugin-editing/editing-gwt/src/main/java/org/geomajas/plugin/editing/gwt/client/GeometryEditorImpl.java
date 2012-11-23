@@ -26,6 +26,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.snap.SnapService;
 import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
 import org.geomajas.plugin.editing.gwt.client.gfx.GeometryRendererImpl;
+import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
 
 /**
  * Top level geometry editor for the GWT face.
@@ -131,6 +132,11 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 
 	public MapWidget getMapWidget() {
 		return mapWidget;
+	}
+
+	@Override
+	public StyleService getStyleService() {
+		return renderer.getStyleService();
 	}
 
 	public GeometryEditService getEditService() {

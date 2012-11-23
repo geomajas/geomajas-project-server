@@ -45,7 +45,9 @@ public class EditingPanel extends SamplePanel {
 	public Canvas getViewPanel() {
 		final MapWidget map = new MapWidget("mapGepEditing", "appEditing");
 		final GeometryEditor editor = new GeometryEditorImpl(map);
-
+		editor.getStyleService().setCloseRingWhileInserting(true);
+		editor.getStyleService().setShowInfo(true);
+		editor.getStyleService().setShowDragLabels(true);				
 		VLayout layout = new VLayout();
 		MenuBar editingToolStrip = new MenuBar(editor);
 		layout.addMember(editingToolStrip);

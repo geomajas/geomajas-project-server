@@ -31,7 +31,7 @@ public interface StyleService {
 	ShapeStyle getVertexSelectHoverStyle();
 
 	ShapeStyle getVertexMarkForDeletionStyle();
-	
+
 	ShapeStyle getVertexSnappedStyle();
 
 	ShapeStyle getEdgeStyle();
@@ -57,4 +57,20 @@ public interface StyleService {
 	ShapeStyle getBackgroundDisabledStyle();
 
 	ShapeStyle getBackgroundMarkedForDeletionStyle();
+
+	void setCloseRingWhileInserting(boolean closeRingWhileInserting);
+
+	boolean isCloseRingWhileInserting();
+
+	void setShowDragLabels(boolean showDragLabels);
+
+	boolean isShowDragLabels();
+
+	void setShowInfo(boolean showInfo);
+
+	boolean isShowInfo();
+
+	void setInfoProvider(InfoProvider provider);
+
+	InfoProvider getInfoProvider();
 }

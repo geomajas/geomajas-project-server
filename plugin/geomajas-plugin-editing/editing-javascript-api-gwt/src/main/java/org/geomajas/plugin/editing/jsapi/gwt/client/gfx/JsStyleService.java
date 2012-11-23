@@ -1,0 +1,156 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+package org.geomajas.plugin.editing.jsapi.gwt.client.gfx;
+
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.plugin.editing.gwt.client.gfx.DefaultStyleService;
+import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
+import org.timepedia.exporter.client.Export;
+import org.timepedia.exporter.client.ExportPackage;
+import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.NoExport;
+
+/**
+ * JavaScript wrapper of {@link StyleService}.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
+@Export("StyleService")
+@ExportPackage("org.geomajas.plugin.editing.gfx")
+@Api(allMethods = true)
+public class JsStyleService implements Exportable {
+
+	private StyleService delegate;
+
+	/**
+	 * Default constructor (needed for exporter?).
+	 */
+	public JsStyleService() {
+		delegate = new DefaultStyleService();
+	}
+
+	/**
+	 * Delegating constructor.
+	 * 
+	 * @param delegate
+	 */
+	@NoExport
+	public JsStyleService(StyleService delegate) {
+		this.delegate = delegate;
+	}
+
+	public ShapeStyle getVertexStyle() {
+		return delegate.getVertexStyle();
+	}
+
+	public ShapeStyle getVertexHoverStyle() {
+		return delegate.getVertexHoverStyle();
+	}
+
+	public ShapeStyle getVertexSelectStyle() {
+		return delegate.getVertexSelectStyle();
+	}
+
+	public ShapeStyle getVertexDisabledStyle() {
+		return delegate.getVertexDisabledStyle();
+	}
+
+	public ShapeStyle getVertexSelectHoverStyle() {
+		return delegate.getVertexSelectHoverStyle();
+	}
+
+	public ShapeStyle getVertexMarkForDeletionStyle() {
+		return delegate.getVertexMarkForDeletionStyle();
+	}
+
+	public ShapeStyle getVertexSnappedStyle() {
+		return delegate.getVertexSnappedStyle();
+	}
+
+	public ShapeStyle getEdgeStyle() {
+		return delegate.getEdgeStyle();
+	}
+
+	public ShapeStyle getEdgeHoverStyle() {
+		return delegate.getEdgeHoverStyle();
+	}
+
+	public ShapeStyle getEdgeSelectStyle() {
+		return delegate.getEdgeSelectStyle();
+	}
+
+	public ShapeStyle getEdgeDisabledStyle() {
+		return delegate.getEdgeDisabledStyle();
+	}
+
+	public ShapeStyle getEdgeSelectHoverStyle() {
+		return delegate.getEdgeSelectHoverStyle();
+	}
+
+	public ShapeStyle getEdgeMarkForDeletionStyle() {
+		return delegate.getEdgeMarkForDeletionStyle();
+	}
+
+	public ShapeStyle getEdgeTentativeMoveStyle() {
+		return delegate.getEdgeTentativeMoveStyle();
+	}
+
+	public ShapeStyle getLineStringStyle() {
+		return delegate.getLineStringStyle();
+	}
+
+	public ShapeStyle getLinearRingStyle() {
+		return delegate.getLinearRingStyle();
+	}
+
+	public ShapeStyle getBackgroundStyle() {
+		return delegate.getBackgroundStyle();
+	}
+
+	public ShapeStyle getBackgroundDisabledStyle() {
+		return delegate.getBackgroundDisabledStyle();
+	}
+
+	public ShapeStyle getBackgroundMarkedForDeletionStyle() {
+		return delegate.getBackgroundMarkedForDeletionStyle();
+	}
+
+	public void setCloseRingWhileInserting(boolean closeRingWhileInserting) {
+		delegate.setCloseRingWhileInserting(closeRingWhileInserting);
+	}
+
+	public boolean isCloseRingWhileInserting() {
+		return delegate.isCloseRingWhileInserting();
+	}
+
+	public void setShowDragLabels(boolean showDragLabels) {
+		delegate.setShowDragLabels(showDragLabels);
+	}
+
+	public boolean isShowDragLabels() {
+		return delegate.isShowDragLabels();
+	}
+
+	public void setShowInfo(boolean showInfo) {
+		delegate.setShowInfo(showInfo);
+	}
+
+	public boolean isShowInfo() {
+		return delegate.isShowInfo();
+	}
+
+	public void setInfoProvider(JsInfoProvider provider) {
+		delegate.setInfoProvider(provider);
+	}
+
+}

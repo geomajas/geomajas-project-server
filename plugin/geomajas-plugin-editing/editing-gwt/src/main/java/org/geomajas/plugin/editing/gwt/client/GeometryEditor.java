@@ -12,9 +12,10 @@ package org.geomajas.plugin.editing.gwt.client;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.BaseGeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
 
 /**
- * Extends {@link BaseGeometryEditor} to provide access to the {@link MapWidget}.
+ * Extends {@link BaseGeometryEditor} to provide access to the {@link MapWidget} and {@link StyleService}.
  * 
  * @author Jan De Moerloose
  * 
@@ -27,4 +28,11 @@ public interface GeometryEditor extends BaseGeometryEditor {
 	 * @return the map widget
 	 */
 	MapWidget getMapWidget();
+
+	/**
+	 * Get the style service of the renderer.
+	 * 
+	 * @return the style service
+	 */
+	StyleService getStyleService();
 }
