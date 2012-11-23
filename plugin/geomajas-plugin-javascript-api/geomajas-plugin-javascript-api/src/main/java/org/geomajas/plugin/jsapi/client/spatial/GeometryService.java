@@ -12,7 +12,6 @@
 package org.geomajas.plugin.jsapi.client.spatial;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Geometry;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.Exportable;
 
