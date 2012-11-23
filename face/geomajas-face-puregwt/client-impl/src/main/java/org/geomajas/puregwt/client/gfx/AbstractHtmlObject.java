@@ -10,6 +10,8 @@
  */
 package org.geomajas.puregwt.client.gfx;
 
+import org.geomajas.puregwt.client.service.DomService;
+
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -89,8 +91,8 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 		DOM.setStyleAttribute(element, "position", "absolute");
 		DOM.setStyleAttribute(element, "width", width + "px");
 		DOM.setStyleAttribute(element, "height", height + "px");
-		DOM.setStyleAttribute(element, "top", top + "px");
-		DOM.setStyleAttribute(element, "left", left + "px");
+		DomService.setTop(element, top);
+		DomService.setLeft(element, left);
 		setElement(element);
 	}
 
@@ -143,7 +145,7 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 	}
 
 	public void setLeft(int left) {
-		DOM.setStyleAttribute(getElement(), "left", left + "px");
+		DomService.setLeft(getElement(), left);
 	}
 
 	public int getTop() {
@@ -151,7 +153,7 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 	}
 
 	public void setTop(int top) {
-		DOM.setStyleAttribute(getElement(), "top", top + "px");
+		DomService.setTop(getElement(), top);
 	}
 
 	public double getOpacity() {
@@ -160,6 +162,9 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
+		if (opacity > 0) {
+			setVisible(true);
+		}
 		DOM.setStyleAttribute(getElement(), "filter", "alpha(opacity=" + (opacity * 100) + ")");
 		DOM.setStyleAttribute(getElement(), "opacity", Double.toString(opacity));
 	}

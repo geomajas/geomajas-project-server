@@ -192,13 +192,13 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 *            The y origin to where we want this container to zoom.
 	 */
 	public void applyScale(double scale, int x, int y) {
-		Dom.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
-		Dom.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
-		Dom.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
-		Dom.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
-
 		if (Dom.isIE()) {
 			Dom.setStyleAttribute(getElement(), "zoom", Double.toString(scale));
+		} else {
+			Dom.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
+			Dom.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
+			Dom.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
+			Dom.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
 		}
 		// Safari - if webkit stuff doesn't work, try: -o-transform: rotate(-90deg) translate(0px, -45px);
 	}

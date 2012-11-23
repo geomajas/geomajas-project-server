@@ -42,6 +42,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
+
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
 	 * 

@@ -73,6 +73,7 @@
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>gwt-graphics</artifactId>
+			<version>1.0.0.TX-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
