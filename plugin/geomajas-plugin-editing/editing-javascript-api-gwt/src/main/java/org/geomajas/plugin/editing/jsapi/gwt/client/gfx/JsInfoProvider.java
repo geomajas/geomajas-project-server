@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.editing.jsapi.gwt.client.gfx;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.gwt.client.gfx.InfoProvider;
@@ -22,10 +23,12 @@ import org.timepedia.exporter.client.Exportable;
  * JavaScript wrapper of {@link InfoProvider}.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 @Export("InfoProvider")
 @ExportPackage("org.geomajas.plugin.editing.gfx")
+@Api(allMethods = true)
 public class JsInfoProvider implements Exportable, InfoProvider {
 
 	private TitleCallback titleCallback;
@@ -64,9 +67,12 @@ public class JsInfoProvider implements Exportable, InfoProvider {
 	 * 
 	 * Closure that returns a string value with the title.
 	 * 
+	 * @since 1.0.0
+	 * 
 	 */
 	@Export
 	@ExportClosure
+	@Api(allMethods = true)
 	public interface TitleCallback extends Exportable {
 
 		String execute();
@@ -76,9 +82,12 @@ public class JsInfoProvider implements Exportable, InfoProvider {
 	 * 
 	 * Closure that returns an HTML fragment with information about the geometry.
 	 * 
+	 * @since 1.0.0
+	 * 
 	 */
 	@Export
 	@ExportClosure
+	@Api(allMethods = true)
 	public interface HtmlCallback extends Exportable {
 
 		String execute(Geometry geometry, Coordinate dragPoint, Coordinate startA, Coordinate startB);

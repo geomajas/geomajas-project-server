@@ -11,7 +11,6 @@
 package org.geomajas.plugin.editing.jsapi.gwt.client.gfx;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.plugin.editing.gwt.client.gfx.DefaultStyleService;
 import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
 import org.timepedia.exporter.client.Export;
@@ -23,6 +22,7 @@ import org.timepedia.exporter.client.NoExport;
  * JavaScript wrapper of {@link StyleService}.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 @Export("StyleService")
@@ -49,106 +49,62 @@ public class JsStyleService implements Exportable {
 		this.delegate = delegate;
 	}
 
-	public ShapeStyle getVertexStyle() {
-		return delegate.getVertexStyle();
-	}
-
-	public ShapeStyle getVertexHoverStyle() {
-		return delegate.getVertexHoverStyle();
-	}
-
-	public ShapeStyle getVertexSelectStyle() {
-		return delegate.getVertexSelectStyle();
-	}
-
-	public ShapeStyle getVertexDisabledStyle() {
-		return delegate.getVertexDisabledStyle();
-	}
-
-	public ShapeStyle getVertexSelectHoverStyle() {
-		return delegate.getVertexSelectHoverStyle();
-	}
-
-	public ShapeStyle getVertexMarkForDeletionStyle() {
-		return delegate.getVertexMarkForDeletionStyle();
-	}
-
-	public ShapeStyle getVertexSnappedStyle() {
-		return delegate.getVertexSnappedStyle();
-	}
-
-	public ShapeStyle getEdgeStyle() {
-		return delegate.getEdgeStyle();
-	}
-
-	public ShapeStyle getEdgeHoverStyle() {
-		return delegate.getEdgeHoverStyle();
-	}
-
-	public ShapeStyle getEdgeSelectStyle() {
-		return delegate.getEdgeSelectStyle();
-	}
-
-	public ShapeStyle getEdgeDisabledStyle() {
-		return delegate.getEdgeDisabledStyle();
-	}
-
-	public ShapeStyle getEdgeSelectHoverStyle() {
-		return delegate.getEdgeSelectHoverStyle();
-	}
-
-	public ShapeStyle getEdgeMarkForDeletionStyle() {
-		return delegate.getEdgeMarkForDeletionStyle();
-	}
-
-	public ShapeStyle getEdgeTentativeMoveStyle() {
-		return delegate.getEdgeTentativeMoveStyle();
-	}
-
-	public ShapeStyle getLineStringStyle() {
-		return delegate.getLineStringStyle();
-	}
-
-	public ShapeStyle getLinearRingStyle() {
-		return delegate.getLinearRingStyle();
-	}
-
-	public ShapeStyle getBackgroundStyle() {
-		return delegate.getBackgroundStyle();
-	}
-
-	public ShapeStyle getBackgroundDisabledStyle() {
-		return delegate.getBackgroundDisabledStyle();
-	}
-
-	public ShapeStyle getBackgroundMarkedForDeletionStyle() {
-		return delegate.getBackgroundMarkedForDeletionStyle();
-	}
-
+	/**
+	 * @see #isCloseRingWhileInserting()
+	 * @param closeRingWhileInserting
+	 */
 	public void setCloseRingWhileInserting(boolean closeRingWhileInserting) {
 		delegate.setCloseRingWhileInserting(closeRingWhileInserting);
 	}
 
+	/**
+	 * Should a second drag line be drawn when creating a linear ring ?
+	 * 
+	 * @return true when it should be drawn, false otherwise
+	 */
 	public boolean isCloseRingWhileInserting() {
 		return delegate.isCloseRingWhileInserting();
 	}
 
+	/**
+	 * @see #isShowDragLabels()
+	 * @param showDragLabels
+	 */
 	public void setShowDragLabels(boolean showDragLabels) {
 		delegate.setShowDragLabels(showDragLabels);
 	}
 
+	/**
+	 * Should labels (A, B) be shown on drag lines ?
+	 * 
+	 * @return true when they should be shown, false otherwise
+	 */
 	public boolean isShowDragLabels() {
 		return delegate.isShowDragLabels();
 	}
 
+	/**
+	 * @see #isShowInfo()
+	 * @param showInfo
+	 */
 	public void setShowInfo(boolean showInfo) {
 		delegate.setShowInfo(showInfo);
 	}
 
+	/**
+	 * Should geometry information be shown while editing ?
+	 * 
+	 * @return true when it should be shown, false otherwise
+	 */
 	public boolean isShowInfo() {
 		return delegate.isShowInfo();
 	}
 
+	/**
+	 * Set the info provider for the geometry information window.
+	 * 
+	 * @param provider the provider
+	 */
 	public void setInfoProvider(JsInfoProvider provider) {
 		delegate.setInfoProvider(provider);
 	}
