@@ -26,10 +26,6 @@ public final class Icon {
 
 	public static String searchActiviteit = "[ISOMORPHIC]/images/searchIcons/nacebel.png";
 
-	public static String navigateCrab = "[ISOMORPHIC]/images/navIcons/crab.png";
-
-	public static String navigateCadmap = "[ISOMORPHIC]/images/navIcons/cadmap.png";
-
 	public static String searchOnderneming = "[ISOMORPHIC]/images/searchIcons/onderneming.png";
 
 	public static String searchRuimtelijk = "[ISOMORPHIC]/images/searchIcons/geographic.png";
