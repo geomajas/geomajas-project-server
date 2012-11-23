@@ -12,6 +12,7 @@
 package org.geomajas.plugin.jsapi.client.spatial;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Geometry;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.Exportable;
 
@@ -60,5 +61,33 @@ public interface GeometryService extends Exportable {
 	 * @return true or false.
 	 */
 	boolean isEmpty(org.geomajas.geometry.Geometry geometry);
+	
+	/**
+	 * Return the area of the geometry. If a polygon should contain a hole, the area of such a hole will be subtracted.
+	 * 
+	 * @param geometry
+	 *            The other geometry to calculate the area for.
+	 * @return The total area within this geometry.
+	 */
+	double getArea(org.geomajas.geometry.Geometry geometry);
+
+	/**
+	 * Return the length of the geometry. This adds up the length of all edges within the geometry.
+	 * 
+	 * @param geometry
+	 *            The other geometry to calculate the length for.
+	 * @return The total length of all edges of the given geometry.
+	 */
+	double getLength(org.geomajas.geometry.Geometry geometry);
+
+	/**
+	 * Return the total number of coordinates within the geometry. This add up all coordinates within the
+	 * sub-geometries.
+	 * 
+	 * @param geometry
+	 *            The geometry to calculate the total number of points for.
+	 * @return The total number of coordinates within this geometry.
+	 */
+	double getNumPoints(org.geomajas.geometry.Geometry geometry);	
 
 }

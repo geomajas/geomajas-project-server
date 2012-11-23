@@ -75,15 +75,25 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 		}
 	}
 	
-	/**
-	 * This geometry is empty if there are no geometries/coordinates stored inside.
-	 * 
-	 * @param geometry
-	 *            The geometry to check.
-	 * @return true or false.
-	 */
+	@Override
 	public boolean isEmpty(Geometry geometry) {
-		return (geometry.getCoordinates() == null || geometry.getCoordinates().length == 0)
-				&& (geometry.getGeometries() == null || geometry.getGeometries().length == 0);
+		return org.geomajas.geometry.service.GeometryService.isEmpty(geometry);
 	}
+
+	@Override
+	public double getArea(Geometry geometry) {
+		return org.geomajas.geometry.service.GeometryService.getArea(geometry);
+	}
+
+	@Override
+	public double getLength(Geometry geometry) {
+		return org.geomajas.geometry.service.GeometryService.getLength(geometry);
+	}
+
+	@Override
+	public double getNumPoints(Geometry geometry) {
+		return org.geomajas.geometry.service.GeometryService.getNumPoints(geometry);
+	}
+	
+	
 }
