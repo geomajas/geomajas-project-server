@@ -410,8 +410,18 @@ public final class GeometryService {
 	private static double getSignedArea(Geometry geometry) {
 		double area = 0;
 		if (geometry.getGeometries() != null) {
-			for (Geometry child : geometry.getGeometries()) {
-				area += getArea(child);
+			if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
+				for (Geometry child : geometry.getGeometries()) {
+					if (child == geometry.getGeometries()[0]) {
+						area += getArea(child);
+					} else {
+						area -= getArea(child);
+					}
+				}
+			} else {
+				for (Geometry child : geometry.getGeometries()) {
+					area += getArea(child);
+				}
 			}
 		}
 		if (geometry.getCoordinates() != null && Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {

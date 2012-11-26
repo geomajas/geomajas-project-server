@@ -140,12 +140,12 @@ public class GeometryServiceLineStringTest {
 
 	@Test
 	public void getArea() {
-		Assert.assertTrue((jts.getArea() - GeometryService.getArea(gwt)) < DELTA);
+		Assert.assertEquals(jts.getArea(), GeometryService.getArea(gwt), DELTA);
 	}
 
 	@Test
 	public void getLength() {
-		Assert.assertTrue((jts.getLength() - GeometryService.getLength(gwt)) < DELTA);
+		Assert.assertEquals(jts.getLength(), GeometryService.getLength(gwt), DELTA);
 	}
 
 	@Test

@@ -90,8 +90,6 @@ public class MathServiceTest {
 		Assert.assertTrue(intersection.getY() == Double.NEGATIVE_INFINITY
 				|| intersection.getY() == Double.POSITIVE_INFINITY);
 
-		System.out.println(intersection);
-
 		Assert.assertNull(MathService.lineSegmentIntersection(c1, c2, c3, c4));
 		try {
 			MathService.lineSegmentIntersection(c1, null, c3, c4);
