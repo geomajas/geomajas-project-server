@@ -25,6 +25,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -79,7 +80,7 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 		// Create a HTTP client object, which will initiate the connection:
 		final HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT);
-		DefaultHttpClient client = new DefaultHttpClient(httpParams);
+		SystemDefaultHttpClient client = new SystemDefaultHttpClient(httpParams);
 
 		String url = addCredentialsToUrl(baseUrl, authentication);
 
