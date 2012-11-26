@@ -177,7 +177,7 @@ function drawPolygon() {
     </orderedlist>
 
     <para>The following code illustrates such registration in the case of a
-    custom handler for deletion of interior rings. </para>
+    custom handler for deletion of interior rings.</para>
 
     <programlisting>function registerDeleteHole() {
     factory = new org.geomajas.plugin.editing.handler.GeometryHandlerFactory(); // (1)
@@ -217,5 +217,110 @@ function unRegisterDeleteHole() {
         editor.getRenderer().redraw();  // (5)
     }
 }</programlisting>
+  </section>
+
+  <section>
+    <title>How to show an information panel and configure its content</title>
+
+    <para>While editing, an information panel with useful content for the end
+    user can be shown. The following steps can be performed to fully configure
+    the information panel:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>The property closeRingWhileInserting determines if the closing
+        drag line should be shown when editing a linear ring. When set to true
+        2 drag lines (A and B) will be shown when creating a linear ring.
+        These can then be labeled (see step 2).</para>
+      </listitem>
+
+      <listitem>
+        <para>The property showDragLabels should be set to true to show labels
+        'A' and 'B' on the drag lines (defaults to false). This is useful to
+        refer to the drag lines in the informational panel.</para>
+      </listitem>
+
+      <listitem>
+        <para>The property showInfo should be set to true to show the
+        informational panel (defaults to false).</para>
+      </listitem>
+
+      <listitem>
+        <para>The property showClose should be set to false to disallow
+        closing of the informational panel (defaults to true).</para>
+      </listitem>
+
+      <listitem>
+        <para>The class <code>org.geomajas.plugin.editing.gfx.InfoProvider
+        </code>is a class that provides callback closures to determine the
+        title and the HTML content of the informational window. An instance of
+        this class should be created and set on the style service (see step
+        8). </para>
+      </listitem>
+
+      <listitem>
+        <para>The method setTitleCallBack() takes as argument a closure that
+        returns the title.</para>
+      </listitem>
+
+      <listitem>
+        <para>The method setHtmlCallBack() takes as argument a closure that
+        returns the HTML content. This closure will be called with the
+        following arguments:</para>
+
+        <para>geometry: the geometry being edited</para>
+
+        <para>cd: the coordinate of the drag point</para>
+
+        <para>ca: the coordinate of the first drag line A</para>
+
+        <para>cb: the coordinate of the second drag line B</para>
+      </listitem>
+
+      <listitem>
+        <para>The property infoProvider should be set to replace the default
+        info provider with a custom one.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The following code shows how to make the information panel visible
+    and configure its content:</para>
+
+    <para><programlisting>function prepareEditor() {
+  editor.getStyleService().setCloseRingWhileInserting(true); // 1
+  editor.getStyleService().setShowDragLabels(true); // 2
+  editor.getStyleService().setShowInfo(true); // 3
+  editor.getStyleService().setShowClose(false); // 4
+  var infoProvider = new org.geomajas.plugin.editing.gfx.InfoProvider(); // 5
+  infoProvider.setTitleCallBack(function() { // 6
+   return "Geometrie eigenschappen"; 
+  });
+  infoProvider.setHtmlCallBack(function(geometry, cd, ca, cb) { // 7
+   if(geometry) {
+    var type = geometry.getGeometryType();
+    var points = Geomajas().getGeometryService().getNumPoints(geometry);
+    var area = Geomajas().getGeometryService().getArea(geometry);
+    var length = Geomajas().getGeometryService().getLength(geometry);
+    var lengthA = "";
+    var lengthB = "";
+    if(ca) {
+     var lengthA = cd.distance(ca);
+    }
+    if(cb) {
+     var lengthB = cd.distance(cb);
+    }
+   }     
+   var content = "&lt;table class='table-info'&gt;";
+   content += "&lt;tr&gt;&lt;td&gt;Type&lt;/td&gt;&lt;td&gt;"+type+"&lt;/td&gt;&lt;/tr&gt;";
+   content += "&lt;tr&gt;&lt;td&gt;Aantal punten&lt;/td&gt;&lt;td&gt;"+points+"&lt;/td&gt;&lt;/tr&gt;";
+   content += "&lt;tr&gt;&lt;td&gt;Oppervlakte&lt;/td&gt;&lt;td&gt;"+area+"m2&lt;/td&gt;&lt;/tr&gt;";
+   content += "&lt;tr&gt;&lt;td&gt;Lengte&lt;/td&gt;&lt;td&gt;"+length+"m&lt;/td&gt;&lt;/tr&gt;";
+   content += "&lt;tr&gt;&lt;td&gt;Lengte A&lt;/td&gt;&lt;td&gt;"+lengthA+"m&lt;/td&gt;&lt;/tr&gt;";
+   content += "&lt;tr&gt;&lt;td&gt;Lengte B&lt;/td&gt;&lt;td&gt;"+lengthB+"m&lt;/td&gt;&lt;/tr&gt;";
+   content += "&lt;/table&gt;";     
+   return content; 
+  });
+  editor.getStyleService().setInfoProvider(infoProvider); // 8
+}</programlisting></para>
   </section>
 </chapter>

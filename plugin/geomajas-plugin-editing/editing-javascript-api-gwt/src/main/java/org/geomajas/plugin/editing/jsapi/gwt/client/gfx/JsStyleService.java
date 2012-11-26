@@ -101,6 +101,23 @@ public class JsStyleService implements Exportable {
 	}
 
 	/**
+	 * @see #isShowClose()
+	 * @param showClose
+	 */
+	public void setShowClose(boolean showClose) {
+		delegate.setShowClose(showClose);
+	}
+
+	/**
+	 * Should geometry information window show close icon ?
+	 * 
+	 * @return true when it should be shown, false otherwise
+	 */
+	public boolean isShowClose() {
+		return delegate.isShowClose();
+	}
+
+	/**
 	 * Set the info provider for the geometry information window.
 	 * 
 	 * @param provider the provider

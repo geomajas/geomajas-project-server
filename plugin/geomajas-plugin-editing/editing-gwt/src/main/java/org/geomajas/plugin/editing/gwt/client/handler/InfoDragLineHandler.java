@@ -95,6 +95,10 @@ public class InfoDragLineHandler extends BaseDragLineHandler implements Geometry
 		this.infoProvider = infoProvider;
 		window.setTitle(infoProvider.getTitle());
 	}
+	
+	public void setShowClose(boolean showClose) {
+		window.setShowCloseButton(showClose);
+	}
 
 	@Override
 	protected void onDrag(Coordinate dragPoint, Coordinate startA, Coordinate startB) {
@@ -138,7 +142,7 @@ public class InfoDragLineHandler extends BaseDragLineHandler implements Geometry
 			rows.add(HtmlBuilder.trHtmlContent(HtmlBuilder.tdStyle(STYLE_NAME, "Number of points"),
 					HtmlBuilder.tdStyle(STYLE_VALUE, "" + (empty ? "" : GeometryService.getNumPoints(geometry)))));
 			String area = (empty ? "" : DistanceFormat.asMapArea(map, GeometryService.getArea(geometry)));
-			area = area.replaceAll("&sup2;", "\u00B2");
+			area = area.replaceAll("&sup2;", "²");
 			rows.add(HtmlBuilder.trHtmlContent(HtmlBuilder.tdStyle(STYLE_NAME, "Area"),
 					HtmlBuilder.tdStyle(STYLE_VALUE, area)));
 

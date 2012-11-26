@@ -73,4 +73,9 @@ public interface StyleService {
 	void setInfoProvider(InfoProvider provider);
 
 	InfoProvider getInfoProvider();
+	
+	void setShowClose(boolean showClose);
+
+	boolean isShowClose();
+
 }

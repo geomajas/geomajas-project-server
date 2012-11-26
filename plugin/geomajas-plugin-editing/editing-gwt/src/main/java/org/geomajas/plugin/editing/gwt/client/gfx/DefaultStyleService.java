@@ -64,6 +64,8 @@ public class DefaultStyleService implements StyleService {
 
 	private boolean showInfo;
 
+	private boolean showClose;
+
 	private InfoProvider infoProvider;
 
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
@@ -250,6 +252,14 @@ public class DefaultStyleService implements StyleService {
 	@Override
 	public void setShowInfo(boolean showInfo) {
 		this.showInfo = showInfo;
+	}
+	
+	public boolean isShowClose() {
+		return showClose;
+	}
+	
+	public void setShowClose(boolean showClose) {
+		this.showClose = showClose;
 	}
 
 	@Override

@@ -170,6 +170,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			if (styleService.getInfoProvider() != null) {
 				infoWindowHandler.setInfoProvider(styleService.getInfoProvider());
 			}
+			infoWindowHandler.setShowClose(styleService.isShowClose());
 		}
 
 		// Render the geometry on the map:
