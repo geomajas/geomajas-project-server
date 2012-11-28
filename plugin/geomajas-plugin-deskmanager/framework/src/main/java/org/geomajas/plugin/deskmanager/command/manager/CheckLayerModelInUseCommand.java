@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kristof Heirwegh
  * @author Oliver May
  */
-@Component(value=CheckLayerModelInUseRequest.COMMAND)
+@Component(CheckLayerModelInUseRequest.COMMAND)
 @Transactional(readOnly = true)
 public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUseRequest, CheckLayerModelInUseResponse> {
 

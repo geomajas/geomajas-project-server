@@ -25,6 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<import resource="ribbon.xml"/>
 	<import resource="userApplications.xml"/>
 	<import resource="datastore.xml"/>
+	<import resource="dynamiclayerapplication.xml"/>
 	
 	<!-- Instructs Spring to perform declarative transaction management on annotated classes -->
 	<tx:annotation-driven transaction-manager="transactionManager" />

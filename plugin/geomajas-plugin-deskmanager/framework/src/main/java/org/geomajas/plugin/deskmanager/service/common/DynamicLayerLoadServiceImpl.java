@@ -11,8 +11,6 @@
 package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -66,10 +64,10 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 	@Resource(name = "postGisDatastoreParams")
 	private Map<String, String> postgisDataStoreParams;
-	
+
 	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo applicationInfo;
-	
+
 	@Autowired
 	private BeanDefinitionWriterService bser;
 
@@ -78,7 +76,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	public void loadDynamicLayers() {
 		log.info("Loading dynamic layers");
 		try {
-			
+
 			// -- clientside / namedstyleinfo --
 			List<BeanDefinitionHolder> holders = new ArrayList<BeanDefinitionHolder>();
 			List<NamedObject> objects = new ArrayList<NamedObject>();
@@ -94,15 +92,15 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 				Map<String, Object> params = discoService.createBeanLayerDefinitionParameters(lm
 						.getLayerConfiguration());
 				holders.addAll(beanFactoryService.createBeans(params));
-				
-				//Add layer to the dynamicLayersApplication for dto postprocessing
+
+				// Add layer to the dynamicLayersApplication for dto postprocessing
 				applicationInfo.getMaps().get(0).getLayers().add(lm.getLayerConfiguration().getClientLayerInfo());
 			}
 
-			NamedObjectImpl applicationInfoNamedObject = new NamedObjectImpl(applicationInfo, 
+			NamedObjectImpl applicationInfoNamedObject = new NamedObjectImpl(applicationInfo,
 					"dynamicLayersApplication");
 			objects.add(applicationInfoNamedObject);
-			
+
 			holders.addAll(converterService.createBeanDefinitionsByIntrospection(objects));
 			activateBeans(holders, clientLayerIds);
 
@@ -122,9 +120,9 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 			throw new IllegalArgumentException("Need a LayerConfiguration");
 		}
 
-		if (lc.getParameter(LayerConfiguration.PARAM_SOURCE_TYPE) != null && 
-				LayerConfiguration.SOURCE_TYPE_SHAPE.equals(lc.getParameter(LayerConfiguration.PARAM_SOURCE_TYPE)
-				.getValue())) {
+		if (lc.getParameter(LayerConfiguration.PARAM_SOURCE_TYPE) != null
+				&& LayerConfiguration.SOURCE_TYPE_SHAPE.equals(lc.getParameter(LayerConfiguration.PARAM_SOURCE_TYPE)
+						.getValue())) {
 			lc.getParameters().clear();
 
 			// inject private properties for shapelayers
