@@ -117,15 +117,15 @@ public class LayerModelServiceImpl implements LayerModelService {
 	public boolean isLayerModelInUse(String layerModelId) throws GeomajasSecurityException {
 		for (Geodesk geodesk : 
 			(List<Geodesk>) factory.getCurrentSession().createCriteria(Geodesk.class).list()) {
-			if (containsLayerModelId(layerModelId, geodesk.getMainMapLayers())
-					|| containsLayerModelId(layerModelId, geodesk.getOverviewMapLayers())) {
+			if (!geodesk.isDeleted() && (containsLayerModelId(layerModelId, geodesk.getMainMapLayers())
+					|| containsLayerModelId(layerModelId, geodesk.getOverviewMapLayers()))) {
 				return true;
 			}
 		}
 		for (Blueprint geodesk : 
 			(List<Blueprint>) factory.getCurrentSession().createCriteria(Blueprint.class).list()) {
-			if (containsLayerModelId(layerModelId, geodesk.getMainMapLayers())
-					|| containsLayerModelId(layerModelId, geodesk.getOverviewMapLayers())) {
+			if (!geodesk.isDeleted() && (containsLayerModelId(layerModelId, geodesk.getMainMapLayers())
+					|| containsLayerModelId(layerModelId, geodesk.getOverviewMapLayers()))) {
 				return true;
 			}
 		}
