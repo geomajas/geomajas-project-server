@@ -23,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * GetConfigurationCommand for the deskmanager. 
- * Fetches from the {@link org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService}.
+ * GetConfigurationCommand for the deskmanager. Fetches from the
+ * {@link org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService}.
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
@@ -49,7 +49,7 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
 		}
 		// this checks if geodesk is allowed
-		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId()); 
+		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId());
 
 		if (loket != null) {
 			ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);

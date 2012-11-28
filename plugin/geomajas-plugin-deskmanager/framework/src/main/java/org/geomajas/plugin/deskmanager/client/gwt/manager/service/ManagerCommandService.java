@@ -277,7 +277,7 @@ public final class ManagerCommandService {
 	 */
 	public static void checkLayerModelInUse(final LayerModelDto layerModel, final DataCallback<Boolean> onFinish) {
 		CheckLayerModelInUseRequest request = new CheckLayerModelInUseRequest();
-		request.setClientLayerId(layerModel.getClientLayerId());
+		request.setLayerModelId(layerModel.getId());
 		GwtCommand command = new GwtCommand(CheckLayerModelInUseRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,

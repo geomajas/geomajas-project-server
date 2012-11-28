@@ -24,13 +24,13 @@ public class CheckLayerModelInUseRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.CheckLayerModelInUseCommand";
 
-	private String clientLayerId;
+	private String layerModelId;
 
-	public String getClientLayerId() {
-		return clientLayerId;
+	public String getLayerModelId() {
+		return layerModelId;
 	}
 
-	public void setClientLayerId(String clientLayerId) {
-		this.clientLayerId = clientLayerId;
+	public void setLayerModelId(String layerModelId) {
+		this.layerModelId = layerModelId;
 	}
 }

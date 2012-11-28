@@ -15,13 +15,15 @@ import java.util.List;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
+import org.geomajas.plugin.deskmanager.domain.Blueprint;
+import org.geomajas.plugin.deskmanager.domain.ClientLayer;
+import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -111,12 +113,32 @@ public class LayerModelServiceImpl implements LayerModelService {
 		return crit.list();
 	}
 
-	public boolean isLayerModelInUse(String clientLayerId) throws GeomajasSecurityException {
-		Query q = factory.getCurrentSession().createQuery(
-				"SELECT count(*) FROM LayerTreeNode l WHERE l.clientLayerId = :id");
-		q.setParameter("id", clientLayerId);
-		Long res = (Long) q.uniqueResult();
-		return (res > 0);
+	@SuppressWarnings("unchecked")
+	public boolean isLayerModelInUse(String layerModelId) throws GeomajasSecurityException {
+		for (Geodesk geodesk : 
+			(List<Geodesk>) factory.getCurrentSession().createCriteria(Geodesk.class).list()) {
+			if (containsLayerModelId(layerModelId, geodesk.getMainMapLayers())
+					|| containsLayerModelId(layerModelId, geodesk.getOverviewMapLayers())) {
+				return true;
+			}
+		}
+		for (Blueprint geodesk : 
+			(List<Blueprint>) factory.getCurrentSession().createCriteria(Blueprint.class).list()) {
+			if (containsLayerModelId(layerModelId, geodesk.getMainMapLayers())
+					|| containsLayerModelId(layerModelId, geodesk.getOverviewMapLayers())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean containsLayerModelId(String id, List<ClientLayer> layers) {
+		for (ClientLayer cli : layers) {
+			if (cli.getLayerModel().getId().equals(id)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** {@inheritDoc} */
@@ -150,10 +172,10 @@ public class LayerModelServiceImpl implements LayerModelService {
 		crit.add(Restrictions.eq("readOnly", false));
 		return crit.list();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public LayerModel getLayerModelByClientLayerIdInternal(String id) {
-		return (LayerModel) factory.getCurrentSession().createCriteria(LayerModel.class).
-			add(Restrictions.eq("clientLayerId", id)).uniqueResult();
+		return (LayerModel) factory.getCurrentSession().createCriteria(LayerModel.class)
+				.add(Restrictions.eq("clientLayerId", id)).uniqueResult();
 	}
 }

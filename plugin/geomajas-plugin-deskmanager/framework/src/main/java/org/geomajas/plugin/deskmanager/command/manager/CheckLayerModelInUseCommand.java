@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kristof Heirwegh
  * @author Oliver May
  */
-@Component()
+@Component(value=CheckLayerModelInUseRequest.COMMAND)
 @Transactional(readOnly = true)
 public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUseRequest, CheckLayerModelInUseResponse> {
 
@@ -36,11 +36,11 @@ public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUse
 	/** {@inheritDoc} */
 	public void execute(CheckLayerModelInUseRequest request, CheckLayerModelInUseResponse response)
 			throws GeomajasSecurityException {
-		if (request.getClientLayerId() == null || "".equals(request.getClientLayerId())) {
+		if (request.getLayerModelId() == null || "".equals(request.getLayerModelId())) {
 			//TODO: i18n
 			response.getErrorMessages().add("Pleas provide a clientlayerid.");
 		} else {
-			response.setLayerModelInUse(service.isLayerModelInUse(request.getClientLayerId()));
+			response.setLayerModelInUse(service.isLayerModelInUse(request.getLayerModelId()));
 		}
 	}
 
