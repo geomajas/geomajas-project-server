@@ -10,20 +10,20 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
-import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
+//import org.geomajas.configuration.FeatureStyleInfo;
+//import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
+//import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+//import com.smartgwt.client.widgets.form.DynamicForm;
+//import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
+//import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -35,11 +35,11 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 
 	private LayerModelDto lmd;
 
-	private DynamicForm form;
+//	private DynamicForm form;
 
-	private ColorPickerItem picker;
+//	private ColorPickerItem picker;
 
-	private LayerModelDto layerModel;
+//	private LayerModelDto layerModel;
 
 	public DatalayerStyle() {
 		super();
@@ -78,7 +78,7 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 	}
 
 	public void setLayerModel(LayerModelDto lmd) {
-		layerModel = lmd;
+//		layerModel = lmd;
 //		if (layerModel.getLayerConfiguration().getClientLayerInfo() instanceof ClientVectorLayerInfo) {
 //			FeatureStyleInfo fs = ((ClientVectorLayerInfo) layerModel.getLayerConfiguration()
 //					.getClientLayerInfo()).getNamedStyleInfo().getFeatureStyles().get(0);
