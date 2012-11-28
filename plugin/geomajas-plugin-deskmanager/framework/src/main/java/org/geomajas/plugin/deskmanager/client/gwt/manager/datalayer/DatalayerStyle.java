@@ -10,14 +10,20 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -28,6 +34,12 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private LayerModelDto lmd;
+
+	private DynamicForm form;
+
+	private ColorPickerItem picker;
+
+	private LayerModelDto layerModel;
 
 	public DatalayerStyle() {
 		super();
@@ -43,14 +55,35 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 		group.setGroupTitle(MESSAGES.datalayerStyleFormGroup());
 		group.setOverflow(Overflow.AUTO);
 
-		// group.addMember(form);
-
-		// TODO
+//		form = new DynamicForm();
+//		picker = new ColorPickerItem("selectColor", "Selecteer kleur: ");
+//
+//		picker.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {
+//
+//			@Override
+//			public void onChanged(ChangedEvent event) {
+//				if (layerModel.getLayerConfiguration().getClientLayerInfo() instanceof ClientVectorLayerInfo) {
+//					FeatureStyleInfo fs = ((ClientVectorLayerInfo) layerModel.getLayerConfiguration()
+//							.getClientLayerInfo()).getNamedStyleInfo().getFeatureStyles().get(0);
+//					fs.setFillColor(picker.getValueAsString());
+//					fs.setStrokeColor(picker.getValueAsString());
+//				}
+//			}
+//
+//		});
+//		form.setFields(picker);
+//		group.addMember(form);
 
 		addMember(group);
 	}
 
 	public void setLayerModel(LayerModelDto lmd) {
+		layerModel = lmd;
+//		if (layerModel.getLayerConfiguration().getClientLayerInfo() instanceof ClientVectorLayerInfo) {
+//			FeatureStyleInfo fs = ((ClientVectorLayerInfo) layerModel.getLayerConfiguration()
+//					.getClientLayerInfo()).getNamedStyleInfo().getFeatureStyles().get(0);
+//			picker.setValue("" + fs.getFillColor());
+//		}
 		fireChangedHandler();
 	}
 
@@ -76,7 +109,6 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 		// }
 		return true;
 	}
-	
 
 	public boolean onResetClick(ClickEvent event) {
 		// TODO Auto-generated method stub
