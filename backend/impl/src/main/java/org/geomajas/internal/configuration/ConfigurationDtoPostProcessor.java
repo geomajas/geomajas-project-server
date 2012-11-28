@@ -406,6 +406,7 @@ public class ConfigurationDtoPostProcessor {
 			double pixPerUnit = map.getUnitLength() / map.getPixelLength();
 			// if resolutions have been defined the old way, calculate the scale configuration
 			if (map.getResolutions().size() > 0) {
+				map.getScaleConfiguration().getZoomLevels().clear();
 				for (Double resolution : map.getResolutions()) {
 					if (map.isResolutionsRelative()) {
 						map.getScaleConfiguration().getZoomLevels().add(new ScaleInfo(1., resolution));
