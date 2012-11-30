@@ -162,9 +162,6 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
-		if (opacity > 0) {
-			setVisible(true);
-		}
 		DOM.setStyleAttribute(getElement(), "filter", "alpha(opacity=" + (opacity * 100) + ")");
 		DOM.setStyleAttribute(getElement(), "opacity", Double.toString(opacity));
 	}

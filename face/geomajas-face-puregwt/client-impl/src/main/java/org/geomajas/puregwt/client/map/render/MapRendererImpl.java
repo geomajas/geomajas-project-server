@@ -20,6 +20,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerOrderChangedEvent;
@@ -83,7 +84,7 @@ public class MapRendererImpl implements MapRenderer {
 	private Coordinate previousTranslation;
 
 	private boolean navigationBusy;
-	
+
 	@Inject
 	private MapScalesRendererFactory mapScalesRendererFactory;
 
@@ -146,7 +147,7 @@ public class MapRendererImpl implements MapRenderer {
 			layerRenderer.clear();
 			layerRenderers.remove(layer);
 			if (event.getIndex() < htmlContainer.getChildCount()) {
-				HtmlObject layerContainer = htmlContainer.getChild(event.getIndex());				
+				HtmlObject layerContainer = htmlContainer.getChild(event.getIndex());
 				if (layerContainer != null) {
 					htmlContainer.remove(layerContainer);
 				}
@@ -320,6 +321,9 @@ public class MapRendererImpl implements MapRenderer {
 	private void navigateTo(Bbox bounds, double scale, int millis) {
 		navigationBusy = true;
 		int delay = fetchDelay >= millis ? 0 : fetchDelay;
+		if (Dom.isIE()) {
+			delay = 0;
+		}
 
 		// Calculate the map translation for the requested scale:
 		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
