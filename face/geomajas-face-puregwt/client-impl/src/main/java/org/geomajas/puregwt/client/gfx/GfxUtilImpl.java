@@ -105,7 +105,7 @@ public final class GfxUtilImpl implements GfxUtil {
 	private Path toPathPoint(Geometry point) {
 		if (point.getCoordinates() != null && point.getCoordinates().length == 1) {
 			Coordinate first = point.getCoordinates()[0];
-			return new Path((int) first.getX(), (int) first.getY());
+			return new Path(first.getX(), first.getY());
 		}
 		return null;
 	}
@@ -113,10 +113,10 @@ public final class GfxUtilImpl implements GfxUtil {
 	private Path toPathLineString(Geometry lineString) {
 		if (lineString.getCoordinates() != null && lineString.getCoordinates().length > 0) {
 			Coordinate first = lineString.getCoordinates()[0];
-			Path path = new Path((int) first.getX(), (int) first.getY());
+			Path path = new Path(first.getX(), first.getY());
 			for (int i = 1; i < lineString.getCoordinates().length; i++) {
 				Coordinate coordinate = lineString.getCoordinates()[i];
-				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+				path.lineTo(coordinate.getX(), coordinate.getY());
 			}
 			return path;
 		}
@@ -126,10 +126,10 @@ public final class GfxUtilImpl implements GfxUtil {
 	private Path toPathLinearRing(Geometry linearRing) {
 		if (linearRing.getCoordinates() != null && linearRing.getCoordinates().length > 0) {
 			Coordinate first = linearRing.getCoordinates()[0];
-			Path path = new Path((int) first.getX(), (int) first.getY());
+			Path path = new Path(first.getX(), first.getY());
 			for (int i = 1; i < linearRing.getCoordinates().length - 1; i++) {
 				Coordinate coordinate = linearRing.getCoordinates()[i];
-				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+				path.lineTo(coordinate.getX(), coordinate.getY());
 			}
 			path.close();
 			path.getElement().getStyle().setProperty("fillRule", "evenOdd");
@@ -144,10 +144,10 @@ public final class GfxUtilImpl implements GfxUtil {
 			path.getElement().getStyle().setProperty("fillRule", "evenOdd");
 			for (int i = 1; i < polygon.getGeometries().length; i++) {
 				Geometry ring = polygon.getGeometries()[i];
-				path.moveTo((int) ring.getCoordinates()[0].getX(), (int) ring.getCoordinates()[0].getY());
+				path.moveTo(ring.getCoordinates()[0].getX(), ring.getCoordinates()[0].getY());
 				for (int j = 1; j < ring.getCoordinates().length - 1; j++) {
 					Coordinate coordinate = ring.getCoordinates()[j];
-					path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+					path.lineTo(coordinate.getX(), coordinate.getY());
 				}
 				path.close();
 			}
@@ -181,10 +181,10 @@ public final class GfxUtilImpl implements GfxUtil {
 			Path path = toPathLineString(multiLineString.getGeometries()[0]);
 			for (int i = 1; i < multiLineString.getGeometries().length; i++) {
 				Geometry lineString = multiLineString.getGeometries()[i];
-				path.moveTo((int) lineString.getCoordinates()[0].getX(), (int) lineString.getCoordinates()[0].getY());
+				path.moveTo(lineString.getCoordinates()[0].getX(), lineString.getCoordinates()[0].getY());
 				for (int j = 1; j < lineString.getCoordinates().length; j++) {
 					Coordinate coordinate = lineString.getCoordinates()[j];
-					path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+					path.lineTo(coordinate.getX(), coordinate.getY());
 				}
 			}
 			return path;
@@ -199,10 +199,10 @@ public final class GfxUtilImpl implements GfxUtil {
 				Geometry polygon = multiPolygon.getGeometries()[i];
 				for (int j = 0; j < polygon.getGeometries().length; j++) {
 					Geometry ring = polygon.getGeometries()[0];
-					path.moveTo((int) ring.getCoordinates()[0].getX(), (int) ring.getCoordinates()[0].getY());
+					path.moveTo(ring.getCoordinates()[0].getX(), ring.getCoordinates()[0].getY());
 					for (int k = 1; k < ring.getCoordinates().length; k++) {
 						Coordinate coordinate = ring.getCoordinates()[k];
-						path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+						path.lineTo(coordinate.getX(), coordinate.getY());
 					}
 					path.close();
 				}
