@@ -46,6 +46,15 @@ public class CsvReader<T> extends Reader {
 
 	private boolean eof;
 
+	public boolean eof() {
+		try {
+			peekChar();
+		} catch (IOException e) {
+			return true;
+		}
+		return eof;
+	}
+	
 	/**
 	 * @param reader for instance a fileReader, will be wrapped in a bufferedReader if not already passed as one
 	 * @param builder class that knows the content of the csv files and can read the necessary fields
