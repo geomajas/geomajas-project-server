@@ -203,7 +203,8 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 			// If allowed, add the style definition to the InternalFeature:
 			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0) {
-				res.setStyleDefinition(findStyleFilter(feature, styles).getStyleDefinition());
+				// We calculate the style on the (almost complete) internal feature to allow synthetic attributes.
+				res.setStyleDefinition(findStyleFilter(res, styles).getStyleDefinition());
 			}
 
 			// If allowed, add the attributes to the InternalFeature:
