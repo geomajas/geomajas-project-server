@@ -152,6 +152,9 @@ public class VectorLayerFactory implements LayerFactory {
 				layerCrs);
 		Filter filter = filterService.createBboxFilter(layerCrs, layerBounds,
 				layer.getLayerInfo().getFeatureInfo().getGeometryType().getName());
+		if (extraInfo.getFilter() != null) {
+			filter = filterService.createAndFilter(filter, filterService.parseFilter(extraInfo.getFilter()));
+		}
 		List<InternalFeature> features = vectorLayerService.getFeatures(vectorInfo.getServerLayerId(),
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
