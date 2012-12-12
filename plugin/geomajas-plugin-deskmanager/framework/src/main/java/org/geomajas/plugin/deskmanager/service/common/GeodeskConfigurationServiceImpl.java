@@ -32,6 +32,7 @@ import org.geomajas.service.DtoConverterService;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -195,7 +196,11 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		for (org.geomajas.plugin.deskmanager.domain.ClientLayer layer : layers) {
 			ClientLayerInfo sourceCli = null;
 			if (layer != null && layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {
-				sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel().getClientLayerId());
+				try {
+					sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel().getClientLayerId());
+				} catch (NoSuchBeanDefinitionException e) {
+					// Ignore, error message later
+				}
 			}
 			if (layer != null && layer.getClientLayerInfo() != null) {
 				clientLayers.add(layer.getClientLayerInfo());
