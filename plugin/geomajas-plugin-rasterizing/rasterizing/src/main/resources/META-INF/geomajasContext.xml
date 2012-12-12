@@ -146,6 +146,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="id" value="SkipTileFill" />
 					<property name="stepId" value="GetTileFillStep" />
 				</bean>
+				<bean
+					class="org.geomajas.service.pipeline.SkipStepPipelineInterceptor">
+					<property name="id" value="SkipGetTileGetFeaturesStep" />
+					<property name="stepId" value="GetTileGetFeaturesStep" />
+				</bean>
 			</list>
 		</property>
 	</bean>
