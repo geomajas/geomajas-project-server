@@ -185,6 +185,16 @@ public class MapImpl implements Exportable, Map {
 		mapWidget.setCursorString(cursor);
 	}
 
+	/**
+	 * Apply a new default cursor to the map.
+	 * 
+	 * @param cursor
+	 *            The new cursor to apply.
+	 */
+	public void setDefaultCursor(String cursor) {
+		mapWidget.setDefaultCursorString(cursor);
+	}
+
 	public String getHtmlElementId() {
 		return htmlElementId;
 	}
