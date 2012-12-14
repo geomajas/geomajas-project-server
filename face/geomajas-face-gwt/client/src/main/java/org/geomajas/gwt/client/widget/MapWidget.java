@@ -168,6 +168,8 @@ public class MapWidget extends VLayout {
 	private MapViewRenderer mapViewRenderer;
 
 	private String cursor = Cursor.DEFAULT.getValue();
+	
+	private String defaultCursor = Cursor.DEFAULT.getValue();
 
 	/**
 	 * A list of handler registrations that are needed to correctly clean up after destruction.
@@ -496,6 +498,38 @@ public class MapWidget extends VLayout {
 	}
 
 	/**
+	 * Apply a new default cursor on the map. This cursor will be set on deactivation of a controller.
+	 * 
+	 * @param cursor The new default cursor to be used when the mouse hovers over the map.
+	 * @since 1.12.0
+	 */
+	@Api
+	public void setDefaultCursorString(String cursor) {
+		try {
+			defaultCursor = cursor.toUpperCase();
+			Cursor.valueOf(cursor.toUpperCase());
+		} catch (Exception e) { // NOSONAR
+			// Let us assume the cursor points to an image:
+			defaultCursor = cursor;
+			if (!cursor.contains("url")) {
+				defaultCursor = "url('" + cursor + "'),auto";
+			}
+		}
+		setCursorString(defaultCursor);
+	}
+
+	/**
+	 * Returns the default cursor as a string. Could be something like "url('blop.img'),auto"
+	 * 
+	 * @return The default cursor as a string.
+	 * @since 1.12.0
+	 */
+	@Api
+	public String getDefaultCursorString() {
+		return defaultCursor;
+	}
+
+	/**
 	 * Apply a new context menu on the map.
 	 * 
 	 * @param contextMenu
@@ -789,6 +823,7 @@ public class MapWidget extends VLayout {
 	 */
 	@Api
 	public void setController(GraphicsController controller) {
+		setCursorString(defaultCursor);
 		graphics.setController(controller);
 	}
 
@@ -1171,6 +1206,7 @@ public class MapWidget extends VLayout {
 						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 					}
 				}
+				setCursorString(getDefaultCursorString());
 			} catch (Exception e) {
 				Log.logError("OnResized exception", e);
 			}

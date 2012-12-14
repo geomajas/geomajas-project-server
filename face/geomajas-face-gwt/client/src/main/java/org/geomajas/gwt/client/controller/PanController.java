@@ -19,7 +19,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.smartgwt.client.types.Cursor;
 
 /**
@@ -44,8 +43,6 @@ public class PanController extends AbstractGraphicsController {
 	private ZoomToRectangleController zoomToRectangleController;
 
 	private Coordinate lastClickPosition;
-
-	private String originalCursor;
 
 	// Constructors:
 
@@ -72,7 +69,7 @@ public class PanController extends AbstractGraphicsController {
 	public void setShowCursorOnMove(boolean showCursorOnMove) {
 		this.showCursorOnMove = showCursorOnMove;
 	}
-
+	
 	@Override
 	public void onDown(HumanInputEvent<?> event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
@@ -83,15 +80,10 @@ public class PanController extends AbstractGraphicsController {
 			mapWidget.getMapModel().getMapView().setPanDragging(true);
 			begin = getLocation(event, RenderSpace.SCREEN);
 			if (!isShowCursorOnMove()) {
-				originalCursor = mapWidget.getCursorString();
 				mapWidget.setCursor(Cursor.MOVE);
 			}
 		}
 		lastClickPosition = getLocation(event, RenderSpace.WORLD);
-	}
-
-	public void onMouseOver(MouseOverEvent event) {
-		originalCursor = mapWidget.getCursorString();
 	}
 	
 	@Override
@@ -151,11 +143,7 @@ public class PanController extends AbstractGraphicsController {
 		mapWidget.getMapModel().getMapView().setPanDragging(false);
 		panning = false;
 		moving = false;
-		if (originalCursor != null) {
-			mapWidget.setCursorString(originalCursor);
-		} else {
-			mapWidget.setCursor(Cursor.DEFAULT);
-		}
+		mapWidget.setCursorString(mapWidget.getDefaultCursorString());
 		if (null != event) {
 			updateView(event);
 		}
