@@ -41,20 +41,36 @@ public class JsLabelHandler implements Exportable {
 	public JsLabelHandler() {
 	}
 
+	/**
+	 * JavaScript constructor.
+	 * 
+	 * @param jsEditor the editor service
+	 */
 	@Export
 	public JsLabelHandler(JsGeometryEditor jsEditor) {
 		editor = jsEditor.getDelegate();
 		delegate = new LabelDragLineHandler(editor.getMapWidget(), editor.getEditService()) ;
 	}
 
+	/**
+	 * Register this handler for editor events.
+	 */
 	public void register() {
 		delegate.register();
 	}
 
+	/**
+	 * Unregister this handler from editor events.
+	 */
 	public void unregister() {
 		delegate.unregister();
 	}
 	
+	/**
+	 * Return whether this handler is registered with the editor.
+	 * 
+	 * @return true if registered
+	 */
 	public boolean isRegistered() {
 		return delegate.isRegistered();
 	}

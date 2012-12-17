@@ -55,7 +55,7 @@ public class JsGeometryEditor implements Exportable {
 	private JsGeometryMergeService mergeService;
 
 	private JsStyleService styleService;
-	
+
 	private JsGeometryRenderer renderer;
 
 	/**
@@ -83,8 +83,7 @@ public class JsGeometryEditor implements Exportable {
 	/**
 	 * Add the list of snapping rules as they are configured for a specific layer within the XML configuration.
 	 * 
-	 * @param layerId
-	 *            The vector layer to use the configuration from.
+	 * @param layerId The vector layer to use the configuration from.
 	 */
 	public void addLayerSnappingRules(String layerId) {
 		Layer<?> layer = mapWidget.getMapModel().getLayer(layerId);
@@ -104,7 +103,7 @@ public class JsGeometryEditor implements Exportable {
 	public MapImpl getMap() {
 		return map;
 	}
-	
+
 	/**
 	 * Get wrapper for the geometry renderer.
 	 * 
@@ -209,7 +208,12 @@ public class JsGeometryEditor implements Exportable {
 	public boolean isBusyEditing() {
 		return delegate.isBusyEditing();
 	}
-	
+
+	/**
+	 * Return the delegate editor.
+	 * 
+	 * @return the delegate
+	 */
 	@NoExport
 	public GeometryEditor getDelegate() {
 		return delegate;

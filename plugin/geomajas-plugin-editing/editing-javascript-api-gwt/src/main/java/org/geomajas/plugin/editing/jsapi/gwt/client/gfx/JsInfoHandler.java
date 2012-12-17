@@ -23,7 +23,6 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 import org.timepedia.exporter.client.NoExport;
 
-
 /**
  * JavaScript wrapper of {@link InfoDragLineHandler}.
  * 
@@ -37,56 +36,92 @@ import org.timepedia.exporter.client.NoExport;
 public class JsInfoHandler implements Exportable, InfoProvider {
 
 	private InfoDragLineHandler delegate;
-	
+
 	private GeometryEditor editor;
 
 	private TitleCallback titleCallback;
 
 	private HtmlCallback htmlCallback;
-	
+
 	/**
 	 * Needed for exporter.
 	 */
 	public JsInfoHandler() {
 	}
-	
+
+	/**
+	 * JavaScript constructor.
+	 * 
+	 * @param jsEditor the editor service
+	 */
 	@Export
 	public JsInfoHandler(JsGeometryEditor jsEditor) {
 		editor = jsEditor.getDelegate();
 		delegate = new InfoDragLineHandler(editor.getMapWidget(), editor.getEditService());
 	}
 
-
+	/**
+	 * Register this handler for editor events.
+	 */
 	public void register() {
 		delegate.register();
 	}
 
+	/**
+	 * Unregister this handler from editor events.
+	 */
 	public void unregister() {
 		delegate.unregister();
 	}
 
+	/**
+	 * Make the info window visible.
+	 * 
+	 * @param visible
+	 */
 	public void setVisible(boolean visible) {
 		delegate.setVisible(visible);
 	}
 
+	/**
+	 * @see #setVisible(boolean)
+	 * @return true if visible
+	 */
 	public boolean isVisible() {
 		return delegate.isVisible();
 	}
 
+	/**
+	 * Set whether the info window should be closeable by the end user.
+	 * 
+	 * @param showClose true if closeable, false otherwise
+	 */
 	public void setShowClose(boolean showClose) {
 		delegate.setShowClose(showClose);
 	}
-	
+
+	/**
+	 * Return whether this handler is registered with the editor.
+	 * 
+	 * @return true if registered
+	 */
 	public boolean isRegistered() {
 		return delegate.isRegistered();
 	}
-	
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	@NoExport
 	public String getTitle() {
 		return titleCallback == null ? "" : titleCallback.execute();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	@NoExport
 	public String getHtml(Geometry geometry, Coordinate dragPoint, Coordinate startA, Coordinate startB) {
 		return htmlCallback == null ? "" : htmlCallback.execute(geometry, dragPoint, startA, startB);
@@ -141,8 +176,5 @@ public class JsInfoHandler implements Exportable, InfoProvider {
 
 		String execute(Geometry geometry, Coordinate dragPoint, Coordinate startA, Coordinate startB);
 	}
-
-	
-	
 
 }
