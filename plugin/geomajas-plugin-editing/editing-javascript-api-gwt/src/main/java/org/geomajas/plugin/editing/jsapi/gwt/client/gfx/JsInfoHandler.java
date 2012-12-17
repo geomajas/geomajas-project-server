@@ -77,6 +77,10 @@ public class JsInfoHandler implements Exportable, InfoProvider {
 		delegate.setShowClose(showClose);
 	}
 	
+	public boolean isRegistered() {
+		return delegate.isRegistered();
+	}
+	
 	
 	@NoExport
 	public String getTitle() {

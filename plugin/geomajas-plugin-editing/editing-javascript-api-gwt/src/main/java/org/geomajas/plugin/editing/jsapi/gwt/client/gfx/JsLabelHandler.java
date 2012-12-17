@@ -55,4 +55,8 @@ public class JsLabelHandler implements Exportable {
 		delegate.unregister();
 	}
 	
+	public boolean isRegistered() {
+		return delegate.isRegistered();
+	}
+
 }
