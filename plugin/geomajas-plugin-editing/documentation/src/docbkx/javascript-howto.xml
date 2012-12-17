@@ -220,7 +220,7 @@ function unRegisterDeleteHole() {
   </section>
 
   <section>
-    <title>How to show an information panel and configure its content</title>
+    <title>How to show an information panel while editing</title>
 
     <para>While editing, an information panel with useful content for the end
     user can be shown. The following steps can be performed to fully configure
@@ -228,34 +228,9 @@ function unRegisterDeleteHole() {
 
     <orderedlist>
       <listitem>
-        <para>The property closeRingWhileInserting determines if the closing
-        drag line should be shown when editing a linear ring. When set to true
-        2 drag lines (A and B) will be shown when creating a linear ring.
-        These can then be labeled (see step 2).</para>
-      </listitem>
-
-      <listitem>
-        <para>The property showDragLabels should be set to true to show labels
-        'A' and 'B' on the drag lines (defaults to false). This is useful to
-        refer to the drag lines in the informational panel.</para>
-      </listitem>
-
-      <listitem>
-        <para>The property showInfo should be set to true to show the
-        informational panel (defaults to false).</para>
-      </listitem>
-
-      <listitem>
-        <para>The property showClose should be set to false to disallow
-        closing of the informational panel (defaults to true).</para>
-      </listitem>
-
-      <listitem>
-        <para>The class <code>org.geomajas.plugin.editing.gfx.InfoProvider
-        </code>is a class that provides callback closures to determine the
-        title and the HTML content of the informational window. An instance of
-        this class should be created and set on the style service (see step
-        8). </para>
+        <para>Create an instance of
+        <code>org.geomajas.plugin.editing.gfx.InfoHandler</code>. Pass the
+        Geomajas editor to the constructor</para>
       </listitem>
 
       <listitem>
@@ -275,11 +250,14 @@ function unRegisterDeleteHole() {
         <para>ca: the coordinate of the first drag line A</para>
 
         <para>cb: the coordinate of the second drag line B</para>
+
+        <para>The drag lines can be shown by registering a separate handler,
+        see <xref linkend="drag-section"
+        xreflabel="How to show drag labels while editing" /></para>
       </listitem>
 
       <listitem>
-        <para>The property infoProvider should be set to replace the default
-        info provider with a custom one.</para>
+        <para>Call register() to activate the info panel.</para>
       </listitem>
     </orderedlist>
 
@@ -287,15 +265,11 @@ function unRegisterDeleteHole() {
     and configure its content:</para>
 
     <para><programlisting>function prepareEditor() {
-  editor.getStyleService().setCloseRingWhileInserting(true); // 1
-  editor.getStyleService().setShowDragLabels(true); // 2
-  editor.getStyleService().setShowInfo(true); // 3
-  editor.getStyleService().setShowClose(false); // 4
-  var infoProvider = new org.geomajas.plugin.editing.gfx.InfoProvider(); // 5
-  infoProvider.setTitleCallBack(function() { // 6
+  infoHandler = new org.geomajas.plugin.editing.gfx.InfoHandler(editor); // 1
+  infoHandler.setTitleCallBack(function() { // 2
    return "Geometrie eigenschappen"; 
   });
-  infoProvider.setHtmlCallBack(function(geometry, cd, ca, cb) { // 7
+  infoHandler.setHtmlCallBack(function(geometry, cd, ca, cb) { // 3
    if(geometry) {
     var type = geometry.getGeometryType();
     var points = Geomajas().getGeometryService().getNumPoints(geometry);
@@ -320,7 +294,40 @@ function unRegisterDeleteHole() {
    content += "&lt;/table&gt;";     
    return content; 
   });
-  editor.getStyleService().setInfoProvider(infoProvider); // 8
+  infoHandler.register(); // 4
 }</programlisting></para>
+
+    <para>If you want to disallow the user to close the panel, call
+    <code>infoHandler.setShowClose(true/false)</code>. If you want to
+    show/hide the infopanel temporarily, just call
+    <code>infoHandler.setVisible(true/false)</code>. After editing had
+    finished, make sure to call <code>infoHandler.unregister()</code>. This
+    will automatically hide the window.</para>
+  </section>
+
+  <section id="drag-section" label="How to show drag labels while editing">
+    <title>How to show drag labels while editing </title>
+
+    <para>While editing, A and B labels can be shown in the center of the drag
+    lines. To allow vertex selection, the labels will automatically disappear
+    when the mouse cursor gets near to one of the vertices. The following
+    steps are necessary to activate the drag labels:</para>
+
+    <para><orderedlist>
+        <listitem>
+          <para>Create an instance of
+          <code>org.geomajas.plugin.editing.gfx.LabelHandler</code>. Pass the
+          Geomajas editor to the constructor</para>
+        </listitem>
+
+        <listitem>
+          <para>Call register() to activate the info panel.</para>
+        </listitem>
+      </orderedlist>The following code snippet shows how to
+    proceed:<programlisting>labelHandler = new org.geomajas.plugin.editing.gfx.LabelHandler(editor);
+labelHandler.register();</programlisting></para>
+
+    <para>when you want to make the labels invisible, or after editing had
+    finished, make sure to call <code>labelHandler.unregister()</code>.</para>
   </section>
 </chapter>
