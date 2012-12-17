@@ -19,15 +19,19 @@ import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.handler.InfoDragLineHandler;
+import org.geomajas.plugin.editing.gwt.client.handler.LabelDragLineHandler;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
+import com.smartgwt.client.widgets.menu.MenuItemStringFunction;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -59,6 +63,7 @@ public class MenuBar extends ToolStrip {
 		// Add creation options:
 		addMenuButton(getNewGeometryButton());
 		addMenuButton(getEditGeometryButton());
+		addMenuButton(getInfoButton());
 		addSeparator();
 
 		// Add buttons to help the editing process:
@@ -256,4 +261,63 @@ public class MenuBar extends ToolStrip {
 		menuButton.setHeight(32);
 		return menuButton;
 	}
+
+	protected ToolStripMenuButton getInfoButton() {
+		Menu menu = new Menu();
+		menu.setShowShadow(true);
+		menu.setShadowDepth(3);
+
+		final InfoDragLineHandler infoHandler = new InfoDragLineHandler(editor.getMapWidget(), editor.getEditService());
+		final LabelDragLineHandler labelHandler = new LabelDragLineHandler(editor.getMapWidget(),
+				editor.getEditService());
+
+		final MenuItem infoItem = new MenuItem("Show infopanel", "[ISOMORPHIC]/geomajas/osgeo/info.png");
+		infoItem.setDynamicTitleFunction(new MenuItemStringFunction() {
+
+			@Override
+			public String execute(Canvas target, Menu menu, MenuItem item) {
+				return infoHandler.isRegistered() ? "Hide infopanel" : "Show infopanel";
+			}
+		});
+		infoItem.addClickHandler(new ClickHandler() {
+
+			public void onClick(MenuItemClickEvent event) {
+				if (infoHandler.isRegistered()) {
+					infoHandler.unregister();
+				} else {
+					infoHandler.register();
+				}
+
+			}
+		});
+		final MenuItem labelItem = new MenuItem("Show drag labels", "[ISOMORPHIC]/geomajas/osgeo/line-edit.png");
+		labelItem.setDynamicTitleFunction(new MenuItemStringFunction() {
+
+			@Override
+			public String execute(Canvas target, Menu menu, MenuItem item) {
+				return labelHandler.isRegistered() ? "Hide drag labels" : "Show drag labels";
+			}
+		});
+		labelItem.addClickHandler(new ClickHandler() {
+
+			public void onClick(MenuItemClickEvent event) {
+				if (labelHandler.isRegistered()) {
+					labelHandler.unregister();
+				} else {
+					labelHandler.register();
+				}
+
+				editor.getStyleService().setCloseRingWhileInserting(labelHandler.isRegistered());
+
+			}
+		});
+
+		menu.setItems(infoItem, labelItem);
+
+		ToolStripMenuButton menuButton = new ToolStripMenuButton("Extras", menu);
+		menuButton.setWidth(100);
+		menuButton.setHeight(32);
+		return menuButton;
+	}
+
 }
