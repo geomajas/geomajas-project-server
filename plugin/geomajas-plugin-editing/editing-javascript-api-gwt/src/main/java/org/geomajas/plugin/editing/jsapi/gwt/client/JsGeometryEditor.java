@@ -16,6 +16,7 @@ import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
 import org.geomajas.plugin.editing.gwt.client.snap.SnapRuleUtil;
 import org.geomajas.plugin.editing.jsapi.client.gfx.JsGeometryRenderer;
@@ -28,6 +29,7 @@ import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.NoExport;
 
 /**
  * Central geometry editor for the JavaScript API on top of the GWT face.
@@ -207,4 +209,10 @@ public class JsGeometryEditor implements Exportable {
 	public boolean isBusyEditing() {
 		return delegate.isBusyEditing();
 	}
+	
+	@NoExport
+	public GeometryEditor getDelegate() {
+		return delegate;
+	}
+
 }
