@@ -56,9 +56,14 @@
 			var service; // The central editing service.
 			var factory; // GeometryHandlerFactory for deleting rings
 			var deleteFromPoint; // HandlerRegistration for delete from point
+			var infoHandler; // HandlerRegistration for delete from point
+			var labelHandler; // HandlerRegistration for delete from point
+			var labelFlag = false;
+			var infoFlag = false;
 			
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapMain", "js-map-element");
+				map.setDefaultCursor('crosshair');
 				editor = new org.geomajas.plugin.editing.GeometryEditor();
 				editor.setMap(map);
 				service = editor.getService();
@@ -108,14 +113,12 @@
 
 			function drawPolygon() {
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Polygon", 0, 0);
-				editor.getStyleService().setCloseRingWhileInserting(true);
-				editor.getStyleService().setShowDragLabels(true);
-				editor.getStyleService().setShowInfo(true);
-				var infoProvider = new org.geomajas.plugin.editing.gfx.InfoProvider();
-				infoProvider.setTitleCallBack(function() {
+				infoHandler = new org.geomajas.plugin.editing.gfx.InfoHandler(editor);
+				labelHandler = new org.geomajas.plugin.editing.gfx.LabelHandler(editor);
+				infoHandler.setTitleCallBack(function() {
 					return "Geometrie eigenschappen";
 				});
-				infoProvider.setHtmlCallBack(function(geometry, cd, ca, cb) {
+				infoHandler.setHtmlCallBack(function(geometry, cd, ca, cb) {
 					if(geometry) {
 						var type = geometry.getGeometryType();
 						var points = Geomajas().getGeometryService().getNumPoints(geometry);
@@ -140,14 +143,34 @@
 					content += "</table>";					
 					return content;
 				});
-				editor.getStyleService().setInfoProvider(infoProvider);
+				infoHandler.register();
+				labelHandler.register();
+				
 				service.start(geometry);
 				service.addEmptyChild();
 				var index = service.getIndexService().create("vertex", [0, 0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}
+			
+			function toggleLabel() {
+				if(labelFlag) {
+					labelHandler.register();
+				} else {
+					labelHandler.unregister();
+				}
+				labelFlag = !labelFlag;
+			}
 
+			function toggleInfo() {
+				if(infoFlag) {
+					infoHandler.register();
+				} else {
+					infoHandler.unregister();
+				}
+				infoFlag = !infoFlag;
+			}
+			
 			function insertHole() {
 				var geometry = service.getGeometry();
 				var ringIndex = service.addEmptyChild();
@@ -233,6 +256,7 @@
 					deleteFromPoint = null;
 				}
 			}
+			
 
 			function log(txt) {
 				var el = document.getElementById("log");
@@ -261,8 +285,8 @@
 			<button onclick="insertHole()">Insert hole</button>
 			<button onclick="registerDeleteHole()">Register hole deletion</button>
 			<button onclick="unRegisterDeleteHole()">Unregister hole deletion</button>
-			<button onclick="registerDeleteHoleFromPoint()">Register hole deletion from point</button>
-			<button onclick="unRegisterDeleteHoleFromPoint()">Unregister hole deletion from point</button>
+			<button onclick="toggleInfo()">Toggle info</button>
+			<button onclick="toggleLabel()">Toggle label</button>
 		</div>
 		
 		<table>
