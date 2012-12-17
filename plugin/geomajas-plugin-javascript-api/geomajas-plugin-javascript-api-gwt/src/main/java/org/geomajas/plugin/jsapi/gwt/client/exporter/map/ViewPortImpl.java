@@ -31,6 +31,10 @@ import org.timepedia.exporter.client.Exportable;
 @ExportPackage("org.geomajas.jsapi.map")
 public class ViewPortImpl implements ViewPort, Exportable {
 
+	private static final String WORLD = "world";
+
+	private static final String SCREEN = "screen";
+
 	private MapView mapView;
 
 	private ZoomOption zoomOption = ZoomOption.LEVEL_FIT;
@@ -167,10 +171,10 @@ public class ViewPortImpl implements ViewPort, Exportable {
 		}
 
 		org.geomajas.geometry.Coordinate transformed;
-		if (from.equalsIgnoreCase("screen") && to.equalsIgnoreCase("world")) {
+		if (SCREEN.equalsIgnoreCase(from) && WORLD.equalsIgnoreCase(to)) {
 			transformed = mapView.getWorldViewTransformer().viewToWorld(coordinate);
 			return new Coordinate(transformed.getX(), transformed.getY());
-		} else if (from.equalsIgnoreCase("world") && to.equalsIgnoreCase("screen")) {
+		} else if (WORLD.equalsIgnoreCase(from) && SCREEN.equalsIgnoreCase(to)) {
 			transformed = mapView.getWorldViewTransformer().worldToView(coordinate);
 			return new Coordinate(transformed.getX(), transformed.getY());
 		}
