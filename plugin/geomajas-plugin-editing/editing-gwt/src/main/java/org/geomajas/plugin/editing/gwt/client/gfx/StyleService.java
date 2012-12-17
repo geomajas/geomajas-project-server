@@ -62,20 +62,4 @@ public interface StyleService {
 
 	boolean isCloseRingWhileInserting();
 
-	void setShowDragLabels(boolean showDragLabels);
-
-	boolean isShowDragLabels();
-
-	void setShowInfo(boolean showInfo);
-
-	boolean isShowInfo();
-
-	void setInfoProvider(InfoProvider provider);
-
-	InfoProvider getInfoProvider();
-	
-	void setShowClose(boolean showClose);
-
-	boolean isShowClose();
-
 }

@@ -63,6 +63,14 @@ public class LabelDragLineHandler extends BaseDragLineHandler implements MapView
 		registrations.add(map.getMapModel().getMapView().addMapViewChangedHandler(this));
 	}
 
+	/**
+	 * Register handlers.
+	 */
+	public void unregister() {
+		onDragStopped();
+		super.unregister();
+	}
+
 	@Override
 	protected void onDrag(Coordinate dragPoint, Coordinate startA, Coordinate startB) {
 		if (startA != null) {

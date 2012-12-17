@@ -67,6 +67,15 @@ public abstract class BaseDragLineHandler implements GeometryEditMoveHandler, Ge
 		}
 		registrations.clear();
 	}
+	
+	/**
+	 * Is this handler registered ?
+	 * 
+	 * @return true if registered
+	 */
+	public boolean isRegistered() {
+		return registrations.size() > 0;
+	}
 
 	@Override
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {

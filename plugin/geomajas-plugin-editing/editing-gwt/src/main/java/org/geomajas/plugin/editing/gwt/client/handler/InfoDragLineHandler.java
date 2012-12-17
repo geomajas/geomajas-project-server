@@ -71,29 +71,38 @@ public class InfoDragLineHandler extends BaseDragLineHandler implements Geometry
 	public InfoDragLineHandler(MapWidget map, GeometryEditService editService) {
 		super(editService);
 		this.map = map;
-		label = new HTMLFlow(infoProvider.getHtml(editService.getGeometry(), null, null, null));
-		label.setAlign(Alignment.LEFT);
-		window = new Window();
-		window.setTitle(infoProvider.getTitle());
-		window.setAutoSize(true);
-		window.setCanDragReposition(true);
-		window.setCanDragResize(true);
-		window.addItem(label);
-		window.setTop(25);
-		window.setLeft(25);
-		window.hide();
-		map.addChild(window);
 	}
 
 	public void register() {
+		if (window == null) {
+			createWindow();
+		}
 		super.register();
 		registrations.add(editService.addGeometryEditStartHandler(this));
 		registrations.add(editService.addGeometryEditStopHandler(this));
+		// show initial state
+		onDrag(null, null, null);
+		window.show();
+	}
+	
+	public void unregister() {
+		window.hide();
+		super.unregister();
+	}
+
+	public void setVisible(boolean visible) {
+		window.setVisible(visible);
+	}
+	
+	public boolean isVisible() {
+		return window.isVisible();
 	}
 
 	public void setInfoProvider(InfoProvider infoProvider) {
 		this.infoProvider = infoProvider;
-		window.setTitle(infoProvider.getTitle());
+		if (window != null) {
+			window.setTitle(infoProvider.getTitle());
+		}
 	}
 	
 	public void setShowClose(boolean showClose) {
@@ -117,11 +126,28 @@ public class InfoDragLineHandler extends BaseDragLineHandler implements Geometry
 
 	@Override
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
+		// show initial state
+		onDrag(null, null, null);
 		window.show();
 	}
 
 	protected double length(Coordinate[] edge) {
 		return Math.hypot(edge[1].getX() - edge[0].getX(), edge[1].getY() - edge[0].getY());
+	}
+
+	private void createWindow() {
+		window = new Window();
+		window.hide();
+		label = new HTMLFlow(infoProvider.getHtml(editService.getGeometry(), null, null, null));
+		label.setAlign(Alignment.LEFT);
+		window.setTitle(infoProvider.getTitle());
+		window.setAutoSize(true);
+		window.setCanDragReposition(true);
+		window.setCanDragResize(true);
+		window.addItem(label);
+		window.setTop(25);
+		window.setLeft(25);
+		map.addChild(window);
 	}
 
 	/**

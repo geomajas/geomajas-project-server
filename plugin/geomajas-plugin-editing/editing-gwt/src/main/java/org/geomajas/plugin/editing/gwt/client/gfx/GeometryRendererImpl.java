@@ -79,9 +79,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent;
 import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler;
 import org.geomajas.plugin.editing.gwt.client.controller.CompositeGeometryIndexController;
-import org.geomajas.plugin.editing.gwt.client.handler.LabelDragLineHandler;
 import org.geomajas.plugin.editing.gwt.client.handler.EditingHandlerRegistry;
-import org.geomajas.plugin.editing.gwt.client.handler.InfoDragLineHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Cursor;
@@ -118,16 +116,10 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	private String baseName = "editing";
 
 	private HandlerRegistration mapViewRegistration;
-	
-	private LabelDragLineHandler dragLineLabelHandler;
-	
-	private InfoDragLineHandler infoWindowHandler;
 
 	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
-		dragLineLabelHandler = new LabelDragLineHandler(mapWidget, editingService);
-		infoWindowHandler = new InfoDragLineHandler(mapWidget, editingService);
 	}
 
 	// ------------------------------------------------------------------------
@@ -156,22 +148,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
 		// Also look at the map for changes in the MapView:
 		mapViewRegistration = mapWidget.getMapModel().getMapView().addMapViewChangedHandler(this);
-
-		// Register optional handlers
-		dragLineLabelHandler.unregister();
-		if (styleService.isShowDragLabels()) {
-			dragLineLabelHandler.register();
-		}
-
-		infoWindowHandler.unregister();
-		if (styleService.isShowInfo()) {
-			infoWindowHandler.register();
-			if (styleService.getInfoProvider() != null) {
-				infoWindowHandler.setInfoProvider(styleService.getInfoProvider());
-			}
-			infoWindowHandler.setShowClose(styleService.isShowClose());
-			infoWindowHandler.onGeometryEditStart(event);
-		}
 
 		// Render the geometry on the map:
 		groups.clear();
@@ -345,7 +321,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				break;
 			case IDLE:
 			default:
-				mapWidget.setCursor(Cursor.DEFAULT);
+				mapWidget.setCursorString(mapWidget.getDefaultCursorString());
 				redraw();
 
 				// Remove the temporary insert move line:

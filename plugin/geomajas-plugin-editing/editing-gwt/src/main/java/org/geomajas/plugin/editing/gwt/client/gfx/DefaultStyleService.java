@@ -60,14 +60,6 @@ public class DefaultStyleService implements StyleService {
 	
 	private boolean closeRingWhileInserting;
 
-	private boolean showDragLabels;
-
-	private boolean showInfo;
-
-	private boolean showClose;
-
-	private InfoProvider infoProvider;
-
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
 	}
@@ -227,44 +219,5 @@ public class DefaultStyleService implements StyleService {
 	public void setCloseRingWhileInserting(boolean closeRingWhileInserting) {
 		this.closeRingWhileInserting = closeRingWhileInserting;
 	}
-	
-	@Override
-	public InfoProvider getInfoProvider() {
-		return infoProvider;
-	}
-	
-	@Override
-	public boolean isShowDragLabels() {
-		return showDragLabels;
-	}
-
-	
-	@Override
-	public boolean isShowInfo() {
-		return showInfo;
-	}
-
-	@Override
-	public void setShowDragLabels(boolean showDragLabels) {
-		this.showDragLabels = showDragLabels;
-	}
-
-	@Override
-	public void setShowInfo(boolean showInfo) {
-		this.showInfo = showInfo;
-	}
-	
-	public boolean isShowClose() {
-		return showClose;
-	}
-	
-	public void setShowClose(boolean showClose) {
-		this.showClose = showClose;
-	}
-
-	@Override
-	public void setInfoProvider(InfoProvider infoProvider) {
-		this.infoProvider = infoProvider;
-	}
-	
+		
 }
