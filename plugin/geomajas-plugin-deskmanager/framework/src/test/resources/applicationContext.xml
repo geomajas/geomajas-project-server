@@ -105,6 +105,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<task:scheduler id="myScheduler" pool-size="1" />
 
+	<bean name="deskmanager.defaultCrs" class="java.lang.String">
+		<constructor-arg value="EPSG:31370"/>
+	</bean>
 
 
 </beans>

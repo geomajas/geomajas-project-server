@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.service.manager;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,35 +26,49 @@ import javax.annotation.Resource;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FileDataStore;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Transaction;
+import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
+ * Implementation of the ShapeFileService.
+ * 
  * @author Kristof Heirwegh
  * @author Frank Wynants
+ * @author Oliver May
  */
 @Component
 public class ShapeFileServiceImpl implements ShapeFileService {
@@ -62,27 +77,31 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String DELIM = ",";
+
+	private static final String SUBDELIM = ":";
+
 	@Autowired
 	private VectorLayerService layerService;
 
 	@Resource(name = "postGisDatastore")
 	private DataStore dataStore;
 
-	/**
-	 * Import of the shape file using geotools.
-	 * 
-	 * @param shpFileName Fully qualified name of the shape file
-	 * @return true if import succeeded
-	 */
-	public boolean doGeoToolsImport(String shpFileName, String layerName) {
+	@Autowired
+	private GeoService geoService;
+
+	@Resource(name = "deskmanager.defaultCrs")
+	private String defaultCrs;
+
+	public boolean importShapeFile(String shpFileName, String layerName) {
 		log.info("Importing Shapefile using Geotools: " + shpFileName);
-		FileDataStore sourceStore = null;
+		DataStore sourceStore = null;
 		Transaction tr = null;
 
 		try {
 			File shpFile = new File(shpFileName);
-			sourceStore = FileDataStoreFinder.getDataStore(shpFile);
-			SimpleFeatureSource featureSource = sourceStore.getFeatureSource();
+			sourceStore = toApplicationCrs((ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile));
+			SimpleFeatureSource featureSource = sourceStore.getFeatureSource(sourceStore.getTypeNames()[0]);
 
 			Set<String> schemes = new HashSet<String>();
 			for (String s : dataStore.getTypeNames()) {
@@ -95,7 +114,9 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			} else {
 				// Build the feature type for the database
 				SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-				builder.init(sourceStore.getSchema());
+				builder.init(sourceStore.getSchema(sourceStore.getTypeNames()[0]));
+				// builder.init(SimpleFeatureTypeBuilder.retype(sourceStore.getSchema(),
+				// geoService.getCrs2(defaultCrs)));
 				builder.setName(layerName);
 
 				dataStore.createSchema(builder.buildFeatureType());
@@ -128,10 +149,55 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		return true;
 	}
 
-	@SuppressWarnings( { "rawtypes", "deprecation" } )  // see GBE-321
-	public File toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception {
+	private DataStore toApplicationCrs(ShapefileDataStore sourceStore) throws LayerException, IOException, FactoryException {
+
+		CoordinateReferenceSystem sourceCrs = sourceStore.getSchema().getGeometryDescriptor().
+			getCoordinateReferenceSystem();
+		CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultCrs);
+        boolean lenient = true; // allow for some error due to different datums
+        MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
+		
+		SimpleFeatureType featureType = SimpleFeatureTypeBuilder.retype(sourceStore.getSchema(), targetCrs);
+		DataStore dataStore = new MemoryDataStore(featureType);
+
+		SimpleFeatureCollection featureCollection = sourceStore.getFeatureSource().getFeatures();
+
+		Transaction transaction = new DefaultTransaction("Reproject");
+
+		FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(
+				featureType.getTypeName(), transaction);
+		SimpleFeatureIterator iterator = featureCollection.features();
+		try {
+			while (iterator.hasNext()) {
+				// copy the contents of each feature and transform the geometry
+				SimpleFeature feature = iterator.next();
+				SimpleFeature copy = writer.next();
+				copy.setAttributes(feature.getAttributes());
+
+				Geometry geometry = (Geometry) feature.getDefaultGeometry();
+				Geometry geometry2 = JTS.transform(geometry, transform);
+
+				copy.setDefaultGeometry(geometry2);
+				writer.write();
+			}
+			transaction.commit();
+		} catch (Exception problem) {
+			problem.printStackTrace();
+			transaction.rollback();
+		} finally {
+			writer.close();
+			iterator.close();
+			transaction.close();
+		}
+
+		return dataStore;
+	}
+
+	@SuppressWarnings({ "rawtypes", "deprecation" })
+	// see GBE-321
+	public void toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception {
 		if (features.size() == 0) {
-			return null;
+			return;
 		}
 
 		List<PrimitiveAttributeInfo> attInfos = getPrimitiveAttributeInfo(layer);
@@ -150,16 +216,12 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			collection.add(sf);
 		}
 
-		return buildShapeFile(shapeFile, layer, collection, type);
+		buildShapeFile(shapeFile, layer, collection, type);
 	}
 
 	// ----------------------------------------------------------
 
-	private static final String DELIM = ",";
-
-	private static final String SUBDELIM = ":";
-
-	private File buildShapeFile(File shapeFile, VectorLayer layer, SimpleFeatureCollection collection,
+	private void buildShapeFile(File shapeFile, VectorLayer layer, SimpleFeatureCollection collection,
 			SimpleFeatureType type) throws Exception {
 		Map<String, Serializable> params = new HashMap<String, Serializable>();
 		params.put("url", shapeFile.toURI().toURL());
@@ -191,10 +253,10 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		} else {
 			throw new Exception("Cannot create Shapefile featurestore??");
 		}
-		return shapeFile;
 	}
 
-	@SuppressWarnings("deprecation")  // see GBE-321
+	@SuppressWarnings("deprecation")
+	// see GBE-321
 	private SimpleFeatureType createFeatureType(String layerName, String geometryName, String geometryType, int srid,
 			List<PrimitiveAttributeInfo> atts) throws Exception {
 		StringBuilder sb = new StringBuilder();
@@ -214,7 +276,8 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		return sft;
 	}
 
-	@SuppressWarnings("deprecation")  // see GBE-321
+	@SuppressWarnings("deprecation")
+	// see GBE-321
 	private List<PrimitiveAttributeInfo> getPrimitiveAttributeInfo(VectorLayer layer) {
 		List<PrimitiveAttributeInfo> res = new ArrayList<PrimitiveAttributeInfo>();
 

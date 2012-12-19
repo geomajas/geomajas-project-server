@@ -17,13 +17,32 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 
 /**
+ * Service that handles import and export of shapefiles.
  * 
  * @author Oliver May
  *
  */
 public interface ShapeFileService {
 
-	boolean doGeoToolsImport(String shpFileName, String layerName);
+	/**
+	 * Import a shape file to the deskmanager datastore.
+	 * The shape file will always be converted to the default application CRS.
+	 * 
+	 * @param shpFileName
+	 *            Fully qualified name of the shape file
+	 * @param layerName the target name of the layer created from the shapefile in the target datastore
+	 * @return true if import succeeded
+	 */
+	boolean importShapeFile(String shpFileName, String layerName);
 
-	File toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception;
+	
+	/**
+	 * Write a collection of features to a shapefile.
+	 * 
+	 * @param shapeFile the target file
+	 * @param layer the layer to write
+	 * @param features the features to write
+	 * @throws Exception
+	 */
+	void toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception;
 }

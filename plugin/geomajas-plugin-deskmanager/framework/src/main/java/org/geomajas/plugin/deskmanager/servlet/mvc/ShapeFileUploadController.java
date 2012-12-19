@@ -126,7 +126,7 @@ public class ShapeFileUploadController {
 				// check if shp is available
 				String shpFileName = getShpFileName(tmpDir);
 				if (shpFileName != null) {
-					boolean ok = service.doGeoToolsImport(shpFileName, layerName);
+					boolean ok = service.importShapeFile(shpFileName, layerName);
 					if (ok) {
 						// upload succeeded; now fill the mapping table
 						return ShapeFileUploadView.RESPONSE_OK;
