@@ -149,14 +149,15 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		return true;
 	}
 
-	private DataStore toApplicationCrs(ShapefileDataStore sourceStore) throws LayerException, IOException, FactoryException {
+	private DataStore toApplicationCrs(ShapefileDataStore sourceStore) throws LayerException, IOException,
+			FactoryException {
 
-		CoordinateReferenceSystem sourceCrs = sourceStore.getSchema().getGeometryDescriptor().
-			getCoordinateReferenceSystem();
+		CoordinateReferenceSystem sourceCrs = sourceStore.getSchema().getGeometryDescriptor()
+				.getCoordinateReferenceSystem();
 		CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultCrs);
-        boolean lenient = true; // allow for some error due to different datums
-        MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
-		
+		boolean lenient = true; // allow for some error due to different datums
+		MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
+
 		SimpleFeatureType featureType = SimpleFeatureTypeBuilder.retype(sourceStore.getSchema(), targetCrs);
 		DataStore dataStore = new MemoryDataStore(featureType);
 
