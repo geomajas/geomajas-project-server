@@ -34,7 +34,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="visible" value="true" />
 		<property name="style" value="1" />
 		<property name="userData">
-			<bean class="org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo">
+			<bean class="org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo">
 				<property name="systemLayer" value="true" /> <!-- This layer should not be used in loketbuilder -->
 			</bean>
 		</property>

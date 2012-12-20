@@ -28,6 +28,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
@@ -42,7 +43,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "config_layermodels")
-public class LayerModel implements Serializable, Comparable<LayerModel> {
+public class LayerModel implements ClientLayerInfo, Serializable, Comparable<LayerModel> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -106,9 +107,6 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	@Column(name = "default_visible")
 	private boolean defaultVisible;
 
-	@Column(name = "show_in_legend")
-	private boolean showInLegend;
-
 	// -------------------------------------------------
 
 	public String getId() {
@@ -119,26 +117,32 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 		this.id = id;
 	}
 
+	@Override
 	public boolean isActive() {
 		return active;
 	}
 
+	@Override
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
+	@Override
 	public boolean isPublic() {
 		return publiek;
 	}
 
+	@Override
 	public void setPublic(boolean publiek) {
 		this.publiek = publiek;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -195,14 +199,6 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 		this.defaultVisible = defaultVisible;
 	}
 
-	public boolean isShowInLegend() {
-		return showInLegend;
-	}
-
-	public void setShowInLegend(boolean showInLegend) {
-		this.showInLegend = showInLegend;
-	}
-
 	public LayerConfiguration getLayerConfiguration() {
 		return layerConfiguration;
 	}
@@ -233,5 +229,21 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#isSystemLayer()
+	 */
+	@Override
+	public boolean isSystemLayer() {
+		return !isReadOnly();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#setSystemLayer(boolean)
+	 */
+	@Override
+	public void setSystemLayer(boolean systemLayer) {
+		setReadOnly(!systemLayer);
 	}
 }

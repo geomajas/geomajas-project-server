@@ -51,7 +51,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInf
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.runtimeconfig.service.BeanFactory;
 import org.geomajas.plugin.runtimeconfig.service.factory.BaseRasterLayerBeanFactory;
@@ -218,7 +218,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 					cvli.setId(clientLayerName);
 					cvli.setServerLayerId(serverLayerName);
 					cvli.setFeatureInfo(fi);
-					cvli.setUserData(new ExtraClientLayerInfo());
+					cvli.setUserData(new DeskmanagerClientLayerInfo());
 					cvli.setNamedStyleInfo(vli.getNamedStyleInfos().get(0));
 					cvli.setMaxExtent(maxExtent);
 					cvli.setMaximumScale(maxScale);
@@ -307,7 +307,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			ClientRasterLayerInfo clientLayerInfo = new ClientRasterLayerInfo();
 			clientLayerInfo.setId(clientLayerName);
 			clientLayerInfo.setServerLayerId(serverLayerName);
-			clientLayerInfo.setUserData(new ExtraClientLayerInfo());
+			clientLayerInfo.setUserData(new DeskmanagerClientLayerInfo());
 			clientLayerInfo.setMaxExtent(rasterCapabilitiesInfo.getExtent());
 			clientLayerInfo.setMaximumScale(maxScale);
 			clientLayerInfo.setMinimumScale(minScale);

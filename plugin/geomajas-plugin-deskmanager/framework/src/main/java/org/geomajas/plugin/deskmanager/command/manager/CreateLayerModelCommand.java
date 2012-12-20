@@ -15,7 +15,6 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
@@ -64,7 +63,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 				return;
 			}
 
-			ExtraClientLayerInfo ud = (ExtraClientLayerInfo) request.getConfiguration().getClientLayerInfo()
+			org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo ud = (org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo) request.getConfiguration().getClientLayerInfo()
 					.getUserData();
 			ClientLayerInfo cvli = request.getConfiguration().getClientLayerInfo();
 			LayerModel lm = new LayerModel();
@@ -75,8 +74,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 			lm.setDefaultVisible(cvli.isVisible());
 			lm.setMaxScale(cvli.getMaximumScale());
 			lm.setMinScale(cvli.getMinimumScale());
-			lm.setPublic(ud.isPublicLayer());
-			lm.setShowInLegend(ud.isShowInLegend());
+			lm.setPublic(ud.isPublic());
 			LayerType layerType = request.getConfiguration().getServerLayerInfo().getLayerType();
 			switch(layerType) {
 				case RASTER:

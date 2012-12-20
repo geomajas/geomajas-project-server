@@ -86,17 +86,16 @@ public class BlueprintLayers extends AbstractConfigurationLayout implements Blue
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
+		layerSelect.setDisabled(true);
 		List<LayerDto> layers = layerSelect.getValues();
 		blueprint.setMainMapLayers(layers);
-
-		layerSelect.setDisabled(true);
 		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_LAYERS);
 		return true;
 	}
 
 	public boolean onCancelClick(ClickEvent event) {
-		setBlueprint(blueprint);
 		layerSelect.setDisabled(true);
+		setBlueprint(blueprint);
 		return true;
 	}
 

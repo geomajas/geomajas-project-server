@@ -21,7 +21,6 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +85,7 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 
 	private LayerModel toLayerModel(ClientLayerInfo cli) {
 		LayerModel lm = new LayerModel();
-		ExtraClientLayerInfo ecli = layerModelService.getExtraInfo(cli);
+		org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo ecli = layerModelService.getExtraInfo(cli);
 
 		// Get layerInfo via server layer
 		LayerInfo sli = null;
@@ -98,11 +97,10 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 		lm.setActive(ecli.isActive());
 		lm.setClientLayerId(cli.getId());
 		lm.setName(ecli.getName() == null ? cli.getLabel() : ecli.getName());
-		lm.setPublic(ecli.isPublicLayer());
+		lm.setPublic(ecli.isPublic());
 		lm.setMinScale(cli.getMinimumScale());
 		lm.setMaxScale(cli.getMaximumScale());
 		lm.setDefaultVisible(cli.isVisible());
-		lm.setShowInLegend(ecli.isShowInLegend());
 		lm.setReadOnly(true);
 
 		if (null != layer && LayerType.RASTER.equals(sli.getLayerType())) {

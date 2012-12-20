@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
+import org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
@@ -29,11 +29,9 @@ public class LayerSettingsForm extends DynamicForm {
 
 	private CheckboxItem visible;
 
-	private CheckboxItem showinlegend;
-
 	private TextItem name;
 
-	private ExtraClientLayerInfo extraLayerInfo;
+	private ClientLayerInfo extraLayerInfo;
 
 	private LayerConfiguration layerConfig;
 
@@ -61,31 +59,25 @@ public class LayerSettingsForm extends DynamicForm {
 		visible.setTitle("Standaard zichtbaar");
 		visible.setTooltip("Laag is zichtbaar bij opstarten loket.");
 
-		showinlegend = new CheckboxItem();
-		showinlegend.setTitle("Toon in legende");
-		showinlegend.setTooltip("Toon de laag in de legende");
-
 		// -------------------------------------------------
 
-		setFields(name, publicLayer, active, visible, showinlegend);
+		setFields(name, publicLayer, active, visible);
 	}
 
 	public void setData(LayerConfiguration layerConfig) {
 		this.layerConfig = layerConfig;
-		this.extraLayerInfo = (ExtraClientLayerInfo) layerConfig.getClientLayerInfo().getUserData();
+		this.extraLayerInfo = (ClientLayerInfo) layerConfig.getClientLayerInfo().getUserData();
 		name.setValue(layerConfig.getClientLayerInfo().getLabel());
-		publicLayer.setValue(extraLayerInfo.isPublicLayer());
+		publicLayer.setValue(extraLayerInfo.isPublic());
 		active.setValue(extraLayerInfo.isActive());
 		visible.setValue(layerConfig.getClientLayerInfo().isVisible());
-		showinlegend.setValue(extraLayerInfo.isShowInLegend());
 	}
 
 	public LayerConfiguration getData() {
 		layerConfig.getClientLayerInfo().setLabel(name.getValueAsString());
 		layerConfig.getClientLayerInfo().setVisible(visible.getValueAsBoolean());
-		extraLayerInfo.setPublicLayer(publicLayer.getValueAsBoolean());
+		extraLayerInfo.setPublic(publicLayer.getValueAsBoolean());
 		extraLayerInfo.setActive(active.getValueAsBoolean());
-		extraLayerInfo.setShowInLegend(showinlegend.getValueAsBoolean());
 		return layerConfig;
 	}
 
@@ -95,14 +87,12 @@ public class LayerSettingsForm extends DynamicForm {
 		publicLayer.setValue(model.isPublic());
 		active.setValue(model.isActive());
 		visible.setValue(model.isDefaultVisible());
-		showinlegend.setValue(model.isShowInLegend());
 	}
 
 	public LayerModelDto getLayerModel() {
 		layerModel.setActive(active.getValueAsBoolean());
 		layerModel.setDefaultVisible(visible.getValueAsBoolean());
 		layerModel.setName(name.getValueAsString());
-		layerModel.setShowInLegend(showinlegend.getValueAsBoolean());
 		layerModel.setPublic(publicLayer.getValueAsBoolean());
 		return layerModel;
 	}

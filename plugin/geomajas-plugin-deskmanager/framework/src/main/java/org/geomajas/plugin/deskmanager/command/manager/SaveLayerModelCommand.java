@@ -19,7 +19,6 @@ import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
@@ -70,19 +69,17 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 							target.setActive(source.isActive());
 							target.setDefaultVisible(source.isDefaultVisible());
 							target.setPublic(source.isPublic());
-							target.setShowInLegend(source.isShowInLegend());
 
 						} else {
 							ClientLayerInfo cli = source.getLayerConfiguration().getClientLayerInfo();
-							ExtraClientLayerInfo ud = (ExtraClientLayerInfo) cli.getUserData();
+							org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo ud = (org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo) cli.getUserData();
 							target.setName(cli.getLabel());
 							target.setActive(ud.isActive());
 							target.setClientLayerId(cli.getId());
 							target.setDefaultVisible(cli.isVisible());
 							target.setMaxScale(cli.getMaximumScale());
 							target.setMinScale(cli.getMinimumScale());
-							target.setPublic(ud.isPublicLayer());
-							target.setShowInLegend(ud.isShowInLegend());
+							target.setPublic(ud.isPublic());
 							target.setLayerType(source.getLayerConfiguration().getServerLayerInfo().getLayerType()
 									.getGeometryType());
 							target.setLayerConfiguration(source.getLayerConfiguration());

@@ -76,6 +76,7 @@ public class BlueprintLayerTree extends AbstractConfigurationLayout implements B
 		ClientLayerTreeInfo cli = layerTreeSelect.getValues();
 		blueprint.getMainMapClientWidgetInfos().put(ClientLayerTreeInfo.IDENTIFIER, cli);
 		ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+		layerTreeSelect.setDisabled(true);
 		return true;
 	}
 

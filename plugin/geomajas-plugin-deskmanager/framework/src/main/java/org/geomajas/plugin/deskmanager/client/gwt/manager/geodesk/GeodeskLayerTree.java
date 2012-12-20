@@ -79,6 +79,7 @@ public class GeodeskLayerTree extends AbstractConfigurationLayout implements Geo
 	}
 
 	public boolean onSaveClick(ClickEvent event) {
+		layerTreeSelect.setDisabled(true);
 		ClientLayerTreeInfo cli = layerTreeSelect.getValues();
 		geodesk.getMainMapClientWidgetInfos().put(ClientLayerTreeInfo.IDENTIFIER, cli);
 		ManagerCommandService.saveGeodesk(geodesk, SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO);

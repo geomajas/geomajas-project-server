@@ -197,7 +197,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lmDto.setName(layerModel.getName());
 		lmDto.setPublic(layerModel.isPublic());
 		lmDto.setDefaultVisible(layerModel.isDefaultVisible());
-		lmDto.setShowInLegend(layerModel.isShowInLegend());
 		lmDto.setMinScale(layerModel.getMinScale());
 		lmDto.setMaxScale(layerModel.getMaxScale());
 		lmDto.setReadOnly(layerModel.isReadOnly());

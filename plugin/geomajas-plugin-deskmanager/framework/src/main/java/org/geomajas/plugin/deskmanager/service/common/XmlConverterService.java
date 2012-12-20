@@ -33,7 +33,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.BitmapInfo;
-import org.geomajas.plugin.deskmanager.configuration.client.ExtraClientLayerInfo;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.sld.UserStyleInfo;
@@ -75,7 +75,7 @@ public final class XmlConverterService {
 		EMI_STREAMER.alias("VectorLayerInfo", VectorLayerInfo.class);
 
 		EMI_STREAMER.alias("GeodeskLayoutInfo", GeodeskLayoutInfo.class);
-		EMI_STREAMER.alias("ExtraClientLayerInfo", ExtraClientLayerInfo.class);
+		EMI_STREAMER.alias("DeskmanagerClientLayerInfo", DeskmanagerClientLayerInfo.class);
 
 		EMI_STREAMER.alias("LayerConfiguration", LayerConfiguration.class);
 		EMI_STREAMER.alias("VectorLayerConfiguration", VectorLayerConfiguration.class);

@@ -49,8 +49,6 @@ public class LayerModelDto implements Serializable {
 
 	private boolean defaultVisible;
 
-	private boolean showInLegend;
-
 	private boolean readOnly;
 
 	private LayerConfiguration layerConfiguration;
@@ -153,14 +151,6 @@ public class LayerModelDto implements Serializable {
 
 	public void setDefaultVisible(boolean defaultVisible) {
 		this.defaultVisible = defaultVisible;
-	}
-
-	public boolean isShowInLegend() {
-		return showInLegend;
-	}
-
-	public void setShowInLegend(boolean showInLegend) {
-		this.showInLegend = showInLegend;
 	}
 
 	public String getLayerType() {
