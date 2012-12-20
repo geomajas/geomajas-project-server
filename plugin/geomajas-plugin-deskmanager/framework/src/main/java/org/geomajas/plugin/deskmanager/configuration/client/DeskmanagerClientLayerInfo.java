@@ -19,7 +19,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
  * @author Oliver May
  * 
  */
-public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLayerInfo {
+public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, DeskmanagerClientLayerInfoI {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#isPublicLayer()
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isPublicLayer()
 	 */
 	@Override
 	public boolean isPublic() {
@@ -41,7 +41,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#setPublicLayer(boolean)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setPublicLayer(boolean)
 	 */
 	@Override
 	public void setPublic(boolean publicLayer) {
@@ -49,7 +49,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#getName()
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#getName()
 	 */
 	@Override
 	public String getName() {
@@ -57,7 +57,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#setName(java.lang.String)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setName(java.lang.String)
 	 */
 	@Override
 	public void setName(String name) {
@@ -65,7 +65,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#isActive()
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isActive()
 	 */
 	@Override
 	public boolean isActive() {
@@ -73,7 +73,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#setActive(boolean)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setActive(boolean)
 	 */
 	@Override
 	public void setActive(boolean active) {
@@ -81,7 +81,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#isSystemLayer()
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isSystemLayer()
 	 */
 	@Override
 	public boolean isSystemLayer() {
@@ -89,7 +89,7 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, ClientLay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#setSystemLayer(boolean)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setSystemLayer(boolean)
 	 */
 	@Override
 	public void setSystemLayer(boolean systemLayer) {

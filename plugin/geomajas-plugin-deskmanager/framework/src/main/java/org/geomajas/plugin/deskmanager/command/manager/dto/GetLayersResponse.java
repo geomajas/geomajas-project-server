@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 /**
  * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}. 
- * Contains an (ordered) list of ClientLayerInfo's and layerModels.
+ * Contains an (ordered) list of DeskmanagerClientLayerInfoI's and layerModels.
  * 
  * @author Oliver May
  *

@@ -21,6 +21,7 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +86,7 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 
 	private LayerModel toLayerModel(ClientLayerInfo cli) {
 		LayerModel lm = new LayerModel();
-		org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo ecli = layerModelService.getExtraInfo(cli);
+		DeskmanagerClientLayerInfoI ecli = layerModelService.getExtraInfo(cli);
 
 		// Get layerInfo via server layer
 		LayerInfo sli = null;

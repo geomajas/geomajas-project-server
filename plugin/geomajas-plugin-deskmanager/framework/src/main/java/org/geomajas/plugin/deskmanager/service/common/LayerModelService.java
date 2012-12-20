@@ -96,7 +96,7 @@ public interface LayerModelService {
 	 *            client layer info
 	 * @return the extra info.
 	 */
-	org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo getExtraInfo(ClientLayerInfo cli);
+	org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI getExtraInfo(ClientLayerInfo cli);
 
 	/**
 	 * Retrieve a list of all layer models. <br />

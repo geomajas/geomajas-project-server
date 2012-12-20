@@ -28,7 +28,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,7 +43,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "config_layermodels")
-public class LayerModel implements ClientLayerInfo, Serializable, Comparable<LayerModel> {
+public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Comparable<LayerModel> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -232,7 +232,7 @@ public class LayerModel implements ClientLayerInfo, Serializable, Comparable<Lay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#isSystemLayer()
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isSystemLayer()
 	 */
 	@Override
 	public boolean isSystemLayer() {
@@ -240,7 +240,7 @@ public class LayerModel implements ClientLayerInfo, Serializable, Comparable<Lay
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo#setSystemLayer(boolean)
+	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setSystemLayer(boolean)
 	 */
 	@Override
 	public void setSystemLayer(boolean systemLayer) {

@@ -483,7 +483,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
 					.getClientLayerId()));
 		} catch (NoSuchBeanDefinitionException e) {
-			log.warn("ClientLayerInfo not found for layer: " + layer.getLayerModel().getClientLayerId()
+			log.warn("DeskmanagerClientLayerInfoI not found for layer: " + layer.getLayerModel().getClientLayerId()
 					+ ", not adding clientLayerinfo. You might need to remove these layers");
 		}
 		dto.setCLientLayerInfo(layer.getClientLayerInfo());

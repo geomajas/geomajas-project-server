@@ -52,7 +52,7 @@ public class ClientLayer {
 	}
 
 	/**
-	 * Returns the clientLayerInfo. This ClientLayerInfo does not contain the featureinfo.
+	 * Returns the clientLayerInfo. This DeskmanagerClientLayerInfoI does not contain the featureinfo.
 	 * 
 	 * @return the clientLayerInfo
 	 */

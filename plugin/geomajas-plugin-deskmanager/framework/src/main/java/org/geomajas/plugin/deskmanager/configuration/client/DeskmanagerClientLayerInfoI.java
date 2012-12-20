@@ -14,28 +14,28 @@ package org.geomajas.plugin.deskmanager.configuration.client;
  * @author Oliver May
  *
  */
-public interface ClientLayerInfo {
+public interface DeskmanagerClientLayerInfoI {
 
 	/**
 	 * Whether a layer is public.
 	 * 
 	 * @return true if the layer is public.
 	 */
-	public abstract boolean isPublic();
+	boolean isPublic();
 
 	/**
 	 * Set whether a layer is public or not.
 	 * 
 	 * @param publicLayer
 	 */
-	public abstract void setPublic(boolean publicLayer);
+	void setPublic(boolean publicLayer);
 
 	/**
 	 * Get the name of a layer. This name is used in the management interface.
 	 * 
 	 * @return the name of the layer
 	 */
-	public abstract String getName();
+	String getName();
 
 	/**
 	 * Set the name of the layer. This name is used in the management interface.
@@ -43,21 +43,21 @@ public interface ClientLayerInfo {
 	 * @param name
 	 *            the name of the layer
 	 */
-	public abstract void setName(String name);
+	void setName(String name);
 
 	/**
 	 * Whether the layer is active.
 	 * 
 	 * @return true if the layer is active.
 	 */
-	public abstract boolean isActive();
+	boolean isActive();
 
 	/**
 	 * Set whether the layer is active or not.
 	 * 
 	 * @param active
 	 */
-	public abstract void setActive(boolean active);
+	void setActive(boolean active);
 
 	/**
 	 * Whether the layer is a system layer. A system layer is a layer that is configured using the spring xml
@@ -65,7 +65,7 @@ public interface ClientLayerInfo {
 	 * 
 	 * @return true if the layer is a system layer.
 	 */
-	public abstract boolean isSystemLayer();
+	boolean isSystemLayer();
 
 	/**
 	 * Set whether layer is a system layer. A system layer is a layer that is configured using the spring xml
@@ -73,6 +73,6 @@ public interface ClientLayerInfo {
 	 * 
 	 * @param systemLayer
 	 */
-	public abstract void setSystemLayer(boolean systemLayer);
+	void setSystemLayer(boolean systemLayer);
 
 }

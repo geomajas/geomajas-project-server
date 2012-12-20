@@ -15,6 +15,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
@@ -54,7 +55,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 
 	@Autowired
 	private DtoConverterService dtoService;
-	
+
 	/** {@inheritDoc} */
 	public void execute(CreateLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
@@ -63,8 +64,8 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 				return;
 			}
 
-			org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo ud = (org.geomajas.plugin.deskmanager.configuration.client.ClientLayerInfo) request.getConfiguration().getClientLayerInfo()
-					.getUserData();
+			DeskmanagerClientLayerInfoI ud = (DeskmanagerClientLayerInfoI) request.getConfiguration()
+					.getClientLayerInfo().getUserData();
 			ClientLayerInfo cvli = request.getConfiguration().getClientLayerInfo();
 			LayerModel lm = new LayerModel();
 			lm.setLayerConfiguration(request.getConfiguration());
@@ -76,13 +77,13 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 			lm.setMinScale(cvli.getMinimumScale());
 			lm.setPublic(ud.isPublic());
 			LayerType layerType = request.getConfiguration().getServerLayerInfo().getLayerType();
-			switch(layerType) {
+			switch (layerType) {
 				case RASTER:
 					lm.setLayerType("Raster");
 					break;
 				default:
 					lm.setLayerType(request.getConfiguration().getServerLayerInfo().getLayerType().getGeometryType());
-					break;				
+					break;
 			}
 
 			Territory g = ((DeskmanagerSecurityContext) securityContext).getTerritory();
