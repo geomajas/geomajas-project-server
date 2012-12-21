@@ -55,7 +55,8 @@
     intermediate package (between "command" and the class name) and the class
     name itself. Some examples:</para>
 
-    <para><table>
+    <para>
+      <table>
         <title>Samples of command name resolution</title>
 
         <tgroup cols="2">
@@ -117,7 +118,8 @@
             </row>
           </tbody>
         </tgroup>
-      </table></para>
+      </table>
+    </para>
 
     <para>You have to include a line in your Spring configuration to scan
     class files for annotation to make the components available. For the case
@@ -163,7 +165,7 @@
     <xi:include href="listing/StaticSecurityDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para></para>
+    <para />
   </chapter>
 
   <chapter id="ch-howto-plugin">
@@ -439,6 +441,118 @@ artifactIdPrefix: geomajas-face-
           created and deserialized instances).</para>
         </listitem>
       </itemizedlist>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Adding your own GWT service as a MVC controller</title>
+
+    <para>When integrating Geomajas with an existing GWT application, you can
+    add your existing GWT-RPC service to the application context as an MVC
+    controller.</para>
+
+    <section>
+      <title>Create the MVC controller</title>
+
+      <para>The code for creating an MVC controller can be based on the
+      <code>GeomajasController</code> class (see <ulink
+      url="http://grepcode.com/file/repo1.maven.org$maven2@org.geomajas$geomajas-face-common-gwt@1.1.0@org$geomajas$gwt$server$mvc$GeomajasController.java">GeomajasController.java</ulink>).
+      Start by implementing your service (e.g. <code>MyService</code>) as a
+      bean and autowiring it in a new controller:<programlisting>@Controller("/myService")
+@Api
+public class MyController extends RemoteServiceServlet implements MyService, ServletConfigAware {
+
+  private static final long serialVersionUID = 100L;
+
+  @Autowired
+  private MyService myService;
+
+  @Autowired(required = false)
+  private ServletContext servletContext;
+  
+  private SerializationPolicyLocator serializationPolicyLocator;
+
+  @RequestMapping("/myService")
+  public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    doPost(request, response);
+    return null;
+  }
+
+  // put delegation methods here
+  void myMethod() {
+    myService.myMethod();
+  }
+
+  ....
+
+  public ServletContext getServletContext() {
+    if (null == servletContext) {
+      throw new IllegalStateException("getServletContext() cannot be used outside web context");
+    }
+    return servletContext;
+  }
+
+  public void setServletConfig(ServletConfig servletConfig) {
+    try {
+      super.init(servletConfig);
+    } catch (ServletException e) {
+      throw new IllegalStateException("init(servletConfig) failed", e);
+    }
+  }
+}</programlisting></para>
+
+      <para>Use the url path of your choice in both the controller name and
+      the request mapping value.</para>
+    </section>
+
+    <section>
+      <title>Add the controller to the web context</title>
+
+      <para>To add a controller to the web context, create a controller
+      configuration file <code>mycontroller.xml</code> with the following
+      content:<programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-2.0.xsd"&gt;
+  
+  &lt;context:component-scan base-package="&lt;path.to.you.controller.package&gt;" /&gt;
+
+&lt;/beans&gt;</programlisting>Use the correct scanning package here. This
+      file can be put in WEB-INF and added to the config locations of the
+      dispatcher servlet in your <code>web.xml:</code></para>
+
+      <programlisting>  &lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+      &lt;param-value&gt;
+        classpath*:META-INF/geomajasWebContext.xml
+        WEB-INF/mycontroller.xml
+      &lt;/param-value&gt;
+      &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+
+</programlisting>
+    </section>
+
+    <section>
+      <title>Access your RPC service from the client</title>
+
+      <para>To access your GWT-RPC service, create a proxy as
+      usual:<programlisting>service = (MyServiceAsync) GWT.create(MyService.class);
+ServiceDefTarget endpoint = (ServiceDefTarget) service;
+endpoint.setServiceEntryPoint(GWT.getModuleBaseURL() + "myService");</programlisting></para>
     </section>
   </chapter>
 
