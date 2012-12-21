@@ -10,6 +10,10 @@
  */
 package org.geomajas.plugin.deskmanager.domain.types;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
@@ -22,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.geomajas.geometry.Bbox;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
@@ -32,6 +37,20 @@ import org.hibernate.usertype.UserType;
  */
 public class XmlSerialisationType implements UserType {
 
+	static {
+		try {
+			BeanInfo bi = Introspector.getBeanInfo(Bbox.class);
+			PropertyDescriptor[] pds = bi.getPropertyDescriptors();
+			for (PropertyDescriptor pd : pds) {
+				if (("maxX").equals(pd.getName()) | ("maxY").equals(pd.getName())) {
+					pd.setValue("transient", Boolean.TRUE);
+				}
+			}
+		} catch (IntrospectionException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static final int[] TYPES = { Types.CLOB };
 
 	private static final String ENCODING = "UTF-8";
