@@ -35,12 +35,6 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 
 	private LayerModelDto lmd;
 
-//	private DynamicForm form;
-
-//	private ColorPickerItem picker;
-
-//	private LayerModelDto layerModel;
-
 	public DatalayerStyle() {
 		super();
 		setMargin(5);
@@ -55,35 +49,10 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 		group.setGroupTitle(MESSAGES.datalayerStyleFormGroup());
 		group.setOverflow(Overflow.AUTO);
 
-//		form = new DynamicForm();
-//		picker = new ColorPickerItem("selectColor", "Selecteer kleur: ");
-//
-//		picker.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {
-//
-//			@Override
-//			public void onChanged(ChangedEvent event) {
-//				if (layerModel.getLayerConfiguration().getClientLayerInfo() instanceof ClientVectorLayerInfo) {
-//					FeatureStyleInfo fs = ((ClientVectorLayerInfo) layerModel.getLayerConfiguration()
-//							.getClientLayerInfo()).getNamedStyleInfo().getFeatureStyles().get(0);
-//					fs.setFillColor(picker.getValueAsString());
-//					fs.setStrokeColor(picker.getValueAsString());
-//				}
-//			}
-//
-//		});
-//		form.setFields(picker);
-//		group.addMember(form);
-
 		addMember(group);
 	}
 
 	public void setLayerModel(LayerModelDto lmd) {
-//		layerModel = lmd;
-//		if (layerModel.getLayerConfiguration().getClientLayerInfo() instanceof ClientVectorLayerInfo) {
-//			FeatureStyleInfo fs = ((ClientVectorLayerInfo) layerModel.getLayerConfiguration()
-//					.getClientLayerInfo()).getNamedStyleInfo().getFeatureStyles().get(0);
-//			picker.setValue("" + fs.getFillColor());
-//		}
 		fireChangedHandler();
 	}
 
@@ -103,10 +72,6 @@ public class DatalayerStyle extends AbstractConfigurationLayout {
 	}
 
 	public boolean validate() {
-		// if (!form.validate()) {
-		// SC.say(MESSAGES.formWarnNotvalid());
-		// return false;
-		// }
 		return true;
 	}
 

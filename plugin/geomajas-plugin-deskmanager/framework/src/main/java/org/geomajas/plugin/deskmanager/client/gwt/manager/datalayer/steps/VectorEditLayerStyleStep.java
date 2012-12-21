@@ -19,6 +19,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfigurat
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 
@@ -33,6 +34,8 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 
 	private DynamicForm form;
 
+	private TextItem label;
+
 	public VectorEditLayerStyleStep(Wizard parent) {
 		super(NewLayerModelWizardWindow.STEP_VECTOR_EDIT_LAYER_STYLE, "4) Vector stijl aanpassen", false, parent);
 		setWindowTitle("Vector stijl aanpassen");
@@ -46,10 +49,22 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 				FeatureStyleInfo fs = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getFeatureStyles()
 						.get(0);
 				fs.setFillColor(picker.getValueAsString());
+				fs.setFillOpacity(0.5f);
 				fs.setStrokeColor(picker.getValueAsString());
 			}
 		});
-		form.setFields(picker);
+		label = new TextItem("styleLabel", "Naam voor deze stijl: ");
+		label.addChangedHandler(new ChangedHandler() {
+			
+			@Override
+			public void onChanged(ChangedEvent event) {
+				FeatureStyleInfo fs = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getFeatureStyles()
+				.get(0);
+				fs.setName(label.getValueAsString());
+			}
+		});
+		
+		form.setFields(label, picker);
 		addMember(form);
 	}
 
