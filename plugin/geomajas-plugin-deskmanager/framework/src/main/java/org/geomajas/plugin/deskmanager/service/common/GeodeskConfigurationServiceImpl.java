@@ -22,7 +22,6 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.Layer;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand;
