@@ -19,9 +19,13 @@ import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientLayerInfo;
 
 /**
+ * Dynamic layer configuration. Should only be read when initializing dynamic layers. All data stored in this object
+ * should be copied to the spring bean context.
+ * 
+ * 
  * @author Kristof Heirwegh
  */
-public abstract class LayerConfiguration implements Serializable {
+public abstract class DynamicLayerConfiguration implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

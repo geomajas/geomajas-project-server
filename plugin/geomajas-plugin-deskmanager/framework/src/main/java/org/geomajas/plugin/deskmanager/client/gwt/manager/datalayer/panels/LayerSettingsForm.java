@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -33,7 +33,7 @@ public class LayerSettingsForm extends DynamicForm {
 
 	private DeskmanagerClientLayerInfoI extraLayerInfo;
 
-	private LayerConfiguration layerConfig;
+	private DynamicLayerConfiguration layerConfig;
 
 	private LayerModelDto layerModel;
 
@@ -64,7 +64,7 @@ public class LayerSettingsForm extends DynamicForm {
 		setFields(name, publicLayer, active, visible);
 	}
 
-	public void setData(LayerConfiguration layerConfig) {
+	public void setData(DynamicLayerConfiguration layerConfig) {
 		this.layerConfig = layerConfig;
 		this.extraLayerInfo = (DeskmanagerClientLayerInfoI) layerConfig.getClientLayerInfo().getUserData();
 		name.setValue(layerConfig.getClientLayerInfo().getLabel());
@@ -73,7 +73,7 @@ public class LayerSettingsForm extends DynamicForm {
 		visible.setValue(layerConfig.getClientLayerInfo().isVisible());
 	}
 
-	public LayerConfiguration getData() {
+	public DynamicLayerConfiguration getData() {
 		layerConfig.getClientLayerInfo().setLabel(name.getValueAsString());
 		layerConfig.getClientLayerInfo().setVisible(visible.getValueAsBoolean());
 		extraLayerInfo.setPublic(publicLayer.getValueAsBoolean());

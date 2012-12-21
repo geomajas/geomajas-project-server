@@ -25,7 +25,6 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -42,8 +41,6 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
-import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.geotools.GeoToolsLayer;
 import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
@@ -52,7 +49,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfigurat
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.runtimeconfig.service.BeanFactory;
 import org.geomajas.plugin.runtimeconfig.service.factory.BaseRasterLayerBeanFactory;
 import org.geomajas.plugin.runtimeconfig.service.factory.BaseVectorLayerBeanFactory;
@@ -289,8 +286,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	}
 
 	public RasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
-		RasterCapabilitiesInfo rasterCapabilitiesInfo)
-			throws IOException {
+			RasterCapabilitiesInfo rasterCapabilitiesInfo) throws IOException {
 		try {
 			RasterLayerConfiguration rlc = new RasterLayerConfiguration();
 			String clientLayerName = UUID.randomUUID().toString();
@@ -324,48 +320,48 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 	}
 
-	public VectorLayer createVectorLayer(VectorLayerConfiguration configuration) throws Exception {
-		GeoToolsLayer gtl = new GeoToolsLayer();
-		if (clientLayerInfoMap.containsKey(configuration.getClientVectorLayerInfo().getId())) {
-			throw new Exception("ClientlayerId is already taken!");
-		}
-		if (serverLayerMap.containsKey(configuration.getClientVectorLayerInfo().getServerLayerId())) {
-			throw new Exception("ServerlayerId is already taken!");
-		}
+	// private VectorLayer createVectorLayer(VectorLayerConfiguration configuration) throws Exception {
+	// GeoToolsLayer gtl = new GeoToolsLayer();
+	// if (clientLayerInfoMap.containsKey(configuration.getClientVectorLayerInfo().getId())) {
+	// throw new Exception("ClientlayerId is already taken!");
+	// }
+	// if (serverLayerMap.containsKey(configuration.getClientVectorLayerInfo().getServerLayerId())) {
+	// throw new Exception("ServerlayerId is already taken!");
+	// }
+	//
+	// gtl.setId(configuration.getClientVectorLayerInfo().getServerLayerId());
+	// gtl.setParameters(configuration.getParameters());
+	// gtl.setLayerInfo(configuration.getVectorLayerInfo());
+	// return gtl;
+	// }
 
-		gtl.setId(configuration.getClientVectorLayerInfo().getServerLayerId());
-		gtl.setParameters(configuration.getParameters());
-		gtl.setLayerInfo(configuration.getVectorLayerInfo());
-		return gtl;
-	}
+	// private RasterLayer createRasterLayer(RasterLayerConfiguration configuration) throws Exception {
+	// // TODO
+	// throw new NotImplementedException("TODO");
+	//
+	// // GeoToolsLayer gtl = new GeoToolsLayer();
+	// // if (clientLayerMap.containsKey(configuration.getClientVectorLayerInfo().getId()))
+	// // throw new Exception("ClientlayerId is already taken!");
+	// // if (serverLayerMap.containsKey(configuration.getClientVectorLayerInfo().getServerLayerId()))
+	// // throw new Exception("ServerlayerId is already taken!");
+	// //
+	// // gtl.setId(configuration.getClientVectorLayerInfo().getServerLayerId());
+	// // gtl.setParameters(configuration.getParameters());
+	// // gtl.setLayerInfo(configuration.getVectorLayerInfo());
+	// // return gtl;
+	// }
 
-	public RasterLayer createRasterLayer(RasterLayerConfiguration configuration) throws Exception {
-		// TODO
-		throw new NotImplementedException("TODO");
+	// private Layer<?> createLayer(DynamicLayerConfiguration lc) throws Exception {
+	// if (lc instanceof VectorLayerConfiguration) {
+	// return createVectorLayer((VectorLayerConfiguration) lc);
+	// } else if (lc instanceof RasterLayerConfiguration) {
+	// return createRasterLayer((RasterLayerConfiguration) lc);
+	// } else {
+	// return null;
+	// }
+	// }
 
-		// GeoToolsLayer gtl = new GeoToolsLayer();
-		// if (clientLayerMap.containsKey(configuration.getClientVectorLayerInfo().getId()))
-		// throw new Exception("ClientlayerId is already taken!");
-		// if (serverLayerMap.containsKey(configuration.getClientVectorLayerInfo().getServerLayerId()))
-		// throw new Exception("ServerlayerId is already taken!");
-		//
-		// gtl.setId(configuration.getClientVectorLayerInfo().getServerLayerId());
-		// gtl.setParameters(configuration.getParameters());
-		// gtl.setLayerInfo(configuration.getVectorLayerInfo());
-		// return gtl;
-	}
-
-	public Layer<?> createLayer(LayerConfiguration lc) throws Exception {
-		if (lc instanceof VectorLayerConfiguration) {
-			return createVectorLayer((VectorLayerConfiguration) lc);
-		} else if (lc instanceof RasterLayerConfiguration) {
-			return createRasterLayer((RasterLayerConfiguration) lc);
-		} else {
-			return null;
-		}
-	}
-
-	public Map<String, Object> createBeanLayerDefinitionParameters(LayerConfiguration lc) throws Exception {
+	public Map<String, Object> createBeanLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new Exception("ClientlayerId is already taken!");
 		}
@@ -407,7 +403,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	// -------------------------------------------------
 
-	public Map<String, Object> createBeanClientLayerDefinitionParameters(LayerConfiguration lc) throws Exception {
+	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) 
+		throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new Exception("ClientlayerId is already taken!");
 		}

@@ -65,14 +65,14 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 				} else {
 					LayerModel source = dtoService.fromDto(request.getLayerModel());
 					if (!target.isReadOnly()) {
-						if (target.getLayerConfiguration() == null) {
+						if (target.getDynamicLayerConfiguration() == null) {
 							target.setName(source.getName());
 							target.setActive(source.isActive());
 							target.setDefaultVisible(source.isDefaultVisible());
 							target.setPublic(source.isPublic());
 
 						} else {
-							ClientLayerInfo cli = source.getLayerConfiguration().getClientLayerInfo();
+							ClientLayerInfo cli = source.getDynamicLayerConfiguration().getClientLayerInfo();
 							DeskmanagerClientLayerInfoI ud = (DeskmanagerClientLayerInfoI) cli.getUserData();
 							target.setName(cli.getLabel());
 							target.setActive(ud.isActive());
@@ -81,9 +81,9 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 							target.setMaxScale(cli.getMaximumScale());
 							target.setMinScale(cli.getMinimumScale());
 							target.setPublic(ud.isPublic());
-							target.setLayerType(source.getLayerConfiguration().getServerLayerInfo().getLayerType()
-									.getGeometryType());
-							target.setLayerConfiguration(source.getLayerConfiguration());
+							target.setLayerType(source.getDynamicLayerConfiguration().getServerLayerInfo()
+									.getLayerType().getGeometryType());
+							target.setDynamicLayerConfiguration(source.getDynamicLayerConfiguration());
 						}
 					}
 					copyNotifications(source, target);

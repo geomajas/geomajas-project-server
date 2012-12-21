@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FloatItem;
@@ -29,7 +29,7 @@ public class MaxBoundsForm extends DynamicForm {
 
 	private FloatItem maxY;
 
-	private LayerConfiguration layerConfig;
+	private DynamicLayerConfiguration layerConfig;
 
 
 	public MaxBoundsForm() {
@@ -61,7 +61,7 @@ public class MaxBoundsForm extends DynamicForm {
 		setFields(minX, maxX, minY, maxY);
 	}
 
-	public void setData(LayerConfiguration layerConfig) {
+	public void setData(DynamicLayerConfiguration layerConfig) {
 		clearValues();
 		this.layerConfig = layerConfig;
 		Bbox bounds = layerConfig.getServerLayerInfo().getMaxExtent();
@@ -73,7 +73,7 @@ public class MaxBoundsForm extends DynamicForm {
 		}
 	}
 
-	public LayerConfiguration getData() {
+	public DynamicLayerConfiguration getData() {
 		Bbox bounds = layerConfig.getServerLayerInfo().getMaxExtent();
 		if (bounds == null) {
 			bounds = new Bbox();

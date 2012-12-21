@@ -15,7 +15,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.UploadShapefileForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class ShapefileUploadStep extends WizardStepPanel {
 	@Override
 	public void initialize() {
 		connectionProps.clear();
-		connectionProps.put(LayerConfiguration.PARAM_SOURCE_TYPE, LayerConfiguration.SOURCE_TYPE_SHAPE);
+		connectionProps.put(DynamicLayerConfiguration.PARAM_SOURCE_TYPE, DynamicLayerConfiguration.SOURCE_TYPE_SHAPE);
 	}
 
 	@Override

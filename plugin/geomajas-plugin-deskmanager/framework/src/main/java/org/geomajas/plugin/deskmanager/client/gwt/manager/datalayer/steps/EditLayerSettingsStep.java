@@ -15,7 +15,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.LayerSettingsForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.MaxBoundsForm;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
@@ -35,7 +35,7 @@ public class EditLayerSettingsStep extends WizardStepPanel {
 
 	private String prevStepName;
 
-	private LayerConfiguration layerConfig;
+	private DynamicLayerConfiguration layerConfig;
 
 	public EditLayerSettingsStep(Wizard parent) {
 		super(NewLayerModelWizardWindow.STEP_EDIT_LAYER_SETTINGS, "5) Laag eigenschappen", true, parent);
@@ -85,7 +85,7 @@ public class EditLayerSettingsStep extends WizardStepPanel {
 	 * @param layerConfig
 	 * @param previousStep
 	 */
-	public void setData(LayerConfiguration layerConfig, String previousStepName) {
+	public void setData(DynamicLayerConfiguration layerConfig, String previousStepName) {
 		this.prevStepName = previousStepName;
 		this.layerConfig = layerConfig;
 		ShapefileUploadStep sfup = 
@@ -95,7 +95,7 @@ public class EditLayerSettingsStep extends WizardStepPanel {
 		}
 	}
 
-	public LayerConfiguration getData() {
+	public DynamicLayerConfiguration getData() {
 		if (isValid()) {
 			form.getData();
 			maxBoundsForm.getData();

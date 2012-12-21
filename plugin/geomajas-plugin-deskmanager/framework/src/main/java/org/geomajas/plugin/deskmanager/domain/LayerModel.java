@@ -29,17 +29,17 @@ import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 /**
- * Domain object for a LayerModel. 
+ * Domain object for a LayerModel.
  * 
  * @author Oliver May
- *
+ * 
  */
 @Entity
 @Table(name = "config_layermodels")
@@ -88,7 +88,7 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "layerConfiguration", nullable = true)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
-	private LayerConfiguration layerConfiguration;
+	private DynamicLayerConfiguration dynamicLayerConfiguration;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "config_tt_mails_layermodels")
@@ -199,12 +199,17 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 		this.defaultVisible = defaultVisible;
 	}
 
-	public LayerConfiguration getLayerConfiguration() {
-		return layerConfiguration;
+	/**
+	 * Get the {@link DynamicLayerConfiguration}. Should only be used when initializing.
+	 *  
+	 * @return the dynamic layer configuration
+	 */
+	public DynamicLayerConfiguration getDynamicLayerConfiguration() {
+		return dynamicLayerConfiguration;
 	}
 
-	public void setLayerConfiguration(LayerConfiguration layerConfiguration) {
-		this.layerConfiguration = layerConfiguration;
+	public void setDynamicLayerConfiguration(DynamicLayerConfiguration dynamicLayerConfiguration) {
+		this.dynamicLayerConfiguration = dynamicLayerConfiguration;
 	}
 
 	public String getLayerType() {
@@ -231,7 +236,9 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 		this.readOnly = readOnly;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isSystemLayer()
 	 */
 	@Override
@@ -239,7 +246,9 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 		return !isReadOnly();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setSystemLayer(boolean)
 	 */
 	@Override

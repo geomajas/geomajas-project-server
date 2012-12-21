@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
@@ -60,9 +60,9 @@ public class Datalayers extends VLayout implements EditSessionHandler, ManagerTa
 		buttonNew.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Window w = new NewLayerModelWizardWindow(new DataCallback<LayerConfiguration>() {
+				Window w = new NewLayerModelWizardWindow(new DataCallback<DynamicLayerConfiguration>() {
 
-					public void execute(LayerConfiguration result) {
+					public void execute(DynamicLayerConfiguration result) {
 						if (result != null && !"".equals(result)) {
 							NotificationWindow.showInfoMessage(MESSAGES.datalayersNewLayerIsBeingSaved());
 							ManagerCommandService.createNewLayerModel(result);

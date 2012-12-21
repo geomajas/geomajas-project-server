@@ -51,7 +51,7 @@ public class LayerModelDto implements Serializable {
 
 	private boolean readOnly;
 
-	private LayerConfiguration layerConfiguration;
+	private DynamicLayerConfiguration layerConfiguration;
 
 	private List<MailAddressDto> mailAddresses = new ArrayList<MailAddressDto>();
 
@@ -161,11 +161,11 @@ public class LayerModelDto implements Serializable {
 		this.layerType = layerType;
 	}
 
-	public LayerConfiguration getLayerConfiguration() {
+	public DynamicLayerConfiguration getLayerConfiguration() {
 		return layerConfiguration;
 	}
 
-	public void setLayerConfiguration(LayerConfiguration layerConfiguration) {
+	public void setLayerConfiguration(DynamicLayerConfiguration layerConfiguration) {
 		this.layerConfiguration = layerConfiguration;
 	}
 

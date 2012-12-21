@@ -25,7 +25,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsCho
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.WmsPreviewLayerStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
@@ -72,7 +72,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 	private static final int HEIGHT = 400;
 
-	private DataCallback<LayerConfiguration> callback;
+	private DataCallback<DynamicLayerConfiguration> callback;
 
 	private Canvas container;
 
@@ -92,7 +92,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 	private WizardStepPanel currentStep;
 
-	public NewLayerModelWizardWindow(DataCallback<LayerConfiguration> callback) {
+	public NewLayerModelWizardWindow(DataCallback<DynamicLayerConfiguration> callback) {
 		this.callback = callback;
 
 		setHeight(HEIGHT);

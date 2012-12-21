@@ -21,7 +21,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
@@ -66,7 +66,7 @@ public class DatabaseCapabilitiesStep extends WizardStepPanel {
 	@Override
 	public void initialize() {
 		Map<String, String> values = new LinkedHashMap<String, String>();
-		values.put(LayerConfiguration.PARAM_SOURCE_TYPE, LayerConfiguration.SOURCE_TYPE_DATABASE);
+		values.put(DynamicLayerConfiguration.PARAM_SOURCE_TYPE, DynamicLayerConfiguration.SOURCE_TYPE_DATABASE);
 		values.put(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DBTYPE, "postgis"); // always postgis
 		form.setData(values);
 	}

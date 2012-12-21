@@ -38,6 +38,7 @@ public class ClientLayer {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String id; // UUID
 
+	//FIXME: we should do some pre and postprocessing on ClientLayerInfo. Now we persist to much information.
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	private ClientLayerInfo clientLayerInfo;
 

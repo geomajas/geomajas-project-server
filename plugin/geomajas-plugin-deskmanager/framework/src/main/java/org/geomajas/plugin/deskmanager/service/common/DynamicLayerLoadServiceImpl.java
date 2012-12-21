@@ -22,7 +22,7 @@ import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService.NamedObject;
@@ -82,19 +82,20 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 			List<NamedObject> objects = new ArrayList<NamedObject>();
 			List<String> clientLayerIds = new ArrayList<String>();
 			for (LayerModel lm : layerModelService.getDynamicLayerModelsInternal()) {
-				log.info(" - creating a dynamic layer for: " + lm.getClientLayerId());
+				log.info(" - creating a dynamic layer for: " + lm.getName());
 				clientLayerIds.add(lm.getClientLayerId());
 
-				updateLayerProperties(lm.getLayerConfiguration());
-				objects.addAll(getClientLayerInfoObject(lm.getLayerConfiguration()));
+				updateLayerProperties(lm.getDynamicLayerConfiguration());
+				objects.addAll(getClientLayerInfoObject(lm.getDynamicLayerConfiguration()));
 
 				// -- serverside layer bean has to be processed separately --
 				Map<String, Object> params = discoService.createBeanLayerDefinitionParameters(lm
-						.getLayerConfiguration());
+						.getDynamicLayerConfiguration());
 				holders.addAll(beanFactoryService.createBeans(params));
 
 				// Add layer to the dynamicLayersApplication for dto postprocessing
-				applicationInfo.getMaps().get(0).getLayers().add(lm.getLayerConfiguration().getClientLayerInfo());
+				applicationInfo.getMaps().get(0).getLayers().add(
+						lm.getDynamicLayerConfiguration().getClientLayerInfo());
 			}
 
 			NamedObjectImpl applicationInfoNamedObject = new NamedObjectImpl(applicationInfo,
@@ -115,14 +116,14 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	/**
 	 * replaces params if necessary, removes styleinfos (use names)
 	 */
-	private void updateLayerProperties(LayerConfiguration lc) throws Exception {
+	private void updateLayerProperties(DynamicLayerConfiguration lc) throws Exception {
 		if (lc == null) {
-			throw new IllegalArgumentException("Need a LayerConfiguration");
+			throw new IllegalArgumentException("Need a DynamicLayerConfiguration");
 		}
 
-		if (lc.getParameter(LayerConfiguration.PARAM_SOURCE_TYPE) != null
-				&& LayerConfiguration.SOURCE_TYPE_SHAPE.equals(lc.getParameter(LayerConfiguration.PARAM_SOURCE_TYPE)
-						.getValue())) {
+		if (lc.getParameter(DynamicLayerConfiguration.PARAM_SOURCE_TYPE) != null
+				&& DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(
+						lc.getParameter(DynamicLayerConfiguration.PARAM_SOURCE_TYPE).getValue())) {
 			lc.getParameters().clear();
 
 			// inject private properties for shapelayers
@@ -135,9 +136,9 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 		}
 	}
 
-	private List<NamedObject> getClientLayerInfoObject(LayerConfiguration lc) throws Exception {
+	private List<NamedObject> getClientLayerInfoObject(DynamicLayerConfiguration lc) throws Exception {
 		if (lc == null) {
-			throw new IllegalArgumentException("Need a LayerConfiguration");
+			throw new IllegalArgumentException("Need a DynamicLayerConfiguration");
 		}
 		List<NamedObject> objects = new ArrayList<BeanDefinitionDtoConverterService.NamedObject>();
 

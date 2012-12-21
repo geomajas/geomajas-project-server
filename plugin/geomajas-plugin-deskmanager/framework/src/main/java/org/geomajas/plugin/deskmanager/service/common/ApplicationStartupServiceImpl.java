@@ -106,10 +106,10 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 
 		if (null != layer && LayerType.RASTER.equals(sli.getLayerType())) {
 			lm.setLayerType("Raster");
-			lm.setLayerConfiguration(new RasterLayerConfiguration());
+			lm.setDynamicLayerConfiguration(new RasterLayerConfiguration());
 		} else if (null != layer) {
 			lm.setLayerType(sli.getLayerType().getGeometryType());
-			lm.setLayerConfiguration(new VectorLayerConfiguration());
+			lm.setDynamicLayerConfiguration(new VectorLayerConfiguration());
 		}
 		return lm;
 	}

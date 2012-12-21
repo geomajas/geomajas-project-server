@@ -175,7 +175,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lm.setPublic(dto.isPublic());
 		lm.setLayerType(dto.getLayerType());
 		lm.setReadOnly(dto.isReadOnly());
-		lm.setLayerConfiguration(dto.getLayerConfiguration());
+		lm.setDynamicLayerConfiguration(dto.getLayerConfiguration());
 		List<MailAddress> mails = lm.getMailAddresses();
 		if (dto.getMailAddresses() != null && dto.getMailAddresses().size() > 0) {
 			for (MailAddressDto mad : dto.getMailAddresses()) {
@@ -203,7 +203,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lmDto.setLayerType(layerModel.getLayerType());
 		lmDto.setOwner((layerModel.getOwner() == null ? "Systeem" : layerModel.getOwner().getName()));
 		if (includeReferences) {
-			lmDto.setLayerConfiguration(layerModel.getLayerConfiguration());
+			lmDto.setLayerConfiguration(layerModel.getDynamicLayerConfiguration());
 			List<MailAddressDto> mails = lmDto.getMailAddresses();
 			if (layerModel.getMailAddresses() != null && layerModel.getMailAddresses().size() > 0) {
 				for (MailAddress ma : layerModel.getMailAddresses()) {

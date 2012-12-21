@@ -24,7 +24,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyVa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.google.gwt.core.client.GWT;
@@ -72,7 +72,7 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 		this.lmd = lmd;
 
 		if (lmd != null) {
-			form.updateFields(getFieldList(lmd.getParameterValue(LayerConfiguration.PARAM_SOURCE_TYPE)));
+			form.updateFields(getFieldList(lmd.getParameterValue(DynamicLayerConfiguration.PARAM_SOURCE_TYPE)));
 			form.setData(paramsToString(lmd.getLayerConfiguration().getParameters()));
 		} else {
 			form.updateFields(new ArrayList<FormElement>());
@@ -117,7 +117,7 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 
 	private List<FormElement> getFieldList(String type) {
 		List<FormElement> fields = new ArrayList<FormElement>();
-		if (LayerConfiguration.SOURCE_TYPE_WFS.equals(type)) {
+		if (DynamicLayerConfiguration.SOURCE_TYPE_WFS.equals(type)) {
 			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL, MESSAGES
 					.datalayerConnectionParametersCapabilitiesURL(), true));
 			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME, MESSAGES
@@ -125,7 +125,7 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD, MESSAGES
 					.datalayerConnectionParametersPassword(), KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
-		} else if (LayerConfiguration.SOURCE_TYPE_DATABASE.equals(type)) {
+		} else if (DynamicLayerConfiguration.SOURCE_TYPE_DATABASE.equals(type)) {
 			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, MESSAGES
 					.datalayerConnectionParametersHost(), true, "localhost"));
 			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT, MESSAGES

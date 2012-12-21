@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
 import com.google.gwt.core.client.GWT;
@@ -200,8 +200,8 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		} else {
 			settingsTab.setDisabled(false);
 
-			String sourceType = layerModel.getParameterValue(LayerConfiguration.PARAM_SOURCE_TYPE);
-			if (LayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
+			String sourceType = layerModel.getParameterValue(DynamicLayerConfiguration.PARAM_SOURCE_TYPE);
+			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				connParTab.setDisabled(true);
 				uploadTab.setDisabled(false);
 				upload.setLayerModel(layerModel);

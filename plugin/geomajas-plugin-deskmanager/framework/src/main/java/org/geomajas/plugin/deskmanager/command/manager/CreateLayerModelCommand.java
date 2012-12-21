@@ -68,7 +68,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 					.getClientLayerInfo().getUserData();
 			ClientLayerInfo cvli = request.getConfiguration().getClientLayerInfo();
 			LayerModel lm = new LayerModel();
-			lm.setLayerConfiguration(request.getConfiguration());
+			lm.setDynamicLayerConfiguration(request.getConfiguration());
 			lm.setName(cvli.getLabel());
 			lm.setActive(ud.isActive());
 			lm.setClientLayerId(cvli.getId());

@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 /**
  * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.CreateLayerModelCommand}.
@@ -26,13 +26,13 @@ public class CreateLayerModelRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.CreateLayerModel";
 
-	private LayerConfiguration configuration;
+	private DynamicLayerConfiguration configuration;
 
-	public LayerConfiguration getConfiguration() {
+	public DynamicLayerConfiguration getConfiguration() {
 		return configuration;
 	}
 
-	public void setConfiguration(LayerConfiguration configuration) {
+	public void setConfiguration(DynamicLayerConfiguration configuration) {
 		this.configuration = configuration;
 	}
 }

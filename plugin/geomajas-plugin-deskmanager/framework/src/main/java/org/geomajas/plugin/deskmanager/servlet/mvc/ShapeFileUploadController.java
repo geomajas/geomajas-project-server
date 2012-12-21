@@ -87,7 +87,7 @@ public class ShapeFileUploadController {
 				}
 				if (lm != null) {
 					try {
-						dataSourceName = ((VectorLayerInfo) lm.getLayerConfiguration().getServerLayerInfo())
+						dataSourceName = ((VectorLayerInfo) lm.getDynamicLayerConfiguration().getServerLayerInfo())
 								.getFeatureInfo().getDataSourceName();
 					} catch (Exception e) {
 					}

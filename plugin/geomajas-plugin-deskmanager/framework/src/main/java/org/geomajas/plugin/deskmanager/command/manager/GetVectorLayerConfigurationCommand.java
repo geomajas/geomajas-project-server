@@ -18,7 +18,7 @@ import org.geomajas.command.Command;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationResponse;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +47,9 @@ public class GetVectorLayerConfigurationCommand implements
 				|| request.getLayerName() == null || "".equals(request.getLayerName())) {
 			response.getErrorMessages().add("Required parameter missing (connectionprops, layerName");
 		} else {
-			String sourceType = request.getConnectionProperties().get(LayerConfiguration.PARAM_SOURCE_TYPE);
+			String sourceType = request.getConnectionProperties().get(DynamicLayerConfiguration.PARAM_SOURCE_TYPE);
 			Map<String, String> connProps;
-			if (LayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
+			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				connProps = postgisDataStoreParams; // get database properties
 			} else {
 				connProps = request.getConnectionProperties();
@@ -58,11 +58,11 @@ public class GetVectorLayerConfigurationCommand implements
 			response.setVectorLayerConfiguration(discoServ.getVectorLayerConfiguration(connProps,
 					request.getLayerName()));
 
-			if (LayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
+			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				// remove connection properties, these are private and should not be sent to the client
 				Parameter stp = new Parameter();
-				stp.setName(LayerConfiguration.PARAM_SOURCE_TYPE);
-				stp.setValue(LayerConfiguration.SOURCE_TYPE_SHAPE);
+				stp.setName(DynamicLayerConfiguration.PARAM_SOURCE_TYPE);
+				stp.setValue(DynamicLayerConfiguration.SOURCE_TYPE_SHAPE);
 				response.getVectorLayerConfiguration().getParameters().clear();
 				response.getVectorLayerConfiguration().getParameters().add(stp);
 			}

@@ -14,27 +14,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 /**
  * @author Kristof Heirwegh
  */
 public interface DiscoveryService {
 
-	/**
-	 * This will return a serverside ClientLayer object (Geotools/WMS layer).
-	 */
-	Layer<?> createLayer(LayerConfiguration lc) throws Exception;
-
-	VectorLayer createVectorLayer(VectorLayerConfiguration configuration) throws Exception;
-
-	Map<String, Object> createBeanLayerDefinitionParameters(LayerConfiguration lc) throws Exception;
+	Map<String, Object> createBeanLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception;
 
 	List<VectorCapabilitiesInfo> getVectorCapabilities(Map<String, String> connectionProperties) throws IOException;
 

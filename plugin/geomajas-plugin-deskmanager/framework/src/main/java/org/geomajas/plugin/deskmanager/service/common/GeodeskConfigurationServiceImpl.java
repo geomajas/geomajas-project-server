@@ -14,12 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.layer.Layer;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
 import org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
@@ -195,28 +199,39 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (org.geomajas.plugin.deskmanager.domain.ClientLayer layer : layers) {
 			ClientLayerInfo sourceCli = null;
-			if (layer != null && layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {
+			ClientLayerInfo targetCli = null;
+			Layer<?> serverLayer = null;
+			if (layer != null && layer.getLayerModel() != null) {
 				try {
 					sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel().getClientLayerId());
+					serverLayer = (Layer<?>) applicationContext.getBean(sourceCli.getServerLayerId());
+
+					//Override layerInfo from server layer
+					sourceCli.setLayerInfo(serverLayer.getLayerInfo());
+					if (sourceCli instanceof ClientVectorLayerInfo) {
+						ClientVectorLayerInfo cvli = (ClientVectorLayerInfo) sourceCli;
+						cvli.setFeatureInfo(((VectorLayerInfo) cvli.getLayerInfo()).getFeatureInfo());
+					}
+					targetCli = sourceCli;
 				} catch (NoSuchBeanDefinitionException e) {
 					// Ignore, error message later
 				}
-			}
+			} 
+			
+			//Override with clientLayerInfo if it is set
 			if (layer != null && layer.getClientLayerInfo() != null) {
-				clientLayers.add(layer.getClientLayerInfo());
 				// Set layerInfo from the source.
-				layer.getClientLayerInfo().setLayerInfo(sourceCli.getLayerInfo());
+				layer.getClientLayerInfo().setLayerInfo(serverLayer.getLayerInfo());
 				layer.getClientLayerInfo().setMaxExtent(sourceCli.getMaxExtent());
+
+				targetCli = layer.getClientLayerInfo();
+			}
+			
+			//Add the layer
+			if (targetCli != null) {
+				clientLayers.add(targetCli);
 			} else {
-				ClientLayerInfo cli = null;
-				if (layer.getLayerModel() != null && layer.getLayerModel().getClientLayerId() != null) {
-					cli = sourceCli;
-				}
-				if (cli != null) {
-					clientLayers.add(cli);
-				} else {
-					log.error("Unknown client layer info for " + layer.getId());
-				}
+				log.error("Unknown client layer info for " + layer.getId());
 			}
 		}
 		return clientLayers;

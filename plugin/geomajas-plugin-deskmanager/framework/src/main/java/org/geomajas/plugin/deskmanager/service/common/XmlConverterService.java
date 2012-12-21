@@ -35,7 +35,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfigurat
 import org.geomajas.plugin.deskmanager.configuration.client.BitmapInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.sld.UserStyleInfo;
 
 import com.thoughtworks.xstream.XStream;
@@ -77,16 +77,16 @@ public final class XmlConverterService {
 		EMI_STREAMER.alias("GeodeskLayoutInfo", GeodeskLayoutInfo.class);
 		EMI_STREAMER.alias("DeskmanagerClientLayerInfo", DeskmanagerClientLayerInfo.class);
 
-		EMI_STREAMER.alias("LayerConfiguration", LayerConfiguration.class);
+		EMI_STREAMER.alias("DynamicLayerConfiguration", DynamicLayerConfiguration.class);
 		EMI_STREAMER.alias("VectorLayerConfiguration", VectorLayerConfiguration.class);
 		EMI_STREAMER.alias("RasterLayerConfiguration", RasterLayerConfiguration.class);
 	}
 
-	public static LayerConfiguration toLayerConfiguration(String data) {
+	public static DynamicLayerConfiguration toLayerConfiguration(String data) {
 		if (data == null || "".equals(data)) {
 			return null;
 		} else {
-			return (LayerConfiguration) EMI_STREAMER.fromXML(data);
+			return (DynamicLayerConfiguration) EMI_STREAMER.fromXML(data);
 		}
 	}
 
@@ -120,7 +120,7 @@ public final class XmlConverterService {
 		}
 	}
 
-	public static String toXml(LayerConfiguration lc) {
+	public static String toXml(DynamicLayerConfiguration lc) {
 		if (lc == null) {
 			return null;
 		} else {

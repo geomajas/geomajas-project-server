@@ -53,7 +53,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
@@ -297,7 +297,7 @@ public final class ManagerCommandService {
 	 * 
 	 * @param configuration the layerconfiguration to base the layermodel on.
 	 */
-	public static void createNewLayerModel(LayerConfiguration configuration) {
+	public static void createNewLayerModel(DynamicLayerConfiguration configuration) {
 		CreateLayerModelRequest request = new CreateLayerModelRequest();
 		request.setConfiguration(configuration);
 		GwtCommand command = new GwtCommand(CreateLayerModelRequest.COMMAND);

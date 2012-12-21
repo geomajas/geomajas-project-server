@@ -14,12 +14,12 @@ import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerConfiguration;
+import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 /**
  * @author Kristof Heirwegh
  */
-public class RasterLayerConfiguration extends LayerConfiguration {
+public class RasterLayerConfiguration extends DynamicLayerConfiguration {
 
 	private static final long serialVersionUID = 1L;
 
