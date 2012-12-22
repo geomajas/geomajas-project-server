@@ -103,10 +103,6 @@
 			<artifactId>validation-api</artifactId>
 		</dependency>
 		<!-- Geomajas dependencies -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.geomajas.plugin</groupId> -->
-<!-- 			<artifactId>geomajas-plugin-staticsecurity</artifactId> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
@@ -234,6 +230,11 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-staticsecurity</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
