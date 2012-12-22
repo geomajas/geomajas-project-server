@@ -7,11 +7,9 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-deskmanager-framework</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas Deskmanager consolidated framework</name>
-	<version>1.0.0-SNAPSHOT</version>
 	<description>Geomajas deskmanager is a dynamic configuration framework for geomajas.</description>
 
 	<dependencies>
@@ -24,7 +22,6 @@
 		<dependency>
 			<groupId>org.geotools.jdbc</groupId>
 			<artifactId>gt-jdbc-h2</artifactId>
-			<version>2.7.5</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -231,27 +228,6 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
-		<!-- GEGIS -->
-		<!-- FIXME: Should be updated in cadmap -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.ws</groupId>
-			<artifactId>spring-ws-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis</groupId>
-			<artifactId>axis</artifactId>
-		</dependency>
-		<!-- Testing -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.geomajas.plugin.deskmanager</groupId> -->
-<!-- 			<artifactId>sleevemonkey-example</artifactId> -->
-<!-- 			<version>${project.version}</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -266,12 +242,6 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<!-- Test case voor AcmIdmTest -->
-		<!-- FIXME indien enkel voor test, test-scope toevoegen -->
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
 		</dependency>
 	</dependencies>
 
