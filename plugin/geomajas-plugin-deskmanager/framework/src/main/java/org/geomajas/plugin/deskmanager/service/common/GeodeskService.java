@@ -41,7 +41,7 @@ public interface GeodeskService {
 
 	List<Geodesk> getLoketten() throws GeomajasSecurityException;
 
-	void deleteLoket(Geodesk gd) throws GeomajasSecurityException;
+	void deleteGeodesk(Geodesk gd) throws GeomajasSecurityException;
 
 	void saveOrUpdateGeodesk(Geodesk gd) throws GeomajasSecurityException;
 
