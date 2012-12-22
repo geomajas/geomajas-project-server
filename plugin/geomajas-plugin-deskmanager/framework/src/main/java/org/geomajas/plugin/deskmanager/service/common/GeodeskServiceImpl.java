@@ -134,10 +134,9 @@ public class GeodeskServiceImpl implements GeodeskService {
 		return crit.list();
 	}
 
-	public void deleteLoket(Geodesk l) throws GeomajasSecurityException {
+	public void deleteGeodesk(Geodesk l) throws GeomajasSecurityException {
 		if (((DeskmanagerSecurityContext) securityContext).deleteAllowed(l)) {
-			l.setDeleted(true);
-			factory.getCurrentSession().saveOrUpdate(l);
+			factory.getCurrentSession().delete(l);
 		} else {
 			throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Verwijderen Geodesk",
 					securityContext.getUserName());
