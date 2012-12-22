@@ -194,12 +194,6 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
 		</dependency>
-		<!-- uncomment if you want to use Hibernate with postgis, for another db 
-			you will need similar dependencies -->
-		<!-- <dependency> <groupId>org.hibernatespatial</groupId> <artifactId>hibernate-spatial-postgis</artifactId> 
-			</dependency> <dependency> <groupId>org.postgis</groupId> <artifactId>postgis-jdbc</artifactId> 
-			</dependency> <dependency> <groupId>postgresql</groupId> <artifactId>postgresql</artifactId> 
-			</dependency> -->
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
