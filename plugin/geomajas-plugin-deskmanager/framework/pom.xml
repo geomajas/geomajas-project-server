@@ -25,10 +25,7 @@
 			<scope>test</scope>
 		</dependency>
 
-
-		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-3cpo</artifactId> 
-			</dependency> -->
-		<!-- Specifiek voor beheer / shared) -->
+		<!-- Dependencies for dynamic layers -->
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-shapefile</artifactId>
@@ -37,6 +34,8 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-wms</artifactId>
 		</dependency>
+		
+		
 		<!-- Specifiek voor loketten -->
 		<dependency>
 			<groupId>org.tuckey</groupId>
@@ -50,7 +49,11 @@
 		<!-- javascript API -->
 		<!-- <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-javascript-api-gwt</artifactId> 
 			</dependency> <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-javascript-api</artifactId> 
-			</dependency> -->		<!-- Specifiek voor backend -->
+			</dependency> -->		
+		
+		
+		
+		<!-- Backend dependencies -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
