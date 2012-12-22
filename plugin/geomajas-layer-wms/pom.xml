@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-wms-all</artifactId>
-	<version>1.10.0-SNAPSHOT</version>
+	<version>1.10.0</version>
 	<packaging>pom</packaging>
 	<name>Geomajas WMS layer plug-in</name>
 	<description>Geomajas WMS layer plug-in</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-wms</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-wms</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-layer-wls</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wms-all-1.10.0</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wms-all-1.10.0</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-wms-all-1.10.0</url>
 	</scm>
 
 	<developers>
