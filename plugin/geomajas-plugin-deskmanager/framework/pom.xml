@@ -36,16 +36,12 @@
 		</dependency>
 		
 		
-		<!-- Specifiek voor loketten -->
+		<!-- Rewrite url's for geodesks -->
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
 		</dependency>
-		<!-- ao webservice -->
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-		</dependency>
+
 		<!-- javascript API -->
 		<!-- <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-javascript-api-gwt</artifactId> 
 			</dependency> <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-javascript-api</artifactId> 
@@ -107,10 +103,10 @@
 			<artifactId>validation-api</artifactId>
 		</dependency>
 		<!-- Geomajas dependencies -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-staticsecurity</artifactId>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.geomajas.plugin</groupId> -->
+<!-- 			<artifactId>geomajas-plugin-staticsecurity</artifactId> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
