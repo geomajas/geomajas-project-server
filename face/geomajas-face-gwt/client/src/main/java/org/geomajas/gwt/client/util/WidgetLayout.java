@@ -340,6 +340,12 @@ public final class WidgetLayout {
 	/** Background in the  the layer tree. */
 	public static String layerTreeBackground = "#cccccc";
 
+	/** Position of the left of the croc eye */
+	public static int crocEyePositionLeft = 75;
+
+	/** Position of the top of the croc eye */
+	public static int crocEyePositionTop = 110;
+
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	private WidgetLayout() {

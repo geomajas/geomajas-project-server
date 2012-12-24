@@ -11,8 +11,12 @@
 
 package org.geomajas.gwt.client;
 
-import com.google.gwt.core.client.EntryPoint;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.handler.NotificationHandler;
+import org.geomajas.gwt.client.util.Notify;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.smartgwt.client.util.SC;
 
 /**
  * Entry point for the Geomajas GWT face.
@@ -26,5 +30,17 @@ public class GeomajasEntryPoint implements EntryPoint {
 		GwtCommandCallback callback = new GwtCommandCallback();
 		dispatcher.setCommandExceptionCallback(callback);
 		dispatcher.setCommunicationExceptionCallback(callback);
+		
+		//Set smartgwt notification handler
+		Notify.getInstance().setHandler(new NotificationHandler() {
+			@Override
+			public void handleInfo(String message) {
+				SC.say(message);
+			}
+			@Override
+			public void handleError(String message) {
+				SC.say(message);
+			}
+		});
 	}
 }
