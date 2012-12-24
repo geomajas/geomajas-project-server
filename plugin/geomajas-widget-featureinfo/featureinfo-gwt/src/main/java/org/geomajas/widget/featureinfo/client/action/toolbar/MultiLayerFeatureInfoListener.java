@@ -34,13 +34,13 @@ import org.geomajas.gwt.client.spatial.Mathlib;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.util.FitSetting;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
-import org.geomajas.widget.featureinfo.client.widget.Notify;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
 
 import com.google.gwt.core.client.GWT;
