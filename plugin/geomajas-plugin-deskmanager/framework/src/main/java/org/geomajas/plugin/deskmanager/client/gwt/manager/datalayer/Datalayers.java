@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerTab;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
@@ -20,6 +19,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
@@ -64,7 +64,7 @@ public class Datalayers extends VLayout implements EditSessionHandler, ManagerTa
 
 					public void execute(DynamicLayerConfiguration result) {
 						if (result != null && !"".equals(result)) {
-							NotificationWindow.showInfoMessage(MESSAGES.datalayersNewLayerIsBeingSaved());
+							Notify.info(MESSAGES.datalayersNewLayerIsBeingSaved());
 							ManagerCommandService.createNewLayerModel(result);
 						}
 					}

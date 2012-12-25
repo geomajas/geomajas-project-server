@@ -2,15 +2,6 @@
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
 	<inherits name="com.smartgwt.SmartGwt" />
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
-	<inherits name="org.geomajas.plugin.printing.Printing" />
-	<inherits name="org.geomajas.widget.featureinfo.Featureinfo" />
-	<inherits name="org.geomajas.widget.advancedviews.Advancedviews" />
-	<inherits name="org.geomajas.widget.searchandfilter.SearchAndFilter" />
-	<inherits name="org.geomajas.widget.utility.gwt.GwtUtilityWidgets" />
-	<inherits name="org.geomajas.plugin.editing.gwt.Editing" />
-	<inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources" />
-	<inherits name="org.geomajas.layer.wms.GeomajasWms" />
-	<inherits name="org.geomajas.widget.layer.Layer" />
 
 	<source path="client/gwt/common" />
 	<source path="client/gwt/geodesk" />

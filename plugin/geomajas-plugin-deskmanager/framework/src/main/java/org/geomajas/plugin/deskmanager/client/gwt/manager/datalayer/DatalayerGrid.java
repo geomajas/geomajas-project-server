@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
@@ -22,6 +21,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
@@ -149,11 +149,10 @@ public class DatalayerGrid extends ListGrid implements LayerModelHandler {
 //					if (model.isReadOnly()) {
 //						SC.warn(MESSAGES.datalayerGridWarnPublicCannotBeRemoved());
 //					} else {
-						NotificationWindow.showInfoMessage(MESSAGES.datalayerGridControlOnLayerUseBeforeRemove());
+						Notify.info(MESSAGES.datalayerGridControlOnLayerUseBeforeRemove());
 						ManagerCommandService.checkLayerModelInUse(model, new DataCallback<Boolean>() {
 
 							public void execute(Boolean result) {
-								NotificationWindow.clearMessages();
 								if (result) {
 									SC.warn(MESSAGES.datalayerGridCannotRemoveLayerInUse());
 								} else {

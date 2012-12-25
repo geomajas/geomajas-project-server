@@ -26,22 +26,6 @@ public interface GeodeskMessages extends Messages {
 
 	String zoomFeatureButtonTooltip();
 
-	String searchFavoriteTitle();
-
-	String searchFavoriteTooltip();
-
-	String searchCombinedTitle();
-
-	String searchCombinedTooltip();
-
-	String searchSpatialTitle();
-
-	String searchSpatialTooltip();
-
-	String searchFreeTitle();
-
-	String searchFreeTooltip();
-
 	String loadingScreenMessage();
 	
 	String userFriendlyLayerErrorMessage();

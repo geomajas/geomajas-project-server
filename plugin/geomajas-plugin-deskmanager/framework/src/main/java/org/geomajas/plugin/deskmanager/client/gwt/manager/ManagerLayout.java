@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints.Blueprints;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Datalayers;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
@@ -64,9 +63,6 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 
 		addMember(tabSet);
 		
-		NotificationWindow.getInstance().setWidth(300);
-		NotificationWindow.getInstance().init(this);
-
 		tabSet.addTabSelectedHandler(new TabSelectedHandler() {
 			
 			public void onTabSelected(TabSelectedEvent event) {

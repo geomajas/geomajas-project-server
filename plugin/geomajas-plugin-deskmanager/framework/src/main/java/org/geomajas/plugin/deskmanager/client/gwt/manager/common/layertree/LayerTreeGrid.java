@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 
 import com.google.gwt.core.client.GWT;
@@ -118,7 +118,7 @@ public class LayerTreeGrid extends TreeGrid {
 			}
 			getTree().remove(node);
 		} else {
-			NotificationWindow.showErrorMessage(MESSAGES.layerTreegridRemoveMapErrorNoSelection());
+			Notify.error(MESSAGES.layerTreegridRemoveMapErrorNoSelection());
 		}
 	}
 

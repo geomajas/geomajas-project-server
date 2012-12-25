@@ -49,7 +49,11 @@
 		
 		
 		
-		<!-- Backend dependencies -->
+		<!-- Database dependencies -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
@@ -62,6 +66,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		
 		<!-- use Hibernate with postgis, for another db you will need similar dependencies -->
 		<dependency>
 			<groupId>org.hibernatespatial</groupId>
@@ -75,7 +84,8 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-		<!-- dependencies for uploading -->
+
+		<!-- dependencies for file uploading -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -107,65 +117,21 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-geotools</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
-		</dependency>
+
+		<!-- TODO: used in management interface, should be in (stable) API projects or deskmanager plugins -->
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-utility-gwt</artifactId>
+			<artifactId>geomajas-widget-layer</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-layer-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-editing-gwt</artifactId>
-		</dependency>
-		<!-- wfs support -->
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-wfs</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-google</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-openstreetmap</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-wms</artifactId>
-		</dependency>
-		<!-- <dependency> <groupId>org.geomajas</groupId> <artifactId>geomajas-testdata</artifactId> 
-			</dependency> -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-		</dependency>
-		<!-- extra functionality -->
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-advancedviews</artifactId>
 		</dependency>
+
+		<!-- TODO: remove again -->
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-advancedviews-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo</artifactId>
+			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
@@ -173,22 +139,31 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-searchandfilter</artifactId>
+			<artifactId>geomajas-widget-utility-gwt</artifactId>
+		</dependency>
+		
+		
+
+		<!-- wfs support -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wfs</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
 		</dependency>
-		<!-- Hibernate layer can be removed if not needed, but the "Road" class 
-			needs the Hibernate stuff -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-hibernate</artifactId>
-		</dependency>
+
+
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -237,6 +212,12 @@
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 

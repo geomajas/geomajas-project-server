@@ -37,18 +37,9 @@ public final class GeodeskLayout {
 	 */
 	public static int loadingZindex = 300000;
 
-	public static int crocEyePositionLeft = 75;
-
-	public static int crocEyePositionTop = 110;
-
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 	
 	public static final String CLIENT_WIDGET_INFO_RIBBON = "ribbon-bar";
-
-	
-	public static final int CROC_EYE_POSITION_TOP_NO_RIBBON = 0;
-
-	public static final int CROC_EYE_POSITION_TOP_TABBED_RIBBON = 130;
 
 	public static final String MAPMAIN_ID = "mainMap";
 

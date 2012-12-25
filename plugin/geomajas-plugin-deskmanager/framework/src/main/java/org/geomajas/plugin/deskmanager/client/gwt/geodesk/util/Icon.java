@@ -22,22 +22,6 @@ public final class Icon {
 	
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
-	public static String searchFavoriet = "[ISOMORPHIC]/images/searchIcons/favoriet.png";
-
-	public static String searchActiviteit = "[ISOMORPHIC]/images/searchIcons/nacebel.png";
-
-	public static String searchOnderneming = "[ISOMORPHIC]/images/searchIcons/onderneming.png";
-
-	public static String searchRuimtelijk = "[ISOMORPHIC]/images/searchIcons/geographic.png";
-
-	public static String searchVrij = "[ISOMORPHIC]/images/searchIcons/vrij.png";
-
-	public static String searchCombined = "[ISOMORPHIC]/images/searchIcons/combined.png";
-
-	public static String searchTerrein = "[ISOMORPHIC]/images/searchIcons/terrein.png";
-
-	public static String searchGebruiksperceel = "[ISOMORPHIC]/images/searchIcons/perceel.png";
-
 	public static String showRelations = "[ISOMORPHIC]/images/osgeo/modeler-main.png";
 
 	public static String clearSelection = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";

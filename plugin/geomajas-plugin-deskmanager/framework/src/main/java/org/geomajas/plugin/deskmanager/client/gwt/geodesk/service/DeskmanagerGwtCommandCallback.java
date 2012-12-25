@@ -16,7 +16,7 @@ import org.geomajas.gwt.client.GwtCommandCallback;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.StatusCodeException;
@@ -41,9 +41,9 @@ public class DeskmanagerGwtCommandCallback extends GwtCommandCallback {
 		if (error instanceof StatusCodeException && ((StatusCodeException) error).getStatusCode() == 500) {
 			String msg = I18nProvider.getGlobal().commandCommunicationError() + ":\n" + error.getMessage();
 			Log.logWarn(msg);
-			NotificationWindow.showErrorMessage(MESSAGES.userFriendlyCommunicationErrorMessage());
+			Notify.error(MESSAGES.userFriendlyCommunicationErrorMessage());
 		} else {
-			NotificationWindow.getInstance().onCommunicationException(error);
+			Notify.error(error.getLocalizedMessage());
 		}
 	}
 
@@ -55,18 +55,24 @@ public class DeskmanagerGwtCommandCallback extends GwtCommandCallback {
 			if (className != null && !"".equals(className)) {
 				if (LAYER_EXCEPTION.equals(className) || RENDER_EXCEPTION.equals(className)) {
 					logWarn(response);
-					NotificationWindow.showErrorMessage(MESSAGES.userFriendlyLayerErrorMessage());
+					Notify.error(MESSAGES.userFriendlyLayerErrorMessage());
 				} else if (SECURITY_EXCEPTION.equals(className)) {
 					logWarn(response);
-					NotificationWindow.showErrorMessage(MESSAGES.userFriendlySecurityErrorMessage());
+					Notify.error(MESSAGES.userFriendlySecurityErrorMessage());
 				} else {
-					NotificationWindow.getInstance().onCommandException(response);
+					for (String error : response.getErrorMessages()) {
+						Notify.error(error);
+					}
 				}
 			} else {
-				NotificationWindow.getInstance().onCommandException(response);
+				for (String error : response.getErrorMessages()) {
+					Notify.error(error);
+				}
 			}
 		} else {
-			NotificationWindow.getInstance().onCommandException(response);
+			for (String error : response.getErrorMessages()) {
+				Notify.error(error);
+			}
 		}
 	}
 

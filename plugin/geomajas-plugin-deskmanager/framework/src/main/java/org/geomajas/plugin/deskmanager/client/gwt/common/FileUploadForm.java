@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.util.UrlBuilder;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -84,7 +84,7 @@ public class FileUploadForm extends HLayout {
 
 			public void onChange(ChangeEvent event) {
 				if (hasFile()) {
-					NotificationWindow.showInfoMessage("Bestand wordt opgeladen...");
+					Notify.info("Bestand wordt opgeladen...");
 					form.submit();
 				}
 			}

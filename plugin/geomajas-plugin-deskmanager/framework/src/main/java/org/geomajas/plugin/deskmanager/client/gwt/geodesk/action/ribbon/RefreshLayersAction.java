@@ -22,6 +22,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 /**
  * Refresh all visible layers.
  * 
+ * FIXME: move to smartgwt plugin
+ *   
  * @author Kristof Heirwegh
  */
 public class RefreshLayersAction extends AbstractButtonAction {

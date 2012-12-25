@@ -97,7 +97,7 @@ public abstract class AbstractUserApplication implements UserApplication {
 				// // -- get default action so it gets initialized
 				// defaultToolAction = ToolbarRegistry.getToolbarAction(DEFAULT_TOOL_ID, getMapWidget());
 				fsiw.initialize(getMainMapWidget());
-				fsiw.setLeftPosition(GeodeskLayout.crocEyePositionLeft);
+				fsiw.setLeftPosition(75);
 			}
 		});
 	}

@@ -23,20 +23,16 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserAppli
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
-import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
-import org.geomajas.widget.searchandfilter.client.widget.search.DockableWindowSearchWidget.SearchWindowPositionType;
-import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * Entry point and main class for deskmanager applications. This entrypoint will show a loading screen and will load the
- * deskmanager application, if it's needed asking for a login role.
+ * Main class for deskmanager applications. This entrypoint will show a loading screen and will load the deskmanager
+ * application, if it's needed asking for a login role.
  * 
  * The entrypoint listens to Mapwidget and MapModel events to set some generic configuration options.
  * 
@@ -45,36 +41,23 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class GeodeskApplication implements UserApplicationHandler {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
-	
+
 	private UserApplication geodesk;
 
 	private LoadingScreen loadScreen;
 
 	/**
-	 * Constructor for the GeodeskApplication, this will create a GWT entrypoint.
+	 * Constructor for the GeodeskApplication.
 	 */
 	public GeodeskApplication() {
-		// register Global layout stuff
-		GuwLayout.ribbonBarInternalMargin = 2;
-		GuwLayout.ribbonGroupInternalMargin = 4;
-
-		GuwLayout.DropDown.ribbonBarDropDownButtonDescriptionIconSize = 48;
-
-		GuwLayout.ribbonBarOverflow = Overflow.HIDDEN;
-		GuwLayout.ribbonTabOverflow = Overflow.HIDDEN;
-
-		GsfLayout.searchWindowPositionType = SearchWindowPositionType.SNAPTO;
-		GsfLayout.searchWindowPosSnapTo = "BR";
-		GsfLayout.searchWindowPosLeft = -5;
-		GsfLayout.searchWindowPosTop = -172;
-
-		SearchCommService.searchResultSize = 500;
-
 	}
 
 	/**
 	 * Ask for the correct user role and load the application. TODO: extract to interface, this is specific to the used
 	 * security model.
+	 * 
+	 * The resentation is added to the layout using a {@link UserApplication}, the key for this user application is
+	 * loaded from the configuration. User applications must be registered to the {@link UserApplicationRegistry}.
 	 */
 	public void loadApplication(final Layout parentLayout) {
 		// First Install a loading screen
@@ -82,7 +65,7 @@ public class GeodeskApplication implements UserApplicationHandler {
 		loadScreen = new LoadingScreen();
 		loadScreen.setZIndex(GeodeskLayout.loadingZindex);
 		loadScreen.draw();
-		
+
 		String geodeskId = GeodeskUrlUtil.getGeodeskId();
 		if (geodeskId == null) {
 			SC.warn(MESSAGES.noGeodeskIdGivenError());
@@ -91,7 +74,7 @@ public class GeodeskApplication implements UserApplicationHandler {
 
 		GeodeskInitializer initializer = new GeodeskInitializer();
 		initializer.addHandler(new GeodeskInitializationHandler() {
-			
+
 			public void initialized(InitializeGeodeskResponse response) {
 				GeodeskLayout.version = response.getDeskmanagerVersion();
 				GeodeskLayout.build = response.getDeskmanagerBuild();
@@ -123,7 +106,7 @@ public class GeodeskApplication implements UserApplicationHandler {
 				parentLayout.addMember(layout);
 			}
 		});
-		
+
 		// Get application info for the geodesk
 		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
 	}

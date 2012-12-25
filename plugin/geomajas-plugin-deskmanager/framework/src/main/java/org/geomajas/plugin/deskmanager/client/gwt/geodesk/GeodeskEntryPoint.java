@@ -13,19 +13,10 @@ package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.gwt.client.action.ToolCreator;
-import org.geomajas.gwt.client.action.ToolbarBaseAction;
-import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.CombinedSearchAction;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.FavouritesSearchAction;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.FreeSearchAction;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.SpatialSearchAction;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.ribbon.RefreshLayersAction;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.ribbon.MouseLocationRibbonColumn;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.ribbon.ScaleSelectRibbonColumn;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.featureinfo.DefaultFeatureInfoCanvasBuilder;
-import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry;
@@ -55,36 +46,6 @@ public class GeodeskEntryPoint implements EntryPoint {
 	}
 
 	public void initialize() {
-		ToolbarRegistry.put(FavouritesSearchAction.IDENTIFIER, new ToolCreator() {
-
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new FavouritesSearchAction();
-			}
-		});
-
-		ToolbarRegistry.put(CombinedSearchAction.IDENTIFIER, new ToolCreator() {
-
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new CombinedSearchAction();
-			}
-		});
-
-		ToolbarRegistry.put(SpatialSearchAction.IDENTIFIER, new ToolCreator() {
-
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new SpatialSearchAction();
-			}
-		});
-
-		ToolbarRegistry.put(FreeSearchAction.IDENTIFIER, new ToolCreator() {
-
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new FreeSearchAction();
-			}
-		});
-
-		FeatureDetailWidgetFactory.setDefaultVectorFeatureDetailWidgetBuilder(new DefaultFeatureInfoCanvasBuilder());
-
 		RibbonColumnRegistry.put(MOUSE_LOCATION_RIBBON_COLUMN_IDENTIFIER, new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {

@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.infowindow.NotificationWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.MailManagePanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
@@ -20,6 +19,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
@@ -94,7 +94,7 @@ public class GeodeskNotifications extends AbstractConfigurationLayout implements
 					ManagerCommandService.saveGeodesk(loket, SaveGeodeskRequest.SAVE_NOTIFICATIONS);
 				}
 			} else {
-				NotificationWindow.showInfoMessage(MESSAGES.geodeskNotificationsWarnNoChanges());
+				Notify.info(MESSAGES.geodeskNotificationsWarnNoChanges());
 			}
 		}
 		mailManage.setDisabled(true);
