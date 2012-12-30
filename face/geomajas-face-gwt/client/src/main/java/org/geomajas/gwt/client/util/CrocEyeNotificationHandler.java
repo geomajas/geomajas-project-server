@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.handler.NotificationHandler;
 import org.geomajas.gwt.client.i18n.GlobalMessages;
 
