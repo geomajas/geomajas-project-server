@@ -53,14 +53,21 @@ public final class CrocEyeNotificationHandler extends AbstractCommandCallback<Co
 	private CrocEyeNotificationHandler() {
 	}
 
+	@Override
 	public void handleInfo(String message) {
 		showInfoMessage(message);
 	}
 
+	@Override
 	public void handleError(String message) {
 		showErrorMessage(message);
 	}
 
+	/**
+	 * Get the singleton instance of the notificationHandler.
+	 * 
+	 * @return the instance.
+	 */
 	public static CrocEyeNotificationHandler getInstance() {
 		if (instance == null) {
 			instance = new CrocEyeNotificationHandler();
@@ -68,24 +75,37 @@ public final class CrocEyeNotificationHandler extends AbstractCommandCallback<Co
 		return instance;
 	}
 
+	/**
+	 * Show info message in the croceye.
+	 * @param message the message to show
+	 */
 	public static void showInfoMessage(String message) {
 		getInstance().addMessage(message, INFOMESSAGE_STYLE);
 	}
 
+	/**
+	 * Show error message in the croceye.
+	 * @param message the message to show
+	 */
 	public static void showErrorMessage(String message) {
 		getInstance().addMessage(message, ERRORMESSAGE_STYLE);
 	}
 
+	/**
+	 * Clear all messages currently displayed in the croceye.
+	 */
 	public static void clearMessages() {
 		getInstance().hideInfoPanel();
 	}
 
 	// ----------------------------------------------------------
 
+	@Override
 	public void onCommunicationException(Throwable error) {
 		addMessage(MESSAGES.commandCommunicationError() + error.getMessage(), ERRORMESSAGE_STYLE);
 	}
 
+	@Override
 	public void onCommandException(CommandResponse response) {
 		String message = "";
 		List<String> msgs = response.getErrorMessages();
@@ -195,34 +215,56 @@ public final class CrocEyeNotificationHandler extends AbstractCommandCallback<Co
 
 	// ----------------------------------------------------------
 
+	/**
+	 * Set the timeout, how long the message is displayed.
+	 */
 	public int getTimeout() {
 		return timeout;
 	}
 
+	/**
+	 * Get the timeout, how long the message is displayed.
+	 */
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
 	}
 
+	/**
+	 * Hook the croceye to a parent widget.
+	 */
 	public void init(Canvas parent) {
 		this.parent = parent;
 	}
 
+	/**
+	 * Get the width of the croceye.
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Set the width of the croceye.
+	 */
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
+	/**
+	 * Get the maximum messages displayed.
+	 */
 	public int getMaxItems() {
 		return maxItems;
 	}
 
+	/**
+	 * Set the maximum messages displayed.
+	 */
 	public void setMaxItems(int maxItems) {
 		this.maxItems = maxItems;
 	}
-
+	
+	@Override
 	public void execute(CommandResponse response) {
 	}
 }
