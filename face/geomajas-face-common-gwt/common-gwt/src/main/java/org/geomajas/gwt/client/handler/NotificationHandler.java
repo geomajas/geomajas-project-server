@@ -11,7 +11,6 @@
 package org.geomajas.gwt.client.handler;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.util.Notify;
 
 /**
  * Notification handler that handles messages sent to the {@link Notify} class.
