@@ -13,9 +13,9 @@ package org.geomajas.gwt.client.util;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.handler.NotificationHandler;
 import org.geomajas.gwt.client.i18n.GlobalMessages;
 
@@ -34,9 +34,7 @@ import com.smartgwt.client.widgets.HTMLFlow;
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
- * @since 1.12.0
  */
-@Api(allMethods = true)
 public final class CrocEyeNotificationHandler extends AbstractCommandCallback<CommandResponse> implements
 		NotificationHandler {
 
