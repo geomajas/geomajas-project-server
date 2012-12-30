@@ -20,7 +20,7 @@ import org.geomajas.gwt.client.util.Notify;
  * @author Oliver May
  * @since 1.2.0
  */
-@Api(allMethods=true)
+@Api(allMethods = true)
 public interface NotificationHandler {
 
 	/**
