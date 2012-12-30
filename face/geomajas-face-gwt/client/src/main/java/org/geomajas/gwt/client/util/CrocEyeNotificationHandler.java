@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.handler.NotificationHandler;
 import org.geomajas.gwt.client.i18n.GlobalMessages;
 
@@ -123,7 +122,7 @@ public final class CrocEyeNotificationHandler extends AbstractCommandCallback<Co
 			messages.remove(0);
 		}
 		showInfoPanel(buildHtml());
-		new Timer() {
+		Timer timer = new Timer() {
 
 			public void run() {
 				if (messages.size() > 0) {
@@ -135,7 +134,8 @@ public final class CrocEyeNotificationHandler extends AbstractCommandCallback<Co
 					hideInfoPanel();
 				}
 			}
-		}.schedule(timeout);
+		};
+		timer.schedule(timeout);
 	}
 
 	private String buildHtml() {
