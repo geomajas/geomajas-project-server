@@ -12,17 +12,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean name="defaultLoketClientInfo"
 		class="org.geomajas.configuration.client.ClientApplicationInfo">
-		<property name="widgetInfo">
-			<map>
-				<entry>
-					<key>
-						<util:constant
-							static-field="org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout.CLIENT_WIDGET_INFO_RIBBON" />
-					</key>
-					<ref bean="ribbon-bar-default-pub" />
-				</entry>
-			</map>
-		</property>
 		<property name="maps">
 			<list>
 				<!-- Main map -->
@@ -34,7 +23,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="id" value="mainMap" />
 					<property name="layers">
 						<list>
-							<ref bean="osmLayer" />
+								<!-- FIXME: change to dummy layer -->
+<!-- 							<ref bean="osmLayer" /> -->
 						</list>
 					</property>
 					<property name="layerTree">
@@ -51,7 +41,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 												<property name="label" value="OSM" />
 												<property name="layers">
 													<list>
-														<ref bean="osmLayer" />
+													<!-- FIXME: change to dummy layer -->
+<!-- 														<ref bean="osmLayer" /> -->
 													</list>
 												</property>
 												<property name="expanded" value="true" />
@@ -122,7 +113,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="initialBounds" ref="worldExtents" />
 					<property name="layers">
 						<list>
-							<ref bean="osmOverviewLayer" />
+							<!-- FIXME: change to dummy layer -->
+<!-- 							<ref bean="osmOverviewLayer" /> -->
 						</list>
 					</property>
 				</bean>
