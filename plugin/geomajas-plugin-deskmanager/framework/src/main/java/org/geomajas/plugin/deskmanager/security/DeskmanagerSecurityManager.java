@@ -10,15 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.security;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.internal.security.DefaultSecurityManager;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.security.SecurityInfo;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -28,11 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Oliver May
  * 
  */
-public class DeskmanagerSecurityManager implements SecurityManager {
+public class DeskmanagerSecurityManager extends DefaultSecurityManager {
 
-	@Autowired
-	private SecurityInfo securityInfo;
-	
 	@Autowired
 	private SecurityContext securityContext;
 
@@ -59,27 +53,6 @@ public class DeskmanagerSecurityManager implements SecurityManager {
 			// System.out.println(authorizations);
 			((DeskmanagerSecurityContext) securityContext).restoreSecurityContext(authorizations);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.geomajas.security.SecurityManager#createSecurityContext(java.lang.String)
-	 */
-	@Override
-	public boolean createSecurityContext(String authenticationToken) {
-		clearSecurityContext(); // assure there is no authenticated user in case of problems during creation
-		List<SecurityService> services = securityInfo.getSecurityServices();
-		List<Authentication> authentications = new ArrayList<Authentication>();
-		for (SecurityService service : services) {
-			Authentication auth = service.getAuthentication(authenticationToken);
-			if (null != auth) {
-				authentications.add(auth);
-				auth.setSecurityServiceId(service.getId());
-				if (!securityInfo.isLoopAllServices()) {
-					break;
-				}
-			}
-		}
-		return setSecurityContext(authenticationToken, authentications);
 	}
 
 }

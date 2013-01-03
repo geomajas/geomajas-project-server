@@ -117,6 +117,17 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
 		</dependency>
+		<!-- Needed at compile time because we extend the default security manager and context -->
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+		</dependency>
+		<!-- Need to depend on printing plugin because we override the print service to inject our own configuration -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing</artifactId>
+		</dependency>
+		
 
 		<!-- TODO: used in management interface, should be in (stable) API projects or deskmanager plugins -->
 		<dependency>
