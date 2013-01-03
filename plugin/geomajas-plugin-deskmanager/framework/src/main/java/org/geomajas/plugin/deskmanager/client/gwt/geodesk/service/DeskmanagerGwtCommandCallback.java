@@ -15,8 +15,8 @@ import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.GwtCommandCallback;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.util.Log;
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
-import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.StatusCodeException;

@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.gwt.client.util.UrlBuilder;
-import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;

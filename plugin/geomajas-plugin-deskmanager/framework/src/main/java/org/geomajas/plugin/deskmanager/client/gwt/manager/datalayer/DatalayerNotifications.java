@@ -10,13 +10,13 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.MailManagePanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
-import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;

@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerTab;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
@@ -19,7 +20,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
-import org.geomajas.widget.featureinfo.client.widget.Notify;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;

@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree;
 
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.widget.featureinfo.client.widget.Notify;
 import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 
 import com.google.gwt.core.client.GWT;
