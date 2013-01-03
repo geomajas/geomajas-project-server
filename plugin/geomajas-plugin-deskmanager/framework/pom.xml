@@ -223,12 +223,6 @@
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
 	</dependencies>
 
 
