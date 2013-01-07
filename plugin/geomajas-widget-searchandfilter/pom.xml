@@ -119,7 +119,7 @@
 	<properties>
 		<geomajas-widget-featureinfo-version>1.0.0-M1</geomajas-widget-featureinfo-version>
 		<geomajas-widget-searchandfilter-backend-version>1.11.1</geomajas-widget-searchandfilter-backend-version>
-		<geomajas-widget-searchandfilter-gwt-face-version>1.11.1</geomajas-widget-searchandfilter-gwt-face-version>
+		<geomajas-widget-searchandfilter-gwt-face-version>1.12.0-SNAPSHOT</geomajas-widget-searchandfilter-gwt-face-version>
 		<geomajas-widget-searchandfilter-gwt-version>2.4.0</geomajas-widget-searchandfilter-gwt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>	
