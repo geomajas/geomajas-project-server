@@ -10,18 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
-import java.util.List;
-
-import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.action.ribbon.RefreshLayersAction;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.ribbon.MouseLocationRibbonColumn;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.ribbon.ScaleSelectRibbonColumn;
-import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
-import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
-import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry;
-import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry.RibbonColumnCreator;
-
 import com.google.gwt.core.client.EntryPoint;
 
 
@@ -33,38 +21,12 @@ import com.google.gwt.core.client.EntryPoint;
  *
  */
 public class GeodeskEntryPoint implements EntryPoint {
-	private static final String MOUSE_LOCATION_RIBBON_COLUMN_IDENTIFIER = "MouseLocationRibbonColumn";
-	private static final String SCLE_SELECT_RIBBON_COLUMN_IDENTIFIER = "ScaleSelectRibbonColumn";
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
 	public void onModuleLoad() {
-		initialize();
-	}
-
-	public void initialize() {
-		RibbonColumnRegistry.put(MOUSE_LOCATION_RIBBON_COLUMN_IDENTIFIER, new RibbonColumnCreator() {
-
-			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
-				return new MouseLocationRibbonColumn(mapWidget);
-			}
-		});
-		RibbonColumnRegistry.put(SCLE_SELECT_RIBBON_COLUMN_IDENTIFIER, new RibbonColumnCreator() {
-
-			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
-				return new ScaleSelectRibbonColumn(mapWidget);
-			}
-		});
-		RibbonColumnRegistry.put(RefreshLayersAction.IDENTIFIER, new RibbonColumnCreator() {
-
-			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
-				RibbonColumn rc = new RibbonButton(new RefreshLayersAction(mapWidget));
-				return rc;
-			}
-		});
 	}
 
 }
