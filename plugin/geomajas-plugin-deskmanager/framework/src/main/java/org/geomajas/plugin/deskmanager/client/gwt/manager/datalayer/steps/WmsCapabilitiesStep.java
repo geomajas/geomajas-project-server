@@ -27,7 +27,6 @@ import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
 
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 

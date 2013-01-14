@@ -27,7 +27,6 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 
