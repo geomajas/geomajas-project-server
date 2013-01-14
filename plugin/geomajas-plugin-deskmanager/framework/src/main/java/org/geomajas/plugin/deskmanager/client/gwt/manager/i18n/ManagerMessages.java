@@ -338,6 +338,9 @@ public interface ManagerMessages extends Messages {
 	String mailGridActionDeleteTooltip();
 	String mailGridConfirmDeleteTitle();
 	String mailGridConfirmDeleteText(String attribute);
+	String mailGridLoadingAddresses();
+
+	
 	String mailManageNewButtonText();
 	
 	String layerAttributesGridLoadingText();

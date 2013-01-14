@@ -182,7 +182,8 @@ public class MailGrid extends ListGrid {
 	private void clearData() {
 		setData(new ListGridRecord[] {});
 		setShowEmptyMessage(true);
-		setEmptyMessage("<i>Adressen worden ingelezen... <img src='" + Geomajas.getIsomorphicDir()
+		setEmptyMessage("<i>" + MESSAGES.mailGridLoadingAddresses() + 
+				" <img src='" + Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></i>");
 		markForRedraw();
 		changed = false;
