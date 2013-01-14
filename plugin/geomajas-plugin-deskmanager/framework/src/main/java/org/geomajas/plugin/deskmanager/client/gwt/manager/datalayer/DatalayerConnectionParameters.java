@@ -24,8 +24,10 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyVa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
+import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
@@ -139,6 +141,13 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD, MESSAGES
 					.datalayerConnectionParametersPassword(), KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
+		} else if (DynamicLayerConfiguration.SOURCE_TYPE_WMS.equals(type)) {
+			fields.add(new FormElement(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL, MESSAGES
+					.datalayerConnectionParametersCapabilitiesURL(), true));
+			fields.add(new FormElement(WmsLayerBeanFactory.WMS_USERNAME, MESSAGES
+					.datalayerConnectionParametersUserName(), 150));
+			fields.add(new FormElement(WmsLayerBeanFactory.WMS_PASSWORD, MESSAGES
+					.datalayerConnectionParametersPassword(), KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 		}
 		// else TODO
 		return fields;
