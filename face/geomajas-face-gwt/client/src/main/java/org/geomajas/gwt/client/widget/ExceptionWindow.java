@@ -12,8 +12,8 @@
 package org.geomajas.gwt.client.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
 import org.geomajas.annotation.Api;
 import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.i18n.GlobalMessages;
@@ -115,7 +115,7 @@ public class ExceptionWindow extends Window implements CloseClickHandler {
 	 *
 	 * @param event close event
 	 */
-	public void onCloseClick(CloseClientEvent event) {
+	public void onCloseClick(CloseClickEvent event) {
 		destroy();
 	}
 
