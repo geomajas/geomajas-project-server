@@ -169,9 +169,9 @@
 
 	<properties>
 		<gwt-face-backend-version>1.11.1</gwt-face-backend-version>
-		<gwt-face-gwt-version>2.4.0</gwt-face-gwt-version>
+		<gwt-face-gwt-version>2.5.0</gwt-face-gwt-version>
 		<gwt-face-common-gwt-version>1.2.0-SNAPSHOT</gwt-face-common-gwt-version>
-		<gwt-face-smartgwt-version>2.5</gwt-face-smartgwt-version>
+		<gwt-face-smartgwt-version>3.1</gwt-face-smartgwt-version>
 	</properties>
 	
 </project>
