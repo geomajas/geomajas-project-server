@@ -371,6 +371,10 @@ public interface ManagerMessages extends Messages {
 	String chooseTypeStepNumbering();
 	String chooseTypeStepTitle();
 	String chooseTypeStepRadioGroupTitle();
+	String chooseTypeStepWFS();
+	String chooseTypeStepShapeFile();
+	String chooseTypeStepWMS();
+	String chooseTypeStepDatabase();
 	
 	String databaseCapabilitiesStepNumbering();
 	String databaseCapabilitiesStepTitle();
@@ -434,11 +438,5 @@ public interface ManagerMessages extends Messages {
 	String wmsPreviewLayerStepNumbering();
 	String wmsPreviewLayerStepTitle();
 	String wmsPreviewLayerStepNextStepNotFound();
-	
-	
-	 
-	
-	
-	
 
 }

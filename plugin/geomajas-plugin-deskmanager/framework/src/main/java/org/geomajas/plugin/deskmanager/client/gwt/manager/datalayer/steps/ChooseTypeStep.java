@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 
+import java.util.LinkedHashMap;
+
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
@@ -51,7 +53,13 @@ public class ChooseTypeStep extends WizardStepPanel {
 
 		radioGroup = new RadioGroupItem();
 		radioGroup.setTitle(MESSAGES.chooseTypeStepRadioGroupTitle());
-		radioGroup.setValueMap(TYPE_WFS, TYPE_SHAPE, TYPE_WMS);
+		 LinkedHashMap<String, String> typeMap = new LinkedHashMap<String, String>();
+			 typeMap.put(TYPE_WFS, MESSAGES.chooseTypeStepWFS());
+			 typeMap.put(TYPE_SHAPE, MESSAGES.chooseTypeStepShapeFile());
+			 typeMap.put(TYPE_WMS, MESSAGES.chooseTypeStepWMS());
+			 typeMap.put(TYPE_DB, MESSAGES.chooseTypeStepDatabase());
+			 
+		radioGroup.setValueMap(typeMap);
 		radioGroup.setDefaultValue(TYPE_WFS);
 		radioGroup.setRequired(true);
 
