@@ -1,5 +1,5 @@
 Geomajas Geometry project
-Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
 
 Copyright/license notices for dependent projects:
 

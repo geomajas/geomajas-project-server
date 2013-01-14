@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -18,7 +18,7 @@ import com.google.gwt.event.shared.EventHandler;
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered

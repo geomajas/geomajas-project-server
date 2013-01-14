@@ -5,7 +5,7 @@
  * It is a building block that allows developers to add maps
  * and other geographic data capabilities to their web applications.
  *
- * Copyright 2008-2012 Geosparc, http://www.geosparc.com, Belgium
+ * Copyright 2008-2013 Geosparc, http://www.geosparc.com, Belgium
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
