@@ -15,18 +15,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -40,6 +42,8 @@ import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
  * @author Kristof Heirwegh
  */
 public class VectorChooseLayerStep extends WizardStepPanel {
+
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private static final String FLD_GROUP = "namespace";
 
@@ -62,8 +66,9 @@ public class VectorChooseLayerStep extends WizardStepPanel {
 	private String previousStep = NewLayerModelWizardWindow.STEP_WFS_PROPS;
 
 	public VectorChooseLayerStep(final Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_VECTOR_CHOOSE_LAYER, "3) Vector - Kies laag", false, parent);
-		setWindowTitle("Vector - Kies laag");
+		super(NewLayerModelWizardWindow.STEP_VECTOR_CHOOSE_LAYER, MESSAGES.vectorChooseLayerStepNumbering() + " "  +
+				MESSAGES.vectorChooseLayerStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.vectorChooseLayerStepTitle());
 
 		grid = new ListGrid();
 		grid.setWidth100();
@@ -83,11 +88,11 @@ public class VectorChooseLayerStep extends WizardStepPanel {
 			}
 		});
 
-		ListGridField groupFld = new ListGridField(FLD_GROUP, "Groep");
+		ListGridField groupFld = new ListGridField(FLD_GROUP, MESSAGES.vectorChooseLayerStepParametersGroup());
 		groupFld.setType(ListGridFieldType.TEXT);
 		groupFld.setWidth(50);
 
-		ListGridField nameFld = new ListGridField(FLD_NAME, "Naam");
+		ListGridField nameFld = new ListGridField(FLD_NAME, MESSAGES.vectorChooseLayerStepParametersName());
 		nameFld.setType(ListGridFieldType.TEXT);
 		nameFld.setWidth("*");
 
@@ -95,11 +100,11 @@ public class VectorChooseLayerStep extends WizardStepPanel {
 		crsFld.setType(ListGridFieldType.TEXT);
 		crsFld.setWidth(75);
 
-		ListGridField geomFld = new ListGridField(FLD_GEOMTYPE, "Type");
+		ListGridField geomFld = new ListGridField(FLD_GEOMTYPE, MESSAGES.vectorChooseLayerStepParametersType());
 		geomFld.setType(ListGridFieldType.TEXT);
 		geomFld.setWidth(70);
 
-		ListGridField descFld = new ListGridField(FLD_DESC, "Omschrijving");
+		ListGridField descFld = new ListGridField(FLD_DESC, MESSAGES.vectorChooseLayerStepParametersDescription());
 		descFld.setType(ListGridFieldType.TEXT);
 		descFld.setWidth("*");
 
@@ -125,8 +130,9 @@ public class VectorChooseLayerStep extends WizardStepPanel {
 		if (connectionProps != null) {
 			reset();
 			grid.setShowEmptyMessage(true);
-			grid.setEmptyMessage("<i>Opvragen gegevens van Server... <img src='" + Geomajas.getIsomorphicDir()
-					+ "/images/circle.gif' style='height: 1em' /></i>");
+			grid.setEmptyMessage("<i>" + MESSAGES.requestingInfoFromServer() +
+					" <img src='" + Geomajas.getIsomorphicDir() +
+					"/images/circle.gif' style='height: 1em' /></i>");
 			grid.redraw();
 			DiscoveryCommService.getVectorCapabilities(connectionProps,
 					new DataCallback<List<VectorCapabilitiesInfo>>() {
@@ -193,7 +199,7 @@ public class VectorChooseLayerStep extends WizardStepPanel {
 			nextStep.setData(connectionProps, grid.getSelectedRecord().getAttribute(FLD_TYPENAME));
 			nextStep.setPreviousStep(NewLayerModelWizardWindow.STEP_VECTOR_CHOOSE_LAYER);
 		} else {
-			SC.warn("Kon Editeer Attributen stap niet vinden ?!");
+			Notify.error(MESSAGES.vectorChooseLayerStepNextStepNotFound());
 		}
 	}
 }

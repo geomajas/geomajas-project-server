@@ -13,14 +13,17 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -35,6 +38,8 @@ import com.smartgwt.client.widgets.Label;
  */
 public class WmsPreviewLayerStep extends WizardStepPanel {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+
 	private Map<String, String> connectionProps;
 
 	private RasterLayerConfiguration layerConfiguration;
@@ -48,8 +53,9 @@ public class WmsPreviewLayerStep extends WizardStepPanel {
 	private Img img;
 
 	public WmsPreviewLayerStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_WMS_PREVIEW_LAYER, "3) Raster - Voorbeeld", false, parent);
-		setWindowTitle("Raster - Laag voorbeeld");
+		super(NewLayerModelWizardWindow.STEP_WMS_PREVIEW_LAYER, MESSAGES.wmsPreviewLayerStepNumbering() + " " +
+				MESSAGES.wmsPreviewLayerStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.wmsPreviewLayerStepTitle());
 		img = new Img();
 		img.setWidth(300);
 		img.setHeight(200);
@@ -123,7 +129,7 @@ public class WmsPreviewLayerStep extends WizardStepPanel {
 		if (nextStep != null) {
 			nextStep.setData(layerConfiguration, NewLayerModelWizardWindow.STEP_WMS_PREVIEW_LAYER);
 		} else {
-			SC.warn("Kon edit layer stap niet vinden ?!");
+			Notify.error(MESSAGES.wmsPreviewLayerStepNextStepNotFound());
 		}
 	}
 

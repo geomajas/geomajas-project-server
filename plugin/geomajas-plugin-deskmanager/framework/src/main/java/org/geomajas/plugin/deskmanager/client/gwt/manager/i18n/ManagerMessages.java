@@ -354,4 +354,91 @@ public interface ManagerMessages extends Messages {
 	String layerAttributesGriDeselectIdAttribute();
 	String layerAttributesGriDeselectLabelAttribute();
 
+	//----------------------------------------------
+	
+	String layerSettingsLayerName();
+	String layerSettingsPublic();
+	String layerSettingsPublicTooltip();
+	String layerSettingsActive();
+	String layerSettingsActiveTooltip();
+	String layerSettingsVisibleByDefault();
+	String layerSettingsVisibleByDefaultTooltip();
+	String maxBoundsMinX();
+	String maxBoundsMinY();
+	String maxBoundsMaxX();
+	String maxBoundsMaxY();
+	
+	String chooseTypeStepNumbering();
+	String chooseTypeStepTitle();
+	String chooseTypeStepRadioGroupTitle();
+	
+	String databaseCapabilitiesStepNumbering();
+	String databaseCapabilitiesStepTitle();
+	String databaseCapabilitiesStepParametersHost();
+	String databaseCapabilitiesStepParametersPort();
+	String databaseCapabilitiesStepParametersScheme();
+	String databaseCapabilitiesStepParametersDatabase();
+	String databaseCapabilitiesStepParametersUserName();
+	String databaseCapabilitiesStepParametersPassword();
+	String databaseCapabilitiesStepChooseVectorLayerNotFound();
+	
+	String requestingInfoFromServer();
+	
+	String shapefileUploadStepNumbering();
+	String shapefileUploadStepTitle();
+	String shapefileUploadStepErrorDuringUpload();
+	String shapefileUploadStepNextStepNotFound();
+	
+	String wfsCapabilitiesStepNumbering();
+	String wfsCapabilitiesStepTitle();
+	String wfsCapabilitiesStepParametersCapabilitiesURL();
+	String wfsCapabilitiesStepParametersUserName();
+	String wfsCapabilitiesStepParametersPassword();
+	String wfsCapabilitiesStepNextStepNotFound();
+	
+	String vectorChooseLayerStepNumbering();
+	String vectorChooseLayerStepTitle();
+	String vectorChooseLayerStepParametersGroup();
+	String vectorChooseLayerStepParametersName();
+	String vectorChooseLayerStepParametersType();
+	String vectorChooseLayerStepParametersDescription();
+	String vectorChooseLayerStepNextStepNotFound();
+	
+	String vectorEditLayerAttributesStepNumbering();
+	String vectorEditLayerAttributesStepTitle();
+	String vectorEditLayerAttributesStepNextStepNotFound();
+	
+	String editLayerSettingsStepNumbering();
+	String editLayerSettingsStepTitle();
+	String editLayerSettingsStepVisibleArea();
+	
+	String vectorEditLayerStyleStepNumbering();
+	String vectorEditLayerStyleStepTitle();
+	String vectorEditLayerStyleStepSelectColor();
+	String vectorEditLayerStyleStepStyleName();
+	String vectorEditLayerStyleStepNextStepNotFound();
+	
+	String wmsCapabilitiesStepNumbering();	
+	String wmsCapabilitiesStepTitle();
+	String wmsCapabilitiesStepParametersCapabilitiesURL();
+	String wmsCapabilitiesStepParametersUserName();
+	String wmsCapabilitiesStepParametersPassword();
+	String wmsCapabilitiesStepNextStepNotFound();
+	
+	String wmsChooseLayerStepNumbering();
+	String wmsChooseLayerStepTitle();
+	String wmsChooseLayerStepName();
+	String wmsChooseLayerStepCRS();
+	String wmsChooseLayerStepDescription();
+	
+	String wmsPreviewLayerStepNumbering();
+	String wmsPreviewLayerStepTitle();
+	String wmsPreviewLayerStepNextStepNotFound();
+	
+	
+	 
+	
+	
+	
+
 }

@@ -14,6 +14,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerMode
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.LayerAttributesGrid;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
@@ -21,12 +22,15 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfigurat
 import java.util.Map;
 
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 
 /**
  * @author Kristof Heirwegh
  */
 public class VectorEditLayerAttributesStep extends WizardStepPanel {
+
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private Map<String, String> connectionProps;
 
@@ -39,9 +43,10 @@ public class VectorEditLayerAttributesStep extends WizardStepPanel {
 	private String previousStep = NewLayerModelWizardWindow.STEP_VECTOR_CHOOSE_LAYER;
 
 	public VectorEditLayerAttributesStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_VECTOR_EDIT_LAYER_ATTRIBUTES, "4) Vector - Personaliseer Attributen", 
-				false, parent);
-		setWindowTitle("Vector - Personaliseer Attributen");
+		super(NewLayerModelWizardWindow.STEP_VECTOR_EDIT_LAYER_ATTRIBUTES, 
+				MESSAGES.vectorEditLayerAttributesStepNumbering() + " " +
+				MESSAGES.vectorEditLayerAttributesStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.vectorEditLayerAttributesStepTitle());
 
 		grid = new LayerAttributesGrid();
 
@@ -119,7 +124,7 @@ public class VectorEditLayerAttributesStep extends WizardStepPanel {
 		if (nextStep != null) {
 			nextStep.setData(getData());
 		} else {
-			SC.warn("Kon Editeer Stijl stap niet vinden ?!");
+			SC.warn(MESSAGES.vectorEditLayerAttributesStepNextStepNotFound());
 		}
 	}
 

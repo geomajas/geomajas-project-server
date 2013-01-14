@@ -15,8 +15,10 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.LayerSettingsForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.MaxBoundsForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
@@ -27,7 +29,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  */
 public class EditLayerSettingsStep extends WizardStepPanel {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private LayerSettingsForm form;
 	private MaxBoundsForm maxBoundsForm;
 
@@ -38,8 +42,10 @@ public class EditLayerSettingsStep extends WizardStepPanel {
 	private DynamicLayerConfiguration layerConfig;
 
 	public EditLayerSettingsStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_EDIT_LAYER_SETTINGS, "5) Laag eigenschappen", true, parent);
-		setWindowTitle("Laag eigenschappen");
+		super(NewLayerModelWizardWindow.STEP_EDIT_LAYER_SETTINGS, 
+				MESSAGES.editLayerSettingsStepNumbering() + " " + MESSAGES.editLayerSettingsStepTitle(),
+				true, parent);
+		setWindowTitle(MESSAGES.editLayerSettingsStepTitle());
 
 		// -- layersettings --
 		form = new LayerSettingsForm();
@@ -69,7 +75,7 @@ public class EditLayerSettingsStep extends WizardStepPanel {
 		
 		VLayout root = new VLayout();
 		root.addMember(form);
-		Label l = new Label("<b>Zichtbaar gebied : </b>");
+		Label l = new Label("<b>" + MESSAGES.editLayerSettingsStepVisibleArea() + " : </b>");
 		l.setPadding(10);
 		l.setWidth100();
 		l.setAutoHeight();

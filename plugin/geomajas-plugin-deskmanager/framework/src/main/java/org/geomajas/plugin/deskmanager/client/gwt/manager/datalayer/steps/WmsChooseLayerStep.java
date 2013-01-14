@@ -17,10 +17,12 @@ import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
@@ -39,6 +41,8 @@ import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
  */
 public class WmsChooseLayerStep extends WizardStepPanel {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+
 	private static final String FLD_NAME = "name";
 
 	private static final String FLD_CRS = "crs";
@@ -56,8 +60,10 @@ public class WmsChooseLayerStep extends WizardStepPanel {
 	private String previousStep = NewLayerModelWizardWindow.STEP_WMS_PROPS;
 
 	public WmsChooseLayerStep(final Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_WMS_CHOOSE_LAYER, "3) WMS - Kies laag", false, parent);
-		setWindowTitle("WMS - Kies laag");
+		super(NewLayerModelWizardWindow.STEP_WMS_CHOOSE_LAYER, 
+			MESSAGES.wmsChooseLayerStepNumbering() + " "  + MESSAGES.wmsChooseLayerStepTitle(), 
+				false, parent);
+		setWindowTitle(MESSAGES.wmsChooseLayerStepTitle());
 
 		grid = new ListGrid();
 		grid.setWidth100();
@@ -77,15 +83,15 @@ public class WmsChooseLayerStep extends WizardStepPanel {
 			}
 		});
 
-		ListGridField nameFld = new ListGridField(FLD_NAME, "Naam");
+		ListGridField nameFld = new ListGridField(FLD_NAME, MESSAGES.wmsChooseLayerStepName());
 		nameFld.setType(ListGridFieldType.TEXT);
 		nameFld.setWidth("*");
 
-		ListGridField crsFld = new ListGridField(FLD_CRS, "CRS");
+		ListGridField crsFld = new ListGridField(FLD_CRS, MESSAGES.wmsChooseLayerStepCRS());
 		crsFld.setType(ListGridFieldType.TEXT);
 		crsFld.setWidth(75);
 
-		ListGridField descFld = new ListGridField(FLD_DESC, "Omschrijving");
+		ListGridField descFld = new ListGridField(FLD_DESC, MESSAGES.wmsChooseLayerStepDescription());
 		descFld.setType(ListGridFieldType.TEXT);
 		descFld.setWidth("*");
 
@@ -111,8 +117,10 @@ public class WmsChooseLayerStep extends WizardStepPanel {
 		if (connectionProps != null) {
 			reset();
 			grid.setShowEmptyMessage(true);
-			grid.setEmptyMessage("<i>Opvragen gegevens van Server... <img src='" + Geomajas.getIsomorphicDir()
-					+ "/images/circle.gif' style='height: 1em' /></i>");
+			grid.setEmptyMessage("<i>" + MESSAGES.requestingInfoFromServer() +
+					" <img src='" + Geomajas.getIsomorphicDir() +
+					"/images/circle.gif' style='height: 1em' /></i>");
+			
 			grid.redraw();
 			DiscoveryCommService.getRasterCapabilities(connectionProps,
 					new DataCallback<List<RasterCapabilitiesInfo>>() {

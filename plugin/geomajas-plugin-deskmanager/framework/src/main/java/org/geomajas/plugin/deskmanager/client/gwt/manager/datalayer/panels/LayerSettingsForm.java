@@ -10,10 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -22,7 +24,9 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
  * @author Kristof Heirwegh
  */
 public class LayerSettingsForm extends DynamicForm {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private CheckboxItem publicLayer;
 
 	private CheckboxItem active;
@@ -43,21 +47,21 @@ public class LayerSettingsForm extends DynamicForm {
 		setColWidths("125", "*");
 
 		name = new TextItem();
-		name.setTitle("Naam laag");
+		name.setTitle(MESSAGES.layerSettingsLayerName());
 		name.setWidth(250);
 		name.setRequired(true);
 
 		publicLayer = new CheckboxItem();
-		publicLayer.setTitle("Publiek");
-		publicLayer.setTooltip("Mag deze laag mag gebruikt worden in publieke loketten?");
+		publicLayer.setTitle(MESSAGES.layerSettingsPublic());
+		publicLayer.setTooltip(MESSAGES.layerSettingsPublicTooltip());
 
 		active = new CheckboxItem();
-		active.setTitle("Actief");
-		active.setTooltip("Enkel actieve lagen kunnen gebruikt worden bij het configureren van loketten.");
+		active.setTitle(MESSAGES.layerSettingsActive());
+		active.setTooltip(MESSAGES.layerSettingsActiveTooltip());
 
 		visible = new CheckboxItem();
-		visible.setTitle("Standaard zichtbaar");
-		visible.setTooltip("Laag is zichtbaar bij opstarten loket.");
+		visible.setTitle(MESSAGES.layerSettingsVisibleByDefault());
+		visible.setTooltip(MESSAGES.layerSettingsVisibleByDefaultTooltip());
 
 		// -------------------------------------------------
 

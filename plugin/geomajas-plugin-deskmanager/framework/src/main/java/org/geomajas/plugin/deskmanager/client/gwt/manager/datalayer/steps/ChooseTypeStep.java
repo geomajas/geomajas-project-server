@@ -13,7 +13,9 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
@@ -23,6 +25,8 @@ import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
  * @author Kristof Heirwegh
  */
 public class ChooseTypeStep extends WizardStepPanel {
+
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private static final String TYPE_WMS = "WMS";
 
@@ -37,15 +41,16 @@ public class ChooseTypeStep extends WizardStepPanel {
 	private RadioGroupItem radioGroup;
 
 	public ChooseTypeStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_CHOOSE_TYPE, "1) Kies Datalaag Type", false, parent);
-		setWindowTitle("Kies Datalaag type");
+		super(NewLayerModelWizardWindow.STEP_CHOOSE_TYPE, MESSAGES.chooseTypeStepNumbering() + " " +
+				MESSAGES.chooseTypeStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.chooseTypeStepTitle());
 
 		form = new DynamicForm();
 		form.setWidth100();
 		form.setColWidths("150", "*");
 
 		radioGroup = new RadioGroupItem();
-		radioGroup.setTitle("Nieuwe laag op basis van");
+		radioGroup.setTitle(MESSAGES.chooseTypeStepRadioGroupTitle());
 		radioGroup.setValueMap(TYPE_WFS, TYPE_SHAPE, TYPE_WMS);
 		radioGroup.setDefaultValue(TYPE_WFS);
 		radioGroup.setRequired(true);

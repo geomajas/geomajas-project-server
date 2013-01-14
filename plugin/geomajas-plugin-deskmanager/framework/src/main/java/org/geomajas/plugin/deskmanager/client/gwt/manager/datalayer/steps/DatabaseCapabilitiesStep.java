@@ -15,15 +15,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
-import com.smartgwt.client.util.SC;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 
@@ -31,22 +33,31 @@ import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
  * @author Kristof Heirwegh
  */
 public class DatabaseCapabilitiesStep extends WizardStepPanel {
-
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private KeyValueForm form;
 
 	private boolean first = true;
 
 	public DatabaseCapabilitiesStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_DATABASE_PROPS, "2) Postgis Database Connectieparameters", false, parent);
-		setWindowTitle("Postgis Database Connectieparameters");
+		super(NewLayerModelWizardWindow.STEP_DATABASE_PROPS, MESSAGES.vectorChooseLayerStepTitle() + " "  +
+				MESSAGES.databaseCapabilitiesStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.databaseCapabilitiesStepTitle());
 
 		List<FormElement> fields = new ArrayList<FormElement>();
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, "Host", true, "localhost"));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT, "Port", true, "5432"));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE, "Schema", true, "public"));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, "Database", true));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_USER, "Gebruikersnaam", 150));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD, "Wachtwoord",
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, 
+				MESSAGES.databaseCapabilitiesStepParametersHost(), true, "localhost"));
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT,
+				MESSAGES.databaseCapabilitiesStepParametersPort(), true, "5432"));
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE,
+				MESSAGES.databaseCapabilitiesStepParametersScheme(), true, "public"));
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, 
+				MESSAGES.databaseCapabilitiesStepParametersDatabase(), true));
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_USER,
+				MESSAGES.databaseCapabilitiesStepParametersUserName(), 150));
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD,
+				MESSAGES.databaseCapabilitiesStepParametersPassword(),
 				KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		form = new KeyValueForm();
@@ -105,7 +116,8 @@ public class DatabaseCapabilitiesStep extends WizardStepPanel {
 			nextStep.setPreviousStep(NewLayerModelWizardWindow.STEP_DATABASE_PROPS);
 			nextStep.setData(getData());
 		} else {
-			SC.warn("Kon Kies Vector Laag stap niet vinden ?!");
+			Notify.error(MESSAGES.databaseCapabilitiesStepChooseVectorLayerNotFound());
+			//TODO: cleanup or turn into logging instruction? 
 		}
 	}
 

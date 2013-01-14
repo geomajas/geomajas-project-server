@@ -10,18 +10,19 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.UploadShapefileForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-
-import com.smartgwt.client.util.SC;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 
@@ -30,6 +31,8 @@ import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
  */
 public class ShapefileUploadStep extends WizardStepPanel {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+
 	private UploadShapefileForm form;
 
 	private boolean first = true;
@@ -37,8 +40,9 @@ public class ShapefileUploadStep extends WizardStepPanel {
 	private Map<String, String> connectionProps = new LinkedHashMap<String, String>();
 
 	public ShapefileUploadStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_SHAPEFILE_UPLOAD, "2) Shapefile opladen", false, parent);
-		setWindowTitle("Shapefile opladen");
+		super(NewLayerModelWizardWindow.STEP_SHAPEFILE_UPLOAD, MESSAGES.shapefileUploadStepNumbering() + " "  + 
+				MESSAGES.shapefileUploadStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.shapefileUploadStepTitle());
 
 		form = new UploadShapefileForm();
 		form.setWidth100();
@@ -106,13 +110,13 @@ public class ShapefileUploadStep extends WizardStepPanel {
 						nextStep.setData(connectionProps, result);
 						nextStep.initialize();
 					} else {
-						nextStep.setWarning("Fout bij opladen Shapefile, " +
-								"keer terug naar de vorige stap om opnieuw te proberen.");
+						nextStep.setWarning(MESSAGES.shapefileUploadStepErrorDuringUpload());
 					}
 				}
 			});
 		} else {
-			SC.warn("Kon Editeer attributen stap niet vinden ?!");
+			Notify.error(MESSAGES.shapefileUploadStepNextStepNotFound());
+			//TODO: cleanup or turn into logging instruction?
 		}
 	}
 }

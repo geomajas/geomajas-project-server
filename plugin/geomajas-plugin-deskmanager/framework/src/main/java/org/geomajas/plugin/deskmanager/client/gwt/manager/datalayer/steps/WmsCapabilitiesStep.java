@@ -15,15 +15,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
@@ -33,18 +36,24 @@ import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
  */
 public class WmsCapabilitiesStep extends WizardStepPanel {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
 	private KeyValueForm form;
 
 	private boolean first = true;
 
 	public WmsCapabilitiesStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_WMS_PROPS, "2) WMS Connectieparameters", false, parent);
-		setWindowTitle("WMS Connectieparameters");
+		super(NewLayerModelWizardWindow.STEP_WMS_PROPS, MESSAGES.wmsCapabilitiesStepNumbering() + " " +
+				MESSAGES.wmsCapabilitiesStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.wmsCapabilitiesStepTitle());
 
 		List<FormElement> fields = new ArrayList<FormElement>();
-		fields.add(new FormElement(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL, "Capabilities URL", true));
-		fields.add(new FormElement(WmsLayerBeanFactory.WMS_USERNAME, "Gebruikersnaam", 150));
-		fields.add(new FormElement(WmsLayerBeanFactory.WMS_PASSWORD, "Wachtwoord",
+		fields.add(new FormElement(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL, 
+				MESSAGES.wmsCapabilitiesStepParametersCapabilitiesURL(), true));
+		fields.add(new FormElement(WmsLayerBeanFactory.WMS_USERNAME,
+				MESSAGES.wmsCapabilitiesStepParametersUserName(), 150));
+		fields.add(new FormElement(WmsLayerBeanFactory.WMS_PASSWORD,
+				MESSAGES.wmsCapabilitiesStepParametersPassword(),
 				KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		form = new KeyValueForm();
@@ -101,7 +110,7 @@ public class WmsCapabilitiesStep extends WizardStepPanel {
 		if (nextStep != null) {
 			nextStep.setData(getData());
 		} else {
-			SC.warn("Kon Kies WMS Laag stap niet vinden ?!");
+			Notify.error(MESSAGES.wmsCapabilitiesStepNextStepNotFound());
 		}
 	}
 

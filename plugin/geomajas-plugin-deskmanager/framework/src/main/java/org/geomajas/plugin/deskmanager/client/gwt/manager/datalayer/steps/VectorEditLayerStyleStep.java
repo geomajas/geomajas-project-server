@@ -11,12 +11,14 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 
-import com.smartgwt.client.util.SC;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -27,6 +29,8 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  * @author Kristof Heirwegh
  */
 public class VectorEditLayerStyleStep extends WizardStepPanel {
+	
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private VectorLayerConfiguration layerConfig;
 
@@ -37,11 +41,13 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 	private TextItem label;
 
 	public VectorEditLayerStyleStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_VECTOR_EDIT_LAYER_STYLE, "4) Vector stijl aanpassen", false, parent);
-		setWindowTitle("Vector stijl aanpassen");
+		super(NewLayerModelWizardWindow.STEP_VECTOR_EDIT_LAYER_STYLE,
+				MESSAGES.vectorEditLayerStyleStepNumbering() + MESSAGES.vectorEditLayerStyleStepTitle(),
+				false, parent);
+		setWindowTitle(MESSAGES.vectorEditLayerStyleStepTitle());
 
 		form = new DynamicForm();
-		picker = new ColorPickerItem("selectColor", "Selecteer kleur: ");
+		picker = new ColorPickerItem("selectColor", MESSAGES.vectorEditLayerStyleStepSelectColor() + ": ");
 		picker.addChangedHandler(new ChangedHandler() {
 
 			@Override
@@ -53,7 +59,7 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 				fs.setStrokeColor(picker.getValueAsString());
 			}
 		});
-		label = new TextItem("styleLabel", "Naam voor deze stijl: ");
+		label = new TextItem("styleLabel", MESSAGES.vectorEditLayerStyleStepStyleName() + ": ");
 		label.addChangedHandler(new ChangedHandler() {
 			
 			@Override
@@ -106,7 +112,7 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 		if (nextStep != null) {
 			nextStep.setData(layerConfig, NewLayerModelWizardWindow.STEP_VECTOR_EDIT_LAYER_STYLE);
 		} else {
-			SC.warn("Kon Editeer Laag eigenschappen stap niet vinden ?!");
+			Notify.error(MESSAGES.vectorEditLayerStyleStepNextStepNotFound());
 		}
 	}
 }

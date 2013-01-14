@@ -11,8 +11,10 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FloatItem;
 
@@ -20,6 +22,8 @@ import com.smartgwt.client.widgets.form.fields.FloatItem;
  * @author Kristof Heirwegh
  */
 public class MaxBoundsForm extends DynamicForm {
+
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private FloatItem minX;
 
@@ -37,22 +41,22 @@ public class MaxBoundsForm extends DynamicForm {
 		setColWidths(125, 125, 75, 125);
 
 		minX = new FloatItem();
-		minX.setTitle("Min X");
+		minX.setTitle(MESSAGES.maxBoundsMinX());
 		minX.setWidth(125);
 		minX.setRequired(true);
 
 		minY = new FloatItem();
-		minY.setTitle("Min Y");
+		minY.setTitle(MESSAGES.maxBoundsMinY());
 		minY.setWidth(125);
 		minY.setRequired(true);
 
 		maxX = new FloatItem();
-		maxX.setTitle("Max X");
+		maxX.setTitle(MESSAGES.maxBoundsMaxX());
 		maxX.setWidth(125);
 		maxX.setRequired(true);
 
 		maxY = new FloatItem();
-		maxY.setTitle("Max Y");
+		maxY.setTitle(MESSAGES.maxBoundsMaxY());
 		maxY.setWidth(125);
 		maxY.setRequired(true);
 

@@ -15,15 +15,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
-import com.smartgwt.client.util.SC;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 
@@ -32,19 +34,25 @@ import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
  */
 public class WfsCapabilitiesStep extends WizardStepPanel {
 
+	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+
 	private KeyValueForm form;
 
 	private boolean first = true;
 
 	public WfsCapabilitiesStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_WFS_PROPS, "2) WFS Connectieparameters", false, parent);
-		setWindowTitle("WFS Connectieparameters");
+		super(NewLayerModelWizardWindow.STEP_WFS_PROPS, MESSAGES.wfsCapabilitiesStepNumbering() + " "  + 
+				MESSAGES.wfsCapabilitiesStepTitle(), false, parent);
+		setWindowTitle(MESSAGES.wfsCapabilitiesStepTitle());
 
 		List<FormElement> fields = new ArrayList<FormElement>();
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL, "Capabilities URL", 
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL,
+				MESSAGES.wfsCapabilitiesStepParametersCapabilitiesURL(), 
 				true));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME, "Gebruikersnaam", 150));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD, "Wachtwoord",
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME,
+				MESSAGES.wfsCapabilitiesStepParametersUserName(), 150));
+		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD,
+				MESSAGES.wfsCapabilitiesStepParametersPassword(),
 				KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		form = new KeyValueForm();
@@ -102,7 +110,8 @@ public class WfsCapabilitiesStep extends WizardStepPanel {
 			nextStep.setPreviousStep(NewLayerModelWizardWindow.STEP_WFS_PROPS);
 			nextStep.setData(getData());
 		} else {
-			SC.warn("Kon Kies WFS Laag stap niet vinden ?!");
+			Notify.error(MESSAGES.wfsCapabilitiesStepNextStepNotFound());
+			//TODO: cleanup or turn into logging instruction?
 		}
 	}
 
