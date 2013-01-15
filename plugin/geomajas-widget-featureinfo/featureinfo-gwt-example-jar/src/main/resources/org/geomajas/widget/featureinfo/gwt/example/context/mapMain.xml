@@ -89,18 +89,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<bean class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
-						<ref bean="ToolbarSeparator" />
-						<ref bean="ZoomToRectangleMode" />
-						<ref bean="PanMode" />
-						<ref bean="ToolbarSeparator" />
-						<ref bean="ZoomPrevious" />
-						<ref bean="ZoomNext" />
-						<ref bean="ToolbarSeparator" />
-						<ref bean="EditMode" />
-						<ref bean="MeasureDistanceMode" />
-						<ref bean="SelectionMode" />
-						<ref bean="FeatureInfoMode" />
-						<ref bean="ToolbarSeparator" />
 						<ref bean="MultilayerFeatureInfoMode" />
 						<ref bean="ToolbarSeparator" />
 						<ref bean="TooltipOnMouseOverMode" />
