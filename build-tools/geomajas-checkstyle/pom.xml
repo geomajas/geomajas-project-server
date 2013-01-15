@@ -19,15 +19,15 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-checkstyle</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.8</version>
+	<version>1.9.0-SNAPSHOT</version>
 	<name>Geomajas checkstyle configuration</name>
 	<description>Geomajas checkstyle configuration</description>
 	<url>http://files.geomajas.org/maven/trunk/geomajas-checkstyle</url>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-checkstyle-1.0.8</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-checkstyle-1.0.8</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-checkstyle-1.0.8</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-checkstyle</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-checkstyle</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-checkstyle</url>
 	</scm>
 
 	<organization>
