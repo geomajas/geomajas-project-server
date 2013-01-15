@@ -29,4 +29,18 @@
       </listitem>
     </itemizedlist>
   </section>
+  <section id="mig-1110">
+    <title>Migrating between GWT face 1.11.0 and Geomajas GWT face
+    1.12.0</title>
+
+    <itemizedlist>
+      <listitem>
+        <para>The smartgwt version has upgraded from 2.5 to 3.1. There is a backwards compatibility issue in smartgwt 
+        3.0, see http://www.smartclient.com/smartgwt/release_notes.html#3_0. Although we re-introduced 
+        <code>CloseClientEvent</code> as deprecated, you might run into problems with 
+        <code>CloseClientHandler</code>.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
 </appendix>
