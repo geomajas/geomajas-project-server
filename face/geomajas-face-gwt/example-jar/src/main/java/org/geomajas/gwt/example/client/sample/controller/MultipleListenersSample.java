@@ -28,7 +28,7 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.PortalLayout;
 import com.smartgwt.client.widgets.layout.Portlet;
@@ -109,7 +109,7 @@ public class MultipleListenersSample extends SamplePanel {
 				map.addListener(listener);
 				portlet.addCloseClickHandler(new CloseClickHandler() {
 
-					public void onCloseClick(CloseClientEvent event) {
+					public void onCloseClick(CloseClickEvent event) {
 						map.removeListener(listener);
 						if (map.getListeners() != null) {
 							SC.say(MESSAGES.multipleListenersCount(map.getListeners().size()));
