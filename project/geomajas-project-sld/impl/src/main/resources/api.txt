@@ -1,1 +1,1 @@
-// geomajas-project-sld-impl module API, 1.0.0
+// geomajas-project-sld-impl module API, 1.2.0-SNAPSHOT

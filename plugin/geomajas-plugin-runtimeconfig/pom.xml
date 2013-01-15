@@ -177,11 +177,11 @@
 	</profiles>
 
 	<properties>
-		<runtimeconfig-backend-version>1.12.0-SNAPSHOT</runtimeconfig-backend-version>
+		<runtimeconfig-backend-version>1.12.0</runtimeconfig-backend-version>
 		<runtimeconfig-gwt-face-version>1.11.1</runtimeconfig-gwt-face-version>
-		<runtimeconfig-puregwt-face-version>1.0.0-SNAPSHOT</runtimeconfig-puregwt-face-version>
+		<runtimeconfig-puregwt-face-version>1.0.0-M1</runtimeconfig-puregwt-face-version>
 		<runtimeconfig-gwt-version>2.4.0</runtimeconfig-gwt-version>
 		<runtimeconfig-geotools-version>1.10.0</runtimeconfig-geotools-version>
-		<runtimeconfig-wms-version>1.10.0-SNAPSHOT</runtimeconfig-wms-version>
+		<runtimeconfig-wms-version>1.10.0</runtimeconfig-wms-version>
 	</properties>
 </project>
