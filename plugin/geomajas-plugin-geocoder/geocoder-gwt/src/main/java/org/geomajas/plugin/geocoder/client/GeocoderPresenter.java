@@ -19,7 +19,7 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -184,7 +184,7 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 			altWindow.setCanDragResize(true);
 			altWindow.addItem(altGrid);
 			altWindow.addCloseClickHandler(new CloseClickHandler() {
-				public void onCloseClick(CloseClientEvent closeClientEvent) {
+				public void onCloseClick(CloseClickEvent closeClickEvent) {
 					removeAltWindow();
 				}
 			});
