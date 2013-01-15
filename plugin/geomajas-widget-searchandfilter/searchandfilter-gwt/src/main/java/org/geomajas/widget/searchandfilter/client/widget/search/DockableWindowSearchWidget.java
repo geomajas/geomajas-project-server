@@ -16,7 +16,7 @@ import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
 
 /**
  * A generic {@link SearchWidget} implemented as dockable window.
@@ -58,7 +58,7 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 
 		addCloseClickHandler(new CloseClickHandler() {
 
-			public void onCloseClick(CloseClientEvent event) {
+			public void onCloseClick(CloseClickEvent event) {
 				searchPanel.hide();
 				hide();
 				destroy();
