@@ -123,4 +123,13 @@ public interface SearchAndFilterMessages extends Messages {
 	String searchWidgetRegistryCriterionTypeOr();
 	String searchWidgetRegistryCriterionTypeGeometry();
 	String searchWidgetRegistryCriterionTypeAttribute();
+	
+	String searchFavoriteTitle();
+	String searchFavoriteTooltip();
+	String searchCombinedTitle();
+	String searchCombinedTooltip();
+	String searchSpatialTitle();
+	String searchSpatialTooltip();
+	String searchFreeTitle();
+	String searchFreeTooltip();
 }

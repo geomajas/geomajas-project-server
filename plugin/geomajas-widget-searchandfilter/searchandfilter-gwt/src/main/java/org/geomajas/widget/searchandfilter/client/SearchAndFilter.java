@@ -11,6 +11,15 @@
 
 package org.geomajas.widget.searchandfilter.client;
 
+import org.geomajas.gwt.client.action.ToolCreator;
+import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.searchandfilter.client.action.CombinedSearchAction;
+import org.geomajas.widget.searchandfilter.client.action.FavouritesSearchAction;
+import org.geomajas.widget.searchandfilter.client.action.FreeSearchAction;
+import org.geomajas.widget.searchandfilter.client.action.SpatialSearchAction;
+
 import com.google.gwt.core.client.EntryPoint;
 
 /**
@@ -21,6 +30,33 @@ import com.google.gwt.core.client.EntryPoint;
 public class SearchAndFilter implements EntryPoint {
 
 	public void onModuleLoad() {
+		ToolbarRegistry.put(FavouritesSearchAction.IDENTIFIER, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new FavouritesSearchAction();
+			}
+		});
+
+		ToolbarRegistry.put(CombinedSearchAction.IDENTIFIER, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new CombinedSearchAction();
+			}
+		});
+
+		ToolbarRegistry.put(SpatialSearchAction.IDENTIFIER, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new SpatialSearchAction();
+			}
+		});
+
+		ToolbarRegistry.put(FreeSearchAction.IDENTIFIER, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new FreeSearchAction();
+			}
+		});
 	}
 
 }

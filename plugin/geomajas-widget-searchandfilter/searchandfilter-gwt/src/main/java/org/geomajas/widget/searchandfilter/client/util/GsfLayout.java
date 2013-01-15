@@ -48,6 +48,14 @@ public final class GsfLayout {
 	public static String searchWindowPosSnapTo;
 	/** Only needed for SNAPTO. */
 	public static Canvas searchWindowParentElement;
+	/** Icon for the favourites action. */
+	public static String iconSearchFavourites = "[ISOMORPHIC]/geomajas/searchIcons/favourite.png";
+	/** Icon for the spatial search action. */
+	public static String iconSpatialSearch = "[ISOMORPHIC]/geomajas/searchIcons/geographic.png";
+	/** Icon for the free search action. */
+	public static String iconSearchFree = "[ISOMORPHIC]/geomajas/searchIcons/free.png";
+	/** Icon for the combined search action. */
+	public static String iconSearchCombined = "[ISOMORPHIC]/geomajas/searchIcons/combined.png";
 	
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
