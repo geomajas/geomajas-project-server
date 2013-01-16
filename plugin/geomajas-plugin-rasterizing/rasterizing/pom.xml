@@ -170,11 +170,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<activation>
-				<property>
-					<name>hudson</name>
-				</property>
-			</activation>
 			<properties>
 				<image.profile>hudson</image.profile>
 			</properties>
