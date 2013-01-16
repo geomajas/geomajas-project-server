@@ -160,7 +160,7 @@
 
 	<profiles>
 		<profile>
-			<id>default</id>
+			<id>windows</id>
 			<properties>
 				<image.profile>default</image.profile>
 			</properties>
