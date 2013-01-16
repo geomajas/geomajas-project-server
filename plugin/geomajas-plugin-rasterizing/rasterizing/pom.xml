@@ -161,15 +161,15 @@
 	<profiles>
 		<profile>
 			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<image.profile>default</image.profile>
 			</properties>
 		</profile>
 		<profile>
 			<id>hudson</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<activation>
 				<property>
 					<name>hudson</name>
