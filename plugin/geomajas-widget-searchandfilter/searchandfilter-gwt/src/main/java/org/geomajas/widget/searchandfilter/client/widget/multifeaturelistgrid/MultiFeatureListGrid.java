@@ -239,7 +239,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 */
 	@Api
 	public void addButton(String layerId, ToolStripButton button, int position) {
-		extraButtons.add(new ExtraButton(layerId, button, position));
+		extraButtons.add(new ExtraButton(constructIdSaveLayerId(layerId), button, position));
 	}
 
 	// ----------------------------------------------------------
@@ -270,7 +270,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	}
 
 	private void removeTab(VectorLayer layer) {
-		String id = tabset.getID() + "_" + layer.getId();
+		String id = tabset.getID() + "_" + constructIdSaveLayerId(layer.getId());
+		
 		if (tabset.getTab(id) != null) {
 			tabset.removeTab(id);
 			setEmpty();
@@ -278,19 +279,25 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	}
 
 	private FeatureListGridTab getOrCreateTab(VectorLayer layer) {
-		String layerId = layer.getId();
-		String id = tabset.getID() + "_" + layerId;
+		String idSaveLayerId = constructIdSaveLayerId(layer.getId());
+		String id = tabset.getID() + "_" + idSaveLayerId;
+		 
 		FeatureListGridTab t = (FeatureListGridTab) tabset.getTab(id);
 		if (t == null) {
 			t = new FeatureListGridTab(map, layer, isShowCsvExportAction());
 			t.setID(id);
 			for (ExtraButton button : extraButtons) {
-				if (layerId.equals(button.getLayerId())) {
+				if (idSaveLayerId.equals(button.getIdSaveLayerId())) {
 					t.addButton(button.getButton(), button.getPosition());
 				}
 			}
 		}
 		return t;
+	}
+
+	private String constructIdSaveLayerId(String layerId) {
+		layerId = layerId.replaceAll("\\-", "_"); // SmartGWT does not support '-' char in ID FeatureListGridTab 
+		return layerId;
 	}
 
 	/**
@@ -301,7 +308,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 */
 	@Api
 	public ListGridRecord[] getSelection(String layerId) {
-		String id = tabset.getID() + "_" + layerId;
+		String id = tabset.getID() + "_" + constructIdSaveLayerId(layerId);
 		FeatureListGridTab tab = (FeatureListGridTab) tabset.getTab(id);
 		if (tab != null) {
 			return tab.getSelection();
@@ -315,18 +322,18 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 * @author Joachim Van der Auwera
 	 */
 	private static class ExtraButton {
-		private String layerId;
+		private String idSaveLayerId;
 		private ToolStripButton button;
 		private int position;
 
-		public ExtraButton(String layerId, ToolStripButton button, int position) {
-			this.layerId = layerId;
+		public ExtraButton(String idSaveLayerId, ToolStripButton button, int position) {
+			this.idSaveLayerId = idSaveLayerId;
 			this.button = button;
 			this.position = position;
 		}
 
-		public String getLayerId() {
-			return layerId;
+		public String getIdSaveLayerId() {
+			return idSaveLayerId;
 		}
 
 		public ToolStripButton getButton() {
