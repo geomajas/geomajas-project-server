@@ -31,19 +31,19 @@ public enum Role {
 	/**
 	 * Geodesk manager, manages his own geodesks.
 	 */
-	DESK_MANAGER("Loketbeheerder"),
+	DESK_MANAGER("Deskmanager"),
 	/**
 	 * Administrator of the system, manages all geodesks and blueprints.
 	 */
-	ADMINISTRATOR("Beheerder"),
+	ADMINISTRATOR("Administrator"),
 	/**
 	 * User with read rights on geodesks.
 	 */
-	CONSULTING_USER("Consulterend gebruiker"),
+	CONSULTING_USER("Geodesk user"),
 	/**
 	 * User with read/write rights on geodesks.
 	 */
-	EDITING_USER("Editerend gebruiker");
+	EDITING_USER("Geodesk user with editing permissions");
 
 	private final String description;
 
