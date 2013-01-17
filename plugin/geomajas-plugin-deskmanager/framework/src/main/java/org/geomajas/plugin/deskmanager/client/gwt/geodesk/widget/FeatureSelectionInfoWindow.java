@@ -17,8 +17,10 @@ import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.util.Icon;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.AnimationCallback;
 import com.smartgwt.client.widgets.Label;
@@ -37,6 +39,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  */
 public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
+
+	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
 
 	private MapWidget mapWidget;
 
@@ -116,9 +120,9 @@ public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 
 	private String getInfoText() {
 		if (selectionCount == 1) {
-			return "Er is <b>1</b> feature geselecteerd.";
+			return MESSAGES.featureSelectionInfoWindowOneFeatureSelected();
 		} else {
-			return "Er zijn <b>" + selectionCount + "</b> features geselecteerd.";
+			return MESSAGES.featureSelectionInfoWindowXFeaturesSelected(selectionCount );
 		}
 	}
 

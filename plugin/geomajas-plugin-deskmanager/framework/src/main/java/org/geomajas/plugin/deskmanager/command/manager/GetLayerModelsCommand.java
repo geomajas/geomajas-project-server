@@ -52,7 +52,7 @@ public class GetLayerModelsCommand implements Command<GetLayerModelsRequest, Get
 
 		// no need to filter by group, this is done by security
 		for (LayerModel bp : layerModelService.getLayerModels()) {
-			layerModels.add(converterService.toDto(bp, false));
+			layerModels.add(converterService.toDto(bp, false, request.getLocale()));
 		}
 
 		response.setLayerModels(layerModels);

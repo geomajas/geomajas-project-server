@@ -41,7 +41,7 @@ public class DatabaseCapabilitiesStep extends WizardStepPanel {
 	private boolean first = true;
 
 	public DatabaseCapabilitiesStep(Wizard parent) {
-		super(NewLayerModelWizardWindow.STEP_DATABASE_PROPS, MESSAGES.vectorChooseLayerStepTitle() + " "  +
+		super(NewLayerModelWizardWindow.STEP_DATABASE_PROPS,  MESSAGES.databaseCapabilitiesStepNumbering() + " "  + 
 				MESSAGES.databaseCapabilitiesStepTitle(), false, parent);
 		setWindowTitle(MESSAGES.databaseCapabilitiesStepTitle());
 

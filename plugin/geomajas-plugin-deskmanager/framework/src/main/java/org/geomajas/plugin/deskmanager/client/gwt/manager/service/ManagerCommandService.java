@@ -56,6 +56,8 @@ import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
+import com.google.gwt.i18n.client.LocaleInfo;
+
 /**
  * Convenience class with helper methods for commands.
  * 
@@ -218,6 +220,7 @@ public final class ManagerCommandService {
 	public static void getLayerModel(String id, final DataCallback<LayerModelDto> onFinish) {
 		GetLayerModelRequest request = new GetLayerModelRequest();
 		request.setId(id);
+		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		GwtCommand command = new GwtCommand(GetLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
@@ -239,6 +242,7 @@ public final class ManagerCommandService {
 	 */
 	public static void getLayerModels(final DataCallback<List<LayerModelDto>> onFinish) {
 		GetLayerModelsRequest request = new GetLayerModelsRequest();
+		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		GwtCommand command = new GwtCommand(GetLayerModelsRequest.COMMAND);
 		command.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,

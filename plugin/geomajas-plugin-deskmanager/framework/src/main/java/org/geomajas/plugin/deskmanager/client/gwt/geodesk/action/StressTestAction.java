@@ -18,7 +18,9 @@ import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
@@ -34,6 +36,8 @@ import com.smartgwt.client.widgets.form.fields.SpinnerItem;
  */
 public class StressTestAction extends ToolbarAction {
 
+	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+
 	private MapWidget mapWidget;
 
 	private StressTester tester;
@@ -47,7 +51,8 @@ public class StressTestAction extends ToolbarAction {
 	private boolean selected;
 
 	public StressTestAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/images/osgeo/stresstest.png", "Stress test!", "Test that stress !!");
+		super("[ISOMORPHIC]/images/osgeo/stresstest.png", MESSAGES.stressTestActionTitle(),
+				MESSAGES.stressTestActionTooltip());
 		this.setMapWidget(mapWidget);
 	}
 
@@ -73,27 +78,27 @@ public class StressTestAction extends ToolbarAction {
 		final Window winModal = new Window();
 		winModal.setWidth(300);
 		winModal.setHeight(150);
-		winModal.setTitle("Parameters");
+		winModal.setTitle(MESSAGES.stressTestActionParameters());
 		winModal.setIsModal(true);
 		winModal.setShowCloseButton(false);
 
 		DynamicForm form = new DynamicForm();
 
 		final SpinnerItem speedSliderItem = new SpinnerItem();
-		speedSliderItem.setTitle("Speed");
+		speedSliderItem.setTitle(MESSAGES.stressTestActionSpeedParameter());
 		speedSliderItem.setValue(speed);
 		speedSliderItem.setMin(0.1);
 		speedSliderItem.setMax(10);
 		speedSliderItem.setStep(0.5);
 
 		final SpinnerItem progressSliderItem = new SpinnerItem();
-		progressSliderItem.setTitle("Progress");
+		progressSliderItem.setTitle(MESSAGES.stressTestActionProgressParameter());
 		progressSliderItem.setValue(moveRatio);
 		progressSliderItem.setMin(0.001);
 		progressSliderItem.setMax(1);
 		progressSliderItem.setStep(0.1);
 
-		IButton button = new IButton("Start!");
+		IButton button = new IButton(MESSAGES.stressTestActionStart());
 		button.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

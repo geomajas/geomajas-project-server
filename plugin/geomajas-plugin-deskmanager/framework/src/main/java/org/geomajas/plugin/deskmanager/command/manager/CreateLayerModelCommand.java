@@ -60,6 +60,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 	public void execute(CreateLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			if (request.getConfiguration() == null) {
+				//TODO: i18n
 				response.getErrorMessages().add("Fout bij opslaan loket: Configuratie is vereist.");
 				return;
 			}
@@ -91,7 +92,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 				lm.setOwner(groupService.getById(g.getId()));
 			}
 			layerModelService.saveOrUpdateLayerModel(lm);
-			response.setLayerModel(dtoService.toDto(lm, false));
+			response.setLayerModel(dtoService.toDto(lm, false/* TODO: , request.getLocale()*/));
 
 			try {
 				loadService.loadDynamicLayers();

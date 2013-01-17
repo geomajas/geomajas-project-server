@@ -33,7 +33,10 @@ public class RefreshLayersAction extends AbstractButtonAction {
 	private MapWidget mapWidget;
 
 	public RefreshLayersAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/images/osgeo/redraw.png", "Herladen", "Herlaad alle zichtbare lagen");
+//		super("[ISOMORPHIC]/images/osgeo/redraw.png", MESSAGES.refreshLayersActionReload(),
+//				MESSAGES.refreshLayersActionReloadTooltip());
+		super("[ISOMORPHIC]/images/osgeo/redraw.png", "Herladen",
+				"Herlaad alle zichtbare lagen");
 		this.mapWidget = mapWidget;
 	}
 

@@ -31,6 +31,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -223,7 +224,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	// ----------------------------------------------------------
 
 	private void buildShapeFile(File shapeFile, VectorLayer layer, SimpleFeatureCollection collection,
-			SimpleFeatureType type) throws Exception {
+			SimpleFeatureType type) throws Exception, DeskmanagerException {
 		Map<String, Serializable> params = new HashMap<String, Serializable>();
 		params.put("url", shapeFile.toURI().toURL());
 		params.put("create spatial index", Boolean.FALSE);
@@ -252,7 +253,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 				transaction.close();
 			}
 		} else {
-			throw new Exception("Cannot create Shapefile featurestore??");
+			throw new DeskmanagerException(DeskmanagerException.CANNOT_CREATE_SHAPEFILE_FEATURESTORE);
 		}
 	}
 

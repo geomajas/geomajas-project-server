@@ -43,6 +43,7 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.geotools.GeoToolsLayer;
 import org.geomajas.layer.wms.WmsLayer;
+import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
@@ -92,6 +93,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	private final Logger log = LoggerFactory.getLogger(DiscoveryServiceImpl.class);
 
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 
 	@Resource(name = "discoveryDefaultMinimumScale")
@@ -122,9 +124,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	private Map<String, Layer<?>> serverLayerMap = new LinkedHashMap<String, Layer<?>>();
 
 	public List<VectorCapabilitiesInfo> getVectorCapabilities(Map<String, String> connectionProperties)
-			throws IOException {
+			throws DeskmanagerException {
+		DataStore store = null;
 		try {
-			DataStore store = DataStoreFinder.getDataStore(connectionProperties);
+			store = DataStoreFinder.getDataStore(connectionProperties);
 			if (store != null) {
 				List<VectorCapabilitiesInfo> res = new ArrayList<VectorCapabilitiesInfo>();
 				for (String typeName : store.getTypeNames()) {
@@ -145,102 +148,106 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 						vci.setGeometryType((sft.getGeometryDescriptor() != null ? sft.getGeometryDescriptor()
 								.getType().getBinding().getSimpleName() : "?"));
 					} catch (Exception e) {
-						vci.setDescription("[Kon metadata niet ophalen!]");
+						vci.setDescription("[Failed retrieving metadata!]");
 						log.debug("Failed retrieving metadata: " + e.getMessage());
 					}
 					res.add(vci);
 				}
 				return res;
-			} else {
-				throw new IOException("Fout bij opzoeken Capabilities Server. (Niet gevonden)");
 			}
 		} catch (Exception e) {
-			throw new IOException("Fout bij opzoeken Capabilities Server: " + e.getMessage());
+			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
 		}
+
+		throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");
 	}
 
 	public VectorLayerConfiguration getVectorLayerConfiguration(Map<String, String> connectionProperties,
-			String layerName) throws IOException {
+			String layerName) throws DeskmanagerException {
+		DataStore store = null;
 		try {
-			DataStore store = DataStoreFinder.getDataStore(connectionProperties);
-			if (store != null) {
-				Bbox maxExtent = null;
-				SimpleFeatureSource fs = store.getFeatureSource(layerName);
-				if (fs != null) {
-					ReferencedEnvelope env = fs.getBounds();
-					if (env != null) {
-						maxExtent = new Bbox(env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
-					}
+			store = DataStoreFinder.getDataStore(connectionProperties);
+		} catch (Exception e) {
+			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
+		}
+		if (store == null) {
+			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");	
+		} 
+		
+		try {
+			Bbox maxExtent = null;
+			SimpleFeatureSource fs = store.getFeatureSource(layerName);
+			if (fs != null) {
+				ReferencedEnvelope env = fs.getBounds();
+				if (env != null) {
+					maxExtent = new Bbox(env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
 				}
+			}
 
-				SimpleFeatureType sft = store.getSchema(layerName);
-				if (sft != null) {
-					String clientLayerName = UUID.randomUUID().toString();
-					String serverLayerName = getServerLayerName(clientLayerName);
-					VectorLayerConfiguration vlc = new VectorLayerConfiguration();
+			SimpleFeatureType sft = store.getSchema(layerName);
+			if (sft != null) {
+				String clientLayerName = UUID.randomUUID().toString();
+				String serverLayerName = getServerLayerName(clientLayerName);
+				VectorLayerConfiguration vlc = new VectorLayerConfiguration();
 
-					// -- Featureinfo --
-					FeatureInfo fi = new FeatureInfo();
-					PrimitiveAttributeInfo identifier = null;
-					for (AttributeDescriptor ad : sft.getAttributeDescriptors()) {
-						if (!(ad instanceof GeometryDescriptorImpl)) { // geometry atrributes are special
-							PrimitiveAttributeInfo pai = toPrimitiveAttributeInfo(ad);
-							fi.getAttributes().add(pai);
-							if (ad.getType().isIdentified() && identifier == null) {
-								identifier = pai;
-							}
+				// -- Featureinfo --
+				FeatureInfo fi = new FeatureInfo();
+				PrimitiveAttributeInfo identifier = null;
+				for (AttributeDescriptor ad : sft.getAttributeDescriptors()) {
+					if (!(ad instanceof GeometryDescriptorImpl)) { // geometry atrributes are special
+						PrimitiveAttributeInfo pai = toPrimitiveAttributeInfo(ad);
+						fi.getAttributes().add(pai);
+						if (ad.getType().isIdentified() && identifier == null) {
+							identifier = pai;
 						}
 					}
-					if (identifier == null) {
-						identifier = (PrimitiveAttributeInfo) fi.getAttributes().get(0);
-					}
-					fi.setDataSourceName(layerName);
-					fi.setGeometryType(toGeometryAttributeInfo(sft.getGeometryDescriptor()));
-					fi.setIdentifier(identifier);
-
-					// -- serverlayerinfo --
-					VectorLayerInfo vli = new VectorLayerInfo();
-					vli.setFeatureInfo(fi);
-					vli.setMaxExtent(maxExtent);
-					vli.setCrs(sft.getCoordinateReferenceSystem().getIdentifiers().iterator().next().toString());
-					vli.setLayerType(toLayerType(sft));
-					vli.getNamedStyleInfos().add(
-							getDefaultStyleInfo(vli.getLayerType(), clientLayerName, identifier.getName()));
-
-					// -- parameters --
-					List<Parameter> params = toParameters(connectionProperties);
-
-					// -- clientlayer --
-					ClientVectorLayerInfo cvli = new ClientVectorLayerInfo();
-					cvli.setId(clientLayerName);
-					cvli.setServerLayerId(serverLayerName);
-					cvli.setFeatureInfo(fi);
-					cvli.setUserData(new DeskmanagerClientLayerInfo());
-					cvli.setNamedStyleInfo(vli.getNamedStyleInfos().get(0));
-					cvli.setMaxExtent(maxExtent);
-					cvli.setMaximumScale(maxScale);
-					cvli.setMinimumScale(minScale);
-					cvli.setCreatable(false);
-					cvli.setDeletable(false);
-					cvli.setUpdatable(false);
-					cvli.setVisible(true);
-					cvli.setLabel(getTypeLabel(sft.getTypeName()));
-
-					// -- config --
-					vlc.setClientVectorLayerInfo(cvli);
-					vlc.setVectorLayerInfo(vli);
-					vlc.setParameters(params);
-
-					return vlc;
-				} else {
-					throw new IOException("Geen laag gevonden met naam: \"" + layerName + "\".");
 				}
-			} else {
-				throw new IOException("Fout bij opzoeken Capabilities Server. (Niet gevonden)");
-			}
+				if (identifier == null) {
+					identifier = (PrimitiveAttributeInfo) fi.getAttributes().get(0);
+				}
+				fi.setDataSourceName(layerName);
+				fi.setGeometryType(toGeometryAttributeInfo(sft.getGeometryDescriptor()));
+				fi.setIdentifier(identifier);
+
+				// -- serverlayerinfo --
+				VectorLayerInfo vli = new VectorLayerInfo();
+				vli.setFeatureInfo(fi);
+				vli.setMaxExtent(maxExtent);
+				vli.setCrs(sft.getCoordinateReferenceSystem().getIdentifiers().iterator().next().toString());
+				vli.setLayerType(toLayerType(sft));
+				vli.getNamedStyleInfos().add(
+						getDefaultStyleInfo(vli.getLayerType(), clientLayerName, identifier.getName()));
+
+				// -- parameters --
+				List<Parameter> params = toParameters(connectionProperties);
+
+				// -- clientlayer --
+				ClientVectorLayerInfo cvli = new ClientVectorLayerInfo();
+				cvli.setId(clientLayerName);
+				cvli.setServerLayerId(serverLayerName);
+				cvli.setFeatureInfo(fi);
+				cvli.setUserData(new DeskmanagerClientLayerInfo());
+				cvli.setNamedStyleInfo(vli.getNamedStyleInfos().get(0));
+				cvli.setMaxExtent(maxExtent);
+				cvli.setMaximumScale(maxScale);
+				cvli.setMinimumScale(minScale);
+				cvli.setCreatable(false);
+				cvli.setDeletable(false);
+				cvli.setUpdatable(false);
+				cvli.setVisible(true);
+				cvli.setLabel(getTypeLabel(sft.getTypeName()));
+
+				// -- config --
+				vlc.setClientVectorLayerInfo(cvli);
+				vlc.setVectorLayerInfo(vli);
+				vlc.setParameters(params);
+
+				return vlc;
+			} 
 		} catch (Exception e) {
-			throw new IOException("Fout bij opzoeken Capabilities Server: " + e.getMessage());
+			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
 		}
+		throw new DeskmanagerException(DeskmanagerException.LAYER_NOT_FOUND, layerName);
 	}
 
 	public List<RasterCapabilitiesInfo> getRasterCapabilities(Map<String, String> connectionProperties)
@@ -286,7 +293,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	}
 
 	public RasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
-			RasterCapabilitiesInfo rasterCapabilitiesInfo) throws IOException {
+			RasterCapabilitiesInfo rasterCapabilitiesInfo) throws IOException, DeskmanagerException {
 		try {
 			RasterLayerConfiguration rlc = new RasterLayerConfiguration();
 			String clientLayerName = UUID.randomUUID().toString();
@@ -316,7 +323,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			rlc.setParameters(params);
 			return rlc;
 		} catch (Exception e) {
-			throw new IOException("Fout bij aanmaken raster layer info: " + e.getMessage());
+			throw new DeskmanagerException(DeskmanagerException.ERROR_CONSTRUCTING_RASTER_LAYER, e.getMessage());
 		}
 	}
 
@@ -363,10 +370,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	public Map<String, Object> createBeanLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
-			throw new Exception("ClientlayerId is already taken!");
+			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE,
+					lc.getClientLayerInfo().getId());
 		}
 		if (serverLayerMap.containsKey(lc.getClientLayerInfo().getServerLayerId())) {
-			throw new Exception("ServerlayerId is already taken!");
+			throw new DeskmanagerException(DeskmanagerException.SERVER_LAYERID_ALREADY_IN_USE,
+					lc.getClientLayerInfo().getServerLayerId());
 		}
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -406,10 +415,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) 
 		throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
-			throw new Exception("ClientlayerId is already taken!");
+			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE,
+					lc.getClientLayerInfo().getId());
 		}
 		if (serverLayerMap.containsKey(lc.getClientLayerInfo().getServerLayerId())) {
-			throw new Exception("ServerlayerId is already taken!");
+			throw new DeskmanagerException(DeskmanagerException.SERVER_LAYERID_ALREADY_IN_USE,
+					lc.getClientLayerInfo().getServerLayerId());
 		}
 
 		Map<String, Object> params = new HashMap<String, Object>();

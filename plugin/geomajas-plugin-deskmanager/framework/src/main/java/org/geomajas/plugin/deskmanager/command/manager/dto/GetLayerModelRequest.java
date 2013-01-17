@@ -27,6 +27,9 @@ public class GetLayerModelRequest implements CommandRequest {
 	public static final String COMMAND = "command.manager.GetLayerModel";
 
 	private String id;
+	private String locale; 
+
+	
 
 	public String getId() {
 		return id;
@@ -35,5 +38,14 @@ public class GetLayerModelRequest implements CommandRequest {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	
+	public String getLocale() {
+		return locale;
+	}
+
 
 }

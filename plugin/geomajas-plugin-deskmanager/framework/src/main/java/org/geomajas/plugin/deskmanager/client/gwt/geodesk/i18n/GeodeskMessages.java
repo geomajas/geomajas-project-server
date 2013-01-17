@@ -35,4 +35,20 @@ public interface GeodeskMessages extends Messages {
 	String userFriendlyCommunicationErrorMessage();
 
 	String noGeodeskIdGivenError();
+
+	String refreshLayersActionReload();
+	String refreshLayersActionReloadTooltip();
+
+	String stressTestActionTitle();
+	String stressTestActionTooltip();
+	String stressTestActionParameters();
+	String stressTestActionSpeedParameter();
+	String stressTestActionProgressParameter();
+	String stressTestActionStart();
+
+	String featureSelectionInfoWindowOneFeatureSelected();
+	String featureSelectionInfoWindowXFeaturesSelected(int selectionCount);
+
+	String abstractUserApplicationTitle();
+	
 }

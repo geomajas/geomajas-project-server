@@ -35,11 +35,14 @@ import com.smartgwt.client.widgets.Window;
  */
 public abstract class AbstractUserApplication implements UserApplication {
 
+	//private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+
 	public AbstractUserApplication() {
 		handlerManager = new HandlerManager(this);
 		geodeskLayout = new GeodeskLayoutInfo();
+		//geodeskLayout.setTitle(MESSAGES.abstractUserApplicationTitle());
 		geodeskLayout.setTitle("[ClientApplicationInfo is niet gezet!]");
-
+		
 		GwtCommandCallback cb = new DeskmanagerGwtCommandCallback();
 		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(cb);
 		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(cb);

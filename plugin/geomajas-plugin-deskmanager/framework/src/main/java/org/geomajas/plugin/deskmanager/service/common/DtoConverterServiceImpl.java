@@ -186,6 +186,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	}
 
 	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences) throws GeomajasException {
+		return toDto(layerModel, includeReferences, null);
+	}
+	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences, String locale) 
+			throws GeomajasException {
 		if (layerModel == null) {
 			return null;
 		}
@@ -201,7 +205,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lmDto.setMaxScale(layerModel.getMaxScale());
 		lmDto.setReadOnly(layerModel.isReadOnly());
 		lmDto.setLayerType(layerModel.getLayerType());
-		lmDto.setOwner((layerModel.getOwner() == null ? "Systeem" : layerModel.getOwner().getName()));
+		lmDto.setOwner((layerModel.getOwner() == null ? "System" : layerModel.getOwner().getName())); //TODO: i18n
 		if (includeReferences) {
 			lmDto.setLayerConfiguration(layerModel.getDynamicLayerConfiguration());
 			List<MailAddressDto> mails = lmDto.getMailAddresses();
@@ -483,11 +487,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
 					.getClientLayerId()));
 		} catch (NoSuchBeanDefinitionException e) {
-			log.warn("DeskmanagerClientLayerInfoI not found for layer: " + layer.getLayerModel().getClientLayerId()
+			log.warn("DeskmanagerClientLayerInfo not found for layer: " + layer.getLayerModel().getClientLayerId()
 					+ ", not adding clientLayerinfo. You might need to remove these layers");
 		}
 		dto.setCLientLayerInfo(layer.getClientLayerInfo());
-		dto.setLayerModel(toDto(layer.getLayerModel(), false));
+		dto.setLayerModel(toDto(layer.getLayerModel(), false, null)); //TODO i18n
 		return dto;
 	}
 

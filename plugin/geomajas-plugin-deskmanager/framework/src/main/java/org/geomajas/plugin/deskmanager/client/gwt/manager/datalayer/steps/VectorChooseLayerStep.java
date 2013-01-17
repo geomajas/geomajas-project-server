@@ -152,6 +152,7 @@ public class VectorChooseLayerStep extends WizardStepPanel {
 					}, new DataCallback<String>() {
 
 						public void execute(String result) {
+							grid.setShowEmptyMessage(false);
 							reset();
 							warnings.setVisible(true);
 							warnings.setContents("<b><i>" + result + "</i></b>");

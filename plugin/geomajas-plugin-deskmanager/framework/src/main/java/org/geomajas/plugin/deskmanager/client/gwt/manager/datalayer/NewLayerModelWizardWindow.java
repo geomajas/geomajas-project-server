@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.ChooseTypeStep;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.DatabaseCapabilitiesStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.EditLayerSettingsStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.ShapefileUploadStep;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps.VectorChooseLayerStep;
@@ -119,6 +120,7 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 		addStep(startStep);
 		addStep(new WfsCapabilitiesStep(this));
 		addStep(new WmsCapabilitiesStep(this));
+		addStep(new DatabaseCapabilitiesStep(this));
 		addStep(new VectorChooseLayerStep(this));
 		addStep(new WmsChooseLayerStep(this));
 		addStep(new WmsPreviewLayerStep(this));

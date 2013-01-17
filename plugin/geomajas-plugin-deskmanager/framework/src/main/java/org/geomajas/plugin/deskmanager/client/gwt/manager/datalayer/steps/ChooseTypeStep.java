@@ -34,7 +34,7 @@ public class ChooseTypeStep extends WizardStepPanel {
 
 	private static final String TYPE_WFS = "WFS";
 
-	private static final String TYPE_DB = "Database (Postgis)";
+	private static final String TYPE_DB = "Database";
 
 	private static final String TYPE_SHAPE = "Shapefile";
 
@@ -57,7 +57,7 @@ public class ChooseTypeStep extends WizardStepPanel {
 			 typeMap.put(TYPE_WFS, MESSAGES.chooseTypeStepWFS());
 			 typeMap.put(TYPE_SHAPE, MESSAGES.chooseTypeStepShapeFile());
 			 typeMap.put(TYPE_WMS, MESSAGES.chooseTypeStepWMS());
-			 typeMap.put(TYPE_DB, MESSAGES.chooseTypeStepDatabase());
+			 typeMap.put(TYPE_DB, MESSAGES.chooseTypeStepDatabase()); //TODO support database+subtypes: 
 			 
 		radioGroup.setValueMap(typeMap);
 		radioGroup.setDefaultValue(TYPE_WFS);

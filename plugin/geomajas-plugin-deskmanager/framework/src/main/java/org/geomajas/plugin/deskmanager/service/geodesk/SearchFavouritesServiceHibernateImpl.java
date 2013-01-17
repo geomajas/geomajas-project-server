@@ -74,13 +74,13 @@ public class SearchFavouritesServiceHibernateImpl implements SearchFavouritesSer
 
 		int res = q.executeUpdate();
 		if (res != 1) {
-			throw new IOException("Failed deleting record with id: " + sf.getId());
+			throw new IOException("Failed deleting search favorite record with id: " + sf.getId());
 		}
 	}
 
 	public void saveOrUpdateSearchFavourite(SearchFavourite sf) throws IOException {
 		if (sf == null) {
-			throw new IllegalArgumentException("Need a favourite");
+			throw new IllegalArgumentException("Need a search favourite");
 		}
 		org.geomajas.plugin.deskmanager.domain.SearchFavourite internal = conversion.toInternal(sf);
 
