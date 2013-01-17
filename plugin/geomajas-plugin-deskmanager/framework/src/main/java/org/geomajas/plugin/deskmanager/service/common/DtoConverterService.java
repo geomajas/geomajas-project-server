@@ -45,8 +45,6 @@ public interface DtoConverterService {
 
 	LayerModelDto toDto(LayerModel lm, boolean includeReferences)  throws GeomajasException;
 	
-	LayerModelDto toDto(LayerModel layerModel, boolean includeReferences, String locale) throws GeomajasException;
-	
 	Geodesk fromDto(GeodeskDto dto) throws GeomajasException;
 
 	GeodeskDto toDto(Geodesk loket, boolean includeReferences) throws GeomajasException;

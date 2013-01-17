@@ -45,7 +45,7 @@ public class GetLayerModelCommand implements Command<GetLayerModelRequest, Layer
 	public void execute(GetLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			response.setLayerModel(dtoService.toDto(layerModelService.getLayerModelById(request.getId()),
-					true, request.getLocale()));
+					true));
 		} catch (Exception e) {
 			response.getErrorMessages().add("Error while fetching layermodel: " + e.getMessage());
 			log.error("Error while fetching layermodel.", e);

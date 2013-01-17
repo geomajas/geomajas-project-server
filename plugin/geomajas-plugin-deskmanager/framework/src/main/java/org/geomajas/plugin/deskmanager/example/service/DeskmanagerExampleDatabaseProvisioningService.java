@@ -12,6 +12,8 @@ package org.geomajas.plugin.deskmanager.example.service;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
@@ -41,7 +43,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 
 	private static final String EPSG_3857 = "EPSG:3857";
 	
-	public static final String CLIENTAPPLICATION_NAME = "Test userapplication name";
+	public static final String CLIENTAPPLICATION_NAME;
 	
 	public static final String CLIENTAPPLICATION_ID = "test_id";
 
@@ -103,13 +105,20 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
+	private static ResourceBundle messages;
+	
+	static {
+		initMessages();
+		CLIENTAPPLICATION_NAME = messages.getString("testUserApplicationName");
+	}
+	
 	@Transactional
 	public void createData() throws WktException, GeomajasException {
 
-		// Create categoty
+		// Create category
 		TerritoryCategory cat = new TerritoryCategory();
-		cat.setCategoryType("Vlaamse Overheid");
-		cat.setDescription("TerritoryCategory description");
+		cat.setCategoryType(messages.getString("testTerritoryCategoryType"));
+		cat.setDescription(messages.getString("testTerritoryCategoryDescription"));
 		cat.setId("ALL");
 
 		session.getCurrentSession().saveOrUpdate(cat);
@@ -117,7 +126,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		// Create group Admin
 		Territory adminGroup = new Territory();
 		adminGroup.setCode("ADMIN");
-		adminGroup.setName("Administrator");
+		adminGroup.setName(messages.getString("adminGroupName"));
 		adminGroup.setCrs(EPSG_3857);
 		adminGroup.setCategory(cat);
 
@@ -164,10 +173,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		// Create an example blueprint.
 		Blueprint bluePrint = new Blueprint();
 		bluePrint.setActive(true);
-		bluePrint.setCreationBy("System");
+		bluePrint.setCreationBy(messages.getString("systemUsr"));
 		bluePrint.setCreationDate(new Date());
 		bluePrint.setGroups(Arrays.asList(adminGroup, beGroup)/*, nlGroup, deGroup)*/);
-		bluePrint.setLastEditBy("System");
+		bluePrint.setLastEditBy(messages.getString("systemUsr"));
 		bluePrint.setLastEditDate(new Date());
 		bluePrint.setLimitToCreatorTerritory(false);
 		bluePrint.setLimitToUserTerritory(false);
@@ -185,10 +194,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		Geodesk geodesk = new Geodesk();
 		geodesk.setActive(true);
 		geodesk.setBlueprint(bluePrint);
-		geodesk.setCreationBy("System");
+		geodesk.setCreationBy(messages.getString("systemUsr"));
 		geodesk.setCreationDate(new Date());
 		geodesk.setDeleted(false);
-		geodesk.setLastEditBy("System");
+		geodesk.setLastEditBy(messages.getString("systemUsr"));
 		geodesk.setLastEditDate(new Date());
 		geodesk.setLimitToCreatorTerritory(true);
 		geodesk.setLimitToUserTerritory(false);
@@ -203,10 +212,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		Geodesk geodesk2 = new Geodesk();
 		geodesk2.setActive(true);
 		geodesk2.setBlueprint(bluePrint);
-		geodesk2.setCreationBy("System");
+		geodesk2.setCreationBy(messages.getString("systemUsr"));
 		geodesk2.setCreationDate(new Date());
 		geodesk2.setDeleted(false);
-		geodesk2.setLastEditBy("System");
+		geodesk2.setLastEditBy(messages.getString("systemUsr"));
 		geodesk2.setLastEditDate(new Date());
 		geodesk2.setLimitToCreatorTerritory(true);
 		geodesk2.setLimitToUserTerritory(false);
@@ -221,10 +230,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		Geodesk geodesk3 = new Geodesk();
 		geodesk3.setActive(true);
 		geodesk3.setBlueprint(bluePrint);
-		geodesk3.setCreationBy("System");
+		geodesk3.setCreationBy(messages.getString("systemUsr"));
 		geodesk3.setCreationDate(new Date());
 		geodesk3.setDeleted(false);
-		geodesk3.setLastEditBy("System");
+		geodesk3.setLastEditBy(messages.getString("systemUsr"));
 		geodesk3.setLastEditDate(new Date());
 		geodesk3.setLimitToCreatorTerritory(true);
 		geodesk3.setLimitToUserTerritory(false);
@@ -236,5 +245,16 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		session.getCurrentSession().saveOrUpdate(geodesk3);
 
 	}
+	
+	private static void initMessages() {
+		try {
+			messages =
+					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages"); 
+	
+		} catch (MissingResourceException e ) {
+		}
+		
+	}
+	
 
 }

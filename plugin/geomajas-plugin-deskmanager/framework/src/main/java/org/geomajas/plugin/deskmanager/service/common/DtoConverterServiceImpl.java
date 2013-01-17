@@ -12,6 +12,8 @@ package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -54,7 +56,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private final Logger log = LoggerFactory.getLogger(DtoConverterServiceImpl.class);
-
+	
+	
 	@Autowired
 	private List<UserApplicationInfo> userApplications;
 
@@ -62,7 +65,50 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	private ApplicationContext applicationContext;
 
 	// ----------------------------------------------------------
+	private static ResourceBundle messages;
+	
+	static {
+		initMessages();
+	}
 
+//	private static void initMessages() {
+//		messagesMap = new HashMap<String, ResourceBundle>();
+//		try {
+//			ResourceBundle messagesDefault =
+//					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages"); 
+//	
+//			messagesMap.put("default", messagesDefault);
+//		} catch (MissingResourceException e ) {
+//		}
+//		try {
+//			ResourceBundle messagesEn =
+//					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages", 
+//							Locale.forLanguageTag("en"));
+//			
+//			messagesMap.put("en", messagesEn);
+//		} catch (MissingResourceException e ) {
+//			
+//		}
+//		try {
+//			ResourceBundle messagesNl =
+//				ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages", 
+//						Locale.forLanguageTag("nl"));
+//		
+//			messagesMap.put("nl", messagesNl);
+//		} catch (MissingResourceException e ) {
+//		}
+//	}
+	private static void initMessages() {
+		try {
+			messages =
+					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages");
+	
+		} catch (MissingResourceException e ) {
+		}
+		
+	}
+	
+	
 	public Blueprint fromDto(BlueprintDto dto) throws GeomajasException {
 		if (dto == null) {
 			return null;
@@ -185,10 +231,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return lm;
 	}
 
-	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences) throws GeomajasException {
-		return toDto(layerModel, includeReferences, null);
-	}
-	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences, String locale) 
+	
+	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences) 
 			throws GeomajasException {
 		if (layerModel == null) {
 			return null;
@@ -205,7 +249,16 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lmDto.setMaxScale(layerModel.getMaxScale());
 		lmDto.setReadOnly(layerModel.isReadOnly());
 		lmDto.setLayerType(layerModel.getLayerType());
-		lmDto.setOwner((layerModel.getOwner() == null ? "System" : layerModel.getOwner().getName())); //TODO: i18n
+		String owner;
+		if (layerModel.getOwner() == null) {
+			owner = getMessage("systemUsr");
+		} else {
+			owner = layerModel.getOwner().getName();
+		} 
+		if (owner == null) {
+			owner = "System";
+		}
+		lmDto.setOwner(owner);
 		if (includeReferences) {
 			lmDto.setLayerConfiguration(layerModel.getDynamicLayerConfiguration());
 			List<MailAddressDto> mails = lmDto.getMailAddresses();
@@ -216,6 +269,26 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			}
 		}
 		return lmDto;
+	}
+
+//	private String getMessage(String key, String locale) {
+//		
+//		if (locale == null) {
+//			locale = "default";
+//		}
+//		if (!messagesMap.containsKey(locale)) {
+//			locale = "default";
+//		}
+//		ResourceBundle messages = messagesMap.get(locale);
+//		if (messages != null) {
+//			return messagesMap.get(locale).getString(key);
+//		} else {
+//			return null;
+//		}
+//	}
+	
+	private static String getMessage(String key) {
+		return messages.getString(key);
 	}
 
 	/**
@@ -491,7 +564,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 					+ ", not adding clientLayerinfo. You might need to remove these layers");
 		}
 		dto.setCLientLayerInfo(layer.getClientLayerInfo());
-		dto.setLayerModel(toDto(layer.getLayerModel(), false, null)); //TODO i18n
+		dto.setLayerModel(toDto(layer.getLayerModel(), false));
 		return dto;
 	}
 
