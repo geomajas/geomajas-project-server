@@ -48,6 +48,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  *
  * @author Kristof Heirwegh
  * @author Wout Swartenbroekx
+ * @author An Buyle
  */
 public class LayerInfo extends Window {
 
@@ -214,7 +215,7 @@ public class LayerInfo extends Window {
 		public VectorLegendListGrid(VectorLayer layer) {
 			super();
 			setWidth100();
-			setHeight(10);
+			setHeight(24); // Min height
 			setCanEdit(false);
 			setShowSelectedStyle(false);
 			setShowRollOver(false);
@@ -234,13 +235,13 @@ public class LayerInfo extends Window {
 			url.addPath(name);
 
 			// -- FIELDS
-			ListGridField keyField = new ListGridField(KEY_FLD, "Veldnaam", 45);
+			ListGridField keyField = new ListGridField(KEY_FLD, "Symbool", 45);
 			keyField.setAlign(Alignment.CENTER);
 			keyField.setType(ListGridFieldType.IMAGE);
 			keyField.setImageURLPrefix(url.toString() + "/");
 			keyField.setImageURLSuffix(LEGEND_ICONS_TYPE);
 
-			ListGridField valueField = new ListGridField(VALUE_FLD, "Waarde");
+			ListGridField valueField = new ListGridField(VALUE_FLD, "Naam");
 			valueField.setWidth("*");
 			setFields(keyField, valueField);
 
@@ -249,21 +250,26 @@ public class LayerInfo extends Window {
 			ClientVectorLayerInfo layerInfo = layer.getLayerInfo();
 			UserStyleInfo userStyle = layerInfo.getNamedStyleInfo().getUserStyle();
 			FeatureTypeStyleInfo info = userStyle.getFeatureTypeStyleList().get(0);
-			for (int i = 0; i < info.getRuleList().size(); i++) {
-				RuleInfo rule = info.getRuleList().get(i);
-				String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
-				if (title == null) {
-					title = layerInfo.getNamedStyleInfo().getName();
+			 
+			if (info.getRuleList().size() > 0) {
+				int i = 0;
+				for (RuleInfo rule : info.getRuleList()) {
+					String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
+					if (title == null) {
+						
+						title = layerInfo.getNamedStyleInfo().getName();
+					}
+					recordList.add(createRecord(title, i));
+					i++;
 				}
-				recordList.add(createRecord(title, i));
 			}
-
 			setData(recordList);
 		}
 
-		private ListGridRecord createRecord(String title, int index) {
+		private ListGridRecord createRecord(String title, Integer index) {
 			ListGridRecord r = new ListGridRecord();
-			r.setAttribute(KEY_FLD, index);
+			
+			r.setAttribute(KEY_FLD, index.toString());
 			r.setAttribute(VALUE_FLD, title);
 			return r;
 		}
