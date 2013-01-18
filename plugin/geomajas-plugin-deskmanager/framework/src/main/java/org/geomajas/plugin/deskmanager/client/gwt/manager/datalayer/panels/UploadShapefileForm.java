@@ -214,7 +214,7 @@ public class UploadShapefileForm extends VLayout {
 				SC.warn(MESSAGES.uploadShapefileResponseOkButWrong(result));
 			}
 		} else {
-			SC.warn(MESSAGES.uploadShapefileResponseDefeaultNOK(result));
+			SC.warn(MESSAGES.uploadShapefileResponseDefaultNOK(result));
 		}
 		if (onUploadFinished != null) {
 			onUploadFinished.execute(dataSourceName);
