@@ -293,7 +293,7 @@ public interface ManagerMessages extends Messages {
 	String uploadShapefileResponseNoRights();
 	String uploadShapefileResponseOK();
 	String uploadShapefileResponseOkButWrong(String result);
-	String uploadShapefileResponseDeafultNOK(String result);
+	String uploadShapefileResponseDefeaultNOK(String result);
 	String uploadShapefileResponseInvalidLayer();
 
 	String layerConfigurationConfigureLayer();
