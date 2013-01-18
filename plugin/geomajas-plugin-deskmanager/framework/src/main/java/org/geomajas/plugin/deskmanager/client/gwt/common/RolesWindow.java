@@ -125,7 +125,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 					first = false;
 					Label label = new Label(
 							MESSAGES.rolesWindowWelcome() + " " + role.getValue().getName() + " " + 
-							role.getValue().getSurname() +  
+							role.getValue().getSurname() +  ". " +
 							MESSAGES.rolesWindowPleaseSpecifyRole());
 					label.setAutoHeight();
 					layout.addMember(label);
@@ -153,7 +153,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 			SC.warn(MESSAGES.rolesWindowInsufficientRightsForDesk(), new BooleanCallback() {
 
 				public void execute(Boolean value) {
-					SC.warn(MESSAGES.rolesWindowStillUnsufficientRightsForDesk(), this);
+					SC.warn(MESSAGES.rolesWindowStillInsufficientRightsForDesk(), this);
 				}
 			});
 		}

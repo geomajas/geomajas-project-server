@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.example.service;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -140,7 +141,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		// Create group Belgium.
 		Territory beGroup = new Territory();
 		beGroup.setCode("BE");
-		beGroup.setName("Belgium");
+		beGroup.setName(getMessage("exampleDatabaseProvisioningServiceBelgium"));
 		beGroup.setCategory(cat);
 		Geometry geom = WktService.toGeometry(BE);
 		geom.setSrid(SRID);
@@ -151,7 +152,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		// Create group Netherlands.
 		Territory nlGroup = new Territory();
 		nlGroup.setCode("NL");
-		nlGroup.setName("Netherlands");
+		nlGroup.setName(getMessage("exampleDatabaseProvisioningServiceNetherlands"));
 		nlGroup.setCategory(cat);
 		nlGroup.setCrs(EPSG_3857);
 		Geometry geomNl = WktService.toGeometry(NL);
@@ -159,10 +160,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		nlGroup.setGeometry(dtoConverterService.toInternal(geomNl));
 		session.getCurrentSession().saveOrUpdate(nlGroup);
 
-		// Create group Netherlands.
+		// Create group Germany.
 		Territory deGroup = new Territory();
 		deGroup.setCode("DE");
-		deGroup.setName("Germany");
+		deGroup.setName(getMessage("exampleDatabaseProvisioningServiceGermany"));
 		deGroup.setCategory(cat);
 		deGroup.setCrs(EPSG_3857);
 		Geometry geomDe = WktService.toGeometry(DE);
@@ -201,7 +202,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		geodesk.setLastEditDate(new Date());
 		geodesk.setLimitToCreatorTerritory(true);
 		geodesk.setLimitToUserTerritory(false);
-		geodesk.setName("Test belgian geodesk based on " + CLIENTAPPLICATION_NAME);
+		geodesk.setName(getMessage("testBelgianGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
 		geodesk.setOwner(beGroup);
 		geodesk.setPublic(true);
 		geodesk.setGeodeskId("TEST_BE");
@@ -249,7 +250,8 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 	private static void initMessages() {
 		try {
 			messages =
-					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages"); 
+					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages",
+							Locale.forLanguageTag("nl")); 
 	
 		} catch (MissingResourceException e ) {
 		}

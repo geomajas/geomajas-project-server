@@ -26,7 +26,7 @@ public interface CommonMessages extends Messages {
 	String rolesWindowWelcome();
 	String rolesWindowPleaseSpecifyRole();
 	String rolesWindowInsufficientRightsForDesk();
-	String rolesWindowStillUnsufficientRightsForDesk();
+	String rolesWindowStillInsufficientRightsForDesk();
 	
 	String roleUnsignedDescription();
 	String roleGuestDescription();
@@ -35,10 +35,4 @@ public interface CommonMessages extends Messages {
 	String roleConsultingUserDescription();
 	String roleEditingUserDescription();
 
-//	@DefaultMessage("Role {0}")
-//	String roleDescription(String key);
-	
-	
-
-		
 }

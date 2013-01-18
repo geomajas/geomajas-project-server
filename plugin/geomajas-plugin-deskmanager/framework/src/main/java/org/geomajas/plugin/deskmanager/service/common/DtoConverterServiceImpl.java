@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -101,7 +102,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	private static void initMessages() {
 		try {
 			messages =
-					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages");
+					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages",
+							Locale.forLanguageTag("nl"));
 	
 		} catch (MissingResourceException e ) {
 		}
