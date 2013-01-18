@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.example.service;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -250,8 +249,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 	private static void initMessages() {
 		try {
 			messages =
-					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages",
-							Locale.forLanguageTag("nl")); 
+					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages"); 
 	
 		} catch (MissingResourceException e ) {
 		}
