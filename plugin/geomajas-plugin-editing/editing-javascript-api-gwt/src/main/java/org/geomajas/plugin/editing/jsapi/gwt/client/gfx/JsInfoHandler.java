@@ -18,10 +18,8 @@ import org.geomajas.plugin.editing.gwt.client.gfx.InfoProvider;
 import org.geomajas.plugin.editing.gwt.client.handler.InfoDragLineHandler;
 import org.geomajas.plugin.editing.jsapi.gwt.client.JsGeometryEditor;
 import org.timepedia.exporter.client.Export;
-import org.timepedia.exporter.client.ExportClosure;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
-import org.timepedia.exporter.client.NoExport;
 
 /**
  * JavaScript wrapper of {@link InfoDragLineHandler}.
@@ -113,7 +111,7 @@ public class JsInfoHandler implements Exportable, InfoProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	@NoExport
+	@Export
 	public String getTitle() {
 		return titleCallback == null ? "" : titleCallback.execute();
 	}
@@ -122,7 +120,7 @@ public class JsInfoHandler implements Exportable, InfoProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	@NoExport
+	@Export
 	public String getHtml(Geometry geometry, Coordinate dragPoint, Coordinate startA, Coordinate startB) {
 		return htmlCallback == null ? "" : htmlCallback.execute(geometry, dragPoint, startA, startB);
 	}
@@ -145,36 +143,6 @@ public class JsInfoHandler implements Exportable, InfoProvider {
 	public void setHtmlCallBack(HtmlCallback htmlCallback) {
 		this.htmlCallback = htmlCallback;
 		delegate.setInfoProvider(this);
-	}
-
-	/**
-	 * 
-	 * Closure that returns a string value with the title.
-	 * 
-	 * @since 1.0.0
-	 * 
-	 */
-	@Export
-	@ExportClosure
-	@Api(allMethods = true)
-	public interface TitleCallback extends Exportable {
-
-		String execute();
-	}
-
-	/**
-	 * 
-	 * Closure that returns an HTML fragment with information about the geometry.
-	 * 
-	 * @since 1.0.0
-	 * 
-	 */
-	@Export
-	@ExportClosure
-	@Api(allMethods = true)
-	public interface HtmlCallback extends Exportable {
-
-		String execute(Geometry geometry, Coordinate dragPoint, Coordinate startA, Coordinate startB);
 	}
 
 }
