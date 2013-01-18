@@ -17,8 +17,8 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 
 /**
  * Configuration of a specific layer in map theming, this contains visibility and opacity of the layer.
- * @author Oliver May
  *
+ * @author Oliver May
  */
 public class LayerConfig implements Serializable {
 
@@ -54,8 +54,9 @@ public class LayerConfig implements Serializable {
 		this.visible = visible;
 	}
 
-	
 	/**
+	 * Get layer opacity.
+	 *
 	 * @return the opacity, a value between 0 and 1.
 	 */
 	public double getOpacity() {
@@ -64,6 +65,8 @@ public class LayerConfig implements Serializable {
 
 	
 	/**
+	 * Set layer opacity.
+	 *
 	 * @param opacity the opacity to set, a value between 0 and 1.
 	 */
 	public void setOpacity(double opacity) {
@@ -71,40 +74,21 @@ public class LayerConfig implements Serializable {
 	}
 
 	/**
-	 * @return the opacity, a value between 0 and 1.
-	 * @deprecated use getOpacity()
-	 */
-	@Deprecated
-	public double getTransparency() {
-		return opacity;
-	}
-
-	
-	/**
-	 * @param opacity the opacity to set, a value between 0 and 1.
-	 * @deprecated use setOpacity()
-	 */
-	@Deprecated
-	public void setTransparency(double opacity) {
-		this.opacity = opacity;
-	}
-
-
-	/**
+	 * Set layer info.
+	 *
 	 * @param layer the layer to set
 	 */
 	public void setLayer(ClientLayerInfo layer) {
 		this.layer = layer;
 	}
 
-
 	/**
+	 * Get layer info.
+	 *
 	 * @return the layer
 	 */
 	public ClientLayerInfo getLayer() {
 		return layer;
 	}
 
-	
-	
 }

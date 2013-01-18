@@ -56,27 +56,13 @@ public final class GuwLayout {
 		private DropDown() { }
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: OFF
-		/**
-		 * @deprecated
-		 * Button layout, which is the same as a RibbonButton 
-		 * in a ToolbarActionList; icon (16px) on the left and title on the right.
-		 */
-		@Deprecated
-		public static final String ICON_AND_TITLE = "ICON_AND_TITLE";
 		/** Default icon size for the icon without description. */
 		public static int ribbonBarDropDownButtonIconSize = 16;
 
-		/**
-		 * @deprecated
-		 * Button layout consisting of an icon (24px) on the 
-		 * left and the title and description on the right, the title on top of the description.
-		 */
-		@Deprecated
-		public static final String ICON_TITLE_AND_DESCRIPTION = "ICON_TITLE_AND_DESCRIPTION";
 		/** Default icon size for the icon with description. */
 		public static int ribbonBarDropDownButtonDescriptionIconSize = 24;
 		
-		/** Wether to show the drop down image on the buttons. */
+		/** Whether to show the drop down image on the buttons. */
 		public static boolean showDropDownImage;
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: ON

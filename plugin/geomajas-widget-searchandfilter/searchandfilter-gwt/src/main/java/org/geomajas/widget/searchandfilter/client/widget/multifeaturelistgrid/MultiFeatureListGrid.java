@@ -11,7 +11,6 @@
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +65,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	
 	private boolean sortFeatures; 
 	
-	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
+	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 
 	private List<ExtraButton> extraButtons = new ArrayList<ExtraButton>();
 
@@ -86,7 +85,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		});
 		this.addChild(tabset);
 
-		empty = new Label(messages.multiFeatureListGridNoData());
+		empty = new Label(MESSAGES.multiFeatureListGridNoData());
 		empty.setWidth100();
 		empty.setAlign(Alignment.CENTER);
 		empty.setPadding(15);
@@ -152,48 +151,12 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	}
 
 	/**
-	 * Add features for a specific layer in the widget.
-	 * 
-	 * @param layer
-	 * @param features
-	 * @deprecated Use {@link #addFeatures(Map)}
-	 */
-	@Deprecated
-	public void addFeatures(VectorLayer layer, List<Feature> features) {
-		Map<VectorLayer, List<Feature>> featureMap = new HashMap<VectorLayer, List<Feature>>();
-		featureMap.put(layer, features);
-		addFeatures(featureMap, null);
-	}
-
-	/**
-	 * Add features for a specific layer in the widget.
-	 *
-	 * @param layer layer to add features for
-	 * @param features features to ass
-	 * @param csvExportData
-	 *            will be used by CSV Export to retrieve features.
-	 * @deprecated Use {@link #addFeatures(Map, Criterion)}           
-	 */
-	@Deprecated
-	public void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData) {
-		Map<VectorLayer, List<Feature>> featureMap = new HashMap<VectorLayer, List<Feature>>();
-		featureMap.put(layer, features);
-
-		if (csvExportData instanceof Criterion) {
-			addFeatures(featureMap, (Criterion) csvExportData);
-		} else {
-			addFeatures(featureMap, null);
-		}
-		
-	}
-	
-	/**
 	 * Add features in the widget for several layers.
 	 *
 	 * @param featureMap map of features per layer
 	 */
-	public void addFeatures(Map<VectorLayer, List<Feature>> result) {
-		addFeatures(result, null);
+	public void addFeatures(Map<VectorLayer, List<Feature>> featureMap) {
+		addFeatures(featureMap, null);
 	}
 
 	/**
