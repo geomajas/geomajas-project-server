@@ -94,7 +94,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 		winModal.setZIndex(CommonLayout.roleSelectZindex);
 
 		HTMLPane pane = new HTMLPane();
-		pane.setContents("<br/><br/><center>" + MESSAGES.rolesWindowUnauthorizedWindowContents() + "</center>");
+		pane.setContents("<br/><br/><center>" + MESSAGES.rolesWindowInsufficientRightsForDesk() + "</center>");
 		winModal.addItem(pane);
 		winModal.show();
 	}
@@ -150,7 +150,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 			winModal.addItem(layout);
 			winModal.show();
 		} else {
-			SC.warn(MESSAGES.rolesWindowUnsufficientRightsForDesk(), new BooleanCallback() {
+			SC.warn(MESSAGES.rolesWindowInsufficientRightsForDesk(), new BooleanCallback() {
 
 				public void execute(Boolean value) {
 					SC.warn(MESSAGES.rolesWindowStillUnsufficientRightsForDesk(), this);
