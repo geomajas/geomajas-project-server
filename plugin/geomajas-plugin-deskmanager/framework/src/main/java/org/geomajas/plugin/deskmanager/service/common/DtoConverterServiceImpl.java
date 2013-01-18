@@ -102,8 +102,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	private static void initMessages() {
 		try {
 			messages =
-					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages",
-							Locale.forLanguageTag("nl"));
+					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages");
 	
 		} catch (MissingResourceException e ) {
 		}
