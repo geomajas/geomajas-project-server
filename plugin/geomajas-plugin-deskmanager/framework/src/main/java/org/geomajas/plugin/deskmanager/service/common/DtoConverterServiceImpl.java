@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
