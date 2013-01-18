@@ -109,7 +109,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 	
 	static {
 		initMessages();
-		CLIENTAPPLICATION_NAME = messages.getString("testUserApplicationName");
+		CLIENTAPPLICATION_NAME = getMessage("testUserApplicationName");
 	}
 	
 	@Transactional
@@ -117,8 +117,8 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 
 		// Create category
 		TerritoryCategory cat = new TerritoryCategory();
-		cat.setCategoryType(messages.getString("testTerritoryCategoryType"));
-		cat.setDescription(messages.getString("testTerritoryCategoryDescription"));
+		cat.setCategoryType(getMessage("testTerritoryCategoryType"));
+		cat.setDescription(getMessage("testTerritoryCategoryDescription"));
 		cat.setId("ALL");
 
 		session.getCurrentSession().saveOrUpdate(cat);
@@ -126,7 +126,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		// Create group Admin
 		Territory adminGroup = new Territory();
 		adminGroup.setCode("ADMIN");
-		adminGroup.setName(messages.getString("adminGroupName"));
+		adminGroup.setName(getMessage("adminGroupName"));
 		adminGroup.setCrs(EPSG_3857);
 		adminGroup.setCategory(cat);
 
@@ -173,10 +173,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		// Create an example blueprint.
 		Blueprint bluePrint = new Blueprint();
 		bluePrint.setActive(true);
-		bluePrint.setCreationBy(messages.getString("systemUsr"));
+		bluePrint.setCreationBy(getMessage("systemUsr"));
 		bluePrint.setCreationDate(new Date());
 		bluePrint.setGroups(Arrays.asList(adminGroup, beGroup)/*, nlGroup, deGroup)*/);
-		bluePrint.setLastEditBy(messages.getString("systemUsr"));
+		bluePrint.setLastEditBy(getMessage("systemUsr"));
 		bluePrint.setLastEditDate(new Date());
 		bluePrint.setLimitToCreatorTerritory(false);
 		bluePrint.setLimitToUserTerritory(false);
@@ -194,10 +194,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		Geodesk geodesk = new Geodesk();
 		geodesk.setActive(true);
 		geodesk.setBlueprint(bluePrint);
-		geodesk.setCreationBy(messages.getString("systemUsr"));
+		geodesk.setCreationBy(getMessage("systemUsr"));
 		geodesk.setCreationDate(new Date());
 		geodesk.setDeleted(false);
-		geodesk.setLastEditBy(messages.getString("systemUsr"));
+		geodesk.setLastEditBy(getMessage("systemUsr"));
 		geodesk.setLastEditDate(new Date());
 		geodesk.setLimitToCreatorTerritory(true);
 		geodesk.setLimitToUserTerritory(false);
@@ -212,14 +212,14 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		Geodesk geodesk2 = new Geodesk();
 		geodesk2.setActive(true);
 		geodesk2.setBlueprint(bluePrint);
-		geodesk2.setCreationBy(messages.getString("systemUsr"));
+		geodesk2.setCreationBy(getMessage("systemUsr"));
 		geodesk2.setCreationDate(new Date());
 		geodesk2.setDeleted(false);
-		geodesk2.setLastEditBy(messages.getString("systemUsr"));
+		geodesk2.setLastEditBy(getMessage("systemUsr"));
 		geodesk2.setLastEditDate(new Date());
 		geodesk2.setLimitToCreatorTerritory(true);
 		geodesk2.setLimitToUserTerritory(false);
-		geodesk2.setName("Test dutch geodesk based on " + CLIENTAPPLICATION_NAME);
+		geodesk2.setName(getMessage("testDutchGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
 		geodesk2.setOwner(nlGroup);
 		geodesk2.setPublic(true);
 		geodesk2.setGeodeskId("TEST_NL");
@@ -230,14 +230,14 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		Geodesk geodesk3 = new Geodesk();
 		geodesk3.setActive(true);
 		geodesk3.setBlueprint(bluePrint);
-		geodesk3.setCreationBy(messages.getString("systemUsr"));
+		geodesk3.setCreationBy(getMessage("systemUsr"));
 		geodesk3.setCreationDate(new Date());
 		geodesk3.setDeleted(false);
-		geodesk3.setLastEditBy(messages.getString("systemUsr"));
+		geodesk3.setLastEditBy(getMessage("systemUsr"));
 		geodesk3.setLastEditDate(new Date());
 		geodesk3.setLimitToCreatorTerritory(true);
 		geodesk3.setLimitToUserTerritory(false);
-		geodesk3.setName("Test german geodesk based on " + CLIENTAPPLICATION_NAME);
+		geodesk3.setName(getMessage("testGermanGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
 		geodesk3.setOwner(deGroup);
 		geodesk3.setPublic(true);
 		geodesk3.setGeodeskId("TEST_DE");
@@ -254,6 +254,10 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		} catch (MissingResourceException e ) {
 		}
 		
+	}
+	
+	private static String getMessage(String key) {
+		return messages.getString(key);
 	}
 	
 

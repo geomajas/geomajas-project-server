@@ -2,7 +2,10 @@
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
 	<inherits name="com.smartgwt.SmartGwt" />
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
-
+	<!--
+	<inherits name="org.geomajas.widget.utility.gwt.GwtUtilityWidgets" />
+	-->
+	 
 	<source path="client/gwt/common" />
 	<source path="client/gwt/geodesk" />
 

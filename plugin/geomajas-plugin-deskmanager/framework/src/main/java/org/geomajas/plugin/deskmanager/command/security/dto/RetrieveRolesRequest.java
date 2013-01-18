@@ -25,7 +25,10 @@ public class RetrieveRolesRequest implements CommandRequest {
 	public static final String MANAGER_ID = "manager";
 	
 	private String geodeskId;
+	
+	private String locale; 
 
+	
 	/**
 	 * @param geodeskId the geodeskId to set
 	 */
@@ -39,5 +42,14 @@ public class RetrieveRolesRequest implements CommandRequest {
 	public String getGeodeskId() {
 		return geodeskId;
 	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
 
 }

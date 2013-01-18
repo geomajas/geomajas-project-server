@@ -23,32 +23,34 @@ public enum Role {
 	/**
 	 * User that is not assigned a role, only useful for the first commands.
 	 */
-	UNASSIGNED("Unassigned"),
+	UNASSIGNED("Unassigned", "Unassigned"),
 	/**
 	 * Guest.
 	 */
-	GUEST("Gast"),
+	GUEST("Guest", "Guest"),
 	/**
 	 * Geodesk manager, manages his own geodesks.
 	 */
-	DESK_MANAGER("Deskmanager"),
+	DESK_MANAGER("Deskmanager", "Deskmanager"),
 	/**
 	 * Administrator of the system, manages all geodesks and blueprints.
 	 */
-	ADMINISTRATOR("Administrator"),
+	ADMINISTRATOR("Administrator", "Administrator"),
 	/**
 	 * User with read rights on geodesks.
 	 */
-	CONSULTING_USER("Geodesk user"),
+	CONSULTING_USER("Geodesk user", "ConsultingUser"),
 	/**
 	 * User with read/write rights on geodesks.
 	 */
-	EDITING_USER("Geodesk user with editing permissions");
+	EDITING_USER("Geodesk user with editing permissions", "Editor");
 
 	private final String description;
+	private final String key;
 
-	private Role(String description) {
+	private Role(String description, String key) {
 		this.description = description;
+		this.key = key;
 	}
 
 	/**
@@ -57,6 +59,10 @@ public enum Role {
 	 */
 	public String getDescription() {
 		return description;
+	}
+
+	public String getKey() {
+		return key;
 	}
 
 }

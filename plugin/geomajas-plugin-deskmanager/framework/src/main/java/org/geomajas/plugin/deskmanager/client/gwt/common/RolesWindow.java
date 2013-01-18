@@ -16,11 +16,14 @@ import java.util.Map.Entry;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.plugin.deskmanager.client.gwt.common.i18n.CommonMessages;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesResponse;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Button;
@@ -36,6 +39,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  */
 public class RolesWindow implements ProfileSelectionWindow {
+
+	private static final CommonMessages MESSAGES = GWT.create(CommonMessages.class);
 
 	private boolean onlyAdminRoles;
 
@@ -54,6 +59,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 	public void askRole(String geodeskId, final AskRoleCallback callback) {
 		RetrieveRolesRequest request = new RetrieveRolesRequest();
 		request.setGeodeskId(geodeskId);
+		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		
 		GwtCommand command = new GwtCommand(RetrieveRolesResponse.COMMAND);
 		command.setCommandRequest(request);
@@ -74,12 +80,12 @@ public class RolesWindow implements ProfileSelectionWindow {
 		});
 	}
 
-	// TODO: i18n
+	
 	private void showUnauthorizedWindow() {
 		final Window winModal = new Window();
 		winModal.setWidth(500);
 		winModal.setHeight(300);
-		winModal.setTitle("Geen rechten.");
+		winModal.setTitle(MESSAGES.rolesWindowUnauthorizedWindowTitle());
 		winModal.setShowMinimizeButton(false);
 		winModal.setIsModal(true);
 		winModal.setShowModalMask(true);
@@ -88,18 +94,17 @@ public class RolesWindow implements ProfileSelectionWindow {
 		winModal.setZIndex(CommonLayout.roleSelectZindex);
 
 		HTMLPane pane = new HTMLPane();
-		pane.setContents("<br/><br/><center>U heeft onvoldoende privileges om dit loket te openen.</center>");
-
+		pane.setContents("<br/><br/><center>" + MESSAGES.rolesWindowUnauthorizedWindowContents() + "</center>");
 		winModal.addItem(pane);
 		winModal.show();
 	}
 
-	// TODO: i18n
+	
 	private void askRoleWindow(Map<String, ProfileDto> roles, final AskRoleCallback callback) {
 		final Window winModal = new Window();
 		winModal.setWidth(500);
 		winModal.setHeight(300);
-		winModal.setTitle("Rolkeuze");
+		winModal.setTitle(MESSAGES.rolesWindowaskRoleWindowTitle());
 		winModal.setShowMinimizeButton(false);
 		winModal.setIsModal(true);
 		winModal.setShowModalMask(true);
@@ -118,14 +123,16 @@ public class RolesWindow implements ProfileSelectionWindow {
 					|| Role.ADMINISTRATOR.equals(role.getValue().getRole())) {
 				if (first) {
 					first = false;
-					Label label = new Label("Welkom " + role.getValue().getName() + " " + role.getValue().getSurname()
-							+ ", gelieve uw rol te selecteren waarmee u dit loket wil openen.");
+					Label label = new Label(
+							MESSAGES.rolesWindowWelcome() + " " + role.getValue().getName() + " " + 
+							role.getValue().getSurname() +  
+							MESSAGES.rolesWindowPleaseSpecifyRole());
 					label.setAutoHeight();
 					layout.addMember(label);
 				}
 
 				final Button button = new Button();
-				button.setTitle(role.getValue().getRoleDescription());
+				button.setTitle(getRoleContentC(role.getValue()));
 				button.setWidth100();
 				button.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
@@ -143,13 +150,14 @@ public class RolesWindow implements ProfileSelectionWindow {
 			winModal.addItem(layout);
 			winModal.show();
 		} else {
-			SC.warn("U heeft onvoldoende rechten voor dit loket!", new BooleanCallback() {
+			SC.warn(MESSAGES.rolesWindowUnsufficientRightsForDesk(), new BooleanCallback() {
 
 				public void execute(Boolean value) {
-					SC.warn("U heeft nog steeds niet voldoende rechten voor dit loket!", this);
+					SC.warn(MESSAGES.rolesWindowStillUnsufficientRightsForDesk(), this);
 				}
 			});
 		}
+		
 	}
 
 	/**
@@ -167,6 +175,34 @@ public class RolesWindow implements ProfileSelectionWindow {
 		 *            the selected token.
 		 */
 		void execute(String token, ProfileDto profile);
+	}
+	
+	private static String getRoleDescription(Role role) {
+		switch (role)  {
+			case UNASSIGNED:
+				return MESSAGES.roleUnsignedDescription();
+			case GUEST:
+				return MESSAGES.roleGuestDescription();
+			case ADMINISTRATOR:
+				return MESSAGES.roleAdministratorDescription();
+			case DESK_MANAGER:
+				return MESSAGES.roleDeskmanagerDescription();	
+			case CONSULTING_USER:
+				return MESSAGES.roleConsultingUserDescription();
+			case EDITING_USER:
+				return MESSAGES.roleEditingUserDescription();	
+			default:
+				return role.getDescription();
+		}
+		
+	}
+	private static String getRoleContentC(ProfileDto profileDto) {
+		if (profileDto.getTerritory() != null) {
+			return "<b>" + 
+					getRoleDescription(profileDto.getRole()) + "</b> (" + profileDto.getTerritory().getName() + ")";
+		} else {
+			return "<b>" + getRoleDescription(profileDto.getRole()) + "</b>";
+		}
 	}
 
 }
