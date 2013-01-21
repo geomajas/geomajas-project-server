@@ -1,4 +1,4 @@
-// geomajas-api module API for 1.11.0
+// geomajas-api module API for 1.12.0
 org.geomajas.command.Command::1.6.0
 org.geomajas.command.Command:RESPONSE getEmptyCommandResponse():1.6.0
 org.geomajas.command.Command:void execute(REQUEST, RESPONSE, ):1.6.0

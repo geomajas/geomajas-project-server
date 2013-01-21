@@ -1,4 +1,4 @@
-// geomajas-common-servlet module API, 1.11.0
+// geomajas-common-servlet module API, 1.12.0
 org.geomajas.servlet.ApplicationContextUtil::1.7.0
 org.geomajas.servlet.ApplicationContextUtil:static ApplicationContext getApplicationContext(ServletConfig, ):1.7.0
 org.geomajas.servlet.ApplicationContextUtil:static ApplicationContext getApplicationContext(ServletContext, ):1.7.0

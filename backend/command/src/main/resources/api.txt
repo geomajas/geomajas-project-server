@@ -1,4 +1,4 @@
-// geomajas-command module API, 1.11.0
+// geomajas-command module API, 1.12.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
 org.geomajas.command.dto.BufferInfo::1.11.0
 org.geomajas.command.dto.BufferInfo:BufferInfo():1.11.0

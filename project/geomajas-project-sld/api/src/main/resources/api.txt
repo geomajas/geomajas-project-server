@@ -1,4 +1,4 @@
-// geomajas-project-sld-api module API, 1.2.0-SNAPSHOT
+// geomajas-project-sld-api module API, 1.2.0
 org.geomajas.sld.AbstractInfo:. toString():1.0.0
 org.geomajas.sld.AbstractInfo::1.0.0
 org.geomajas.sld.AbstractInfo:AbstractInfo():1.0.0

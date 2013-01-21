@@ -1,4 +1,4 @@
-// common-gwt module API version 1.1.0
+// common-gwt module API version 1.2.0
 org.geomajas.gwt.client.GeomajasService::0.0.0
 org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):0.0.0
 org.geomajas.gwt.client.GeomajasServiceAsync::0.0.0
