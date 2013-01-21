@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-widget-utility-all</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0-M2</version>
 	</parent>
 
 	<name>Widget utility backend</name>
