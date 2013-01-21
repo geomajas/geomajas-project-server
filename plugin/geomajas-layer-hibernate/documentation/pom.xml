@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-hibernate-documentation</artifactId>
-	<version>1.10.0-SNAPSHOT</version>
+	<version>1.10.0</version>
 	<packaging>jar</packaging>
 	<name>Geomajas Hibernate layer documentation</name>
 	<description>Geomajas Hibernate layer documentation</description>
@@ -26,4 +26,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-hibernate-all-1.10.0/geomajas-layer-hibernate-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-hibernate-all-1.10.0/geomajas-layer-hibernate-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-hibernate-all-1.10.0/geomajas-layer-hibernate-documentation</url>
+  </scm>
 </project>
