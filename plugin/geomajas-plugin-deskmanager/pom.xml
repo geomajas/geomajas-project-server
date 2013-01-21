@@ -31,7 +31,7 @@
 	</developers>
 
 	<modules>
-		<module>framework</module>
+		<module>deskmanager</module>
 	</modules>
 
 	<dependencyManagement>
