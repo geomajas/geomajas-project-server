@@ -1,4 +1,4 @@
-// geomajas-layer-wms module API, 1.9.0
+// geomajas-layer-wms module API, 1.10.0
 org.geomajas.layer.wms.WmsAuthentication::1.8.0
 org.geomajas.layer.wms.WmsAuthentication:String getPassword():1.8.0
 org.geomajas.layer.wms.WmsAuthentication:String getPasswordKey():1.8.0

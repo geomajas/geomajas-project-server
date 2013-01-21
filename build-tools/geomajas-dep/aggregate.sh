@@ -77,17 +77,17 @@ template_start
 
 # main guides
 
-include "org.geomajas.documentation" "docbook-gettingstarted" "1.12.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-gettingstarted" "1.13.0-SNAPSHOT" \
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
-    "org.geomajas" "geomajas-command" "1.11.1"
+    "org.geomajas" "geomajas-command" "1.12.0"
 
-include "org.geomajas.documentation" "docbook-devuserguide" "1.12.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-devuserguide" "1.13.0-SNAPSHOT" \
     "User guide for developers" \
     "Reference guide detailing architecture, implementation and extension possibilities of the back-end core." \
     "incubating" "User_Guide_for_Developers.pdf" \
-    "org.geomajas" "geomajas-api" "1.11.1"
+    "org.geomajas" "geomajas-api" "1.12.0"
 
 
 # projects
@@ -104,20 +104,20 @@ include "org.geomajas.documentation" "geomajas-project-geometry-documentation" "
     "incubating" "master.pdf" \
     "org.geomajas.project" "geomajas-project-geometry-core" "1.0.0"
 
-include "org.geomajas.documentation" "geomajas-project-sld-documentation" "1.1.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-project-sld-documentation" "1.2.0-SNAPSHOT" \
     "SLD DTO project" \
     "Set of GWT compatible SLD DTOs and services to read/write them." \
     "incubating" "master.pdf" \
-    "org.geomajas.project" "geomajas-project-sld-api" "1.0.0"
+    "org.geomajas.project" "geomajas-project-sld-api" "1.1.0"
 
 
 # faces
 
-include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.12.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.13.0-SNAPSHOT" \
     "GWT face" \
     "GWT face for building powerful AJAX web user interfaces in Java using SmartGWT." \
     "incubating" "gwt_face.pdf" \
-    "org.geomajas" "geomajas-gwt-client" "1.11.1"
+    "org.geomajas" "geomajas-gwt-client" "1.12.0"
 
 include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.0-SNAPSHOT" \
     "PureGWT face" \
@@ -126,11 +126,11 @@ include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.
     "" "" ""
     "org.geomajas" "geomajas-puregwt-client" "1.0.0-M1"
 
-include "org.geomajas.documentation" "common-gwt-documentation" "1.2.0-SNAPSHOT" \
+include "org.geomajas.documentation" "common-gwt-documentation" "1.3.0-SNAPSHOT" \
     "Common-GWT " \
     "Common module which is used by both the GWT and PureGWT faces." \
     "incubating" "master.pdf" \
-    "org.geomajas" "geomajas-face-common-gwt" "1.1.0"
+    "org.geomajas" "geomajas-face-common-gwt" "1.2.0"
 
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
@@ -176,11 +176,11 @@ include "org.geomajas.plugin" "geomajas-layer-tms-documentation" "1.1.0-SNAPSHOT
     "incubating" "master.pdf" \
     "org.geomajas.plugin" "geomajas-layer-tms" "1.0.0"
 
-include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.10.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.11.0-SNAPSHOT" \
     "WMS layer" \
     "This is a layer which allows accessing WMS images as raster layer." \
     "graduated" "WMS_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-wms" "1.9.0"
+    "org.geomajas.plugin" "geomajas-layer-wms" "1.10.0"
 
 include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.10.0-SNAPSHOT" \
     "Staticsecurity plug-in" \
