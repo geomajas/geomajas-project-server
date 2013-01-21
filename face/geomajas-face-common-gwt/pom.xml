@@ -101,6 +101,6 @@
 
 	<properties>
 		<common-gwt-backend-version>1.11.0</common-gwt-backend-version>
-		<common-gwt-gwt-version>2.4.0</common-gwt-gwt-version>
+		<common-gwt-gwt-version>2.5.0</common-gwt-gwt-version>
 	</properties>	
 </project>

@@ -171,6 +171,6 @@
 	<properties>
 		<puregwt-face-backend-version>1.11.1</puregwt-face-backend-version>
 		<puregwt-face-common-gwt-version>1.1.0</puregwt-face-common-gwt-version>
-		<puregwt-face-gwt-version>2.4.0</puregwt-face-gwt-version>
+		<puregwt-face-gwt-version>2.5.0</puregwt-face-gwt-version>
 	</properties>
 </project>
