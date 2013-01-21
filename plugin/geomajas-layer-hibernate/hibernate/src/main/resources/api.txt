@@ -1,4 +1,4 @@
-// geomajas-layer-hibernate module API, 1.9.0
+// geomajas-layer-hibernate module API, 1.10.0
 org.geomajas.layer.hibernate.HibernateLayer::1.7.1
 org.geomajas.layer.hibernate.HibernateLayer:void setFeatureModel(FeatureModel, ):1.8.0
 org.geomajas.layer.hibernate.HibernateLayer:void setId(String, ):1.8.0
