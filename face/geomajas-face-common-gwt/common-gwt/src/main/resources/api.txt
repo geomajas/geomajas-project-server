@@ -124,6 +124,9 @@ org.geomajas.gwt.client.controller.Controller:boolean isRightMouseButton(HumanIn
 org.geomajas.gwt.client.controller.MapEventParser::1.0.0
 org.geomajas.gwt.client.controller.MapEventParser:Coordinate getLocation(HumanInputEvent<?>, RenderSpace, ):1.0.0
 org.geomajas.gwt.client.controller.MapEventParser:Element getTarget(HumanInputEvent<?>, ):1.0.0
+org.geomajas.gwt.client.handler.NotificationHandler::1.2.0
+org.geomajas.gwt.client.handler.NotificationHandler:void handleError(String, ):1.2.0
+org.geomajas.gwt.client.handler.NotificationHandler:void handleInfo(String, ):1.2.0
 org.geomajas.gwt.client.map.RenderSpace::1.0.0
 org.geomajas.gwt.client.map.RenderSpace:SCREEN:1.0.0
 org.geomajas.gwt.client.map.RenderSpace:WORLD:1.0.0
@@ -211,6 +214,7 @@ org.geomajas.gwt.client.util.Log:static void logServer(int, String, ):1.0.0
 org.geomajas.gwt.client.util.Log:static void logServer(int, String, Throwable, ):1.0.0
 org.geomajas.gwt.client.util.Log:static void logWarn(String, ):1.0.0
 org.geomajas.gwt.client.util.Log:static void logWarn(String, Throwable, ):1.0.0
+org.geomajas.gwt.client.util.Notify::1.2.0
 org.geomajas.gwt.server.GeomajasServiceImpl::0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl:GeomajasServiceImpl():0.0.0
