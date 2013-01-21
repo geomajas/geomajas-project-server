@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-plugin-deskmanager-all</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0-M1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>geomajas-plugin-deskmanager-framework</artifactId>
@@ -236,8 +235,7 @@
 						<id>Instrument domain classes</id>
 						<configuration>
 							<tasks>
-								<taskdef name="instrument"
-									classname="org.hibernate.tool.instrument.javassist.InstrumentTask">
+								<taskdef name="instrument" classname="org.hibernate.tool.instrument.javassist.InstrumentTask">
 									<classpath>
 										<path refid="maven.dependency.classpath" />
 										<path refid="maven.plugin.classpath" />
@@ -299,7 +297,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
