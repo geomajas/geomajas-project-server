@@ -26,9 +26,9 @@
 	<description>admin plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig/geomajas-plugin-runtimeconfig-all</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig/geomajas-plugin-runtimeconfig-all</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-runtimeconfig/geomajas-plugin-runtimeconfig-all</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-runtimeconfig</url>
 	</scm>
 
 	<developers>
