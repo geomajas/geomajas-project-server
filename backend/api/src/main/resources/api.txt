@@ -90,12 +90,14 @@ org.geomajas.configuration.FeatureInfo::1.6.0
 org.geomajas.configuration.FeatureInfo:FeatureInfo():1.6.0
 org.geomajas.configuration.FeatureInfo:GeometryAttributeInfo getGeometryType():1.6.0
 org.geomajas.configuration.FeatureInfo:List<AttributeInfo> getAttributes():1.6.0
+org.geomajas.configuration.FeatureInfo:Map<String,AbstractAttributeInfo> getAttributesMap():1.11.1
 org.geomajas.configuration.FeatureInfo:PrimitiveAttributeInfo getIdentifier():1.6.0
 org.geomajas.configuration.FeatureInfo:SortType getSortType():1.6.0
 org.geomajas.configuration.FeatureInfo:String getDataSourceName():1.6.0
 org.geomajas.configuration.FeatureInfo:String getDisplayAttributeName():1.9.0
 org.geomajas.configuration.FeatureInfo:String getSortAttributeName():1.6.0
 org.geomajas.configuration.FeatureInfo:void setAttributes(List<AttributeInfo>, ):1.6.0
+org.geomajas.configuration.FeatureInfo:void setAttributesMap(Map<String,AbstractAttributeInfo>, ):1.11.1
 org.geomajas.configuration.FeatureInfo:void setDataSourceName(String, ):1.6.0
 org.geomajas.configuration.FeatureInfo:void setDisplayAttributeName(String, ):1.9.0
 org.geomajas.configuration.FeatureInfo:void setGeometryType(GeometryAttributeInfo, ):1.6.0
@@ -486,14 +488,17 @@ org.geomajas.configuration.client.ScaleInfo:ScaleInfo():1.7.0
 org.geomajas.configuration.client.ScaleInfo:ScaleInfo(ScaleInfo, ):1.11.0
 org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:boolean isPixelPerUnitBased():1.11.1
 org.geomajas.configuration.client.ScaleInfo:double getDenominator():1.7.0
 org.geomajas.configuration.client.ScaleInfo:double getNumerator():1.7.0
 org.geomajas.configuration.client.ScaleInfo:double getPixelPerUnit():1.7.0
 org.geomajas.configuration.client.ScaleInfo:static final double MAXIMUM_PIXEL_PER_UNIT:1.7.0
 org.geomajas.configuration.client.ScaleInfo:static final double MINIMUM_PIXEL_PER_UNIT:1.7.0
+org.geomajas.configuration.client.ScaleInfo:static final double PIXEL_PER_METER:1.11.1
 org.geomajas.configuration.client.ScaleInfo:void setDenominator(double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:void setNumerator(double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:void setPixelPerUnit(double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:void setPixelPerUnitBased(boolean, ):1.11.1
 org.geomajas.configuration.client.ScaleUnit::1.7.0
 org.geomajas.configuration.client.ScaleUnit:NORMAL:1.7.0
 org.geomajas.configuration.client.ScaleUnit:PIXEL_PER_UNIT:1.7.0
@@ -604,6 +609,7 @@ org.geomajas.global.ExceptionCode::1.6.0
 org.geomajas.global.ExceptionCode:int APPLICATION_NOT_FOUND:1.6.0
 org.geomajas.global.ExceptionCode:int ATTRIBUTE_UNKNOWN:1.6.0
 org.geomajas.global.ExceptionCode:int CANNOT_CONVERT_GEOMETRY:1.7.0
+org.geomajas.global.ExceptionCode:int CANNOT_CREATE_FEATURE_WITHOUT_GEOMETRY:1.11.1
 org.geomajas.global.ExceptionCode:int CANNOT_CREATE_LAYER_MODEL:1.6.0
 org.geomajas.global.ExceptionCode:int CANNOT_DETERMINE_CLASS_FOR_FEATURE:1.6.0
 org.geomajas.global.ExceptionCode:int CANNOT_PARSE_WKT_GEOMETRY:1.8.0
@@ -685,6 +691,8 @@ org.geomajas.global.ExceptionCode:int RENDER_TRANSFORMATION_FAILED:1.6.0
 org.geomajas.global.ExceptionCode:int RESOURCE_NOT_FOUND:1.10.0
 org.geomajas.global.ExceptionCode:int RULE_NOT_FOUND:1.10.0
 org.geomajas.global.ExceptionCode:int SCALE_CONVERSION_PROBLEM:1.7.1
+org.geomajas.global.ExceptionCode:int SLD_PARSE_NUMBER:1.11.1
+org.geomajas.global.ExceptionCode:int SLD_PARSE_NUMBER_ATTRIBUTE:1.11.1
 org.geomajas.global.ExceptionCode:int STYLE_NOT_FOUND:1.10.0
 org.geomajas.global.ExceptionCode:int TEST:1.6.0
 org.geomajas.global.ExceptionCode:int TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED:1.6.0
