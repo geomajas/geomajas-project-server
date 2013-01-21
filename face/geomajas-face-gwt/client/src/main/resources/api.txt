@@ -487,6 +487,8 @@ org.geomajas.gwt.client.util.WidgetLayout:static String loadingScreenTopSpacerHe
 org.geomajas.gwt.client.util.WidgetLayout:static String loadingScreenWidth:1.10.0
 org.geomajas.gwt.client.util.WidgetLayout:static boolean exceptionWindowKeepInScreen:1.10.0
 org.geomajas.gwt.client.util.WidgetLayout:static boolean featureAttributeWindowKeepInScreen:1.10.0
+org.geomajas.gwt.client.util.WidgetLayout:static int crocEyePositionLeft:1.12.0
+org.geomajas.gwt.client.util.WidgetLayout:static int crocEyePositionTop:1.12.0
 org.geomajas.gwt.client.util.WidgetLayout:static int exceptionWindowIconSize:1.10.0
 org.geomajas.gwt.client.util.WidgetLayout:static int layerTreeButtonSize:1.10.0
 org.geomajas.gwt.client.util.WidgetLayout:static int layerTreePadding:1.10.0
@@ -543,6 +545,7 @@ org.geomajas.gwt.client.widget.MapWidget:MapWidget(String, String, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MenuContext getMenuContext():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:Set<Listener> getListeners():1.8.0
 org.geomajas.gwt.client.widget.MapWidget:String getCursorString():1.10.0
+org.geomajas.gwt.client.widget.MapWidget:String getDefaultCursorString():1.12.0
 org.geomajas.gwt.client.widget.MapWidget:WorldPaintable getWorldPaintable(String, ):1.9.0
 org.geomajas.gwt.client.widget.MapWidget:boolean addListener(Listener, ):1.8.0
 org.geomajas.gwt.client.widget.MapWidget:boolean removeListener(Listener, ):1.8.0
@@ -555,6 +558,7 @@ org.geomajas.gwt.client.widget.MapWidget:void render(Paintable, RenderGroup, Ren
 org.geomajas.gwt.client.widget.MapWidget:void renderAll(boolean, ):1.10.0
 org.geomajas.gwt.client.widget.MapWidget:void setController(GraphicsController, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void setCursorString(String, ):1.10.0
+org.geomajas.gwt.client.widget.MapWidget:void setDefaultCursorString(String, ):1.12.0
 org.geomajas.gwt.client.widget.MapWidget:void setFallbackController(GraphicsController, ):1.7.0
 org.geomajas.gwt.client.widget.MapWidget:void setMouseWheelController(MouseWheelHandler, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void unregisterPainter(Painter, ):1.6.0
@@ -574,6 +578,9 @@ org.geomajas.gwt.client.widget.ScaleSelect:void setScales(Double, ):1.6.0
 org.geomajas.gwt.client.widget.ScaleSelect:void setSignificantDigits(int, ):1.10.0
 org.geomajas.gwt.client.widget.Toolbar::1.6.0
 org.geomajas.gwt.client.widget.Toolbar:Toolbar(MapWidget, ):1.10.0
+org.geomajas.gwt.client.widget.attribute.AssociationItem::1.11.1
+org.geomajas.gwt.client.widget.attribute.AssociationItem:F getItem():1.11.1
+org.geomajas.gwt.client.widget.attribute.AssociationItem:String ASSOCIATION_ITEM_ATTRIBUTE_KEY:1.11.1
 org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry::1.10.0
 org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry:static DataSourceField createDataSourceField(AbstractReadOnlyAttributeInfo, ):1.10.0
 org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry:static FormItem createFormItem(AbstractReadOnlyAttributeInfo, AttributeProvider, ):1.10.0
@@ -581,5 +588,61 @@ org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry:static FormI
 org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry:static void registerCustomFormItem(String, DataSourceFieldFactory, FormItemFactory, List<Validator>, ):1.10.0
 org.geomajas.gwt.client.widget.attribute.DataSourceFieldFactory::1.10.0
 org.geomajas.gwt.client.widget.attribute.DataSourceFieldFactory:DataSourceField create():1.10.0
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm::1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:DataSourceField createField(AbstractReadOnlyAttributeInfo, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:DefaultFeatureForm(FeatureInfo, AttributeProvider, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:DefaultFeatureForm(VectorLayer, ):1.11.0
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:FeatureInfo getFeatureInfo():1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:FormItem createItem(AbstractReadOnlyAttributeInfo, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:boolean isIncluded(AbstractReadOnlyAttributeInfo, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, BooleanAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, CurrencyAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, DateAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, DoubleAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, FloatAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, ImageUrlAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, IntegerAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, LongAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, ShortAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, StringAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void getValue(String, UrlAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void prepareForm(FormItemList, DataSource, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, CurrencyAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, DateAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, DoubleAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, FloatAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, ImageUrlAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, IntegerAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, LongAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, ShortAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, StringAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm:void setValue(String, UrlAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm::1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:HandlerRegistration addItemChangedHandler(ItemChangedHandler, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:W getWidget():1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:boolean isDisabled():1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:boolean silentValidate():1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:boolean validate():1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void clear():1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void fromForm(AssociationValue, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void fromForm(String, Attribute<?>, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void setDisabled(boolean, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void toForm(AssociationValue, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void toForm(Feature, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureForm:void toForm(String, Attribute<?>, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureFormFactory::1.11.1
+org.geomajas.gwt.client.widget.attribute.FeatureFormFactory:FeatureForm<W> createFeatureForm(VectorLayer, ):1.11.1
 org.geomajas.gwt.client.widget.attribute.FormItemFactory::1.10.0
 org.geomajas.gwt.client.widget.attribute.FormItemFactory:FormItem create():1.10.0
+org.geomajas.gwt.client.widget.attribute.FormItemList::1.11.1
+org.geomajas.gwt.client.widget.attribute.FormItemList:FormItemList():1.11.1
+org.geomajas.gwt.client.widget.attribute.FormItemList:FormItem[] toArray():1.11.1
+org.geomajas.gwt.client.widget.attribute.FormItemList:int indexOf(String, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.FormItemList:void insertBefore(String, FormItem, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.ManyToOneItem::1.11.1
+org.geomajas.gwt.client.widget.attribute.ManyToOneItem:F getItem():1.11.1
+org.geomajas.gwt.client.widget.attribute.ManyToOneItem:void clearValue():1.11.1
+org.geomajas.gwt.client.widget.attribute.ManyToOneItem:void fromItem(ManyToOneAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.ManyToOneItem:void init(AssociationAttributeInfo, AttributeProvider, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.ManyToOneItem:void toItem(ManyToOneAttribute, ):1.11.1
+org.geomajas.gwt.client.widget.attribute.OneToManyItem::1.11.1
