@@ -1,4 +1,4 @@
-// geomajas-plugin-printing plugin-core, 2.2.0
+// geomajas-plugin-printing plugin-core, 2.3.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest::2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:PrintGetTemplateRequest():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:PrintTemplateInfo getTemplate():2.0.0
@@ -108,6 +108,14 @@ org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setApplicati
 org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setFont(FontStyleInfo, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setMapId(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setTitle(String, ):2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo::2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:LegendGraphicComponentInfo():2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:RuleInfo getRuleInfo():2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:String getLabel():2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:String getLayerId():2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:void setLabel(String, ):2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:void setLayerId(String, ):2.0.0
+org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo:void setRuleInfo(RuleInfo, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo::2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:FeatureStyleInfo getStyleInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:LayerType getLayerType():2.0.0

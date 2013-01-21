@@ -1,4 +1,4 @@
-// geomajas-plugin-printing plug-in, gwt module API, 2.2.0
+// geomajas-plugin-printing plug-in, gwt module API, 2.3.0
 org.geomajas.plugin.printing.client.util.PrintingLayout::2.2.0
 org.geomajas.plugin.printing.client.util.PrintingLayout:static String iconWaitBlank:2.2.0
 org.geomajas.plugin.printing.client.util.PrintingLayout:static String iconWaitMoving:2.2.0
