@@ -71,6 +71,7 @@ import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import com.vividsolutions.jts.geom.Envelope;
 
+
 /**
  * Sub component of a map responsible for rendering raster layer.
  * 
@@ -191,7 +192,16 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 								RenderedImage image = JAI.create("stream", new ByteArraySeekableStream(result
 										.getImage()));
 								// convert to common direct colormodel (some images have their own indexed color model)
-								RenderedImage colored = toDirectColorModel(image);
+								// Sprint-51  If the image source is not available the java.awt.image will throw
+								// a runtime error causing the printing to fail.  If this happens handle the error
+								// and and allow the print process to continue.
+								// convert to common direct colormodel (some images have their own indexed color model)
+								RenderedImage colored = null;
+								try {
+									colored = toDirectColorModel(image);
+								} catch (Exception e) {
+									continue;
+								}
 
 								// translate to the correct position in the tile grid
 								double xOffset = result.getRasterImage().getCode().getX() * imageWidth
