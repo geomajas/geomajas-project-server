@@ -21,6 +21,8 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +51,8 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 	private ServletContext servletContext;
 	
 	private SerializationPolicyLocator serializationPolicyLocator;
+	
+	private final Logger log = LoggerFactory.getLogger(GeomajasController.class);
 
 	/**
 	 * Implements Spring Controller interface method.
@@ -106,7 +110,12 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 			return getSerializationPolicyLocator().loadPolicy(request, moduleBaseURL, strongName);
 		}
 	}
-
+	
+	@Override
+	protected void doUnexpectedFailure(Throwable e) {
+		log.error("Unexpected GWT-RPC failure", e);
+		super.doUnexpectedFailure(e);
+	}
 
 	/**
 	 * Execute a GWT RPC command request, and return the response. These request come from the client, and the response
