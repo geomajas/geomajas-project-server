@@ -18,11 +18,14 @@ import org.springframework.stereotype.Component;
 
 
 /**
+ * Service that listens for ContextRefreshedEvent so that initialization of the spring context can be done when
+ * the application is initialized. This can't be done trough @PostConstruct because it is executed to early in the
+ * spring context life cycle.
+ * 
  * @author Oliver May
- *
  */
 @Component
-public class PostConstructService implements ApplicationListener<ContextRefreshedEvent>{
+public class PostConstructService implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Autowired
 	private ApplicationStartupService applicationStartupService;
@@ -30,7 +33,7 @@ public class PostConstructService implements ApplicationListener<ContextRefreshe
 	@Autowired
 	private DynamicLayerLoadService layerLoadService;
 	
-	private boolean loaded = false;
+	private boolean initialized;
 	
 	public void onApplicationStart() {
 		try {
@@ -41,15 +44,11 @@ public class PostConstructService implements ApplicationListener<ContextRefreshe
 		applicationStartupService.onStartup();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
-	 */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		if (!loaded) {
-			loaded = true;
+		if (!initialized) {
+			initialized = true;
 			onApplicationStart();
 		}
 	}
-	
 }
