@@ -10,10 +10,10 @@
  */
 package org.geomajas.plugin.deskmanager.service.common;
 
-import javax.annotation.PostConstruct;
-
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class PostConstructService {
+public class PostConstructService implements ApplicationListener<ContextRefreshedEvent>{
 
 	@Autowired
 	private ApplicationStartupService applicationStartupService;
@@ -30,7 +30,8 @@ public class PostConstructService {
 	@Autowired
 	private DynamicLayerLoadService layerLoadService;
 	
-	@PostConstruct
+	private boolean loaded = false;
+	
 	public void onApplicationStart() {
 		try {
 			layerLoadService.loadDynamicLayers();
@@ -40,4 +41,15 @@ public class PostConstructService {
 		applicationStartupService.onStartup();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
+	 */
+	@Override
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+		if (!loaded) {
+			loaded = true;
+			onApplicationStart();
+		}
+	}
+	
 }
