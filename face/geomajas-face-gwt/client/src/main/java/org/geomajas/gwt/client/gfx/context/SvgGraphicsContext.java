@@ -28,6 +28,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -65,6 +66,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 		this.parent = parent;
 		// the root SVG node
 		Element rootNode = Dom.createElementNS(Dom.NS_SVG, "svg");
+		// needed for IE9
+		rootNode.getStyle().setOverflow(Overflow.HIDDEN);
 		String sWidth = Integer.toString(width);
 		String sHeight = Integer.toString(height);
 		Dom.setElementAttribute(rootNode, "width", sWidth);

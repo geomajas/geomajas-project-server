@@ -286,7 +286,7 @@ public class VectorTile extends AbstractVectorTile {
 		request.setPaintGeometries(!featureContent.isLoaded());
 		request.setPaintLabels(layer.isLabelsShowing() && !labelContent.isLoaded());
 		request.setPanOrigin(mapView.getPanOrigin());
-		request.setRenderer(Dom.isIE() ? "VML" : "SVG");
+		request.setRenderer(Dom.isSvg() ? "SVG" : "VML");
 		request.setScale(mapView.getCurrentScale());
 		request.setStyleInfo(layer.getLayerInfo().getNamedStyleInfo());
 		return request;

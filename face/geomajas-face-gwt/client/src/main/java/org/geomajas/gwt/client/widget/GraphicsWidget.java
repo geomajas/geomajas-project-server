@@ -28,6 +28,7 @@ import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.gfx.context.DefaultImageContext;
 import org.geomajas.gwt.client.gfx.context.SvgGraphicsContext;
 import org.geomajas.gwt.client.gfx.context.VmlGraphicsContext;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
@@ -51,7 +52,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusWidget;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.WidgetCanvas;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
@@ -161,10 +161,10 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		// append a raster context
 		rasterContext = new DefaultImageContext(eventWidget.getWidget());
 		// append a vector context
-		if (SC.isIE()) {
-			vectorContext = new VmlGraphicsContext(eventWidget.getWidget());
-		} else {
+		if (Dom.isSvg()) {
 			vectorContext = new SvgGraphicsContext(eventWidget.getWidget());
+		} else {
+			vectorContext = new VmlGraphicsContext(eventWidget.getWidget());
 		}
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
