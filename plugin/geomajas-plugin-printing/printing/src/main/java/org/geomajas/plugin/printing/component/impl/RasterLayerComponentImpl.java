@@ -200,6 +200,9 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 								try {
 									colored = toDirectColorModel(image);
 								} catch (Exception e) {
+									String msg = getLayerId() + " returned a null image.";
+									msg += " The printing plugin will not render this layer";
+									log.error(msg, e);
 									continue;
 								}
 
