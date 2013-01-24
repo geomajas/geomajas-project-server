@@ -9,21 +9,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="maxUploadSize" value="1000000000"/>
     </bean>
 
-	<!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers -->
-	<bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-		<!-- need security  -->
-		<property name="interceptors">
-			<list>
-				<ref bean="securityInterceptor" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"></bean>
-
-	<!--  we need a view resolver -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"></bean>
-
 	<!--  scan for controllers and views -->
  	<context:component-scan base-package="org.geomajas.plugin.deskmanager.servlet.mvc" />
  	<context:component-scan base-package="org.geomajas.plugin.deskmanager.manager.server.mvc" />
