@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt.client.util;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.user.client.Element;
 import org.geomajas.annotation.Api;
-import org.geomajas.global.GeomajasConstant;
+import org.geomajas.gwt.client.util.impl.DomImpl;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Element;
 
 /**
  * <p>
@@ -26,10 +26,13 @@ import org.geomajas.global.GeomajasConstant;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  * @since 1.1.0
  */
 @Api(allMethods = true)
 public class Dom extends com.google.gwt.user.client.DOM {
+	
+	private static final DomImpl IMPL = GWT.create(DomImpl.class);
 
 	/**
 	 * XLINK name-space. Used in attributes, referencing other elements.
@@ -61,9 +64,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * first!
 	 */
 	public static void initVMLNamespace() {
-		if (isIE()) {
-			initVMLNamespaceForIE();
-		}
+		IMPL.initVMLNamespace();
 	}
 
 	/**
@@ -74,15 +75,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return id
 	 */
 	public static String assembleId(String id, String... suffixes) {
-		StringBuilder sb = new StringBuilder();
-		if (null != id) {
-			sb.append(id);
-		}
-		for (String s : suffixes) {
-			sb.append(Dom.ID_SEPARATOR);
-			sb.append(s);
-		}
-		return sb.toString();
+		return IMPL.assembleId(id, suffixes);
 	}
 
 	/**
@@ -93,21 +86,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return id
 	 */
 	public static String disAssembleId(String id, String... suffixes) {
-		int count = 0;
-		for (String s : suffixes) {
-			count += s.length() + Dom.ID_SEPARATOR.length();
-		}
-		return id.substring(0, id.length() - count);
+		return IMPL.disAssembleId(id, suffixes);
 	}
-
-	private static native void initVMLNamespaceForIE()
-	/*-{
-	 if (!$doc.namespaces['vml']) {
-		 $doc.namespaces.add('vml', 'urn:schemas-microsoft-com:vml');
-		 var styleSheet = $doc.createStyleSheet();
-		 styleSheet.addRule("vml\\:*", "behavior: url(#default#VML);");
-	 }
-	}-*/;
 
 	/**
 	 * <p>
@@ -123,21 +103,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return Returns a newly created DOM element in the given name-space.
 	 */
 	public static Element createElementNS(String ns, String tag, String id) {
-		Element element;
-		if (NS_HTML.equals(ns)) {
-			element = createElement(tag);
-		} else {
-			if (isIE()) {
-				element = createElement(ns + ":" + tag);
-			} else {
-				element = createNameSpaceElement(ns, tag);
-			}
-		}
-		if (id != null) {
-			setElementAttribute(element, "id", id);
-		}
-		Log.logDebug("Creating element " + id);
-		return element;
+		return IMPL.createElementNS(ns, tag, id);
 	}
 
 	/**
@@ -154,7 +120,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return Returns a newly created DOM element in the given name-space.
 	 */
 	public static Element createElementNS(String ns, String tag) {
-		return createElementNS(ns, tag, null);
+		return IMPL.createElementNS(ns, tag);
 	}
 
 	/**
@@ -164,16 +130,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return the newly-created element
 	 */
 	public static Element createElement(String tagName, String id) {
-		Log.logDebug("Creating element " + id);
-		Element element = createElement(tagName).cast();
-		setElementAttribute(element, "id", id);
-		return element;
+		return IMPL.createElement(tagName, id);
 	}
-
-	private static native Element createNameSpaceElement(String ns, String tag)
-	/*-{
-	 return $doc.createElementNS(ns, tag);
-	}-*/;
 
 	/**
 	 * <p>
@@ -190,17 +148,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @param value The new value for the attribute.
 	 */
 	public static void setElementAttributeNS(String ns, Element element, String attr, String value) {
-		if (isIE()) {
-			element.setAttribute(ns + ":" + attr, value);
-		} else {
-			setNameSpaceAttribute(ns, element, attr, value);
-		}
+		IMPL.setElementAttributeNS(ns, element, attr, value);
 	}
-
-	private static native void setNameSpaceAttribute(String ns, Element element, String attr, String value)
-	/*-{
-	 element.setAttributeNS(ns, attr, value);
-	}-*/;
 
 	/**
 	 * Is the user currently running Internet Explorer?
@@ -208,7 +157,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isIE() {
-		return getUserAgent().contains("msie");
+		return IMPL.isIE();
 	}
 
 	/**
@@ -217,7 +166,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isSvg() {
-		return !getUserAgent().contains("msie") || getUserAgent().contains("msie 9.0");
+		return IMPL.isSvg();
 	}
 
 	/**
@@ -226,7 +175,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isFireFox() {
-		return getUserAgent().contains("firefox");
+		return IMPL.isFireFox();
 	}
 
 	/**
@@ -235,7 +184,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isChrome() {
-		return getUserAgent().contains("chrome");
+		return IMPL.isChrome();
 	}
 
 	/**
@@ -244,7 +193,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isSafari() {
-		return getUserAgent().contains("safari");
+		return IMPL.isSafari();
 	}
 
 	/**
@@ -253,13 +202,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isWebkit() {
-		return getUserAgent().contains("webkit");
+		return IMPL.isWebkit();
 	}
-
-	private static native String getUserAgent()
-	/*-{
-	 return navigator.userAgent.toLowerCase();
-	}-*/;
 
 	/**
 	 * Similar method to the "setInnerHTML", but specified for setting SVG. Using the regular setInnerHTML, it is not
@@ -270,37 +214,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @param svg The string of SVG to set on the element.
 	 */
 	public static void setInnerSvg(Element element, String svg) {
-		svg = "<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">" + svg + "</g>";
-		if (isFireFox()) {
-			setFireFoxInnerHTML(element, svg);
-		} else if (isWebkit()) {
-			setWebkitInnerHTML(element, svg);
-		}
+		IMPL.setInnerSvg(element, svg);
 	}
-
-	private static native void setFireFoxInnerHTML(Element element, String svg)
-	/*-{
-		 var fragment = new DOMParser().parseFromString(svg, "text/xml");
-		 if(fragment) {
-			 var children = fragment.childNodes;         
-			 for(var i=0; i < children.length; i++) {    
-				 element.appendChild (children[i]);
-			 }
-		 }
-	 }-*/;
-
-	private static native void setWebkitInnerHTML(Element element, String svg)
-	/*-{
-		 var fragment = new DOMParser().parseFromString(svg,"text/xml");	
-		 if(fragment) {
-			 var children = fragment.childNodes;         
-			 for(var i=0; i < children.length; i++) {
-				 var node = @org.geomajas.gwt.client.util.Dom::cloneSvgElement(Lcom/google/gwt/user/client/Element;)
-						 (children[i]);
-				 element.appendChild (node);
-			 }
-		 }
-	 }-*/;
 
 	/**
 	 * Clone a single SVG element.
@@ -309,40 +224,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return Returns the clone.
 	 */
 	public static Element cloneSvgElement(Element source) {
-		if (source == null || source.getNodeName() == null) {
-			return null;
-		}
-		if ("#text".equals(source.getNodeName())) {
-			return Document.get().createTextNode(source.getNodeValue()).cast();
-		}
-		Element clone = createElementNS(Dom.NS_SVG, source.getNodeName(), Dom.createUniqueId());
-		cloneAttributes(source, clone);
-		for (int i = 0; i < source.getChildCount(); i++) {
-			Element child = source.getChild(i).cast();
-			clone.appendChild(cloneSvgElement(child));
-		}
-
-		return clone;
+		return IMPL.cloneSvgElement(source);
 	}
-
-	private static native void cloneAttributes(Element source, Element target)
-	/*-{
-		  if (source != null && target != null) {
-			  for (var i=0; i<source.attributes.length; i++) {
-				  var attribute = source.attributes.item(i);
-				  if (attribute.value != null && attribute.value.length > 0) {
-					  var atClone = null;
-					  try {
-						  atClone = $doc.createAttributeNS(attribute.namespaceURI, attribute.name);
-					  } catch (e) {
-						  atClone = $doc.createAttribute(attribute.name);
-					  }
-					 atClone.value = attribute.value;
-					 target.setAttributeNode(atClone);
-				  }
-			  }
-		  }
-	 }-*/;
 
 	/**
 	 * Convert a URL to an absolute URL. This assumes the page is at the application root.
@@ -354,14 +237,6 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return converted URL
 	 */
 	public static String makeUrlAbsolute(String url) {
-		String href = url;
-		if (href.indexOf(':') <= 0) {
-			// SVG in Chrome can't handle relative paths (the xml:base attribute has not yet been tested):
-			href = GWT.getHostPageBaseURL() + href;
-		} else if (href.startsWith(GeomajasConstant.CLASSPATH_URL_PREFIX)) {
-			href = GWT.getHostPageBaseURL() + "d/resource/" +
-					href.substring(GeomajasConstant.CLASSPATH_URL_PREFIX.length());
-		}
-		return href;
+		return IMPL.makeUrlAbsolute(url);
 	}
 }

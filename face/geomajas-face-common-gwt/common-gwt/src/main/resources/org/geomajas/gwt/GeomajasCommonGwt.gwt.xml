@@ -15,5 +15,44 @@
 
 	<!-- make sure the default is there -->
 	<source path="client"/>
+	
+   <!-- Default implementation -->
+	<replace-with class="org.geomajas.gwt.client.util.impl.DomImpl">
+		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
+	</replace-with>
+	
+    <!-- FF implementation -->
+	<replace-with class="org.geomajas.gwt.client.util.impl.DomImplFF">
+		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
+		<any>
+			<when-property-is name="user.agent" value="gecko" />
+			<when-property-is name="user.agent" value="gecko1_8" />
+		</any>
+	</replace-with>
+	
+    <!-- WebKit implementation -->
+	<replace-with class="org.geomajas.gwt.client.util.impl.DomImplWebKit">
+		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
+		<any>
+			<when-property-is name="user.agent" value="safari" />
+		</any>
+	</replace-with>
+	
+    <!-- IE implementation -->
+	<replace-with class="org.geomajas.gwt.client.util.impl.DomImplIE">
+		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
+		<any>
+			<when-property-is name="user.agent" value="ie6" />
+			<when-property-is name="user.agent" value="ie8" />
+		</any>
+	</replace-with>
+	
+    <!-- IE9 implementation -->
+	<replace-with class="org.geomajas.gwt.client.util.impl.DomImplIE9">
+		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
+		<any>
+			<when-property-is name="user.agent" value="ie9" />
+		</any>
+	</replace-with>
 
 </module>
