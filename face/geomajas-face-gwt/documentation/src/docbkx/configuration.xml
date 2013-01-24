@@ -86,7 +86,7 @@
         &lt;dependency&gt;
             &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
             &lt;artifactId&gt;geomajas-face-gwt&lt;/artifactId&gt;
-            &lt;version&gt;1.9.0-SNAPS&lt;/version&gt;
+            &lt;version&gt;1.9.0-SNAPSHOT&lt;/version&gt;
             &lt;type&gt;pom&lt;/type&gt;
             &lt;scope&gt;import&lt;/scope&gt;
         &lt;/dependency&gt;
@@ -172,5 +172,38 @@
     &lt;/executions&gt;
 &lt;/plugin&gt;</programlisting>
     </example>
+  </section>
+
+  <section>
+    <title>HTML page</title>
+
+    <para>The HTML page should at least contain the following content:</para>
+
+    <para><programlisting>&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv="content-type" content="text/html;charset=utf-8" /&gt;
+        &lt;link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /&gt;
+
+        &lt;!--meta name="gwt:property" content="locale=en" /--&gt;
+        &lt;link type="text/css" rel="stylesheet" href="geomajas.css"&gt;
+        &lt;title&gt;GWT web application using Geomajas&lt;/title&gt;
+
+        &lt;!-- Name defined in the module xml (=geomajas). --&gt;
+        &lt;script type="text/javascript" language="javascript"&gt;var isomorphicDir = "mypackage.GeomajasSimple/sc/";&lt;/script&gt;
+        &lt;script type="text/javascript" language="javascript" src="mypackage.GeomajasSimple/mypackage.GeomajasSimple.nocache.js"&gt;&lt;/script&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;!-- OPTIONAL: include this if you want history support --&gt;
+        &lt;iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position: absolute; width: 0; height: 0; border: 0"&gt;&lt;/iframe&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</programlisting>This includes the compiled module script, the
+    SmartGWT isomorphicDir setting and the stylesheets. You should use an
+    HTML5 standard header if you want SVG support in IE9. Other headers will
+    work as well but will result in VML being used for IE. You may need to add
+    conditional headers for other IE versions when using standards mode, but
+    this will depend on the application and is beyond the scope of
+    Geomajas.</para>
   </section>
 </chapter>
