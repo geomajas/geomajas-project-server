@@ -103,6 +103,8 @@ public class WmsController {
 		}
 
 		String url = layer.getBaseWmsUrl() + "?" + request.getQueryString();
+		// Filter out the user token
+		url = url.replaceFirst("&userToken=[^&]*", "");
 		InputStream stream = null;
 
 		try {
