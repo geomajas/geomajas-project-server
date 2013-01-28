@@ -183,13 +183,15 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 	 * #createClonedConfiguration(org.geomajas.plugin.deskmanager.common .server.domain.configuration.Loket, boolean)
 	 */
 	public ClientApplicationInfo createClonedGeodeskConfiguration(Geodesk loket, boolean includeMaps) {
-		ClientApplicationInfo loketConfig = createGeodeskConfiguration(loket, true);
+		ClientApplicationInfo loketConfig = createGeodeskConfiguration(loket, includeMaps);
 		List<ClientMapInfo> cloned = new ArrayList<ClientMapInfo>();
-		for (ClientMapInfo map : loketConfig.getMaps()) {
-			cloned.add(mapConfigurationCommand.securityClone(map));
+		if (includeMaps) {
+			for (ClientMapInfo map : loketConfig.getMaps()) {
+				cloned.add(mapConfigurationCommand.securityClone(map));
+			}
+			loketConfig.getMaps().clear();
+			loketConfig.getMaps().addAll(cloned);
 		}
-		loketConfig.getMaps().clear();
-		loketConfig.getMaps().addAll(cloned);
 
 		return loketConfig;
 	}
