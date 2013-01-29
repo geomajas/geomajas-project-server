@@ -25,6 +25,7 @@
 	<description>Grouping of Geomajas plugins</description>
 
 	<modules>
+		<module>geomajas-layer-common</module>
 		<module>geomajas-layer-geotools</module>
 		<module>geomajas-layer-google</module>
 		<module>geomajas-layer-hibernate</module>
