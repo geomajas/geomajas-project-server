@@ -178,9 +178,9 @@
 
               <entry>Optional basic or digest HTTP authentication. This bean
               is of the type:
-              <code>org.geomajas.layer.wms.WmsAuthentication</code>. When set,
-              the WMS request is automatically proxied to assure that
-              credentials are not leaked to the client. See "<link
+              <code>org.geomajas.layer.common.proxy.LayerAuthentication</code>.
+              When set, the WMS request is automatically proxied to assure
+              that credentials are not leaked to the client. See "<link
               linkend="wms_authentication">Using authentication</link>" for
               more information.</entry>
             </row>
@@ -268,7 +268,7 @@
     &lt;property name="styles" value="" /&gt;
         
     &lt;property name="authentication"&gt;
-        &lt;bean class="be.geomajas.layer.wms.HttpAuthentication"&gt;
+        &lt;bean class="be.geomajas.layer.common.proxy.LayerHttpAuthentication"&gt;
             &lt;property name="user" value="&lt;the user name&gt;" /&gt;
             &lt;property name="password" value="&lt;password&gt;" /&gt;
             &lt;property name="realm" value="&lt;optional realm&gt;" /&gt;
@@ -323,8 +323,8 @@
               <emphasis>(optional)</emphasis></emphasis></entry>
 
               <entry>Authentication method to use. Options are
-              <code>WmsAuthenticationMethod.BASIC</code> (default) and
-              <code>WmsAuthenticationMethod.URL</code>.</entry>
+              <code>LayerAuthenticationMethod.BASIC</code> (default) and
+              <code>LayerAuthenticationMethod.URL</code>.</entry>
             </row>
 
             <row>
@@ -354,17 +354,17 @@
       HttpRequest interceptors which will be used by the proxy to further
       customise your requests (add extra parameters / headers for security or
       do some logging). To add interceptors add a bean of type
-      WmsHttpServiceInterceptors to your spring configuration. This contains a
-      map of HttpRequestInterceptor lists. The key is a prefix to the baseUrl
-      property of the wmsLayerInfo object.</para>
+      LayerHttpServiceInterceptors to your spring configuration. This contains
+      a map of HttpRequestInterceptor lists. The key is the name of a layer or
+      the prefix to the baseUrl property of the RasterLayerInfo object.</para>
 
-      <para>To add an interceptor to all Wms layers use an empty key (eg. "").
-      To add an interceptor to a specific layer use the complete baseUrl of
-      this layer.</para>
+      <para>To add an interceptor to all layers use an empty key (eg. ""). To
+      add an interceptor to a specific layer use the name of this
+      layer.</para>
 
       <para>Sample bean configuration:</para>
 
-      <para><programlisting>&lt;bean name="wmsInterceptors" class="org.geomajas.layer.wms.WmsHttpServiceInterceptors"&gt;
+      <para><programlisting>&lt;bean name="interceptors" class="org.geomajas.layer.common.proxy.LayerHttpServiceInterceptors"&gt;
    &lt;property name="map"&gt;
       &lt;map&gt;
          &lt;entry key=""&gt;

@@ -34,6 +34,9 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.common.proxy.LayerAuthentication;
+import org.geomajas.layer.common.proxy.LayerAuthenticationMethod;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
@@ -112,7 +115,13 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private String id;
 
+	/**
+	 * @deprecated use layerAuthentication
+	 */
+	@Deprecated
 	private WmsAuthentication authentication;
+	 
+	private LayerAuthentication layerAuthentication;
 
 	private boolean useProxy;
 	
@@ -122,7 +131,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private GeoService geoService;
 
 	@Autowired
-	private WmsHttpService httpService;
+	private LayerHttpService httpService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -245,7 +254,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					url });
 			GML gml = new GML(Version.GML3);
 
-			stream = httpService.getStream(url, getAuthentication());
+			stream = httpService.getStream(url, getLayerAuthentication(), getId());
 			FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
 			FeatureIterator<SimpleFeature> it = collection.features();
 
@@ -647,7 +656,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * Get the authentication object.
 	 * 
 	 * @return authentication object
+	 * @deprecated use getLayerAuthentication
 	 */
+	@Deprecated
 	public WmsAuthentication getAuthentication() {
 		return authentication;
 	}
@@ -665,10 +676,53 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @param authentication
 	 *            authentication object
 	 * @since 1.8.0
+	 * @deprecated use setLayerAuthentication()
 	 */
 	@Api
+	@Deprecated
 	public void setAuthentication(WmsAuthentication authentication) {
 		this.authentication = authentication;
+	}
+
+	/**
+	 * Get the layerAuthentication object.
+	 * 
+	 * @return layerAuthentication object
+	 */
+	public LayerAuthentication getLayerAuthentication() {
+		// convert authentication to layerAuthentication so we only use one
+		// TODO Remove when removing deprecated authentication field.
+		if (layerAuthentication == null && authentication != null) {
+			layerAuthentication = new LayerAuthentication();
+			layerAuthentication.setAuthenticationMethod(LayerAuthenticationMethod.valueOf(authentication
+					.getAuthenticationMethod().name()));
+			layerAuthentication.setPassword(authentication.getPassword());
+			layerAuthentication.setPasswordKey(authentication.getPasswordKey());
+			layerAuthentication.setRealm(authentication.getRealm());
+			layerAuthentication.setUser(authentication.getUser());
+			layerAuthentication.setUserKey(authentication.getUserKey());
+		}
+		// TODO Remove when removing deprecated authentication field.
+		return layerAuthentication;
+	}
+
+	/**
+	 * <p>
+	 * Set the authentication object. This configuration object provides support for basic and digest HTTP
+	 * authentication on the WMS server. If no HTTP authentication is required, leave this empty.
+	 * </p>
+	 * <p>
+	 * Note that there is still the option of adding a user name and password as HTTP parameters, as some WMS server
+	 * support. To do that, just add {@link #parameters}.
+	 * </p>
+	 * 
+	 * @param layerAuthentication
+	 *            layerAuthentication object
+	 * @since 1.11.0
+	 */
+	@Api
+	public void setLayerAuthentication(LayerAuthentication layerAuthentication) {
+		this.layerAuthentication = layerAuthentication;
 	}
 
 	/**
@@ -861,4 +915,5 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	void clearCacheManagerService() {
 		this.cacheManagerService = null;
 	}
+
 }

@@ -10,11 +10,13 @@
  */
 package org.geomajas.layer.wms;
 
-import org.geomajas.annotation.Api;
-
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotation.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -28,9 +30,13 @@ import javax.validation.constraints.NotNull;
  * 
  * @author Pieter De Graef
  * @since 1.8.0
+ * @deprecated use {@link LayerAuthentication}
  */
 @Api(allMethods = true)
+@Deprecated
 public class WmsAuthentication implements Serializable {
+
+	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
 	private static final long serialVersionUID = 180L;
 
@@ -45,6 +51,14 @@ public class WmsAuthentication implements Serializable {
 	private String passwordKey = "password";
 
 	private WmsAuthenticationMethod authenticationMethod = WmsAuthenticationMethod.BASIC;
+
+	/**
+	 * This class is deprecated use: LayerAuthentication.
+	 */
+	public WmsAuthentication() {
+		super();
+		log.warn("this class is deprecated use: LayerAuthentication.");
+	}
 
 	/**
 	 * Get the user name.

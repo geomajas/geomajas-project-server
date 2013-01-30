@@ -15,7 +15,9 @@ package org.geomajas.layer.wms;
  * Different possible authentication methods for WMS requests.
  *
  * @author Joachim Van der Auwera
+ * @deprecated use {@link LayerAuthenticationMethod}
  */
+@Deprecated
 public enum WmsAuthenticationMethod {
 	/**
 	 * HTTP BASIC authentication is used.

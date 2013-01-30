@@ -10,6 +10,17 @@
  */
 package org.geomajas.layer.wms.mvc;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.StringTokenizer;
+
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +31,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.wms.WmsHttpService;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
@@ -35,17 +46,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vividsolutions.jts.geom.Envelope;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.StringTokenizer;
 
 /**
  * Spring MVC controller that maps a WMS request so it can be proxied to the real URL with authentication parameters,
@@ -72,7 +72,7 @@ public class WmsController {
 	private ConfigurationService configurationService;
 
 	@Autowired
-	private WmsHttpService httpService;
+	private LayerHttpService httpService;
 	
 	@Autowired(required = false)
 	private CacheManagerService cacheManagerService;
@@ -84,7 +84,7 @@ public class WmsController {
 	private TestRecorder testRecorder;
 
 	// method provided for testing
-	protected void setHttpService(WmsHttpService httpService) {
+	protected void setHttpService(LayerHttpService httpService) {
 		this.httpService = httpService;
 	}
 
@@ -118,7 +118,7 @@ public class WmsController {
 					out.write((byte[]) cachedObject);
 				} else {
 					testRecorder.record(TEST_RECORDER_GROUP, TEST_RECORDER_PUT_IN_CACHE);
-					stream = httpService.getStream(url, layer.getAuthentication());
+					stream = httpService.getStream(url, layer.getLayerAuthentication(), layerId);
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 					int b;
 					while ((b = stream.read()) >= 0 ) {
@@ -129,7 +129,7 @@ public class WmsController {
 							getLayerEnvelope(layer));
 				}				
 			} else {
-				stream = httpService.getStream(url, layer.getAuthentication());
+				stream = httpService.getStream(url, layer.getLayerAuthentication(), layerId);
 				int b;
 				while ((b = stream.read()) >= 0 ) {
 					out.write(b);

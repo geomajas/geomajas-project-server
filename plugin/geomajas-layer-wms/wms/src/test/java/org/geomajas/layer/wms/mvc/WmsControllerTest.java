@@ -11,9 +11,17 @@
 
 package org.geomajas.layer.wms.mvc;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import junit.framework.Assert;
-import org.geomajas.layer.wms.WmsAuthentication;
-import org.geomajas.layer.wms.WmsHttpService;
+
+import org.geomajas.layer.common.proxy.LayerAuthentication;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geomajas.testdata.rule.SecurityRule;
 import org.junit.Rule;
@@ -25,13 +33,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Test for {@link WmsController}.
@@ -110,13 +111,13 @@ public class WmsControllerTest {
 		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
 	}
 
-	private class MockHttpService implements WmsHttpService {
+	private class MockHttpService implements LayerHttpService {
 
-		public String addCredentialsToUrl(String url, WmsAuthentication authentication) {
+		public String addCredentialsToUrl(String url, LayerAuthentication authentication) {
 			return url;
 		}
 
-		public InputStream getStream(String url, WmsAuthentication authentication) throws IOException {
+		public InputStream getStream(String url, LayerAuthentication authentication, String layerId) throws IOException {
 			return new ByteArrayInputStream(TEST_VALUE.getBytes("UTF-8"));
 		}
 	}
