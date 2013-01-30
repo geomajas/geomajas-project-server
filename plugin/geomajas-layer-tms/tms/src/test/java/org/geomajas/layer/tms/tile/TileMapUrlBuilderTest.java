@@ -12,8 +12,8 @@
 package org.geomajas.layer.tms.tile;
 
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tms.TmsLayerException;
 import org.geomajas.layer.tms.TmsConfigurationService;
+import org.geomajas.layer.tms.TmsLayerException;
 import org.geomajas.layer.tms.xml.TileMap;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,8 +41,8 @@ public class TileMapUrlBuilderTest {
 	public void testBuildUrl1() throws TmsLayerException {
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
-		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap, BASE_TMS_URL);
-		String url = builder.buildUrl(new TileCode(1, 2, 3));
+		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap);
+		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL);
 		Assert.assertEquals("http://www.geomajas.org/tms/some_layer/href2/2/3.extension", url);
 	}
 
@@ -50,15 +50,15 @@ public class TileMapUrlBuilderTest {
 	public void testBuildUrl2() throws TmsLayerException {
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
-		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap, BASE_TMS_URL);
-		String url = builder.buildUrl(new TileCode(1, 2, 3));
+		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap);
+		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL);
 		Assert.assertEquals("http://tms.osgeo.org/1.0.0/landsat2000/512/2/3.png", url);
 	}
 
 	@Test
 	public void testBuildUrlCornerCases() throws TmsLayerException {
 		try {
-			new TileMapUrlBuilder(null, BASE_TMS_URL);
+			new TileMapUrlBuilder(null);
 			Assert.fail();
 		} catch (IllegalStateException e) {
 			// As expected...
@@ -66,19 +66,31 @@ public class TileMapUrlBuilderTest {
 
 		TileMap tileMap = configurationService
 				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
+
+		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap);
 		try {
-			new TileMapUrlBuilder(tileMap, null);
+			builder.buildUrl(null, BASE_TMS_URL);
 			Assert.fail();
-		} catch (IllegalStateException e) {
+		} catch (IllegalArgumentException e) {
 			// As expected...
 		}
 
-		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap, BASE_TMS_URL);
 		try {
-			builder.buildUrl(null);
+			builder.buildUrl(new TileCode(), null);
 			Assert.fail();
-		} catch (NullPointerException e) {
+		} catch (IllegalArgumentException e) {
 			// As expected...
 		}
+	}
+	
+	@Test
+	public void testParseTileCode() {
+		String relativeUrl = "12/5/7.jpg";
+		TileCode tc = TileMapUrlBuilder.parseTileCode(relativeUrl);
+		
+		Assert.assertNotNull(tc);
+		Assert.assertTrue(tc.getTileLevel() == 12);
+		Assert.assertTrue(tc.getX() == 5);
+		Assert.assertTrue(tc.getY() == 7);
 	}
 }

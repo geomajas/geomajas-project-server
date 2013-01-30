@@ -23,14 +23,18 @@ import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.common.proxy.LayerAuthentication;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tms.xml.TileMap;
 import org.geomajas.layer.tms.tile.SimpleTmsUrlBuilder;
 import org.geomajas.layer.tms.tile.TileMapUrlBuilder;
 import org.geomajas.layer.tms.tile.TileService;
 import org.geomajas.layer.tms.tile.TileServiceState;
 import org.geomajas.layer.tms.tile.TileUrlBuilder;
+import org.geomajas.layer.tms.xml.TileMap;
+import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.security.SecurityContext;
+import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.GeoService;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -45,6 +49,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * {@link RasterLayerInfo} needs to be configured, as the target TMS url should contain a description of the TMS layer.
  * 
  * @author Pieter De Graef
+ * @author Kristof Heirwegh
  * @since 1.0.0
  */
 @Api
@@ -63,6 +68,12 @@ public class TmsLayer implements RasterLayer {
 	private TileMap tileMap;
 
 	private RasterLayerInfo layerInfo;
+	
+	private LayerAuthentication authentication;
+
+	private boolean useProxy;
+
+	private boolean useCache;
 
 	// Spring services:
 
@@ -72,6 +83,15 @@ public class TmsLayer implements RasterLayer {
 	@Autowired
 	private TmsConfigurationService configurationService;
 
+	@Autowired(required = false)
+	private DispatcherUrlService dispatcherUrlService;
+
+	@Autowired(required = false)
+	private CacheManagerService cacheManagerService;
+	
+	@Autowired
+	private SecurityContext securityContext;
+	
 	@Autowired
 	private TileService tileService;
 
@@ -107,10 +127,12 @@ public class TmsLayer implements RasterLayer {
 
 		// Finally prepare some often needed values:
 		state = new TileServiceState(geoService, layerInfo);
-		if (tileMap != null) {
-			urlBuilder = new TileMapUrlBuilder(tileMap, baseTmsUrl);
+		// when proxying the real url will be resolved later on, just use a simple one for now
+		boolean proxying = useCache || useProxy || null != authentication;
+		if (tileMap != null && !proxying) {
+			urlBuilder = new TileMapUrlBuilder(tileMap);
 		} else {
-			urlBuilder = new SimpleTmsUrlBuilder(baseTmsUrl, extension);
+			urlBuilder = new SimpleTmsUrlBuilder(extension);
 		}
 	}
 
@@ -201,11 +223,54 @@ public class TmsLayer implements RasterLayer {
 
 				TileCode tileCode = new TileCode(tileLevel, i, j);
 				image.setCode(tileCode);
-				image.setUrl(urlBuilder.buildUrl(tileCode));
+				image.setUrl(formatUrl(urlBuilder.buildUrl(tileCode, getTmsTargetUrl())));
 				result.add(image);
 			}
 		}
 		return result;
+	}
+
+	// ---------------------------------------------------
+
+	private String getTmsTargetUrl() {
+		if (useProxy || null != authentication || useCache) {
+			if (null != dispatcherUrlService) {
+				String url = dispatcherUrlService.getDispatcherUrl();
+				if (!url.endsWith("/")) {
+					url += "/";
+				}
+				return url + "tms/" + getId() + "/";
+			} else {
+				return "./d/tms/" + getId() + "/";
+			}
+		} else {
+			return baseTmsUrl;
+		}
+	}
+	
+	/**
+	 * Adds userToken to url if we are proxying or caching (eg. indirect calls)
+	 * 
+	 * @param imageUrl
+	 * @return
+	 */
+	private String formatUrl(String imageUrl) {
+		if (useProxy || null != authentication || useCache) {
+			String token = securityContext.getToken();
+			if (null != token) {
+				StringBuilder url = new StringBuilder(imageUrl);
+				int pos = url.lastIndexOf("?");
+				if (pos > 0) {
+					url.append("&");
+				} else {
+					url.append("?");
+				}
+				url.append("userToken=");
+				url.append(token);
+				return url.toString();
+			}
+		}
+		return imageUrl;
 	}
 
 	// ------------------------------------------------------------------------
@@ -294,5 +359,83 @@ public class TmsLayer implements RasterLayer {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	
+	/**
+	 * Get the authentication object.
+	 * 
+	 * @return authentication object
+	 * @since 1.1.0
+	 */
+	public LayerAuthentication getAuthentication() {
+		return authentication;
+	}
+
+	/**
+	 * <p>
+	 * Set the authentication object. This configuration object provides support for basic and digest HTTP
+	 * authentication on the TMS server. If no HTTP authentication is required, leave this empty.
+	 * </p>
+	 * <p>
+	 * Note that there is still the option of adding a user name and password as HTTP parameters.
+	 * To do that, just add {@link #parameters}.
+	 * </p>
+	 * 
+	 * @param authentication
+	 *            authentication object
+	 * @since 1.1.0
+	 */
+	@Api
+	public void setAuthentication(LayerAuthentication authentication) {
+		this.authentication = authentication;
+	}
+
+	/**
+	 * Set whether the TMS request should use a proxy. This is automatically done when the authentication object is set.
+	 * When the TMS request is proxied, the credentials and TMS base address are hidden from the client.
+	 * 
+	 * @param useProxy
+	 *            true when request needs to use the proxy
+	 * @since 1.1.0
+	 */
+	@Api
+	public void setUseProxy(boolean useProxy) {
+		this.useProxy = useProxy;
+	}
+
+	/**
+	 * Set whether the TMS tiles should be cached for later use. This implies that the TMS tiles will be proxied.
+	 *
+	 * @param useCache true when request needs to be cached
+	 * @since 1.1.0
+	 */
+	@Api
+	public void setUseCache(boolean useCache) {
+		if (null == cacheManagerService && useCache) {
+			log.warn("The caching plugin needs to be available to cache TMS requests. Not setting useCache.");
+		} else {
+			this.useCache = useCache;
+		}
+	}
+
+	/**
+	 * Set whether the TMS tiles should be cached for later use. This implies that the TMS tiles will be proxied.
+	 *
+	 * @return true when request needs to be cached
+	 * @since 1.1.0
+	 */
+	@Api
+	public boolean isUseCache() {
+		return useCache;
+	}
+
+	/**
+	 * The tilemap is needed by the proxy to retrieve the correct url (when proxying / caching).
+	 * 
+	 * @return tileMap
+	 * @since 1.1.0
+	 */
+	public TileMap getTileMap() {
+		return tileMap;
 	}
 }

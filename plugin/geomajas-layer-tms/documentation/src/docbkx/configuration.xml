@@ -131,5 +131,137 @@
 
       <programlisting>http://tms.osgeo.org/1.0.0/landsat/0/0/0.jpg</programlisting>
     </section>
+
+    <section>
+      <title id="tms_authentication">Using authentication</title>
+
+      <para>The optional HTTP authentication allows the TMS layer to send user
+      credentials to the TMS server in the HTTP headers. Although this is an
+      option, often TMS servers will be secured, and require such
+      authentication. Below is an example of a TMS layer configuration that
+      uses the HTTP authentication:</para>
+
+      <programlisting>&lt;bean name="layerTms" class="org.geomajas.layer.tms.TmsLayer" &gt;
+    &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
+    &lt;property name="extension" value="jpg" /&gt;
+    &lt;property name="layerInfo" ref="<emphasis role="bold">layerTmsInfo</emphasis>" /&gt;
+
+    &lt;property name="authentication"&gt;
+        &lt;bean class="be.geomajas.layer.common.proxy.LayerHttpAuthentication"&gt;
+            &lt;property name="user" value="&lt;the user name&gt;" /&gt;
+            &lt;property name="password" value="&lt;password&gt;" /&gt;
+            &lt;property name="realm" value="&lt;optional realm&gt;" /&gt;
+            &lt;property name="applicationUrl" value="&lt;the URL for this web application&gt;" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+
+      <para>Let us go over the properties for the authentication bean:</para>
+
+      <table>
+        <title>TMS authentication properties</title>
+
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry><emphasis role="bold">user
+              <emphasis>(required)</emphasis></emphasis></entry>
+
+              <entry>The user login name.</entry>
+            </row>
+
+            <row>
+              <entry><emphasis role="bold">password<emphasis>
+              (required)</emphasis></emphasis></entry>
+
+              <entry>The users password.</entry>
+            </row>
+
+            <row>
+              <entry><emphasis role="bold">realm
+              <emphasis>(optional)</emphasis></emphasis></entry>
+
+              <entry>The HTTP realm for this user. This is an optional
+              value.</entry>
+            </row>
+
+            <row>
+              <entry><emphasis role="bold">authenticationMethod
+              <emphasis>(optional)</emphasis></emphasis></entry>
+
+              <entry>Authentication method to use. Options are
+              <code>LayerAuthenticationMethod.BASIC</code> (default) and
+              <code>LayerAuthenticationMethod.URL</code>.</entry>
+            </row>
+
+            <row>
+              <entry><emphasis role="bold">userKey</emphasis>
+              <emphasis>(optional)</emphasis></entry>
+
+              <entry>Key which is used to pass the user name when using the
+              URL authentication type.</entry>
+            </row>
+
+            <row>
+              <entry><emphasis role="bold">passwordKey</emphasis>
+              <emphasis>(optional)</emphasis></entry>
+
+              <entry>Key which is used to set the password when using the URL
+              authentication type.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section>
+      <title>Using the proxy</title>
+
+      <para>When using the optional Proxy setting you can provide extra
+      HttpRequest interceptors which will be used by the proxy to further
+      customise your requests (add extra parameters / headers for security or
+      do some logging). To add interceptors add a bean of type
+      LayerHttpServiceInterceptors to your spring configuration. This contains
+      a map of HttpRequestInterceptor lists. The key is the name of a layer or
+      the prefix to the baseUrl property of the RasterLayerInfo object.</para>
+
+      <para>To add an interceptor to all layers use an empty key (eg. ""). To
+      add an interceptor to a specific layer use the name of this
+      layer.</para>
+
+      <para>Sample bean configuration:</para>
+
+      <para><programlisting>&lt;bean name="layerTms" class="org.geomajas.layer.tms.TmsLayer" &gt;
+    &lt;property name="baseTmsUrl" value="http://tms.osgeo.org/1.0.0/landsat/" /&gt;
+    &lt;property name="extension" value="jpg" /&gt;
+    &lt;property name="layerInfo" ref="layerTmsInfo" /&gt;
+    <emphasis role="bold">&lt;property name="useProxy"  value="true" /&gt;</emphasis>
+&lt;/bean&gt;
+
+&lt;bean name="<emphasis role="bold">interceptors</emphasis>" class="<emphasis
+            role="bold">org.geomajas.layer.common.proxy.LayerHttpServiceInterceptors</emphasis>"&gt;
+   &lt;property name="map"&gt;
+      &lt;map&gt;
+         &lt;entry key=""&gt;
+            &lt;list&gt;
+               &lt;bean class="org.geomajas.layer.tms.sample.AddSomeLeetHeadersHttpRequestInterceptor" /&gt;
+            &lt;/list&gt;
+         &lt;/entry&gt;
+      &lt;/map&gt;
+   &lt;/property&gt;
+&lt;/bean&gt;</programlisting></para>
+    </section>
   </section>
 </chapter>

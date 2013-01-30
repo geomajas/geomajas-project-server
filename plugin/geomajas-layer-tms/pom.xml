@@ -57,17 +57,30 @@
 			</dependency>
 
 			<dependency>
-				<groupId>commons-httpclient</groupId>
-				<artifactId>commons-httpclient</artifactId>
-				<version>2.0</version>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching</artifactId>
+				<version>${tms-layer-caching-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-			<!-- should use this instead
+
 			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-layer-common</artifactId>
+				<version>${tms-layer-common-version}</version>
+			</dependency>
+
+ 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
-				<version>4.1</version>
+				<version>${tms-httpcomponents-version}</version>
 			</dependency>
-			-->
+			
+	 		<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>${tms-httpcomponents-version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -78,5 +91,8 @@
 
 	<properties>
 		<tms-layer-backend-version>1.10.0</tms-layer-backend-version>
+		<tms-layer-caching-version>2.0.0</tms-layer-caching-version>
+		<tms-layer-common-version>1.0.0-SNAPSHOT</tms-layer-common-version>
+		<tms-httpcomponents-version>4.2.1</tms-httpcomponents-version>
 	</properties>
 </project>

@@ -27,6 +27,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 		<property name="backendVersion" value="${tms-layer-backend-version}" />
+		<property name="optionalDependencies">
+			<list>
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<property name="name" value="caching" />
+					<property name="version" value="${tms-layer-caching-version}" />
+				</bean>
+			</list>
+		</property>
 		<property name="copyrightInfo">
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">

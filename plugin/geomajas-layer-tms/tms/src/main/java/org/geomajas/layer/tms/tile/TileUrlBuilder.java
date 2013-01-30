@@ -25,7 +25,9 @@ public interface TileUrlBuilder {
 	 * 
 	 * @param tileCode
 	 *            The tile-code that points to a unique tile within the raster layer.
+	 * @param baseTmsUrl
+	 *            The base url.
 	 * @return The URL where to retrieve the actual image.
 	 */
-	String buildUrl(TileCode tileCode);
+	String buildUrl(TileCode tileCode, String baseTmsUrl);
 }

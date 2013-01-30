@@ -21,15 +21,12 @@ import org.geomajas.layer.tile.TileCode;
  */
 public class SimpleTmsUrlBuilder implements TileUrlBuilder {
 
-	private final String baseTmsUrl;
-
 	private final String extension;
 
-	public SimpleTmsUrlBuilder(String baseTmsUrl, String extension) {
-		if (extension == null || baseTmsUrl == null) {
+	public SimpleTmsUrlBuilder(String extension) {
+		if (extension == null) {
 			throw new IllegalStateException("Values may not be null.");
 		}
-		this.baseTmsUrl = baseTmsUrl;
 		if (extension.charAt(0) != '.') {
 			this.extension = "." + extension;
 		} else {
@@ -38,7 +35,7 @@ public class SimpleTmsUrlBuilder implements TileUrlBuilder {
 	}
 
 	/** {@inheritDoc} */
-	public String buildUrl(TileCode tileCode) {
+	public String buildUrl(TileCode tileCode, String baseTmsUrl) {
 		StringBuilder builder = new StringBuilder(baseTmsUrl);
 		if (!baseTmsUrl.endsWith("/")) {
 			builder.append("/");
@@ -51,4 +48,5 @@ public class SimpleTmsUrlBuilder implements TileUrlBuilder {
 		builder.append(extension);
 		return builder.toString();
 	}
+	
 }

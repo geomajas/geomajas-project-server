@@ -31,42 +31,43 @@ public class SimpleTmsUrlBuilderTest {
 
 	@Test
 	public void testBuildUrl1() {
-		TileUrlBuilder builder = new SimpleTmsUrlBuilder(BASE_TMS_URL, EXTENSION);
-		String url = builder.buildUrl(new TileCode(1, 2, 3));
+		TileUrlBuilder builder = new SimpleTmsUrlBuilder(EXTENSION);
+		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL);
 		Assert.assertEquals(EXPECTED, url);
 	}
 
 	@Test
 	public void testBuildUrl2() {
-		TileUrlBuilder builder = new SimpleTmsUrlBuilder(BASE_TMS_URL + "/", EXTENSION);
-		String url = builder.buildUrl(new TileCode(1, 2, 3));
+		TileUrlBuilder builder = new SimpleTmsUrlBuilder(EXTENSION);
+		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL + "/");
 		Assert.assertEquals(EXPECTED, url);
 	}
 
 	@Test
 	public void testBuildUrl3() {
-		TileUrlBuilder builder = new SimpleTmsUrlBuilder(BASE_TMS_URL + "/", "." + EXTENSION);
-		String url = builder.buildUrl(new TileCode(1, 2, 3));
+		TileUrlBuilder builder = new SimpleTmsUrlBuilder("." + EXTENSION);
+		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL + "/");
 		Assert.assertEquals(EXPECTED, url);
 	}
 
 	@Test
 	public void testBuildUrlCornerCases() {
 		try {
-			new SimpleTmsUrlBuilder(null, EXTENSION);
+			new SimpleTmsUrlBuilder(null);
 			Assert.fail();
 		} catch (IllegalStateException e) {
 			// As expected...
 		}
 		try {
-			new SimpleTmsUrlBuilder(BASE_TMS_URL, null);
+			TileUrlBuilder builder = new SimpleTmsUrlBuilder("." + EXTENSION);
+			builder.buildUrl(null, "");
 			Assert.fail();
-		} catch (IllegalStateException e) {
+		} catch (NullPointerException e) {
 			// As expected...
 		}
 		try {
-			TileUrlBuilder builder = new SimpleTmsUrlBuilder(BASE_TMS_URL + "/", "." + EXTENSION);
-			builder.buildUrl(null);
+			TileUrlBuilder builder = new SimpleTmsUrlBuilder("." + EXTENSION);
+			builder.buildUrl(new TileCode(), null);
 			Assert.fail();
 		} catch (NullPointerException e) {
 			// As expected...
