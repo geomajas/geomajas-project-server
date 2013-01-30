@@ -14,4 +14,8 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
   
+  <section>
+	<title>Security</title>
+	<para>Check out TmsLayer + TmsController or WmsLayer + WmsController on how you can add security to your custom layer.</para>
+  </section>
 </chapter>
