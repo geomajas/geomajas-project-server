@@ -137,8 +137,8 @@
 
 	<properties>
 		<geomajas-widget-utility-backend-version>1.11.1</geomajas-widget-utility-backend-version>
-		<geomajas-widget-utility-gwt-face-version>1.11.1</geomajas-widget-utility-gwt-face-version>
-		<geomajas-widget-utility-gwt-version>2.4.0</geomajas-widget-utility-gwt-version>
+		<geomajas-widget-utility-gwt-face-version>1.12.0</geomajas-widget-utility-gwt-face-version>
+		<geomajas-widget-utility-gwt-version>2.5.0</geomajas-widget-utility-gwt-version>
 	</properties>
 
 </project>
