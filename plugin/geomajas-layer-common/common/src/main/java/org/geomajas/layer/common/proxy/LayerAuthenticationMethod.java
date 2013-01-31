@@ -22,6 +22,11 @@ public enum LayerAuthenticationMethod {
 	 * HTTP BASIC authentication is used.
 	 */
 	BASIC,
+	
+	/**
+	 * HTTP DIGEST authentication is used.
+	 */
+	DIGEST,
 
 	/**
 	 * Username and password are added in the URL.

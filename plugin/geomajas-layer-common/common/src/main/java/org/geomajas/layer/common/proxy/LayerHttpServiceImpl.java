@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -87,10 +88,10 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 
 		// -- add basic authentication
 		if (null != authentication 
-				&& LayerAuthenticationMethod.BASIC.equals(authentication.getAuthenticationMethod())) {
-			// Set up the WMS credentials:
-			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(authentication.getUser(),
-					authentication.getPassword());
+				&& (LayerAuthenticationMethod.BASIC.equals(authentication.getAuthenticationMethod()) || 
+					LayerAuthenticationMethod.DIGEST.equals(authentication.getAuthenticationMethod()))) {
+			// Set up the credentials:
+			Credentials creds = new UsernamePasswordCredentials(authentication.getUser(), authentication.getPassword());
 			AuthScope scope = new AuthScope(parseDomain(url), parsePort(url), authentication.getRealm());
 			client.getCredentialsProvider().setCredentials(scope, creds);
 		}
