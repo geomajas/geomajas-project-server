@@ -56,7 +56,6 @@ public class Geodesks extends VLayout implements EditSessionHandler, ManagerTab 
 
 		buttonNew = new IButton(MESSAGES.newGeodeskButtonText());
 		buttonNew.setIcon(WidgetLayout.iconAdd);
-		buttonNew.setAutoFit(true);
 		buttonNew.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

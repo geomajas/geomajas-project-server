@@ -56,7 +56,6 @@ public class Datalayers extends VLayout implements EditSessionHandler, ManagerTa
 
 		buttonNew = new IButton(MESSAGES.datalayersNewDatalayerButtonText());
 		buttonNew.setIcon(WidgetLayout.iconAdd);
-		buttonNew.setAutoFit(true);
 		buttonNew.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

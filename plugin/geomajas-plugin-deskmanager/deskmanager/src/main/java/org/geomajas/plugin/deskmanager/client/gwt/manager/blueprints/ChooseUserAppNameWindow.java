@@ -85,7 +85,6 @@ public class ChooseUserAppNameWindow extends Window {
 		HLayout buttons = new HLayout(10);
 		save = new IButton(MESSAGES.chooseAppCreate());
 		save.setIcon(WidgetLayout.iconAdd);
-		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -94,7 +93,6 @@ public class ChooseUserAppNameWindow extends Window {
 		});
 		IButton cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
-		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

@@ -73,7 +73,6 @@ public class SaveButtonBar extends HLayout implements ChangedHandler {
 
 		edit = new IButton(MESSAGES.editButtonText());
 		edit.setIcon(WidgetLayout.iconEdit);
-		edit.setAutoFit(true);
 		edit.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -83,7 +82,6 @@ public class SaveButtonBar extends HLayout implements ChangedHandler {
 
 		save = new IButton(MESSAGES.saveButtonText());
 		save.setIcon(WidgetLayout.iconSave);
-		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -93,7 +91,6 @@ public class SaveButtonBar extends HLayout implements ChangedHandler {
 
 		cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
-		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -103,7 +100,6 @@ public class SaveButtonBar extends HLayout implements ChangedHandler {
 
 		reset = new IButton(MESSAGES.resetButtonText());
 		reset.setIcon(WidgetLayout.iconUndo);
-		reset.setAutoFit(true);
 		reset.setTooltip(MESSAGES.resetButtonTooltip());
 		reset.addClickHandler(new ClickHandler() {
 

@@ -128,7 +128,6 @@ public class LayerConfigurationWindow extends DockableWindow {
 		HLayout buttons = new HLayout(10);
 		IButton save = new IButton(MESSAGES.saveButtonText());
 		save.setIcon(WidgetLayout.iconSave);
-		save.setAutoFit(true);
 		save.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -137,7 +136,6 @@ public class LayerConfigurationWindow extends DockableWindow {
 		});
 		IButton cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
-		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -147,7 +145,6 @@ public class LayerConfigurationWindow extends DockableWindow {
 
 		IButton restore = new IButton(MESSAGES.resetButtonText());
 		restore.setIcon(WidgetLayout.iconReset);
-		restore.setAutoFit(true);
 		restore.setTooltip(MESSAGES.resetButtonTooltip());
 		restore.addClickHandler(new ClickHandler() {
 

@@ -42,7 +42,6 @@ public class MailManagePanel extends VLayout {
 
 		buttonNew = new IButton(MESSAGES.mailManageNewButtonText());
 		buttonNew.setIcon(WidgetLayout.iconAdd);
-		buttonNew.setAutoFit(true);
 		buttonNew.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

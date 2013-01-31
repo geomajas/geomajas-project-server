@@ -137,7 +137,6 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 		buttons.setHeight(25);
 		prev = new IButton(MESSAGES.wizardPreviousButtonText());
 		prev.setIcon(WidgetLayout.iconZoomLast);
-		prev.setAutoFit(true);
 		prev.setDisabled(true);
 		prev.addClickHandler(new ClickHandler() {
 
@@ -148,7 +147,6 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 		next = new IButton(MESSAGES.wizardNextButtonText());
 		next.setIcon(WidgetLayout.iconZoomNext);
-		next.setAutoFit(true);
 		next.setDisabled(true);
 		next.addClickHandler(new ClickHandler() {
 
@@ -164,7 +162,6 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 		save = new IButton(MESSAGES.newLayerModelWizardCreateButtonText());
 		save.setIcon(WidgetLayout.iconAdd);
-		save.setAutoFit(true);
 		save.setDisabled(true);
 		save.setVisible(false);
 		save.addClickHandler(new ClickHandler() {
@@ -176,7 +173,6 @@ public class NewLayerModelWizardWindow extends Window implements Wizard {
 
 		cancel = new IButton(MESSAGES.cancelButtonText());
 		cancel.setIcon(WidgetLayout.iconCancel);
-		cancel.setAutoFit(true);
 		cancel.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
