@@ -146,7 +146,6 @@ public class LayerActions extends Window {
 				IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields()
 						: MESSAGES.layerActionsShowLegend());
 				legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
-				legendInfo.setAutoFit(true);
 				legendInfo.addClickHandler(new ClickHandler() {
 
 					public void onClick(ClickEvent event) {
@@ -159,7 +158,6 @@ public class LayerActions extends Window {
 			IButton legendInfo = new IButton(vectorLayer != null ? MESSAGES.layerActionsShowLegendAndFields()
 					: MESSAGES.layerActionsShowLegend());
 			legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
-			legendInfo.setAutoFit(true);
 			legendInfo.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
@@ -211,7 +209,6 @@ public class LayerActions extends Window {
 		if (vectorLayer != null && vectorLayer.getFilter() != null && !"".equals(vectorLayer.getFilter())) {
 			final IButton removeFilter = new IButton(MESSAGES.layerActionsRemoveFilter());
 			removeFilter.setIcon(BTN_REMOVEFILTER_IMG);
-			removeFilter.setAutoFit(true);
 			String tooltip = vectorLayer.getFilter();
 			if (tooltip.length() > 1000) {
 				tooltip = tooltip.substring(0, 1000);
