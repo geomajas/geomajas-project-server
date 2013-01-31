@@ -108,6 +108,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 
 		String iconBaseUrl = buttonAction.getIcon();
 		icon = new Img(iconBaseUrl, iconSize, iconSize);
+		icon.setOverflow(Overflow.HIDDEN);
 		icon.setLayoutAlign(Alignment.CENTER);
 		
 		titleLabel = new StatefulCanvas();
