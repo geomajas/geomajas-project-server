@@ -305,7 +305,6 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 			final IButton saveButton = new IButton(MESSAGES.searchFavouritesListWidgetSave());
 			saveButton.setIcon(WidgetLayout.iconSave);
-			saveButton.setAutoFit(true);
 			saveButton.setShowDisabledIcon(false);
 			saveButton.setDisabled(true);
 			saveButton.addClickHandler(new ClickHandler() {
@@ -322,7 +321,6 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 			final IButton cancelButton = new IButton(MESSAGES.searchFavouritesListWidgetCancel());
 			cancelButton.setIcon(WidgetLayout.iconCancel);
-			cancelButton.setAutoFit(true);
 			cancelButton.setDisabled(true);
 			cancelButton.setShowDisabledIcon(false);
 			cancelButton.addClickHandler(new ClickHandler() {
@@ -343,7 +341,6 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 			IButton editCritButton = new IButton(MESSAGES.searchFavouritesListWidgetEditFilter());
 			editCritButton.setIcon(WidgetLayout.iconEdit);
-			editCritButton.setAutoFit(true);
 			editCritButton.setShowDisabledIcon(false);
 			editCritButton.setTooltip(MESSAGES.searchFavouritesListWidgetEditFilterTooltip());
 			editCritButton.addClickHandler(new ClickHandler() {
@@ -379,7 +376,6 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 			IButton deleteButton = new IButton(MESSAGES.searchFavouritesListWidgetDelete());
 			deleteButton.setIcon(BTN_DELETE_IMG);
-			deleteButton.setAutoFit(true);
 			deleteButton.setShowDisabledIcon(false);
 			deleteButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {

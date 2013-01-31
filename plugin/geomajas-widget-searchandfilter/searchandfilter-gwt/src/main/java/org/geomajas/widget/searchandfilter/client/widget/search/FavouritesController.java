@@ -87,7 +87,6 @@ public class FavouritesController implements FavouriteRequestHandler {
 		buttonLayout.setWidth100();
 		IButton addBtn = new IButton(messages.favouritesControllerAddAdd());
 		addBtn.setIcon(BTN_ADD_IMG);
-		addBtn.setAutoFit(true);
 		addBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (form.validate()) {
@@ -105,7 +104,6 @@ public class FavouritesController implements FavouriteRequestHandler {
 		});
 		IButton cancelBtn = new IButton(messages.favouritesControllerAddCancel());
 		cancelBtn.setIcon(WidgetLayout.iconCancel);
-		cancelBtn.setAutoFit(true);
 		cancelBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				addWindow.destroy();

@@ -103,7 +103,6 @@ public class SelectionSearch extends AbstractGeometricSearchMethod implements Fe
 	
 			IButton btnZoom = new IButton(messages.geometricSearchWidgetSelectionSearchZoomToSelection());
 			btnZoom.setIcon(WidgetLayout.iconZoomSelection);
-			btnZoom.setAutoFit(true);
 			btnZoom.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					onZoomClick();
@@ -113,7 +112,6 @@ public class SelectionSearch extends AbstractGeometricSearchMethod implements Fe
 	
 			IButton btnAdd = new IButton(messages.geometricSearchWidgetSelectionSearchAddSelection());
 			btnAdd.setIcon(WidgetLayout.iconSelectedAdd);
-			btnAdd.setAutoFit(true);
 			btnAdd.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					onAddClick();

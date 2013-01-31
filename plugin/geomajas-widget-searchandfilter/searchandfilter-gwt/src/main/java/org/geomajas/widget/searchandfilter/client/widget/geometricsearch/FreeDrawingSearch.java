@@ -103,7 +103,6 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnPoint = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingPoint());
 		btnPoint.setIcon(WidgetLayout.iconPointCreate);
-		btnPoint.setAutoFit(true);
 		btnPoint.setActionType(SelectionType.RADIO);
 		btnPoint.setRadioGroup("drawType");
 		btnPoint.addClickHandler(new ClickHandler() {
@@ -114,7 +113,6 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnLine = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingLine());
 		btnLine.setIcon(WidgetLayout.iconLineCreate);
-		btnLine.setAutoFit(true);
 		btnLine.setActionType(SelectionType.RADIO);
 		btnLine.setRadioGroup("drawType");
 		btnLine.addClickHandler(new ClickHandler() {
@@ -125,7 +123,6 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnPolygon = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingPolygon());
 		btnPolygon.setIcon(WidgetLayout.iconPolygonCreate);
-		btnPolygon.setAutoFit(true);
 		btnPolygon.setActionType(SelectionType.RADIO);
 		btnPolygon.setRadioGroup("drawType");
 		btnPolygon.addClickHandler(new ClickHandler() {
@@ -136,7 +133,6 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnUndo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingUndo());
 		btnUndo.setIcon(WidgetLayout.iconUndo);
-		btnUndo.setAutoFit(true);
 		btnUndo.setDisabled(true);
 		btnUndo.setShowDisabledIcon(false);
 		btnUndo.addClickHandler(new ClickHandler() {
@@ -147,7 +143,6 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnRedo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingRedo());
 		btnRedo.setIcon(WidgetLayout.iconRedo);
-		btnRedo.setAutoFit(true);
 		btnRedo.setDisabled(true);
 		btnRedo.setShowDisabledIcon(false);
 		btnRedo.addClickHandler(new ClickHandler() {

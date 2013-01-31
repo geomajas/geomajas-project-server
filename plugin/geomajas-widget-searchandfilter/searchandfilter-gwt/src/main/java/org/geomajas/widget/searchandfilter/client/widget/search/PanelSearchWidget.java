@@ -89,8 +89,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 		IButton favouritesBtn = new IButton(MESSAGES.searchWidgetAddToFavourites());
 		favouritesBtn.setIcon(BTN_FAVOURITES_IMG);
-		favouritesBtn.setAutoFit(true);
 		favouritesBtn.setShowDisabledIcon(false);
+		favouritesBtn.setAutoFit(true);
 		favouritesBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -99,7 +99,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		});
 		searchBtn = new IButton(MESSAGES.searchWidgetSearch());
 		searchBtn.setIcon(BTN_SEARCH_IMG);
-		searchBtn.setAutoFit(true);
 		searchBtn.setShowDisabledIcon(false);
 		searchBtn.addClickHandler(new ClickHandler() {
 
@@ -109,7 +108,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		});
 		IButton resetBtn = new IButton(MESSAGES.searchWidgetReset());
 		resetBtn.setIcon(WidgetLayout.iconReset);
-		resetBtn.setAutoFit(true);
 		resetBtn.setShowDisabledIcon(false);
 		resetBtn.addClickHandler(new ClickHandler() {
 
@@ -119,7 +117,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		});
 		saveBtn = new IButton(MESSAGES.searchWidgetSave());
 		saveBtn.setIcon(WidgetLayout.iconSave);
-		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
 		saveBtn.addClickHandler(new ClickHandler() {
 
@@ -130,7 +127,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		saveBtn.setVisible(false);
 		IButton cancelBtn = new IButton(MESSAGES.searchWidgetCancel());
 		cancelBtn.setIcon(WidgetLayout.iconCancel);
-		cancelBtn.setAutoFit(true);
 		cancelBtn.setShowDisabledIcon(false);
 		cancelBtn.addClickHandler(new ClickHandler() {
 
@@ -142,7 +138,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 		IButton filterLayerBtn = new IButton(MESSAGES.searchWidgetFilterLayer());
 		filterLayerBtn.setIcon(BTN_FILTER_IMG);
-		filterLayerBtn.setAutoFit(true);
 		filterLayerBtn.setShowDisabledIcon(false);
 		filterLayerBtn.addClickHandler(new ClickHandler() {
 
@@ -153,7 +148,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 		removeFilterBtn = new IButton(MESSAGES.searchWidgetRemoveFilter());
 		removeFilterBtn.setIcon(BTN_REMOVEFILTER_IMG);
-		removeFilterBtn.setAutoFit(true);
 		removeFilterBtn.setShowDisabledIcon(false);
 		removeFilterBtn.addClickHandler(new ClickHandler() {
 
