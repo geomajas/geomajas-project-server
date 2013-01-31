@@ -231,6 +231,9 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		float margin = 0.25f * font.getSize();
 		Rectangle rect = new Rectangle(textSize.getWidth() + 2 * margin, textSize.getHeight() + 2 * margin);
 		Coordinate labelPosition = geoService.calcDefaultLabelPosition(f);
+		// SPRINT-53 Labels should be rendered in Screen Space
+		new MapToUserFilter().filter(labelPosition);
+
 		context.moveRectangleTo(rect, (float) labelPosition.x - rect.getWidth() / 2f,
 				(float) labelPosition.y - rect.getHeight() / 2f);
 		if (f.getGeometry() instanceof Point) {
