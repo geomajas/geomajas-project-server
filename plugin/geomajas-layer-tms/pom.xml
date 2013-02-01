@@ -92,7 +92,7 @@
 	<properties>
 		<tms-layer-backend-version>1.10.0</tms-layer-backend-version>
 		<tms-layer-caching-version>2.0.0</tms-layer-caching-version>
-		<tms-layer-common-version>1.0.0-SNAPSHOT</tms-layer-common-version>
+		<tms-layer-common-version>1.0.0-M1</tms-layer-common-version>
 		<tms-httpcomponents-version>4.2.1</tms-httpcomponents-version>
 	</properties>
 </project>
