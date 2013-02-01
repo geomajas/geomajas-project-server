@@ -67,7 +67,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(4.75513, result[0].getEnvelope().getMinX(), .00001);
 		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
 		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
-		Assert.assertEquals(51.060329, result[0].getEnvelope().getMaxY(), .00001);
+		Assert.assertEquals(51.05677, result[0].getEnvelope().getMaxY(), .00001);
 
 		list.clear();
 		list.add("booischot");
@@ -83,7 +83,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(4.75513, result[0].getEnvelope().getMinX(), .00001);
 		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
 		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
-		Assert.assertEquals(51.060329, result[0].getEnvelope().getMaxY(), .00001);
+		Assert.assertEquals(51.05677, result[0].getEnvelope().getMaxY(), .00001);
 
 		list.clear();
 		list.add("london");
@@ -104,10 +104,10 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertEquals("United States", result[0].getCanonicalStrings().get(0));
-		Assert.assertEquals("London, CA  93618", result[0].getCanonicalStrings().get(1));
+		Assert.assertEquals("London, CA 93618", result[0].getCanonicalStrings().get(1));
 
 		list.clear();
-		list.add("blablabla");
+		list.add("thequickbrownfoxjumpsoverthelazydogloremipsumdolorsitamet");
 		result = geocoder.getLocation(list, 50, null);
 		Assert.assertTrue(null == result || 0 == result.length);
 	}
@@ -131,7 +131,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(4.75513, result[0].getEnvelope().getMinX(), .00001);
 		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
 		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
-		Assert.assertEquals(51.060329, result[0].getEnvelope().getMaxY(), .00001);
+		Assert.assertEquals(51.05677, result[0].getEnvelope().getMaxY(), .00001);
 	}
 	
 	@Test
@@ -139,8 +139,9 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		List<String> list = new ArrayList<String>();
 		GetLocationResult[] result;
 		// empty list
+		//OM: empty list will no longer throw an exception, instead empty list is returned
 		result = geocoder.getLocation(list, 50, null);
-		Assert.assertNull(result);
+		Assert.assertTrue(null == result || 0 == result.length);
 	}
 
 }
