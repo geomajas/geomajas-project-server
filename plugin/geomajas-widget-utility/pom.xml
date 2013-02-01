@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-widget-utility-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M3</version>
 	<packaging>pom</packaging>
 	<name>Widget utility parent</name>
 	<description>Parent module for the utility widgets plugin.</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-utility</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-utility</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-widget-utility</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-utility-all-1.0.0-M3</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-utility-all-1.0.0-M3</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-utility-all-1.0.0-M3</url>
 	</scm>
 
 	<developers>
@@ -84,7 +84,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder-all</artifactId>
-				<version>1.3.0-SNAPSHOT</version>
+				<version>1.3.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
