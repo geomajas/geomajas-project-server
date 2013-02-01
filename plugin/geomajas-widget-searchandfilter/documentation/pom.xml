@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-searchandfilter-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M3</version>
 	<packaging>jar</packaging>
 	<name>geomajas-widget-searchandfilter documentation</name>
 	<description>geomajas-widget-searchandfilter documentation</description>
@@ -27,4 +27,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-searchandfilter-all-1.0.0-M3/geomajas-widget-searchandfilter-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-searchandfilter-all-1.0.0-M3/geomajas-widget-searchandfilter-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-searchandfilter-all-1.0.0-M3/geomajas-widget-searchandfilter-documentation</url>
+  </scm>
 </project>
