@@ -19,6 +19,7 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
+import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 
 import com.google.gwt.core.client.GWT;
@@ -103,6 +104,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnPoint = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingPoint());
 		btnPoint.setIcon(WidgetLayout.iconPointCreate);
+		btnPoint.setWidth(btnPoint.getTitle().length() * GsfLayout.buttonFontWidth + GsfLayout.buttonOffset);
 		btnPoint.setActionType(SelectionType.RADIO);
 		btnPoint.setRadioGroup("drawType");
 		btnPoint.addClickHandler(new ClickHandler() {
@@ -113,6 +115,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnLine = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingLine());
 		btnLine.setIcon(WidgetLayout.iconLineCreate);
+		btnLine.setWidth(btnLine.getTitle().length() * GsfLayout.buttonFontWidth + GsfLayout.buttonOffset);
 		btnLine.setActionType(SelectionType.RADIO);
 		btnLine.setRadioGroup("drawType");
 		btnLine.addClickHandler(new ClickHandler() {
@@ -123,6 +126,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnPolygon = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingPolygon());
 		btnPolygon.setIcon(WidgetLayout.iconPolygonCreate);
+		btnPolygon.setWidth(btnPolygon.getTitle().length() * GsfLayout.buttonFontWidth + GsfLayout.buttonOffset);
 		btnPolygon.setActionType(SelectionType.RADIO);
 		btnPolygon.setRadioGroup("drawType");
 		btnPolygon.addClickHandler(new ClickHandler() {
@@ -133,6 +137,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnUndo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingUndo());
 		btnUndo.setIcon(WidgetLayout.iconUndo);
+		btnUndo.setWidth(btnUndo.getTitle().length() * GsfLayout.buttonFontWidth + GsfLayout.buttonOffset);
 		btnUndo.setDisabled(true);
 		btnUndo.setShowDisabledIcon(false);
 		btnUndo.addClickHandler(new ClickHandler() {
@@ -143,6 +148,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod implements 
 
 		btnRedo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingRedo());
 		btnRedo.setIcon(WidgetLayout.iconRedo);
+		btnRedo.setWidth(btnRedo.getTitle().length() * GsfLayout.buttonFontWidth + GsfLayout.buttonOffset);
 		btnRedo.setDisabled(true);
 		btnRedo.setShowDisabledIcon(false);
 		btnRedo.addClickHandler(new ClickHandler() {

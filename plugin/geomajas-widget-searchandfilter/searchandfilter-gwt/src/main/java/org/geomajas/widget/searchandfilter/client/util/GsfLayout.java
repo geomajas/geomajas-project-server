@@ -56,6 +56,11 @@ public final class GsfLayout {
 	public static String iconSearchFree = "[ISOMORPHIC]/geomajas/searchIcons/free.png";
 	/** Icon for the combined search action. */
 	public static String iconSearchCombined = "[ISOMORPHIC]/geomajas/searchIcons/combined.png";
+	/** Average width in pixels text characters, used to calculate button size. 
+	 * (buttonOffset + buttonFontWidth * title.length()) */
+	public static int buttonFontWidth = 7;
+	/** Offset size of a button without the text, used to calculate button size. */
+	public static int buttonOffset = 28;
 	
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
