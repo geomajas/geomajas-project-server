@@ -69,9 +69,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="Default" />
-					<property name="fillColor" value="FFFFFF" />
+					<property name="fillColor" value="#FFFFFF" />
 					<property name="fillOpacity" value="0" />
-					<property name="strokeColor" value="998811" />
+					<property name="strokeColor" value="#998811" />
 					<property name="strokeOpacity" value="1" />
 					<property name="strokeWidth" value="2" />
 				</bean>
@@ -82,15 +82,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="labelAttributeName" value="NAME" />
 				<property name="fontStyle">
 					<bean class="org.geomajas.configuration.FontStyleInfo">
-						<property name="color" value="998811" />
+						<property name="color" value="#998811" />
 						<property name="opacity" value="1" />
 					</bean>
 				</property>
 				<property name="backgroundStyle">
 					<bean class="org.geomajas.configuration.FeatureStyleInfo">
-						<property name="fillColor" value="000000" />
+						<property name="fillColor" value="#000000" />
 						<property name="fillOpacity" value=".7" />
-						<property name="strokeColor" value="998811" />
+						<property name="strokeColor" value="#998811" />
 						<property name="strokeOpacity" value="1" />
 						<property name="strokeWidth" value="1" />
 					</bean>
