@@ -170,11 +170,17 @@ include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10
     "graduated" "Openstreetmap_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-openstreetmap" "1.9.0"
 
+include "org.geomajas.plugin" "geomajas-layer-common-documentation" "1.0.0-SNAPSHOT" \
+    "Common layer tools" \
+    "This plug-in contains common classes used by layers. (to help with proxying and security)." \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-plugin-layer-common" "1.0.0-M1"
+
 include "org.geomajas.plugin" "geomajas-layer-tms-documentation" "1.1.0-SNAPSHOT" \
     "TMS layer" \
     "This is a layer which allows accessing TMS images as raster layer." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-tms" "1.0.0"
+    "org.geomajas.plugin" "geomajas-layer-tms" "1.1.0-M1"
 
 include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.11.0-SNAPSHOT" \
     "WMS layer" \
