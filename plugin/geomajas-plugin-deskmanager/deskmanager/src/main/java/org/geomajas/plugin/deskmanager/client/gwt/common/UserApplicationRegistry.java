@@ -16,21 +16,20 @@ import java.util.Map;
 import org.geomajas.annotation.Api;
 
 /**
- * Singleton where different {@link UserApplication}s can be registered. UserApplications registered here are available
+ * Registry where different {@link UserApplication}s can be registered. UserApplications registered here are available
  * for use in the management interface.
  * 
  * @author Oliver May
  * 
  */
 @Api
-public class UserApplicationRegistry {
+public final class UserApplicationRegistry {
 
 	private static final UserApplicationRegistry INSTANCE = new UserApplicationRegistry();
 
-	private Map<String, UserApplication> userApplications;
+	private Map<String, UserApplication> userApplications = new LinkedHashMap<String, UserApplication>();
 
 	private UserApplicationRegistry() {
-		userApplications = new LinkedHashMap<String, UserApplication>();
 	}
 
 	/**
