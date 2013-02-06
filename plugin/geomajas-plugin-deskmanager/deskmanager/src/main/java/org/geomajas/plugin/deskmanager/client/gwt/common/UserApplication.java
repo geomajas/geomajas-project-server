@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.common;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -25,7 +25,7 @@ import com.smartgwt.client.widgets.layout.Layout;
  * @author Oliver May
  *
  */
-@FutureApi
+@Api
 public interface UserApplication {
 
 	/**
@@ -99,9 +99,16 @@ public interface UserApplication {
 	 */
 	boolean supportsWidgetConfiguration(ClientWidgetInfo cwi);
 	
+	/**
+	 * Get the key by wich this user application type is referred to.
+	 * 
+	 * @return the key
+	 */
 	String getClientApplicationKey();
+	
+	/**
+	 * Get the name of this user application type.
+	 * @return
+	 */
 	String getClientApplicationName();
-	
-	boolean hasLayerTree();
-	
 }
