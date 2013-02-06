@@ -186,7 +186,7 @@ include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.11.0-SNAPSHO
     "WMS layer" \
     "This is a layer which allows accessing WMS images as raster layer." \
     "graduated" "WMS_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-wms" "1.10.0"
+    "org.geomajas.plugin" "geomajas-layer-wms" "1.10.1"
 
 include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.10.0-SNAPSHOT" \
     "Staticsecurity plug-in" \
@@ -212,11 +212,11 @@ include "org.geomajas.plugin" "caching-documentation" "2.1.0-SNAPSHOT" \
     "graduated" "caching.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-caching" "2.0.0"
 
-include "org.geomajas.plugin" "geocoder-documentation" "1.3.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geocoder-documentation" "1.4.0-SNAPSHOT" \
     "Geocoder plug-in" \
     "Convert a location description to map coordinates." \
     "graduated" "geocoder.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.2.0"
+    "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.3.0"
 
 include "org.geomajas.plugin" "rasterizing-documentation" "1.1.0-SNAPSHOT" \
     "Rasterizing plug-in" \
