@@ -99,7 +99,7 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 		clientApplicationName.setWidth(FORMITEM_WIDTH);
 		clientApplicationName.setRequired(true);
 		clientApplicationName.setWrapTitle(false);
-		clientApplicationName.setValueMap(UserApplicationRegistry.getInstance().getLoketNames());
+		clientApplicationName.setValueMap(UserApplicationRegistry.getInstance().getUserApplicationNames());
 
 		lastEditBy = new StaticTextItem("lastEditBy");
 		lastEditBy.setTitle(MESSAGES.settingsLatestChangeBy());

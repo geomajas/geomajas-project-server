@@ -13,49 +13,87 @@ package org.geomajas.plugin.deskmanager.client.gwt.common;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.geomajas.annotation.FutureApi;
-
+import org.geomajas.annotation.Api;
 
 /**
+ * Singleton where different {@link UserApplication}s can be registered. UserApplications registered here are available
+ * for use in the management interface.
  * 
  * @author Oliver May
- *
+ * 
  */
-@FutureApi
+@Api
 public class UserApplicationRegistry {
 
-	private static final UserApplicationRegistry INSTANCE;
-	private Map<String, UserApplication> loketten;
+	private static final UserApplicationRegistry INSTANCE = new UserApplicationRegistry();
 
-	static {
-		INSTANCE = new UserApplicationRegistry();
-	}
-	
-	public UserApplicationRegistry() {
-		loketten = new LinkedHashMap<String, UserApplication>();
+	private Map<String, UserApplication> userApplications;
+
+	private UserApplicationRegistry() {
+		userApplications = new LinkedHashMap<String, UserApplication>();
 	}
 
-	public void register(UserApplication loket) {
-		if (null != loket) {
-			loketten.put(loket.getClientApplicationKey(), loket);
+	/**
+	 * Register a user application. UserApplication.getClientApplicationKey() is used as key to fetch the application
+	 * later.
+	 * 
+	 * @param userApplication
+	 *            the user application to register.
+	 */
+	public void register(UserApplication userApplication) {
+		if (null != userApplication) {
+			register(userApplication.getClientApplicationKey(), userApplication);
 		}
 	}
 
-	public UserApplication get(String key) {
-		return loketten.get(key);
+	/**
+	 * Register a user application.
+	 * 
+	 * @param key
+	 *            the key
+	 * @param userApplication
+	 *            the user application
+	 */
+	public void register(String key, UserApplication userApplication) {
+		userApplications.put(key, userApplication);
 	}
-	
+
+	/**
+	 * Fetch a user application for with the given key.
+	 * 
+	 * @param key the key
+	 * @return the user applications.
+	 */
+	public UserApplication get(String key) {
+		return userApplications.get(key);
+	}
+
+	/**
+	 * Get the only instance of the user application registry.
+	 *  
+	 * @return the registry.
+	 */
 	public static UserApplicationRegistry getInstance() {
 		return INSTANCE;
 	}
-	
-	public Map<String, UserApplication> getLoketten() {
-		return loketten;
+
+	/**
+	 * Get a map of user application keys mapped to the user applications.
+	 * 
+	 * @return the user applications.
+	 */
+	public Map<String, UserApplication> getUserApplications() {
+		return userApplications;
 	}
-	
-	public LinkedHashMap<String, String> getLoketNames() {
+
+	/**
+	 * Get a map of user application keys mapped to the user application names. 
+	 * 
+	 * @return the names
+	 */
+	public LinkedHashMap<String, String> getUserApplicationNames() {
 		LinkedHashMap<String, String> loketNames = new LinkedHashMap<String, String>();
-		for (UserApplication ca : getLoketten().values()) {
+		for (UserApplication ca : getUserApplications().values()) {
 			loketNames.put(ca.getClientApplicationKey(), ca.getClientApplicationName());
 		}
 		return loketNames;

@@ -77,7 +77,7 @@ public class ChooseUserAppNameWindow extends Window {
 		userappName.setRequiredMessage(MESSAGES.chooseAppRequired());
 		userappName.setTitle(MESSAGES.chooseAppTitle());
 		userappName.setTooltip("<nobr>" + MESSAGES.chooseAppTooltip() + "</nobr>");
-		userappName.setValueMap(UserApplicationRegistry.getInstance().getLoketNames());
+		userappName.setValueMap(UserApplicationRegistry.getInstance().getUserApplicationNames());
 		form.setFields(userappName);
 
 		// ----------------------------------------------------------
