@@ -180,7 +180,9 @@ public class GeodeskServiceImpl implements GeodeskService {
 			case ADMINISTRATOR:
 				return true;
 			case DESK_MANAGER:
-				return false;
+				//Allow desk usage for the deskmanager
+				Geodesk desk = getGeodeskByPublicIdInternal(id);
+				return desk.getOwner().equals(territory);
 			case CONSULTING_USER:
 			case EDITING_USER:
 				q = factory.getCurrentSession().createQuery(
