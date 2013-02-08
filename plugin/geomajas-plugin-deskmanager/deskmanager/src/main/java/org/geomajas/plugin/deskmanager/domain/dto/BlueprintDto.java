@@ -21,7 +21,10 @@ import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
 
 /**
+ * Dto object for a blueprint.
+ * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class BlueprintDto implements BaseGeodeskDto {
 
@@ -31,8 +34,7 @@ public class BlueprintDto implements BaseGeodeskDto {
 
 	private String name;
 
-	// -- Spring bean reference
-	private String userApplicationName;
+	private String userApplicationKey;
 
 	private Date creationDate;
 
@@ -86,12 +88,12 @@ public class BlueprintDto implements BaseGeodeskDto {
 		this.name = name;
 	}
 
-	public String getUserApplicationName() {
-		return userApplicationName;
+	public String getUserApplicationKey() {
+		return userApplicationKey;
 	}
 
-	public void setUserApplicationName(String userApplicationName) {
-		this.userApplicationName = userApplicationName;
+	public void setUserApplicationKey(String userApplicationKey) {
+		this.userApplicationKey = userApplicationKey;
 	}
 
 	public Date getCreationDate() {

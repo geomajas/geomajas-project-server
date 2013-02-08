@@ -10,14 +10,18 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
+import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.LayerTreeEditorFactory;
+
 import com.google.gwt.core.client.EntryPoint;
 
 /**
  * @author Oliver May
  * 
  */
-//FIXME: class shouldn't be here, move geodesk stuff to geodesk entrypoint
 public class ManagerEntryPoint implements EntryPoint {
 
-	public void onModuleLoad() {	}
+	public void onModuleLoad() {
+		WidgetEditorFactoryRegistry.getInstance().register(new LayerTreeEditorFactory());
+	}
 }

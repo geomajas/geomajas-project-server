@@ -10,6 +10,9 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.gwt.client.GwtCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -35,14 +38,14 @@ import com.smartgwt.client.widgets.Window;
  */
 public abstract class AbstractUserApplication implements UserApplication {
 
-	//private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+	// private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
 
 	public AbstractUserApplication() {
 		handlerManager = new HandlerManager(this);
 		geodeskLayout = new GeodeskLayoutInfo();
-		//geodeskLayout.setTitle(MESSAGES.abstractUserApplicationTitle());
+		// geodeskLayout.setTitle(MESSAGES.abstractUserApplicationTitle());
 		geodeskLayout.setTitle("[ClientApplicationInfo is niet gezet!]");
-		
+
 		GwtCommandCallback cb = new DeskmanagerGwtCommandCallback();
 		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(cb);
 		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(cb);
@@ -81,8 +84,8 @@ public abstract class AbstractUserApplication implements UserApplication {
 
 	public void setClientApplicationInfo(ClientApplicationInfo clientAppInfo) {
 		clientApplicationInfo = clientAppInfo;
-		geodeskLayout = (GeodeskLayoutInfo) getClientApplicationInfo().getWidgetInfo().get(
-				GeodeskLayoutInfo.IDENTIFIER);
+		geodeskLayout = (GeodeskLayoutInfo) getClientApplicationInfo().getWidgetInfo()
+				.get(GeodeskLayoutInfo.IDENTIFIER);
 	}
 
 	protected ClientApplicationInfo getClientApplicationInfo() {
@@ -159,4 +162,25 @@ public abstract class AbstractUserApplication implements UserApplication {
 	protected void setSearchResult(Window searchResult) {
 		this.searchResult = searchResult;
 	}
+
+	@Override
+	public List<String> getSupportedApplicationWidgetKeys() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<String> getSupportedMainMapWidgetKeys() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<String> getSupportedOverviewMapWidgetKeys() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<String> getSupportedLayerWidgetKeys() {
+		return Collections.emptyList();
+	}
+
 }

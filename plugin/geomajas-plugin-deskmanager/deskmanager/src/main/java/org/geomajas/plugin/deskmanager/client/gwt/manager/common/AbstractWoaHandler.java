@@ -13,22 +13,21 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * @author Oliver May
+ * WoaHandler that already implements the changedhandler methods.
  * 
+ * @author Oliver May
  */
-public abstract class AbstractConfigurationLayout extends VLayout implements WoaEventHandler {
-
+public abstract class AbstractWoaHandler implements WoaEventHandler {
 	private List<WoaEventHandler.WoaChangedHandler> changedHandlers = 
-		new ArrayList<WoaEventHandler.WoaChangedHandler>();
-
+		new ArrayList<WoaEventHandler.WoaChangedHandler>(); 
+	
 	public void registerChangedHandler(WoaEventHandler.WoaChangedHandler handler) {
 		changedHandlers.add(handler);
 	}
-
-	protected void fireChangedHandler() {
+	
+	public void fireChangedHandler() {
 		for (WoaEventHandler.WoaChangedHandler handler : changedHandlers) {
 			handler.onChange();
 		}

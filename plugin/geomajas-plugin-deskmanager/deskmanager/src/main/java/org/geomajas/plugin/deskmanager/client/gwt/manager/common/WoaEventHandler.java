@@ -10,8 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout.ChangedHandler;
-
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
@@ -20,6 +18,20 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  *  @author Oliver May
  */
 public interface WoaEventHandler {
+
+	/**
+	 * Listens to change events that may trigger changes on the buttonbar layout.
+	 * 
+	 * @author Oliver May
+	 * 
+	 */
+	public interface WoaChangedHandler {
+	
+		/**
+		 * Called when something had changed.
+		 */
+		void onChange();
+	}
 
 	/**
 	 * Trigger edit event, the handler should prepare to be edited (enable forms etc).
@@ -64,6 +76,6 @@ public interface WoaEventHandler {
 	/**
 	 * Register a change handler. Called when the waoeventhandler has changed.
 	 */
-	void registerChangedHandler(ChangedHandler handler);
+	void registerChangedHandler(WoaEventHandler.WoaChangedHandler handler);
 
 }

@@ -27,7 +27,11 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
+ * Frontend presentation of a selectable list of blueprints, and a panel that contains configuration options of the
+ * selected blueprint. 
+ * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class Blueprints extends VLayout implements EditSessionHandler, ManagerTab {
 	

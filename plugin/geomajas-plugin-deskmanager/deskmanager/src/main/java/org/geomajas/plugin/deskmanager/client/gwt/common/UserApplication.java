@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.client.gwt.common;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientApplicationInfo;
-import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
 
@@ -23,10 +22,10 @@ import com.smartgwt.client.widgets.layout.Layout;
  * Interface for the deskmanager applications.
  * 
  * @author Oliver May
- *
+ * @since 1.0.0
  */
 @Api
-public interface UserApplication {
+public interface UserApplication extends UserApplicationConfiguration {
 
 	/**
 	 * This method acts as the entrypoint for a deskmanager user application. When all initialization is done, this
@@ -90,25 +89,4 @@ public interface UserApplication {
 	 * @return the banner of the geodesk
 	 */
 	String getBannerUrl();
-	
-	/**
-	 * Chieck if this UserApplication supports a widget configuration.
-	 * 
-	 * @param cwi
-	 * @return true if this application supports configuration of this type of ClientWidgetInfo
-	 */
-	boolean supportsWidgetConfiguration(ClientWidgetInfo cwi);
-	
-	/**
-	 * Get the key by wich this user application type is referred to.
-	 * 
-	 * @return the key
-	 */
-	String getClientApplicationKey();
-	
-	/**
-	 * Get the name of this user application type.
-	 * @return
-	 */
-	String getClientApplicationName();
 }

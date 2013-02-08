@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout.ChangedHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -26,7 +25,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class SaveButtonBar extends HLayout implements ChangedHandler {
+public class SaveButtonBar extends HLayout implements WoaEventHandler.WoaChangedHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 

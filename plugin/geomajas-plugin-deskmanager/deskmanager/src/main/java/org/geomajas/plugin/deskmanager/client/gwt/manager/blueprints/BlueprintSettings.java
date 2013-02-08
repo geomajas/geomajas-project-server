@@ -179,7 +179,7 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 		this.blueprint = blueprint;
 		if (blueprint != null) {
 			blueprintName.setValue(blueprint.getName());
-			clientApplicationName.setValue(blueprint.getUserApplicationName());
+			clientApplicationName.setValue(blueprint.getUserApplicationKey());
 			lastEditBy.setValue(blueprint.getLastEditBy());
 			lastEditDate.setValue(DATE_FORMATTER.format(blueprint.getLastEditDate()));
 			active.setValue(blueprint.isActive());
@@ -207,7 +207,7 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 	public boolean onSaveClick(ClickEvent event) {
 		if (validate()) {
 			blueprint.setName(blueprintName.getValueAsString());
-			blueprint.setUserApplicationName(clientApplicationName.getValueAsString());
+			blueprint.setUserApplicationKey(clientApplicationName.getValueAsString());
 			blueprint.setActive(active.getValueAsBoolean());
 			blueprint.setGeodesksActive(geodesksActive.getValueAsBoolean());
 			blueprint.setPublic(publiek.getValueAsBoolean());

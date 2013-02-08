@@ -118,7 +118,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bp.setActive(dto.isActive());
 		bp.setCreationBy(dto.getCreationBy());
 		bp.setCreationDate(dto.getCreationDate());
-		bp.setUserApplicationKey(dto.getUserApplicationName());
+		bp.setUserApplicationKey(dto.getUserApplicationKey());
 		bp.setDeleted(dto.isDeleted());
 		bp.setId(dto.getId());
 		bp.setLastEditBy(dto.getLastEditBy());
@@ -161,7 +161,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bpDto.setActive(blueprint.isActive());
 		bpDto.setCreationBy(blueprint.getCreationBy());
 		bpDto.setCreationDate(blueprint.getCreationDate());
-		bpDto.setUserApplicationName(blueprint.getUserApplicationKey());
+		bpDto.setUserApplicationKey(blueprint.getUserApplicationKey());
 		bpDto.setDeleted(blueprint.isDeleted());
 		bpDto.setId(blueprint.getId());
 		bpDto.setLastEditBy(blueprint.getLastEditBy());

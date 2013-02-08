@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * for use in the management interface.
  * 
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
 @Api
 public final class UserApplicationRegistry {
