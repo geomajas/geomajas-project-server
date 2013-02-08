@@ -34,7 +34,6 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfigurat
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.BitmapInfo;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
-import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.sld.UserStyleInfo;
 
@@ -74,7 +73,6 @@ public final class XmlConverterService {
 		EMI_STREAMER.alias("UserStyleInfo", UserStyleInfo.class);
 		EMI_STREAMER.alias("VectorLayerInfo", VectorLayerInfo.class);
 
-		EMI_STREAMER.alias("GeodeskLayoutInfo", GeodeskLayoutInfo.class);
 		EMI_STREAMER.alias("DeskmanagerClientLayerInfo", DeskmanagerClientLayerInfo.class);
 
 		EMI_STREAMER.alias("DynamicLayerConfiguration", DynamicLayerConfiguration.class);

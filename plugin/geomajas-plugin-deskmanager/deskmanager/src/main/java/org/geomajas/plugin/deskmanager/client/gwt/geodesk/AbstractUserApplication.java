@@ -23,7 +23,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.service.DeskmanagerGwt
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.FeatureSelectionInfoWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
-import org.geomajas.plugin.deskmanager.configuration.client.GeodeskLayoutInfo;
 import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
 
 import com.google.gwt.event.shared.HandlerManager;
@@ -42,9 +41,6 @@ public abstract class AbstractUserApplication implements UserApplication {
 
 	public AbstractUserApplication() {
 		handlerManager = new HandlerManager(this);
-		geodeskLayout = new GeodeskLayoutInfo();
-		// geodeskLayout.setTitle(MESSAGES.abstractUserApplicationTitle());
-		geodeskLayout.setTitle("[ClientApplicationInfo is niet gezet!]");
 
 		GwtCommandCallback cb = new DeskmanagerGwtCommandCallback();
 		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(cb);
@@ -55,7 +51,6 @@ public abstract class AbstractUserApplication implements UserApplication {
 
 	private ClientApplicationInfo clientApplicationInfo;
 
-	private GeodeskLayoutInfo geodeskLayout;
 
 	private String geodeskId;
 
@@ -74,26 +69,12 @@ public abstract class AbstractUserApplication implements UserApplication {
 		initDefaultTools();
 	}
 
-	public String getName() {
-		return geodeskLayout.getTitle();
-	}
-
-	public String getBannerUrl() {
-		return geodeskLayout.getBannerUrl();
-	}
-
 	public void setClientApplicationInfo(ClientApplicationInfo clientAppInfo) {
 		clientApplicationInfo = clientAppInfo;
-		geodeskLayout = (GeodeskLayoutInfo) getClientApplicationInfo().getWidgetInfo()
-				.get(GeodeskLayoutInfo.IDENTIFIER);
 	}
 
 	protected ClientApplicationInfo getClientApplicationInfo() {
 		return clientApplicationInfo;
-	}
-
-	public GeodeskLayoutInfo getVaudi() {
-		return geodeskLayout;
 	}
 
 	private void initDefaultTools() {

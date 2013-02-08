@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * user application class.
  * 
  * @author Oliver May
- *
+ * @since 1.0.0
  */
 @Api
 public interface UserApplicationConfiguration {

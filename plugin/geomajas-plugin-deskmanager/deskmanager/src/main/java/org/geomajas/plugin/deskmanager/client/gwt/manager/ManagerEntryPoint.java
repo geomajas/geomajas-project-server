@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree.LayerTreeEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig.ThemeConfigurationEditorFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 
@@ -23,5 +24,6 @@ public class ManagerEntryPoint implements EntryPoint {
 
 	public void onModuleLoad() {
 		WidgetEditorFactoryRegistry.getInstance().register(new LayerTreeEditorFactory());
+		WidgetEditorFactoryRegistry.getInstance().register(new ThemeConfigurationEditorFactory());
 	}
 }

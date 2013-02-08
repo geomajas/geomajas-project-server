@@ -8,11 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager.common.layertree;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.common.themeconfig;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
+import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
@@ -20,24 +21,20 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 
 /**
- * Editor for the layertree. Actualy a wrapper around {@link LayerTreeSelectPanel}.
+ * Editor for the theme configuration. Actualy a wrapper around {@link ThemeConfigPanel}.
  * 
  * @author Oliver May
  *
  */
-public class LayerTreeEditor implements WidgetEditor {
+public class ThemeConfigurationEditor implements WidgetEditor {
 
-	private LayerTreeSelectPanel panel;
+	private ThemeConfigurationPanel panel;
 	private VLayout layout;
-
-	public LayerTreeEditor() {
-		
-		panel = new LayerTreeSelectPanel();
+	
+	public ThemeConfigurationEditor() {
+		panel = new ThemeConfigurationPanel();
 
 		layout = new VLayout();
-		layout.setPadding(10);
-		layout.setIsGroup(true);
-		layout.setGroupTitle(new LayerTreeEditorFactory().getName());
 		layout.addMember(panel);
 		layout.setOverflow(Overflow.AUTO);
 	}
@@ -49,17 +46,23 @@ public class LayerTreeEditor implements WidgetEditor {
 
 	@Override
 	public ClientWidgetInfo getWidgetConfiguration() {
-		return panel.getValues();
+		return panel.getThemeConfig();
 	}
 
 	@Override
 	public void setWidgetConfiguration(ClientWidgetInfo configuration) {
-		//Do nothing, configuration is set trough setBaseGeodesk()
+		if (configuration == null) {
+			panel.setThemeConfig(new ThemesInfo());
+		} else if (configuration instanceof ThemesInfo) {
+			panel.setThemeConfig((ThemesInfo) configuration);
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override
 	public void setBaseGeodesk(BaseGeodeskDto geodesk) {
-		panel.setValues(geodesk);
+		//Do nothing, configuration is set trough setWidgetConfiguration()
 	}
 
 	@Override

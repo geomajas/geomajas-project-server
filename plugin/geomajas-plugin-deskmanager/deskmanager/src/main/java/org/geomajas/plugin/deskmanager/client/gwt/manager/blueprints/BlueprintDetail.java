@@ -31,6 +31,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
@@ -46,21 +47,24 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
- * FIXME: the panels should come from a factory, see GDM-13.
+ * Detail panel for a blueprint, contains the different configuration tabs and automatically adds widget editors that
+ * are supported by the user application.
  * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
-public class BlueprintDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, BlueprintHandler {
-	
+public class BlueprintDetail extends HLayout implements SelectionChangedHandler, EditSessionHandler, BlueprintHandler {
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private static final String ID_ATTRIBUTE = "id";
-	
+
 	private BlueprintDto blueprint;
 
 	private TabSet tabset;
@@ -69,22 +73,17 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 
 	private BlueprintLayers layers;
 
-	private BlueprintLayerTree layerTree;
-
 	private BlueprintAccessRights accessrights;
-
-	private BlueprintGeodeskLayout loketLayout;
 
 	private Label loadingLabel;
 
 	private VLayout loadingLayout;
 
-	private BlueprintThemeConfig themeConfig;
-	
 	private List<Tab> widgetTabs = new ArrayList<Tab>();
-	
+
 	public BlueprintDetail() {
-		super(10);
+		super();
+		setMargin(10);
 
 		tabset = new TabSet();
 		tabset.setTabBarPosition(Side.TOP);
@@ -92,7 +91,7 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		tabset.setHeight100();
 		tabset.setOverflow(Overflow.HIDDEN);
 
-		//This must become more generic...
+		// This must become more generic...
 		settings = new BlueprintSettings();
 		Whiteboard.registerHandler(settings);
 		Tab tab = new Tab(MESSAGES.blueprintDetailTabSettings());
@@ -105,31 +104,11 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 		tabset.addTab(tab);
 		tab.setPane(layers);
 
-		layerTree = new BlueprintLayerTree();
-		Whiteboard.registerHandler(layerTree);
-		tab = new Tab(MESSAGES.blueprintDetailTabLayerTree());
-		tabset.addTab(tab);
-		tab.setPane(layerTree);
-
 		accessrights = new BlueprintAccessRights();
 		Whiteboard.registerHandler(accessrights);
 		tab = new Tab(MESSAGES.blueprintDetailTabAccessRights());
 		tabset.addTab(tab);
 		tab.setPane(accessrights);
-
-//FIXME: Disabled: should move to custom project
-		loketLayout = new BlueprintGeodeskLayout();
-		Whiteboard.registerHandler(loketLayout);
-		tab = new Tab(MESSAGES.blueprintDetailTabLayout());
-		tabset.addTab(tab);
-		tab.setPane(loketLayout);
-
-		themeConfig = new BlueprintThemeConfig();
-		Whiteboard.registerHandler(themeConfig);
-		tab = new Tab(MESSAGES.blueprintDetailTabThemes());
-		
-		tabset.addTab(tab);
-		tab.setPane(themeConfig);
 
 		// loading widget
 		loadingLayout = new VLayout();
@@ -194,7 +173,7 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 			}
 		});
 	}
-	
+
 	/**
 	 * Clear all custom widget tabs from the last blueprint.
 	 */
@@ -208,18 +187,22 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 	/**
 	 * Load all widget editors that are available on this blueprints user application, and add them to the tabset.
 	 * 
-	 * @param bp the blueprint.
+	 * @param bp
+	 *            the blueprint.
 	 */
-	private void loadWidgetTabs(BlueprintDto bp) {
-		UserApplication ua = UserApplicationRegistry.getInstance().get(bp.getUserApplicationKey());
+	private void loadWidgetTabs(BaseGeodeskDto bp) {
+		UserApplication ua = UserApplicationRegistry.getInstance().get(bp.getUserApplicationInfo().getKey());
 		for (String key : ua.getSupportedApplicationWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getApplicationClientWidgetInfos(), bp);
+			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getApplicationClientWidgetInfos(),
+					GeodeskDtoUtil.getApplicationClientWidgetInfo(bp), bp);
 		}
 		for (String key : ua.getSupportedMainMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getMainMapClientWidgetInfos(), bp);
+			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getMainMapClientWidgetInfos(),
+					GeodeskDtoUtil.getMainMapClientWidgetInfo(bp), bp);
 		}
 		for (String key : ua.getSupportedOverviewMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getOverviewMapClientWidgetInfos(), bp);
+			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getOverviewMapClientWidgetInfos(),
+					GeodeskDtoUtil.getOverviewMapClientWidgetInfo(bp), bp);
 		}
 	}
 
@@ -227,78 +210,78 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be
 	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
 	 * 
-	 * @param editorFactory the editor factory
-	 * @param widgetInfos the widget infos
-	 * @param geodesk the geodesk
+	 * @param editorFactory
+	 *            the editor factory
+	 * @param blueprintWidgetInfos
+	 *            the blueprint widget infos
+	 * @param widgetInfos
+	 *            all the widget infos (including inherited)
+	 * @param geodesk
+	 *            the geodesk
 	 */
-	private void addWidgetTab(final WidgetEditorFactory editorFactory, final Map<String, ClientWidgetInfo> widgetInfos, 
+	private void addWidgetTab(final WidgetEditorFactory editorFactory,
+			final Map<String, ClientWidgetInfo> blueprintWidgetInfos, final Map<String, ClientWidgetInfo> widgetInfos,
 			BaseGeodeskDto geodesk) {
 		if (editorFactory != null) {
 			Tab tab = new Tab(editorFactory.getName());
 			final WidgetEditor editor = editorFactory.createEditor();
 			editor.setBaseGeodesk(geodesk);
 			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
+			editor.setDisabled(true);
 
 			// Create tab layout
 			VLayout layout = new VLayout();
 			layout.setMargin(5);
-			
+
 			AbstractWoaHandler editWidgetHandler = new AbstractWoaHandler() {
-				
+
 				@Override
 				public boolean onSaveClick(ClickEvent event) {
-					widgetInfos.put(editorFactory.getKey(), editor.getWidgetConfiguration());
+					blueprintWidgetInfos.put(editorFactory.getKey(), editor.getWidgetConfiguration());
 					ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 					editor.setDisabled(true);
 					return true;
 				}
-				
+
 				@Override
 				public boolean onResetClick(ClickEvent event) {
-					widgetInfos.remove(ClientLayerTreeInfo.IDENTIFIER);
+					blueprintWidgetInfos.remove(ClientLayerTreeInfo.IDENTIFIER);
 					ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 					return true;
 				}
-				
+
 				@Override
 				public boolean onEditClick(ClickEvent event) {
 					editor.setDisabled(false);
 					return true;
 				}
-				
+
 				@Override
 				public boolean onCancelClick(ClickEvent event) {
-					editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
+					editor.setWidgetConfiguration(blueprintWidgetInfos.get(editorFactory.getKey()));
 					editor.setDisabled(true);
 					return true;
 				}
-				
+
 				@Override
 				public boolean isDefault() {
-					return !widgetInfos.containsKey(ClientLayerTreeInfo.IDENTIFIER);
+					return !blueprintWidgetInfos.containsKey(editorFactory.getKey());
 				}
 			};
-			
+
 			SaveButtonBar buttonBar = new SaveButtonBar(editWidgetHandler, layout);
 			layout.addMember(buttonBar);
-			VLayout group = new VLayout();
-			group.setPadding(10);
-			group.setIsGroup(true);
-			group.setGroupTitle(editorFactory.getName());
-			group.addMember(editor.getCanvas());
-			group.setOverflow(Overflow.AUTO);
-			layout.addMember(group);
+			layout.addMember(editor.getCanvas());
 			tab.setPane(layout);
-			
+
 			tabset.addTab(tab);
 			widgetTabs.add(tab);
-			
+
 			// Always caused by a blueprint change, so fire the changed handler.
 			editWidgetHandler.fireChangedHandler();
 		}
 	}
-	
-	
+
 	public void setBlueprint(BlueprintDto blueprint) {
 		this.blueprint = blueprint;
 
@@ -313,7 +296,7 @@ public class BlueprintDetail extends VLayout implements SelectionChangedHandler,
 	}
 
 	// -- EditSessionHandler --------------------------------------------------------
-	//Wherefore is this still used?
+	// Wherefore is this still used?
 	public void onEditSessionChange(EditSessionEvent ese) {
 		boolean disabled = ese.isSessionStart();
 		for (Tab tab : tabset.getTabs()) {

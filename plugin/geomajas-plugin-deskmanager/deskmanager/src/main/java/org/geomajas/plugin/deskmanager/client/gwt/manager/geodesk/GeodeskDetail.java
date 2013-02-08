@@ -10,7 +10,19 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
+import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractWoaHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
@@ -19,7 +31,11 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
+import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
+import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
@@ -27,6 +43,7 @@ import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
@@ -35,18 +52,18 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
- * TODO.
+ * Detail panel for a blueprint, contains the different configuration tabs and automatically adds widget editors that
+ * are supported by the user application.
  * 
- * FIXME: the panels should come from a factory, see GDM-13.
- * 
- * @author Jan De Moerloose
+ * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class GeodeskDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, GeodeskHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private static final String ID_ATTRIBUTE = "id";
-	
+
 	private GeodeskDto geodesk;
 
 	private TabSet tabset;
@@ -57,8 +74,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private GeodeskAccessRights accessrights;
 
-	private GeodeskLayout geodeskLayout;
-
 	private GeodeskNotifications notifications;
 
 	private Tab accessrightsTab;
@@ -67,9 +82,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private VLayout loadingLayout;
 
-	private GeodeskThemeConfig themeConfig;
-
-	private GeodeskLayerTree layerTree;
+	private List<Tab> widgetTabs = new ArrayList<Tab>();
 
 	public GeodeskDetail() {
 		super(10);
@@ -91,43 +104,19 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		tabset.addTab(tab);
 		tab.setPane(layers);
 		Whiteboard.registerHandler(layers);
-		
 
-		layerTree = new GeodeskLayerTree();
-		tab = new Tab(MESSAGES.geodeskDetailTabLayerTree());
-		tabset.addTab(tab);
-		tab.setPane(layerTree);
-		Whiteboard.registerHandler(layerTree);
-
-		
 		accessrights = new GeodeskAccessRights();
 		accessrightsTab = new Tab(MESSAGES.geodeskDetailTabAccessRights());
 		tabset.addTab(accessrightsTab);
 		accessrightsTab.setPane(accessrights);
 		accessrightsTab.setDisabled(true);
 		Whiteboard.registerHandler(accessrights);
-		
 
 		notifications = new GeodeskNotifications();
 		tab = new Tab(MESSAGES.geodeskDetailTabNotifications());
 		tabset.addTab(tab);
 		tab.setPane(notifications);
 		Whiteboard.registerHandler(notifications);
-		
-// FIXME: Disabled -> should be moved to custom project
-		geodeskLayout = new GeodeskLayout();
-		tab = new Tab(MESSAGES.geodeskDetailTabLayout());
-		tabset.addTab(tab);
-		tab.setPane(geodeskLayout);
-		Whiteboard.registerHandler(geodeskLayout);
-		
-
-		themeConfig = new GeodeskThemeConfig();
-		tab = new Tab(MESSAGES.geodeskDetailTabThemes());
-		tabset.addTab(tab);
-		tab.setPane(themeConfig);
-		Whiteboard.registerHandler(themeConfig);
-		
 
 		// loading widget
 		loadingLayout = new VLayout();
@@ -171,8 +160,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	}
 
 	private void setLoading() {
-		loadingLabel.setContents("<B><i>" + MESSAGES.loadingConfig() + "</i> <img src='"
-				+ Geomajas.getIsomorphicDir()
+		loadingLabel.setContents("<B><i>" + MESSAGES.loadingConfig() + "</i> <img src='" + Geomajas.getIsomorphicDir()
 				+ "/images/circle.gif' style='height: 1em' /></B>");
 		loadingLayout.animateShow(AnimationEffect.FADE);
 	}
@@ -183,11 +171,13 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	}
 
 	private void loadRecord(final String id) {
+		clearWidgetTabs();
 		setLoading(); /* Clear edit form */
 		ManagerCommandService.getGeodesk(id, new DataCallback<GeodeskDto>() {
 
 			public void execute(GeodeskDto result) {
 				setGeodesk(result);
+				loadWidgetTabs(result);
 			}
 		});
 	}
@@ -233,4 +223,113 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 			}
 		}
 	}
+
+	/**
+	 * Clear all custom widget tabs from the last blueprint.
+	 */
+	private void clearWidgetTabs() {
+		for (Tab tab : widgetTabs) {
+			tabset.removeTab(tab);
+		}
+		widgetTabs.clear();
+	}
+
+	/**
+	 * Load all widget editors that are available on this blueprints user application, and add them to the tabset.
+	 * 
+	 * @param bgd
+	 *            the basegeodesk.
+	 */
+	private void loadWidgetTabs(BaseGeodeskDto bgd) {
+		UserApplication ua = UserApplicationRegistry.getInstance().get(bgd.getUserApplicationInfo().getKey());
+		for (String key : ua.getSupportedApplicationWidgetKeys()) {
+			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bgd.getApplicationClientWidgetInfos(),
+					GeodeskDtoUtil.getApplicationClientWidgetInfo(bgd), bgd);
+		}
+		for (String key : ua.getSupportedMainMapWidgetKeys()) {
+			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bgd.getMainMapClientWidgetInfos(),
+					GeodeskDtoUtil.getMainMapClientWidgetInfo(bgd), bgd);
+		}
+		for (String key : ua.getSupportedOverviewMapWidgetKeys()) {
+			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bgd.getOverviewMapClientWidgetInfos(),
+					GeodeskDtoUtil.getOverviewMapClientWidgetInfo(bgd), bgd);
+		}
+	}
+
+	/**
+	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be
+	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
+	 * 
+	 * @param editorFactory
+	 *            the editor factory
+	 * @param geodeskWidgetInfos
+	 *            the geodesk widget infos
+	 * @param widgetInfos
+	 *            all the widget infos (including inherited)
+	 * @param geodesk
+	 *            the geodesk
+	 */
+	private void addWidgetTab(final WidgetEditorFactory editorFactory,
+			final Map<String, ClientWidgetInfo> geodeskWidgetInfos, final Map<String, ClientWidgetInfo> widgetInfos,
+			BaseGeodeskDto baseGeodesk) {
+		if (editorFactory != null) {
+			Tab tab = new Tab(editorFactory.getName());
+			final WidgetEditor editor = editorFactory.createEditor();
+			editor.setBaseGeodesk(baseGeodesk);
+			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
+			editor.setDisabled(true);
+			
+			// Create tab layout
+			VLayout layout = new VLayout();
+			layout.setMargin(5);
+
+			AbstractWoaHandler editWidgetHandler = new AbstractWoaHandler() {
+
+				@Override
+				public boolean onSaveClick(ClickEvent event) {
+					geodeskWidgetInfos.put(editorFactory.getKey(), editor.getWidgetConfiguration());
+					ManagerCommandService.saveGeodesk(geodesk, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+					editor.setDisabled(true);
+					return true;
+				}
+
+				@Override
+				public boolean onResetClick(ClickEvent event) {
+					geodeskWidgetInfos.remove(ClientLayerTreeInfo.IDENTIFIER);
+					ManagerCommandService.saveGeodesk(geodesk, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
+					return true;
+				}
+
+				@Override
+				public boolean onEditClick(ClickEvent event) {
+					editor.setDisabled(false);
+					return true;
+				}
+
+				@Override
+				public boolean onCancelClick(ClickEvent event) {
+					editor.setWidgetConfiguration(geodeskWidgetInfos.get(editorFactory.getKey()));
+					editor.setDisabled(true);
+					return true;
+				}
+
+				@Override
+				public boolean isDefault() {
+					return !geodeskWidgetInfos.containsKey(editorFactory.getKey());
+				}
+			};
+
+			SaveButtonBar buttonBar = new SaveButtonBar(editWidgetHandler, layout);
+			layout.addMember(buttonBar);
+			layout.addMember(editor.getCanvas());
+			tab.setPane(layout);
+
+			tabset.addTab(tab);
+			widgetTabs.add(tab);
+
+			// Always caused by a blueprint change, so fire the changed handler.
+			editWidgetHandler.fireChangedHandler();
+		}
+	}
+
 }
