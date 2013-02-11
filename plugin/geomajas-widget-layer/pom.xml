@@ -79,6 +79,11 @@
 				<artifactId>geomajas-widget-layer-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-layer-editor</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.google.gwt</groupId>
