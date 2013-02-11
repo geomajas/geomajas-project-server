@@ -35,7 +35,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
-import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
@@ -245,7 +244,7 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 
 				@Override
 				public boolean onResetClick(ClickEvent event) {
-					blueprintWidgetInfos.remove(ClientLayerTreeInfo.IDENTIFIER);
+					blueprintWidgetInfos.remove(editorFactory.getKey());
 					ManagerCommandService.saveBlueprint(blueprint, SaveBlueprintRequest.SAVE_CLIENTWIDGETINFO);
 					return true;
 				}
