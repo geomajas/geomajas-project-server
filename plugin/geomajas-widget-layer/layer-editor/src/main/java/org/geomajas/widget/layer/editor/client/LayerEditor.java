@@ -8,10 +8,9 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.widget.layer.editor;
+package org.geomajas.widget.layer.editor.client;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
-import org.geomajas.widget.layer.editor.client.LayerTreeEditorFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 
