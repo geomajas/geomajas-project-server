@@ -60,4 +60,21 @@ public interface LayerMessages extends Messages {
 	String layerInfoLayerInfoAttNo();
 	String layerInfoLayerInfoLegend();
 	String layerInfoLayerInfoLegendNoLegend();
+
+	// Editor messages:
+	String layerTreegridCreateMap();
+	String layerTreegridRemoveMap();
+	String layerTreegridColumnPublic();
+	String layerTreegridColumnPublicTooltip();
+	String layerTreegridRemoveMapErrorNoSelection();
+	String layerTreegridCreateMapAskValue();
+	
+	String blueprintDetailTabLayerTree();
+	
+	String layerSelectAvailableLayers();
+	String layerSelectSelectedLayers();
+	String layerSelectPanelHelpText();
+	
+
+	
 }
