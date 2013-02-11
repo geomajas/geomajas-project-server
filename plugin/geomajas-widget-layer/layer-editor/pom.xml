@@ -36,6 +36,16 @@
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-layer-gwt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+            <scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
