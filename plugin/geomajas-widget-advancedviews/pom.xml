@@ -105,6 +105,7 @@
 	<modules>
 		<module>advancedviews</module>
 		<module>advancedviews-gwt</module>
+		<module>advancedviews-editor</module>
 		<module>advancedviews-gwt-example</module>
 	</modules>
 
