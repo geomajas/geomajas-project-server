@@ -11,7 +11,7 @@
 package org.geomajas.widget.advancedviews.editor;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
-import org.geomajas.widget.advancedviews.editor.client.LayerTreeEditorFactory;
+import org.geomajas.widget.advancedviews.editor.client.ThemeConfigurationEditorFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 
@@ -24,7 +24,7 @@ public class AdvancedviewsEditor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		WidgetEditorFactoryRegistry.getInstance().register(new LayerTreeEditorFactory());
+		WidgetEditorFactoryRegistry.getInstance().register(new ThemeConfigurationEditorFactory());
 	}
 
 }

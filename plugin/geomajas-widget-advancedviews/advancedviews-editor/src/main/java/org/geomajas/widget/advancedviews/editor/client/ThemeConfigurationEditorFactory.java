@@ -13,34 +13,34 @@ package org.geomajas.widget.advancedviews.editor.client;
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactory;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
+import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
 import com.google.gwt.core.client.GWT;
 
 
 /**
- * EditorFactory for the layertree configuration.
+ * EditorFactory for the themeconfig configuration.
  * 
  * @author Oliver May
  *
  */
-public class LayerTreeEditorFactory implements WidgetEditorFactory {
+public class ThemeConfigurationEditorFactory implements WidgetEditorFactory {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	@Override
 	public WidgetEditor createEditor() {
-		return new LayerTreeEditor();
+		return new ThemeConfigurationEditor();
 	}
 
 	@Override
 	public String getKey() {
-		return ClientLayerTreeInfo.IDENTIFIER;
+		return ThemesInfo.IDENTIFIER;
 	}
 
 	@Override
 	public String getName() {
-		return MESSAGES.blueprintDetailTabLayerTree();
+		return MESSAGES.blueprintDetailTabThemes();
 	}
 
 }
