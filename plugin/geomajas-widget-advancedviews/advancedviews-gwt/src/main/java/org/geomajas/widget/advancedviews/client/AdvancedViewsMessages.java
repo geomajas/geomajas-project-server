@@ -24,5 +24,44 @@ public interface AdvancedViewsMessages extends Messages {
 	String expandingThemeWidgetNoThemeAvailableTitle();
 	String expandingThemeWidgetTooltip();
 	String expandingThemeWidgetTitle();
-
+	
+	// Configuration of Themes
+	String themeConfigThemeImage();
+	String themeConfigThemeTurnsOtherLayersOff();
+	String themeConfigThemeGridNameField();
+	String themeConfigThemeConfigGroup();
+	String themeConfigBreadcrumbThemeConfig();
+	String themeConfigBreadcrumbViewConfig();
+	String themeConfigBreadcrumbRangeConfig();
+	String themeConfigBreadcrumbLayerConfig();
+	String themeConfigViewRemove();
+	String themeConfigViewRemoveConfirm();
+	String themeConfigViewAdd();
+	String themeConfigViewDefaultNewTitle();
+	String themeConfigViewName();
+	String themeConfigViewDescription();
+	String themeConfigViewConfigGroup();
+	String themeConfigViewGridMinScaleField();
+	String themeConfigViewGridMaxScaleField();
+	String themeConfigRangeRemove(); 
+	String themeConfigRangeRemoveConfirm();
+	String themeConfigRangeTitle();
+	String themeConfigRangeMinScale();
+	String themeConfigRangeMaxScale();
+	String themeConfigLayerGridNameField();
+	String themeConfigLayerGridVisibleField();
+	String themeConfigLayerGridOpacityField();
+	String themeConfigLayerRemove();
+	String themeConfigLayerAdd();
+	String themeConfigLayerRemoveConfirm();
+	String themeConfigLayerTitle();
+	String themeConfigLayerVisibility();
+	String themeConfigLayerVisibilityOn();
+	String themeConfigLayerVisibilityOff();
+	String themeConfigLayerOpacity();
+	String themeConfigRangeAddInline();
+	String themeConfigRangeAdd();
+	String themeConfigLayerSelect();
+	
+	String detailTabThemes();
 }
