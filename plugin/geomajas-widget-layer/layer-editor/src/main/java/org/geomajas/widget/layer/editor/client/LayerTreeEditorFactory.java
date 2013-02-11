@@ -12,7 +12,7 @@ package org.geomajas.widget.layer.editor.client;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactory;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.widget.layer.client.LayerMessages;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 
 import com.google.gwt.core.client.GWT;
@@ -26,7 +26,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class LayerTreeEditorFactory implements WidgetEditorFactory {
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final LayerMessages MESSAGES = GWT.create(LayerMessages.class);
 
 	@Override
 	public WidgetEditor createEditor() {

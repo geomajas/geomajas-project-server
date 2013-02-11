@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
+import org.geomajas.widget.layer.client.LayerMessages;
 import org.geomajas.widget.layer.configuration.client.ClientAbstractNodeInfo;
 import org.geomajas.widget.layer.configuration.client.ClientBranchNodeInfo;
 import org.geomajas.widget.layer.configuration.client.ClientLayerNodeInfo;
@@ -45,7 +45,7 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class LayerTreeSelectPanel extends HLayout {
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final LayerMessages MESSAGES = GWT.create(LayerMessages.class);
 
 	private LayerTreeGrid sourceGrid;
 
