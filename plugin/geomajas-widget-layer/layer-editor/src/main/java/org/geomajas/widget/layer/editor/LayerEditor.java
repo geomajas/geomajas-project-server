@@ -11,7 +11,7 @@
 package org.geomajas.widget.layer.editor;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
-import org.geomajas.widget.advancedviews.editor.client.LayerTreeEditorFactory;
+import org.geomajas.widget.layer.editor.client.LayerTreeEditorFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 
