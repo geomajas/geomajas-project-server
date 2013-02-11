@@ -14,10 +14,10 @@ import java.util.LinkedHashMap;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
@@ -28,7 +28,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  * @author Oliver May
  * 
  */
-public class LayerAddWindow extends DockableWindow {
+public class LayerAddWindow extends Window {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	private DynamicForm form;
