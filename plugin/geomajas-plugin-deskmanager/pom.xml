@@ -115,13 +115,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-advancedviews-all</artifactId>
-				<version>1.0.0-M1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-widget-featureinfo-all</artifactId>
 				<version>1.0.0-M2</version>
 				<type>pom</type>
@@ -138,13 +131,6 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-widget-utility-all</artifactId>
 				<version>1.0.0-M3</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-layer-all</artifactId>
-				<version>1.0.0-M2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

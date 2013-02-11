@@ -127,12 +127,6 @@
 			<artifactId>geomajas-plugin-printing</artifactId>
 		</dependency>
 		
-		<!-- TODO: used in management interface, should be in (stable) API projects or deskmanager plugins -->
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-layer</artifactId>
-		</dependency>
-
 		<!-- TODO: remove again -->
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
