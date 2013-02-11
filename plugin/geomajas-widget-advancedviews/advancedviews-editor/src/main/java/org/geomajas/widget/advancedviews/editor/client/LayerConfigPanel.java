@@ -11,6 +11,7 @@
 package org.geomajas.widget.advancedviews.editor.client;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.editor.client.ThemeConfigurationPanel.State;
 
 import com.google.gwt.core.client.GWT;
@@ -42,7 +43,7 @@ public class LayerConfigPanel extends Layout {
 
 	private ThemeConfigurationPanel themeConfigurationPanel;
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	/**
 	 * @param themeConfigurationPanel

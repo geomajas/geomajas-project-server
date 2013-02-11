@@ -16,6 +16,7 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.FileUploadForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.ScaleInfoUtil;
+import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
 import org.geomajas.widget.advancedviews.editor.client.LayerAddWindow.LayerAddCallback;
@@ -69,7 +70,9 @@ public class RangeConfigPanel extends Layout {
 
 	private SpinnerItem maxScale;
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
+
+	private static final ManagerMessages MANAGERMESSAGES = GWT.create(ManagerMessages.class);
 
 	/**
 	 * @param themeConfigurationPanel
@@ -232,7 +235,7 @@ public class RangeConfigPanel extends Layout {
 			opacity.setWidth("*");
 			opacity.setType(ListGridFieldType.TEXT);
 
-			ListGridField delete = new ListGridField(FLD_DEL, MESSAGES.configAddDelete());
+			ListGridField delete = new ListGridField(FLD_DEL, MANAGERMESSAGES.configAddDelete());
 			delete.setWidth(64);
 			delete.setAlign(Alignment.CENTER);
 

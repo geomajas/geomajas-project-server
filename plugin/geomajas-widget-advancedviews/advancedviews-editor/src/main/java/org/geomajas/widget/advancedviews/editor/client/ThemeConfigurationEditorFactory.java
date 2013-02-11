@@ -12,7 +12,7 @@ package org.geomajas.widget.advancedviews.editor.client;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
 import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactory;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
 import com.google.gwt.core.client.GWT;
@@ -26,7 +26,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class ThemeConfigurationEditorFactory implements WidgetEditorFactory {
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	@Override
 	public WidgetEditor createEditor() {
@@ -40,7 +40,7 @@ public class ThemeConfigurationEditorFactory implements WidgetEditorFactory {
 
 	@Override
 	public String getName() {
-		return MESSAGES.blueprintDetailTabThemes();
+		return MESSAGES.detailTabThemes();
 	}
 
 }

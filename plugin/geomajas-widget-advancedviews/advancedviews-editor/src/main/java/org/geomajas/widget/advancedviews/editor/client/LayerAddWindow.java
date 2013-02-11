@@ -13,7 +13,7 @@ package org.geomajas.widget.advancedviews.editor.client;
 import java.util.LinkedHashMap;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
@@ -30,7 +30,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  */
 public class LayerAddWindow extends Window {
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 	private DynamicForm form;
 	private ComboBoxItem layerSelect;
 

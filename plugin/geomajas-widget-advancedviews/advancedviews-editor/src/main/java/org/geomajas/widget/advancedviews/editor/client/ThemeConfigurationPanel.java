@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 import org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
@@ -51,7 +52,7 @@ public class ThemeConfigurationPanel extends VLayout {
 
 	public static final int LEFT_WIDTH = 400;
 
-	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	private static final AdvancedViewsMessages MESSAGES = GWT.create(AdvancedViewsMessages.class);
 
 	public ThemeConfigurationPanel() {
 		super(5);
