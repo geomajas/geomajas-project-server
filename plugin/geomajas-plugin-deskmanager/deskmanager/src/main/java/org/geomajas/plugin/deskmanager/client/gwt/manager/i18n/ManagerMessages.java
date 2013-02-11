@@ -43,79 +43,6 @@ public interface ManagerMessages extends Messages {
 	String settingsLatestChangeWhen();
 
 	
-	// Configuration of Themes
-	String themeConfigThemeImage();
-
-	String themeConfigThemeTurnsOtherLayersOff();
-
-	String themeConfigThemeGridNameField();
-
-	String themeConfigThemeConfigGroup();
-
-	String themeConfigBreadcrumbThemeConfig();
-
-	String themeConfigBreadcrumbViewConfig();
-
-	String themeConfigBreadcrumbRangeConfig();
-
-	String themeConfigBreadcrumbLayerConfig();
-
-	String themeConfigViewRemove();
-
-	String themeConfigViewRemoveConfirm();
-	
-	String themeConfigViewAdd();
-
-	String themeConfigViewDefaultNewTitle();
-
-	String themeConfigViewName();
-
-	String themeConfigViewDescription();
-
-	String themeConfigViewConfigGroup();
-
-	String themeConfigViewGridMinScaleField();
-
-	String themeConfigViewGridMaxScaleField();
-
-	String themeConfigRangeRemove(); 
-
-	String themeConfigRangeRemoveConfirm();
-
-	String themeConfigRangeTitle();
-
-	String themeConfigRangeMinScale();
-
-	String themeConfigRangeMaxScale();
-
-	String themeConfigLayerGridNameField();
-
-	String themeConfigLayerGridVisibleField();
-
-	String themeConfigLayerGridOpacityField();
-
-	String themeConfigLayerRemove();
-
-	String themeConfigLayerAdd();
-
-	String themeConfigLayerRemoveConfirm();
-
-	String themeConfigLayerTitle();
-
-	String themeConfigLayerVisibility();
-
-	String themeConfigLayerVisibilityOn();
-
-	String themeConfigLayerVisibilityOff();
-	
-	String themeConfigLayerOpacity();
-
-	String themeConfigRangeAddInline();
-
-	String themeConfigRangeAdd();
-
-	String themeConfigLayerSelect();
-
 	// Main section tabs
 	String mainTabGeodesks();
 	String mainTabDataLayers();
@@ -184,7 +111,6 @@ public interface ManagerMessages extends Messages {
 
 	String geodeskDetailTabSettings();
 	String geodeskDetailTabDataLayers();
-	String geodeskDetailTabLayerTree();
 	String geodeskDetailTabAccessRights();
 	String geodeskDetailTabNotifications();
 	String geodeskDetailTabLayout();
@@ -229,10 +155,8 @@ public interface ManagerMessages extends Messages {
 
 	String blueprintDetailTabSettings();
 	String blueprintDetailTabDataLayers();
-	String blueprintDetailTabLayerTree();
 	String blueprintDetailTabAccessRights();
 	String blueprintDetailTabLayout();
-	String blueprintDetailTabThemes();
 	String blueprintDetailLoadingConfig();
 
 	// Blueprint settings form in Blueprint Settings Tab of Blueprint detail panel
@@ -325,12 +249,6 @@ public interface ManagerMessages extends Messages {
 	String layerSelectUserLayers();
 	String layerSelectSelectedLayers();
 	String layerSelectSelectedLayersTooltip();
-	String layerTreegridCreateMap();
-	String layerTreegridRemoveMap();
-	String layerTreegridColumnPublic();
-	String layerTreegridColumnPublicTooltip();
-	String layerTreegridRemoveMapErrorNoSelection();
-	String layerTreegridCreateMapAskValue();
 	
 	String mailGridInvalidAddress();
 	String mailGridColumnName();
