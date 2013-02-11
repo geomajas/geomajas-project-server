@@ -90,6 +90,7 @@
 	<modules>
 		<module>layer</module>
 		<module>layer-gwt</module>
+		<module>layer-editor</module>
 		<module>layer-gwt-example</module>
 	</modules>
 
