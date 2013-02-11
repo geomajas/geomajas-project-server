@@ -10,7 +10,6 @@
  */
 package org.geomajas.widget.advancedviews.editor.client;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.editor.client.ThemeConfigurationPanel.State;
 

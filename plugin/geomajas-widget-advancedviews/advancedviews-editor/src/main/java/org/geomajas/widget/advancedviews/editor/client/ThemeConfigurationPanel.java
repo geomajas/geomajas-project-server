@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 import org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig;

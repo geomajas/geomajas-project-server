@@ -11,7 +11,6 @@
 package org.geomajas.widget.advancedviews.editor.client;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.common.FileUploadForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
@@ -31,8 +30,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
-import com.smartgwt.client.widgets.form.fields.TextAreaItem;
-import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -58,12 +55,6 @@ public class ThemeConfigPanel extends Layout {
 	private static final ManagerMessages MANAGERMESSAGES = GWT.create(ManagerMessages.class);
 
 	private DynamicForm form;
-
-	private TextItem themeTitle;
-
-	private TextAreaItem mouseOverText;
-
-	private FileUploadForm uploadForm;
 
 	private ThemeGrid grid;
 
