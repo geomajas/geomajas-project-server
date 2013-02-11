@@ -1,0 +1,6 @@
+<module>
+	<inherits name="org.geomajas.plugin.deskmanager.client.gwt.manager.Manager" />
+	 
+	<source path="client" />
+	<entry-point class='org.geomajas.plugin.advancedviews.editor.AdvancedviewsEditor' />
+</module>
