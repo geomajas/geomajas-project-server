@@ -26,7 +26,6 @@ import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -184,8 +183,6 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		bluePrint.setName(CLIENTAPPLICATION_NAME);
 		bluePrint.setPublic(true);
 		bluePrint.setUserApplicationKey(CLIENTAPPLICATION_ID);
-		// TEST empty layertree
-		bluePrint.getMainMapClientWidgetInfos().put(ClientLayerTreeInfo.IDENTIFIER + "TEST", new ClientLayerTreeInfo());
 		
 
 		session.getCurrentSession().saveOrUpdate(bluePrint);
