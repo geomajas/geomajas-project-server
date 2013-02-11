@@ -133,7 +133,7 @@
 
 	<properties>
 		<geomajas-widget-advancedviews-backend-version>1.11.1</geomajas-widget-advancedviews-backend-version>
-		<geomajas-widget-advancedviews-gwt-face-version>1.11.1</geomajas-widget-advancedviews-gwt-face-version>
+		<geomajas-widget-advancedviews-gwt-face-version>1.12.0</geomajas-widget-advancedviews-gwt-face-version>
 		<geomajas-widget-advancedviews-gwt-version>2.4.0</geomajas-widget-advancedviews-gwt-version>
 		<geomajas-plugin-deskmanager-version>1.0.0-SNAPSHOT</geomajas-plugin-deskmanager-version>
 	</properties>
