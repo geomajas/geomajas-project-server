@@ -27,10 +27,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.BeheerConstants;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
-import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -40,6 +38,7 @@ import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -142,7 +141,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 				String id = event.getRecord().getAttribute(FLD_GEODESKID);
 				//FIXME: preview URL
 				String url = GeodeskUrlUtil.createPreviewUrl(id);
-				Window.open(url, "_blank", null);
+				com.google.gwt.user.client.Window.open(url, "_blank", null);
 			}
 		});
 	}
@@ -176,7 +175,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			previewImg.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					DockableWindow window = new DockableWindow();
+					Window window = new Window();
 					window.setTitle(MESSAGES.geodeskLabel() + ": " + rollOverRecord.getAttribute(FLD_NAME));
 					
 					window.setAutoCenter(true);

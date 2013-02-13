@@ -15,7 +15,6 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.SensibleScaleConverter;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
-import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
@@ -23,6 +22,7 @@ import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -35,7 +35,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class LayerConfigurationWindow extends DockableWindow {
+public class LayerConfigurationWindow extends Window {
 	
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -62,7 +62,7 @@ public class LayerConfigurationWindow extends DockableWindow {
 	/**
 	 * @param layer
 	 * @param callback
-	 *            returns true if saved, false if cancelled.
+	 *            returns true if saved, false if canceled.
 	 */
 	public LayerConfigurationWindow(LayerDto layerDto, BooleanCallback callback) {
 		this.layer = layerDto;

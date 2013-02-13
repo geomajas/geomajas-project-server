@@ -23,7 +23,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.service.DeskmanagerGwt
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.FeatureSelectionInfoWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
-import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -57,8 +56,6 @@ public abstract class AbstractUserApplication implements UserApplication {
 	private FeatureSelectionInfoWindow fsiw = new FeatureSelectionInfoWindow();
 
 	private Window searchResult;
-
-	private MultiFeatureListGrid searchResultGrid;
 
 	public HandlerRegistration addUserApplicationLoadedHandler(final UserApplicationHandler userApplicationHandler) {
 		return handlerManager.addHandler(UserApplicationEvent.TYPE, userApplicationHandler);
@@ -111,21 +108,6 @@ public abstract class AbstractUserApplication implements UserApplication {
 	 */
 	protected String getApplicationId() {
 		return geodeskId;
-	}
-
-	/**
-	 * @param searchResultGrid
-	 *            the searchResultGrid to set
-	 */
-	protected void setSearchResultGrid(MultiFeatureListGrid searchResultGrid) {
-		this.searchResultGrid = searchResultGrid;
-	}
-
-	/**
-	 * @return the searchResultGrid
-	 */
-	protected MultiFeatureListGrid getSearchResultGrid() {
-		return searchResultGrid;
 	}
 
 	/**

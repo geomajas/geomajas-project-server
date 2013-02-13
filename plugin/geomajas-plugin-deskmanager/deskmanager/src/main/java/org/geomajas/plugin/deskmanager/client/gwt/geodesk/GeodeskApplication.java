@@ -22,7 +22,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.LoadingScreen;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
-import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -102,7 +101,6 @@ public class GeodeskApplication implements UserApplicationHandler {
 				// Finaly add the geodesk to the main layout and draw
 				layout.addMember(loketLayout);
 
-				GsfLayout.searchWindowParentElement = layout;
 				parentLayout.addMember(layout);
 			}
 		});

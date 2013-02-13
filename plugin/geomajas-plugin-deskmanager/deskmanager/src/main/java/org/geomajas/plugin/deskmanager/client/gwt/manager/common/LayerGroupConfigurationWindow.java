@@ -12,13 +12,13 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -30,7 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class LayerGroupConfigurationWindow extends DockableWindow {
+public class LayerGroupConfigurationWindow extends Window {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 	
@@ -50,7 +50,7 @@ public class LayerGroupConfigurationWindow extends DockableWindow {
 	/**
 	 * @param layerGroup
 	 * @param callback
-	 *            returns true if saved, false if cancelled.
+	 *            returns true if saved, false if canceled.
 	 */
 	public LayerGroupConfigurationWindow() {
 		setAutoSize(true);

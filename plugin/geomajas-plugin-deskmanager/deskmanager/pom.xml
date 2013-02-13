@@ -127,12 +127,6 @@
 			<artifactId>geomajas-plugin-printing</artifactId>
 		</dependency>
 		
-		<!-- TODO: remove again -->
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
-		</dependency>
-
 		<!-- wfs support -->
 		<dependency>
 			<groupId>org.geotools</groupId>
