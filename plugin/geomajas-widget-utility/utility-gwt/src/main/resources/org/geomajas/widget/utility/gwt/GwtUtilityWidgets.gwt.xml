@@ -15,5 +15,5 @@
     <inherits name="org.geomajas.gwt.GeomajasClient" />
     <inherits name="org.geomajas.widget.utility.common.UtilityWidgets" />
 	<source path='client'/>
-	<entry-point name="org.geomajas.widget.utility.gwt.client.GwtUtilityWidgetsEntryPoint" />
+	<entry-point class="org.geomajas.widget.utility.gwt.client.GwtUtilityWidgetsEntryPoint" />
 </module>
