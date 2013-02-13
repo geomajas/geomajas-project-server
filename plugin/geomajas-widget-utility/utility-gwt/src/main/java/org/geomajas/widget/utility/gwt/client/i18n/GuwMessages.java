@@ -34,4 +34,8 @@ public interface GuwMessages extends Messages {
 
 	/** @return Message which is displayed when saving a wizard page fails. */
 	String wizardSavePageFailed();
+	
+	String refreshLayersTitle();
+	
+	String refreshLayersTooltip();
 }
