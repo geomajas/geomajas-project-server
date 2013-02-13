@@ -31,7 +31,8 @@ public class GwtUtilityWidgetsEntryPoint implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		RibbonColumnRegistry.put(DisplayCoordinatesRibbonColumn.IDENTIFIER, new RibbonColumnRegistry.RibbonColumnCreator() {
+		RibbonColumnRegistry.put(DisplayCoordinatesRibbonColumn.IDENTIFIER, 
+				new RibbonColumnRegistry.RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				return new DisplayCoordinatesRibbonColumn(mapWidget);
