@@ -136,12 +136,6 @@
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-utility-gwt</artifactId>
-		</dependency>
-		
-		
 
 		<!-- wfs support -->
 		<dependency>

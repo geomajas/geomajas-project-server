@@ -30,7 +30,6 @@ import org.springframework.stereotype.Component;
  * 
  * @author Oliver May
  */
-// FIXME: this is not distributed...
 @Component
 public class AuthenticationTokenService {
 
