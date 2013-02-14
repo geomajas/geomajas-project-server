@@ -11,16 +11,13 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
-import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
@@ -78,9 +75,6 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodes
 					}
 					if ((SaveGeodeskRequest.SAVE_TERRITORIES & request.getSaveBitmask()) > 0) {
 						copyGroups(source, target);
-					}
-					if ((SaveGeodeskRequest.SAVE_NOTIFICATIONS & request.getSaveBitmask()) > 0) {
-						copyNotifications(source, target);
 					}
 					if ((SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO & request.getSaveBitmask()) > 0) {
 						copyWidgetInfo(source, target);
@@ -162,64 +156,6 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodes
 				log.warn("Territory not found !? (id: " + discon.getId());
 			}
 		}
-	}
-
-	/**
-	 * Helper method to copy all notifications.
-	 * @deprecated don't use notifications as such, use clientwidgetinfo.
-	 */
-	@Deprecated
-	private void copyNotifications(Geodesk source, Geodesk target) throws Exception {
-		List<MailAddress> toDelete = new ArrayList<MailAddress>();
-		List<MailAddress> toAdd = new ArrayList<MailAddress>();
-		Map<Long, MailAddress> sourcemap = toMap(source.getMailAddresses());
-
-		// remove deleted records
-		for (MailAddress m : target.getMailAddresses()) {
-			if (!source.getMailAddresses().contains(m)) {
-				toDelete.add(m);
-			}
-		}
-		if (toDelete.size() > 0) {
-			target.getMailAddresses().removeAll(toDelete);
-		}
-
-		// update existing
-		for (MailAddress upd : target.getMailAddresses()) {
-			MailAddress src = sourcemap.get(upd.getId());
-			if (src != null) {
-				upd.setEmail(src.getEmail());
-				upd.setName(src.getName());
-			} else {
-				log.warn("MailAddress not found !? (id: " + upd.getId() + ")");
-			}
-		}
-
-		// add new
-		for (MailAddress m : source.getMailAddresses()) {
-			if (!target.getMailAddresses().contains(m)) {
-				toAdd.add(m);
-			}
-		}
-		if (toAdd.size() > 0) {
-			target.getMailAddresses().addAll(toAdd);
-		}
-	}
-
-	/**
-	 * Helper method to copy all mail addresses.
-	 * @deprecated don't use notifications as such, use clientwidgetinfo.
-	 */
-	@Deprecated
-	private Map<Long, MailAddress> toMap(List<MailAddress> list) {
-		Map<Long, MailAddress> res = new HashMap<Long, MailAddress>();
-		for (MailAddress m : list) {
-			if (m.getId() != null) {
-				res.put(m.getId(), m);
-			}
-		}
-
-		return res;
 	}
 
 	/**

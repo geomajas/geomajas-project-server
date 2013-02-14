@@ -11,8 +11,6 @@
 package org.geomajas.plugin.deskmanager.domain.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.geomajas.configuration.client.ScaleInfo;
 
@@ -52,8 +50,6 @@ public class LayerModelDto implements Serializable {
 	private boolean readOnly;
 
 	private DynamicLayerConfiguration layerConfiguration;
-
-	private List<MailAddressDto> mailAddresses = new ArrayList<MailAddressDto>();
 
 	// ------------------------------------------------------------------
 
@@ -167,14 +163,6 @@ public class LayerModelDto implements Serializable {
 
 	public void setLayerConfiguration(DynamicLayerConfiguration layerConfiguration) {
 		this.layerConfiguration = layerConfiguration;
-	}
-
-	public List<MailAddressDto> getMailAddresses() {
-		return mailAddresses;
-	}
-
-	public void setMailAddresses(List<MailAddressDto> mailAddresses) {
-		this.mailAddresses = mailAddresses;
 	}
 
 	public boolean isReadOnly() {

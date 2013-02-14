@@ -68,8 +68,6 @@ public class GeodeskDto implements BaseGeodeskDto {
 
 	private List<TerritoryDto> groups = new ArrayList<TerritoryDto>();
 
-	private List<MailAddressDto> mailAddresses = new ArrayList<MailAddressDto>();
-	
 	private Map<String, ClientWidgetInfo> applicationClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
 	private Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
@@ -190,14 +188,6 @@ public class GeodeskDto implements BaseGeodeskDto {
 		this.owner = owner;
 	}
 
-	public List<MailAddressDto> getMailAddresses() {
-		return mailAddresses;
-	}
-
-	public void setMailAddresses(List<MailAddressDto> mailAddresses) {
-		this.mailAddresses = mailAddresses;
-	}
-	
 	/**
 	 * @param applicationClientWidgetInfos the applicationClientWidgetInfos to set
 	 */

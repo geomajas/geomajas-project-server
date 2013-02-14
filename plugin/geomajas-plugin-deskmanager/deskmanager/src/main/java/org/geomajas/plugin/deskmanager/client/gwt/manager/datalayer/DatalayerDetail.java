@@ -17,8 +17,8 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
@@ -52,8 +52,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 
 	private DatalayerConnectionParameters connPar;
 
-	private DatalayerNotifications notifications;
-
 	private DatalayerShapeUpload upload;
 
 	private DatalayerStyle style;
@@ -77,7 +75,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 
 		settings = new DatalayerSettings();
 		connPar = new DatalayerConnectionParameters();
-		notifications = new DatalayerNotifications();
 		upload = new DatalayerShapeUpload();
 		style = new DatalayerStyle();
 
@@ -98,10 +95,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		connParTab = new Tab(MESSAGES.datalayerDetailTabConnectionparameters());
 		connParTab.setPane(connPar);
 		tabset.addTab(connParTab);
-
-		notificationsTab = new Tab(MESSAGES.datalayerDetailTabNotifications());
-		notificationsTab.setPane(notifications);
-		tabset.addTab(notificationsTab);
 
 		styleTab = new Tab(MESSAGES.datalayerDetailTabStyle());
 		styleTab.setPane(style);
@@ -175,7 +168,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		this.layerModel = layerModel;
 
 		settings.setLayerModel(layerModel);
-		notifications.setLayerModel(layerModel);
 
 		updateTabState();
 

@@ -39,13 +39,6 @@ public class SaveGeodeskRequest implements CommandRequest {
 	public static final int SAVE_TERRITORIES = 4; // security
 
 	/**
-	 * Bitmask to save notifications.
-	 * @deprecated use clientwidgetinfo.
-	 */
-	@Deprecated
-	public static final int SAVE_NOTIFICATIONS = 16; // mailnotifications
-
-	/**
 	 * Bitmask to save all clientwidgetinfo's (application, mainmap, overviewmap).
 	 */
 	public static final int SAVE_CLIENTWIDGETINFO = 32;

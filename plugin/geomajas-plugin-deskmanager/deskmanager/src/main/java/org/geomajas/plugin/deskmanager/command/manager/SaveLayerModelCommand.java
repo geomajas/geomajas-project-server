@@ -10,18 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.slf4j.Logger;
@@ -86,7 +80,6 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 							target.setDynamicLayerConfiguration(source.getDynamicLayerConfiguration());
 						}
 					}
-					copyNotifications(source, target);
 
 					layerModelService.saveOrUpdateLayerModel(target);
 					response.setLayerModel(dtoService.toDto(target, false));
@@ -105,51 +98,4 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 
 	// -------------------------------------------------
 
-	private void copyNotifications(LayerModel source, LayerModel target) throws Exception {
-		List<MailAddress> toDelete = new ArrayList<MailAddress>();
-		List<MailAddress> toAdd = new ArrayList<MailAddress>();
-		Map<Long, MailAddress> sourcemap = toMap(source.getMailAddresses());
-
-		// remove deleted records
-		for (MailAddress m : target.getMailAddresses()) {
-			if (!source.getMailAddresses().contains(m)) {
-				toDelete.add(m);
-			}
-		}
-		if (toDelete.size() > 0) {
-			target.getMailAddresses().removeAll(toDelete);
-		}
-
-		// update existing
-		for (MailAddress upd : target.getMailAddresses()) {
-			MailAddress src = sourcemap.get(upd.getId());
-			if (src != null) {
-				upd.setEmail(src.getEmail());
-				upd.setName(src.getName());
-			} else {
-				log.warn("MailAddress not found !? (id: " + upd.getId() + ")");
-			}
-		}
-
-		// add new
-		for (MailAddress m : source.getMailAddresses()) {
-			if (!target.getMailAddresses().contains(m)) {
-				toAdd.add(m);
-			}
-		}
-		if (toAdd.size() > 0) {
-			target.getMailAddresses().addAll(toAdd);
-		}
-	}
-
-	private Map<Long, MailAddress> toMap(List<MailAddress> list) {
-		Map<Long, MailAddress> res = new HashMap<Long, MailAddress>();
-		for (MailAddress m : list) {
-			if (m.getId() != null) {
-				res.put(m.getId(), m);
-			}
-		}
-
-		return res;
-	}
 }

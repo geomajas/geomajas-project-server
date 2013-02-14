@@ -24,13 +24,11 @@ import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.LayerView;
-import org.geomajas.plugin.deskmanager.domain.MailAddress;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerViewDto;
-import org.geomajas.plugin.deskmanager.domain.dto.MailAddressDto;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
@@ -71,33 +69,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		initMessages();
 	}
 
-//	private static void initMessages() {
-//		messagesMap = new HashMap<String, ResourceBundle>();
-//		try {
-//			ResourceBundle messagesDefault =
-//					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages"); 
-//	
-//			messagesMap.put("default", messagesDefault);
-//		} catch (MissingResourceException e ) {
-//		}
-//		try {
-//			ResourceBundle messagesEn =
-//					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages", 
-//							Locale.forLanguageTag("en"));
-//			
-//			messagesMap.put("en", messagesEn);
-//		} catch (MissingResourceException e ) {
-//			
-//		}
-//		try {
-//			ResourceBundle messagesNl =
-//				ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages", 
-//						Locale.forLanguageTag("nl"));
-//		
-//			messagesMap.put("nl", messagesNl);
-//		} catch (MissingResourceException e ) {
-//		}
-//	}
 	private static void initMessages() {
 		try {
 			messages =
@@ -222,12 +193,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lm.setLayerType(dto.getLayerType());
 		lm.setReadOnly(dto.isReadOnly());
 		lm.setDynamicLayerConfiguration(dto.getLayerConfiguration());
-		List<MailAddress> mails = lm.getMailAddresses();
-		if (dto.getMailAddresses() != null && dto.getMailAddresses().size() > 0) {
-			for (MailAddressDto mad : dto.getMailAddresses()) {
-				mails.add(fromDto(mad));
-			}
-		}
 		return lm;
 	}
 
@@ -261,12 +226,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lmDto.setOwner(owner);
 		if (includeReferences) {
 			lmDto.setLayerConfiguration(layerModel.getDynamicLayerConfiguration());
-			List<MailAddressDto> mails = lmDto.getMailAddresses();
-			if (layerModel.getMailAddresses() != null && layerModel.getMailAddresses().size() > 0) {
-				for (MailAddress ma : layerModel.getMailAddresses()) {
-					mails.add(toDto(ma));
-				}
-			}
 		}
 		return lmDto;
 	}
@@ -343,18 +302,12 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		l.setPublic(dto.isPublic());
 		l.setOwner(fromDto(dto.getOwner(), false, false));
 		List<Territory> territories = l.getTerritories();
-		List<MailAddress> mails = l.getMailAddresses();
 		l.setApplicationClientWidgetInfos(dto.getApplicationClientWidgetInfos());
 		l.setMainMapClientWidgetInfos(dto.getMainMapClientWidgetInfos());
 		l.setOverviewMapClientWidgetInfos(dto.getOverviewMapClientWidgetInfos());
 		if (dto.getTerritories() != null && dto.getTerritories().size() > 0) {
 			for (TerritoryDto gDto : dto.getTerritories()) {
 				territories.add(fromDto(gDto, false, false));
-			}
-		}
-		if (dto.getMailAddresses() != null && dto.getMailAddresses().size() > 0) {
-			for (MailAddressDto mad : dto.getMailAddresses()) {
-				mails.add(fromDto(mad));
 			}
 		}
 		List<ClientLayer> mainLayers = l.getMainMapLayers();
@@ -408,16 +361,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 		if (includeReferences) {
 			List<TerritoryDto> territories = lDto.getTerritories();
-			List<MailAddressDto> mails = lDto.getMailAddresses();
 			lDto.setOwner(toDto(geodesk.getOwner(), false, false));
 			if (geodesk.getTerritories() != null && geodesk.getTerritories().size() > 0) {
 				for (Territory grp : geodesk.getTerritories()) {
 					territories.add(toDto(grp, false, false));
-				}
-			}
-			if (geodesk.getMailAddresses() != null && geodesk.getMailAddresses().size() > 0) {
-				for (MailAddress ma : geodesk.getMailAddresses()) {
-					mails.add(toDto(ma));
 				}
 			}
 		}
@@ -526,28 +473,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		pDto.setRole(profile.getRole());
 		pDto.setName(profile.getFirstName());
 		return pDto;
-	}
-
-	public MailAddress fromDto(MailAddressDto dto) throws GeomajasException {
-		if (dto == null) {
-			return null;
-		}
-		MailAddress mail = new MailAddress();
-		mail.setEmail(dto.getEmail());
-		mail.setId(dto.getId());
-		mail.setName(dto.getName());
-		return mail;
-	}
-
-	public MailAddressDto toDto(MailAddress mail) throws GeomajasException {
-		if (mail == null) {
-			return null;
-		}
-		MailAddressDto dto = new MailAddressDto();
-		dto.setEmail(mail.getEmail());
-		dto.setId(mail.getId());
-		dto.setName(mail.getName());
-		return dto;
 	}
 
 	public LayerDto toDto(ClientLayer layer) throws GeomajasException {

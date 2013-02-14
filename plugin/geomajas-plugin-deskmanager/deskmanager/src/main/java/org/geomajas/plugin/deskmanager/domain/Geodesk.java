@@ -142,12 +142,6 @@ public class Geodesk implements BaseGeodesk {
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "config_tt_mails_geodesks")
-	private List<MailAddress> mailAddresses = new ArrayList<MailAddress>();
-
-	// ------------------------------------------------------------------
-
 	public String getId() {
 		return id;
 	}
@@ -273,26 +267,6 @@ public class Geodesk implements BaseGeodesk {
 	public void setOwner(Territory owner) {
 		this.owner = owner;
 	}
-
-	/**
-	 * 
-	 * @deprecated don't use notifications as such, use clientwidgetinfo.
-	 */
-	@Deprecated
-	public List<MailAddress> getMailAddresses() {
-		return mailAddresses;
-	}
-
-	/**
-	 * 
-	 * @deprecated don't use notifications as such, use clientwidgetinfo.
-	 */
-	@Deprecated
-	public void setMailAddresses(List<MailAddress> mailAddresses) {
-		this.mailAddresses = mailAddresses;
-	}
-
-	// -------------------------------------------------
 
 	public boolean mustFilterByCreatorTerritory() {
 		return (isPublic() && (isLimitToCreatorTerritory() || getBlueprint().isLimitToCreatorTerritory()));

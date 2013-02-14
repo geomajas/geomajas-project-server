@@ -73,8 +73,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private GeodeskAccessRights accessrights;
 
-	private GeodeskNotifications notifications;
-
 	private Tab accessrightsTab;
 
 	private Label loadingLabel;
@@ -110,12 +108,6 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		accessrightsTab.setPane(accessrights);
 		accessrightsTab.setDisabled(true);
 		Whiteboard.registerHandler(accessrights);
-
-		notifications = new GeodeskNotifications();
-		tab = new Tab(MESSAGES.geodeskDetailTabNotifications());
-		tabset.addTab(tab);
-		tab.setPane(notifications);
-		Whiteboard.registerHandler(notifications);
 
 		// loading widget
 		loadingLayout = new VLayout();
@@ -189,9 +181,8 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		} else {
 			// public geodesks don't have accessrights
 			accessrightsTab.setDisabled(geodesk.isPublic());
-			if (geodesk.isPublic() && tabset.getSelectedTab().equals(accessrightsTab)) {
-				tabset.selectTab(0);
-			}
+			//Always select first tab
+			tabset.selectTab(0);
 			setDisabled(false);
 		}
 		setLoaded();

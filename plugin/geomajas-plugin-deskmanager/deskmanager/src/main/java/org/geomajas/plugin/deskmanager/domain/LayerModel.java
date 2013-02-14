@@ -11,20 +11,15 @@
 package org.geomajas.plugin.deskmanager.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ScaleInfo;
@@ -89,10 +84,6 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 	@Column(name = "layerConfiguration", nullable = true)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	private DynamicLayerConfiguration dynamicLayerConfiguration;
-
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "config_tt_mails_layermodels")
-	private List<MailAddress> mailAddresses = new ArrayList<MailAddress>();
 
 	// -------------------------------------------------
 
@@ -218,14 +209,6 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 
 	public void setLayerType(String layerType) {
 		this.layerType = layerType;
-	}
-
-	public List<MailAddress> getMailAddresses() {
-		return mailAddresses;
-	}
-
-	public void setMailAddresses(List<MailAddress> mailAddresses) {
-		this.mailAddresses = mailAddresses;
 	}
 
 	public boolean isReadOnly() {
