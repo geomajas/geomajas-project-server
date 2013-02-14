@@ -64,8 +64,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 
 	private Tab connParTab;
 
-	private Tab notificationsTab;
-
 	private Label loadingLabel;
 
 	private VLayout loadingLayout;
@@ -181,8 +179,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 	}
 
 	private void updateTabState() {
-		notificationsTab.setDisabled(false);
-
 		if (layerModel == null || layerModel.isReadOnly()) {
 			settingsTab.setDisabled(true);
 			uploadTab.setDisabled(true);
@@ -214,10 +210,6 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 				styleTab.setDisabled(false);
 				style.setLayerModel(layerModel);
 			}
-		}
-
-		if (tabset.getSelectedTab().getDisabled()) {
-			tabset.selectTab(notificationsTab);
 		}
 	}
 

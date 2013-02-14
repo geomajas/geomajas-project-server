@@ -105,14 +105,10 @@ public interface ManagerMessages extends Messages {
 	String datalagenGroup();
 	String layerTreeFormGroup();
 	String geodeskAccessRightsFormGroup();
-	String geodeskNotificationsFormGroup();
-	String geodeskNotificationsWarnInvalidList();
-	String geodeskNotificationsWarnNoChanges();
 
 	String geodeskDetailTabSettings();
 	String geodeskDetailTabDataLayers();
 	String geodeskDetailTabAccessRights();
-	String geodeskDetailTabNotifications();
 	String geodeskDetailTabLayout();
 
 	String geodeskDetailTabHTMLCode();
@@ -174,7 +170,6 @@ public interface ManagerMessages extends Messages {
 	String datalayerDetailTabSettings();
 	String datalayerDetailTabUpload();
 	String datalayerDetailTabConnectionparameters();
-	String datalayerDetailTabNotifications();
 	String datalayerDetailTabStyle();
 
 	String datalayerGridColumnLayerName();
@@ -195,10 +190,6 @@ public interface ManagerMessages extends Messages {
 	String datalayerGridRemoveConfirmQuestion(String name);
 	String datalayerGridLoading();
 	
-	String datalayerNotificationsFormGroup();	
-	String datalayerNotificationsWarnInvalidFormData();
-	
-	String datalayerNotificationsNoFormChanges();
 	String datalayersNewDatalayerButtonText();
 	String datalayersNewLayerIsBeingSaved();
 	String datalayerShapeUploadFormGroup();
@@ -249,17 +240,6 @@ public interface ManagerMessages extends Messages {
 	String layerSelectUserLayers();
 	String layerSelectSelectedLayers();
 	String layerSelectSelectedLayersTooltip();
-	
-	String mailGridInvalidAddress();
-	String mailGridColumnName();
-	String mailGridColumnAddress();
-	String mailGridActionDeleteTooltip();
-	String mailGridConfirmDeleteTitle();
-	String mailGridConfirmDeleteText(String attribute);
-	String mailGridLoadingAddresses();
-
-	
-	String mailManageNewButtonText();
 	
 	String layerAttributesGridLoadingText();
 	String layerAttributesGridColumnAttribute();
