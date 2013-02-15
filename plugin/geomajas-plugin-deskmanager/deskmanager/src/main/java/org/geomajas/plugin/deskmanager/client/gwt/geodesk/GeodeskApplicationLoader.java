@@ -10,18 +10,19 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerTokenRequestHandler;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializer;
-import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.common.util.GeodeskUrlUtil;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.LoadingScreen;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 
 import com.google.gwt.core.client.GWT;
@@ -37,8 +38,10 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * The entrypoint listens to Mapwidget and MapModel events to set some generic configuration options.
  * 
  * @author Oliver May
+ * @since 1.0.0
  */
-public class GeodeskApplication implements UserApplicationHandler {
+@Api
+public class GeodeskApplicationLoader {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
 
@@ -47,19 +50,38 @@ public class GeodeskApplication implements UserApplicationHandler {
 	private LoadingScreen loadScreen;
 
 	/**
-	 * Constructor for the GeodeskApplication.
+	 * Constructor for the GeodeskApplicationLoader.
 	 */
-	public GeodeskApplication() {
+	public GeodeskApplicationLoader() {
 	}
 
 	/**
-	 * Ask for the correct user role and load the application. TODO: extract to interface, this is specific to the used
-	 * security model.
+	 * Load a geodesk application. If needed this will first ask for the correct user role and then load the 
+	 * application.
 	 * 
-	 * The resentation is added to the layout using a {@link UserApplication}, the key for this user application is
-	 * loaded from the configuration. User applications must be registered to the {@link UserApplicationRegistry}.
+	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is
+	 * loaded from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
+	 * 
+	 * @param parentLayout the layout to add the application to.
 	 */
 	public void loadApplication(final Layout parentLayout) {
+		loadApplication(parentLayout, null);
+	}
+	
+	/**
+	 * Load a geodesk application. If needed this will first ask for the correct user role and then load the 
+	 * application.
+	 * 
+	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is
+	 * loaded from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
+	 * 
+	 * You can add a user application handler that is called once the user application is loaded and added to the 
+	 * layout.
+	 * 
+	 * @param parentLayout the layout to add the application to.
+	 * @param handler the user application handler
+	 */
+	public void loadApplication(final Layout parentLayout, final UserApplicationHandler handler) {
 		// First Install a loading screen
 		// FIXME: i18n
 		loadScreen = new LoadingScreen();
@@ -81,7 +103,6 @@ public class GeodeskApplication implements UserApplicationHandler {
 
 				// Load geodesk from registry
 				geodesk = UserApplicationRegistry.getInstance().get(response.getGeodeskTypeIdentifier());
-				geodesk.addUserApplicationLoadedHandler(GeodeskApplication.this);
 
 				geodesk.setApplicationId(response.getGeodeskIdentifier());
 				geodesk.setClientApplicationInfo(response.getClientApplicationInfo());
@@ -103,34 +124,15 @@ public class GeodeskApplication implements UserApplicationHandler {
 				layout.addMember(loketLayout);
 
 				parentLayout.addMember(layout);
+				
+				if (handler != null) {
+					handler.onUserApplicationLoad(new UserApplicationEvent(geodesk));
+				}
 			}
 		});
 
 		// Get application info for the geodesk
 		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void onUserApplicationLoad(UserApplicationEvent event) {
-		// Listen for mapModelChanges
-		event.getUserApplication().getMainMapWidget().getMapModel().runWhenInitialized(new Runnable() {
-
-			public void run() {
-				onMapModelInitialized();
-			}
-		});
-	}
-
-	public void onMapModelInitialized() {
-		if (geodesk != null) {
-			// MapWidget mapWidget = geodesk.getMainMapWidget();
-			// Register to Javascript api
-			// FIXME: re enable javascript api
-			// GeomajasServiceImpl.getInstance().registerMap(mapWidget.getApplicationId(), mapWidget.getID(),
-			// new MapImpl(mapWidget));
-		}
 	}
 
 }

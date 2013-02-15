@@ -8,25 +8,23 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
-
-import com.google.gwt.core.client.EntryPoint;
-
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl;
 
 /**
- * Entry point for the geodesks, this loads all necessary widgets. For starting up an actual geodesk application, see 
- * {@link GeodeskApplication}.
- * 
  * @author Oliver May
- *
+ * 
  */
-public class GeodeskEntryPoint implements EntryPoint {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
-	 */
-	public void onModuleLoad() {
-	}
+public final class CodeServer {
+	
+	private CodeServer() { }
 
+	public static String getCodeServer() {
+		String codeServer = com.google.gwt.user.client.Window.Location.getParameter("gwt.codesvr");
+		if (codeServer != null) {
+			codeServer = "?gwt.codesvr=" + codeServer;
+		} else {
+			codeServer = "";
+		}
+		return codeServer;
+	}
 }

@@ -13,9 +13,11 @@ package org.geomajas.plugin.deskmanager.client.gwt.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.gwt.client.util.UrlBuilder;
+import org.geomajas.plugin.deskmanager.client.gwt.common.i18n.CommonMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -31,13 +33,16 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 
 /**
- * TODO.
+ * A form that uploads files to the server.
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
- *
+ * @since 1.0.0
  */
+@Api
 public class FileUploadForm extends HLayout {
+	
+	private static final CommonMessages MESSAGES = GWT.create(CommonMessages.class);
 
 	private static final String SERVICE_NAME = GWT.getHostPageBaseURL() + "d/fileUpload";
 
@@ -62,9 +67,19 @@ public class FileUploadForm extends HLayout {
 		}
 	}
 
+	/**
+	 * Default contstuctor, don't use, instead use FileUploadForm(String label, String tooltip).
+	 */
 	public FileUploadForm() {
 		this(null, null);
 	}
+	
+	/**
+	 * Construct a file upload form.
+	 * 
+	 * @param label the label.
+	 * @param tooltip the tooltip.
+	 */
 	public FileUploadForm(String label, String tooltip) {
 		super(5);
 		setHeight(50);
@@ -84,7 +99,7 @@ public class FileUploadForm extends HLayout {
 
 			public void onChange(ChangeEvent event) {
 				if (hasFile()) {
-					Notify.info("Bestand wordt opgeladen...");
+					Notify.info(MESSAGES.fileIsUploading());
 					form.submit();
 				}
 			}
@@ -104,7 +119,7 @@ public class FileUploadForm extends HLayout {
 					setUrl(builder.toString());
 					fireChangedEvent(new ChangedEvent(this, oldResult, getUrl()));
 				} else {
-					SC.say("Er heeft zich een fout voorgedaan bij het opladen van het bestand.<br />("
+					SC.say(MESSAGES.errorWhileUploadingFile() + "<br />("
 							+ event.getResults() + ")");
 				}
 			}
@@ -134,33 +149,49 @@ public class FileUploadForm extends HLayout {
 		addMember(previewImage);
 	}
 
-	public void init() {
-		// limit extentions?
-	}
-
+	/**
+	 * Check if the upload form contains a file.
+	 * 
+	 * @return true if the upload form contains a file.
+	 */
 	public boolean hasFile() {
 		String val = upload.getFilename();
 		return (val != null && !"".equals(val));
 	}
 
 	/**
-	 * This will be set after file has been uploaded.
+	 * Get the url of the uploaded file.
 	 * 
-	 * @return
+	 * @return the url to the file
 	 */
 	public String getUrl() {
 		return url;
 	}
 
+	/**
+	 * Set the url of the current file.
+	 * 
+	 * @param url the url
+	 */
 	public void setUrl(String url) {
 		previewImage.setSrc(Geomajas.getDispatcherUrl() + url);
 		this.url = url;
 	}
 
+	/**
+	 * Register a changed handler.
+	 * 
+	 * @param handler the handler to add
+	 */
 	public void addChangedHandler(ChangedHandler handler) {
 		changedHandlers.add(handler);
 	}
 
+	/**
+	 * Unregister a changed handler.
+	 * 
+	 * @param handler the handler to remove
+	 */
 	public void removeChangedHandler(ChangedHandler handler) {
 		if (changedHandlers.contains(handler)) {
 			changedHandlers.remove(handler);
@@ -173,14 +204,10 @@ public class FileUploadForm extends HLayout {
 		}
 	}
 
-	// ----------------------------------------------------------
-	// -- caveat you can't create smartgwt changedevents so faking one...
-	// ----------------------------------------------------------
-
 	/**
-	 * TODO.
+	 * Event handler for the file upload form.
 	 * 
-	 * @author Jan De Moerloose
+	 * @author Oliver May
 	 *
 	 */
 	public interface ChangedHandler {
@@ -189,9 +216,9 @@ public class FileUploadForm extends HLayout {
 	}
 
 	/**
-	 * TODO.
+	 * Event for the file upload form.
 	 * 
-	 * @author Jan De Moerloose
+	 * @author Oliver May
 	 *
 	 */
 	public static final class ChangedEvent {

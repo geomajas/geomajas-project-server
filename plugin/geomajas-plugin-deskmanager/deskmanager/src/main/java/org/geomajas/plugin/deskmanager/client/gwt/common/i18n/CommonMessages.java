@@ -35,4 +35,7 @@ public interface CommonMessages extends Messages {
 	String roleConsultingUserDescription();
 	String roleEditingUserDescription();
 
+	String fileIsUploading();
+	String errorWhileUploadingFile();
+
 }

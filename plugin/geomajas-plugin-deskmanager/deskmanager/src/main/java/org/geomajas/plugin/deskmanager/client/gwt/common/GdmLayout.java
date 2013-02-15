@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 
 
 /**
+ * Utility class to change default behaviour of the deskmanager layouts.
  * 
  * @author Oliver May
  *

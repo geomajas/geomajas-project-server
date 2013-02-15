@@ -17,7 +17,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;

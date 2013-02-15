@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerTokenRequestHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.LoadingScreen;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;

@@ -17,8 +17,8 @@ import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskIcon;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.util.Icon;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
@@ -37,6 +37,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Kristof Heirwegh
  * 
+ * TODO: this should move to the GWT face 
  */
 public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 
@@ -141,7 +142,7 @@ public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 	}
 
 	private ToolStripButton getDeselectButton() {
-		ToolStripButton btn = new ToolStripButton(I18nProvider.getMenu().deselectAll(), Icon.clearSelection);
+		ToolStripButton btn = new ToolStripButton(I18nProvider.getMenu().deselectAll(), GeodeskIcon.clearSelection);
 		btn.setWidth100();
 		btn.addClickHandler(new ClickHandler() {
 

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.geodesk.util;
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
 
@@ -16,9 +16,9 @@ import org.geomajas.gwt.client.util.WidgetLayout;
  * @author Oliver May
  * 
  */
-public final class Icon {
+public final class GeodeskIcon {
 
-	private Icon() { }
+	private GeodeskIcon() { }
 	
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 

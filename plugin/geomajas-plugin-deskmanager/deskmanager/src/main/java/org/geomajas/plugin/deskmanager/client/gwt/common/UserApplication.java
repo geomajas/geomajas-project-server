@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.common;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.widgets.layout.Layout;

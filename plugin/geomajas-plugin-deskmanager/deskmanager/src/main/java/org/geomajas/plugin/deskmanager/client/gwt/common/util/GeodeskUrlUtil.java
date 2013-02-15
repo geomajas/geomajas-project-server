@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.common.util;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.util.CodeServer;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl.CodeServer;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;

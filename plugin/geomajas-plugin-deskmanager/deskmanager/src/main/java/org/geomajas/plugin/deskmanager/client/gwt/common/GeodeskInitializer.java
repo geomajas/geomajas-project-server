@@ -18,6 +18,8 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.TokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 
@@ -35,6 +37,15 @@ public class GeodeskInitializer {
 
 	private List<GeodeskInitializationHandler> handlers = new ArrayList<GeodeskInitializationHandler>();
 
+	/**
+	 * Load a geodesk. This will execute the InitializationCommand, and ask to select a valid user if needed, using
+	 * the default token request handler.
+	 */
+	public void loadApplication(String geodeskId) {
+		loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
+	}
+
+	
 	/**
 	 * Load a geodesk. This will execute the InitializationCommand, and ask to select a valid user if needed.
 	 * 

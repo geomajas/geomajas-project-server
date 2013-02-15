@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.common;
+package org.geomajas.plugin.deskmanager.client.gwt.common.impl;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileSelectionWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.common.i18n.CommonMessages;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesResponse;

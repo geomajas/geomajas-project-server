@@ -47,7 +47,7 @@ public class PanAndZoomSlider extends ZoomSlider {
 
 	private static final String ZOOM_OUT = "zoomOut";
 
-	private static final String ICON = "Icon";
+	private static final String ICON = "GeodeskIcon";
 
 	/**
 	 * Convenience method to add the zoomslider to the map.

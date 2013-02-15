@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.common;
+package org.geomajas.plugin.deskmanager.client.gwt.common.impl;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.TokenRequestHandler;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow.AskRoleCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileSelectionWindow;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow.AskRoleCallback;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 
 /**
@@ -25,9 +25,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * sso,...) so that only a specific role for the application has to be chosen.
  * 
  * @author Oliver May
- * @since 1.0.0
  */
-@Api
 public class DeskmanagerTokenRequestHandler implements TokenRequestHandler {
 
 	private String geodeskId;

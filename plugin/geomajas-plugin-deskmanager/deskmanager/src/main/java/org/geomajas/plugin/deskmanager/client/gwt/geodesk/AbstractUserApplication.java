@@ -13,117 +13,80 @@ package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 import java.util.Collections;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.gwt.client.GwtCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
-import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.service.DeskmanagerGwtCommandCallback;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.FeatureSelectionInfoWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationEvent;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.event.UserApplicationHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationEvent;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl.DeskmanagerGwtCommandCallback;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.widgets.Window;
 
 /**
- * Abstract deskmanager user application.
+ * Abstract deskmanager user application. It implements the handlers, provides empty supported widget configuration
+ * lists and handles user friendly error messages.
  * 
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
+@Api
 public abstract class AbstractUserApplication implements UserApplication {
-
-	// private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
-
-	public AbstractUserApplication() {
-		handlerManager = new HandlerManager(this);
-
-		GwtCommandCallback cb = new DeskmanagerGwtCommandCallback();
-		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(cb);
-		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(cb);
-	}
 
 	private HandlerManager handlerManager;
 
 	private ClientApplicationInfo clientApplicationInfo;
 
+	private String applicationId;
 
-	private String geodeskId;
-
-	private FeatureSelectionInfoWindow fsiw = new FeatureSelectionInfoWindow();
-
-	private Window searchResult;
-
-	public HandlerRegistration addUserApplicationLoadedHandler(final UserApplicationHandler userApplicationHandler) {
-		return handlerManager.addHandler(UserApplicationEvent.TYPE, userApplicationHandler);
+	/**
+	 * Construct an abstract application and initialize handlers.
+	 */
+	public AbstractUserApplication() {
+		handlerManager = new HandlerManager(this);
+		GwtCommandCallback cb = new DeskmanagerGwtCommandCallback();
+		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(cb);
+		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(cb);
 	}
 
-	public void fireUserApplicationEvent() {
-		handlerManager.fireEvent(new UserApplicationEvent(this));
-		initDefaultTools();
-	}
-
-	public void setClientApplicationInfo(ClientApplicationInfo clientAppInfo) {
-		clientApplicationInfo = clientAppInfo;
-	}
-
+	/**
+	 * Get the client application info.
+	 * 
+	 * @return the client application info
+	 */
 	protected ClientApplicationInfo getClientApplicationInfo() {
 		return clientApplicationInfo;
 	}
 
-	private void initDefaultTools() {
-		getMainMapWidget().getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
-
-			public void onMapModelChanged(MapModelChangedEvent event) {
-				// // -- get default action so it gets initialized
-				// defaultToolAction = ToolbarRegistry.getToolbarAction(DEFAULT_TOOL_ID, getMapWidget());
-				fsiw.initialize(getMainMapWidget());
-				fsiw.setLeftPosition(75);
-			}
-		});
-	}
-
-	// ----------------------------------------------------------
-	// -- Search -- // needs to be initialized in child classes
-	// ----------------------------------------------------------
-
-	public void showSearchResultWindow() {
-		searchResult.show();
-		searchResult.bringToFront();
-	}
-
 	/**
-	 * @param geodeskId
-	 *            the geodeskId to set
-	 */
-	public void setApplicationId(String applicationId) {
-		this.geodeskId = applicationId;
-	}
-
-	/**
-	 * @return the geodeskId
+	 * Get the application id.
+	 * 
+	 * @return the applicationId
 	 */
 	protected String getApplicationId() {
-		return geodeskId;
+		return applicationId;
 	}
 
-	/**
-	 * @return the searchResult
-	 */
-
-	protected Window getSearchResult() {
-		return searchResult;
+	@Override
+	public HandlerRegistration addUserApplicationLoadedHandler(final UserApplicationHandler userApplicationHandler) {
+		return handlerManager.addHandler(UserApplicationEvent.TYPE, userApplicationHandler);
 	}
 
-	/**
-	 * @param searchResult
-	 *            the searchResult to set
-	 */
-	protected void setSearchResult(Window searchResult) {
-		this.searchResult = searchResult;
+	@Override
+	public void fireUserApplicationEvent() {
+		handlerManager.fireEvent(new UserApplicationEvent(this));
+	}
+
+	@Override
+	public void setClientApplicationInfo(ClientApplicationInfo clientAppInfo) {
+		clientApplicationInfo = clientAppInfo;
+	}
+
+	@Override
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 
 	@Override

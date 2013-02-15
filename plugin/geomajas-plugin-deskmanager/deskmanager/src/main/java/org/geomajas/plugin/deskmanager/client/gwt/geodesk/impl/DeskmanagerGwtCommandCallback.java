@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.geodesk.service;
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionDto;

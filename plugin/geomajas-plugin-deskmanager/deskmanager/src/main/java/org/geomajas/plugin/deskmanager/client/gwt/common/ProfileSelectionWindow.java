@@ -10,12 +10,14 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.common;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow.AskRoleCallback;
+import org.geomajas.annotation.Api;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow.AskRoleCallback;
 
 /**
  * @author Oliver May
- *
+ * @since 1.0.0
  */
+@Api
 public interface ProfileSelectionWindow {
 
 	/**

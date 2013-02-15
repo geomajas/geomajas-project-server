@@ -8,21 +8,25 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk.event;
 
 import org.geomajas.annotation.Api;
 
+import com.google.gwt.event.shared.EventHandler;
+
 /**
- * @author Oliver May
+ * Throws onUserApplicationLoad(UserApplicationEvent) when the user application is loaded.
  * 
+ * @author Oliver May
  * @since 1.0.0
  */
 @Api
-public final class GeodeskLayout {
+public interface UserApplicationHandler extends EventHandler {
 
-	// CHECKSTYLE VISIBILITY MODIFIER: OFF
-	
-	private GeodeskLayout() { }
-
-
+	/**
+	 * Called when mapWidget is set or changed.
+	 * 
+	 * @param event
+	 */
+	void onUserApplicationLoad(UserApplicationEvent event);
 }
