@@ -28,11 +28,11 @@ import com.smartgwt.client.widgets.layout.Layout;
  * @since 1.0.0
  */
 @Api
-public class ManagerApplicationLoader {
+public final class ManagerApplicationLoader {
 
 	public static final int LOADING_Z_INDEX = 300000;
 
-	private static ManagerApplicationLoader INSTANCE = new ManagerApplicationLoader();
+	private static final ManagerApplicationLoader INSTANCE = new ManagerApplicationLoader();
 
 	// Hide default constructor.
 	private ManagerApplicationLoader() {

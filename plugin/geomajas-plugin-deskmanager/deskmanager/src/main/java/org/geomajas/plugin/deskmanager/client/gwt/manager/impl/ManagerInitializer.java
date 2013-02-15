@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerInitializationHandler;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
@@ -68,7 +67,7 @@ public class ManagerInitializer {
 	}
 
 	/**
-	 * Remove a {@link GeodeskInitializationHandler}.
+	 * Remove a {@link ManagerInitializationHandler}.
 	 * 
 	 * @param handler
 	 *            the handler to remove.

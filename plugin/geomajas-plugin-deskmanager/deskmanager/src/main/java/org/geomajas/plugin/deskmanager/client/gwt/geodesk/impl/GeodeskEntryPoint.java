@@ -10,14 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl;
 
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskApplicationLoader;
-
 import com.google.gwt.core.client.EntryPoint;
 
 
 /**
  * Entry point for the geodesks, this loads all necessary widgets. For starting up an actual geodesk application, see 
- * {@link GeodeskApplicationLoader}.
+ * {@link org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskApplicationLoader}.
  * 
  * @author Oliver May
  *

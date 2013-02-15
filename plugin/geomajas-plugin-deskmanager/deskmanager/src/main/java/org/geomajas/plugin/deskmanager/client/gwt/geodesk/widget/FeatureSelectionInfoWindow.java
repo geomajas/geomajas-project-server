@@ -54,7 +54,7 @@ public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 
 	private Label info;
 	
-	private static final String clearSelection = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";
+	private static final String CLEAR_SELECTION = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";
 
 
 	public void initialize(MapWidget mapWidget) {
@@ -144,7 +144,7 @@ public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 	}
 
 	private ToolStripButton getDeselectButton() {
-		ToolStripButton btn = new ToolStripButton(I18nProvider.getMenu().deselectAll(), clearSelection);
+		ToolStripButton btn = new ToolStripButton(I18nProvider.getMenu().deselectAll(), CLEAR_SELECTION);
 		btn.setWidth100();
 		btn.addClickHandler(new ClickHandler() {
 
