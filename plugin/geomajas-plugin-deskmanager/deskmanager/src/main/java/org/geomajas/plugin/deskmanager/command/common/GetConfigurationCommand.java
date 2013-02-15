@@ -44,7 +44,6 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 
 	@Transactional(readOnly = true)
 	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
-		// FIXME: is this needed for magdageo?
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
 		}

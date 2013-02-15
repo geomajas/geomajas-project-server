@@ -14,7 +14,7 @@ import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
-import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
@@ -67,7 +67,7 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 
 						} else {
 							ClientLayerInfo cli = source.getDynamicLayerConfiguration().getClientLayerInfo();
-							DeskmanagerClientLayerInfoI ud = (DeskmanagerClientLayerInfoI) cli.getUserData();
+							DeskmanagerClientLayerInfo ud = (DeskmanagerClientLayerInfo) cli.getUserData();
 							target.setName(cli.getLabel());
 							target.setActive(ud.isActive());
 							target.setClientLayerId(cli.getId());

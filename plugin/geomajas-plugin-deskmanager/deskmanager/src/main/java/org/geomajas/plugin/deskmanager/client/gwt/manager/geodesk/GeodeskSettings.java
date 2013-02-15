@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerApplication;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerApplicationLoader;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractConfigurationLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
@@ -114,7 +114,7 @@ public class GeodeskSettings extends AbstractConfigurationLayout implements Geod
 		blueprints.setDisabled(true); // ter info
 		blueprints.setTooltip("<nobr>" + MESSAGES.settingsNameBlueprintTooltip() + "</nobr>");
 
-		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile().getRole())) {
+		if (Role.ADMINISTRATOR.equals(ManagerApplicationLoader.getInstance().getUserProfile().getRole())) {
 			geodeskId = new TextItem();
 			geodeskId.setRequired(true);
 			geodeskId.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {

@@ -15,7 +15,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
-import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
@@ -65,7 +65,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 				return;
 			}
 
-			DeskmanagerClientLayerInfoI ud = (DeskmanagerClientLayerInfoI) request.getConfiguration()
+			DeskmanagerClientLayerInfo ud = (DeskmanagerClientLayerInfo) request.getConfiguration()
 					.getClientLayerInfo().getUserData();
 			ClientLayerInfo cvli = request.getConfiguration().getClientLayerInfo();
 			LayerModel lm = new LayerModel();

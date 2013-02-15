@@ -9,9 +9,8 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget;
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
@@ -59,9 +58,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  * @author Oliver May
  * @author Pieter De Graef
- * @since 1.0.0
  */
-@Api
 public class LoadingScreen extends VLayout implements GeodeskInitializationHandler {
 
 	private int logoHeight = 226;

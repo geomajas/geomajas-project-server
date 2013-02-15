@@ -8,16 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
-
-import com.google.gwt.core.client.EntryPoint;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.util;
 
 /**
- * @author Oliver May
+ * ...
  * 
+ * @author Jan De Moerloose
+ *
  */
-public class ManagerEntryPoint implements EntryPoint {
+public final class ManagerConstants {
 
-	public void onModuleLoad() {
-	}
+	private ManagerConstants() {
+	};
+
+	public static final String ICON_OPENSAMPLELOKET = "[ISOMORPHIC]/images/silk/application_view_gallery.png";
+
 }

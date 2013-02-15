@@ -25,7 +25,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.util.BeheerConstants;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.ManagerConstants;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 import com.google.gwt.core.client.GWT;
@@ -167,7 +167,7 @@ public class GeodeskGrid extends ListGrid implements GeodeskHandler, BlueprintHa
 			previewImg.setShowDown(false);
 			previewImg.setShowRollOver(false);
 			previewImg.setLayoutAlign(Alignment.CENTER);
-			previewImg.setSrc(BeheerConstants.ICON_OPENSAMPLELOKET);
+			previewImg.setSrc(ManagerConstants.ICON_OPENSAMPLELOKET);
 			previewImg.setPrompt(MESSAGES.geodeskGridActionsColumnPreviewTooltip());
 					
 			previewImg.setHeight(16);

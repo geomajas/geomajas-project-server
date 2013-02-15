@@ -13,6 +13,7 @@ package org.geomajas.plugin.deskmanager.service.common;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.security.GeomajasSecurityException;
 import org.hibernate.HibernateException;
@@ -96,7 +97,7 @@ public interface LayerModelService {
 	 *            client layer info
 	 * @return the extra info.
 	 */
-	org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI getExtraInfo(ClientLayerInfo cli);
+	DeskmanagerClientLayerInfo getExtraInfo(ClientLayerInfo cli);
 
 	/**
 	 * Retrieve a list of all layer models. <br />

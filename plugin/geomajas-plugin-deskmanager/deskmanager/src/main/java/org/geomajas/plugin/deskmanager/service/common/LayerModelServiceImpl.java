@@ -15,7 +15,6 @@ import java.util.List;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
-import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
@@ -41,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = { Exception.class })
 public class LayerModelServiceImpl implements LayerModelService {
 
-	private static final DeskmanagerClientLayerInfoI DEFAULT_ECLI = new DeskmanagerClientLayerInfo();
+	private static final DeskmanagerClientLayerInfo DEFAULT_ECLI = new DeskmanagerClientLayerInfo();
 
 	@Autowired
 	private SessionFactory factory;
@@ -143,9 +142,9 @@ public class LayerModelServiceImpl implements LayerModelService {
 	}
 
 	/** {@inheritDoc} */
-	public DeskmanagerClientLayerInfoI getExtraInfo(ClientLayerInfo cli) {
+	public DeskmanagerClientLayerInfo getExtraInfo(ClientLayerInfo cli) {
 		if (cli.getUserData() != null && cli.getUserData() instanceof DeskmanagerClientLayerInfo) {
-			return (DeskmanagerClientLayerInfoI) cli.getUserData();
+			return (DeskmanagerClientLayerInfo) cli.getUserData();
 		} else {
 			return DEFAULT_ECLI;
 		}

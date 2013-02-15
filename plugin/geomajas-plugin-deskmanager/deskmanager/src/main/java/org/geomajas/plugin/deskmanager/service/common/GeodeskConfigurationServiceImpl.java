@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -88,7 +89,8 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			UserApplicationInfo userApplicationInfo = getUserApplicationInfo(geodesk.getBlueprint()
 					.getUserApplicationKey());
 
-			ClientApplicationInfo appInfo = clone(userApplicationInfo.getApplicationInfo());
+			ClientApplicationInfo appInfo = (ClientApplicationInfo) SerializationUtils.clone(userApplicationInfo
+					.getApplicationInfo());
 			BaseGeodesk blueprint = blueprintService.getBlueprintByIdInternal(geodesk.getBlueprint().getId());
 			if (includeMaps) {
 				ClientMapInfo mainMap = null;
@@ -172,10 +174,6 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		}
 	}
 
-	private ClientApplicationInfo clone(ClientApplicationInfo cai) {
-		return XmlConverterService.toClientApplicationInfo(XmlConverterService.toXml(cai));
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -207,7 +205,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 					sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel().getClientLayerId());
 					serverLayer = (Layer<?>) applicationContext.getBean(sourceCli.getServerLayerId());
 
-					//Override layerInfo from server layer
+					// Override layerInfo from server layer
 					sourceCli.setLayerInfo(serverLayer.getLayerInfo());
 					if (sourceCli instanceof ClientVectorLayerInfo) {
 						ClientVectorLayerInfo cvli = (ClientVectorLayerInfo) sourceCli;
@@ -217,9 +215,9 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 				} catch (NoSuchBeanDefinitionException e) {
 					// Ignore, error message later
 				}
-			} 
-			
-			//Override with clientLayerInfo if it is set
+			}
+
+			// Override with clientLayerInfo if it is set
 			if (layer != null && layer.getClientLayerInfo() != null) {
 				// Set layerInfo from the source.
 				layer.getClientLayerInfo().setLayerInfo(serverLayer.getLayerInfo());
@@ -227,8 +225,8 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 				targetCli = layer.getClientLayerInfo();
 			}
-			
-			//Add the layer
+
+			// Add the layer
 			if (targetCli != null) {
 				clientLayers.add(targetCli);
 			} else {

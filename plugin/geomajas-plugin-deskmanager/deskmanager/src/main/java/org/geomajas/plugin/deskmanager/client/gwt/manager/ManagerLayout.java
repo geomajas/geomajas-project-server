@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints.Blueprints;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.ManagerTab;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Datalayers;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
@@ -54,7 +55,7 @@ public class ManagerLayout extends VLayout implements EditSessionHandler {
 		Tab lagenBeheerTab = new Tab(MESSAGES.mainTabDataLayers());
 		lagenBeheerTab.setPane(new Datalayers());
 		tabSet.addTab(lagenBeheerTab);
-		if (Role.ADMINISTRATOR.equals(ManagerApplication.getInstance().getUserProfile()
+		if (Role.ADMINISTRATOR.equals(ManagerApplicationLoader.getInstance().getUserProfile()
 				.getRole())) {
 			Tab blueprintTab = new Tab(MESSAGES.mainTabBlueprints());
 			blueprintTab.setPane(new Blueprints());

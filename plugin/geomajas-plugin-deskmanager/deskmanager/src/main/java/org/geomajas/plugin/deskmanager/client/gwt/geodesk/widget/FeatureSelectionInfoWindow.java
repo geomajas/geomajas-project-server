@@ -17,7 +17,6 @@ import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskIcon;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 
 import com.google.gwt.core.client.GWT;
@@ -54,6 +53,9 @@ public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 	private VLayout tooltip;
 
 	private Label info;
+	
+	private static final String clearSelection = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";
+
 
 	public void initialize(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
@@ -142,7 +144,7 @@ public class FeatureSelectionInfoWindow implements FeatureSelectionHandler {
 	}
 
 	private ToolStripButton getDeselectButton() {
-		ToolStripButton btn = new ToolStripButton(I18nProvider.getMenu().deselectAll(), GeodeskIcon.clearSelection);
+		ToolStripButton btn = new ToolStripButton(I18nProvider.getMenu().deselectAll(), clearSelection);
 		btn.setWidth100();
 		btn.addClickHandler(new ClickHandler() {
 

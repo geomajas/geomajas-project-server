@@ -8,19 +8,15 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager.util;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
+
 
 /**
- * ...
- * 
- * @author Jan De Moerloose
+ * @author Oliver May
  *
  */
-public final class BeheerConstants {
+public interface ManagerTab {
 
-	private BeheerConstants() {
-	};
-
-	public static final String ICON_OPENSAMPLELOKET = "[ISOMORPHIC]/images/silk/application_view_gallery.png";
-
+	void readData();
+	
 }

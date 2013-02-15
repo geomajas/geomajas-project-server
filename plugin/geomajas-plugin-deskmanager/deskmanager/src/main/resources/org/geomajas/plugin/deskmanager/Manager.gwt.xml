@@ -14,5 +14,5 @@
 
 	<source path="configuration" />
 
-	<entry-point class='org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerEntryPoint' />
+	<entry-point class='org.geomajas.plugin.deskmanager.client.gwt.manager.impl.ManagerEntryPoint' />
 </module>

@@ -8,16 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.ManagerInitializationHandler;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
@@ -29,9 +30,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * {@link ManagerInitializationHandler}.
  * 
  * @author Oliver May
- * @since 1.0.0
  */
-@Api
 public class ManagerInitializer {
 
 	private List<ManagerInitializationHandler> handlers = new ArrayList<ManagerInitializationHandler>();

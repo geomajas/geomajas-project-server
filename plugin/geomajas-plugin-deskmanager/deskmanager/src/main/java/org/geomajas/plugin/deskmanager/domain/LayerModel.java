@@ -23,7 +23,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
@@ -38,7 +37,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "config_layermodels")
-public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Comparable<LayerModel> {
+public class LayerModel implements Serializable, Comparable<LayerModel> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -108,32 +107,26 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 		this.id = id;
 	}
 
-	@Override
 	public boolean isActive() {
 		return active;
 	}
 
-	@Override
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
-	@Override
 	public boolean isPublic() {
 		return publiek;
 	}
 
-	@Override
 	public void setPublic(boolean publiek) {
 		this.publiek = publiek;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -219,22 +212,10 @@ public class LayerModel implements DeskmanagerClientLayerInfoI, Serializable, Co
 		this.readOnly = readOnly;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isSystemLayer()
-	 */
-	@Override
 	public boolean isSystemLayer() {
 		return !isReadOnly();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setSystemLayer(boolean)
-	 */
-	@Override
 	public void setSystemLayer(boolean systemLayer) {
 		setReadOnly(!systemLayer);
 	}

@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.configuration.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 
 /**
@@ -17,9 +18,10 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
-public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, DeskmanagerClientLayerInfoI {
+@Api
+public class DeskmanagerClientLayerInfo implements ClientUserDataInfo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,66 +34,77 @@ public class DeskmanagerClientLayerInfo implements ClientUserDataInfo, Deskmanag
 	private boolean systemLayer;
 
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isPublicLayer()
+	/**
+	 * Whether a layer is public.
+	 * 
+	 * @return true if the layer is public.
 	 */
-	@Override
 	public boolean isPublic() {
 		return publicLayer;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setPublicLayer(boolean)
+	/**
+	 * Set whether a layer is public or not.
+	 * 
+	 * @param publicLayer
 	 */
-	@Override
 	public void setPublic(boolean publicLayer) {
 		this.publicLayer = publicLayer;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#getName()
+	/**
+	 * Get the name of a layer. This name is used in the management interface.
+	 * 
+	 * @return the name of the layer
 	 */
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setName(java.lang.String)
+	/**
+	 * Set the name of the layer. This name is used in the management interface.
+	 * 
+	 * @param name
+	 *            the name of the layer
 	 */
-	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isActive()
+	/**
+	 * Whether the layer is active.
+	 * 
+	 * @return true if the layer is active.
 	 */
-	@Override
 	public boolean isActive() {
 		return active;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setActive(boolean)
+	/**
+	 * Set whether the layer is active or not.
+	 * 
+	 * @param active
 	 */
-	@Override
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#isSystemLayer()
+	/**
+	 * Whether the layer is a system layer. A system layer is a layer that is configured using the spring xml
+	 * configuration, not added dynamically.
+	 * 
+	 * @return true if the layer is a system layer.
 	 */
-	@Override
 	public boolean isSystemLayer() {
 		return systemLayer;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI#setSystemLayer(boolean)
+	/**
+	 * Set whether layer is a system layer. A system layer is a layer that is configured using the spring xml
+	 * configuration, not added dynamically.
+	 * 
+	 * @param systemLayer
 	 */
-	@Override
 	public void setSystemLayer(boolean systemLayer) {
 		this.systemLayer = systemLayer;
 	}

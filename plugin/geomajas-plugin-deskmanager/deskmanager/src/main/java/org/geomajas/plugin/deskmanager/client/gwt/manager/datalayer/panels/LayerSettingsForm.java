@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels;
 
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfoI;
+import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
@@ -35,7 +35,7 @@ public class LayerSettingsForm extends DynamicForm {
 
 	private TextItem name;
 
-	private DeskmanagerClientLayerInfoI extraLayerInfo;
+	private DeskmanagerClientLayerInfo extraLayerInfo;
 
 	private DynamicLayerConfiguration layerConfig;
 
@@ -70,7 +70,7 @@ public class LayerSettingsForm extends DynamicForm {
 
 	public void setData(DynamicLayerConfiguration layerConfig) {
 		this.layerConfig = layerConfig;
-		this.extraLayerInfo = (DeskmanagerClientLayerInfoI) layerConfig.getClientLayerInfo().getUserData();
+		this.extraLayerInfo = (DeskmanagerClientLayerInfo) layerConfig.getClientLayerInfo().getUserData();
 		name.setValue(layerConfig.getClientLayerInfo().getLabel());
 		publicLayer.setValue(extraLayerInfo.isPublic());
 		active.setValue(extraLayerInfo.isActive());

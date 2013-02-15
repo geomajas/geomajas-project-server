@@ -8,15 +8,16 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.impl;
 
+import com.google.gwt.core.client.EntryPoint;
 
 /**
  * @author Oliver May
- *
+ * 
  */
-public interface ManagerTab {
+public class ManagerEntryPoint implements EntryPoint {
 
-	void readData();
-	
+	public void onModuleLoad() {
+	}
 }

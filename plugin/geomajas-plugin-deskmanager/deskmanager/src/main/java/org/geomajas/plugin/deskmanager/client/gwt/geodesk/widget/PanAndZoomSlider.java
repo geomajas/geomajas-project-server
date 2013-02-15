@@ -21,9 +21,10 @@ import org.geomajas.gwt.client.util.ImageUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
+ * Combined pan and zoom slider.
  * 
  * @author Oliver May
- *
+ * TODO: this should move to the GWT face 
  */
 public class PanAndZoomSlider extends ZoomSlider {
 

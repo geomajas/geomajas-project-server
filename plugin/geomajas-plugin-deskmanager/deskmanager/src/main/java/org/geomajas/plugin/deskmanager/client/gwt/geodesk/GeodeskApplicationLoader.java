@@ -22,7 +22,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.common.util.GeodeskUrlUtil;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.widget.LoadingScreen;
+import org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl.LoadingScreen;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 
 import com.google.gwt.core.client.GWT;

@@ -35,6 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 
  * @author Oliver May
+ * 
+ * TODO: move to search and filter
  *
  */
 @Component(SearchFeatureToCsvRequest.COMMAND)
