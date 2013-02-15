@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.service.common;
 import javax.servlet.http.HttpServletRequest;
 
 import org.geomajas.gwt.server.GeomajasServiceImpl;
-import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 
@@ -38,7 +38,7 @@ public class DeskmanagerGeomajasServiceImpl extends GeomajasServiceImpl {
 			moduleBaseURL = moduleBaseURLHdr;
 		}
 
-		moduleBaseURL = moduleBaseURL.replaceFirst(CommonLayout.GEODESK_PREFIX + "[^/]*", "");
+		moduleBaseURL = moduleBaseURL.replaceFirst(GdmLayout.GEODESK_PREFIX + "[^/]*", "");
 		return super.doGetSerializationPolicy(request, moduleBaseURL, strongName);
 	}
 

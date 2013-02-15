@@ -98,8 +98,8 @@ public class FileUploadForm extends HLayout {
 					int start = res.indexOf("[");
 					int stop = res.indexOf("]");
 					String result = res.substring(start + 1, stop);
-					UrlBuilder builder = new UrlBuilder(CommonLayout.FILEDOWNLOAD_URL);
-					builder.addParameter(CommonLayout.FILEDOWNLOAD_ID, result);
+					UrlBuilder builder = new UrlBuilder(GdmLayout.FILEDOWNLOAD_URL);
+					builder.addParameter(GdmLayout.FILEDOWNLOAD_ID, result);
 					String oldResult = url;
 					setUrl(builder.toString());
 					fireChangedEvent(new ChangedEvent(this, oldResult, getUrl()));

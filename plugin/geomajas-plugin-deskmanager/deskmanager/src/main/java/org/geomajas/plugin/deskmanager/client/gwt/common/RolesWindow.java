@@ -91,7 +91,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 		winModal.setShowModalMask(true);
 		winModal.centerInPage();
 		winModal.setShowCloseButton(false);
-		winModal.setZIndex(CommonLayout.roleSelectZindex);
+		winModal.setZIndex(GdmLayout.roleSelectZindex);
 
 		HTMLPane pane = new HTMLPane();
 		pane.setContents("<br/><br/><center>" + MESSAGES.rolesWindowInsufficientRightsForDesk() + "</center>");

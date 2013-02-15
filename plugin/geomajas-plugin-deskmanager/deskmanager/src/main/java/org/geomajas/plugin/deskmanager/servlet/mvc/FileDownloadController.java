@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.service.common.FileRef;
 import org.geomajas.plugin.deskmanager.service.common.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class FileDownloadController {
 	@Autowired
 	protected FileService service;
 
-	@RequestMapping(value = CommonLayout.FILEDOWNLOAD_URL, method = RequestMethod.GET)
+	@RequestMapping(value = GdmLayout.FILEDOWNLOAD_URL, method = RequestMethod.GET)
 	public ModelAndView getFile(@RequestParam("id") String id, HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(FileDownloadView.VIEW_NAME);

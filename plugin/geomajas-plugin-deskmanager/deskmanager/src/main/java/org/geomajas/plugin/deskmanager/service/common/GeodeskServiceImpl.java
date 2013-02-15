@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
@@ -95,7 +95,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 				q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 				Geodesk l = (Geodesk) q.uniqueResult();
 				if (l == null) {
-					throw new GeomajasSecurityException(GeodeskLayout.EXCEPTIONCODE_LOKETINACTIVE);
+					throw new GeomajasSecurityException(GdmLayout.EXCEPTIONCODE_GEODESKINACTIVE);
 				}
 				return l;
 			} else {

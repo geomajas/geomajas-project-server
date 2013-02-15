@@ -93,7 +93,6 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	private final Logger log = LoggerFactory.getLogger(DiscoveryServiceImpl.class);
 
-	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 
 	@Resource(name = "discoveryDefaultMinimumScale")

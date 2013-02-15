@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerTokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializer;
 import org.geomajas.plugin.deskmanager.client.gwt.common.RolesWindow;
@@ -62,7 +63,7 @@ public class GeodeskApplication implements UserApplicationHandler {
 		// First Install a loading screen
 		// FIXME: i18n
 		loadScreen = new LoadingScreen();
-		loadScreen.setZIndex(GeodeskLayout.loadingZindex);
+		loadScreen.setZIndex(GdmLayout.loadingZindex);
 		loadScreen.draw();
 
 		String geodeskId = GeodeskUrlUtil.getGeodeskId();
@@ -75,8 +76,8 @@ public class GeodeskApplication implements UserApplicationHandler {
 		initializer.addHandler(new GeodeskInitializationHandler() {
 
 			public void initialized(InitializeGeodeskResponse response) {
-				GeodeskLayout.version = response.getDeskmanagerVersion();
-				GeodeskLayout.build = response.getDeskmanagerBuild();
+				GdmLayout.version = response.getDeskmanagerVersion();
+				GdmLayout.build = response.getDeskmanagerBuild();
 
 				// Load geodesk from registry
 				geodesk = UserApplicationRegistry.getInstance().get(response.getGeodeskTypeIdentifier());

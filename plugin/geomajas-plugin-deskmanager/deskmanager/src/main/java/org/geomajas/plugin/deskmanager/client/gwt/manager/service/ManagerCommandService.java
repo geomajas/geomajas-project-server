@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
@@ -83,7 +82,7 @@ public final class ManagerCommandService {
 		GetLayersRequest request = new GetLayersRequest();
 		GwtCommand command = new GwtCommand(GetLayersRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetLayersResponse>() {
 
 					public void execute(GetLayersResponse response) {
@@ -109,7 +108,7 @@ public final class ManagerCommandService {
 		request.setUuid(uuid);
 		GwtCommand command = new GwtCommand(GetBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<BlueprintResponse>() {
 
 					public void execute(BlueprintResponse response) {
@@ -130,7 +129,7 @@ public final class ManagerCommandService {
 		GetBlueprintsRequest request = new GetBlueprintsRequest();
 		GwtCommand command = new GwtCommand(GetBlueprintsRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetBlueprintsResponse>() {
 
 					public void execute(GetBlueprintsResponse response) {
@@ -152,7 +151,7 @@ public final class ManagerCommandService {
 		request.setUuid(blueprint.getId());
 		GwtCommand command = new GwtCommand(DeleteBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<CommandResponse>() {
 
 					public void execute(CommandResponse response) {
@@ -175,7 +174,7 @@ public final class ManagerCommandService {
 		request.setUserApplicationName(userApplicationName);
 		GwtCommand command = new GwtCommand(CreateBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<BlueprintResponse>() {
 
 					public void execute(BlueprintResponse response) {
@@ -198,7 +197,7 @@ public final class ManagerCommandService {
 		request.setSaveBitmask(bitmask);
 		GwtCommand command = new GwtCommand(SaveBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<BlueprintResponse>() {
 
 					public void execute(BlueprintResponse response) {
@@ -223,7 +222,7 @@ public final class ManagerCommandService {
 		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		GwtCommand command = new GwtCommand(GetLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<LayerModelResponse>() {
 
 					public void execute(LayerModelResponse response) {
@@ -245,7 +244,7 @@ public final class ManagerCommandService {
 		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		GwtCommand command = new GwtCommand(GetLayerModelsRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetLayerModelsResponse>() {
 
 					public void execute(GetLayerModelsResponse response) {
@@ -267,7 +266,7 @@ public final class ManagerCommandService {
 		request.setId(layerModel.getId());
 		GwtCommand command = new GwtCommand(DeleteLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<CommandResponse>() {
 
 					public void execute(CommandResponse response) {
@@ -289,7 +288,7 @@ public final class ManagerCommandService {
 		request.setLayerModelId(layerModel.getId());
 		GwtCommand command = new GwtCommand(CheckLayerModelInUseRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<CheckLayerModelInUseResponse>() {
 
 					public void execute(CheckLayerModelInUseResponse response) {
@@ -311,7 +310,7 @@ public final class ManagerCommandService {
 		request.setConfiguration(configuration);
 		GwtCommand command = new GwtCommand(CreateLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<LayerModelResponse>() {
 
 					public void execute(LayerModelResponse response) {
@@ -331,7 +330,7 @@ public final class ManagerCommandService {
 		request.setLayerModel(layerModel);
 		GwtCommand command = new GwtCommand(SaveLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<LayerModelResponse>() {
 
 					public void execute(LayerModelResponse response) {
@@ -350,7 +349,7 @@ public final class ManagerCommandService {
 		GetTerritoriesRequest request = new GetTerritoriesRequest();
 		GwtCommand command = new GwtCommand(GetTerritoriesRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetTerritoriesResponse>() {
 
 					public void execute(GetTerritoriesResponse response) {
@@ -372,7 +371,7 @@ public final class ManagerCommandService {
 		request.setUuid(uuid);
 		GwtCommand command = new GwtCommand(GetGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetGeodeskResponse>() {
 
 					public void execute(GetGeodeskResponse response) {
@@ -393,7 +392,7 @@ public final class ManagerCommandService {
 		GetGeodesksRequest request = new GetGeodesksRequest();
 		GwtCommand command = new GwtCommand(GetGeodesksRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetGeodesksResponse>() {
 
 					public void execute(GetGeodesksResponse response) {
@@ -415,7 +414,7 @@ public final class ManagerCommandService {
 		request.setUuid(geodesk.getId());
 		GwtCommand command = new GwtCommand(DeleteGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<CommandResponse>() {
 
 					public void execute(CommandResponse response) {
@@ -438,7 +437,7 @@ public final class ManagerCommandService {
 		request.setName(geodeskName);
 		GwtCommand command = new GwtCommand(CreateGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetGeodeskResponse>() {
 
 					public void execute(GetGeodeskResponse response) {
@@ -461,7 +460,7 @@ public final class ManagerCommandService {
 		request.setSaveBitmask(bitmask);
 		GwtCommand command = new GwtCommand(SaveGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<GetGeodeskResponse>() {
 
 					public void execute(GetGeodeskResponse response) {
@@ -483,7 +482,7 @@ public final class ManagerCommandService {
 		request.setGeodeskId(geodeskId);
 		GwtCommand command = new GwtCommand(CheckGeodeskIdExistsRequest.COMMAND);
 		command.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
+		GwtCommandDispatcher.getInstance().execute(command,
 				new AbstractCommandCallback<CheckGeodeskIdExistsResponse>() {
 
 					public void execute(CheckGeodeskIdExistsResponse response) {

@@ -15,7 +15,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 
 /**
@@ -39,7 +39,7 @@ public final class UserApplicationDtoUtil {
 	public static Map<String, ClientWidgetInfo> getMainMapClientWidgetInfo(UserApplicationInfo userApplication) {
 		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
 		for (ClientMapInfo mapInfo : userApplication.getApplicationInfo().getMaps()) {
-			if (mapInfo.getId().equals(GeodeskLayout.MAPMAIN_ID)) {
+			if (mapInfo.getId().equals(GdmLayout.MAPMAIN_ID)) {
 				widgetInfos.putAll(mapInfo.getWidgetInfo());
 			}
 		}
@@ -57,7 +57,7 @@ public final class UserApplicationDtoUtil {
 	public static Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfo(UserApplicationInfo userApplication) {
 		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
 		for (ClientMapInfo mapInfo : userApplication.getApplicationInfo().getMaps()) {
-			if (mapInfo.getId().equals(GeodeskLayout.MAPOVERVIEW_ID)) {
+			if (mapInfo.getId().equals(GdmLayout.MAPOVERVIEW_ID)) {
 				widgetInfos.putAll(mapInfo.getWidgetInfo());
 			}
 		}
@@ -89,7 +89,7 @@ public final class UserApplicationDtoUtil {
 	 */
 	public static ClientMapInfo getMainMap(UserApplicationInfo userApplication) {
 		for (ClientMapInfo mapInfo : userApplication.getApplicationInfo().getMaps()) {
-			if (mapInfo.getId().equals(GeodeskLayout.MAPMAIN_ID)) {
+			if (mapInfo.getId().equals(GdmLayout.MAPMAIN_ID)) {
 				return mapInfo;
 			}
 		}

@@ -18,7 +18,7 @@ import java.util.Map;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
@@ -151,7 +151,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 		if (uai != null) {
 			ClientMapInfo mainMap = null;
 			for (ClientMapInfo map : uai.getApplicationInfo().getMaps()) {
-				if (GeodeskLayout.MAPMAIN_ID.equals(map.getId())) {
+				if (GdmLayout.MAPMAIN_ID.equals(map.getId())) {
 					mainMap = map;
 				}
 			}
@@ -180,7 +180,7 @@ public class BlueprintServiceImpl implements BlueprintService {
 		if (uai != null) {
 			ClientMapInfo overviewMap = null;
 			for (ClientMapInfo map : uai.getApplicationInfo().getMaps()) {
-				if (GeodeskLayout.MAPOVERVIEW_ID.equals(map.getId())) {
+				if (GdmLayout.MAPOVERVIEW_ID.equals(map.getId())) {
 					overviewMap = map;
 				}
 			}

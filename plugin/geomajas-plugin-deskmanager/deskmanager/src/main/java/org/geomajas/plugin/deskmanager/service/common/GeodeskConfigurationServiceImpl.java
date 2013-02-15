@@ -23,7 +23,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
@@ -94,10 +94,10 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 				ClientMapInfo mainMap = null;
 				ClientMapInfo overviewMap = null;
 				for (ClientMapInfo map : appInfo.getMaps()) {
-					if (GeodeskLayout.MAPMAIN_ID.equals(map.getId())) {
+					if (GdmLayout.MAPMAIN_ID.equals(map.getId())) {
 						mainMap = map;
 					}
-					if (GeodeskLayout.MAPOVERVIEW_ID.equals(map.getId())) {
+					if (GdmLayout.MAPOVERVIEW_ID.equals(map.getId())) {
 						overviewMap = map;
 					}
 				}

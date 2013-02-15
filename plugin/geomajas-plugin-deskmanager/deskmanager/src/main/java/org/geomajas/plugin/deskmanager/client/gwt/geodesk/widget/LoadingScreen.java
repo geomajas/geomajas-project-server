@@ -20,7 +20,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
@@ -111,7 +111,7 @@ public class LoadingScreen extends VLayout implements GeodeskInitializationHandl
 		banner.setLayoutAlign(Alignment.CENTER);
 		banner.setLayoutAlign(VerticalAlignment.CENTER);
 
-		logoImg = new Img(CommonLayout.loadingLogo);
+		logoImg = new Img(GdmLayout.loadingLogo);
 		// logoImg.setWidth(logoWidth);
 		logoImg.setHeight(logoHeight);
 		logoImg.setLayoutAlign(Alignment.CENTER);

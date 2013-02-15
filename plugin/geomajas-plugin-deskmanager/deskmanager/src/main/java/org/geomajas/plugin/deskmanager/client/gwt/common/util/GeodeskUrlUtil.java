@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.common.util;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.CommonLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.util.CodeServer;
 
 import com.google.gwt.core.client.GWT;
@@ -28,7 +28,7 @@ public final class GeodeskUrlUtil {
 	private GeodeskUrlUtil() { }
 	
 	public static String createUrl(String baseUrl, String geodeskId) {
-		return baseUrl + CommonLayout.GEODESK_PREFIX + geodeskId + "/" + CodeServer.getCodeServer();
+		return baseUrl + GdmLayout.GEODESK_PREFIX + geodeskId + "/" + CodeServer.getCodeServer();
 	}
 
 	public static String createPreviewUrl(String geodeskId) {
@@ -38,11 +38,11 @@ public final class GeodeskUrlUtil {
 	public static String getGeodeskId() {
 
 		String geodeskId = Window.Location.getHref();
-		if (!geodeskId.contains(CommonLayout.GEODESK_PREFIX)) {
+		if (!geodeskId.contains(GdmLayout.GEODESK_PREFIX)) {
 			return null;
 		}
-		geodeskId = geodeskId.substring(geodeskId.indexOf(CommonLayout.GEODESK_PREFIX) 
-				+ CommonLayout.GEODESK_PREFIX.length()); 
+		geodeskId = geodeskId.substring(geodeskId.indexOf(GdmLayout.GEODESK_PREFIX) 
+				+ GdmLayout.GEODESK_PREFIX.length()); 
 		geodeskId = geodeskId.substring(0, geodeskId.indexOf('/'));
 		
 		return geodeskId;

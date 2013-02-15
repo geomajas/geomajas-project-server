@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.utility;
 
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.geodesk.GeodeskLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 
 
@@ -33,7 +33,7 @@ public final class UserApplicationInfoUtil {
 	 */
 	public static ClientMapInfo getMainMapInfo(UserApplicationInfo applicationInfo) {
 		for (ClientMapInfo map : applicationInfo.getApplicationInfo().getMaps()) {
-			if (GeodeskLayout.MAPMAIN_ID.equals(map.getId())) {
+			if (GdmLayout.MAPMAIN_ID.equals(map.getId())) {
 				return map;
 			}
 		}
@@ -48,7 +48,7 @@ public final class UserApplicationInfoUtil {
 	 */
 	public static ClientMapInfo getOverviewMapInfo(UserApplicationInfo applicationInfo) {
 		for (ClientMapInfo map : applicationInfo.getApplicationInfo().getMaps()) {
-			if (GeodeskLayout.MAPOVERVIEW_ID.equals(map.getId())) {
+			if (GdmLayout.MAPOVERVIEW_ID.equals(map.getId())) {
 				return map;
 			}
 		}
