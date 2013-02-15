@@ -138,8 +138,6 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 				if (geodeskInfo != null) {
 					for (ClientMapInfo map : geodeskInfo.getMaps()) {
 						for (ClientLayerInfo layer : map.getLayers()) {
-							// TODO: Zouden we hier niet beter nog een extra check doen op publiek/private? --> if rol =
-							// publiek, enkel publieke lagen toevoegen
 							deskmanagerAuthorizationInfo.getVisibleLayersInclude().add(layer.getServerLayerId());
 						}
 					}
@@ -239,7 +237,8 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 														// this
 			// won't
 			// work!
-			return Restrictions.and(Restrictions.eq("active", true), Restrictions.eq("groups.id", getTerritory().getId()));
+			return Restrictions.and(Restrictions.eq("active", true), 
+					Restrictions.eq("groups.id", getTerritory().getId()));
 		}
 		return Restrictions.sqlRestriction("1 = ?", 2, new IntegerType());
 	}
