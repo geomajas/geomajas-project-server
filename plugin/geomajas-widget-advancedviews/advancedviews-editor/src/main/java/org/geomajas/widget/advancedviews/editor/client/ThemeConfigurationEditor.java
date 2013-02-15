@@ -11,7 +11,7 @@
 package org.geomajas.widget.advancedviews.editor.client;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
