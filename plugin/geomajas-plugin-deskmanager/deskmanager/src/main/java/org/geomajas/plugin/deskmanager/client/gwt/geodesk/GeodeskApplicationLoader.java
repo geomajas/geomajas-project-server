@@ -12,8 +12,6 @@ package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializationHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.common.GeodeskInitializer;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
@@ -40,7 +38,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public class GeodeskApplicationLoader {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);

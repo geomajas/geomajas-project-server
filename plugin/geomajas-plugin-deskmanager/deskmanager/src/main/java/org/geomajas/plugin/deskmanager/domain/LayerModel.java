@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -33,8 +34,9 @@ import org.hibernate.annotations.Type;
  * Domain object for a LayerModel.
  * 
  * @author Oliver May
- * 
+ * @since 1.0.0
  */
+@Api (allMethods = true)
 @Entity
 @Table(name = "config_layermodels")
 public class LayerModel implements Serializable, Comparable<LayerModel> {
@@ -99,86 +101,183 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 
 	// -------------------------------------------------
 
+	/**
+	 * Get the id of this layer model.
+	 * @return the id.
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id of this layer model.
+	 * 
+	 * @param id the id to set.
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Is this layermodel active?
+	 * 
+	 * @return true if active
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Set if this layer model is active.
+	 * 
+	 * @param active
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
+	/**
+	 * Is this layer model available in public geodesks?
+	 * 
+	 * @return true if public
+	 */
 	public boolean isPublic() {
 		return publiek;
 	}
 
+	/**
+	 * Set if this layer model is available in public geodesks. 
+	 * 
+	 * @param publiek
+	 */
 	public void setPublic(boolean publiek) {
 		this.publiek = publiek;
 	}
 
+	/**
+	 * Get the name of this layer model.
+	 * 
+	 * @return the name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Set the name of this layer model.
+	 * 
+	 * @param name the name to set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get the client layer id of this model, the reference to a spring bean.
+	 * 
+	 * @return the client layer id.
+	 */
 	public String getClientLayerId() {
 		return clientLayerId;
 	}
 
+	/**
+	 * Set the client layer id of this model, the reference to a spring bean.
+	 * 
+	 * @param clientLayerId
+	 */
 	public void setClientLayerId(String clientLayerId) {
 		this.clientLayerId = clientLayerId;
 	}
 
+	/**
+	 * Compare the layer models for natural sorting on the name.
+	 * @return order
+	 */
 	public int compareTo(LayerModel o) {
 		return name.compareTo(o.name);
 	}
 
+	/**
+	 * Get the minimum scale where this layer is available.
+	 * @return the scale
+	 */
 	public ScaleInfo getMinScale() {
 		return minScale;
 	}
 
+	/**
+	 * Set the minimum scale where this layer is available.
+	 * @param minScale the scale
+	 */
 	public void setMinScale(ScaleInfo minScale) {
 		this.minScale = minScale;
 	}
 
+	/**
+	 * Get the maximum scale where this layer is available.
+	 * @return the maximum scale
+	 */
 	public ScaleInfo getMaxScale() {
 		return maxScale;
 	}
 
+	/**
+	 * Set the maximum scale where this layer is available.
+	 * 
+	 * @param maxScale the maximum scale
+	 */
 	public void setMaxScale(ScaleInfo maxScale) {
 		this.maxScale = maxScale;
 	}
 
+	/**
+	 * Is this layerModel deleted?
+	 * 
+	 * @return true if deleted
+	 */
 	public boolean isDeleted() {
 		return deleted;
 	}
 
+	/**
+	 * Set if this layermodel is deleted.
+	 * 
+	 * @param deleted
+	 */
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
 
+	/**
+	 * Set the owner of this layermodel. This owner can update the layermodel.
+	 * @return the owner
+	 */
 	public Territory getOwner() {
 		return owner;
 	}
 
+	/**
+	 * Set the owner of this layermodel. This owner can update the layermodel.
+	 * @param owner
+	 */
 	public void setOwner(Territory owner) {
 		this.owner = owner;
 	}
 
+	/**
+	 * Is this layer default visible?
+	 * @return true if the layer is default visible
+	 */
 	public boolean isDefaultVisible() {
 		return defaultVisible;
 	}
 
+	/**
+	 * Set if the layer is default visible.
+	 * 
+	 * @param defaultVisible
+	 */
 	public void setDefaultVisible(boolean defaultVisible) {
 		this.defaultVisible = defaultVisible;
 	}
@@ -192,30 +291,59 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 		return dynamicLayerConfiguration;
 	}
 
+	/**
+	 * Set the dynamic layer configuration. Should only be used when initializing.
+	 * @param dynamicLayerConfiguration
+	 */
 	public void setDynamicLayerConfiguration(DynamicLayerConfiguration dynamicLayerConfiguration) {
 		this.dynamicLayerConfiguration = dynamicLayerConfiguration;
 	}
 
+	/**
+	 * Get the type of layer. 
+	 * 
+	 * @return
+	 */
 	public String getLayerType() {
 		return layerType;
 	}
 
+	/**
+	 * Get the type of layer.
+	 * @param layerType
+	 */
 	public void setLayerType(String layerType) {
 		this.layerType = layerType;
 	}
 
+	/**
+	 * If the layer is read only: system layers are read only, Dynamic layers are not.
+	 * @return
+	 */
 	public boolean isReadOnly() {
 		return readOnly;
 	}
 
+	/**
+	 * Set if the layer is read only: system layers are read only, Dynamic layers are not.
+	 * @param readOnly
+	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
 
+	/**
+	 * Is this layer a system layer? Read only is always a system layer.
+	 * @return
+	 */
 	public boolean isSystemLayer() {
 		return !isReadOnly();
 	}
-
+	
+	/**
+	 * Set if this is a system layer, this will set read only.
+	 * @param systemLayer
+	 */
 	public void setSystemLayer(boolean systemLayer) {
 		setReadOnly(!systemLayer);
 	}

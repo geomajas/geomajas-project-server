@@ -31,6 +31,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
@@ -38,13 +39,13 @@ import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.Type;
 
 /**
- * Blueprints should not (cannot) be *really* deleted as they might still have loketten that depend on them.
- * <p>
- * Use the deleted property to mark a blueprint as deleted.
- * 
+ * Representation of a blueprint. A blueprint contains a full geodesk configuration on which a geodesk is based.
+ *  
  * @author Kristof Heirwegh
- * 
+ * @author Oliver May
+ * @since 1.0.0
  */
+@Api (allMethods = true)
 @Entity
 @Table(name = "config_blueprints")
 public class Blueprint implements BaseGeodesk {
@@ -132,202 +133,260 @@ public class Blueprint implements BaseGeodesk {
 	
 	// ------------------------------------------------------------------
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getId()
-	 */
+	@Override
 	public String getId() {
 		return id;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setId(java.lang.String)
-	 */
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getName()
-	 */
+	@Override
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setName(java.lang.String)
-	 */
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get the creation date of this blueprint.
+	 * @return the creation date
+	 */
 	public Date getCreationDate() {
 		return creationDate;
 	}
 
+	/**
+	 * Set the creation date of this blueprint.
+	 * @param creationDate
+	 */
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
+	/**
+	 * Get the creator of this blueprint.
+	 * @return the creator
+	 */
 	public String getCreationBy() {
 		return creationBy;
 	}
 
+	/**
+	 * Set the creator of this blueprint.
+	 * @param creationBy
+	 */
 	public void setCreationBy(String creationBy) {
 		this.creationBy = creationBy;
 	}
 
+	/**
+	 * Is this blueprint active?
+	 * 
+	 * @return true if the blueprint is active.
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Is this blueprint active.
+	 * 
+	 * @param active
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
+	/**
+	 * Get the last edit date.
+	 * 
+	 * @return the edit date
+	 */
 	public Date getLastEditDate() {
 		return lastEditDate;
 	}
 
+	/**
+	 * Set the last edit date.
+	 * @param lastEditDate
+	 */
 	public void setLastEditDate(Date lastEditDate) {
 		this.lastEditDate = lastEditDate;
 	}
 
+	/**
+	 * Get the last editor.
+	 * @return
+	 */
 	public String getLastEditBy() {
 		return lastEditBy;
 	}
 
+	/**
+	 * Set the last editor.
+	 * @param lastEditBy
+	 */
 	public void setLastEditBy(String lastEditBy) {
 		this.lastEditBy = lastEditBy;
 	}
 
+	/**
+	 * Are geodesks based on this blueprint limited to creator territory?
+	 * @return
+	 */
 	public boolean isLimitToCreatorTerritory() {
 		return limitToCreatorTerritory;
 	}
 
+	/**
+	 * Set if geodesks based on this blueprint are limited to creator territory.
+	 */
 	public void setLimitToCreatorTerritory(boolean limitToCreatorTerritory) {
 		this.limitToCreatorTerritory = limitToCreatorTerritory;
 	}
 
+	/**
+	 * Are geodesks based on this blueprint limited to user territory?
+	 * @return
+	 */
 	public boolean isLimitToUserTerritory() {
 		return limitToUserTerritory;
 	}
 
+	/**
+	 * Set if geodesks based on this blueprint are limited to user territory.
+	 * @param limitToUserTerritory
+	 */
 	public void setLimitToUserTerritory(boolean limitToUserTerritory) {
 		this.limitToUserTerritory = limitToUserTerritory;
 	}
 
+	/**
+	 * Are the geodesks based on this blueprint public?
+	 * @return
+	 */
 	public boolean isPublic() {
 		return publicc;
 	}
 
+	/**
+	 * Set if the geodesks based on this blueprint are public.
+	 * @param publik
+	 */
 	public void setPublic(boolean publik) {
 		this.publicc = publik;
 	}
 
+	/**
+	 * Get territories that can use this blueprint (create a geodesk based on it).
+	 * @return
+	 */
 	public List<Territory> getTerritories() {
 		return groups;
 	}
 
-	public void setGroups(List<Territory> groups) {
-		this.groups = groups;
+	/**
+	 * Set the territories that can use this blueprint (create a geodesk based on it).
+	 * @param territories
+	 */
+	public void setTerritories(List<Territory> territories) {
+		this.groups = territories;
 	}
 
+	/**
+	 * Is this blueprint deleted?
+	 * @return
+	 */
 	public boolean isDeleted() {
 		return deleted;
 	}
 
+	/**
+	 * Set if this blueprint is deleted.
+	 * @param deleted
+	 */
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
 
+	/**
+	 * Are geodesks based on this blueprint activated?
+	 * @return
+	 */
 	public boolean isGeodesksActive() {
 		return geodesksActive;
 	}
 
+	/**
+	 * Set if geodesks based on this blueprint are activated.
+	 * @param geodesksActive
+	 */
 	public void setGeodesksActive(boolean geodesksActive) {
 		this.geodesksActive = geodesksActive;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getUserApplicationKey()
-	 */
+	@Override
 	public String getUserApplicationKey() {
 		return userApplicationKey;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setUserApplicationKey(java.lang.String)
-	 */
+	@Override
 	public void setUserApplicationKey(String userApplicationName) {
 		this.userApplicationKey = userApplicationName;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setApplicationClientWidgetInfos(java.util.Map)
-	 */
+	@Override
 	public void setApplicationClientWidgetInfos(Map<String, ClientWidgetInfo> applicationClientWidgetInfos) {
 		this.applicationClientWidgetInfos = applicationClientWidgetInfos;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getApplicationClientWidgetInfos()
-	 */
+	@Override
 	public Map<String, ClientWidgetInfo> getApplicationClientWidgetInfos() {
 		return applicationClientWidgetInfos;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setOverviewMapClientWidgetInfos(java.util.Map)
-	 */
+	@Override
 	public void setOverviewMapClientWidgetInfos(Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos) {
 		this.overviewMapClientWidgetInfos = overviewMapClientWidgetInfos;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getOverviewMapClientWidgetInfos()
-	 */
+	@Override
 	public Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfos() {
 		return overviewMapClientWidgetInfos;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setMainMapClientWidgetInfos(java.util.Map)
-	 */
+	@Override
 	public void setMainMapClientWidgetInfos(Map<String, ClientWidgetInfo> mainMapClientWidgetInfos) {
 		this.mainMapClientWidgetInfos = mainMapClientWidgetInfos;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getMainMapClientWidgetInfos()
-	 */
+	@Override
 	public Map<String, ClientWidgetInfo> getMainMapClientWidgetInfos() {
 		return mainMapClientWidgetInfos;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setMainMapLayers(java.util.List)
-	 */
+	@Override
 	public void setMainMapLayers(List<ClientLayer> layers) {
 		this.mainMapLayers = layers;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getMainMapLayers()
-	 */
+	@Override
 	public List<ClientLayer> getMainMapLayers() {
 		return mainMapLayers;
 	}
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#setOverviewMapLayers(java.util.List)
-	 */
 
+	@Override
 	public void setOverviewMapLayers(List<ClientLayer> layers) {
 		this.overviewMapLayers = layers;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.deskmanager.domain.BaseGeodesk#getOverviewMapLayers()
-	 */
+	@Override
 	public List<ClientLayer> getOverviewMapLayers() {
 		return overviewMapLayers;
 	}

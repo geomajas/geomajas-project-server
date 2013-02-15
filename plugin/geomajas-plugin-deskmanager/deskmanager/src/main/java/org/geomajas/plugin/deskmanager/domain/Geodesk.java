@@ -33,6 +33,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
@@ -40,11 +41,12 @@ import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.Type;
 
 /**
- * TODO.
+ * Representation of a geodesk.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 @Entity
 @Table(name = "config_geodesks")
 public class Geodesk implements BaseGeodesk {
@@ -142,145 +144,260 @@ public class Geodesk implements BaseGeodesk {
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
 
+	/**
+	 * Get the id.
+	 * @return the id.
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id.
+	 * @param id the id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the name.
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Set the name.
+	 * @param name the name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get the creation date.
+	 * @return the creation date
+	 */
 	public Date getCreationDate() {
 		return creationDate;
 	}
 
+	/**
+	 * Set the creation date.
+	 * @param creationDate
+	 */
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
+	/**
+	 * Get the creator's name.
+	 * @return the creator
+	 */
 	public String getCreationBy() {
 		return creationBy;
 	}
 
+	/**
+	 * Set the creator's name.
+	 * @param creationBy the creator
+	 */
 	public void setCreationBy(String creationBy) {
 		this.creationBy = creationBy;
 	}
 
+	/**
+	 * Is this geodesk active?
+	 * @return true if active
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Set if this geodesk is active.
+	 * @param active
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
+	/**
+	 * Get the last edit date.
+	 * 
+	 * @return the edit date.
+	 */
 	public Date getLastEditDate() {
 		return lastEditDate;
 	}
 
+	/**
+	 * Set the last edit date.
+	 * @param lastEditDate
+	 */
 	public void setLastEditDate(Date lastEditDate) {
 		this.lastEditDate = lastEditDate;
 	}
 
+	/**
+	 * Who edited the geodesk last.
+	 * @return the last editor.
+	 */
 	public String getLastEditBy() {
 		return lastEditBy;
 	}
 
+	/**
+	 * Set who edited the geodesk last.
+	 * @param lastEditBy
+	 */
 	public void setLastEditBy(String lastEditBy) {
 		this.lastEditBy = lastEditBy;
 	}
 
 	/**
-	 * This is just the property getter, do not use to test if filter should be set, use mustFilterByGeodeskTerritory().
+	 * Is this geodesk limited to creator territory?
 	 */
 	public boolean isLimitToCreatorTerritory() {
 		return limitToCreatorTerritory;
 	}
 
+	/**
+	 * Set if this geodesk is limited to the creator territory.
+	 * @param limitToCreatorTerritory
+	 */
 	public void setLimitToCreatorTerritory(boolean limitToCreatorTerritory) {
 		this.limitToCreatorTerritory = limitToCreatorTerritory;
 	}
 
 	/**
-	 * This is just the property getter, do not use to test if filter should be set, use mustFilterByUserTerritory().
+	 * Is this geodesk limited to the user's territory?
 	 */
 	public boolean isLimitToUserTerritory() {
 		return limitToUserTerritory;
 	}
 
+	/**
+	 * Set if this geodesk is limited to the user's territory.
+	 * @param limitToUserTerritory
+	 */
 	public void setLimitToUserTerritory(boolean limitToUserTerritory) {
 		this.limitToUserTerritory = limitToUserTerritory;
 	}
 
+	/**
+	 * Is this geodesk public?
+	 * @return
+	 */
 	public boolean isPublic() {
 		return publicc;
 	}
 
+	/**
+	 * Set if this geodesk is public.
+	 * @param publik
+	 */
 	public void setPublic(boolean publik) {
 		this.publicc = publik;
 	}
 
+	/**
+	 * Get the blueprint on which this geodesk is based.
+	 * @return
+	 */
 	public Blueprint getBlueprint() {
 		return blueprint;
 	}
 
+	/**
+	 * Set the blueprint on which this geodesk is based.
+	 * @param blueprint
+	 */
 	public void setBlueprint(Blueprint blueprint) {
 		this.blueprint = blueprint;
 	}
 
+	/**
+	 * Get the geodesk id. This is the id that is used in the url.
+	 * @return the geodesk id
+	 */
 	public String getGeodeskId() {
 		return geodeskId;
 	}
 
+	/**
+	 * Set the geodesk id. This is the id that is used in the url.
+	 * @param geodeskId
+	 */
 	public void setGeodeskId(String geodeskId) {
 		this.geodeskId = geodeskId;
 	}
 
+	/**
+	 * Get territories that have access to this geodesk.
+	 * @return
+	 */
 	public List<Territory> getTerritories() {
 		return groups;
 	}
 
+	/**
+	 * Set the territories that have access to this geodesk.
+	 * @param groups
+	 */
 	public void setGroups(List<Territory> groups) {
 		this.groups = groups;
 	}
 
+	/**
+	 * Is this geodesk deleted.
+	 * @return
+	 */
 	public boolean isDeleted() {
 		return deleted;
 	}
 
+	/**
+	 * Set if this geodesk is deleted.
+	 * @param deleted
+	 */
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
 
+	/**
+	 * Get the owner of a geodesk, the owner can edit the geodesk.
+	 * @return the owner
+	 */
 	public Territory getOwner() {
 		return owner;
 	}
 
+	/**
+	 * Set the owner of the geodesk.
+	 */
 	public void setOwner(Territory owner) {
 		this.owner = owner;
 	}
 
+	/**
+	 * Check if the geodesk must be filtered by creator territory.
+	 * @return
+	 */
 	public boolean mustFilterByCreatorTerritory() {
 		return (isPublic() && (isLimitToCreatorTerritory() || getBlueprint().isLimitToCreatorTerritory()));
 	}
 
+	/**
+	 * Check if the geodesk must be filtered by user territory.
+	 * @return
+	 */
 	public boolean mustFilterByUserTerritory() {
 		return (!isPublic() && (isLimitToUserTerritory() || getBlueprint().isLimitToUserTerritory()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -289,11 +406,6 @@ public class Geodesk implements BaseGeodesk {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -316,86 +428,62 @@ public class Geodesk implements BaseGeodesk {
 		return true;
 	}
 
-	/**
-	 * @param applicationClientWidgetInfos
-	 *            the applicationClientWidgetInfos to set
-	 */
+	@Override
 	public void setApplicationClientWidgetInfos(Map<String, ClientWidgetInfo> applicationClientWidgetInfos) {
 		this.applicationClientWidgetInfos = applicationClientWidgetInfos;
 	}
 
-	/**
-	 * @return the applicationClientWidgetInfos
-	 */
+	@Override
 	public Map<String, ClientWidgetInfo> getApplicationClientWidgetInfos() {
 		return applicationClientWidgetInfos;
 	}
 
-	/**
-	 * @param mainMapClientWidgetInfos
-	 *            the mainMapClientWidgetInfos to set
-	 */
+	@Override
 	public void setMainMapClientWidgetInfos(Map<String, ClientWidgetInfo> mainMapClientWidgetInfos) {
 		this.mainMapClientWidgetInfos = mainMapClientWidgetInfos;
 	}
 
-	/**
-	 * @return the mainMapClientWidgetInfos
-	 */
+	@Override
 	public Map<String, ClientWidgetInfo> getMainMapClientWidgetInfos() {
 		return mainMapClientWidgetInfos;
 	}
 
-	/**
-	 * @param overviewMapClientWidgetInfos
-	 *            the overviewMapClientWidgetInfos to set
-	 */
+	@Override
 	public void setOverviewMapClientWidgetInfos(Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos) {
 		this.overviewMapClientWidgetInfos = overviewMapClientWidgetInfos;
 	}
 
-	/**
-	 * @return the overviewMapClientWidgetInfos
-	 */
+	@Override
 	public Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfos() {
 		return overviewMapClientWidgetInfos;
 	}
 
-	/**
-	 * @param mainMapLayers
-	 *            the mainMapLayers to set
-	 */
+	@Override
 	public void setMainMapLayers(List<ClientLayer> layers) {
 		this.mainMapLayers = layers;
 	}
 
-	/**
-	 * @return the mainMapLayers
-	 */
+	@Override
 	public List<ClientLayer> getMainMapLayers() {
 		return mainMapLayers;
 	}
 
-	/**
-	 * @param mainMapLayers
-	 *            the mainMapLayers to set
-	 */
-
+	@Override
 	public void setOverviewMapLayers(List<ClientLayer> layers) {
 		this.overviewMapLayers = layers;
 	}
 
-	/**
-	 * @return the mainMapLayers
-	 */
+	@Override
 	public List<ClientLayer> getOverviewMapLayers() {
 		return overviewMapLayers;
 	}
 
+	@Override
 	public String getUserApplicationKey() {
 		return getBlueprint().getUserApplicationKey();
 	}
 
+	@Override
 	public void setUserApplicationKey(String userApplicationKey) {
 		getBlueprint().setUserApplicationKey(userApplicationKey);
 	}

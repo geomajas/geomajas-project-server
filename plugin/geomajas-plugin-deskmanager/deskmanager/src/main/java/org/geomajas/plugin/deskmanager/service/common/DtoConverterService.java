@@ -15,12 +15,10 @@ import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerViewDto;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
@@ -46,10 +44,6 @@ public interface DtoConverterService {
 	Geodesk fromDto(GeodeskDto dto) throws GeomajasException;
 
 	GeodeskDto toDto(Geodesk loket, boolean includeReferences) throws GeomajasException;
-
-	LayerView fromDto(LayerViewDto dto) throws GeomajasException;
-
-	LayerViewDto toDto(LayerView layerView) throws GeomajasException;
 
 	ClientLayer fromDto(LayerDto dto) throws GeomajasException;
 

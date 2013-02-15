@@ -24,7 +24,7 @@ import com.smartgwt.client.widgets.layout.Layout;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public interface UserApplication extends UserApplicationConfiguration {
 
 	/**

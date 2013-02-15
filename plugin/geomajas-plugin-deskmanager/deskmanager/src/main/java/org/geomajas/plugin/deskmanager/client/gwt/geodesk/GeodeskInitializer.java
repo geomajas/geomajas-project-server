@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.common;
+package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResp
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public class GeodeskInitializer {
 
 	private List<GeodeskInitializationHandler> handlers = new ArrayList<GeodeskInitializationHandler>();

@@ -20,7 +20,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public class DeskmanagerClientLayerInfo implements ClientUserDataInfo {
 
 	private static final long serialVersionUID = 1L;

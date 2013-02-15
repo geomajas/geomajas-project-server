@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 @Entity
 @Table(name = "security_groups", uniqueConstraints = { @UniqueConstraint(columnNames = { "code" }) })
 public class Territory implements Serializable {

@@ -39,7 +39,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public class FileUploadForm extends HLayout {
 	
 	private static final CommonMessages MESSAGES = GWT.create(CommonMessages.class);
@@ -58,6 +58,7 @@ public class FileUploadForm extends HLayout {
 
 	private Img previewImage;
 
+	@Override
 	public void setDisabled(boolean disabled) {
 		if (upload != null) {
 			upload.setEnabled(!disabled);

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -27,8 +28,9 @@ import org.hibernate.annotations.Type;
  * Contains a clientLayerInfo configuration and a reference to the layerModel.
  * 
  * @author Oliver May
- *
+ * @since 1.0.0
  */
+@Api (allMethods = true)
 @Entity
 @Table(name = "config_clientlayers")
 public class ClientLayer {
@@ -46,6 +48,8 @@ public class ClientLayer {
 	private LayerModel layerModel;
 	
 	/**
+	 * Set the client layer info.
+	 * 
 	 * @param clientLayerInfo the clientLayerInfo to set
 	 */
 	public void setClientLayerInfo(ClientLayerInfo clientLayerInfo) {
@@ -53,7 +57,7 @@ public class ClientLayer {
 	}
 
 	/**
-	 * Returns the clientLayerInfo. This DeskmanagerClientLayerInfoI does not contain the featureinfo.
+	 * Get the client Layer Info.
 	 * 
 	 * @return the clientLayerInfo
 	 */
@@ -62,6 +66,8 @@ public class ClientLayer {
 	}
 
 	/**
+	 * Set the layer model.
+	 * 
 	 * @param layerModel the layerModel to set
 	 */
 	public void setLayerModel(LayerModel layerModel) {
@@ -69,6 +75,8 @@ public class ClientLayer {
 	}
 
 	/**
+	 * Get the layer model.
+	 * 
 	 * @return the layerModel
 	 */
 	public LayerModel getLayerModel() {
@@ -76,6 +84,8 @@ public class ClientLayer {
 	}
 
 	/**
+	 * Set the id.
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(String id) {
@@ -83,10 +93,11 @@ public class ClientLayer {
 	}
 
 	/**
+	 * Get the id.
+	 * 
 	 * @return the id
 	 */
 	public String getId() {
 		return id;
 	}
-
 }

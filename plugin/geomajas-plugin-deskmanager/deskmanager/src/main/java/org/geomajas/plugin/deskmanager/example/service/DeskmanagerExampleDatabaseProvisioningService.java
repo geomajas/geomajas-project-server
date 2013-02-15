@@ -174,7 +174,7 @@ public class DeskmanagerExampleDatabaseProvisioningService {
 		bluePrint.setActive(true);
 		bluePrint.setCreationBy(getMessage("systemUsr"));
 		bluePrint.setCreationDate(new Date());
-		bluePrint.setGroups(Arrays.asList(adminGroup, beGroup)/*, nlGroup, deGroup)*/);
+		bluePrint.setTerritories(Arrays.asList(adminGroup, beGroup)/*, nlGroup, deGroup)*/);
 		bluePrint.setLastEditBy(getMessage("systemUsr"));
 		bluePrint.setLastEditDate(new Date());
 		bluePrint.setLimitToCreatorTerritory(false);

@@ -22,7 +22,7 @@ import org.geomajas.annotation.Api;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public final class UserApplicationRegistry {
 
 	private static final UserApplicationRegistry INSTANCE = new UserApplicationRegistry();

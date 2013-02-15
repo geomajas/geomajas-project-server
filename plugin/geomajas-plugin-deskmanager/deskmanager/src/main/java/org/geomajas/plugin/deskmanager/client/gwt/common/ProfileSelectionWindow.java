@@ -17,7 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow.AskRol
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public interface ProfileSelectionWindow {
 
 	/**

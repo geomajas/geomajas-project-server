@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.common;
+package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import org.geomajas.annotation.Api;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public final class WidgetEditorFactoryRegistry {
 
 	private static final WidgetEditorFactoryRegistry INSTANCE = new WidgetEditorFactoryRegistry();

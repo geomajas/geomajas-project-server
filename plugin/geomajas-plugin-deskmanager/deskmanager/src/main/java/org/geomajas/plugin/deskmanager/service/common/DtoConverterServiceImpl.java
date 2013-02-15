@@ -23,12 +23,10 @@ import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
-import org.geomajas.plugin.deskmanager.domain.LayerView;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
-import org.geomajas.plugin.deskmanager.domain.dto.LayerViewDto;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
@@ -230,57 +228,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return lmDto;
 	}
 
-//	private String getMessage(String key, String locale) {
-//		
-//		if (locale == null) {
-//			locale = "default";
-//		}
-//		if (!messagesMap.containsKey(locale)) {
-//			locale = "default";
-//		}
-//		ResourceBundle messages = messagesMap.get(locale);
-//		if (messages != null) {
-//			return messagesMap.get(locale).getString(key);
-//		} else {
-//			return null;
-//		}
-//	}
-	
 	private static String getMessage(String key) {
 		return messages.getString(key);
-	}
-
-	/**
-	 * Scales are not cloned but referenced !!
-	 */
-	public LayerView fromDto(LayerViewDto dto) throws GeomajasException {
-		if (dto == null) {
-			return null;
-		}
-		LayerView lv = new LayerView();
-
-		lv.setDefaultVisible(dto.isDefaultVisible());
-		lv.setId(dto.getId());
-		lv.setLabel(dto.getLabel());
-		lv.setMaximumScale(dto.getMaximumScale());
-		lv.setMinimumScale(dto.getMinimumScale());
-		lv.setShowInLegend(dto.isShowInLegend());
-		return lv;
-	}
-
-	public LayerViewDto toDto(LayerView layerView) throws GeomajasException {
-		if (layerView == null) {
-			return null;
-		}
-		LayerViewDto lvDto = new LayerViewDto();
-
-		lvDto.setDefaultVisible(layerView.isDefaultVisible());
-		lvDto.setId(layerView.getId());
-		lvDto.setLabel(layerView.getLabel());
-		lvDto.setMaximumScale(layerView.getMaximumScale());
-		lvDto.setMinimumScale(layerView.getMinimumScale());
-		lvDto.setShowInLegend(layerView.isShowInLegend());
-		return lvDto;
 	}
 
 	public Geodesk fromDto(GeodeskDto dto) throws GeomajasException {

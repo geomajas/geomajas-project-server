@@ -20,15 +20,17 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.geomajas.annotation.Api;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 /**
- * TODO.
+ * Reference of a file saved in the database.
  * 
- * @author Jan De Moerloose
- *
+ * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 @Entity
 @Table(name = "files")
 public class FileRef implements org.geomajas.plugin.deskmanager.service.common.FileRef {
@@ -49,41 +51,66 @@ public class FileRef implements org.geomajas.plugin.deskmanager.service.common.F
 	@Column(name = "data", nullable = false)
 	private byte[] data;
 
-	public FileRef() {
-	}
-
-	public FileRef(String id) {
-		this.id = id;
-	}
-
-	// ----------------------------------------------------------
-
+	/**
+	 * Get the id of this file ref.
+	 * 
+	 * @return the the id.
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id of this file ref.
+	 * 
+	 * @param id the id to set.
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the mime type.
+	 * 
+	 * @return the mime type.
+	 */
 	public String getMimeType() {
 		return mimeType;
 	}
 
+	/**
+	 * Set the mime type.
+	 * 
+	 * @param mimeType the mime type to set.
+	 */
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
 
+	/**
+	 * Get the data.
+	 * 
+	 * @return the data.
+	 */
 	public byte[] getData() {
 		return data;
 	}
 
+	/**
+	 * Set the data.
+	 * 
+	 * @param data the data to set.
+	 */
 	public void setData(byte[] data) {
 		this.data = data.clone();
 	}
 
+	/**
+	 * Get the data as input stream.
+	 * 
+	 * @return the input stream.
+	 */
 	public InputStream getDataAsStream() {
 		return new ByteArrayInputStream(getData());
 	}
-
 }

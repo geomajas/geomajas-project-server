@@ -28,7 +28,7 @@ public final class GeodeskUrlUtil {
 	private GeodeskUrlUtil() { }
 	
 	public static String createUrl(String baseUrl, String geodeskId) {
-		return baseUrl + GdmLayout.GEODESK_PREFIX + geodeskId + "/" + CodeServer.getCodeServer();
+		return baseUrl + GdmLayout.geodeskPrefix + geodeskId + "/" + CodeServer.getCodeServer();
 	}
 
 	public static String createPreviewUrl(String geodeskId) {
@@ -38,11 +38,11 @@ public final class GeodeskUrlUtil {
 	public static String getGeodeskId() {
 
 		String geodeskId = Window.Location.getHref();
-		if (!geodeskId.contains(GdmLayout.GEODESK_PREFIX)) {
+		if (!geodeskId.contains(GdmLayout.geodeskPrefix)) {
 			return null;
 		}
-		geodeskId = geodeskId.substring(geodeskId.indexOf(GdmLayout.GEODESK_PREFIX) 
-				+ GdmLayout.GEODESK_PREFIX.length()); 
+		geodeskId = geodeskId.substring(geodeskId.indexOf(GdmLayout.geodeskPrefix) 
+				+ GdmLayout.geodeskPrefix.length()); 
 		geodeskId = geodeskId.substring(0, geodeskId.indexOf('/'));
 		
 		return geodeskId;
