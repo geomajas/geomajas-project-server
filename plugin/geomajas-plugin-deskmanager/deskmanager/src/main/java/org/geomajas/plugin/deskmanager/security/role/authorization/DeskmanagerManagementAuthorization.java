@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.security.role.authorization;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
@@ -23,9 +22,7 @@ import org.hibernate.criterion.Criterion;
  * @author Kristof Heirwegh
  * @author Oliver May
  * 
- * @since 1.0.0
  */
-@Api
 public interface DeskmanagerManagementAuthorization {
 
 	/**
@@ -128,7 +125,7 @@ public interface DeskmanagerManagementAuthorization {
 	 * 
 	 * @return the filter.
 	 */
-	Criterion getFilterLoketten();
+	Criterion getFilterGeodesks();
 
 	/**
 	 * Whether a user can upload a new shapefile for the given layer.

@@ -59,7 +59,6 @@ import com.vividsolutions.jts.io.WKTReader;
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
- * 
  */
 public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthorization, AuthorizationNeedsWiring,
 		Serializable, DeskmanagerManagementAuthorization, DeskmanagerGeodeskAuthorization {
@@ -161,35 +160,42 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		this.geoService = applicationContext.getBean(GeoService.class);
 	}
 
+	@Override
 	public String getId() {
 		return "DeskmanagerAuthorizationInfo." /* + Integer.toString(role.hashCode()) */;
 	}
 
+	@Override
 	public boolean isToolAuthorized(String toolId) {
 		return check(toolId, getMagdageoAuthorizationInfo().getToolsInclude(), getMagdageoAuthorizationInfo()
 				.getToolsExclude());
 	}
 
+	@Override
 	public boolean isCommandAuthorized(String commandName) {
 		return check(commandName, getMagdageoAuthorizationInfo().getCommandsInclude(), getMagdageoAuthorizationInfo()
 				.getCommandsExclude());
 	}
 
+	@Override
 	public boolean isLayerVisible(String layerId) {
 		return check(layerId, getMagdageoAuthorizationInfo().getVisibleLayersInclude(), getMagdageoAuthorizationInfo()
 				.getVisibleLayersExclude());
 	}
 
+	@Override
 	public boolean isLayerUpdateAuthorized(String layerId) {
 		return check(layerId, getMagdageoAuthorizationInfo().getUpdateAuthorizedLayersInclude(),
 				getMagdageoAuthorizationInfo().getUpdateAuthorizedLayersExclude());
 	}
 
+	@Override
 	public boolean isLayerCreateAuthorized(String layerId) {
 		return check(layerId, getMagdageoAuthorizationInfo().getCreateAuthorizedLayersInclude(),
 				getMagdageoAuthorizationInfo().getCreateAuthorizedLayersExclude());
 	}
 
+	@Override
 	public boolean isLayerDeleteAuthorized(String layerId) {
 		return check(layerId, getMagdageoAuthorizationInfo().getDeleteAuthorizedLayersInclude(),
 				getMagdageoAuthorizationInfo().getDeleteAuthorizedLayersExclude());
@@ -197,6 +203,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// -- Blueprint --------------------------------------------------------
 
+	@Override
 	public boolean readAllowed(BaseGeodesk bp) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
@@ -208,6 +215,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return false;
 	}
 
+	@Override
 	public boolean saveAllowed(BaseGeodesk bp) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
@@ -215,6 +223,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return false;
 	}
 
+	@Override
 	public boolean deleteAllowed(BaseGeodesk bp) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
@@ -222,6 +231,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return false;
 	}
 
+	@Override
 	public Criterion getFilterBlueprints() {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return null;
@@ -229,34 +239,34 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 														// this
 			// won't
 			// work!
-			return Restrictions.and(Restrictions.eq("active", true), Restrictions.eq("groups.id", getGroup().getId()));
+			return Restrictions.and(Restrictions.eq("active", true), Restrictions.eq("groups.id", getTerritory().getId()));
 		}
 		return Restrictions.sqlRestriction("1 = ?", 2, new IntegerType());
 	}
 
 	// -- LayerModel --------------------------------------------------------
 
-	// save enkel eigen
+	@Override
 	public boolean saveAllowed(LayerModel lm) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
 		} else if (getRole() == Role.DESK_MANAGER) {
-			return (getGroup().equals(lm.getOwner()));
+			return (getTerritory().equals(lm.getOwner()));
 		}
 		return false;
 	}
 
-	// delete enkel eigen
+	@Override
 	public boolean deleteAllowed(LayerModel lm) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
 		} else if (getRole() == Role.DESK_MANAGER) {
-			return (getGroup().equals(lm.getOwner()));
+			return (getTerritory().equals(lm.getOwner()));
 		}
 		return false;
 	}
 
-	// read beheerders alles (hangt af van blueprint)
+	@Override
 	public boolean readAllowed(LayerModel lm) {
 		if (getRole() == Role.ADMINISTRATOR || getRole() == Role.DESK_MANAGER) {
 			return true;
@@ -264,38 +274,44 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return false;
 	}
 
+	@Override
 	public Criterion getFilterLayerModels() {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return null;
 		} else if (getRole() == Role.DESK_MANAGER) {
-			return Restrictions.and(Restrictions.eq("active", true), Restrictions.eq("owner", getGroup()));
+			return Restrictions.and(Restrictions.eq("active", true), Restrictions.eq("owner", getTerritory()));
 		}
 		return Restrictions.sqlRestriction("1 = ?", 2, new IntegerType());
 	}
 
 	// -- Geodesk --------------------------------------------------------
 
+	@Override
 	public boolean isGeodeskUseAllowed(String geodeskId) {
-		return geodeskService.isGeodeskUseAllowed(geodeskId, getRole(), getGroup());
+		return geodeskService.isGeodeskUseAllowed(geodeskId, getRole(), getTerritory());
 	}
 
+	@Override
 	public boolean readAllowed(Geodesk geodesk) {
-		return geodeskService.isGeodeskReadAllowed(geodesk, getRole(), getGroup());
+		return geodeskService.isGeodeskReadAllowed(geodesk, getRole(), getTerritory());
 	}
 
+	@Override
 	public boolean saveAllowed(Geodesk geodesk) {
-		return geodeskService.isGeodeskSaveAllowed(geodesk, getRole(), getGroup());
+		return geodeskService.isGeodeskSaveAllowed(geodesk, getRole(), getTerritory());
 	}
 
+	@Override
 	public boolean deleteAllowed(Geodesk geodesk) {
-		return geodeskService.isGeodeskDeleteAllowed(geodesk, getRole(), getGroup());
+		return geodeskService.isGeodeskDeleteAllowed(geodesk, getRole(), getTerritory());
 	}
 
-	public Criterion getFilterLoketten() {
+	@Override
+	public Criterion getFilterGeodesks() {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return null;
 		} else if (getRole() == Role.DESK_MANAGER) {
-			return Restrictions.eq("owner", getGroup());
+			return Restrictions.eq("owner", getTerritory());
 		} else {
 			return Restrictions.sqlRestriction("1 = ?", 2, new IntegerType());
 		}
@@ -303,6 +319,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// -- ShapefileUpload -----------------------------------------------
 
+	@Override
 	public boolean isShapeFileUploadAllowed(String clientLayerId) {
 		if (getRole() == Role.ADMINISTRATOR) {
 			return true;
@@ -344,6 +361,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	// -- Area---------------------------------
 
+	@Override
 	public Geometry getVisibleArea(String layerId) {
 		if (!isLayerVisible(layerId)) {
 			return null;
@@ -371,10 +389,12 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return geometry;
 	}
 
+	@Override
 	public boolean isPartlyVisibleSufficient(String layerId) {
 		return true;
 	}
 
+	@Override
 	public Geometry getUpdateAuthorizedArea(String layerId) {
 		if (!isLayerUpdateAuthorized(layerId)) {
 			return null;
@@ -382,10 +402,12 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return getVisibleArea(layerId);
 	}
 
+	@Override
 	public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
 		return true;
 	}
 
+	@Override
 	public Geometry getCreateAuthorizedArea(String layerId) {
 		if (!isLayerCreateAuthorized(layerId)) {
 			return null;
@@ -393,10 +415,12 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return getVisibleArea(layerId);
 	}
 
+	@Override
 	public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
 		return true;
 	}
 
+	@Override
 	public Geometry getDeleteAuthorizedArea(String layerId) {
 		if (!isLayerDeleteAuthorized(layerId)) {
 			return null;
@@ -404,6 +428,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return getVisibleArea(layerId);
 	}
 
+	@Override
 	public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
 		return true;
 	}
@@ -421,18 +446,34 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		return geodesk;
 	}
 
+	/**
+	 * Get the role defined by this authorization.
+	 * @return the role.
+	 */
 	public Role getRole() {
 		return (profile == null ? null : profile.getRole());
 	}
 
-	public Territory getGroup() {
+	/**
+	 * Get the territory of this authorization.
+	 * @return
+	 */
+	public Territory getTerritory() {
 		return (profile == null ? null : profile.getTerritory());
 	}
 
+	/**
+	 * Get the profile of this authorization.
+	 * @return the profile
+	 */
 	public Profile getProfile() {
 		return profile;
 	}
 	
+	/**
+	 * Get the geodesk id of this authorization.
+	 * @return
+	 */
 	public String getGeodeskId() {
 		return geodeskId;
 	}

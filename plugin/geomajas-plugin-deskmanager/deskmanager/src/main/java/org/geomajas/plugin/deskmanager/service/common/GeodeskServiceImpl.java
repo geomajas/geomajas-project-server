@@ -126,7 +126,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		Criteria crit = factory.getCurrentSession().createCriteria(Geodesk.class);
 		crit.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		crit.add(Restrictions.eq("deleted", false));
-		Criterion filter = ((DeskmanagerSecurityContext) securityContext).getFilterLoketten();
+		Criterion filter = ((DeskmanagerSecurityContext) securityContext).getFilterGeodesks();
 		if (filter != null) {
 			crit.add(filter);
 		}

@@ -102,7 +102,7 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerAuthorization) {
 					return (Territory) session.getCurrentSession().merge(
-							((DeskmanagerAuthorization) authorization).getGroup());
+							((DeskmanagerAuthorization) authorization).getTerritory());
 				}
 			}
 		}
@@ -274,12 +274,12 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 		return false;
 	}
 
-	public Criterion getFilterLoketten() {
+	public Criterion getFilterGeodesks() {
 		Criterion filter = null;
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerManagementAuthorization) {
-					Criterion part = ((DeskmanagerManagementAuthorization) authorization).getFilterLoketten();
+					Criterion part = ((DeskmanagerManagementAuthorization) authorization).getFilterGeodesks();
 					if (null != part) {
 						if (filter == null) {
 							filter = part;
