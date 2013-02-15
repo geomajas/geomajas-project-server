@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.DeskmanagerIcon;
+import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerIcon;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;

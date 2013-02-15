@@ -11,7 +11,7 @@
 package org.geomajas.widget.layer.editor.client;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 
 import com.smartgwt.client.types.Overflow;

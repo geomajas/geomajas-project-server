@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.layer.editor.client;
 
-import org.geomajas.plugin.deskmanager.client.gwt.common.WidgetEditorFactoryRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactoryRegistry;
 
 import com.google.gwt.core.client.EntryPoint;
 
