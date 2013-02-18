@@ -28,8 +28,9 @@ import java.sql.Types;
 
 import org.geomajas.geometry.Bbox;
 import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Oliver May
@@ -37,6 +38,9 @@ import org.hibernate.usertype.UserType;
  */
 public class XmlSerialisationType implements UserType {
 
+	private static final Logger LOG = LoggerFactory.getLogger(XmlSerialisationType.class);
+
+	
 	static {
 		try {
 			BeanInfo bi = Introspector.getBeanInfo(Bbox.class);
@@ -47,7 +51,7 @@ public class XmlSerialisationType implements UserType {
 				}
 			}
 		} catch (IntrospectionException e) {
-			e.printStackTrace();
+			LOG.warn(e.getLocalizedMessage());
 		}
 	}
 	
@@ -63,7 +67,7 @@ public class XmlSerialisationType implements UserType {
 		return Serializable.class;
 	}
 
-	public boolean equals(Object x, Object y) throws HibernateException {
+	public boolean equals(Object x, Object y) {
 		if (x == null && y == null) {
 			return true;
 		}
@@ -73,14 +77,14 @@ public class XmlSerialisationType implements UserType {
 		return x.equals(y);
 	}
 
-	public int hashCode(Object x) throws HibernateException {
+	public int hashCode(Object x) {
 		if (x == null) {
 			return 0;
 		}
 		return x.hashCode();
 	}
 
-	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws SQLException {
 		String xmlString = (String) Hibernate.STRING.nullSafeGet(rs, names);
 		return fromXmlString(xmlString);
 
@@ -93,17 +97,16 @@ public class XmlSerialisationType implements UserType {
 		try {
 			ByteArrayInputStream is = new ByteArrayInputStream(xmlString.getBytes(ENCODING));
 			XMLDecoder decoder = new XMLDecoder(is);
-			Object o = decoder.readObject();
-			return o;
+			return decoder.readObject();
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			LOG.warn(e.getLocalizedMessage());
 			IllegalArgumentException ex = new IllegalArgumentException("cannot disassemble the object");
 			ex.setStackTrace(e.getStackTrace());
 			throw ex;
 		}
 	}
 
-	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
+	public void nullSafeSet(PreparedStatement st, Object value, int index) throws SQLException {
 		String xmlString = toXmlString(value);
 		Hibernate.TEXT.nullSafeSet(st, xmlString, index);
 	}
@@ -122,13 +125,12 @@ public class XmlSerialisationType implements UserType {
 			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
-			IllegalArgumentException ex = new IllegalArgumentException("cannot disassemble the object");
-			ex.setStackTrace(e.getStackTrace());
+			IllegalArgumentException ex = new IllegalArgumentException("cannot disassemble the object", e);
 			throw ex;
 		}
 	}
 
-	public Object deepCopy(Object value) throws HibernateException {
+	public Object deepCopy(Object value) {
 		return fromXmlString(toXmlString(value));
 	}
 
@@ -136,15 +138,15 @@ public class XmlSerialisationType implements UserType {
 		return true;
 	}
 
-	public Serializable disassemble(Object value) throws HibernateException {
+	public Serializable disassemble(Object value) {
 		return (Serializable) deepCopy(value);
 	}
 
-	public Object assemble(Serializable cached, Object owner) throws HibernateException {
+	public Object assemble(Serializable cached, Object owner) {
 		return deepCopy(cached);
 	}
 
-	public Object replace(Object original, Object target, Object owner) throws HibernateException {
+	public Object replace(Object original, Object target, Object owner) {
 		return deepCopy(original);
 	}
 
