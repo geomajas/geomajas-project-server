@@ -229,13 +229,13 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		params.put("url", shapeFile.toURI().toURL());
 		params.put("create spatial index", Boolean.FALSE);
 
-		ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
-		ShapefileDataStore dataStore = (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
-		dataStore.createSchema(type);
-		dataStore.forceSchemaCRS(layerService.getCrs(layer));
+		ShapefileDataStoreFactory sfDataStoreFactory = new ShapefileDataStoreFactory();
+		ShapefileDataStore sfDataStore = (ShapefileDataStore) sfDataStoreFactory.createNewDataStore(params);
+		sfDataStore.createSchema(type);
+		sfDataStore.forceSchemaCRS(layerService.getCrs(layer));
 
-		String typeName = dataStore.getTypeNames()[0];
-		SimpleFeatureSource sfSource = dataStore.getFeatureSource(typeName);
+		String typeName = sfDataStore.getTypeNames()[0];
+		SimpleFeatureSource sfSource = sfDataStore.getFeatureSource(typeName);
 		if (sfSource instanceof SimpleFeatureStore) {
 			SimpleFeatureStore sfs = (SimpleFeatureStore) sfSource;
 			Transaction transaction = new DefaultTransaction("create");
