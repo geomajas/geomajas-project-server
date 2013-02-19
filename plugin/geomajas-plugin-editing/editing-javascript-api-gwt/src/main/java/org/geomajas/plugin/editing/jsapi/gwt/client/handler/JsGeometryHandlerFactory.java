@@ -47,8 +47,6 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 @ExportPackage("org.geomajas.plugin.editing.handler")
 public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exportable {
 
-	private AbstractGeometryIndexMapHandler handler = new GeometryIndexMapAdapter();
-
 	private MouseMoveHandler mouseMoveHandler = new MouseAdapter();
 
 	private MouseOutHandler mouseOutHandler = new MouseAdapter();
@@ -62,10 +60,12 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	private DragHandler dragHandler = new MouseAdapter();
 
 	private DoubleClickHandler doubleClickHandler = new MouseAdapter();
+	
+	private GeometryIndex currentIndex;
 
 	@NoExport
 	public AbstractGeometryIndexMapHandler create() {
-		return handler;
+		return new GeometryIndexMapAdapter();
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 	 */
 	@Api
 	public GeometryIndex getIndex() {
-		return handler.getIndex();
+		return currentIndex;
 	}
 
 	/**
@@ -161,36 +161,43 @@ public class JsGeometryHandlerFactory implements GeometryHandlerFactory, Exporta
 
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
+			currentIndex = getIndex();
 			doubleClickHandler.onDoubleClick(event);
 		}
 
 		@Override
 		public void onDrag(HumanInputEvent<?> event) {
+			currentIndex = getIndex();
 			dragHandler.onDrag(event);
 		}
 
 		@Override
 		public void onUp(HumanInputEvent<?> event) {
+			currentIndex = getIndex();
 			upHandler.onUp(event);
 		}
 
 		@Override
 		public void onDown(HumanInputEvent<?> event) {
+			currentIndex = getIndex();
 			downHandler.onDown(event);
 		}
 
 		@Override
 		public void onMouseOver(MouseOverEvent event) {
+			currentIndex = getIndex();
 			mouseOverHandler.onMouseOver(event);
 		}
 
 		@Override
 		public void onMouseOut(MouseOutEvent event) {
+			currentIndex = getIndex();
 			mouseOutHandler.onMouseOut(event);
 		}
 
 		@Override
 		public void onMouseMove(MouseMoveEvent event) {
+			currentIndex = getIndex();
 			mouseMoveHandler.onMouseMove(event);
 		}
 
