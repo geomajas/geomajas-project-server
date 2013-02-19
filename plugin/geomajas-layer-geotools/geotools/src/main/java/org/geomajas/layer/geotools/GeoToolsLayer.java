@@ -73,8 +73,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private static final long DEFAULT_COOLDOWN_TIME = 60000; // millis
 
 	// WARNING this may change when using a different GeoTools library version
-	private static final String MAGIC_STRING_LIBRARY_MISSING = "No datastore found. Possible causes are " +
-			"missing factory or missing library for your datastore (e.g. database driver).";
+	private static final String MAGIC_STRING_LIBRARY_MISSING = "No datastore found. Possible causes are "
+			+ "missing factory or missing library for your datastore (e.g. database driver).";
 
 	private FeatureModel featureModel;
 
@@ -85,7 +85,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private String dbtype;
 
 	private List<Parameter> parameters;
-	
+
 	private DataSource dataSource;
 
 	@Autowired
@@ -94,11 +94,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	@Autowired
 	private GeoService geoService;
 
-	@Autowired(required = false)
-	private GeoToolsTransactionManager transactionManager;
-
 	@Autowired
 	private DtoConverterService converterService;
+
+	@Autowired
+	private GeoToolsTransactionSynchronization transactionSynchronization;
 
 	private CoordinateReferenceSystem crs;
 
@@ -117,7 +117,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set the id for this layer.
-	 *
+	 * 
 	 * @param id layer id
 	 * @since 1.8.0
 	 */
@@ -133,7 +133,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * <p/>
 	 * Important note: the shape file data store (specifically the indexing code) is not thread safe, so it should not
 	 * be used for writing.
-	 *
+	 * 
 	 * @param url shape file url
 	 * @since 1.8.0
 	 */
@@ -144,7 +144,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set database type. Useful when the data store is a database.
-	 *
+	 * 
 	 * @param dbtype database type
 	 * @since 1.8.0
 	 */
@@ -152,7 +152,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public void setDbtype(String dbtype) {
 		this.dbtype = dbtype;
 	}
-	
+
 	/**
 	 * Get the data source used by this layer (optional and only for database layers). This is the data source that is
 	 * passed to the GeoTools data store.
@@ -179,7 +179,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set additional parameters for the GeoTools data store.
-	 *
+	 * 
 	 * @param parameters parameter list
 	 * @since 1.8.0
 	 */
@@ -190,7 +190,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * The time to wait between initialization retries in case the service is unavailable.
-	 *
+	 * 
 	 * @param cooldownTimeBetweenInitializationRetries cool down time in milliseconds
 	 * @since 1.8.0
 	 */
@@ -207,10 +207,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	/**
 	 * Set the layer configuration.
 	 * 
-	 * @param layerInfo
-	 *            layer information
-	 * @throws LayerException
-	 *             oops
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
 	 * @since 1.7.1
 	 */
 	@Api
@@ -241,7 +239,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @deprecated set the data store parameters on the parameter object instead
 	 */
 	@Override
@@ -252,7 +250,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Finish initializing the layer.
-	 *
+	 * 
 	 * @throws LayerException oops
 	 */
 	@PostConstruct
@@ -291,9 +289,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			if (null == super.getDataStore()) {
 				return;
 			}
-			this.featureModel = new GeoToolsFeatureModel(super.getDataStore(),
-					layerInfo.getFeatureInfo().getDataSourceName(), geoService.getSridFromCrs(layerInfo.getCrs()),
-					converterService);
+			this.featureModel = new GeoToolsFeatureModel(super.getDataStore(), layerInfo.getFeatureInfo()
+					.getDataSourceName(), geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
 			featureModel.setLayerInfo(layerInfo);
 			featureModelUsable = true;
 
@@ -315,9 +312,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			SimpleFeatureCollection collection = FeatureCollections.newCollection();
 			collection.add((SimpleFeature) feature);
-			if (transactionManager != null) {
-				store.setTransaction(transactionManager.getTransaction());
-			}
+			transactionSynchronization.synchTransaction(store);
 			try {
 				List<FeatureId> ids = store.addFeatures(collection);
 				// fetch it again to get the generated values !!!
@@ -339,7 +334,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Update an existing feature. Made package private for testing purposes.
-	 *
+	 * 
 	 * @param feature feature to update
 	 * @throws LayerException oops
 	 */
@@ -348,10 +343,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (source instanceof SimpleFeatureStore) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			String featureId = getFeatureModel().getId(feature);
-			Filter filter = filterService.createFidFilter(new String[] {featureId});
-			if (transactionManager != null) {
-				store.setTransaction(transactionManager.getTransaction());
-			}
+			Filter filter = filterService.createFidFilter(new String[] { featureId });
+			transactionSynchronization.synchTransaction(store);
 			List<Name> names = new ArrayList<Name>();
 			Map<String, Attribute> attrMap = getFeatureModel().getAttributes(feature);
 			List<Object> values = new ArrayList<Object>();
@@ -384,10 +377,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		SimpleFeatureSource source = getFeatureSource();
 		if (source instanceof SimpleFeatureStore) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			Filter filter = filterService.createFidFilter(new String[] {featureId});
-			if (transactionManager != null) {
-				store.setTransaction(transactionManager.getTransaction());
-			}
+			Filter filter = filterService.createFidFilter(new String[] { featureId });
+			transactionSynchronization.synchTransaction(store);
 			try {
 				store.removeFeatures(filter);
 				if (log.isDebugEnabled()) {
@@ -418,7 +409,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/** {@inheritDoc} */
 	public Object read(String featureId) throws LayerException {
-		Filter filter = filterService.createFidFilter(new String[] {featureId});
+		Filter filter = filterService.createFidFilter(new String[] { featureId });
 		Iterator<?> iterator = getElements(filter, 0, 0);
 		if (iterator.hasNext()) {
 			return iterator.next();
@@ -437,9 +428,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			if (transactionManager != null) {
-				store.setTransaction(transactionManager.getTransaction());
-			}
+			transactionSynchronization.synchTransaction(store);
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc;
@@ -449,13 +438,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				fc = source.getFeatures(filter);
 			}
 			FeatureIterator<SimpleFeature> it = fc.features();
-			try {
-				if (transactionManager != null) {
-					transactionManager.addIterator(it);
-				}
-			} finally {
-				it.close();
-			}
+			transactionSynchronization.addIterator(it);
 			return fc.getBounds();
 		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
 			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
@@ -464,26 +447,20 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
+	@Transactional(readOnly = true)
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		try {
 			if (source instanceof FeatureStore<?, ?>) {
 				SimpleFeatureStore store = (SimpleFeatureStore) source;
-				if (transactionManager != null) {
-					// only set the transaction if some state was set by a previous write operation
-					if (transactionManager.getTransaction().getState(getDataStore()) != null) {
-						store.setTransaction(transactionManager.getTransaction());
-					}
-				}
+				transactionSynchronization.synchTransaction(store);
 			}
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
 			FeatureIterator<SimpleFeature> it = fc.features();
-			if (transactionManager != null) {
-				transactionManager.addIterator(it);
-			}
+			transactionSynchronization.addIterator(it);
 			return new JavaIterator(it);
 		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
 			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
@@ -499,7 +476,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	private boolean exists(String featureId) throws LayerException {
-		Filter filter = filterService.createFidFilter(new String[] {featureId});
+		Filter filter = filterService.createFidFilter(new String[] { featureId });
 		Iterator<?> iterator = getElements(filter, 0, 0);
 		return iterator.hasNext();
 	}

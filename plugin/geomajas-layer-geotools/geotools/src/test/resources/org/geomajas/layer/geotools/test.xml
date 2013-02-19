@@ -23,13 +23,20 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	-->
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
 
+	<!--  only necessary if you have no hibernate or datasource transaction manager defined ! -->
 	<bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager">
 	</bean>
+	
 	<!-- @extract-end -->
+
+	<bean id="GeoToolsTransactionSynchronization"
+		class="org.geomajas.layer.geotools.GeoToolsTransactionSynchronization" scope="thread">
+		<aop:scoped-proxy/>
+	</bean>
 
 	<bean name="filterTest" class="org.geomajas.layer.geotools.GeoToolsLayer">
 		<property name="url">
-			<value>classpath:org/geomajas/testdata/shapes/filtertest/filtertest.shp</value>
+			<value>classpath:org/geomajas/layer/geotools/shapes/filtertest.shp</value>
 		</property>
 	</bean>
 
@@ -39,7 +46,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<bean class="org.geomajas.configuration.Parameter">
 					<property name="name" value="url" />
 					<property name="value"
-						value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp" />
+						value="classpath:org/geomajas/layer/geotools/shapes/110m_populated_places_simple.shp" />
 				</bean>
 			</list>
 		</property>

@@ -20,7 +20,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
 
-	<bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="geotoolsDataSource" />
 	</bean>
 
 </beans>

@@ -12,6 +12,8 @@ package org.geomajas.layer.geotools;
 
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -50,4 +52,9 @@ public abstract class AbstractGeoToolsTest {
 
 	@Autowired
 	protected DtoConverterService converterService;
+	
+	@Before
+	public void before() {
+		ThreadScopeContextHolder.clear();
+	}
 }

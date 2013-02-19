@@ -19,4 +19,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager">
 	</bean>
+	
+	<bean id="GeoToolsTransactionSynchronization"
+		class="org.geomajas.layer.geotools.GeoToolsTransactionSynchronization" scope="thread">
+		<aop:scoped-proxy/>
+	</bean>
+	
 </beans>

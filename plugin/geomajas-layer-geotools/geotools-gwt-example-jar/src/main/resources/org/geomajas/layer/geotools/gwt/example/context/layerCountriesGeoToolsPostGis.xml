@@ -20,7 +20,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	
 	
-	<bean id="postgisDataSourceGeoTools" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+	<bean id="geotoolsDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
 	   <property name="driverClass" value="org.postgresql.Driver" />
 	   <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/app" />
 	   <property name="username" value="app"/>
@@ -37,7 +37,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	
 	<bean name="layerCountriesGeoTools" class="org.geomajas.layer.geotools.GeoToolsLayer">
 		<property name="layerInfo" ref="layerCountriesInfoGeoTools"/>
-		<property name="dataSource" ref="postgisDataSourceGeoTools"/>
+		<property name="dataSource" ref="geotoolsDataSource"/>
 		<property name="parameters">
 			<list>
 				<bean class="org.geomajas.configuration.Parameter">
@@ -76,9 +76,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="Default" />
-					<property name="fillColor" value="FFFFFF" />
+					<property name="fillColor" value="#FFFFFF" />
 					<property name="fillOpacity" value="0" />
-					<property name="strokeColor" value="998811" />
+					<property name="strokeColor" value="#998811" />
 					<property name="strokeOpacity" value="1" />
 					<property name="strokeWidth" value="2" />
 				</bean>
@@ -89,15 +89,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="labelAttributeName" value="name" />
 				<property name="fontStyle">
 					<bean class="org.geomajas.configuration.FontStyleInfo">
-						<property name="color" value="998811" />
+						<property name="color" value="#998811" />
 						<property name="opacity" value="1" />
 					</bean>
 				</property>
 				<property name="backgroundStyle">
 					<bean class="org.geomajas.configuration.FeatureStyleInfo">
-						<property name="fillColor" value="000000" />
+						<property name="fillColor" value="#000000" />
 						<property name="fillOpacity" value=".7" />
-						<property name="strokeColor" value="998811" />
+						<property name="strokeColor" value="#998811" />
 						<property name="strokeOpacity" value="1" />
 						<property name="strokeWidth" value="1" />
 					</bean>

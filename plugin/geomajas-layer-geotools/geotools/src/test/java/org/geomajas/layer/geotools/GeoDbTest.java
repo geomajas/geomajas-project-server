@@ -10,7 +10,11 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.FilterService;
+import org.geomajas.spring.ThreadScope;
+import org.geomajas.spring.ThreadScopeContext;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.feature.simple.SimpleFeature;
@@ -37,6 +41,11 @@ public class GeoDbTest {
 
 	@Autowired
 	private FilterService filterService;
+	
+	@Before
+	public void before() {
+		ThreadScopeContextHolder.clear();
+	}
 
 	@Test
 	public void testRead() throws GeomajasException {
@@ -101,5 +110,6 @@ public class GeoDbTest {
 		Assert.assertTrue(filtered.containsKey("POINT.1"));		
 		Assert.assertTrue(filtered.containsKey("POINT.2"));		
 	}
+	
 
 }

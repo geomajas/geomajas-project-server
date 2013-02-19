@@ -20,7 +20,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	
 	
-	<bean name="geodbGeoTools" class="org.geomajas.layer.geotools.GeoDbDataSource">
+	<bean name="geotoolsDataSource" class="org.geomajas.layer.geotools.GeoDbDataSource">
 	    <property name="script" value="classpath:org/geomajas/layer/geotools/gwt/example/context/countries.sql"/> 
 	    <property name="dataSource">
 			<bean class="org.apache.commons.dbcp.BasicDataSource">
@@ -34,7 +34,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	
 	<bean name="layerCountriesGeoTools" class="org.geomajas.layer.geotools.GeoToolsLayer">
 		<property name="layerInfo" ref="layerCountriesInfoGeoTools"/>
-		<property name="dataSource" ref="geodbGeoTools"/>
+		<property name="dataSource" ref="geotoolsDataSource"/>
 		<property name="parameters">
 			<list>
 				<bean class="org.geomajas.configuration.Parameter">

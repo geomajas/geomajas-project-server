@@ -339,7 +339,7 @@
     next-generation JDBC datastores (gt-jdbc-xxx), this means that the id is
     <code>typed</code>, i.e. constructed as a combination of the type name
     (table or view name) and the primary key, and separated with a dot:
-    <code>mytable.1</code>, <code>mytable.2</code>, etc.... </para>
+    <code>mytable.1</code>, <code>mytable.2</code>, etc....</para>
 
     <para>For first-generation JDBC datastores (gt-xxx), which support
     non-typed fids, a special configuration parameter
@@ -432,24 +432,25 @@
     <xi:include href="listing/GeoToolsTx.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>Starting from the top, the following are defined:</para>
+    <para>There are 2 entries:</para>
 
     <itemizedlist>
       <listitem>
-        <para>The data store: this is GeoTools' primary data object and will
-        be referenced in the GeoTools layer. The parameters define the
-        connection properties of the underlying physical medium (PostGIS in
-        this case).</para>
-      </listitem>
-
-      <listitem>
         <para>A tag to enable annotation-based transactional behavior,
-        internally used by Geomajas to decide which commands need transaction
-        support.</para>
+        internally used by Geomajas (and your custom code) to decide which
+        commands need transaction support.</para>
       </listitem>
 
       <listitem>
-        <para>The platform transaction manager for GeoTools.</para>
+        <para>The platform transaction manager: Spring comes with a set of
+        predefined transaction managers that are tied to JDBC, Hibernate, JTA,
+        etc.... You can use any of these, as long as there is at least one
+        transaction manager bean defined. If you have no need for a
+        transaction manager outside of the geotools layer and there is no
+        transaction manager that fits your geotools layer (e.g. your layer is
+        not JDBC-based), you can should use a dummy transaction manager here to
+        enable transaction synchronization:
+        <code>GeotoolsTransactionManager</code>.</para>
       </listitem>
     </itemizedlist>
   </section>
