@@ -18,7 +18,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.sql.DataSource;
 
 import org.geotools.data.DataAccess;
 import org.geotools.data.DefaultTransaction;
