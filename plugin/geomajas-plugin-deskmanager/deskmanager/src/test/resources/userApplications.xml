@@ -16,7 +16,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		class="org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo">
 		<property name="key">
 			<util:constant
-				static-field="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExampleDatabaseProvisioningService.CLIENTAPPLICATION_ID" />
+				static-field="org.geomajas.plugin.deskmanager.test.service.DeskmanagerExampleDatabaseProvisioningService.CLIENTAPPLICATION_ID" />
 		</property>
 		<property name="applicationInfo" ref="defaultLoketClientInfo" />
 	</bean>
