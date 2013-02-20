@@ -18,8 +18,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.security.GeomajasSecurityException;
 
 /**
- * TODO.
- * 
+ *  
  * @author Jan De Moerloose
  *
  */

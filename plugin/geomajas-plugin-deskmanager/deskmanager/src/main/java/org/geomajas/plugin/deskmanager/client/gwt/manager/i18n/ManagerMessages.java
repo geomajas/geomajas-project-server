@@ -110,6 +110,8 @@ public interface ManagerMessages extends Messages {
 	String geodeskDetailTabDataLayers();
 	String geodeskDetailTabAccessRights();
 	String geodeskDetailTabLayout();
+	String geodeskDetailTabWidgets();
+
 
 	String geodeskDetailTabHTMLCode();
 

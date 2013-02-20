@@ -13,9 +13,9 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.events;
 import com.smartgwt.client.widgets.Canvas;
 
 /**
- * TODO.
+ * Edit session event. Called when an edit session is started or stopped.
  * 
- * @author Jan De Moerloose
+ * @author Oliver May
  *
  */
 public class EditSessionEvent {

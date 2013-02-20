@@ -10,8 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -78,7 +76,7 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 
 	private VLayout loadingLayout;
 
-	private List<Tab> widgetTabs = new ArrayList<Tab>();
+	private TabSet widgetTabset;
 
 	public BlueprintDetail() {
 		super();
@@ -109,6 +107,17 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 		tabset.addTab(tab);
 		tab.setPane(accessrights);
 
+		//Widget tabs
+		tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
+		widgetTabset = new TabSet();
+		widgetTabset.setTabBarPosition(Side.LEFT);
+		widgetTabset.setWidth100();
+		widgetTabset.setHeight100();
+		widgetTabset.setOverflow(Overflow.HIDDEN);
+		widgetTabset.setTabBarThickness(100);
+		tab.setPane(widgetTabset);
+		
+		tabset.addTab(tab);
 		// loading widget
 		loadingLayout = new VLayout();
 		loadingLayout.setWidth100();
@@ -177,10 +186,9 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 	 * Clear all custom widget tabs from the last blueprint.
 	 */
 	private void clearWidgetTabs() {
-		for (Tab tab : widgetTabs) {
-			tabset.removeTab(tab);
+		for (Tab tab : widgetTabset.getTabs()) {
+			widgetTabset.removeTab(tab);
 		}
-		widgetTabs.clear();
 	}
 
 	/**
@@ -273,8 +281,7 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 			layout.addMember(editor.getCanvas());
 			tab.setPane(layout);
 
-			tabset.addTab(tab);
-			widgetTabs.add(tab);
+			widgetTabset.addTab(tab);
 
 			// Always caused by a blueprint change, so fire the changed handler.
 			editWidgetHandler.fireChangedHandler();
@@ -299,6 +306,11 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 	public void onEditSessionChange(EditSessionEvent ese) {
 		boolean disabled = ese.isSessionStart();
 		for (Tab tab : tabset.getTabs()) {
+			if (tab.getPane() == null || !ese.isParentOfRequestee(tab.getPane())) {
+				tab.setDisabled(disabled);
+			}
+		}
+		for (Tab tab : widgetTabset.getTabs()) {
 			if (tab.getPane() == null || !ese.isParentOfRequestee(tab.getPane())) {
 				tab.setDisabled(disabled);
 			}

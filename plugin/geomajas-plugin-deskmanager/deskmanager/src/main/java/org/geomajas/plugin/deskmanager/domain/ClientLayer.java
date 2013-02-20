@@ -10,16 +10,24 @@
  */
 package org.geomajas.plugin.deskmanager.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyClass;
 import javax.persistence.Table;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.Type;
 
 
@@ -46,6 +54,13 @@ public class ClientLayer {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private LayerModel layerModel;
+	
+	@ElementCollection()
+	@MapKeyClass(String.class)
+	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
+	@JoinTable(name = "config_clientlayer_clientwidgetinfos")
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 	
 	/**
 	 * Set the client layer info.
@@ -99,5 +114,23 @@ public class ClientLayer {
 	 */
 	public String getId() {
 		return id;
+	}
+
+	/**
+	 * Set the widget info's for this client layer.
+	 * 
+	 * @param widgetInfo the widgetInfo to set
+	 */
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
+	}
+
+	/**
+	 * Get the widget info's for this layer.
+	 * 
+	 * @return the widgetInfo
+	 */
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
 	}
 }

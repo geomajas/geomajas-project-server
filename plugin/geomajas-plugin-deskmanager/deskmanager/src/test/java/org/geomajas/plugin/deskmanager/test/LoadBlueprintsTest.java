@@ -68,13 +68,5 @@ public class LoadBlueprintsTest {
 
 		}
 
-		// for (Profile profile : profileService.getProfiles()) {
-		// String token = ((DeskmanagerSecurityService) securityService).registerRole(profile);
-		// securityManager.createSecurityContext(token);
-		//
-		// List<Blueprint> blueprints = blueprintService.getBlueprints();
-		//
-		// }
-
 	}
 }

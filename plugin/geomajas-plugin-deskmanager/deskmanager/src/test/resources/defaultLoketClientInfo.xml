@@ -16,15 +16,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<!-- Main map -->
 				<bean class="org.geomajas.configuration.client.ClientMapInfo">
-					<!-- <property name="preferredPixelsPerTile"> <bean class="org.geomajas.configuration.client.ClientPreferredPixelsPerTile"> 
-						<property name="preferredPixelsPerTileType"> <value type="org.geomajas.configuration.client.PreferredPixelsPerTileType">CONFIGURED</value> 
-						</property> <property name="width" value="512" /> <property name="height" 
-						value="512" /> </bean> </property> -->
 					<property name="id" value="mainMap" />
 					<property name="layers">
 						<list>
-								<!-- FIXME: change to dummy layer -->
-<!-- 							<ref bean="osmLayer" /> -->
+							<!-- Don't change the amount of layers without changing unit tests! -->
+							<ref bean="layerBeans1Layer" />
+							<ref bean="layerBeans2Layer" />
+							<ref bean="layerBeans3Layer" />
 						</list>
 					</property>
 					<property name="layerTree">
@@ -41,8 +39,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 												<property name="label" value="OSM" />
 												<property name="layers">
 													<list>
-													<!-- FIXME: change to dummy layer -->
-<!-- 														<ref bean="osmLayer" /> -->
+														<ref bean="layerBeans1Layer" />
+														<ref bean="layerBeans2Layer" />
+														<ref bean="layerBeans3Layer" />
 													</list>
 												</property>
 												<property name="expanded" value="true" />
@@ -113,8 +112,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="initialBounds" ref="worldExtents" />
 					<property name="layers">
 						<list>
-							<!-- FIXME: change to dummy layer -->
-<!-- 							<ref bean="osmOverviewLayer" /> -->
+							<!-- Don't change the amount of layers without changing unit tests! -->
+							<ref bean="layerBeans1Layer" />
 						</list>
 					</property>
 				</bean>

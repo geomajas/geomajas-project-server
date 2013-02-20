@@ -11,9 +11,9 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.events;
 
 /**
- * TODO.
+ * Handler that gets called when an edit session starts or stops.
  * 
- * @author Jan De Moerloose
+ * @author Oliver May
  *
  */
 public interface EditSessionHandler {

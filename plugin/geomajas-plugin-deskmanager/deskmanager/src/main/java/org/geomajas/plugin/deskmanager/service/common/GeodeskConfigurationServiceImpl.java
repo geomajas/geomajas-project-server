@@ -11,15 +11,19 @@
 package org.geomajas.plugin.deskmanager.service.common;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
+import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
@@ -28,6 +32,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand;
 import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
+import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.runtimeconfig.service.Rewirable;
@@ -106,18 +111,19 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 				if (!geodesk.getMainMapLayers().isEmpty()) {
 					mainMap.getLayers().clear();
-					mainMap.getLayers().addAll(addLayers(geodesk.getMainMapLayers()));
+					mainMap.getLayers().addAll(addLayers(geodesk.getMainMapLayers(), blueprint.getMainMapLayers()));
 				} else if (!blueprint.getMainMapLayers().isEmpty()) {
 					mainMap.getLayers().clear();
-					mainMap.getLayers().addAll(addLayers(blueprint.getMainMapLayers()));
+					mainMap.getLayers().addAll(addLayers(blueprint.getMainMapLayers(), null));
 				}
 
 				if (!geodesk.getOverviewMapLayers().isEmpty()) {
 					overviewMap.getLayers().clear();
-					overviewMap.getLayers().addAll(addLayers(geodesk.getOverviewMapLayers()));
+					overviewMap.getLayers().addAll(
+							addLayers(geodesk.getOverviewMapLayers(), blueprint.getOverviewMapLayers()));
 				} else if (!blueprint.getOverviewMapLayers().isEmpty()) {
 					overviewMap.getLayers().clear();
-					overviewMap.getLayers().addAll(addLayers(blueprint.getOverviewMapLayers()));
+					overviewMap.getLayers().addAll(addLayers(blueprint.getOverviewMapLayers(), null));
 				}
 
 				// Set bounds
@@ -194,45 +200,91 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 		return loketConfig;
 	}
 
-	private List<ClientLayerInfo> addLayers(List<org.geomajas.plugin.deskmanager.domain.ClientLayer> layers) {
-		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
-		for (org.geomajas.plugin.deskmanager.domain.ClientLayer layer : layers) {
-			ClientLayerInfo sourceCli = null;
-			ClientLayerInfo targetCli = null;
-			Layer<?> serverLayer = null;
-			if (layer != null && layer.getLayerModel() != null) {
-				try {
-					sourceCli = (ClientLayerInfo) applicationContext.getBean(layer.getLayerModel().getClientLayerId());
-					serverLayer = (Layer<?>) applicationContext.getBean(sourceCli.getServerLayerId());
+	private ClientLayerInfo createLayer(ClientLayer geodeskLayer, ClientLayer blueprintLayer) {
+		ClientLayerInfo serverCli = null;
+		ClientLayerInfo targetCli = null;
+		Layer<?> serverLayer = null;
 
-					// Override layerInfo from server layer
-					sourceCli.setLayerInfo(serverLayer.getLayerInfo());
-					if (sourceCli instanceof ClientVectorLayerInfo) {
-						ClientVectorLayerInfo cvli = (ClientVectorLayerInfo) sourceCli;
-						cvli.setFeatureInfo(((VectorLayerInfo) cvli.getLayerInfo()).getFeatureInfo());
-					}
-					targetCli = sourceCli;
-				} catch (NoSuchBeanDefinitionException e) {
-					// Ignore, error message later
+		if (geodeskLayer != null && geodeskLayer.getLayerModel() != null) {
+			try {
+				serverCli = (ClientLayerInfo) SerializationUtils.clone((ClientLayerInfo) applicationContext
+						.getBean(geodeskLayer.getLayerModel().getClientLayerId()));
+				serverLayer = (Layer<?>) applicationContext.getBean(serverCli.getServerLayerId());
+
+				// Override layerInfo from server layer
+				serverCli.setLayerInfo((LayerInfo) SerializationUtils.clone((LayerInfo) serverLayer.getLayerInfo()));
+				if (serverCli instanceof ClientVectorLayerInfo) {
+					ClientVectorLayerInfo cvli = (ClientVectorLayerInfo) serverCli;
+					cvli.setFeatureInfo(((VectorLayerInfo) cvli.getLayerInfo()).getFeatureInfo());
 				}
+				targetCli = serverCli;
+
+				// Override with clientLayerInfo if it is set
+				if (geodeskLayer.getClientLayerInfo() != null) {
+					targetCli = geodeskLayer.getClientLayerInfo();
+
+					// Set layerInfo and max extent from server configuration.
+					targetCli.setLayerInfo(serverLayer.getLayerInfo());
+					targetCli.setMaxExtent(serverCli.getMaxExtent());
+				}
+
+				// Finally set the widget configuration as a see trough.
+				Map<String, ClientWidgetInfo> clientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
+				clientWidgetInfos.putAll(serverCli.getWidgetInfo());
+				if (blueprintLayer != null) {
+					clientWidgetInfos.putAll(blueprintLayer.getWidgetInfo());
+				}
+				if (geodeskLayer != null) {
+					clientWidgetInfos.putAll(geodeskLayer.getWidgetInfo());
+				}
+				targetCli.setWidgetInfo(clientWidgetInfos);
+
+				return targetCli;
+
+			} catch (NoSuchBeanDefinitionException e) {
+				// Ignore, error message later
 			}
+		}
 
-			// Override with clientLayerInfo if it is set
-			if (layer != null && layer.getClientLayerInfo() != null) {
-				// Set layerInfo from the source.
-				layer.getClientLayerInfo().setLayerInfo(serverLayer.getLayerInfo());
-				layer.getClientLayerInfo().setMaxExtent(sourceCli.getMaxExtent());
+		return null;
+	}
 
-				targetCli = layer.getClientLayerInfo();
-			}
-
-			// Add the layer
-			if (targetCli != null) {
-				clientLayers.add(targetCli);
+	private List<ClientLayerInfo> addLayers(List<ClientLayer> geodeskLayers, List<ClientLayer> blueprintLayers) {
+		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
+		for (ClientLayer geodeskLayer : geodeskLayers) {
+			ClientLayerInfo cli;
+			if (blueprintLayers != null) {
+				cli = createLayer(geodeskLayer, getLayer(blueprintLayers, geodeskLayer.getLayerModel().getId()));
 			} else {
-				log.error("Unknown client layer info for " + layer.getId());
+				cli = createLayer(geodeskLayer, getLayer(Collections.EMPTY_LIST, geodeskLayer.getLayerModel().getId()));
+			}
+			// Add the layer
+			if (cli != null) {
+				clientLayers.add(cli);
+			} else {
+				log.error("Unknown client layer info for " + geodeskLayer.getId());
 			}
 		}
 		return clientLayers;
+	}
+
+	/**
+	 * Helper method to fetch a single layer from the layer list.
+	 * 
+	 * @param layers
+	 *            the list of layers
+	 * @param id
+	 *            the layer id to fetch
+	 * @return the layer, null if not found
+	 */
+	private static ClientLayer getLayer(List<ClientLayer> layers, String id) {
+		if (layers != null) {
+			for (ClientLayer layer : layers) {
+				if (layer.getLayerModel().getId().equals(id)) {
+					return layer;
+				}
+			}
+		}
+		return null;
 	}
 }

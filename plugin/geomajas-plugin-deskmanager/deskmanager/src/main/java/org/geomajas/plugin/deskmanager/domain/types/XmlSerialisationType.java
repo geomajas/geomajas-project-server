@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.geometry.Bbox;
 import org.hibernate.Hibernate;
 import org.hibernate.usertype.UserType;
@@ -33,6 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Type for storing serializable objects in the database. Used for ClientWidgetInfo configurations.
+ * 
  * @author Oliver May
  * 
  */
@@ -40,7 +43,6 @@ public class XmlSerialisationType implements UserType {
 
 	private static final Logger LOG = LoggerFactory.getLogger(XmlSerialisationType.class);
 
-	
 	static {
 		try {
 			BeanInfo bi = Introspector.getBeanInfo(Bbox.class);
@@ -54,7 +56,7 @@ public class XmlSerialisationType implements UserType {
 			LOG.warn(e.getLocalizedMessage());
 		}
 	}
-	
+
 	private static final int[] TYPES = { Types.CLOB };
 
 	private static final String ENCODING = "UTF-8";
@@ -131,7 +133,14 @@ public class XmlSerialisationType implements UserType {
 	}
 
 	public Object deepCopy(Object value) {
-		return fromXmlString(toXmlString(value));
+		if (value == null) {
+			return value;
+		} else if (value instanceof Serializable) {
+			return SerializationUtils.clone((Serializable) value);
+		} else {
+			LOG.warn("Could not deepCopy object, not serializable. " + value);
+			return null;
+		}
 	}
 
 	public boolean isMutable() {

@@ -23,6 +23,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<import resource="userApplications.xml"/>
 	<import resource="datastore.xml"/>
 	<import resource="dynamiclayerapplication.xml"/>
+	<import resource="layerBeansCommon.xml"/>
+	<import resource="layerBeans1.xml"/>
+	<import resource="layerBeans2.xml"/>
+	<import resource="layerBeans3.xml"/>
 	
 	<!-- Instructs Spring to perform declarative transaction management on annotated classes -->
 	<tx:annotation-driven transaction-manager="transactionManager" />

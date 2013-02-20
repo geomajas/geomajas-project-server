@@ -10,8 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.geodesk;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -79,7 +77,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 	private VLayout loadingLayout;
 
-	private List<Tab> widgetTabs = new ArrayList<Tab>();
+	private TabSet widgetTabset;
 
 	public GeodeskDetail() {
 		super(10);
@@ -109,6 +107,19 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		accessrightsTab.setDisabled(true);
 		Whiteboard.registerHandler(accessrights);
 
+		//Widget tabs
+		tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
+		widgetTabset = new TabSet();
+		widgetTabset.setTabBarPosition(Side.LEFT);
+		widgetTabset.setWidth100();
+		widgetTabset.setHeight100();
+		widgetTabset.setOverflow(Overflow.HIDDEN);
+		widgetTabset.setTabBarThickness(100);
+		tab.setPane(widgetTabset);
+		
+		tabset.addTab(tab);
+		
+		
 		// loading widget
 		loadingLayout = new VLayout();
 		loadingLayout.setWidth100();
@@ -200,6 +211,11 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 				tab.setDisabled(disabled);
 			}
 		}
+		for (Tab tab : widgetTabset.getTabs()) {
+			if (tab.getPane() == null || !ese.isParentOfRequestee(tab.getPane())) {
+				tab.setDisabled(disabled);
+			}
+		}
 	}
 
 	// -- GeodeskHandler ---------------------------------------------------------
@@ -218,10 +234,9 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	 * Clear all custom widget tabs from the last blueprint.
 	 */
 	private void clearWidgetTabs() {
-		for (Tab tab : widgetTabs) {
-			tabset.removeTab(tab);
+		for (Tab tab : widgetTabset.getTabs()) {
+			widgetTabset.removeTab(tab);
 		}
-		widgetTabs.clear();
 	}
 
 	/**
@@ -314,8 +329,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 			layout.addMember(editor.getCanvas());
 			tab.setPane(layout);
 
-			tabset.addTab(tab);
-			widgetTabs.add(tab);
+			widgetTabset.addTab(tab);
 
 			// Always caused by a blueprint change, so fire the changed handler.
 			editWidgetHandler.fireChangedHandler();
