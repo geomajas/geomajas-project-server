@@ -33,7 +33,7 @@ public class DeskmanagerExamplePostConstructService {
 	public void postConstruct() throws WktException, GeomajasException {
 		DeskmanagerExampleDatabaseProvisioningService provisioningService = 
 			(DeskmanagerExampleDatabaseProvisioningService) applicationContext
-			.getBean("ExampleDatabaseProvisioningService");
+			.getBean("DeskmanagerExampleDatabaseProvisioningService");
 		provisioningService.createData();
 	}
 }
