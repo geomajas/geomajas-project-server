@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.test;
+package org.geomajas.plugin.deskmanager.test.general;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 

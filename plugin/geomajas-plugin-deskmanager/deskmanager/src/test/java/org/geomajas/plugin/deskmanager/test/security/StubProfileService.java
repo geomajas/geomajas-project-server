@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.test.service;
+package org.geomajas.plugin.deskmanager.test.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
- * FIXME: move to example package.
  * @author Oliver May
  *
  */

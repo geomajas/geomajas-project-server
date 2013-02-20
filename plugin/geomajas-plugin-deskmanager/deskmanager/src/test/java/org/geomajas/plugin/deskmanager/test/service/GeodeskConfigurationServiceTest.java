@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.test;
+package org.geomajas.plugin.deskmanager.test.service;
 
 import java.util.Date;
 
@@ -25,6 +25,7 @@ import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
+import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
 import org.junit.Assert;
@@ -46,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
 @Transactional
-public class TestGeodeskConfigurationService {
+public class GeodeskConfigurationServiceTest {
 
 	private static final String KWI_KEY = "KWI_KEY";
 

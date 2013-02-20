@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.test;
+package org.geomajas.plugin.deskmanager.test.service;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class LoadBlueprintsTest {
+public class BlueprintServiceTest {
 
 	@Autowired
 	private BlueprintService blueprintService;
