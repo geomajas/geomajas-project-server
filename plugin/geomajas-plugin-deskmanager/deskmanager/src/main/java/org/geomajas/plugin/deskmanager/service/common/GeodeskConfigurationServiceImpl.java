@@ -229,11 +229,18 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 				}
 
 				// Finally set the widget configuration as a see trough.
+				// Widget configurations set in the configuration
 				Map<String, ClientWidgetInfo> clientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 				clientWidgetInfos.putAll(serverCli.getWidgetInfo());
+				// Widget info set on the layer
+				if (geodeskLayer != null && geodeskLayer.getLayerModel() != null) {
+					clientWidgetInfos.putAll(geodeskLayer.getLayerModel().getWidgetInfo());
+				}
+				// Widget info set on the blueprint
 				if (blueprintLayer != null) {
 					clientWidgetInfos.putAll(blueprintLayer.getWidgetInfo());
 				}
+				// Widget info set on the geodesk layer
 				if (geodeskLayer != null) {
 					clientWidgetInfos.putAll(geodeskLayer.getWidgetInfo());
 				}

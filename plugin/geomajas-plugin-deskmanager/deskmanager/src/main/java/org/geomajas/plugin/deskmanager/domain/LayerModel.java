@@ -11,23 +11,30 @@
 package org.geomajas.plugin.deskmanager.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyClass;
 import javax.persistence.Table;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Index;
+import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.Type;
 
 /**
@@ -99,6 +106,13 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	@Column(name = "default_visible")
 	private boolean defaultVisible;
 
+	@ElementCollection()
+	@MapKeyClass(String.class)
+	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
+	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
+	@JoinTable(name = "config_clientlayer_clientwidgetinfos")
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
+	
 	// -------------------------------------------------
 
 	/**
@@ -346,5 +360,21 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	 */
 	public void setSystemLayer(boolean systemLayer) {
 		setReadOnly(!systemLayer);
+	}
+
+	/**
+	 * Set default widgetinfo on this layer.
+	 * @param widgetInfo the widgetInfo to set
+	 */
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
+	}
+
+	/**
+	 * Get default widgetinfo on this layer.
+	 * @return the widgetInfo
+	 */
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
 	}
 }

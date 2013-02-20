@@ -24,6 +24,7 @@ import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
+import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
@@ -70,6 +71,9 @@ public class GeodeskConfigurationServiceTest {
 
 	@Autowired
 	private BlueprintService blueprintService;
+	
+	@Autowired
+	private LayerModelService layerModelService;
 
 	@Autowired
 	private GeodeskConfigurationService geodeskConfigurationService;
@@ -109,14 +113,21 @@ public class GeodeskConfigurationServiceTest {
 		ClientApplicationInfo cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
 		Assert.assertNull(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY));
 
-		// Put cwi on blueprint
+		// Configure cwi on layer
+		ClientWidgetInfo layermodelCwi = new MyClientWidgetInfo("layermodel");
+		blueprint.getMainMapLayers().get(0).getLayerModel().getWidgetInfo().put(KWI_KEY, layermodelCwi);
+		layerModelService.saveOrUpdateLayerModel(blueprint.getMainMapLayers().get(0).getLayerModel());
+		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
+		Assert.assertEquals(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY), layermodelCwi);
+		
+		// Configure cwi on blueprint
 		ClientWidgetInfo blueprintCwi = new MyClientWidgetInfo("blueprint");
 		geodesk.getBlueprint().getMainMapLayers().get(0).getWidgetInfo().put(KWI_KEY, blueprintCwi);
 		blueprintService.saveOrUpdateBlueprint(blueprint);
 		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
 		Assert.assertEquals(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY), blueprintCwi);
 
-		// Put cwi2 on blueprint
+		// Configure cwi2 on blueprint
 		ClientWidgetInfo blueprintCwi2 = new MyClientWidgetInfo("blueprint2");
 		geodesk.getBlueprint().getMainMapLayers().get(0).getWidgetInfo().put(KWI_KEY2, blueprintCwi2);
 		blueprintService.saveOrUpdateBlueprint(blueprint);
@@ -147,10 +158,15 @@ public class GeodeskConfigurationServiceTest {
 		// Remove cwi from blueprint
 		blueprint.getMainMapLayers().get(0).getWidgetInfo().remove(KWI_KEY);
 		blueprintService.saveOrUpdateBlueprint(geodesk.getBlueprint());
-		geodesk = geodeskService.getGeodeskByPublicId("42");
+		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
+		Assert.assertEquals(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY2), blueprintCwi2);
+		Assert.assertEquals(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY), layermodelCwi);
+		
+		// Remove cwi from layermodel
+		blueprint.getMainMapLayers().get(0).getLayerModel().getWidgetInfo().remove(KWI_KEY);
+		layerModelService.saveOrUpdateLayerModel(blueprint.getMainMapLayers().get(0).getLayerModel());
 		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
 		Assert.assertNull(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY));
-		Assert.assertEquals(getMainMap(cai).getLayers().get(0).getWidgetInfo(KWI_KEY2), blueprintCwi2);
 	}
 	
 	@Test
