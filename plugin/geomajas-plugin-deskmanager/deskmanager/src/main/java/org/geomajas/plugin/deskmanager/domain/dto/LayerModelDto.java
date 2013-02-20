@@ -18,7 +18,7 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 
 /**
- * Dto object for the LayerModel
+ * Dto object for the LayerModel.
  * 
  * @author Kristof Heirwegh
  */
