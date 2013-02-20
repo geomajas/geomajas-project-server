@@ -15,7 +15,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExampleDatabaseProvisioningService" />
 	<bean class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExamplePostConstructService" />
-	<bean class="org.geomajas.plugin.deskmanager.test.service.StubProfileService" />
+	<bean class="org.geomajas.plugin.deskmanager.test.security.StubProfileService" />
 	
 	<import resource="commonBeans.xml"/>
 	<import resource="defaultLoketClientInfo.xml"/>
