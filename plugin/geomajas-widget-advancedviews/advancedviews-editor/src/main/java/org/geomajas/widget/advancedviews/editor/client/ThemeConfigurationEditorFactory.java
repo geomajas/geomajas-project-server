@@ -10,8 +10,8 @@
  */
 package org.geomajas.widget.advancedviews.editor.client;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactory;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 

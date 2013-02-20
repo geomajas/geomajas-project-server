@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.advancedviews.editor.client;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactoryRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 
 import com.google.gwt.core.client.EntryPoint;
 
@@ -23,7 +23,8 @@ public class AdvancedviewsEditor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		WidgetEditorFactoryRegistry.getInstance().register(new ThemeConfigurationEditorFactory());
+		WidgetEditorFactoryRegistry.getMapRegistry().register(new ThemeConfigurationEditorFactory());
+		WidgetEditorFactoryRegistry.getApplicationRegistry().register(new ThemeConfigurationEditorFactory());
 	}
 
 }

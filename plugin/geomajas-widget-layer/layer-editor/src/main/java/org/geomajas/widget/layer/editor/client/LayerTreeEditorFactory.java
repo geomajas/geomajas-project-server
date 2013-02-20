@@ -10,8 +10,8 @@
  */
 package org.geomajas.widget.layer.editor.client;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactory;
 import org.geomajas.widget.layer.client.LayerMessages;
 import org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo;
 

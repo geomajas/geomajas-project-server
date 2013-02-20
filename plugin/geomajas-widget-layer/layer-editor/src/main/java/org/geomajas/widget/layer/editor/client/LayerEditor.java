@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.layer.editor.client;
 
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactoryRegistry;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 
 import com.google.gwt.core.client.EntryPoint;
 
@@ -23,7 +23,7 @@ public class LayerEditor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		WidgetEditorFactoryRegistry.getInstance().register(new LayerTreeEditorFactory());
+		WidgetEditorFactoryRegistry.getMapRegistry().register(new LayerTreeEditorFactory());
 	}
 
 }

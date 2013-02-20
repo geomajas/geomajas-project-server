@@ -11,7 +11,7 @@
 package org.geomajas.widget.layer.editor.client;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.BaseGeodeskWidgetEditor;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 
 import com.smartgwt.client.types.Overflow;
@@ -25,7 +25,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  *
  */
-public class LayerTreeEditor implements WidgetEditor {
+public class LayerTreeEditor implements BaseGeodeskWidgetEditor {
 
 	private LayerTreeSelectPanel panel;
 	private VLayout layout;

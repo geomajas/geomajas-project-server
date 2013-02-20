@@ -11,8 +11,7 @@
 package org.geomajas.widget.advancedviews.editor.client;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
-import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 
 import com.smartgwt.client.types.Overflow;
@@ -58,11 +57,6 @@ public class ThemeConfigurationEditor implements WidgetEditor {
 		} else {
 			throw new IllegalArgumentException();
 		}
-	}
-
-	@Override
-	public void setBaseGeodesk(BaseGeodeskDto geodesk) {
-		//Do nothing, configuration is set trough setWidgetConfiguration()
 	}
 
 	@Override
