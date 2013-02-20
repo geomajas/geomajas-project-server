@@ -13,7 +13,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<context:component-scan base-package="org.geomajas.plugin.deskmanager" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 
-	<bean class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExampleDatabaseProvisioningService" />
+	<bean id="DeskmanagerExampleDatabaseProvisioningService" class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExampleDatabaseProvisioningService" />
 	<bean class="org.geomajas.plugin.deskmanager.example.service.DeskmanagerExamplePostConstructService" />
 	<bean class="org.geomajas.plugin.deskmanager.test.security.StubProfileService" />
 	
