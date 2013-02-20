@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import org.geomajas.geometry.service.WktException;
 import org.geomajas.global.GeomajasException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 /**
  * @author Oliver May
@@ -26,10 +27,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DeskmanagerExamplePostConstructService {
 
 	@Autowired
-	private DeskmanagerExampleDatabaseProvisioningService provisioningService;
+	private ApplicationContext applicationContext;
 
 	@PostConstruct
 	public void postConstruct() throws WktException, GeomajasException {
+		DeskmanagerExampleDatabaseProvisioningService provisioningService = applicationContext
+				.getBean(DeskmanagerExampleDatabaseProvisioningService.class);
 		provisioningService.createData();
 	}
 }
