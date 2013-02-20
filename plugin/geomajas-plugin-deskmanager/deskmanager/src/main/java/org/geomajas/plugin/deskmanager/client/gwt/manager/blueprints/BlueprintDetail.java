@@ -16,11 +16,12 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactory;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractWoaHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.BaseGeodeskWidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
@@ -200,15 +201,15 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 	private void loadWidgetTabs(BaseGeodeskDto bp) {
 		UserApplication ua = UserApplicationRegistry.getInstance().get(bp.getUserApplicationInfo().getKey());
 		for (String key : ua.getSupportedApplicationWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getApplicationClientWidgetInfos(),
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getApplicationClientWidgetInfos(),
 					GeodeskDtoUtil.getApplicationClientWidgetInfo(bp), bp);
 		}
 		for (String key : ua.getSupportedMainMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getMainMapClientWidgetInfos(),
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getMainMapClientWidgetInfos(),
 					GeodeskDtoUtil.getMainMapClientWidgetInfo(bp), bp);
 		}
 		for (String key : ua.getSupportedOverviewMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bp.getOverviewMapClientWidgetInfos(),
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getOverviewMapClientWidgetInfos(),
 					GeodeskDtoUtil.getOverviewMapClientWidgetInfo(bp), bp);
 		}
 	}
@@ -232,7 +233,9 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 		if (editorFactory != null) {
 			Tab tab = new Tab(editorFactory.getName());
 			final WidgetEditor editor = editorFactory.createEditor();
-			editor.setBaseGeodesk(geodesk);
+			if (editor instanceof BaseGeodeskWidgetEditor) {
+				((BaseGeodeskWidgetEditor) editor).setBaseGeodesk(geodesk);
+			}
 			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
 			editor.setDisabled(true);
 

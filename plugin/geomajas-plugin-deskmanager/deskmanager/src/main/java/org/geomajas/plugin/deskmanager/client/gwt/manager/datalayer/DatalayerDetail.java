@@ -10,7 +10,16 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
+import java.util.Map;
+
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractWoaHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.LayerWidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.LayerModelEvent;
@@ -28,6 +37,7 @@ import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
@@ -36,6 +46,8 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
+ * Detail panel for data layers.
+ * 
  * @author Kristof Heirwegh
  */
 public class DatalayerDetail extends VLayout implements SelectionChangedHandler, EditSessionHandler, LayerModelHandler {
@@ -68,6 +80,8 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 
 	private VLayout loadingLayout;
 
+	private TabSet widgetTabset;
+
 	public DatalayerDetail() {
 		super(10);
 
@@ -98,8 +112,18 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 		styleTab.setPane(style);
 		tabset.addTab(styleTab);
 
-		// -------------------------------------------------
-
+		//Widget tabs
+		Tab tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
+		widgetTabset = new TabSet();
+		widgetTabset.setTabBarPosition(Side.LEFT);
+		widgetTabset.setWidth100();
+		widgetTabset.setHeight100();
+		widgetTabset.setOverflow(Overflow.HIDDEN);
+		widgetTabset.setTabBarThickness(100);
+		tab.setPane(widgetTabset);
+		
+		tabset.addTab(tab);
+		
 		// loading widget
 		loadingLayout = new VLayout();
 		loadingLayout.setWidth100();
@@ -153,11 +177,13 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 	}
 
 	private void loadRecord(final String id) {
+		clearWidgetTabs();
 		setLoading(); /* Clear edit form */
 		ManagerCommandService.getLayerModel(id, new DataCallback<LayerModelDto>() {
 
 			public void execute(LayerModelDto result) {
 				setLayerModel(result);
+				loadWidgetTabs(result);
 			}
 		});
 	}
@@ -238,4 +264,101 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 			}
 		}
 	}
+	
+	/**
+	 * Clear all custom widget tabs from the last blueprint.
+	 */
+	private void clearWidgetTabs() {
+		for (Tab tab : widgetTabset.getTabs()) {
+			widgetTabset.removeTab(tab);
+		}
+	}
+
+	/**
+	 * Load all widget editors that are available on this blueprints user application, and add them to the tabset.
+	 * 
+	 * @param bgd
+	 *            the basegeodesk.
+	 */
+	private void loadWidgetTabs(LayerModelDto bgd) {
+		
+		for (String key : WidgetEditorFactoryRegistry.getLayerRegistry().getWidgetEditors().keySet()) {
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getWidgetInfo(), bgd);
+		}
+	}
+
+	/**
+	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be
+	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
+	 * 
+	 * @param editorFactory
+	 *            the editor factory
+	 * @param widgetInfos
+	 *            all the widget infos 
+	 * @param layerModelDto 
+	 *            the layer model
+	 */
+	private void addWidgetTab(final WidgetEditorFactory editorFactory,
+			final Map<String, ClientWidgetInfo> widgetInfos, final LayerModelDto layerModelDto) {
+		if (editorFactory != null) {
+			Tab tab = new Tab(editorFactory.getName());
+			final WidgetEditor editor = editorFactory.createEditor();
+			if (editor instanceof LayerWidgetEditor) {
+				((LayerWidgetEditor) editor).setLayer(layerModelDto);
+			}
+			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
+			editor.setDisabled(true);
+			
+			// Create tab layout
+			VLayout layout = new VLayout();
+			layout.setMargin(5);
+
+			AbstractWoaHandler editWidgetHandler = new AbstractWoaHandler() {
+
+				@Override
+				public boolean onSaveClick(ClickEvent event) {
+					widgetInfos.put(editorFactory.getKey(), editor.getWidgetConfiguration());
+					ManagerCommandService.saveLayerModel(layerModelDto);
+					editor.setDisabled(true);
+					return true;
+				}
+
+				@Override
+				public boolean onResetClick(ClickEvent event) {
+					widgetInfos.remove(editorFactory.getKey());
+					ManagerCommandService.saveLayerModel(layerModelDto);
+					return true;
+				}
+
+				@Override
+				public boolean onEditClick(ClickEvent event) {
+					editor.setDisabled(false);
+					return true;
+				}
+
+				@Override
+				public boolean onCancelClick(ClickEvent event) {
+					//Disable editor and reload datalayer data.
+					editor.setDisabled(true);
+					return true;
+				}
+
+				@Override
+				public boolean isDefault() {
+					return !widgetInfos.containsKey(editorFactory.getKey());
+				}
+			};
+
+			SaveButtonBar buttonBar = new SaveButtonBar(editWidgetHandler, layout);
+			layout.addMember(buttonBar);
+			layout.addMember(editor.getCanvas());
+			tab.setPane(layout);
+
+			widgetTabset.addTab(tab);
+
+			// Always caused by a blueprint change, so fire the changed handler.
+			editWidgetHandler.fireChangedHandler();
+		}
+	}
+	
 }

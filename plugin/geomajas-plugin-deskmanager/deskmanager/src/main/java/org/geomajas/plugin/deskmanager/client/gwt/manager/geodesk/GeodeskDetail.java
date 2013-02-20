@@ -16,11 +16,12 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditor;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactory;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractWoaHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.SaveButtonBar;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.BaseGeodeskWidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskEvent;
@@ -248,15 +249,15 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	private void loadWidgetTabs(BaseGeodeskDto bgd) {
 		UserApplication ua = UserApplicationRegistry.getInstance().get(bgd.getUserApplicationInfo().getKey());
 		for (String key : ua.getSupportedApplicationWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bgd.getApplicationClientWidgetInfos(),
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getApplicationClientWidgetInfos(),
 					GeodeskDtoUtil.getApplicationClientWidgetInfo(bgd), bgd);
 		}
 		for (String key : ua.getSupportedMainMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bgd.getMainMapClientWidgetInfos(),
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getMainMapClientWidgetInfos(),
 					GeodeskDtoUtil.getMainMapClientWidgetInfo(bgd), bgd);
 		}
 		for (String key : ua.getSupportedOverviewMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getInstance().get(key), bgd.getOverviewMapClientWidgetInfos(),
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getOverviewMapClientWidgetInfos(),
 					GeodeskDtoUtil.getOverviewMapClientWidgetInfo(bgd), bgd);
 		}
 	}
@@ -280,7 +281,9 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		if (editorFactory != null) {
 			Tab tab = new Tab(editorFactory.getName());
 			final WidgetEditor editor = editorFactory.createEditor();
-			editor.setBaseGeodesk(baseGeodesk);
+			if (editor instanceof BaseGeodeskWidgetEditor) {
+				((BaseGeodeskWidgetEditor) editor).setBaseGeodesk(geodesk);
+			}
 			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
 			editor.setDisabled(true);
 			

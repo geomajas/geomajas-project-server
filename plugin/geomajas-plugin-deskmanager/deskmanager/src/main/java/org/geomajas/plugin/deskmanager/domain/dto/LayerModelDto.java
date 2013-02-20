@@ -11,10 +11,15 @@
 package org.geomajas.plugin.deskmanager.domain.dto;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 
 /**
+ * Dto object for the LayerModel
+ * 
  * @author Kristof Heirwegh
  */
 public class LayerModelDto implements Serializable {
@@ -25,14 +30,8 @@ public class LayerModelDto implements Serializable {
 
 	private boolean active;
 
-	/**
-	 * Mag deze laag getoond worden in een publiek loket?
-	 */
 	private boolean publiek;
 
-	/**
-	 * Een meer userfriendly name than clientLayerId, default = clientlayer.label
-	 */
 	private String name;
 
 	private String layerType;
@@ -50,6 +49,8 @@ public class LayerModelDto implements Serializable {
 	private boolean readOnly;
 
 	private DynamicLayerConfiguration layerConfiguration;
+	
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	// ------------------------------------------------------------------
 
@@ -181,6 +182,14 @@ public class LayerModelDto implements Serializable {
 		this.owner = owner;
 	}
 
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
+	}
+	
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
+	}
+
 	// -------------------------------------------------
 
 	public String getParameterValue(String key) {
@@ -190,4 +199,5 @@ public class LayerModelDto implements Serializable {
 			return layerConfiguration.getParameterValue(key);
 		}
 	}
+
 }

@@ -8,11 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.client.gwt.manager;
+package org.geomajas.plugin.deskmanager.client.gwt.manager.editor;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 
 import com.smartgwt.client.widgets.Canvas;
 
@@ -48,13 +47,6 @@ public interface WidgetEditor {
 	 * @param configuration the widget configuration.
 	 */
 	void setWidgetConfiguration(ClientWidgetInfo configuration);
-	
-	/**
-	 * Set the base geodesk that this editor is working on.
-	 * 
-	 * @param geodesk
-	 */
-	void setBaseGeodesk(BaseGeodeskDto geodesk);
 	
 	/**
 	 * Set if the editor is disabled.
