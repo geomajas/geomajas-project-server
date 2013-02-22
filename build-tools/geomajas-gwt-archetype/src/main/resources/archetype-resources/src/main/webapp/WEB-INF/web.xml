@@ -36,12 +36,19 @@
 			WEB-INF/layerCountries.xml
 			WEB-INF/tools.xml
 
-			<!-- To use Roads layer stored in PostGIS through hibernate layer, uncomment the following -->
+			<!-- To use Roads layer stored in database through hibernate layer, uncomment the following -->
 			<!--
 			WEB-INF/example/hibernate/mapMain.xml
-			WEB-INF/example/hibernate/spring-hibernate.xml
 			WEB-INF/example/hibernate/clientLayerRoads.xml
 			WEB-INF/example/hibernate/layerRoads.xml
+			-->
+			<!-- for PostGIS -->
+			<!--
+			WEB-INF/example/hibernate/postgis/spring-hibernate.xml
+			-->
+			<!-- for SQLServer -->
+			<!--
+			WEB-INF/example/hibernate/sqlserver/spring-hibernate.xml
 			-->
 
 			<!-- To use Roads layer stored in PostGIS through GeoTools layer, uncomment the following -->

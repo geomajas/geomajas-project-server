@@ -39,7 +39,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- Hibernate SessionFactory -->
 	<bean id="postgisSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="postgisDataSource" />
-		<property name="configLocation" value="classpath:/hibernate.cfg.xml" />
+		<property name="configLocation" value="WEB-INF/example/hibernate/postgis/hibernate.cfg.xml" />
 		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
 	</bean>
 
