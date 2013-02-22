@@ -349,7 +349,17 @@ public class LayerConfigurationWindow extends Window {
 		}
 	}
 	
+	/**
+	 * Interface for handling widget editors.
+	 * 
+	 * @author Oliver May
+	 *
+	 */
 	private interface WidgetEditorHandler {
+		/**
+		 * Set the correct information in the layer dto.
+		 * @param layer the layer dto
+		 */
 		void save(LayerDto layer);
 	}
 	
