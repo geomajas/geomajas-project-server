@@ -191,7 +191,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lm.setLayerType(dto.getLayerType());
 		lm.setReadOnly(dto.isReadOnly());
 		lm.setDynamicLayerConfiguration(dto.getLayerConfiguration());
-		lm.setWidgetInfo(dto.getWidgetInfo());
+		lm.getWidgetInfo().putAll(dto.getWidgetInfo());
 		return lm;
 	}
 
@@ -213,7 +213,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		lmDto.setMaxScale(layerModel.getMaxScale());
 		lmDto.setReadOnly(layerModel.isReadOnly());
 		lmDto.setLayerType(layerModel.getLayerType());
-		lmDto.setWidgetInfo(layerModel.getWidgetInfo());
+		lmDto.getWidgetInfo().putAll(layerModel.getWidgetInfo());
 		String owner;
 		if (layerModel.getOwner() == null) {
 			owner = getMessage("systemUsr");

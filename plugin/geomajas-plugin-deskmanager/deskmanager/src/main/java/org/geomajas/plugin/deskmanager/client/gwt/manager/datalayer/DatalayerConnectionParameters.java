@@ -25,6 +25,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
@@ -93,7 +94,7 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 		if (validate()) {
 			lmd.getLayerConfiguration().getParameters().clear();
 			lmd.getLayerConfiguration().getParameters().addAll(stringToParams(form.getData()));
-			ManagerCommandService.saveLayerModel(lmd);
+			ManagerCommandService.saveLayerModel(lmd, SaveLayerModelRequest.SAVE_SETTINGS);
 			form.setDisabled(true);
 			return true;
 		} else {

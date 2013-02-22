@@ -324,8 +324,9 @@ public final class ManagerCommandService {
 	 * 
 	 * @param layerModel
 	 *            the layerModel to save.
+	 * @param bitmask what to save
 	 */
-	public static void saveLayerModel(LayerModelDto layerModel) {
+	public static void saveLayerModel(LayerModelDto layerModel, int bitmask) {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
 		GwtCommand command = new GwtCommand(SaveLayerModelRequest.COMMAND);

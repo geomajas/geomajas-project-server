@@ -25,8 +25,21 @@ public class SaveLayerModelRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.SaveLayerModel";
 
+	/**
+	 * Bitmask to save settings. 
+	 */
+	public static final int SAVE_SETTINGS = 1;
+
+	/**
+	 * Bitmask to save all clientwidgetinfo's.
+	 */
+	public static final int SAVE_CLIENTWIDGETINFO = 32;
+
+
 	private LayerModelDto layerModel;
 
+	private int saveBitmask;
+	
 	public LayerModelDto getLayerModel() {
 		return layerModel;
 	}
@@ -34,4 +47,21 @@ public class SaveLayerModelRequest implements CommandRequest {
 	public void setLayerModel(LayerModelDto layerModel) {
 		this.layerModel = layerModel;
 	}
+
+	/**
+	 * Set the bitmask of what to save.
+	 * 
+	 * @param saveBitmask
+	 */
+	public void setSaveBitmask(int saveBitmask) {
+		this.saveBitmask = saveBitmask;
+	}
+	
+	/**
+	 * Get the bitmask of what needs to be saved. 
+	 */ 
+	public int getSaveBitmask() {
+		return saveBitmask;
+	}
+
 }

@@ -12,12 +12,14 @@ package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
+import org.geomajas.security.GeomajasSecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,19 +49,23 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 	public void execute(SaveLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			if (request.getLayerModel() == null) {
-				response.getErrorMessages().add("Geen Datalaag opgegeven ??");
+				throw new IllegalArgumentException("No layermodel given.");
 			} else if (request.getLayerModel().getLayerConfiguration() == null) {
-				response.getErrorMessages().add("Geen Laag configuratie opgegeven ??");
+				throw new IllegalArgumentException("No layer configuration given.");
 			} else {
 				LayerModel target = layerModelService.getLayerModelById(request.getLayerModel().getId());
 				if (target == null) {
-					response.getErrorMessages().add(
-							"Geen Datalaag gevonden voor id: " + request.getLayerModel().getId()
-									+ " (Nieuwe Datalaag?)");
+					throw new IllegalArgumentException("No datalayer found for id: " + request.getLayerModel().getId());
 				} else {
 					LayerModel source = dtoService.fromDto(request.getLayerModel());
-					if (!target.isReadOnly()) {
-						if (target.getDynamicLayerConfiguration() == null) {
+					if ((SaveLayerModelRequest.SAVE_CLIENTWIDGETINFO & request.getSaveBitmask()) > 0) {
+						target.getWidgetInfo().clear();
+						target.getWidgetInfo().putAll(source.getWidgetInfo());
+					}
+
+					if ((SaveLayerModelRequest.SAVE_SETTINGS & request.getSaveBitmask()) > 0) {
+
+						if (target.getDynamicLayerConfiguration() == null || target.isReadOnly()) {
 							target.setName(source.getName());
 							target.setActive(source.isActive());
 							target.setDefaultVisible(source.isDefaultVisible());
@@ -79,15 +85,18 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 									.getLayerType().getGeometryType());
 							target.setDynamicLayerConfiguration(source.getDynamicLayerConfiguration());
 						}
+
 					}
 
 					layerModelService.saveOrUpdateLayerModel(target);
 					response.setLayerModel(dtoService.toDto(target, false));
 				}
 			}
+		} catch (GeomajasSecurityException e) {
+			throw e;
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij opslaan Datalaag: " + e.getMessage());
-			log.error("fout bij opslaan datalaag.", e);
+			log.error("Error while saving layermodel.", e);
+			throw new GeomajasException(e);
 		}
 	}
 

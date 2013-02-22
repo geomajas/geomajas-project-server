@@ -32,8 +32,6 @@ public class DeskmanagerSecurityService implements SecurityService {
 
 	public static final String SERVICE_ID = "DM_SECURITY_SERVICE";
 
-	public static final String MANAGER_GEODESK_ID = "MaNaGeR";
-
 	@Autowired
 	private AuthenticationTokenService tokenService;
 

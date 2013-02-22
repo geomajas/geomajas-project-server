@@ -28,6 +28,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.Whiteboard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 
@@ -318,7 +319,7 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 				@Override
 				public boolean onSaveClick(ClickEvent event) {
 					widgetInfos.put(editorFactory.getKey(), editor.getWidgetConfiguration());
-					ManagerCommandService.saveLayerModel(layerModelDto);
+					ManagerCommandService.saveLayerModel(layerModelDto, SaveLayerModelRequest.SAVE_CLIENTWIDGETINFO);
 					editor.setDisabled(true);
 					return true;
 				}
@@ -326,7 +327,7 @@ public class DatalayerDetail extends VLayout implements SelectionChangedHandler,
 				@Override
 				public boolean onResetClick(ClickEvent event) {
 					widgetInfos.remove(editorFactory.getKey());
-					ManagerCommandService.saveLayerModel(layerModelDto);
+					ManagerCommandService.saveLayerModel(layerModelDto, SaveLayerModelRequest.SAVE_CLIENTWIDGETINFO);
 					return true;
 				}
 

@@ -110,7 +110,7 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
-	@JoinTable(name = "config_clientlayer_clientwidgetinfos")
+	@JoinTable(name = "config_layermodel_clientwidgetinfo")
 	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 	
 	// -------------------------------------------------

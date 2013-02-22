@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
@@ -53,7 +54,7 @@ public class BlueprintServiceTest {
 	public void testLoadBlueprints() throws Exception {
 
 		String token = ((DeskmanagerSecurityService) securityService).registerRole(
-				DeskmanagerSecurityService.MANAGER_GEODESK_ID, profileService.getProfiles().get(1));
+				RetrieveRolesRequest.MANAGER_ID, profileService.getProfiles().get(1));
 		securityManager.createSecurityContext(token);
 
 		List<Blueprint> blueprints = blueprintService.getBlueprints();
