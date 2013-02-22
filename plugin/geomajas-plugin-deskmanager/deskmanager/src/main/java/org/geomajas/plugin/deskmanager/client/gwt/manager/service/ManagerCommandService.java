@@ -329,6 +329,7 @@ public final class ManagerCommandService {
 	public static void saveLayerModel(LayerModelDto layerModel, int bitmask) {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
+		request.setSaveBitmask(bitmask);
 		GwtCommand command = new GwtCommand(SaveLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,

@@ -11,14 +11,21 @@
 package org.geomajas.plugin.deskmanager.domain.dto;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 
 
 /**
+ * Dto object for a {@link org.geomajas.plugin.deskmanager.domain.ClientLayer}.
+ * 
  * @author Oliver May
  *
  */
+@Api(allMethods = true)
 public class LayerDto implements Serializable {
 
 	private static final long serialVersionUID = 100L;
@@ -30,6 +37,8 @@ public class LayerDto implements Serializable {
 	private ClientLayerInfo refLayerInfo;
 	
 	private String clientLayerIdReference;
+
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	/**
 	 * @param layerModel the layerModel to set
@@ -121,6 +130,20 @@ public class LayerDto implements Serializable {
 	 */
 	public ClientLayerInfo getReferencedLayerInfo() {
 		return refLayerInfo;
+	}
+
+	/**
+	 * @param widgetInfo the widgetInfo to set
+	 */
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
+	}
+
+	/**
+	 * @return the widgetInfo
+	 */
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
 	}
 	
 	

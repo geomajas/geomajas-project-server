@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.Command;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.BlueprintResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
@@ -22,6 +23,7 @@ import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
+import org.geomajas.security.GeomajasSecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +83,11 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 					response.setBlueprint(dtoService.toDto(target, false));
 				}
 			}
+		} catch (GeomajasSecurityException e) {
+			throw e;
 		} catch (Exception e) {
-			//TODO: i18n
-			response.getErrorMessages().add("Unexpected error while saving blueprint: " + e.getMessage());
 			log.error("Unexpected error while saving blueprint.", e);
+			throw new GeomajasException(e);
 		}
 	}
 

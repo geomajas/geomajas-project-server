@@ -10,14 +10,24 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.common;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.LayerWidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactory;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.SensibleScaleConverter;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -31,13 +41,22 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
+ * Configuration window for individual layers.
+ * 
+ * @author Oliver May
  * @author Kristof Heirwegh
  */
 public class LayerConfigurationWindow extends Window {
 	
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
+	
+	private static final int TABSET_WIDTH = 600;
+	private static final int TABSET_HEIGHT = 300;
+	
 	
 	private static final int FORMITEM_WIDTH = 300;
 	public static final String FLD_NAME = "Name";
@@ -57,6 +76,12 @@ public class LayerConfigurationWindow extends Window {
 	private TextItem minScale;
 
 	private TextItem maxScale;
+
+	private TabSet tabset;
+	
+	private TabSet widgetTabset;
+	
+	private List<WidgetEditorHandler> widgetEditors = new ArrayList<WidgetEditorHandler>();
 
 
 	/**
@@ -81,48 +106,21 @@ public class LayerConfigurationWindow extends Window {
 		setIsModal(true);
 		setShowModalMask(true);
 
-		form = new DynamicForm();
-		form.setIsGroup(true);
-		form.setGroupTitle(MESSAGES.layerConfigurationLayerProperties());
-		form.setPadding(5);
-		form.setAutoWidth();
-		form.setAutoFocus(true); /* Set focus on first field */
-		form.setNumCols(2);
-		form.setTitleOrientation(TitleOrientation.LEFT);
-
-		label = new TextItem(FLD_NAME );
-		label.setTitle(MESSAGES.layerConfigurationName());
-		label.setRequired(true);
-		label.setWidth(FORMITEM_WIDTH);
-		label.setWrapTitle(false);
-		label.setTooltip(MESSAGES.layerConfigurationNameTooltip());
-
-		publicLayer = new CheckboxItem();
-		publicLayer.setTitle(MESSAGES.layerConfigurationPublicLayer());
-		publicLayer.setDisabled(true); // altijd readonly hier
-		publicLayer.setWrapTitle(false);
-
-		defaultVisible = new CheckboxItem();
-		defaultVisible.setTitle(MESSAGES.layerConfigurationLayerVisibleByDefault());
-		defaultVisible.setWrapTitle(false);
-		defaultVisible.setTooltip(MESSAGES.layerConfigurationLayerVisibleByDefaultTooltip());
-
-		minScale = new TextItem();
-		minScale.setTitle(MESSAGES.layerConfigurationMinimumScale());
-		minScale.setWidth(FORMITEM_WIDTH / 2);
-		minScale.setWrapTitle(false);
-		minScale.setTooltip(MESSAGES.layerConfigurationMinimumScaleTooltip());
-		minScale.setValidators(new ScaleValidator());
-
-		maxScale = new TextItem();
-		maxScale.setTitle(MESSAGES.layerConfigurationMaximumScale());
-		maxScale.setWidth(FORMITEM_WIDTH / 2);
-		maxScale.setWrapTitle(false);
-		maxScale.setValidators(new ScaleValidator());
-		maxScale.setTooltip(MESSAGES.layerConfigurationMaximumScaleTooltip());
-
-		form.setFields(label, publicLayer, defaultVisible, minScale, maxScale);
-
+		tabset = new TabSet();
+		tabset.setWidth(TABSET_WIDTH);
+		tabset.setHeight(TABSET_HEIGHT);
+		tabset.addTab(createSettingsTab());
+		
+		widgetTabset = new TabSet();
+		widgetTabset.setTabBarPosition(Side.LEFT);
+		widgetTabset.setWidth100();
+		widgetTabset.setHeight100();
+		widgetTabset.setOverflow(Overflow.HIDDEN);
+		widgetTabset.setTabBarThickness(100);
+		Tab tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
+		tab.setPane(widgetTabset);
+		tabset.addTab(tab);
+		
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
@@ -162,7 +160,7 @@ public class LayerConfigurationWindow extends Window {
 
 		VLayout vl = new VLayout(10);
 		vl.setMargin(10);
-		vl.addMember(form);
+		vl.addMember(tabset);
 		vl.addMember(buttons);
 		addItem(vl);
 
@@ -170,6 +168,56 @@ public class LayerConfigurationWindow extends Window {
 
 	}
 
+	private Tab createSettingsTab() {
+		Tab tab = new Tab(MESSAGES.layerConfigurationLayerProperties());
+		form = new DynamicForm();
+		form.setIsGroup(true);
+		form.setGroupTitle(MESSAGES.layerConfigurationLayerProperties());
+		form.setPadding(5);
+		form.setWidth100();
+		form.setHeight100();
+		form.setAutoFocus(true); /* Set focus on first field */
+		form.setNumCols(2);
+		form.setTitleOrientation(TitleOrientation.LEFT);
+
+		label = new TextItem(FLD_NAME );
+		label.setTitle(MESSAGES.layerConfigurationName());
+		label.setRequired(true);
+		label.setWidth(FORMITEM_WIDTH);
+		label.setWrapTitle(false);
+		label.setTooltip(MESSAGES.layerConfigurationNameTooltip());
+
+		publicLayer = new CheckboxItem();
+		publicLayer.setTitle(MESSAGES.layerConfigurationPublicLayer());
+		publicLayer.setDisabled(true); // altijd readonly hier
+		publicLayer.setWrapTitle(false);
+
+		defaultVisible = new CheckboxItem();
+		defaultVisible.setTitle(MESSAGES.layerConfigurationLayerVisibleByDefault());
+		defaultVisible.setWrapTitle(false);
+		defaultVisible.setTooltip(MESSAGES.layerConfigurationLayerVisibleByDefaultTooltip());
+
+		minScale = new TextItem();
+		minScale.setTitle(MESSAGES.layerConfigurationMinimumScale());
+		minScale.setWidth(FORMITEM_WIDTH / 2);
+		minScale.setWrapTitle(false);
+		minScale.setTooltip(MESSAGES.layerConfigurationMinimumScaleTooltip());
+		minScale.setValidators(new ScaleValidator());
+
+		maxScale = new TextItem();
+		maxScale.setTitle(MESSAGES.layerConfigurationMaximumScale());
+		maxScale.setWidth(FORMITEM_WIDTH / 2);
+		maxScale.setWrapTitle(false);
+		maxScale.setValidators(new ScaleValidator());
+		maxScale.setTooltip(MESSAGES.layerConfigurationMaximumScaleTooltip());
+
+		form.setFields(label, publicLayer, defaultVisible, minScale, maxScale);
+
+		tab.setPane(form);
+		
+		return tab;
+	}
+	
 	public void show() {
 		form.clearValues();
 		publicLayer.setValue(layer.getLayerModel().isPublic());
@@ -183,6 +231,9 @@ public class LayerConfigurationWindow extends Window {
 		minScale.setValue(SensibleScaleConverter.scaleToString(cli.getMinimumScale()));
 		maxScale.setValue(SensibleScaleConverter.scaleToString(cli.getMaximumScale()));
 
+		clearWidgetTabs();
+		loadWidgetTabs(layer);
+		
 		super.show();
 	}
 
@@ -204,7 +255,11 @@ public class LayerConfigurationWindow extends Window {
 			cli.setLabel(label.getValueAsString());
 			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
 			cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
-
+			
+			for (WidgetEditorHandler h : widgetEditors) {
+				h.save(layer);
+			}
+			
 			hide();
 			destroy();
 			if (callback != null) {
@@ -214,13 +269,14 @@ public class LayerConfigurationWindow extends Window {
 	}
 
 	private void restored() {
-		if (layer.getClientLayerInfo() != null) {
+		if (layer.getClientLayerInfo() != null || !layer.getWidgetInfo().isEmpty()) {
 			SC.ask(MESSAGES.layerConfigConfirmRestoreTitle(), 
 					MESSAGES.layerConfigConfirmRestoreText(), new BooleanCallback() {
 
 						public void execute(Boolean value) {
 							if (value) {
 								layer.setCLientLayerInfo(null);
+								layer.getWidgetInfo().clear();
 								hide();
 								callback.execute(true);
 							}
@@ -228,4 +284,71 @@ public class LayerConfigurationWindow extends Window {
 					});
 		}
 	}
+	
+	/**
+	 * Clear all custom widget tabs from the last blueprint.
+	 */
+	private void clearWidgetTabs() {
+		for (Tab tab : widgetTabset.getTabs()) {
+			widgetTabset.removeTab(tab);
+		}
+		widgetEditors.clear();
+	}
+
+	/**
+	 * Load all widget editors that are available on this blueprints user application, and add them to the tabset.
+	 * 
+	 * @param bgd
+	 *            the basegeodesk.
+	 */
+	private void loadWidgetTabs(LayerDto bgd) {
+		for (String key : WidgetEditorFactoryRegistry.getLayerRegistry().getWidgetEditors().keySet()) {
+			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getWidgetInfo(), bgd);
+		}
+	}
+
+	/**
+	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be
+	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
+	 * 
+	 * @param editorFactory
+	 *            the editor factory
+	 * @param widgetInfos
+	 *            all the widget infos 
+	 * @param layerDto 
+	 *            the layer model
+	 */
+	private void addWidgetTab(final WidgetEditorFactory editorFactory,
+			final Map<String, ClientWidgetInfo> widgetInfos, final LayerDto layerDto) {
+		if (editorFactory != null) {
+			Tab tab = new Tab(editorFactory.getName());
+			final WidgetEditor editor = editorFactory.createEditor();
+			if (editor instanceof LayerWidgetEditor) {
+				((LayerWidgetEditor) editor).setLayer(layerDto.getLayerModel());
+			}
+			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
+			
+			// Create tab layout
+			VLayout layout = new VLayout();
+			layout.setMargin(5);
+			
+			widgetEditors.add(new WidgetEditorHandler() {
+				
+				@Override
+				public void save(LayerDto layer) {
+					layer.getWidgetInfo().put(editorFactory.getKey(), editor.getWidgetConfiguration());
+				}
+			});
+			
+			layout.addMember(editor.getCanvas());
+			tab.setPane(layout);
+
+			widgetTabset.addTab(tab);
+		}
+	}
+	
+	private interface WidgetEditorHandler {
+		void save(LayerDto layer);
+	}
+	
 }

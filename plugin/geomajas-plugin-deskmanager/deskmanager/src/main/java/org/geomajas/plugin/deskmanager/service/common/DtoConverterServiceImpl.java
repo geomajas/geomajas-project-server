@@ -24,8 +24,8 @@ import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
-import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
+import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -432,6 +432,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		LayerDto dto = new LayerDto();
 		dto.setClientLayerIdReference(layer.getLayerModel().getClientLayerId());
+		dto.getWidgetInfo().putAll(layer.getWidgetInfo());
 		try {
 			dto.setReferencedLayerInfo((ClientLayerInfo) applicationContext.getBean(layer.getLayerModel()
 					.getClientLayerId()));
@@ -451,6 +452,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		ClientLayer layer = new ClientLayer();
 		layer.setClientLayerInfo(dto.getClientLayerInfo());
 		layer.setLayerModel(fromDto(dto.getLayerModel()));
+		layer.getWidgetInfo().putAll(dto.getWidgetInfo());
 		return layer;
 	}
 
