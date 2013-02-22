@@ -85,6 +85,8 @@ public class LayerConfigurationWindow extends Window {
 
 
 	/**
+	 * Construct a layer configuration window.
+	 * 
 	 * @param layer
 	 * @param callback
 	 *            returns true if saved, false if canceled.

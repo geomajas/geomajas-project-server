@@ -23,7 +23,7 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
  * Dto object for a {@link org.geomajas.plugin.deskmanager.domain.ClientLayer}.
  * 
  * @author Oliver May
- *
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class LayerDto implements Serializable {
