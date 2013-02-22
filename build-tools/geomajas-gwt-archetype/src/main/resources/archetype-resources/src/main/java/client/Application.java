@@ -48,6 +48,9 @@ public class Application implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
+		WidgetLayout.legendVectorRowHeight=10;
+		WidgetLayout.legendRasterRowHeight=10;
+		
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();

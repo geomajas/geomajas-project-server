@@ -14,9 +14,10 @@
 
 package ${package}.client.gui;
 
+
 import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
@@ -264,10 +265,10 @@ public class SearchPanel extends VLayout {
 		searchWidget.setBackgroundColor("#F0F0F0");
 		layout.addMember(searchWidget);
 
-		mapModel.addMapModelHandler(new MapModelHandler() {
+		mapModel.addMapModelChangedHandler(new MapModelChangedHandler() {
 
 			// On map initialization: Select the countries layer in the search panel.
-			public void onMapModelChange(MapModelEvent event) {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				VectorLayer layer = mapModel.getVectorLayers().get(0);
 				searchWidget.setLayer(layer);
 			}
