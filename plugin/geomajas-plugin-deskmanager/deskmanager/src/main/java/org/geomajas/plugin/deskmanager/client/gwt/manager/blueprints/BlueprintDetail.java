@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.AbstractWoaHandler;
@@ -108,7 +109,7 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 		tabset.addTab(tab);
 		tab.setPane(accessrights);
 
-		//Widget tabs
+		// Widget tabs
 		tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
 		widgetTabset = new TabSet();
 		widgetTabset.setTabBarPosition(Side.LEFT);
@@ -117,7 +118,7 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 		widgetTabset.setOverflow(Overflow.HIDDEN);
 		widgetTabset.setTabBarThickness(100);
 		tab.setPane(widgetTabset);
-		
+
 		tabset.addTab(tab);
 		// loading widget
 		loadingLayout = new VLayout();
@@ -201,16 +202,28 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 	private void loadWidgetTabs(BaseGeodeskDto bp) {
 		UserApplication ua = UserApplicationRegistry.getInstance().get(bp.getUserApplicationInfo().getKey());
 		for (String key : ua.getSupportedApplicationWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getApplicationClientWidgetInfos(),
-					GeodeskDtoUtil.getApplicationClientWidgetInfo(bp), bp);
+			try {
+				addWidgetTab(WidgetEditorFactoryRegistry.getApplicationRegistry().get(key),
+						bp.getApplicationClientWidgetInfos(), GeodeskDtoUtil.getApplicationClientWidgetInfo(bp), bp);
+			} catch (Exception e) {
+				Log.logError("Error adding application widget editor for key: " + key + ", ", e);
+			}
 		}
 		for (String key : ua.getSupportedMainMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getMainMapClientWidgetInfos(),
-					GeodeskDtoUtil.getMainMapClientWidgetInfo(bp), bp);
+			try {
+				addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getMainMapClientWidgetInfos(),
+						GeodeskDtoUtil.getMainMapClientWidgetInfo(bp), bp);
+			} catch (Exception e) {
+				Log.logError("Error adding main map widget editor for key: " + key + ", ", e);
+			}
 		}
 		for (String key : ua.getSupportedOverviewMapWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bp.getOverviewMapClientWidgetInfos(),
-					GeodeskDtoUtil.getOverviewMapClientWidgetInfo(bp), bp);
+			try {
+				addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key),
+						bp.getOverviewMapClientWidgetInfos(), GeodeskDtoUtil.getOverviewMapClientWidgetInfo(bp), bp);
+			} catch (Exception e) {
+				Log.logError("Error adding overview map widget editor for key: " + key + ", ", e);
+			}
 		}
 	}
 

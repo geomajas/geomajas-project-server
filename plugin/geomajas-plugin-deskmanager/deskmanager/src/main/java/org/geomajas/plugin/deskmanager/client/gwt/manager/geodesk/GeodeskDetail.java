@@ -108,7 +108,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		accessrightsTab.setDisabled(true);
 		Whiteboard.registerHandler(accessrights);
 
-		//Widget tabs
+		// Widget tabs
 		tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
 		widgetTabset = new TabSet();
 		widgetTabset.setTabBarPosition(Side.LEFT);
@@ -117,10 +117,9 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		widgetTabset.setOverflow(Overflow.HIDDEN);
 		widgetTabset.setTabBarThickness(100);
 		tab.setPane(widgetTabset);
-		
+
 		tabset.addTab(tab);
-		
-		
+
 		// loading widget
 		loadingLayout = new VLayout();
 		loadingLayout.setWidth100();
@@ -193,7 +192,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 		} else {
 			// public geodesks don't have accessrights
 			accessrightsTab.setDisabled(geodesk.isPublic());
-			//Always select first tab
+			// Always select first tab
 			tabset.selectTab(0);
 			setDisabled(false);
 		}
@@ -249,8 +248,8 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 	private void loadWidgetTabs(BaseGeodeskDto bgd) {
 		UserApplication ua = UserApplicationRegistry.getInstance().get(bgd.getUserApplicationInfo().getKey());
 		for (String key : ua.getSupportedApplicationWidgetKeys()) {
-			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getApplicationClientWidgetInfos(),
-					GeodeskDtoUtil.getApplicationClientWidgetInfo(bgd), bgd);
+			addWidgetTab(WidgetEditorFactoryRegistry.getApplicationRegistry().get(key),
+					bgd.getApplicationClientWidgetInfos(), GeodeskDtoUtil.getApplicationClientWidgetInfo(bgd), bgd);
 		}
 		for (String key : ua.getSupportedMainMapWidgetKeys()) {
 			addWidgetTab(WidgetEditorFactoryRegistry.getMapRegistry().get(key), bgd.getMainMapClientWidgetInfos(),
@@ -286,7 +285,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 			}
 			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
 			editor.setDisabled(true);
-			
+
 			// Create tab layout
 			VLayout layout = new VLayout();
 			layout.setMargin(5);
