@@ -270,6 +270,21 @@
 				<artifactId>gt-shapefile</artifactId>
 				<version>${geotools-version}</version>
 			</dependency>
+			
+	<!-- Google dependencies -->
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${gwt-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${gwt-version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
 
             <!-- old dependencies, for compatibility only -->
 			<dependency>
@@ -287,6 +302,7 @@
 	</dependencyManagement>
 
 	<properties>
+		<gwt-version>2.5.0</gwt-version>
 		<geotools-version>2.7.5</geotools-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<dojo-version>1.1.0</dojo-version>
