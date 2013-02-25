@@ -19,15 +19,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-archetype</artifactId>
-	<version>1.12.0-SNAPSHOT</version>
+	<version>1.12.0</version>
 	<packaging>maven-archetype</packaging>
 	<name>Geomajas GWT application archetype</name>
 	<description>Geomajas GWT application archetype</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-gwt-archetype</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.12.0</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.12.0</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-gwt-archetype-1.12.0</url>
 	</scm>
 
 	<developers>
