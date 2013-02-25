@@ -74,7 +74,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/select-archetype.png" width="75%"/>
+              <imagedata fileref="images/select-archetype.png" width="75%" />
             </imageobject>
           </mediaobject>
         </figure>
@@ -113,7 +113,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/run-archetype.png" width="75%"/>
+              <imagedata fileref="images/run-archetype.png" width="75%" />
             </imageobject>
           </mediaobject>
         </figure>
@@ -213,6 +213,79 @@
     server.</para>
   </section>
 
+  <section id="ConfigureDatabase">
+    <title>Getting started with database layers</title>
+
+    <para>The Geomajas sample application comes with a predefined layer
+    configuration for PostgreSQL/PostGIS and SQLServer databases
+    (configurations for other supported databases like Oracle and MySQL can be
+    added in a similar way).</para>
+
+    <para>To activate the database layer, the following steps should be
+    taken:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>Create the sample database. This should be a spatially enabled
+        database with name 'app' and login user 'app' with password
+        'app'.</para>
+      </listitem>
+
+      <listitem>
+        <para>Import the layer data in the database. For reference , the data
+        is provided as a shape file in the directory:
+        src/main/resources/context/shapes/road.shp. There are also 2 scripts
+        available for both the PostGIS and SQLServer databases:
+        src/main/webapp/WEB-INF/example/road_postgres.sql and
+        src/main/webapp/WEB-INF/example/road_sqlserver.sql. These can be run
+        from PgAdmin or SQL Server Management Studio respectively.</para>
+      </listitem>
+
+      <listitem>
+        <para>Uncomment the necessary dependencies in your pom.xml file.
+        Geomajas provides 2 layer plugins that can work with databases:
+        Geotools layer and Hibernate layer plugin. The Geotools layer plugin
+        does not require the creation of a Java mapping, which makes it easier
+        to configure, but it also has no support for complex attributes
+        (many-to-one, one-to-many). The Hibernate layer plugin does require
+        Java mapping objects (have a look at the Road.java class to see how
+        the mapping works) but offers complex attribute support instead. The
+        choice of layer plugin will depend on the needs of your application
+        and whether or not you want to make use of the advanced feature
+        editing capabilities of Geomajas. As an example, for the Geotools
+        layer with a PostGIS database, the following dependencies should be
+        uncommented:<programlisting>&lt;!-- uncomment if you want to use geotools with postgis, for another db you will need similar dependencies --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.postgis&lt;/groupId&gt;
+  &lt;artifactId&gt;postgis-jdbc&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;postgresql&lt;/groupId&gt;
+  &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting></para>
+      </listitem>
+
+      <listitem>
+        <para>Uncomment the necessary application context entries in your
+        web.xml file. This is necessary to add the roads layer to your Spring
+        context definition. The specific entries to uncomment will again
+        depend on your choice of layer plugin and database. For he Geotools
+        layer with a PostGIS database, the following entries should be
+        uncommented:<programlisting>&lt;!-- To use Roads layer stored in PostGIS through GeoTools layer, uncomment the following --&gt;
+WEB-INF/example/geotools/mapMain.xml
+WEB-INF/example/geotools/spring-geotools.xml
+WEB-INF/example/geotools/clientLayerRoads.xml
+&lt;!-- for PostGIS --&gt;
+WEB-INF/example/geotools/postgis/layerRoads.xml</programlisting></para>
+      </listitem>
+
+      <listitem>
+        <para>Restart your application. An editable road layer should
+        appear.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+
   <section id="cont">
     <title>How to continue</title>
 
@@ -242,7 +315,7 @@
           <para>DZone's GWT refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js">http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js</ulink>.</para>
 
-          <para/>
+          <para></para>
         </listitem>
 
         <listitem>
@@ -254,7 +327,7 @@
           <para>DZone's Spring configuration refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/spring-configuration">http://refcardz.dzone.com/refcardz/spring-configuration</ulink>.</para>
 
-          <para/>
+          <para></para>
         </listitem>
 
         <listitem>
