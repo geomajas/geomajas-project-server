@@ -104,7 +104,7 @@ public class Blueprint implements BaseGeodesk {
 	/**
 	 * The groups that can use this blueprint to create loketten
 	 */
-	@ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Territory.class)
+	@ManyToMany(targetEntity = Territory.class)
 	@JoinTable(name = "config_blueprint_territory", 
 		joinColumns = @JoinColumn(name = "blueprint_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	@OrderBy("name desc")
