@@ -64,7 +64,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>${geomajas-dep-version}</version>
+				<version>${symbol_dollar}{geomajas-dep-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -427,7 +427,7 @@
 	</pluginRepositories>
 
 	<properties>
-		<geomajas-dep-version>1.12.36</geomajas-dep-version>
+		<geomajas-dep-version>${geomajas-dep-version}</geomajas-dep-version>
 		<geotools-version>2.7.5</geotools-version>
 		<gwt-version>2.4.0</gwt-version>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
