@@ -15,6 +15,7 @@
 package ${package}.client;
 
 import ${package}.client.gui.SearchPanel;
+import ${package}.client.i18n.ApplicationMessages;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
@@ -24,6 +25,7 @@ import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -42,7 +44,7 @@ public class Application implements EntryPoint {
 
 	private Legend legend;
 
-	// private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
+	private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
 
 	public Application() {
 	}
@@ -75,7 +77,7 @@ public class Application implements EntryPoint {
 		map.getMapModel().runWhenInitialized(new Runnable() {
 
 			public void run() {
-				Label title = new Label("Geomajas GWT: hello world");
+				Label title = new Label(messages.applicationTitle("${geomajas-dep-version}"));
 				title.setStyleName("appTitle");
 				title.setWidth(260);
 				toolbar.addFill();
@@ -111,7 +113,7 @@ public class Application implements EntryPoint {
 		sectionStack.setSize("250px", "100%");
 
 		// Overview map layout:
-		SectionStackSection section1 = new SectionStackSection("Overview map");
+		SectionStackSection section1 = new SectionStackSection(messages.overviewMapTitle());
 		section1.setExpanded(true);
 		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
 		overviewMap.setTargetMaxExtentRectangleStyle(new ShapeStyle("#888888", 0.3f, "#666666", 0.75f, 2));
@@ -120,14 +122,14 @@ public class Application implements EntryPoint {
 		sectionStack.addSection(section1);
 
 		// LayerTree layout:
-		SectionStackSection section2 = new SectionStackSection("Layer tree");
+		SectionStackSection section2 = new SectionStackSection(messages.layerTreeTitle());
 		section2.setExpanded(true);
 		LayerTree layerTree = new LayerTree(map);
 		section2.addItem(layerTree);
 		sectionStack.addSection(section2);
 
 		// Legend layout:
-		SectionStackSection section3 = new SectionStackSection("Legend");
+		SectionStackSection section3 = new SectionStackSection(messages.legendTitle());
 		section3.setExpanded(true);
 		legend = new Legend(map.getMapModel());
 		legend.setBackgroundColor("#FFFFFF");

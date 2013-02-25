@@ -26,5 +26,11 @@ import com.google.gwt.i18n.client.Messages;
 public interface ApplicationMessages extends Messages {
 
 	String applicationTitle(String version);
+	
+	String overviewMapTitle();
+	
+	String layerTreeTitle();
+	
+	String legendTitle();
 
 }

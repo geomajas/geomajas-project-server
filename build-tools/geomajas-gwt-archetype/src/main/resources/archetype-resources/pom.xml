@@ -55,6 +55,12 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- bugfix for transaction problem -->
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-data</artifactId>
+				<version>2.7.5-GEOT-4394</version>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
@@ -151,6 +157,19 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 		-->
+		<!-- uncomment if you want to use geotools with sqlserver, for another db you will need similar dependencies -->
+		<!--
+		<dependency>
+			<groupId>org.geotools.jdbc</groupId>
+			<artifactId>gt-jdbc-sqlserver</artifactId>
+			<version>${geotools-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>4.0</version>
+		</dependency>
+		-->
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -244,7 +263,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>${gwt-version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.google.gwt</groupId>
@@ -305,6 +324,41 @@
 			</plugin>
 
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											gwt-maven-plugin
+										</artifactId>
+										<versionRange>
+											[${gwt-version},)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>
@@ -325,7 +379,6 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt-version}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -375,6 +428,7 @@
 
 	<properties>
 		<geomajas-dep-version>1.12.36</geomajas-dep-version>
+		<geotools-version>2.7.5</geotools-version>
 		<gwt-version>2.4.0</gwt-version>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
