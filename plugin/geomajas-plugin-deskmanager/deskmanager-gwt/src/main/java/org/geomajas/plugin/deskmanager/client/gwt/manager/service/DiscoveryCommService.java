@@ -28,9 +28,9 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigu
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 
 /**
  * Convenience class with helper methods for commands.
@@ -107,7 +107,7 @@ public final class DiscoveryCommService {
 	}
 
 	public static void getVectorLayerConfiguration(final Map<String, String> connectionProps, String layerTypeName,
-			final DataCallback<VectorLayerConfiguration> onFinish, final DataCallback<String> onError) {
+			final DataCallback<DynamicVectorLayerConfiguration> onFinish, final DataCallback<String> onError) {
 		GetVectorLayerConfigurationRequest request = new GetVectorLayerConfigurationRequest();
 		request.setConnectionProperties(connectionProps);
 		request.setLayerName(layerTypeName);
@@ -138,7 +138,7 @@ public final class DiscoveryCommService {
 	}
 	
 	public static void getRasterLayerConfiguration(Map<String, String> connectionProps, RasterCapabilitiesInfo info,
-			final DataCallback<RasterLayerConfiguration> onFinish, final DataCallback<String> onError) {
+			final DataCallback<DynamicRasterLayerConfiguration> onFinish, final DataCallback<String> onError) {
 		GetRasterLayerConfigurationRequest request = new GetRasterLayerConfigurationRequest();
 		request.setRasterCapabilitiesInfo(info);
 		request.setConnectionProperties(connectionProps);

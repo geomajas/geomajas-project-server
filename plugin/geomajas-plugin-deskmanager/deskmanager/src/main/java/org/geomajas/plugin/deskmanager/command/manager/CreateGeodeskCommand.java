@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component(CreateGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
-public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, GetGeodeskResponse> {
+public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, GeodeskResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(CreateGeodeskCommand.class);
 
@@ -59,7 +59,7 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, GetGe
 	private DtoConverterService dtoService;
 
 	/** {@inheritDoc} */
-	public void execute(CreateGeodeskRequest request, GetGeodeskResponse response) throws Exception {
+	public void execute(CreateGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			if (request.getBlueprintId() == null || "".equals(request.getBlueprintId())) {
 				response.getErrorMessages().add("Error while saving geodesk: BlueprintID is required.");
@@ -96,7 +96,7 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, GetGe
 	}
 
 	/** {@inheritDoc} */
-	public GetGeodeskResponse getEmptyCommandResponse() {
-		return new GetGeodeskResponse();
+	public GeodeskResponse getEmptyCommandResponse() {
+		return new GeodeskResponse();
 	}
 }

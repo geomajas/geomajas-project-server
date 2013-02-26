@@ -15,7 +15,7 @@ import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
@@ -56,7 +56,7 @@ public class LayerAttributesGrid extends VLayout {
 
 	private static final String FLD_OBJECT = "_object";
 
-	private VectorLayerConfiguration layerConfig;
+	private DynamicVectorLayerConfiguration layerConfig;
 
 	private ListGrid grid;
 
@@ -174,7 +174,7 @@ public class LayerAttributesGrid extends VLayout {
 		addMember(warnings);
 	}
 
-	public void setData(VectorLayerConfiguration layerConfig) {
+	public void setData(DynamicVectorLayerConfiguration layerConfig) {
 		this.layerConfig = layerConfig;
 		FeatureInfo fi = layerConfig.getClientVectorLayerInfo().getFeatureInfo();
 		String labelFieldName = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getLabelStyle()
@@ -205,7 +205,7 @@ public class LayerAttributesGrid extends VLayout {
 		}
 	}
 
-	public VectorLayerConfiguration getData() {
+	public DynamicVectorLayerConfiguration getData() {
 		if (currentIdField == null || currentLabelField == null) {
 			return null;
 		}

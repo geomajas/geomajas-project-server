@@ -12,7 +12,7 @@ package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component(GetGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
-public class GetGeodeskCommand implements Command<GetGeodeskRequest, GetGeodeskResponse> {
+public class GetGeodeskCommand implements Command<GetGeodeskRequest, GeodeskResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetGeodeskCommand.class);
 
@@ -40,7 +40,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GetGeodeskR
 	private DtoConverterService dtoService;
 
 	/** {@inheritDoc} */
-	public void execute(GetGeodeskRequest request, GetGeodeskResponse response) throws Exception {
+	public void execute(GetGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			response.setGeodesk(dtoService.toDto(geodeskService.getGeodeskById(request.getUuid()), true));
 		} catch (Exception e) {
@@ -50,7 +50,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GetGeodeskR
 	}
 
 	/** {@inheritDoc} */
-	public GetGeodeskResponse getEmptyCommandResponse() {
-		return new GetGeodeskResponse();
+	public GeodeskResponse getEmptyCommandResponse() {
+		return new GeodeskResponse();
 	}
 }

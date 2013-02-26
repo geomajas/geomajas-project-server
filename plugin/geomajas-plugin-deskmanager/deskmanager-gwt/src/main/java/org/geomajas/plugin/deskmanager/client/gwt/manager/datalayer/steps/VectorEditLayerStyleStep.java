@@ -16,7 +16,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerMode
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -32,7 +32,7 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 	
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
-	private VectorLayerConfiguration layerConfig;
+	private DynamicVectorLayerConfiguration layerConfig;
 
 	private ColorPickerItem picker;
 
@@ -79,7 +79,7 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 		// TODO
 	}
 
-	public void setData(VectorLayerConfiguration layerConfig) {
+	public void setData(DynamicVectorLayerConfiguration layerConfig) {
 		this.layerConfig = layerConfig;
 		layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().applyDefaults();
 		FeatureStyleInfo fs = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getFeatureStyles().get(0);

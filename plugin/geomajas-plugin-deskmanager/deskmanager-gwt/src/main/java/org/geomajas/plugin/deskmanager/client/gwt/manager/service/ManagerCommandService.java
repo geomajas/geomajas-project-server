@@ -35,7 +35,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
@@ -171,7 +171,7 @@ public final class ManagerCommandService {
 	public static void createNewBlueprint(String userApplicationName, String name) {
 		CreateBlueprintRequest request = new CreateBlueprintRequest();
 		request.setName(name);
-		request.setUserApplicationName(userApplicationName);
+		request.setUserApplicationKey(userApplicationName);
 		GwtCommand command = new GwtCommand(CreateBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
@@ -374,9 +374,9 @@ public final class ManagerCommandService {
 		GwtCommand command = new GwtCommand(GetGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetGeodeskResponse>() {
+				new AbstractCommandCallback<GeodeskResponse>() {
 
-					public void execute(GetGeodeskResponse response) {
+					public void execute(GeodeskResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response.getGeodesk());
 						}
@@ -440,9 +440,9 @@ public final class ManagerCommandService {
 		GwtCommand command = new GwtCommand(CreateGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetGeodeskResponse>() {
+				new AbstractCommandCallback<GeodeskResponse>() {
 
-					public void execute(GetGeodeskResponse response) {
+					public void execute(GeodeskResponse response) {
 						Whiteboard.fireEvent(new GeodeskEvent(response.getGeodesk(), false, true));
 					}
 				});
@@ -463,9 +463,9 @@ public final class ManagerCommandService {
 		GwtCommand command = new GwtCommand(SaveGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetGeodeskResponse>() {
+				new AbstractCommandCallback<GeodeskResponse>() {
 
-					public void execute(GetGeodeskResponse response) {
+					public void execute(GeodeskResponse response) {
 						Whiteboard.fireEvent(new GeodeskEvent(response.getGeodesk()));
 					}
 				});

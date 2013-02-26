@@ -19,8 +19,8 @@ import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
@@ -120,10 +120,10 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 
 		if (null != layer && LayerType.RASTER.equals(sli.getLayerType())) {
 			lm.setLayerType("Raster");
-			lm.setDynamicLayerConfiguration(new RasterLayerConfiguration());
+			lm.setDynamicLayerConfiguration(new DynamicRasterLayerConfiguration());
 		} else if (null != layer) {
 			lm.setLayerType(sli.getLayerType().getGeometryType());
-			lm.setDynamicLayerConfiguration(new VectorLayerConfiguration());
+			lm.setDynamicLayerConfiguration(new DynamicVectorLayerConfiguration());
 		}
 		return lm;
 	}

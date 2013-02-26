@@ -45,7 +45,7 @@ public class CreateBlueprintCommand implements Command<CreateBlueprintRequest, B
 		try {
 			Blueprint bp = new Blueprint();
 			bp.setName(request.getName());
-			bp.setUserApplicationKey(request.getUserApplicationName());
+			bp.setUserApplicationKey(request.getUserApplicationKey());
 			blueprintService.saveOrUpdateBlueprint(bp);
 			response.setBlueprint(dtoService.toDto(bp, false));
 		} catch (Exception e) {

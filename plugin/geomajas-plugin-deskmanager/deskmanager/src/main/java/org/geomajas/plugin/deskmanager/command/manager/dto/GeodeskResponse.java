@@ -22,7 +22,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
  * @author Oliver May
  * @author Kristof Heirwegh
  */
-public class GetGeodeskResponse extends CommandResponse {
+public class GeodeskResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 

@@ -16,9 +16,9 @@ import java.util.Map;
 
 import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 /**
@@ -31,12 +31,13 @@ public interface DiscoveryService {
 	List<VectorCapabilitiesInfo> getVectorCapabilities(Map<String, String> connectionProperties) throws 
 			IOException, DeskmanagerException;
 
-	VectorLayerConfiguration getVectorLayerConfiguration(Map<String, String> connectionProperties, String layerName)
+	DynamicVectorLayerConfiguration getVectorLayerConfiguration(Map<String, String> connectionProperties, 
+			String layerName)
 			throws IOException, DeskmanagerException;
 
 	List<RasterCapabilitiesInfo> getRasterCapabilities(Map<String, String> connectionProperties) throws Exception;
 
-	RasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
+	DynamicRasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
 		RasterCapabilitiesInfo rasterCapabilitiesInfo)
 			throws IOException, DeskmanagerException;
 }

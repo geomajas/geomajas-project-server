@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 /**
  * @author Kristof Heirwegh
  */
-public class RasterLayerConfiguration extends DynamicLayerConfiguration {
+public class DynamicRasterLayerConfiguration extends DynamicLayerConfiguration {
 
 	private static final long serialVersionUID = 1L;
 

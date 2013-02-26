@@ -17,7 +17,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.Layer
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 
 import java.util.Map;
 
@@ -60,9 +60,9 @@ public class VectorEditLayerAttributesStep extends WizardStepPanel {
 			loading = true;
 			fireChangedEvent();
 			DiscoveryCommService.getVectorLayerConfiguration(connectionProps, layerTypeName,
-					new DataCallback<VectorLayerConfiguration>() {
+					new DataCallback<DynamicVectorLayerConfiguration>() {
 
-						public void execute(VectorLayerConfiguration result) {
+						public void execute(DynamicVectorLayerConfiguration result) {
 							grid.setData(result);
 							loading = false;
 							fireChangedEvent();
@@ -84,7 +84,7 @@ public class VectorEditLayerAttributesStep extends WizardStepPanel {
 		this.layerTypeName = layerTypeName;
 	}
 
-	public VectorLayerConfiguration getData() {
+	public DynamicVectorLayerConfiguration getData() {
 		return grid.getData();
 	}
 

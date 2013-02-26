@@ -21,7 +21,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.ImageStyle;
@@ -41,7 +41,7 @@ public class WmsPreviewLayerStep extends WizardStepPanel {
 
 	private Map<String, String> connectionProps;
 
-	private RasterLayerConfiguration layerConfiguration;
+	private DynamicRasterLayerConfiguration layerConfiguration;
 	
 	private RasterCapabilitiesInfo info;
 
@@ -101,9 +101,9 @@ public class WmsPreviewLayerStep extends WizardStepPanel {
 			}
 			loading = true;
 			DiscoveryCommService.getRasterLayerConfiguration(connectionProps, info,
-					new DataCallback<RasterLayerConfiguration>() {
+					new DataCallback<DynamicRasterLayerConfiguration>() {
 
-						public void execute(RasterLayerConfiguration result) {
+						public void execute(DynamicRasterLayerConfiguration result) {
 							loading = false;
 							layerConfiguration = result;
 							fireChangedEvent();

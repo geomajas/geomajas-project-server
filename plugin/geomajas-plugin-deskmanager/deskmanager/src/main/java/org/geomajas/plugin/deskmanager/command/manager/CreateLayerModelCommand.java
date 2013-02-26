@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
@@ -58,52 +59,50 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 
 	/** {@inheritDoc} */
 	public void execute(CreateLayerModelRequest request, LayerModelResponse response) throws Exception {
+		if (request.getConfiguration() == null || request.getConfiguration().getClientLayerInfo() == null
+				|| request.getConfiguration().getClientLayerInfo().getUserData() == null) {
+			// TODO: i18n: Error while saving layermodel: configuration is required
+			log.error("Error while saving layermodel: configuration is required.");
+			throw new GeomajasException(new Exception("Error while saving layermodel: configuration is required."));
+		}
+
+		DeskmanagerClientLayerInfo ud = (DeskmanagerClientLayerInfo) request.getConfiguration().getClientLayerInfo()
+				.getUserData();
+		ClientLayerInfo cvli = request.getConfiguration().getClientLayerInfo();
+		LayerModel lm = new LayerModel();
+		lm.setDynamicLayerConfiguration(request.getConfiguration());
+
+		lm.setActive(ud.isActive());
+		lm.setPublic(ud.isPublic());
+
+		lm.setName(cvli.getLabel());
+		lm.setClientLayerId(cvli.getId());
+		lm.setDefaultVisible(cvli.isVisible());
+		lm.setMaxScale(cvli.getMaximumScale());
+		lm.setMinScale(cvli.getMinimumScale());
+		LayerType layerType = request.getConfiguration().getServerLayerInfo().getLayerType();
+		switch (layerType) {
+			case RASTER:
+				lm.setLayerType("Raster");
+				break;
+			default:
+				lm.setLayerType(request.getConfiguration().getServerLayerInfo().getLayerType().getGeometryType());
+				break;
+		}
+
+		Territory g = ((DeskmanagerSecurityContext) securityContext).getTerritory();
+		if (g.getId() > 0) { // 0 = superuser
+			lm.setOwner(groupService.getById(g.getId()));
+		}
+		layerModelService.saveOrUpdateLayerModel(lm);
+		response.setLayerModel(dtoService.toDto(lm, false/* TODO: , request.getLocale() */));
+
 		try {
-			if (request.getConfiguration() == null) {
-				//TODO: i18n
-				response.getErrorMessages().add("Fout bij opslaan loket: Configuratie is vereist.");
-				return;
-			}
-
-			DeskmanagerClientLayerInfo ud = (DeskmanagerClientLayerInfo) request.getConfiguration()
-					.getClientLayerInfo().getUserData();
-			ClientLayerInfo cvli = request.getConfiguration().getClientLayerInfo();
-			LayerModel lm = new LayerModel();
-			lm.setDynamicLayerConfiguration(request.getConfiguration());
-			lm.setName(cvli.getLabel());
-			lm.setActive(ud.isActive());
-			lm.setClientLayerId(cvli.getId());
-			lm.setDefaultVisible(cvli.isVisible());
-			lm.setMaxScale(cvli.getMaximumScale());
-			lm.setMinScale(cvli.getMinimumScale());
-			lm.setPublic(ud.isPublic());
-			LayerType layerType = request.getConfiguration().getServerLayerInfo().getLayerType();
-			switch (layerType) {
-				case RASTER:
-					lm.setLayerType("Raster");
-					break;
-				default:
-					lm.setLayerType(request.getConfiguration().getServerLayerInfo().getLayerType().getGeometryType());
-					break;
-			}
-
-			Territory g = ((DeskmanagerSecurityContext) securityContext).getTerritory();
-			if (g.getId() > 0) { // 0 = superuser
-				lm.setOwner(groupService.getById(g.getId()));
-			}
-			layerModelService.saveOrUpdateLayerModel(lm);
-			response.setLayerModel(dtoService.toDto(lm, false/* TODO: , request.getLocale()*/));
-
-			try {
-				loadService.loadDynamicLayers();
-				// loadService.loadDynamicLayer(lm.getLayerConfiguration());
-			} catch (Exception e) {
-				response.getErrorMessages().add("Fout bij initializeren datalaag in context: " + e.getMessage());
-				log.error("Fout bij initializeren datalaag in context: ", e);
-			}
+			loadService.loadDynamicLayers();
+			// loadService.loadDynamicLayer(lm.getLayerConfiguration());
 		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij opslaan datalaag: " + e.getMessage());
-			log.error("fout bij opslaan datalaag.", e);
+			log.error("Error while initializing datalayer in context.", e);
+			throw new GeomajasException(new Exception("Error while initializing datalayer in context.", e));
 		}
 	}
 

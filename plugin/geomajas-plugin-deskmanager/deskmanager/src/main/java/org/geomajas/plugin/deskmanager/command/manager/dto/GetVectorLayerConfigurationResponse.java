@@ -19,13 +19,13 @@ public class GetVectorLayerConfigurationResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private VectorLayerConfiguration vectorLayerConfiguration;
+	private DynamicVectorLayerConfiguration vectorLayerConfiguration;
 
-	public VectorLayerConfiguration getVectorLayerConfiguration() {
+	public DynamicVectorLayerConfiguration getVectorLayerConfiguration() {
 		return vectorLayerConfiguration;
 	}
 
-	public void setVectorLayerConfiguration(VectorLayerConfiguration vectorLayerConfiguration) {
+	public void setVectorLayerConfiguration(DynamicVectorLayerConfiguration vectorLayerConfiguration) {
 		this.vectorLayerConfiguration = vectorLayerConfiguration;
 	}
 }

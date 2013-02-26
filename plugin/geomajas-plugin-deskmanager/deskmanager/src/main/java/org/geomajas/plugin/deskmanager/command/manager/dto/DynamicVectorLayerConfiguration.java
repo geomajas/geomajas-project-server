@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 /**
  * @author Kristof Heirwegh
  */
-public class VectorLayerConfiguration extends DynamicLayerConfiguration {
+public class DynamicVectorLayerConfiguration extends DynamicLayerConfiguration {
 
 	private static final long serialVersionUID = 1L;
 

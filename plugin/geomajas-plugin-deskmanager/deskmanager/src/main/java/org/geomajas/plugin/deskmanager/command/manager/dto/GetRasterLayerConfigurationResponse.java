@@ -19,13 +19,13 @@ public class GetRasterLayerConfigurationResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private RasterLayerConfiguration rasterLayerConfiguration;
+	private DynamicRasterLayerConfiguration rasterLayerConfiguration;
 
-	public RasterLayerConfiguration getRasterLayerConfiguration() {
+	public DynamicRasterLayerConfiguration getRasterLayerConfiguration() {
 		return rasterLayerConfiguration;
 	}
 
-	public void setRasterLayerConfiguration(RasterLayerConfiguration rasterLayerConfiguration) {
+	public void setRasterLayerConfiguration(DynamicRasterLayerConfiguration rasterLayerConfiguration) {
 		this.rasterLayerConfiguration = rasterLayerConfiguration;
 	}
 }

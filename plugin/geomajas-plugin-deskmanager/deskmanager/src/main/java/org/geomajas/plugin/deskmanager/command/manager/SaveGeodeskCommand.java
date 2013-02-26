@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component(SaveGeodeskRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
-public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodeskResponse> {
+public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GeodeskResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SaveGeodeskCommand.class);
 
@@ -56,7 +56,7 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodes
 	private SecurityContext securityContext;
 
 	/** {@inheritDoc} */
-	public void execute(SaveGeodeskRequest request, GetGeodeskResponse response) throws Exception {
+	public void execute(SaveGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			if (request.getLoket() == null) {
 				response.getErrorMessages().add("Geen loket opgegeven ??");
@@ -94,8 +94,8 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GetGeodes
 	}
 
 	/** {@inheritDoc} */
-	public GetGeodeskResponse getEmptyCommandResponse() {
-		return new GetGeodeskResponse();
+	public GeodeskResponse getEmptyCommandResponse() {
+		return new GeodeskResponse();
 	}
 
 	// ----------------------------------------------------------

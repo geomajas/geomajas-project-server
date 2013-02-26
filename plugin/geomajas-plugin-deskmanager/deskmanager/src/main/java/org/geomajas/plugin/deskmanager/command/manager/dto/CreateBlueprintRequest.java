@@ -25,14 +25,23 @@ public class CreateBlueprintRequest implements CommandRequest {
 
 	private String name;
 	
-	private String userApplicationName;
+	private String userApplicationKey;
 
-	public String getUserApplicationName() {
-		return userApplicationName;
+	/**
+	 * Get the user application key.
+	 * @return the user application key.
+	 */
+	public String getUserApplicationKey() {
+		return userApplicationKey;
 	}
 
-	public void setUserApplicationName(String userApplicationName) {
-		this.userApplicationName = userApplicationName;
+	/**
+	 * Set the user application key.
+	 * 
+	 * @param userApplicationKey the key to set.
+	 */
+	public void setUserApplicationKey(String userApplicationKey) {
+		this.userApplicationKey = userApplicationKey;
 	}
 
 	/**

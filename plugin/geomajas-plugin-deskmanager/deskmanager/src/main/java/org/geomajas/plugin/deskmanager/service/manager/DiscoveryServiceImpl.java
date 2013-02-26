@@ -46,9 +46,9 @@ import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.runtimeconfig.service.BeanFactory;
@@ -161,7 +161,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");
 	}
 
-	public VectorLayerConfiguration getVectorLayerConfiguration(Map<String, String> connectionProperties,
+	public DynamicVectorLayerConfiguration getVectorLayerConfiguration(Map<String, String> connectionProperties,
 			String layerName) throws DeskmanagerException {
 		DataStore store = null;
 		try {
@@ -170,9 +170,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
 		}
 		if (store == null) {
-			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");	
-		} 
-		
+			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");
+		}
+
 		try {
 			Bbox maxExtent = null;
 			SimpleFeatureSource fs = store.getFeatureSource(layerName);
@@ -187,7 +187,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			if (sft != null) {
 				String clientLayerName = UUID.randomUUID().toString();
 				String serverLayerName = getServerLayerName(clientLayerName);
-				VectorLayerConfiguration vlc = new VectorLayerConfiguration();
+				DynamicVectorLayerConfiguration vlc = new DynamicVectorLayerConfiguration();
 
 				// -- Featureinfo --
 				FeatureInfo fi = new FeatureInfo();
@@ -242,7 +242,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 				vlc.setParameters(params);
 
 				return vlc;
-			} 
+			}
 		} catch (Exception e) {
 			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
 		}
@@ -291,10 +291,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		return new Bbox(envelope.getMinimum(0), envelope.getMinimum(1), envelope.getSpan(0), envelope.getSpan(1));
 	}
 
-	public RasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
+	public DynamicRasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
 			RasterCapabilitiesInfo rasterCapabilitiesInfo) throws IOException, DeskmanagerException {
 		try {
-			RasterLayerConfiguration rlc = new RasterLayerConfiguration();
+			DynamicRasterLayerConfiguration rlc = new DynamicRasterLayerConfiguration();
 			String clientLayerName = UUID.randomUUID().toString();
 			String serverLayerName = getServerLayerName(clientLayerName);
 			// server layer info
@@ -326,7 +326,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 	}
 
-	// private VectorLayer createVectorLayer(VectorLayerConfiguration configuration) throws Exception {
+	// private VectorLayer createVectorLayer(DynamicVectorLayerConfiguration configuration) throws Exception {
 	// GeoToolsLayer gtl = new GeoToolsLayer();
 	// if (clientLayerInfoMap.containsKey(configuration.getClientVectorLayerInfo().getId())) {
 	// throw new Exception("ClientlayerId is already taken!");
@@ -341,7 +341,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	// return gtl;
 	// }
 
-	// private RasterLayer createRasterLayer(RasterLayerConfiguration configuration) throws Exception {
+	// private RasterLayer createRasterLayer(DynamicRasterLayerConfiguration configuration) throws Exception {
 	// // TODO
 	// throw new NotImplementedException("TODO");
 	//
@@ -358,10 +358,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	// }
 
 	// private Layer<?> createLayer(DynamicLayerConfiguration lc) throws Exception {
-	// if (lc instanceof VectorLayerConfiguration) {
-	// return createVectorLayer((VectorLayerConfiguration) lc);
-	// } else if (lc instanceof RasterLayerConfiguration) {
-	// return createRasterLayer((RasterLayerConfiguration) lc);
+	// if (lc instanceof DynamicVectorLayerConfiguration) {
+	// return createVectorLayer((DynamicVectorLayerConfiguration) lc);
+	// } else if (lc instanceof DynamicRasterLayerConfiguration) {
+	// return createRasterLayer((DynamicRasterLayerConfiguration) lc);
 	// } else {
 	// return null;
 	// }
@@ -369,21 +369,21 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	public Map<String, Object> createBeanLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
-			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE,
-					lc.getClientLayerInfo().getId());
+			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
+					.getId());
 		}
 		if (serverLayerMap.containsKey(lc.getClientLayerInfo().getServerLayerId())) {
-			throw new DeskmanagerException(DeskmanagerException.SERVER_LAYERID_ALREADY_IN_USE,
-					lc.getClientLayerInfo().getServerLayerId());
+			throw new DeskmanagerException(DeskmanagerException.SERVER_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
+					.getServerLayerId());
 		}
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(BeanFactory.BEAN_NAME, lc.getClientLayerInfo().getServerLayerId());
 
-		if (lc instanceof VectorLayerConfiguration) {
-			createVectorLayerParams((VectorLayerConfiguration) lc, params);
-		} else if (lc instanceof RasterLayerConfiguration) {
-			createRasterLayerParams((RasterLayerConfiguration) lc, params);
+		if (lc instanceof DynamicVectorLayerConfiguration) {
+			createVectorLayerParams((DynamicVectorLayerConfiguration) lc, params);
+		} else if (lc instanceof DynamicRasterLayerConfiguration) {
+			createRasterLayerParams((DynamicRasterLayerConfiguration) lc, params);
 		} else {
 			return null;
 		}
@@ -391,13 +391,15 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		return params;
 	}
 
-	private void createVectorLayerParams(VectorLayerConfiguration vlc, Map<String, Object> params) throws Exception {
+	private void createVectorLayerParams(DynamicVectorLayerConfiguration vlc, Map<String, Object> params)
+			throws Exception {
 		params.put(BeanFactory.CLASS_NAME, GeoToolsLayer.class.getName());
 		params.put(BaseVectorLayerBeanFactory.LAYER_INFO, vlc.getVectorLayerInfo());
 		params.put(GeoToolsLayerBeanFactory.PARAMETERS, vlc.getParameters());
 	}
 
-	public void createRasterLayerParams(RasterLayerConfiguration rlc, Map<String, Object> params) throws Exception {
+	public void createRasterLayerParams(DynamicRasterLayerConfiguration rlc, Map<String, Object> params)
+			throws Exception {
 		// TODO: this mixes WMS and generic stuff: split this up for WMS/TMS/OSM or make a generic
 		// RasterLayerBeanFactory ?
 		params.put(BeanFactory.CLASS_NAME, WmsLayer.class.getName());
@@ -412,23 +414,23 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	// -------------------------------------------------
 
 	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) 
-		throws Exception {
+	throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
-			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE,
-					lc.getClientLayerInfo().getId());
+			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
+					.getId());
 		}
 		if (serverLayerMap.containsKey(lc.getClientLayerInfo().getServerLayerId())) {
-			throw new DeskmanagerException(DeskmanagerException.SERVER_LAYERID_ALREADY_IN_USE,
-					lc.getClientLayerInfo().getServerLayerId());
+			throw new DeskmanagerException(DeskmanagerException.SERVER_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
+					.getServerLayerId());
 		}
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(BeanFactory.BEAN_NAME, lc.getClientLayerInfo().getServerLayerId());
 
-		if (lc instanceof VectorLayerConfiguration) {
-			createVectorLayerParams((VectorLayerConfiguration) lc, params);
-		} else if (lc instanceof RasterLayerConfiguration) {
-			createRasterLayerParams((RasterLayerConfiguration) lc, params);
+		if (lc instanceof DynamicVectorLayerConfiguration) {
+			createVectorLayerParams((DynamicVectorLayerConfiguration) lc, params);
+		} else if (lc instanceof DynamicRasterLayerConfiguration) {
+			createRasterLayerParams((DynamicRasterLayerConfiguration) lc, params);
 		} else {
 			return null;
 		}
