@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.test.command.common;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.command.dto.GetConfigurationRequest;
+import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
@@ -28,7 +28,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Oliver May
@@ -37,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-@Transactional
 public class GetMapConfigurationCommandTest {
 
 	@Autowired
@@ -67,11 +65,11 @@ public class GetMapConfigurationCommandTest {
 		request.setApplicationId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE);
 		request.setMapId(GdmLayout.MAPMAIN_ID);
 
-		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				GetConfigurationRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(GetMapConfigurationRequest.COMMAND, request, guestToken, "en");
 
 		Assert.assertTrue(response.getErrorMessages().isEmpty());
-		Assert.assertNotNull(response.getMapInfo());
+		Assert.assertTrue(response instanceof GetMapConfigurationResponse);
+		Assert.assertNotNull(((GetMapConfigurationResponse) response).getMapInfo());
 	}
 
 	@Test
@@ -80,10 +78,9 @@ public class GetMapConfigurationCommandTest {
 		request.setApplicationId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_DE_PRIVATE);
 		request.setMapId(GdmLayout.MAPMAIN_ID);
 
-		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				GetConfigurationRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(GetMapConfigurationRequest.COMMAND, request, guestToken, "en");
 
 		Assert.assertFalse(response.getErrorMessages().isEmpty());
-		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
+		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}
 }

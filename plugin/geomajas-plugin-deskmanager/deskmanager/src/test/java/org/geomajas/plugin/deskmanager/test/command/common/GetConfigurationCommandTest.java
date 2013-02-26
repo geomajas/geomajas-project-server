@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.test.command.common;
 
 import org.geomajas.command.CommandDispatcher;
+import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
@@ -35,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-@Transactional
 public class GetConfigurationCommandTest {
 
 	@Autowired
@@ -76,7 +76,7 @@ public class GetConfigurationCommandTest {
 		GetConfigurationRequest request = new GetConfigurationRequest();
 		request.setApplicationId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_DE_PRIVATE);
 
-		GetConfigurationResponse response = (GetConfigurationResponse) dispatcher.execute(
+		CommandResponse response = dispatcher.execute(
 				GetConfigurationRequest.COMMAND, request, guestToken, "en");
 
 		Assert.assertFalse(response.getErrorMessages().isEmpty());

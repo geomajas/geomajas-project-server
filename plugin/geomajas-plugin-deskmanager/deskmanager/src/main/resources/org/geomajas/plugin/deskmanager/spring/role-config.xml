@@ -127,7 +127,7 @@
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<value>*google*</value>
+				<value>google*</value>
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">
@@ -160,7 +160,7 @@
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<value>*google*</value>
+				<value>google*</value>
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">
@@ -193,7 +193,7 @@
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<value>*google*</value>
+				<value>google*</value>
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">

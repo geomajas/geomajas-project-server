@@ -37,18 +37,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * @author Oliver May
- *
- * TODO: tests for all different save scenarios
- *
+ * 
+ *         TODO: tests for all different save scenarios
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-@Transactional
 public class SaveBlueprintCommandTest {
+
 	@Autowired
 	private SecurityService securityService;
 
@@ -68,10 +67,10 @@ public class SaveBlueprintCommandTest {
 	@Before
 	public void setup() throws Exception {
 		// First profile in list is admin
-		userToken = ((DeskmanagerSecurityService) securityService).registerRole(
-				RetrieveRolesRequest.MANAGER_ID, profileService.getProfiles().get(0));
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(
-				RetrieveRolesRequest.MANAGER_ID, DeskmanagerSecurityService.createGuestProfile());
+		userToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
+				profileService.getProfiles().get(0));
+		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
+				DeskmanagerSecurityService.createGuestProfile());
 
 		// Log in
 		securityManager.createSecurityContext(userToken);
@@ -81,27 +80,29 @@ public class SaveBlueprintCommandTest {
 	 * Test layer settings.
 	 */
 	@Test
+	@Transactional
 	public void testSaveLayers() {
-		GetLayersResponse glsresp = (GetLayersResponse) dispatcher.execute(GetLayersRequest.COMMAND, 
+		GetLayersResponse glsresp = (GetLayersResponse) dispatcher.execute(GetLayersRequest.COMMAND,
 				new GetLayersRequest(), userToken, "en");
-		
-		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND, 
+
+		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND,
 				new GetBlueprintsRequest(), userToken, "en");
-		
+
 		GetBlueprintRequest gbpreq = new GetBlueprintRequest();
 		gbpreq.setUuid(gbpsresp.getBlueprints().get(0).getId());
-		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, 
-				gbpreq, userToken, "en");
+		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
+				userToken, "en");
 
 		BlueprintDto bpDto = gbpresp.getBlueprint();
-		
+
 		LayerDto cl = glsresp.getLayers().get(0);
 		Assert.assertNull(cl.getClientLayerInfo());
 		Assert.assertNull(cl.getWidgetInfo().get("TEST"));
 		cl.setCLientLayerInfo(cl.getReferencedLayerInfo());
 		cl.getWidgetInfo().put("TEST", new MyClientWidgetInfo("testSaveLayers"));
+		bpDto.getMainMapLayers().clear();
 		bpDto.getMainMapLayers().add(cl);
-		
+
 		SaveBlueprintRequest request = new SaveBlueprintRequest();
 		request.setBlueprint(bpDto);
 		request.setSaveBitmask(SaveBlueprintRequest.SAVE_LAYERS);
@@ -111,40 +112,37 @@ public class SaveBlueprintCommandTest {
 
 		gbpreq = new GetBlueprintRequest();
 		gbpreq.setUuid(gbpsresp.getBlueprints().get(0).getId());
-		gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, 
-				gbpreq, userToken, "en");
-		
+		gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq, userToken, "en");
+
 		bpDto = gbpresp.getBlueprint();
-		
-		Assert.assertEquals(bpDto.getMainMapLayers().get(0).getWidgetInfo().get("TEST"), 
-				new MyClientWidgetInfo("testSaveLayers"));
+
+		Assert.assertEquals(new MyClientWidgetInfo("testSaveLayers"), bpDto.getMainMapLayers().get(0).getWidgetInfo()
+				.get("TEST"));
 		Assert.assertNotNull(bpDto.getMainMapLayers().get(0).getClientLayerInfo());
 	}
-	
+
 	/**
 	 * Test security.
 	 */
 	@Test
 	public void testNotAllowed() {
-		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND, 
+		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND,
 				new GetBlueprintsRequest(), userToken, "en");
-		
+
 		GetBlueprintRequest gbpreq = new GetBlueprintRequest();
 		gbpreq.setUuid(gbpsresp.getBlueprints().get(0).getId());
-		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, 
-				gbpreq, userToken, "en");
+		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
+				userToken, "en");
 		Assert.assertTrue(gbpresp.getExceptions().isEmpty());
-		
+
 		securityManager.createSecurityContext(guestToken);
 
-		
 		SaveBlueprintRequest request = new SaveBlueprintRequest();
 		request.setBlueprint(gbpresp.getBlueprint());
 
-		BlueprintResponse response = 
-			(BlueprintResponse) dispatcher.execute(SaveBlueprintRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(SaveBlueprintRequest.COMMAND, request, guestToken, "en");
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
-		
+
 	}
 }

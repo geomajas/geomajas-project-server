@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kristof Heirwegh
  */
 @Repository
-@Transactional(rollbackFor = { Exception.class })
+@Transactional(readOnly = true)
 public class GeodeskServiceImpl implements GeodeskService {
 
 	@SuppressWarnings("unused")
@@ -65,8 +65,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 
 	public boolean loketExists(String publicId) {
 		Query q = factory.getCurrentSession().createQuery(
-				"select id from Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false"
-		);
+				"select id from Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false");
 		q.setParameter("id", publicId);
 		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 
@@ -89,8 +88,8 @@ public class GeodeskServiceImpl implements GeodeskService {
 		if (loketExists(id)) {
 			if (((DeskmanagerSecurityContext) securityContext).isGeodeskUseAllowed(id)) {
 				Query q = factory.getCurrentSession().createQuery(
-						"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " 
-						+ "l.active = true AND l.blueprint.geodesksActive = true");
+						"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND "
+								+ "l.active = true AND l.blueprint.geodesksActive = true");
 				q.setParameter("id", id);
 				q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 				Geodesk l = (Geodesk) q.uniqueResult();
@@ -99,7 +98,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 				}
 				return l;
 			} else {
-				//FIXME: i18n
+				// FIXME: i18n
 				throw new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, "Geodesk openen",
 						securityContext.getUserName());
 			}
@@ -134,6 +133,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		return crit.list();
 	}
 
+	@Transactional(rollbackFor = { Exception.class })
 	public void deleteGeodesk(Geodesk l) throws GeomajasSecurityException {
 		if (((DeskmanagerSecurityContext) securityContext).deleteAllowed(l)) {
 			factory.getCurrentSession().delete(l);
@@ -143,6 +143,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		}
 	}
 
+	@Transactional(rollbackFor = { Exception.class })
 	public void saveOrUpdateGeodesk(Geodesk l) throws GeomajasSecurityException {
 		if (((DeskmanagerSecurityContext) securityContext).saveAllowed(l)) {
 			Date date = new Date();
@@ -180,7 +181,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 			case ADMINISTRATOR:
 				return true;
 			case DESK_MANAGER:
-				//Allow desk usage for the deskmanager
+				// Allow desk usage for the deskmanager
 				Geodesk desk = getGeodeskByPublicIdInternal(id);
 				return desk.getOwner().equals(territory);
 			case CONSULTING_USER:

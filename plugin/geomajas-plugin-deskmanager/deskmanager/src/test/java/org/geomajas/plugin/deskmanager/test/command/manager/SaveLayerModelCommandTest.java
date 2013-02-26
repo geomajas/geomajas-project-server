@@ -13,6 +13,7 @@ package org.geomajas.plugin.deskmanager.test.command.manager;
 import junit.framework.Assert;
 
 import org.geomajas.command.CommandDispatcher;
+import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
@@ -277,8 +278,7 @@ public class SaveLayerModelCommandTest {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(glmresponse.getLayerModel());
 
-		LayerModelResponse response = 
-			(LayerModelResponse) dispatcher.execute(SaveLayerModelRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(SaveLayerModelRequest.COMMAND, request, guestToken, "en");
 		
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
