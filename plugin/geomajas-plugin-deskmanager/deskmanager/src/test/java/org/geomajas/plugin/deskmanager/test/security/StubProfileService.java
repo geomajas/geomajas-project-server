@@ -42,7 +42,6 @@ public class StubProfileService implements ProfileService {
 		admin.setFirstName("Peter");
 		admin.setSurname("The Administrator");
 		admin.setTerritory(groupService.getByCode("ADMIN"));
-		//profile.setLoketten();
 		profiles.add(admin);
 
 		Profile deskManager = new Profile();
@@ -51,7 +50,6 @@ public class StubProfileService implements ProfileService {
 		deskManager.setFirstName("Lois");
 		deskManager.setSurname("The Deskmanager");
 		deskManager.setTerritory(groupService.getByCode("BE"));
-		//profile.setLoketten();
 		profiles.add(deskManager);
 		
 		Profile deskConsulter = new Profile();
@@ -60,7 +58,6 @@ public class StubProfileService implements ProfileService {
 		deskConsulter.setFirstName("Stewart");
 		deskConsulter.setSurname("The Consulter");
 		deskConsulter.setTerritory(groupService.getByCode("BE"));
-		//profile.setLoketten();
 		profiles.add(deskConsulter);
 		
 		Profile deskEditor = new Profile();
@@ -69,12 +66,24 @@ public class StubProfileService implements ProfileService {
 		deskEditor.setFirstName("Meg");
 		deskEditor.setSurname("The Editor");
 		deskEditor.setTerritory(groupService.getByCode("BE"));
-		//profile.setLoketten();
 		profiles.add(deskEditor);
 		
 		profiles.add(DeskmanagerSecurityService.createGuestProfile());
 		
 		return profiles;
 	}
-
+	
+	/**
+	 * Helper method to retrieve a profile for a specific role.
+	 * @param role
+	 * @return the profile
+	 */
+	public Profile getProfileByRole(Role role) {
+		for (Profile p : getProfiles()) {
+			if (p.getRole().equals(role)) {
+				return p;
+			}
+		}
+		return null;
+	}
 }

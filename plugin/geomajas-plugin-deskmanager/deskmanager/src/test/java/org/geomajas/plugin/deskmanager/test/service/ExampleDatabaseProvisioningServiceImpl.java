@@ -38,7 +38,15 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Component
-public class DeskmanagerExampleDatabaseProvisioningServiceImpl implements DeskmanagerExampleDatabaseProvisioningService {
+public class ExampleDatabaseProvisioningServiceImpl implements DeskmanagerExampleDatabaseProvisioningService {
+
+	public static final String GEODESK_TEST_DE = "TEST_DE";
+
+	public static final String GEODESK_TEST_DE_PRIVATE = "TEST_DE_PRIVATE";
+
+	public static final String GEODESK_TEST_NL = "TEST_NL";
+
+	public static final String GEODESK_TEST_BE = "TEST_BE";
 
 	private static final int SRID = 3857;
 
@@ -205,7 +213,7 @@ public class DeskmanagerExampleDatabaseProvisioningServiceImpl implements Deskma
 		geodesk.setName(getMessage("testBelgianGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
 		geodesk.setOwner(beGroup);
 		geodesk.setPublic(true);
-		geodesk.setGeodeskId("TEST_BE");
+		geodesk.setGeodeskId(GEODESK_TEST_BE);
 
 		session.getCurrentSession().saveOrUpdate(geodesk);
 
@@ -223,7 +231,7 @@ public class DeskmanagerExampleDatabaseProvisioningServiceImpl implements Deskma
 		geodesk2.setName(getMessage("testDutchGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
 		geodesk2.setOwner(nlGroup);
 		geodesk2.setPublic(true);
-		geodesk2.setGeodeskId("TEST_NL");
+		geodesk2.setGeodeskId(GEODESK_TEST_NL);
 
 		session.getCurrentSession().saveOrUpdate(geodesk2);
 
@@ -241,9 +249,27 @@ public class DeskmanagerExampleDatabaseProvisioningServiceImpl implements Deskma
 		geodesk3.setName(getMessage("testGermanGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
 		geodesk3.setOwner(deGroup);
 		geodesk3.setPublic(true);
-		geodesk3.setGeodeskId("TEST_DE");
+		geodesk3.setGeodeskId(GEODESK_TEST_DE);
 
 		session.getCurrentSession().saveOrUpdate(geodesk3);
+
+		// Create an example non publigeodesk.
+		Geodesk geodesk4 = new Geodesk();
+		geodesk4.setActive(true);
+		geodesk4.setBlueprint(bluePrint);
+		geodesk4.setCreationBy(getMessage("systemUsr"));
+		geodesk4.setCreationDate(new Date());
+		geodesk4.setDeleted(false);
+		geodesk4.setLastEditBy(getMessage("systemUsr"));
+		geodesk4.setLastEditDate(new Date());
+		geodesk4.setLimitToCreatorTerritory(true);
+		geodesk4.setLimitToUserTerritory(false);
+		geodesk4.setName(getMessage("testGermanGeodeskBasedOn") + " " + CLIENTAPPLICATION_NAME);
+		geodesk4.setOwner(deGroup);
+		geodesk4.setPublic(false);
+		geodesk4.setGeodeskId(GEODESK_TEST_DE_PRIVATE);
+
+		session.getCurrentSession().saveOrUpdate(geodesk4);
 
 	}
 	
