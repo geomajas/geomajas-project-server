@@ -26,7 +26,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-deskmanager-framework</artifactId>
+			<artifactId>geomajas-plugin-deskmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
