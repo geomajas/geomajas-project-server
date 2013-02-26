@@ -15,18 +15,11 @@ import org.geomajas.internal.configuration.ConfigurationDtoPostProcessor;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.ScaleInfoUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Oliver May
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
 public class ScaleInfoUtilTest {
 
 	private static final double MAP_UNIT_IN_PIXELS = 2.0;
@@ -35,8 +28,7 @@ public class ScaleInfoUtilTest {
 
 	private static final double DELTA = 1e-15;
 
-	@Autowired
-	private ConfigurationDtoPostProcessor dtoConfigurationDtoPostProcessor;
+	private ConfigurationDtoPostProcessor dtoConfigurationDtoPostProcessor = new ConfigurationDtoPostProcessor();
 
 	@Test
 	public void testScaleInfoUpdates() {
