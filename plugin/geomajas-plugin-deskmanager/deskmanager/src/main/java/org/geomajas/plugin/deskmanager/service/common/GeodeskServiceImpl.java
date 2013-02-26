@@ -63,7 +63,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		}
 	}
 
-	public boolean loketExists(String publicId) {
+	public boolean geodeskExists(String publicId) {
 		Query q = factory.getCurrentSession().createQuery(
 				"select id from Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false");
 		q.setParameter("id", publicId);
@@ -85,7 +85,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	 * Will throw a securityException if no accessrights, or not active.
 	 */
 	public Geodesk getGeodeskByPublicId(String id) throws GeomajasSecurityException {
-		if (loketExists(id)) {
+		if (geodeskExists(id)) {
 			if (((DeskmanagerSecurityContext) securityContext).isGeodeskUseAllowed(id)) {
 				Query q = factory.getCurrentSession().createQuery(
 						"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND "
@@ -108,7 +108,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	}
 
 	public Geodesk getGeodeskByPublicIdInternal(String id) {
-		if (loketExists(id)) {
+		if (geodeskExists(id)) {
 			Query q = factory.getCurrentSession().createQuery(
 					"FROM Geodesk l WHERE l.geodeskId = :id AND " + "l.deleted = false AND " + "l.active = true AND "
 							+ "l.blueprint.geodesksActive = true");
@@ -121,7 +121,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Geodesk> getLoketten() throws GeomajasSecurityException {
+	public List<Geodesk> getGeodesks() throws GeomajasSecurityException {
 		Criteria crit = factory.getCurrentSession().createCriteria(Geodesk.class);
 		crit.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		crit.add(Restrictions.eq("deleted", false));
@@ -164,7 +164,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 		}
 	}
 
-	public String getLoketNameByPublicId(String id) throws GeomajasSecurityException {
+	public String getGeodeskNameByPublicId(String id) throws GeomajasSecurityException {
 		Query q = factory.getCurrentSession().createQuery("SELECT name FROM Geodesk l WHERE l.geodeskId = :id");
 		q.setParameter("id", id);
 		q.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
@@ -173,7 +173,7 @@ public class GeodeskServiceImpl implements GeodeskService {
 	}
 
 	/**
-	 * group can be null, in which case the loket will need to be public.
+	 * group can be null, in which case the geodesk will need to be public.
 	 */
 	public boolean isGeodeskUseAllowed(String id, Role role, Territory territory) {
 		Query q;
@@ -205,32 +205,32 @@ public class GeodeskServiceImpl implements GeodeskService {
 		return (result != null);
 	}
 
-	public boolean isGeodeskReadAllowed(Geodesk loket, Role role, Territory group) {
+	public boolean isGeodeskReadAllowed(Geodesk geodesk, Role role, Territory group) {
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;
 			case DESK_MANAGER:
-				return loket.getOwner().equals(group);
+				return geodesk.getOwner().equals(group);
 		}
 		return false;
 	}
 
-	public boolean isGeodeskSaveAllowed(Geodesk loket, Role role, Territory group) {
+	public boolean isGeodeskSaveAllowed(Geodesk geodesk, Role role, Territory group) {
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;
 			case DESK_MANAGER:
-				return loket.getOwner().equals(group);
+				return geodesk.getOwner().equals(group);
 		}
 		return false;
 	}
 
-	public boolean isGeodeskDeleteAllowed(Geodesk loket, Role role, Territory group) {
+	public boolean isGeodeskDeleteAllowed(Geodesk geodesk, Role role, Territory group) {
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;
 			case DESK_MANAGER:
-				return loket.getOwner().equals(group);
+				return geodesk.getOwner().equals(group);
 		}
 		return false;
 	}

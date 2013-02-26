@@ -413,7 +413,7 @@ public final class ManagerCommandService {
 	 */
 	public static void deleteGeodesk(final GeodeskDto geodesk) {
 		DeleteGeodeskRequest request = new DeleteGeodeskRequest();
-		request.setUuid(geodesk.getId());
+		request.setGeodeskId(geodesk.getId());
 		GwtCommand command = new GwtCommand(DeleteGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,

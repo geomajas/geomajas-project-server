@@ -47,7 +47,7 @@ public class GetGeodesksCommand implements Command<GetGeodesksRequest, GetGeodes
 		List<GeodeskDto> geodesks = new ArrayList<GeodeskDto>();
 
 		// no need to filter by group, this is done by security
-		for (Geodesk l : geodeskService.getLoketten()) {
+		for (Geodesk l : geodeskService.getGeodesks()) {
 			geodesks.add(converterService.toDto(l, false));
 		}
 

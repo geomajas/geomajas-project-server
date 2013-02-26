@@ -36,9 +36,9 @@ public interface GeodeskService {
 	 */
 	Geodesk getGeodeskByPublicIdInternal(String id);
 
-	String getLoketNameByPublicId(String id) throws GeomajasSecurityException;
+	String getGeodeskNameByPublicId(String id) throws GeomajasSecurityException;
 
-	List<Geodesk> getLoketten() throws GeomajasSecurityException;
+	List<Geodesk> getGeodesks() throws GeomajasSecurityException;
 
 	void deleteGeodesk(Geodesk gd) throws GeomajasSecurityException;
 
@@ -50,7 +50,7 @@ public interface GeodeskService {
 	 * @param publicId
 	 * @return
 	 */
-	boolean loketExists(String publicId);
+	boolean geodeskExists(String publicId);
 
 	boolean isGeodeskUseAllowed(String id, Role role, Territory group);
 

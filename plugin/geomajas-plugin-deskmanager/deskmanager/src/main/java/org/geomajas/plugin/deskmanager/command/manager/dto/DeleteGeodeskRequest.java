@@ -25,14 +25,14 @@ public class DeleteGeodeskRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.DeleteLoket";
 
-	private String uuid;
+	private String geodeskId;
 
-	public String getUuid() {
-		return uuid;
+	public String getGeodeskId() {
+		return geodeskId;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setGeodeskId(String geodeskId) {
+		this.geodeskId = geodeskId;
 	}
 
 }

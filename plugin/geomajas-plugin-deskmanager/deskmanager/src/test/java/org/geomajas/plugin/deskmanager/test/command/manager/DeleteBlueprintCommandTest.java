@@ -75,15 +75,15 @@ public class DeleteBlueprintCommandTest {
 	@Transactional
 	public void testDeleteGeodesk() throws GeomajasSecurityException {
 
-		Geodesk gd = geodeskService.getLoketten().get(0);
-		int count = geodeskService.getLoketten().size();
+		Geodesk gd = geodeskService.getGeodesks().get(0);
+		int count = geodeskService.getGeodesks().size();
 		
 		DeleteGeodeskRequest request = new DeleteGeodeskRequest();
-		request.setUuid(gd.getId());
+		request.setGeodeskId(gd.getId());
 
 		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, request, userToken, "en");
 		Assert.assertTrue(response.getErrors().isEmpty());
-		Assert.assertTrue(geodeskService.getLoketten().size() == count -1);
+		Assert.assertTrue(geodeskService.getGeodesks().size() == count -1);
 	}
 
 	/**

@@ -40,13 +40,13 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 	/** {@inheritDoc} */
 	public void execute(DeleteGeodeskRequest request, CommandResponse response) throws Exception {
 		try {
-			if (request.getUuid() == null) {
+			if (request.getGeodeskId() == null) {
 				response.getErrorMessages().add("Geen id opgegeven?");
 			} else {
 
-				Geodesk bp = loketService.getGeodeskById(request.getUuid());
+				Geodesk bp = loketService.getGeodeskById(request.getGeodeskId());
 				if (bp == null) {
-					response.getErrorMessages().add("Geen loket gevonden met id: " + request.getUuid());
+					response.getErrorMessages().add("Geen loket gevonden met id: " + request.getGeodeskId());
 				} else {
 					loketService.deleteGeodesk(bp);
 				}
