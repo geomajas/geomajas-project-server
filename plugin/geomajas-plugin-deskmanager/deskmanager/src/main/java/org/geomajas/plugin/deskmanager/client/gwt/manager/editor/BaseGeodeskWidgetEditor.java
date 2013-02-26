@@ -21,7 +21,7 @@ import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api (allMethods = true)
+@Api(allMethods = true)
 public interface BaseGeodeskWidgetEditor extends WidgetEditor {
 
 	

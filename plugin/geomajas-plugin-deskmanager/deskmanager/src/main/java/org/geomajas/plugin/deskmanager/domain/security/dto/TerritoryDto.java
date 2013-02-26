@@ -14,19 +14,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 
 /**
- * DTO version of Territory, does not include geometry! See {@link Territory}
+ * DTO version of Territory, does not include geometry! 
+ * See {@link org.geomajas.plugin.deskmanager.domain.security.Territory}
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
  * 
- * @since 1.0.0
  */
-@Api
 public class TerritoryDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;

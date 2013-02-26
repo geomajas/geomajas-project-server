@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.service.common;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 
@@ -19,9 +18,7 @@ import org.geomajas.plugin.deskmanager.domain.Geodesk;
  * application.
  * 
  * @author Kristof Heirwegh
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public interface GeodeskConfigurationService {
 
 	/**

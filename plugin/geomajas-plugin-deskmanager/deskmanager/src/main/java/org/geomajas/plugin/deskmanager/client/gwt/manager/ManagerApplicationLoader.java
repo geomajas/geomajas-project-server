@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl.LoadingScreen;
@@ -27,12 +28,14 @@ import com.smartgwt.client.widgets.layout.Layout;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public final class ManagerApplicationLoader {
 
-	public static final int LOADING_Z_INDEX = 300000;
-
 	private static final ManagerApplicationLoader INSTANCE = new ManagerApplicationLoader();
+
+	private LoadingScreen loadScreen;
+
+	private ProfileDto profile;
 
 	// Hide default constructor.
 	private ManagerApplicationLoader() {
@@ -47,10 +50,6 @@ public final class ManagerApplicationLoader {
 		return INSTANCE;
 	}
 
-	private LoadingScreen loadScreen;
-
-	private ProfileDto profile;
-
 	/**
 	 * Loads the manager application, asks for the correct role, and adds it to the given layout. Calls the
 	 * initialization handler when finished;
@@ -60,7 +59,7 @@ public final class ManagerApplicationLoader {
 	 */
 	public void loadManager(final Layout parentLayout, ManagerInitializationHandler handler) {
 		loadScreen = new LoadingScreen();
-		loadScreen.setZIndex(LOADING_Z_INDEX);
+		loadScreen.setZIndex(GdmLayout.loadingZindex);
 		loadScreen.draw();
 
 		ManagerInitializer initializer = new ManagerInitializer();

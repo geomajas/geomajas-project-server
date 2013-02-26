@@ -20,7 +20,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api (allMethods = true)
 public interface ManagerInitializationHandler {
 
 	/**
