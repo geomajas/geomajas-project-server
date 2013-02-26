@@ -41,15 +41,15 @@ public class DeleteBlueprintCommand implements Command<DeleteBlueprintRequest, C
 	/** {@inheritDoc} */
 	public void execute(DeleteBlueprintRequest request, CommandResponse response) throws Exception {
 		try {
-			if (request.getUuid() == null) {
+			if (request.getBlueprintId() == null) {
 				//TODO: i18n
 				response.getErrorMessages().add("No blueprint id was given!");
 			} else {
 
-				Blueprint bp = blueprintService.getBlueprintById(request.getUuid());
+				Blueprint bp = blueprintService.getBlueprintById(request.getBlueprintId());
 				if (bp == null) {
 					//TODO: i18n
-					response.getErrorMessages().add("No blueprint was found with id: " + request.getUuid());
+					response.getErrorMessages().add("No blueprint was found with id: " + request.getBlueprintId());
 				} else {
 					blueprintService.deleteBlueprint(bp);
 				}

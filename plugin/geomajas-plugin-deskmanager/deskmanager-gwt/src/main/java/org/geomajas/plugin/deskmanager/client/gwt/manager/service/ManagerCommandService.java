@@ -148,7 +148,7 @@ public final class ManagerCommandService {
 	 */
 	public static void deleteBlueprint(final BlueprintDto blueprint) {
 		DeleteBlueprintRequest request = new DeleteBlueprintRequest();
-		request.setUuid(blueprint.getId());
+		request.setBlueprintId(blueprint.getId());
 		GwtCommand command = new GwtCommand(DeleteBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,

@@ -26,22 +26,22 @@ public class DeleteBlueprintRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.DeleteBlueprint";
 
-	private String uuid;
+	private String blueprintId;
 
 	/**
-	 * Get the uuid of the blueprint to delete.
-	 * @return the uuid
+	 * Get the blueprintId of the blueprint to delete.
+	 * @return the blueprintId
 	 */
-	public String getUuid() {
-		return uuid;
+	public String getBlueprintId() {
+		return blueprintId;
 	}
 
 	/**
-	 * Set the uuid of the blueprint to delete.
-	 * @param uuid the uuid
+	 * Set the blueprintId of the blueprint to delete.
+	 * @param blueprintId the blueprintId
 	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setBlueprintId(String uuid) {
+		this.blueprintId = uuid;
 	}
 
 }
