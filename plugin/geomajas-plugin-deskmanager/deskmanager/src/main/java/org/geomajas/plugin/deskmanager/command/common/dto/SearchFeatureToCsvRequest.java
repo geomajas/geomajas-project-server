@@ -21,6 +21,6 @@ public class SearchFeatureToCsvRequest extends SearchFeatureRequest {
 
 	private static final long serialVersionUID = 151L;
 
-	public static final String COMMAND = "command.deskmanager.SearchFeatureToCsv";
+	public static final String COMMAND = "command.common.SearchFeatureToCsv";
 
 }

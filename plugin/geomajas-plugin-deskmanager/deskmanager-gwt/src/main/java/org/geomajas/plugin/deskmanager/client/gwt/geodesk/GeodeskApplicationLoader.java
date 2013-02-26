@@ -100,7 +100,7 @@ public class GeodeskApplicationLoader {
 				GdmLayout.build = response.getDeskmanagerBuild();
 
 				// Load geodesk from registry
-				geodesk = UserApplicationRegistry.getInstance().get(response.getGeodeskTypeIdentifier());
+				geodesk = UserApplicationRegistry.getInstance().get(response.getUserApplicationKey());
 
 				geodesk.setApplicationId(response.getGeodeskIdentifier());
 				geodesk.setClientApplicationInfo(response.getClientApplicationInfo());

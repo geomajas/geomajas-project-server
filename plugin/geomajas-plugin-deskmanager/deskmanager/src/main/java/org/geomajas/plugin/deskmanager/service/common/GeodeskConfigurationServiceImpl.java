@@ -175,7 +175,7 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.warn("Fout bij aanmaken configuratie: " + e.getMessage());
+			log.warn("Error creating configuration: " + e.getMessage());
 			return null;
 		}
 	}
@@ -263,7 +263,8 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			if (blueprintLayers != null) {
 				cli = createLayer(geodeskLayer, getLayer(blueprintLayers, geodeskLayer.getLayerModel().getId()));
 			} else {
-				cli = createLayer(geodeskLayer, getLayer(Collections.EMPTY_LIST, geodeskLayer.getLayerModel().getId()));
+				cli = createLayer(geodeskLayer, getLayer(Collections.<ClientLayer>emptyList(), 
+						geodeskLayer.getLayerModel().getId()));
 			}
 			// Add the layer
 			if (cli != null) {

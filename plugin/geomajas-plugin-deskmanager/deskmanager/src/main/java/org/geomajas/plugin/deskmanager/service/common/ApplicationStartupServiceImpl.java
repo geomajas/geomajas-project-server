@@ -22,6 +22,7 @@ import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
+import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,12 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 	@Autowired(required = false)
 	private Map<String, Layer<LayerInfo>> serverLayerMap = new LinkedHashMap<String, Layer<LayerInfo>>();
 
+	@Autowired
+	private BlueprintService blueprintService;
+
 	public void onStartup() {
 		updateSystemLayers();
+		updateBlueprints();
 	}
 
 	// -------------------------------------------------
@@ -71,6 +76,15 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 			}
 		} catch (Exception e) {
 			log.warn("Error updating system layers: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Update the blueprints from the user applications.
+	 */
+	private void updateBlueprints() {
+		for (Blueprint bp : blueprintService.getBlueprintsInternal()) {
+			blueprintService.updateBluePrintFromUserApplication(bp);
 		}
 	}
 

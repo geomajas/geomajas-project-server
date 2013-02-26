@@ -23,7 +23,7 @@ public class CreateGeodeskRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.deskmanager.beheer.CreateGeodesk";
+	public static final String COMMAND = "command.manager.CreateGeodesk";
 
 	private String name;
 	

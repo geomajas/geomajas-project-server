@@ -19,13 +19,13 @@
 	<util:map id="security.roles" key-type="java.lang.String"
 		value-type="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
 		<entry key="UNASSIGNED" value-ref="UnassignedAuthorizationInfo" />
-		<entry key="GUEST" value-ref="GastAuthorizationInfo" />
+		<entry key="GUEST" value-ref="GuestAuthorizationInfo" />
 
-		<entry key="DESK_MANAGER" value-ref="BeherendAuthorizationInfo" />
- 		<entry key="ADMINISTRATOR" value-ref="SuperBeherendAuthorizationInfo" />
+		<entry key="DESK_MANAGER" value-ref="ManagerAuthorizationInfo" />
+ 		<entry key="ADMINISTRATOR" value-ref="AdministratorAuthorizationInfo" />
 
-		<entry key="EDITING_USER" value-ref="ConsulterendAuthorizationInfo" />
-		<entry key="CONSULTING_USER" value-ref="ConsulterendAuthorizationInfo" />
+		<entry key="EDITING_USER" value-ref="ConsultingAuthorizationInfo" />
+		<entry key="CONSULTING_USER" value-ref="ConsultingAuthorizationInfo" />
 
 	</util:map>
 
@@ -39,8 +39,6 @@
 		</property>
 		<property name="commandsExclude">
 			<list>
-				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
-				<!-- FIXME: hoe gaan we dit op een goeie manier overriden vanuit specifieke configuraties??? -->
 			</list>
 		</property>
 		<property name="toolsInclude">
@@ -50,12 +48,10 @@
 		</property>
 		<property name="visibleLayersInclude">
 			<list>
-				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">
@@ -70,7 +66,7 @@
 		</property>
 	</bean>
 
-	<bean id="GastAuthorizationInfo"
+	<bean id="GuestAuthorizationInfo"
 		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
 		<property name="commandsInclude">
 			<list>
@@ -79,11 +75,8 @@
 		</property>
 		<property name="commandsExclude">
 			<list>
-				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
-				<!-- FIXME: hoe gaan we dit op een goeie manier overriden vanuit specifieke configuraties??? -->
-				<value>command.vkbo.SearchByGeometriesToCsv</value>
-				<value>command.vkbo.SearchFeatureToCsv</value>
-				<value>command.deskmanager.beheer.*</value>
+				<value>command.common.SearchFeatureToCsv</value>
+				<value>command.manager.*</value>
 			</list>
 		</property>
 		<property name="toolsInclude">
@@ -93,12 +86,10 @@
 		</property>
 		<property name="visibleLayersInclude">
 			<list>
-				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">
@@ -113,7 +104,7 @@
 		</property>
 	</bean>
 
-	<bean id="ConsulterendAuthorizationInfo"
+	<bean id="ConsultingAuthorizationInfo"
 		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
 		<property name="commandsInclude">
 			<list>
@@ -122,8 +113,7 @@
 		</property>
 		<property name="commandsExclude">
 			<list>
-				<!-- Zet hier commando's die _nooit_ toegankelijk mogen zijn voor deze rol, onafhankelijk van het loket -->
-				<value>command.deskmanager.beheer.*</value>
+				<value>command.manager.*</value>
 			</list>
 		</property>
 		<property name="toolsInclude">
@@ -133,15 +123,11 @@
 		</property>
 		<property name="visibleLayersInclude">
 			<list>
-				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
-				<value>googleNormalLayerModel</value>
-				<value>googleTerrainLayerModel</value>
-				<value>googleSatelliteLayerModel</value>
+				<value>*google*</value>
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">
@@ -156,7 +142,7 @@
 		</property>
 	</bean>
 
-	<bean id="BeherendAuthorizationInfo"
+	<bean id="ManagerAuthorizationInfo"
 		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
 		<property name="commandsInclude">
 			<list>
@@ -170,15 +156,11 @@
 		</property>
 		<property name="visibleLayersInclude">
 			<list>
-				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
-				<value>googleNormalLayerModel</value>
-				<value>googleTerrainLayerModel</value>
-				<value>googleSatelliteLayerModel</value>
+				<value>*google*</value>
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">
@@ -193,7 +175,7 @@
 		</property>
 	</bean>
 
-	<bean id="SuperBeherendAuthorizationInfo"
+	<bean id="AdministratorAuthorizationInfo"
 		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
 		<property name="commandsInclude">
 			<list>
@@ -207,15 +189,11 @@
 		</property>
 		<property name="visibleLayersInclude">
 			<list>
-				<!-- Zet hier lagen die _altijd_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
 			</list>
 		</property>
 		<property name="visibleLayersExclude">
 			<list>
-				<!-- Zet hier lagen die _nooit_ zichtbaar moeten zijn voor deze rol, onafhankelijk van het loket -->
-				<value>googleNormalLayerModel</value>
-				<value>googleTerrainLayerModel</value>
-				<value>googleSatelliteLayerModel</value>
+				<value>*google*</value>
 			</list>
 		</property>
 		<property name="createAuthorizedLayersInclude">

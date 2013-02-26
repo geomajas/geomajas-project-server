@@ -129,6 +129,9 @@ public class BlueprintServiceImpl implements BlueprintService {
 		factory.getCurrentSession().saveOrUpdate(bp);
 	}
 
+	/**
+	 * Insert configuration from user application into blueprint, if blueprint does not exist.
+	 */
 	@Transactional(rollbackFor = { Exception.class })
 	public void updateBluePrintFromUserApplication(Blueprint bluePrint) {
 		if (bluePrint.getMainMapLayers() == null || bluePrint.getMainMapLayers().isEmpty()) {

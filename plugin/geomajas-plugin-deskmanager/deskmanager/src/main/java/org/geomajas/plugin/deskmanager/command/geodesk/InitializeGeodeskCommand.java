@@ -65,7 +65,7 @@ public class InitializeGeodeskCommand implements Command<InitializeGeodeskReques
 		}
 		if (loket != null) {
 			response.setGeodeskIdentifier(request.getGeodeskId());
-			response.setGeodeskTypeIdentifier(loket.getBlueprint().getUserApplicationKey());
+			response.setUserApplicationKey(loket.getBlueprint().getUserApplicationKey());
 
 			ClientApplicationInfo loketConfig = configurationService.createGeodeskConfiguration(loket, false);
 			response.setClientApplicationInfo(loketConfig);

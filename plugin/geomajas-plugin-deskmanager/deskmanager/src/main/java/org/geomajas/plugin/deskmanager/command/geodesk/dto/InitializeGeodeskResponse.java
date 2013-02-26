@@ -21,46 +21,78 @@ import org.geomajas.configuration.client.ClientApplicationInfo;
  */
 public class InitializeGeodeskResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND = "command.geodesk.InitializeGeodesk";
 
 	private String geodeskIdentifier;
 
-	private String geodeskTypeIdentifier;
+	private String userApplicationKey;
 
 	private String deskmanagerVersion;
 
 	private String deskmanagerBuild;
 
-	// Does not contain ClientMapInfo's (are retrieved separately)
 	private ClientApplicationInfo clientApplicationInfo;
 
+	
+	/**
+	 * Get the geodesk identifier (public id).
+	 * 
+	 * @return the identifier.
+	 */
 	public String getGeodeskIdentifier() {
 		return geodeskIdentifier;
 	}
 
+	/**
+	 * Set the geodesk identifier (public id).
+	 * 
+	 *  @param geodeskIdentifier the identifier
+	 */
 	public void setGeodeskIdentifier(String geodeskIdentifier) {
 		this.geodeskIdentifier = geodeskIdentifier;
 	}
 
+	/**
+	 * Get the client application info, this info does not contain maps.
+	 * 
+	 * @return the client application info.
+	 */
 	public ClientApplicationInfo getClientApplicationInfo() {
 		return clientApplicationInfo;
 	}
 
+	/**
+	 * Set the client application info, this info must not contain maps.
+	 * 
+	 * @param clientApplicationInfo the client application info.
+	 */
 	public void setClientApplicationInfo(ClientApplicationInfo clientApplicationInfo) {
 		this.clientApplicationInfo = clientApplicationInfo;
 	}
 
-	public String getGeodeskTypeIdentifier() {
-		return geodeskTypeIdentifier;
-	}
-
-	public void setGeodeskTypeIdentifier(String geodeskTypeIdentifier) {
-		this.geodeskTypeIdentifier = geodeskTypeIdentifier;
+	/**
+	 * Get the user application key for this geodesk.
+	 * 
+	 * @return the user application key.
+	 */
+	public String getUserApplicationKey() {
+		return userApplicationKey;
 	}
 
 	/**
+	 * Set the user application key for this geodesk.
+	 * 
+	 * @param userApplicationKey the user application key
+	 */
+	public void setUserApplicationKey(String userApplicationKey) {
+		this.userApplicationKey = userApplicationKey;
+	}
+
+	/**
+	 * Set the deskmanager application version.
+	 * 
 	 * @param deskmanagerVersion the deskmanagerVersion to set.
 	 */
 	public void setDeskmanagerVersion(String deskmanagerVersion) {
@@ -68,6 +100,8 @@ public class InitializeGeodeskResponse extends CommandResponse {
 	}
 
 	/**
+	 * Get the deskmanager application version.
+	 * 
 	 * @return the deskmanager version string, injected by maven.
 	 */
 	public String getDeskmanagerVersion() {
@@ -75,6 +109,8 @@ public class InitializeGeodeskResponse extends CommandResponse {
 	}
 
 	/**
+	 * Set the deskmanager build version.
+	 * 
 	 * @param deskmanagerBuild the deskmanagerBuild to set.
 	 */
 	public void setDeskmanagerBuild(String deskmanagerBuild) {
@@ -82,6 +118,8 @@ public class InitializeGeodeskResponse extends CommandResponse {
 	}
 
 	/**
+	 * Get the deskmanager build version.
+	 * 
 	 * @return the unique application build string, injected by maven.
 	 */
 	public String getDeskmanagerBuild() {

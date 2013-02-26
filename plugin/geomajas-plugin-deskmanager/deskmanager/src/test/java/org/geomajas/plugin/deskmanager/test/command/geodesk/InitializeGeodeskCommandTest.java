@@ -8,13 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.test.command;
+package org.geomajas.plugin.deskmanager.test.command.geodesk;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.command.dto.GetConfigurationRequest;
-import org.geomajas.command.dto.GetMapConfigurationRequest;
-import org.geomajas.command.dto.GetMapConfigurationResponse;
-import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
@@ -38,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
 @Transactional
-public class GetMapConfigurationCommandTest {
+public class InitializeGeodeskCommandTest {
 
 	@Autowired
 	private SecurityService securityService;
@@ -63,25 +61,31 @@ public class GetMapConfigurationCommandTest {
 
 	@Test
 	public void testGetPublicConfiguration() {
-		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
-		request.setApplicationId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE);
-		request.setMapId(GdmLayout.MAPMAIN_ID);
+		InitializeGeodeskRequest request = new InitializeGeodeskRequest();
+		request.setGeodeskId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE);
 
-		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				GetConfigurationRequest.COMMAND, request, guestToken, "en");
+		InitializeGeodeskResponse response = (InitializeGeodeskResponse) dispatcher.execute(
+				InitializeGeodeskResponse.COMMAND, request, guestToken, "en");
 
 		Assert.assertTrue(response.getErrorMessages().isEmpty());
-		Assert.assertNotNull(response.getMapInfo());
+
+		Assert.assertEquals(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE, response.getGeodeskIdentifier());
+		Assert.assertEquals("${buildNumber}", response.getDeskmanagerBuild());
+		Assert.assertEquals("${project.version}", response.getDeskmanagerVersion());
+		Assert.assertEquals(ExampleDatabaseProvisioningServiceImpl.CLIENTAPPLICATION_ID,
+				response.getUserApplicationKey());
+
+		Assert.assertNotNull(response.getClientApplicationInfo());
+		Assert.assertTrue(response.getClientApplicationInfo().getMaps().isEmpty());
 	}
 
 	@Test
 	public void testGetPrivateConfiguration() {
-		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
-		request.setApplicationId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_DE_PRIVATE);
-		request.setMapId(GdmLayout.MAPMAIN_ID);
+		InitializeGeodeskRequest request = new InitializeGeodeskRequest();
+		request.setGeodeskId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_DE_PRIVATE);
 
-		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				GetConfigurationRequest.COMMAND, request, guestToken, "en");
+		InitializeGeodeskResponse response = (InitializeGeodeskResponse) dispatcher.execute(
+				InitializeGeodeskResponse.COMMAND, request, guestToken, "en");
 
 		Assert.assertFalse(response.getErrorMessages().isEmpty());
 		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());

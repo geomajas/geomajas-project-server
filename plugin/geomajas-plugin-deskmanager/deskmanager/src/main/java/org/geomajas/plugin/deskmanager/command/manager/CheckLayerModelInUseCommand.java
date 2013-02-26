@@ -38,7 +38,7 @@ public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUse
 			throws GeomajasSecurityException {
 		if (request.getLayerModelId() == null || "".equals(request.getLayerModelId())) {
 			//TODO: i18n
-			response.getErrorMessages().add("Pleas provide a clientlayerid.");
+			response.getErrorMessages().add("Please provide a layer model id.");
 		} else {
 			response.setLayerModelInUse(service.isLayerModelInUse(request.getLayerModelId()));
 		}
