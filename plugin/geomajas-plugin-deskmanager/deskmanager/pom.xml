@@ -8,8 +8,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>geomajas-plugin-deskmanager</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas Deskmanager consolidated framework</name>
-	<description>Geomajas deskmanager is a dynamic configuration framework for geomajas.</description>
+	<name>Geomajas Deskmanager</name>
+	<description>Geomajas deskmanager consist of dynamic configuration tools for geomajas.</description>
 
 	<dependencies>
 

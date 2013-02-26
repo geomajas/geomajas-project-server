@@ -10,7 +10,7 @@
 	<artifactId>geomajas-plugin-deskmanager-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>deskmanager plugin grouping module</name>
+	<name>Geomajas Deskmanager plugin grouping module</name>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-deskmanager</connection>
@@ -31,6 +31,7 @@
 
 	<modules>
 		<module>deskmanager</module>
+		<module>framework</module>
 	</modules>
 
 	<dependencyManagement>
