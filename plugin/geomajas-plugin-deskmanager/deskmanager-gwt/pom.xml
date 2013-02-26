@@ -13,6 +13,11 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-deskmanager</artifactId>
+		</dependency>
+
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
