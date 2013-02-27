@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command that fetches a blueprint from the database using a given uuid.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  *
@@ -44,11 +43,11 @@ public class GetBlueprintCommand implements Command<GetBlueprintRequest, Bluepri
 	/** {@inheritDoc} */
 	public void execute(GetBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
-			response.setBlueprint(dtoService.toDto(blueprintService.getBlueprintById(request.getUuid()), true));
-		} catch (Exception e) {
-			//TODO: i18n
-			response.getErrorMessages().add("Unexpected error while fetching blueprint: " + e.getMessage());
-			log.error("Unexpected error while fetching blueprint.", e);
+			response.setBlueprint(dtoService.toDto(blueprintService.getBlueprintById(request.getBlueprintId()), true));
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error fetching blueprints.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

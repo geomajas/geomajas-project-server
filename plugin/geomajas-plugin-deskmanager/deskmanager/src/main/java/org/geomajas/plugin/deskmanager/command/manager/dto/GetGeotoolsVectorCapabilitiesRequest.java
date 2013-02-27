@@ -18,7 +18,7 @@ import org.geomajas.command.CommandRequest;
 /**
  * @author Kristof Heirwegh
  */
-public class GetVectorCapabilitiesRequest implements CommandRequest {
+public class GetGeotoolsVectorCapabilitiesRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class GetVectorCapabilitiesRequest implements CommandRequest {
 
 	public static final String PROPERTY_DATABASE_PASSWD = "passwd";
 
-	public static final String COMMAND = "command.discovery.GetVectorCapabilities";
+	public static final String COMMAND = "command.manager.GetGeotoolsVectorCapabilities";
 
 	private Map<String, String> connectionProperties = new LinkedHashMap<String, String>();
 

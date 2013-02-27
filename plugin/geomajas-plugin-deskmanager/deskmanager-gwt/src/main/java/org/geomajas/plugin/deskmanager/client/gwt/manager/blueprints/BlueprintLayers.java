@@ -20,7 +20,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.BlueprintSelect
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
@@ -67,9 +67,9 @@ public class BlueprintLayers extends AbstractConfigurationLayout implements Blue
 
 	public void setBlueprint(BlueprintDto newBluePrint) {
 		this.blueprint = newBluePrint;
-		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
+		ManagerCommandService.getLayers(new DataCallback<GetClientLayersResponse>() {
 
-			public void execute(GetLayersResponse result) {
+			public void execute(GetClientLayersResponse result) {
 				layerSelect.setValues(null, result.getLayers(), blueprint.getMainMapLayers(),
 						blueprint.isPublic());
 				fireChangedHandler();

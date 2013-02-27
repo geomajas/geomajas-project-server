@@ -22,7 +22,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
@@ -46,17 +46,17 @@ public class DatabaseCapabilitiesStep extends WizardStepPanel {
 		setWindowTitle(MESSAGES.databaseCapabilitiesStepTitle());
 
 		List<FormElement> fields = new ArrayList<FormElement>();
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, 
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, 
 				MESSAGES.databaseCapabilitiesStepParametersHost(), true, "localhost"));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT,
 				MESSAGES.databaseCapabilitiesStepParametersPort(), true, "5432"));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE,
 				MESSAGES.databaseCapabilitiesStepParametersScheme(), true, "public"));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, 
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, 
 				MESSAGES.databaseCapabilitiesStepParametersDatabase(), true));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_USER,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_USER,
 				MESSAGES.databaseCapabilitiesStepParametersUserName(), 150));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD,
 				MESSAGES.databaseCapabilitiesStepParametersPassword(),
 				KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
@@ -78,7 +78,7 @@ public class DatabaseCapabilitiesStep extends WizardStepPanel {
 	public void initialize() {
 		Map<String, String> values = new LinkedHashMap<String, String>();
 		values.put(DynamicLayerConfiguration.PARAM_SOURCE_TYPE, DynamicLayerConfiguration.SOURCE_TYPE_DATABASE);
-		values.put(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DBTYPE, "postgis"); // always postgis
+		values.put(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_DBTYPE, "postgis"); // always postgis
 		form.setData(values);
 	}
 

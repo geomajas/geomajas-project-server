@@ -15,7 +15,7 @@ import org.geomajas.command.CommandResponse;
 /**
  * @author Kristof Heirwegh
  */
-public class GetVectorLayerConfigurationResponse extends CommandResponse {
+public class GetVectorLayerConfigResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 

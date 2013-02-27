@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
@@ -34,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command that creates a new layer model, based on the given configuration info.
  * 
+ * @author Oliver May
  * @author Kristof Heirwegh
  */
 @Component(CreateLayerModelRequest.COMMAND)
@@ -61,9 +61,9 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 	public void execute(CreateLayerModelRequest request, LayerModelResponse response) throws Exception {
 		if (request.getConfiguration() == null || request.getConfiguration().getClientLayerInfo() == null
 				|| request.getConfiguration().getClientLayerInfo().getUserData() == null) {
-			// TODO: i18n: Error while saving layermodel: configuration is required
-			log.error("Error while saving layermodel: configuration is required.");
-			throw new GeomajasException(new Exception("Error while saving layermodel: configuration is required."));
+			Exception e = new IllegalArgumentException("Error while saving layermodel: configuration is required.");
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 
 		DeskmanagerClientLayerInfo ud = (DeskmanagerClientLayerInfo) request.getConfiguration().getClientLayerInfo()
@@ -99,10 +99,10 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 
 		try {
 			loadService.loadDynamicLayers();
-			// loadService.loadDynamicLayer(lm.getLayerConfiguration());
-		} catch (Exception e) {
-			log.error("Error while initializing datalayer in context.", e);
-			throw new GeomajasException(new Exception("Error while initializing datalayer in context.", e));
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error removing layer.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

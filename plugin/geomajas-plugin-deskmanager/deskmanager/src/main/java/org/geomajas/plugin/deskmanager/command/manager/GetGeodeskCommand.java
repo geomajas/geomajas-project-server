@@ -11,8 +11,8 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.slf4j.Logger;
@@ -42,10 +42,11 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GeodeskResp
 	/** {@inheritDoc} */
 	public void execute(GetGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
-			response.setGeodesk(dtoService.toDto(geodeskService.getGeodeskById(request.getUuid()), true));
-		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij ophalen loket: " + e.getMessage());
-			log.error("fout bij ophalen loket.", e);
+			response.setGeodesk(dtoService.toDto(geodeskService.getGeodeskById(request.getGeodeskId()), true));
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error fetching geodesk.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

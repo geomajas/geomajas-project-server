@@ -14,12 +14,12 @@ import org.geomajas.command.CommandRequest;
 
 
 /**
- * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}.
+ * Request object for {@link org.geomajas.plugin.deskmanager.command.manager.GetClientLayersCommand}.
  * 
  * @author Oliver May
  *
  */
-public class GetLayersRequest implements CommandRequest {
+public class GetClientLayersRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.GetLayers";
 	

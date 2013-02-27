@@ -10,22 +10,25 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.CommandResponse;
 
 /**
- * @author Jan De Moerloose
+ * @author Kristof Heirwegh
  */
-public class GetRasterLayerConfigurationResponse extends CommandResponse {
+public class GetGeotoolsVectorCapabilitiesResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private DynamicRasterLayerConfiguration rasterLayerConfiguration;
+	private List<VectorCapabilitiesInfo> layers = new ArrayList<VectorCapabilitiesInfo>();
 
-	public DynamicRasterLayerConfiguration getRasterLayerConfiguration() {
-		return rasterLayerConfiguration;
+	public List<VectorCapabilitiesInfo> getVectorCapabilities() {
+		return layers;
 	}
 
-	public void setRasterLayerConfiguration(DynamicRasterLayerConfiguration rasterLayerConfiguration) {
-		this.rasterLayerConfiguration = rasterLayerConfiguration;
+	public void setVectorCapabilities(List<VectorCapabilitiesInfo> layers) {
+		this.layers = layers;
 	}
 }

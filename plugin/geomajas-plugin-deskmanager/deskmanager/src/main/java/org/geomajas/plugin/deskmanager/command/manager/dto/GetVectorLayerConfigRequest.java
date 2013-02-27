@@ -18,11 +18,11 @@ import org.geomajas.command.CommandRequest;
 /**
  * @author Kristof Heirwegh
  */
-public class GetVectorLayerConfigurationRequest implements CommandRequest {
+public class GetVectorLayerConfigRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.discovery.GetVectorLayerConfiguration";
+	public static final String COMMAND = "command.manager.GetVectorLayerConfig";
 
 	private Map<String, String> connectionProperties = new LinkedHashMap<String, String>();
 

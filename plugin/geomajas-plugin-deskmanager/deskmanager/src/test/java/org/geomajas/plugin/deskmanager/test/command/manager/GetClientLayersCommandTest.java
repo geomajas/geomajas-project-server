@@ -12,12 +12,12 @@ package org.geomajas.plugin.deskmanager.test.command.manager;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
-import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class DeleteGeodeskCommandTest {
+public class GetClientLayersCommandTest {
 
 	@Autowired
 	private SecurityService securityService;
@@ -50,9 +50,6 @@ public class DeleteGeodeskCommandTest {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
-
-	@Autowired
-	private GeodeskService geodeskService;
 
 	private String userToken;
 
@@ -68,23 +65,19 @@ public class DeleteGeodeskCommandTest {
 
 		// Log in
 		securityManager.createSecurityContext(userToken);
-
 	}
 
 	@Test
 	@Transactional
-	public void testDeleteBlueprint() throws GeomajasSecurityException {
+	public void testGetLayerModels() {
+		GetClientLayersRequest request = new GetClientLayersRequest();
 
-		int size = geodeskService.getGeodesks().size();
-		Geodesk bp = geodeskService.getGeodesks().get(0);
+		GetClientLayersResponse response = (GetClientLayersResponse) dispatcher.execute(GetClientLayersRequest.COMMAND,
+				request, userToken, "en");
 
-		DeleteGeodeskRequest request = new DeleteGeodeskRequest();
-		request.setGeodeskId(bp.getId());
-
-		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, request, userToken, "en");
 		Assert.assertTrue(response.getErrors().isEmpty());
-		Assert.assertTrue(response.getErrorMessages().isEmpty());
-		Assert.assertEquals(size - 1, geodeskService.getGeodesks().size());
+		Assert.assertNotNull(response.getLayers());
+		Assert.assertTrue(response.getLayers().size() > 0);
 	}
 
 	/**
@@ -92,8 +85,9 @@ public class DeleteGeodeskCommandTest {
 	 */
 	@Test
 	public void testNotAllowed() {
-		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, new DeleteGeodeskRequest(),
-				guestToken, "en");
+		CommandResponse response = dispatcher.execute(GetClientLayersRequest.COMMAND,
+				new GetLayerModelsRequest(), guestToken, "en");
+
 
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());

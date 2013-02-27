@@ -10,14 +10,20 @@
  */
 package org.geomajas.plugin.deskmanager.test.command.manager;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
-import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
+import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
@@ -37,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class DeleteGeodeskCommandTest {
+public class GetRasterLayerConfigCommandTest {
 
 	@Autowired
 	private SecurityService securityService;
@@ -52,7 +58,7 @@ public class DeleteGeodeskCommandTest {
 	private CommandDispatcher dispatcher;
 
 	@Autowired
-	private GeodeskService geodeskService;
+	private DiscoveryService discoveryService;
 
 	private String userToken;
 
@@ -73,18 +79,23 @@ public class DeleteGeodeskCommandTest {
 
 	@Test
 	@Transactional
-	public void testDeleteBlueprint() throws GeomajasSecurityException {
+	public void testGetDynamicWmsLayerConfiguration() throws Exception {
+		// Get configuration object.
+		Map<String, String> connection = new HashMap<String, String>();
+		connection.put(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL,
+				"http://apps.geomajas.org/geoserver/geosparc/ows?service=wms&version=1.1.1&request=GetCapabilities");
+		List<RasterCapabilitiesInfo> rci = discoveryService.getRasterCapabilities(connection);
 
-		int size = geodeskService.getGeodesks().size();
-		Geodesk bp = geodeskService.getGeodesks().get(0);
+		GetRasterLayerConfigRequest request = new GetRasterLayerConfigRequest();
+		request.setConnectionProperties(connection);
+		request.setRasterCapabilitiesInfo(rci.get(0));
 
-		DeleteGeodeskRequest request = new DeleteGeodeskRequest();
-		request.setGeodeskId(bp.getId());
+		GetRasterLayerConfigResponse response = (GetRasterLayerConfigResponse) dispatcher
+				.execute(GetRasterLayerConfigRequest.COMMAND, request, userToken, "en");
 
-		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, request, userToken, "en");
 		Assert.assertTrue(response.getErrors().isEmpty());
 		Assert.assertTrue(response.getErrorMessages().isEmpty());
-		Assert.assertEquals(size - 1, geodeskService.getGeodesks().size());
+		Assert.assertNotNull(response.getRasterLayerConfiguration());
 	}
 
 	/**
@@ -92,8 +103,8 @@ public class DeleteGeodeskCommandTest {
 	 */
 	@Test
 	public void testNotAllowed() {
-		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, new DeleteGeodeskRequest(),
-				guestToken, "en");
+		CommandResponse response = dispatcher.execute(GetRasterLayerConfigRequest.COMMAND,
+				new GetRasterLayerConfigRequest(), guestToken, "en");
 
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());

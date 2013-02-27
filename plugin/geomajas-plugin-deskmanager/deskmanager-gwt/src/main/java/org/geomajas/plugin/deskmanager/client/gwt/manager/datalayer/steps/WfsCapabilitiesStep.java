@@ -22,7 +22,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPa
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormElement;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
@@ -46,12 +46,12 @@ public class WfsCapabilitiesStep extends WizardStepPanel {
 		setWindowTitle(MESSAGES.wfsCapabilitiesStepTitle());
 
 		List<FormElement> fields = new ArrayList<FormElement>();
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL,
 				MESSAGES.wfsCapabilitiesStepParametersCapabilitiesURL(), 
 				true));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME,
 				MESSAGES.wfsCapabilitiesStepParametersUserName(), 150));
-		fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD,
+		fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD,
 				MESSAGES.wfsCapabilitiesStepParametersPassword(),
 				KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 

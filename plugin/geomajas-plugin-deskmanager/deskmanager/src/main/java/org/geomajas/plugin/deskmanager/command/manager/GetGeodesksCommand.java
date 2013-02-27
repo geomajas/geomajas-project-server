@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command to fetch a list of geodesks, accessible by the current logged in user.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */

@@ -26,14 +26,14 @@ public class GetBlueprintRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.GetBlueprint";
 
-	private String uuid;
+	private String blueprintId;
 
-	public String getUuid() {
-		return uuid;
+	public String getBlueprintId() {
+		return blueprintId;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setBlueprintId(String blueprintId) {
+		this.blueprintId = blueprintId;
 	}
 
 }

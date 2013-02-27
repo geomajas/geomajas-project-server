@@ -11,8 +11,8 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigResponse;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,26 +20,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO.
- * 
- * @author Jan De Moerloose
- *
+ * @author Kristof Heirwegh
  */
-@Component(GetVectorCapabilitiesRequest.COMMAND)
-public class GetVectorCapabilitiesCommand implements
-		Command<GetVectorCapabilitiesRequest, GetVectorCapabilitiesResponse> {
+@Component(GetRasterLayerConfigRequest.COMMAND)
+public class GetRasterLayerConfigCommand implements
+		Command<GetRasterLayerConfigRequest, GetRasterLayerConfigResponse> {
 
 	@SuppressWarnings("unused")
-	private final Logger log = LoggerFactory.getLogger(GetVectorCapabilitiesCommand.class);
+	private final Logger log = LoggerFactory.getLogger(GetRasterLayerConfigCommand.class);
 
 	@Autowired
 	private DiscoveryService discoServ;
 
-	public void execute(GetVectorCapabilitiesRequest request, GetVectorCapabilitiesResponse response) throws Exception {
-		response.setVectorCapabilities(discoServ.getVectorCapabilities(request.getConnectionProperties()));
+	public void execute(GetRasterLayerConfigRequest request, GetRasterLayerConfigResponse response)
+			throws Exception {
+		response.setRasterLayerConfiguration(discoServ.getRasterLayerConfiguration(request.getConnectionProperties(),
+				request.getRasterCapabilitiesInfo()));
 	}
 
-	public GetVectorCapabilitiesResponse getEmptyCommandResponse() {
-		return new GetVectorCapabilitiesResponse();
+	public GetRasterLayerConfigResponse getEmptyCommandResponse() {
+		return new GetRasterLayerConfigResponse();
 	}
 }

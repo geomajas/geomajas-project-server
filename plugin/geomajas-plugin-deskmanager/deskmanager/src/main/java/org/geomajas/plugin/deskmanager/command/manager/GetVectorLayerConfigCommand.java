@@ -16,8 +16,8 @@ import javax.annotation.Resource;
 
 import org.geomajas.command.Command;
 import org.geomajas.configuration.Parameter;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.slf4j.Logger;
@@ -28,12 +28,11 @@ import org.springframework.stereotype.Component;
 /**
  * @author Kristof Heirwegh
  */
-@Component(GetVectorLayerConfigurationRequest.COMMAND)
-public class GetVectorLayerConfigurationCommand implements
-		Command<GetVectorLayerConfigurationRequest, GetVectorLayerConfigurationResponse> {
+@Component(GetVectorLayerConfigRequest.COMMAND)
+public class GetVectorLayerConfigCommand implements
+		Command<GetVectorLayerConfigRequest, GetVectorLayerConfigResponse> {
 
-	@SuppressWarnings("unused")
-	private final Logger log = LoggerFactory.getLogger(GetVectorLayerConfigurationCommand.class);
+	private final Logger log = LoggerFactory.getLogger(GetVectorLayerConfigCommand.class);
 
 	@Autowired
 	private DiscoveryService discoServ;
@@ -41,11 +40,14 @@ public class GetVectorLayerConfigurationCommand implements
 	@Resource(name = "postGisDatastoreParams")
 	private Map<String, String> postgisDataStoreParams;
 
-	public void execute(GetVectorLayerConfigurationRequest request, GetVectorLayerConfigurationResponse response)
+	//FIXME: inconsistent with GetRasterLayerConfigCommand (String layer vs RasterCapabilitiesInfo)
+	public void execute(GetVectorLayerConfigRequest request, GetVectorLayerConfigResponse response)
 			throws Exception {
 		if (request.getConnectionProperties() == null || request.getConnectionProperties().size() < 1
 				|| request.getLayerName() == null || "".equals(request.getLayerName())) {
-			response.getErrorMessages().add("Required parameter missing (connectionprops, layerName");
+			Exception e = new IllegalArgumentException("Missing parameter connection properties or layer name.");
+			log.error(e.getLocalizedMessage());
+			throw e;
 		} else {
 			String sourceType = request.getConnectionProperties().get(DynamicLayerConfiguration.PARAM_SOURCE_TYPE);
 			Map<String, String> connProps;
@@ -69,7 +71,7 @@ public class GetVectorLayerConfigurationCommand implements
 		}
 	}
 
-	public GetVectorLayerConfigurationResponse getEmptyCommandResponse() {
-		return new GetVectorLayerConfigurationResponse();
+	public GetVectorLayerConfigResponse getEmptyCommandResponse() {
+		return new GetVectorLayerConfigResponse();
 	}
 }

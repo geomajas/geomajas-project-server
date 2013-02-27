@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command that deletes a geodesk from the database.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */
@@ -41,19 +40,24 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 	public void execute(DeleteGeodeskRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getGeodeskId() == null) {
-				response.getErrorMessages().add("Geen id opgegeven?");
+				Exception e = new IllegalArgumentException("No geodesk id given.");
+				log.error(e.getLocalizedMessage());
+				throw e;
 			} else {
 
 				Geodesk bp = loketService.getGeodeskById(request.getGeodeskId());
 				if (bp == null) {
-					response.getErrorMessages().add("Geen loket gevonden met id: " + request.getGeodeskId());
+					Exception e = new IllegalArgumentException("No geodesk found with id : " + request.getGeodeskId());
+					log.error(e.getLocalizedMessage());
+					throw e;
 				} else {
 					loketService.deleteGeodesk(bp);
 				}
 			}
-		} catch (Exception e) {
-			response.getErrorMessages().add("Fout bij verwijderen loket: " + e.getMessage());
-			log.error("fout bij verwijderen loket.", e);
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error removing geodesk.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

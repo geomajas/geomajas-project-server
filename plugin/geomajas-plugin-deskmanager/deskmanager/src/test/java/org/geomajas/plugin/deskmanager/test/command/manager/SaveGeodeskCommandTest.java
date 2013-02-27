@@ -12,15 +12,15 @@ package org.geomajas.plugin.deskmanager.test.command.manager;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.BlueprintResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
+import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
@@ -46,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class SaveBlueprintCommandTest {
+public class SaveGeodeskCommandTest {
 
 	@Autowired
 	private SecurityService securityService;
@@ -85,15 +85,15 @@ public class SaveBlueprintCommandTest {
 		GetClientLayersResponse glsresp = (GetClientLayersResponse) dispatcher.execute(GetClientLayersRequest.COMMAND,
 				new GetClientLayersRequest(), userToken, "en");
 
-		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND,
-				new GetBlueprintsRequest(), userToken, "en");
+		GetGeodesksResponse gbpsresp = (GetGeodesksResponse) dispatcher.execute(GetGeodesksRequest.COMMAND,
+				new GetGeodesksRequest(), userToken, "en");
 
-		GetBlueprintRequest gbpreq = new GetBlueprintRequest();
-		gbpreq.setBlueprintId(gbpsresp.getBlueprints().get(0).getId());
-		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
+		GetGeodeskRequest gbpreq = new GetGeodeskRequest();
+		gbpreq.setGeodeskId(gbpsresp.getGeodesks().get(0).getId());
+		GeodeskResponse gbpresp = (GeodeskResponse) dispatcher.execute(GetGeodeskRequest.COMMAND, gbpreq,
 				userToken, "en");
 
-		BlueprintDto bpDto = gbpresp.getBlueprint();
+		GeodeskDto bpDto = gbpresp.getGeodesk();
 
 		LayerDto cl = glsresp.getLayers().get(0);
 		Assert.assertNull(cl.getClientLayerInfo());
@@ -103,18 +103,18 @@ public class SaveBlueprintCommandTest {
 		bpDto.getMainMapLayers().clear();
 		bpDto.getMainMapLayers().add(cl);
 
-		SaveBlueprintRequest request = new SaveBlueprintRequest();
-		request.setBlueprint(bpDto);
-		request.setSaveBitmask(SaveBlueprintRequest.SAVE_LAYERS);
+		SaveGeodeskRequest request = new SaveGeodeskRequest();
+		request.setGeodesk(bpDto);
+		request.setSaveBitmask(SaveGeodeskRequest.SAVE_LAYERS);
 
-		CommandResponse resp = dispatcher.execute(SaveBlueprintRequest.COMMAND, request, userToken, "en");
+		CommandResponse resp = dispatcher.execute(SaveGeodeskRequest.COMMAND, request, userToken, "en");
 		Assert.assertTrue(resp.getExceptions().isEmpty());
 
-		gbpreq = new GetBlueprintRequest();
-		gbpreq.setBlueprintId(gbpsresp.getBlueprints().get(0).getId());
-		gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq, userToken, "en");
+		gbpreq = new GetGeodeskRequest();
+		gbpreq.setGeodeskId(gbpsresp.getGeodesks().get(0).getId());
+		gbpresp = (GeodeskResponse) dispatcher.execute(GetGeodeskRequest.COMMAND, gbpreq, userToken, "en");
 
-		bpDto = gbpresp.getBlueprint();
+		bpDto = gbpresp.getGeodesk();
 
 		Assert.assertEquals(new MyClientWidgetInfo("testSaveLayers"), bpDto.getMainMapLayers().get(0).getWidgetInfo()
 				.get("TEST"));
@@ -126,21 +126,21 @@ public class SaveBlueprintCommandTest {
 	 */
 	@Test
 	public void testNotAllowed() {
-		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND,
-				new GetBlueprintsRequest(), userToken, "en");
+		GetGeodesksResponse gbpsresp = (GetGeodesksResponse) dispatcher.execute(GetGeodesksRequest.COMMAND,
+				new GetGeodesksRequest(), userToken, "en");
 
-		GetBlueprintRequest gbpreq = new GetBlueprintRequest();
-		gbpreq.setBlueprintId(gbpsresp.getBlueprints().get(0).getId());
-		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
+		GetGeodeskRequest gbpreq = new GetGeodeskRequest();
+		gbpreq.setGeodeskId(gbpsresp.getGeodesks().get(0).getId());
+		GeodeskResponse gbpresp = (GeodeskResponse) dispatcher.execute(GetGeodeskRequest.COMMAND, gbpreq,
 				userToken, "en");
 		Assert.assertTrue(gbpresp.getExceptions().isEmpty());
 
 		securityManager.createSecurityContext(guestToken);
 
-		SaveBlueprintRequest request = new SaveBlueprintRequest();
-		request.setBlueprint(gbpresp.getBlueprint());
+		SaveGeodeskRequest request = new SaveGeodeskRequest();
+		request.setGeodesk(gbpresp.getGeodesk());
 
-		CommandResponse response = dispatcher.execute(SaveBlueprintRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(SaveGeodeskRequest.COMMAND, request, guestToken, "en");
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
 

@@ -10,24 +10,22 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager.dto;
 
-import org.geomajas.command.CommandRequest;
+import org.geomajas.command.CommandResponse;
 
 /**
- * TODO.
- * 
- * FIXME: merge with RetrieveRolesCommand
- * 
  * @author Jan De Moerloose
- *
  */
-public class GetManagerUserProfileRequest implements CommandRequest {
+public class GetRasterLayerConfigResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetBeheerUserProfile";
+	private DynamicRasterLayerConfiguration rasterLayerConfiguration;
 
-	public String toString() {
-		return COMMAND;
+	public DynamicRasterLayerConfiguration getRasterLayerConfiguration() {
+		return rasterLayerConfiguration;
 	}
-	
+
+	public void setRasterLayerConfiguration(DynamicRasterLayerConfiguration rasterLayerConfiguration) {
+		this.rasterLayerConfiguration = rasterLayerConfiguration;
+	}
 }

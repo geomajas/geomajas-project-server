@@ -48,11 +48,10 @@ public class CreateBlueprintCommand implements Command<CreateBlueprintRequest, B
 			bp.setUserApplicationKey(request.getUserApplicationKey());
 			blueprintService.saveOrUpdateBlueprint(bp);
 			response.setBlueprint(dtoService.toDto(bp, false));
-		} catch (Exception e) {
-			//TODO: i18n
-			response.getErrorMessages().add("Error while saving new blueprint: " + e.getMessage());
-			//TODO: i18n
-			log.error("Error while saving new blueprint:", e);
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error creating blueprint.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

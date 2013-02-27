@@ -11,8 +11,8 @@
 package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
@@ -27,9 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver May
  * @author Kristof Heirwegh
  */
-@Component(GetLayersRequest.COMMAND)
+@Component(GetClientLayersRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class GetLayersCommand implements Command<GetLayersRequest, GetLayersResponse> {
+public class GetClientLayersCommand implements Command<GetClientLayersRequest, GetClientLayersResponse> {
 
 	@Autowired
 	private LayerModelService layerModelService;
@@ -38,7 +38,7 @@ public class GetLayersCommand implements Command<GetLayersRequest, GetLayersResp
 	private DtoConverterService converterService;
 
 	/** {@inheritDoc} */
-	public void execute(GetLayersRequest request, GetLayersResponse response) throws Exception {
+	public void execute(GetClientLayersRequest request, GetClientLayersResponse response) throws Exception {
 		for (LayerModel model : layerModelService.getLayerModels()) {
 			ClientLayer layer = new ClientLayer();
 			layer.setLayerModel(model);
@@ -47,8 +47,8 @@ public class GetLayersCommand implements Command<GetLayersRequest, GetLayersResp
 	}
 
 	/** {@inheritDoc} */
-	public GetLayersResponse getEmptyCommandResponse() {
-		return new GetLayersResponse();
+	public GetClientLayersResponse getEmptyCommandResponse() {
+		return new GetClientLayersResponse();
 	}
 
 }

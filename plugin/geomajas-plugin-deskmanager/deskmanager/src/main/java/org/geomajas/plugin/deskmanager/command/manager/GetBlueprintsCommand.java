@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command that fetches a list of blueprints from the database where the current user has access to.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  *

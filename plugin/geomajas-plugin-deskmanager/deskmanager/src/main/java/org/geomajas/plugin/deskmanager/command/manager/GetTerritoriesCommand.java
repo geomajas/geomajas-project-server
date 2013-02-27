@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Command that fetches all territories from the database. Commonly used to display all territories in select lists in 
  * the management interface. It only contains the territory definition, not the mapped blueprints or geodesks.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */

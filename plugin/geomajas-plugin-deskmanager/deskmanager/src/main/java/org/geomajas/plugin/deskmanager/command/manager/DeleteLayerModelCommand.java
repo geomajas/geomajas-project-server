@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command to delete a layer model given a layer id.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */
@@ -41,20 +40,24 @@ public class DeleteLayerModelCommand implements Command<DeleteLayerModelRequest,
 	public void execute(DeleteLayerModelRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getId() == null) {
-				//TODO: i18n
-				response.getErrorMessages().add("No id given?");
+				Exception e = new IllegalArgumentException("No layermodel id given.");
+				log.error(e.getLocalizedMessage());
+				throw e;
 			} else {
 				LayerModel bp = layerModelService.getLayerModelById(request.getId());
 				if (bp == null) {
-					//TODO: i18n
-					response.getErrorMessages().add("No datalayer found with the given id: " + request.getId());
+					Exception e = new IllegalArgumentException("No datalayer found with the given id: "
+							+ request.getId());
+					log.error(e.getLocalizedMessage());
+					throw e;
 				} else {
 					layerModelService.deleteLayerModel(bp);
 				}
 			}
-		} catch (Exception e) {
-			response.getErrorMessages().add("Unexpected error removing layer: " + e.getMessage());
-			log.error("Unexpected error removing layer.", e);
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error removing layer.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

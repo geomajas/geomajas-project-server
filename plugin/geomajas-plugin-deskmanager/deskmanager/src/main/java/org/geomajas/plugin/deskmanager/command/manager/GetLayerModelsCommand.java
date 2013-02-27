@@ -29,9 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
  * display a list of layers that a user can manage and/or use.
  * 
  * If you need to fetch the full layers including clientlayerinfo, use 
- * {@link org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}. 
+ * {@link org.geomajas.plugin.deskmanager.command.manager.GetClientLayersCommand}. 
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */

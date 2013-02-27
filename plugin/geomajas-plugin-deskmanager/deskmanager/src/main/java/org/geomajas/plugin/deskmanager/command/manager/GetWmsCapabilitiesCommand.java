@@ -20,9 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO.
+ * Retrieve capabilities from a WMS data source. Returns a list of raster layers in this
+ * source. 
  * 
- * @author Jan De Moerloose
+ * @author Kristof Heirwegh
+ * @author Oliver May
  *
  */
 @Component(GetWmsCapabilitiesRequest.COMMAND)

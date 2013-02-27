@@ -18,13 +18,13 @@ import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 
 /**
- * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}. 
+ * Response object for {@link org.geomajas.plugin.deskmanager.command.manager.GetClientLayersCommand}. 
  * Contains an (ordered) list of DeskmanagerClientLayerInfoI's and layerModels.
  * 
  * @author Oliver May
  *
  */
-public class GetLayersResponse extends CommandResponse {
+public class GetClientLayersResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;
 	

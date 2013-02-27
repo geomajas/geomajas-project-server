@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command that retrieves a layermodel where a user has access to.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  *

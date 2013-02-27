@@ -24,10 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command to delete a blueprint from the database from a given ID.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
- *
+ * 
  */
 @Component(DeleteBlueprintRequest.COMMAND)
 @Transactional(rollbackFor = { Exception.class })
@@ -42,22 +41,25 @@ public class DeleteBlueprintCommand implements Command<DeleteBlueprintRequest, C
 	public void execute(DeleteBlueprintRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getBlueprintId() == null) {
-				//TODO: i18n
-				response.getErrorMessages().add("No blueprint id was given!");
+				Exception e = new IllegalArgumentException("No blueprint id given.");
+				log.error(e.getLocalizedMessage());
+				throw e;
 			} else {
 
 				Blueprint bp = blueprintService.getBlueprintById(request.getBlueprintId());
 				if (bp == null) {
-					//TODO: i18n
-					response.getErrorMessages().add("No blueprint was found with id: " + request.getBlueprintId());
+					Exception e = new IllegalArgumentException("No blueprint found with the given id: "
+							+ request.getBlueprintId());
+					log.error(e.getLocalizedMessage());
+					throw e;
 				} else {
 					blueprintService.deleteBlueprint(bp);
 				}
 			}
-		} catch (Exception e) {
-			//TODO: i18n
-			response.getErrorMessages().add("Unexpected error while deleting blueprint: " + e.getMessage());
-			log.error("Unexpected error while deleting blueprint.", e);
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error removing blueprint.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

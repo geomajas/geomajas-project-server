@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command that creates a new empty geodesk in the database, based on a given blueprint.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */
@@ -62,12 +61,16 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, Geode
 	public void execute(CreateGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			if (request.getBlueprintId() == null || "".equals(request.getBlueprintId())) {
-				response.getErrorMessages().add("Error while saving geodesk: BlueprintID is required.");
+				Exception e = new IllegalArgumentException("No blueprint id given.");
+				log.error(e.getLocalizedMessage());
+				throw e;
 			} else {
 				Blueprint bp = blueprintService.getBlueprintById(request.getBlueprintId());
 				if (bp == null) {
-					response.getErrorMessages().add(
-							"Error while saving geodesk: Could not find blueprint. (" + request.getBlueprintId() + ")");
+					Exception e = new IllegalArgumentException("No blueprint found for the given id: "
+							+ request.getBlueprintId());
+					log.error(e.getLocalizedMessage());
+					throw e;
 				}
 				Geodesk l = new Geodesk();
 				l.setName(request.getName());
@@ -89,9 +92,10 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, Geode
 				geodeskService.saveOrUpdateGeodesk(l);
 				response.setGeodesk(dtoService.toDto(l, false));
 			}
-		} catch (Exception e) {
-			response.getErrorMessages().add("Unexpected error while saving geodesk: " + e.getMessage());
-			log.error("Unexpected error while saving geodesk:", e);
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error creating geodesk layer.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 

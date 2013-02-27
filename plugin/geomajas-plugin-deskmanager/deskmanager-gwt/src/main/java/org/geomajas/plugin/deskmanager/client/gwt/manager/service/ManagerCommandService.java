@@ -41,8 +41,8 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
@@ -73,19 +73,19 @@ public final class ManagerCommandService {
 
 	// -- Layers ----------------------------------------------------
 	/**
-	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetLayersCommand}.
+	 * {@see org.geomajas.plugin.deskmanager.command.manager.GetClientLayersCommand}.
 	 * 
 	 * @param onFinish
 	 *            callback called when system layers are retrieved.
 	 */
-	public static void getLayers(final DataCallback<GetLayersResponse> onFinish) {
-		GetLayersRequest request = new GetLayersRequest();
-		GwtCommand command = new GwtCommand(GetLayersRequest.COMMAND);
+	public static void getLayers(final DataCallback<GetClientLayersResponse> onFinish) {
+		GetClientLayersRequest request = new GetClientLayersRequest();
+		GwtCommand command = new GwtCommand(GetClientLayersRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
-				new AbstractCommandCallback<GetLayersResponse>() {
+				new AbstractCommandCallback<GetClientLayersResponse>() {
 
-					public void execute(GetLayersResponse response) {
+					public void execute(GetClientLayersResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response);
 						}
@@ -105,7 +105,7 @@ public final class ManagerCommandService {
 	 */
 	public static void getBlueprint(String uuid, final DataCallback<BlueprintDto> onFinish) {
 		GetBlueprintRequest request = new GetBlueprintRequest();
-		request.setUuid(uuid);
+		request.setBlueprintId(uuid);
 		GwtCommand command = new GwtCommand(GetBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
@@ -219,7 +219,6 @@ public final class ManagerCommandService {
 	public static void getLayerModel(String id, final DataCallback<LayerModelDto> onFinish) {
 		GetLayerModelRequest request = new GetLayerModelRequest();
 		request.setId(id);
-		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		GwtCommand command = new GwtCommand(GetLayerModelRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
@@ -370,7 +369,7 @@ public final class ManagerCommandService {
 	 */
 	public static void getGeodesk(String uuid, final DataCallback<GeodeskDto> onFinish) {
 		GetGeodeskRequest request = new GetGeodeskRequest();
-		request.setUuid(uuid);
+		request.setGeodeskId(uuid);
 		GwtCommand command = new GwtCommand(GetGeodeskRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,

@@ -19,12 +19,12 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigurationRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigurationResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigurationResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetRasterLayerConfigResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
@@ -48,15 +48,15 @@ public final class DiscoveryCommService {
 
 	public static void getVectorCapabilities(final Map<String, String> connectionProps,
 			final DataCallback<List<VectorCapabilitiesInfo>> onFinish, final DataCallback<String> onError) {
-		GetVectorCapabilitiesRequest request = new GetVectorCapabilitiesRequest();
+		GetGeotoolsVectorCapabilitiesRequest request = new GetGeotoolsVectorCapabilitiesRequest();
 		request.setConnectionProperties(connectionProps);
-		GwtCommand command = new GwtCommand(GetVectorCapabilitiesRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetGeotoolsVectorCapabilitiesRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new CommandCallback<GetVectorCapabilitiesResponse>() {
+				new CommandCallback<GetGeotoolsVectorCapabilitiesResponse>() {
 
-					public void execute(GetVectorCapabilitiesResponse response) {
+					public void execute(GetGeotoolsVectorCapabilitiesResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response.getVectorCapabilities());
 						}
@@ -108,16 +108,16 @@ public final class DiscoveryCommService {
 
 	public static void getVectorLayerConfiguration(final Map<String, String> connectionProps, String layerTypeName,
 			final DataCallback<DynamicVectorLayerConfiguration> onFinish, final DataCallback<String> onError) {
-		GetVectorLayerConfigurationRequest request = new GetVectorLayerConfigurationRequest();
+		GetVectorLayerConfigRequest request = new GetVectorLayerConfigRequest();
 		request.setConnectionProperties(connectionProps);
 		request.setLayerName(layerTypeName);
-		GwtCommand command = new GwtCommand(GetVectorLayerConfigurationRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetVectorLayerConfigRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new CommandCallback<GetVectorLayerConfigurationResponse>() {
+				new CommandCallback<GetVectorLayerConfigResponse>() {
 
-					public void execute(GetVectorLayerConfigurationResponse response) {
+					public void execute(GetVectorLayerConfigResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response.getVectorLayerConfiguration());
 						}
@@ -139,16 +139,16 @@ public final class DiscoveryCommService {
 	
 	public static void getRasterLayerConfiguration(Map<String, String> connectionProps, RasterCapabilitiesInfo info,
 			final DataCallback<DynamicRasterLayerConfiguration> onFinish, final DataCallback<String> onError) {
-		GetRasterLayerConfigurationRequest request = new GetRasterLayerConfigurationRequest();
+		GetRasterLayerConfigRequest request = new GetRasterLayerConfigRequest();
 		request.setRasterCapabilitiesInfo(info);
 		request.setConnectionProperties(connectionProps);
-		GwtCommand command = new GwtCommand(GetRasterLayerConfigurationRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetRasterLayerConfigRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		Deferred def = GwtCommandDispatcher.getInstance().execute(command,
-				new CommandCallback<GetRasterLayerConfigurationResponse>() {
+				new CommandCallback<GetRasterLayerConfigResponse>() {
 
-					public void execute(GetRasterLayerConfigurationResponse response) {
+					public void execute(GetRasterLayerConfigResponse response) {
 						if (onFinish != null) {
 							onFinish.execute(response.getRasterLayerConfiguration());
 						}

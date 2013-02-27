@@ -14,7 +14,8 @@ import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CheckLayerModelInUseRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CheckLayerModelInUseResponse;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
-import org.geomajas.security.GeomajasSecurityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +31,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUseRequest, CheckLayerModelInUseResponse> {
 
+	private final Logger log = LoggerFactory.getLogger(CheckLayerModelInUseCommand.class);
+
 	@Autowired
 	private LayerModelService service;
 
 	/** {@inheritDoc} */
 	public void execute(CheckLayerModelInUseRequest request, CheckLayerModelInUseResponse response)
-			throws GeomajasSecurityException {
+			throws Exception {
 		if (request.getLayerModelId() == null || "".equals(request.getLayerModelId())) {
-			//TODO: i18n
-			response.getErrorMessages().add("Please provide a layer model id.");
+			Exception e = new IllegalArgumentException("No layermodel id given.");
+			log.error(e.getLocalizedMessage());
+			throw e;
 		} else {
 			response.setLayerModelInUse(service.isLayerModelInUse(request.getLayerModelId()));
 		}

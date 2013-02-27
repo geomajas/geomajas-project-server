@@ -24,22 +24,22 @@ public class GetGeodeskRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.manager.GetGeodesk";
 
-	private String uuid;
+	private String geodeskId;
 
 	/**
 	 * The id of the geodesk to fetch.
-	 * @return the uuid.
+	 * @return the geodeskId.
 	 */
-	public String getUuid() {
-		return uuid;
+	public String getGeodeskId() {
+		return geodeskId;
 	}
 
 	/**
 	 * The id of the geodesk to fetch.
-	 * @param uuid the uuid.
+	 * @param geodeskId the geodeskId.
 	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setGeodeskId(String geodeskId) {
+		this.geodeskId = geodeskId;
 	}
 
 }

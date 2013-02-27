@@ -20,7 +20,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.events.GeodeskSelectio
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayersResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
@@ -67,9 +67,9 @@ public class GeodeskLayers extends AbstractConfigurationLayout implements Geodes
 
 	private void setGeodesk(final GeodeskDto newLoket) {
 		geodesk = newLoket;
-		ManagerCommandService.getLayers(new DataCallback<GetLayersResponse>() {
+		ManagerCommandService.getLayers(new DataCallback<GetClientLayersResponse>() {
 
-			public void execute(GetLayersResponse result) {
+			public void execute(GetClientLayersResponse result) {
 				if (geodesk.getMainMapLayers() == null || geodesk.getMainMapLayers().size() == 0) {
 					//If no layers is set, present default from blueprint
 					layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),

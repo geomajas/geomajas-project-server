@@ -23,7 +23,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.FormE
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.panels.KeyValueForm;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.ManagerCommandService;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorCapabilitiesRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
@@ -121,25 +121,25 @@ public class DatalayerConnectionParameters extends AbstractConfigurationLayout {
 	private List<FormElement> getFieldList(String type) {
 		List<FormElement> fields = new ArrayList<FormElement>();
 		if (DynamicLayerConfiguration.SOURCE_TYPE_WFS.equals(type)) {
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL, MESSAGES
 					.datalayerConnectionParametersCapabilitiesURL(), true));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_USERNAME, MESSAGES
 					.datalayerConnectionParametersUserName(), 150));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_PASSWORD, MESSAGES
 					.datalayerConnectionParametersPassword(), KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		} else if (DynamicLayerConfiguration.SOURCE_TYPE_DATABASE.equals(type)) {
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_HOST, MESSAGES
 					.datalayerConnectionParametersHost(), true, "localhost"));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_PORT, MESSAGES
 					.datalayerConnectionParametersPort(), true, "5432"));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_NAMESPACE, MESSAGES
 					.datalayerConnectionParametersScheme(), true, "public"));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_DATABASE, MESSAGES
 					.datalayerConnectionParametersDatabase(), true));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_USER, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_USER, MESSAGES
 					.datalayerConnectionParametersUserName(), 150));
-			fields.add(new FormElement(GetVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD, MESSAGES
+			fields.add(new FormElement(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_DATABASE_PASSWD, MESSAGES
 					.datalayerConnectionParametersPassword(), KeyValueForm.ITEMTYPE_PASSWORD, false, 150, null, null));
 
 		} else if (DynamicLayerConfiguration.SOURCE_TYPE_WMS.equals(type)) {

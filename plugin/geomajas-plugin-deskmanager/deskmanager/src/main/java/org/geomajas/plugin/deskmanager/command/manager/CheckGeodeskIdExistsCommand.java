@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Command that checks if a geodesk id already exists in the database. Typically called when an administrator
  * tries to override a geodesk id in the management interface.
  * 
- * @author Jan De Moerloose
  * @author Oliver May
  * @author Kristof Heirwegh
  */

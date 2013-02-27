@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.Command;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.BlueprintResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
@@ -55,14 +54,16 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 	public void execute(SaveBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			if (request.getBlueprint() == null) {
-				//TODO: i18n
-				response.getErrorMessages().add("No blueprint was given.");
+				Exception e = new IllegalArgumentException("No blueprint id given.");
+				log.error(e.getLocalizedMessage());
+				throw e;
 			} else {
 				Blueprint target = blueprintService.getBlueprintById(request.getBlueprint().getId());
 				if (target == null) {
-					//TODO: i18n
-					response.getErrorMessages().add(
-							"No blueprint found for id: " + request.getBlueprint().getId());
+					Exception e = new IllegalArgumentException("No blueprint found for the given id: "
+							+ request.getBlueprint());
+					log.error(e.getLocalizedMessage());
+					throw e;
 				} else {
 					Blueprint source = dtoService.fromDto(request.getBlueprint());
 
@@ -85,9 +86,10 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 			}
 		} catch (GeomajasSecurityException e) {
 			throw e;
-		} catch (Exception e) {
-			log.error("Unexpected error while saving blueprint.", e);
-			throw new GeomajasException(e);
+		} catch (Exception orig) {
+			Exception e = new Exception("Unexpected error saving blueprint.", orig);
+			log.error(e.getLocalizedMessage());
+			throw e;
 		}
 	}
 
