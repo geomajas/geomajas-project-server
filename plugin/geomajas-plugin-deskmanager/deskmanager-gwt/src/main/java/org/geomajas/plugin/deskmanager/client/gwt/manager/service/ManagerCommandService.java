@@ -31,18 +31,18 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelReque
 import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteLayerModelRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsResponse;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodesksResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetTerritoriesResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
@@ -54,8 +54,6 @@ import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
-
-import com.google.gwt.i18n.client.LocaleInfo;
 
 /**
  * Convenience class with helper methods for commands.
@@ -240,7 +238,6 @@ public final class ManagerCommandService {
 	 */
 	public static void getLayerModels(final DataCallback<List<LayerModelDto>> onFinish) {
 		GetLayerModelsRequest request = new GetLayerModelsRequest();
-		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		GwtCommand command = new GwtCommand(GetLayerModelsRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
