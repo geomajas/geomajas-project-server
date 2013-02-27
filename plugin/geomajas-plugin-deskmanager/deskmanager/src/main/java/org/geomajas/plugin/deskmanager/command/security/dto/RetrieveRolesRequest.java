@@ -26,7 +26,9 @@ public class RetrieveRolesRequest implements CommandRequest {
 	
 	private String geodeskId;
 	
-	private String locale; 
+	private String locale;
+
+	public static final String COMMAND = "command.security.RetrieveRolesCommand"; 
 
 	
 	/**

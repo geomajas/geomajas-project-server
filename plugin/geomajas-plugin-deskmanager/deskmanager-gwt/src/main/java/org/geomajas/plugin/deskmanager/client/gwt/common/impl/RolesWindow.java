@@ -63,7 +63,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 		request.setGeodeskId(geodeskId);
 		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		
-		GwtCommand command = new GwtCommand(RetrieveRolesResponse.COMMAND);
+		GwtCommand command = new GwtCommand(RetrieveRolesRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<RetrieveRolesResponse>() {
 

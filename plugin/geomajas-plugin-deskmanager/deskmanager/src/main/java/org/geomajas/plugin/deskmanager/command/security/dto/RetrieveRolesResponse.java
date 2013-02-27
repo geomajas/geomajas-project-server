@@ -24,8 +24,6 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  */
 public class RetrieveRolesResponse extends CommandResponse {
 
-	public static final String COMMAND = "command.security.RetrieveRolesCommand";
-
 	private static final long serialVersionUID = 100L;
 
 	private Map<String, ProfileDto> profiles = new HashMap<String, ProfileDto>();

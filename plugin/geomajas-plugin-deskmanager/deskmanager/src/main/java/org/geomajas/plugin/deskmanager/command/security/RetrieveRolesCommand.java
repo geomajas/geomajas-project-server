@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.geomajas.command.Command;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesResponse;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
@@ -25,6 +23,8 @@ import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerAuthorization;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -36,8 +36,10 @@ import org.springframework.stereotype.Component;
  *         or manager interface from where the command is requested.
  * 
  */
-@Component(RetrieveRolesResponse.COMMAND)
+@Component(RetrieveRolesRequest.COMMAND)
 public class RetrieveRolesCommand implements Command<RetrieveRolesRequest, RetrieveRolesResponse> {
+
+	private final Logger log = LoggerFactory.getLogger(RetrieveRolesCommand.class);
 
 	@Autowired
 	private DeskmanagerSecurityService securityService;
@@ -61,7 +63,9 @@ public class RetrieveRolesCommand implements Command<RetrieveRolesRequest, Retri
 
 		String geodeskId = request.getGeodeskId();
 		if (geodeskId == null) {
-			throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, geodeskId);
+			Exception e = new IllegalArgumentException("Error retrieving roles: geodesk id is required.");
+			log.error(e.getLocalizedMessage());
+			throw e;
 		} else if (!RetrieveRolesRequest.MANAGER_ID.equals(geodeskId)) {
 			for (Profile profile : profileService.getProfiles()) {
 				DeskmanagerAuthorization auth = new DeskmanagerAuthorization(profile, geodeskId, applicationContext);
