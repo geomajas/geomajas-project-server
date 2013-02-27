@@ -30,6 +30,7 @@ import org.geomajas.sld.SizeInfo;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.UserStyleInfo;
+import org.geomajas.sld.WellKnownNameInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
 
 /**
@@ -62,44 +63,47 @@ public final class StyleUtil {
 	}
 
 	public static RuleInfo createRule(LayerType type, FeatureStyleInfo featureStyle) {
+		SymbolizerTypeInfo symbolizer = createSymbolizer(type, featureStyle);
+		RuleInfo rule = createRule(featureStyle.getName(), featureStyle.getName(), symbolizer);
+		return rule;
+	}
+
+	public static SymbolizerTypeInfo createSymbolizer(LayerType type, FeatureStyleInfo featureStyle) {
 		SymbolInfo symbol = featureStyle.getSymbol();
-		RuleInfo rule = null;
-		StrokeInfo stroke = StyleUtil.createStroke(featureStyle.getStrokeColor(), featureStyle.getStrokeWidth(),
+		SymbolizerTypeInfo symbolizer = null;
+		StrokeInfo stroke = createStroke(featureStyle.getStrokeColor(), featureStyle.getStrokeWidth(),
 				featureStyle.getStrokeOpacity(), null);
-		FillInfo fill = StyleUtil.createFill(featureStyle.getFillColor(), featureStyle.getFillOpacity());
+		FillInfo fill = createFill(featureStyle.getFillColor(), featureStyle.getFillOpacity());
 		switch (type) {
 			case GEOMETRY:
 				break;
 			case LINESTRING:
 			case MULTILINESTRING:
-				LineSymbolizerInfo line = StyleUtil.createLineSymbolizer(stroke);
-				rule = StyleUtil.createRule(featureStyle.getName(), featureStyle.getName(), line);
-				break;
+				symbolizer = createLineSymbolizer(stroke);
+					break;
 			case MULTIPOINT:
 			case POINT:
 				GraphicInfo graphic;
 				if (symbol.getCircle() != null) {
-					MarkInfo circle = StyleUtil.createMark(WKN_CIRCLE, fill, stroke);
-					graphic = StyleUtil.createGraphic(circle, (int) (2 * symbol.getCircle().getR()));
+					MarkInfo circle = createMark(WKN_CIRCLE, fill, stroke);
+					graphic = createGraphic(circle, (int) (2 * symbol.getCircle().getR()));
 				} else if (symbol.getRect() != null) {
-					MarkInfo rect = StyleUtil.createMark(WKN_RECT, fill, stroke);
-					graphic = StyleUtil.createGraphic(rect, (int) symbol.getRect().getH());
+					MarkInfo rect = createMark(WKN_RECT, fill, stroke);
+					graphic = createGraphic(rect, (int) symbol.getRect().getH());
 				} else {
-					ExternalGraphicInfo image = StyleUtil.createExternalGraphic(symbol.getImage().getHref());
-					graphic = StyleUtil.createGraphic(image, symbol.getImage().getHeight());
+					ExternalGraphicInfo image = createExternalGraphic(symbol.getImage().getHref());
+					graphic = createGraphic(image, symbol.getImage().getHeight());
 				}
-				PointSymbolizerInfo point = StyleUtil.createPointSymbolizer(graphic);
-				rule = StyleUtil.createRule(featureStyle.getName(), featureStyle.getName(), point);
+				symbolizer = createPointSymbolizer(graphic);
 				break;
 			case POLYGON:
 			case MULTIPOLYGON:
-				PolygonSymbolizerInfo polygon = StyleUtil.createPolygonSymbolizer(fill, stroke);
-				rule = StyleUtil.createRule(featureStyle.getName(), featureStyle.getName(), polygon);
+				symbolizer = createPolygonSymbolizer(fill, stroke);
 				break;
 			default:
 				throw new IllegalStateException("Unknown layer type " + type);
 		}
-		return rule;
+		return symbolizer;
 	}
 
 	/**
@@ -233,6 +237,9 @@ public final class StyleUtil {
 		MarkInfo mark = new MarkInfo();
 		mark.setFill(fill);
 		mark.setStroke(stroke);
+		WellKnownNameInfo wellKnownNameInfo = new WellKnownNameInfo();
+		wellKnownNameInfo.setWellKnownName(wellKnownName);
+		mark.setWellKnownName(wellKnownNameInfo);
 		return mark;
 	}
 
