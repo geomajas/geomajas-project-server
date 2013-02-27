@@ -121,22 +121,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-layer-common-all</artifactId>
-				<version>1.0.0-M1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-wms-all</artifactId>
 				<version>1.10.1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-tms-all</artifactId>
-				<version>1.1.0-M1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -176,6 +162,20 @@
 				<scope>import</scope>
 			</dependency>
 			<!-- no stable release yet
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-tms-all</artifactId>
+				<version>1.1.0-M1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-layer-common-all</artifactId>
+				<version>1.0.0-M1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-widget-utility-all</artifactId>
