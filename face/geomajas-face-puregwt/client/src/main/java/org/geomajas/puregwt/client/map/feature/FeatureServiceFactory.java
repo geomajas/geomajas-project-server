@@ -17,6 +17,7 @@ import org.geomajas.puregwt.client.map.MapPresenter;
  * GIN factory for {@link Feature} objects.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface FeatureServiceFactory {
@@ -24,7 +25,8 @@ public interface FeatureServiceFactory {
 	/**
 	 * creates a {@link FeatureService} using the given {@link MapPresenter}.
 	 * 
-	 * @param mapPresenter the map presenter
+	 * @param mapPresenter
+	 *            the map presenter
 	 * @return a new {@link FeatureService}
 	 */
 	FeatureService create(MapPresenter mapPresenter);

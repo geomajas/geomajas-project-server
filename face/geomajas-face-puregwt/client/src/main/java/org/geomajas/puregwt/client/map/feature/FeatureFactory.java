@@ -17,6 +17,7 @@ import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
  * GIN factory for {@link Feature} objects.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface FeatureFactory {
@@ -24,8 +25,10 @@ public interface FeatureFactory {
 	/**
 	 * creates a {@link Feature} from a DTO feature and layer.
 	 * 
-	 * @param feature the DTO feature
-	 * @param layer the layer
+	 * @param feature
+	 *            the DTO feature
+	 * @param layer
+	 *            the layer
 	 * @return a new {@link Feature}
 	 */
 	Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer);
