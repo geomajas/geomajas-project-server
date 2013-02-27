@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer;
 
 import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.ManagerTab;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
@@ -34,7 +35,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class Datalayers extends VLayout implements EditSessionHandler, ManagerTab {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private IButton buttonNew;
 
 	private DatalayerGrid grid;
@@ -55,6 +56,7 @@ public class Datalayers extends VLayout implements EditSessionHandler, ManagerTa
 		topContainer.setLayoutBottomMargin(5);
 
 		buttonNew = new IButton(MESSAGES.datalayersNewDatalayerButtonText());
+		buttonNew.setWidth(buttonNew.getTitle().length() * GdmLayout.buttonFontWidth + GdmLayout.buttonOffset);
 		buttonNew.setIcon(WidgetLayout.iconAdd);
 		buttonNew.addClickHandler(new ClickHandler() {
 

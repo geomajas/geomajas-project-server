@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.ManagerTab;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionEvent;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.events.EditSessionHandler;
@@ -57,6 +58,7 @@ public class Blueprints extends VLayout implements EditSessionHandler, ManagerTa
 		topContainer.setLayoutBottomMargin(5);
 
 		buttonNew = new IButton(MESSAGES.newBlueprintButtonText());
+		buttonNew.setWidth(buttonNew.getTitle().length() * GdmLayout.buttonFontWidth + GdmLayout.buttonOffset);
 		buttonNew.setIcon(WidgetLayout.iconAdd);
 		buttonNew.addClickHandler(new ClickHandler() {
 
