@@ -223,7 +223,6 @@
 		</module>
 		<!--<module name="AvoidInlineConditionals"/>-->
 		<module name="CovariantEquals"/>
-		<module name="DoubleCheckedLocking"/>
 		<module name="EmptyStatement">
 			<!--<property name="severity" value="info"/>-->
 		</module>
