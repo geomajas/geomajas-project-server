@@ -21,7 +21,7 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.service.CommandService;
 
@@ -39,7 +39,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 	private final String crs;
 
-	private final VectorLayer vectorLayer;
+	private final VectorServerLayer vectorLayer;
 
 	private final HtmlContainer htmlContainer;
 
@@ -67,7 +67,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 	@Inject
 	public VectorLayerScaleRenderer(EventBus eventBus, CommandService commandService, @Assisted Object eventSource,
-			@Assisted String crs, @Assisted VectorLayer vectorLayer, @Assisted HtmlContainer htmlContainer,
+			@Assisted String crs, @Assisted VectorServerLayer vectorLayer, @Assisted HtmlContainer htmlContainer,
 			@Assisted double scale) {
 		this.eventBus = eventBus;
 		this.commandService = commandService;
@@ -174,7 +174,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 		this.mapExtentScaleAtFetch = mapExtentScaleAtFetch;
 	}
 
-	public VectorLayer getLayer() {
+	public VectorServerLayer getLayer() {
 		return vectorLayer;
 	}
 

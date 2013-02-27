@@ -28,6 +28,7 @@ import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.ServerLayer;
 import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.inject.Inject;
@@ -36,7 +37,7 @@ import com.google.inject.assistedinject.Assisted;
 /**
  * <p>
  * Service for feature retrieval and manipulation. This service is map specific, and so the methods may assume the
- * features come from layers within the map's {@link org.geomajas.puregwt.client.map.LayersModel}.
+ * features come from layers within the map's {@link org.geomajas.puregwt.client.map.layer.LayersModel}.
  * </p>
  * 
  * @author Pieter De Graef
@@ -44,9 +45,9 @@ import com.google.inject.assistedinject.Assisted;
 public class FeatureServiceImpl implements FeatureService {
 
 	private final MapPresenter mapPresenter;
-	
+
 	private final FeatureFactory featureFactory;
-	
+
 	@Inject
 	private CommandService commandService;
 
@@ -67,13 +68,16 @@ public class FeatureServiceImpl implements FeatureService {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public void search(final FeaturesSupported<?> layer, SearchCriterion[] criteria, LogicalOperator operator,
+	public void search(final FeaturesSupported layer, SearchCriterion[] criteria, LogicalOperator operator,
 			int maxResultSize, final FeatureMapFunction callback) {
 		SearchFeatureRequest request = new SearchFeatureRequest();
 		request.setBooleanOperator(operator.getValue());
 		request.setCriteria(criteria);
 		request.setMax(maxResultSize);
-		request.setLayerId(layer.getServerLayerId());
+		if (layer instanceof ServerLayer) {
+			ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
+			request.setLayerId(serverLayer.getServerLayerId());
+		}
 		request.setCrs(mapPresenter.getViewPort().getCrs());
 		request.setFilter(layer.getFilter());
 		request.setFeatureIncludes(11);
@@ -87,7 +91,7 @@ public class FeatureServiceImpl implements FeatureService {
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
 					features.add(featureFactory.create(feature, layer));
 				}
-				Map<FeaturesSupported<?>, List<Feature>> mapping = new HashMap<FeaturesSupported<?>, List<Feature>>();
+				Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
 				mapping.put(layer, features);
 				callback.execute(mapping);
 			}
@@ -99,11 +103,15 @@ public class FeatureServiceImpl implements FeatureService {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public void search(final FeaturesSupported<?> layer, Geometry location, double buffer,
+	public void search(final FeaturesSupported layer, Geometry location, double buffer,
 			final FeatureMapFunction callback) {
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		request.setBuffer(buffer);
-		request.addLayerWithFilter(layer.getServerLayerId(), layer.getServerLayerId(), layer.getFilter());
+		if (layer instanceof ServerLayer) {
+			ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
+			request.addLayerWithFilter(serverLayer.getServerLayerId(), serverLayer.getServerLayerId(),
+					layer.getFilter());
+		}
 		request.setLocation(location);
 		request.setSearchType(SearchLayerType.SEARCH_ALL_LAYERS.getValue());
 		request.setCrs(mapPresenter.getViewPort().getCrs());
@@ -119,7 +127,7 @@ public class FeatureServiceImpl implements FeatureService {
 					for (org.geomajas.layer.feature.Feature feature : dtos) {
 						features.add(featureFactory.create(feature, layer));
 					}
-					Map<FeaturesSupported<?>, List<Feature>> map = new HashMap<FeaturesSupported<?>, List<Feature>>();
+					Map<FeaturesSupported, List<Feature>> map = new HashMap<FeaturesSupported, List<Feature>>();
 					map.put(layer, features);
 					callback.execute(map);
 				}
@@ -135,10 +143,11 @@ public class FeatureServiceImpl implements FeatureService {
 		// Add all FeaturesSupported layers, together with their filters:
 		switch (searchType) {
 			case SEARCH_SELECTED_LAYER:
-				Layer<?> layer = mapPresenter.getLayersModel().getSelectedLayer();
-				if (layer != null && layer instanceof FeaturesSupported<?>) {
-					request.addLayerWithFilter(layer.getServerLayerId(), layer.getServerLayerId(),
-							((FeaturesSupported<?>) layer).getFilter());
+				Layer layer = mapPresenter.getLayersModel().getSelectedLayer();
+				if (layer != null && layer instanceof FeaturesSupported && layer instanceof ServerLayer) {
+					ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
+					request.addLayerWithFilter(serverLayer.getServerLayerId(), serverLayer.getServerLayerId(),
+							((FeaturesSupported) layer).getFilter());
 				} else {
 					throw new IllegalStateException(
 							"No selected layer, or selected layer is not of the type FeaturesSupported.");
@@ -146,10 +155,11 @@ public class FeatureServiceImpl implements FeatureService {
 				break;
 			default:
 				for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-					Layer<?> layer2 = mapPresenter.getLayersModel().getLayer(i);
-					if (layer2 instanceof FeaturesSupported) {
-						request.addLayerWithFilter(layer2.getServerLayerId(), layer2.getServerLayerId(),
-								((FeaturesSupported<?>) layer2).getFilter());
+					Layer layer2 = mapPresenter.getLayersModel().getLayer(i);
+					if (layer2 instanceof FeaturesSupported && layer2 instanceof ServerLayer) {
+						ServerLayer<?> serverLayer = (ServerLayer<?>) layer2;
+						request.addLayerWithFilter(serverLayer.getServerLayerId(), serverLayer.getServerLayerId(),
+								((FeaturesSupported) layer2).getFilter());
 					}
 				}
 		}
@@ -167,10 +177,10 @@ public class FeatureServiceImpl implements FeatureService {
 		commandService.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
 			public void execute(SearchByLocationResponse response) {
-				Map<FeaturesSupported<?>, List<Feature>> mapping = new HashMap<FeaturesSupported<?>, List<Feature>>();
+				Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
 				for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : response.getFeatureMap()
 						.entrySet()) {
-					FeaturesSupported<?> layer = searchLayer(entry.getKey());
+					FeaturesSupported layer = searchLayer(entry.getKey());
 					List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
 					for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
 						features.add(featureFactory.create(feature, layer));
@@ -186,12 +196,15 @@ public class FeatureServiceImpl implements FeatureService {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private FeaturesSupported<?> searchLayer(String layerId) {
+	private FeaturesSupported searchLayer(String layerId) {
 		if (layerId != null) {
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-				Layer<?> layer = mapPresenter.getLayersModel().getLayer(i);
-				if (layerId.equals(layer.getServerLayerId()) && layer instanceof FeaturesSupported) {
-					return (FeaturesSupported<?>) layer;
+				Layer layer = mapPresenter.getLayersModel().getLayer(i);
+				if (layer instanceof ServerLayer && layer instanceof FeaturesSupported) {
+					ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
+					if (layerId.equals(serverLayer.getServerLayerId())) {
+						return (FeaturesSupported) layer;
+					}
 				}
 			}
 		}

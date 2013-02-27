@@ -8,10 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.map.render;
 
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 
 import com.google.inject.name.Named;
@@ -20,7 +21,6 @@ import com.google.inject.name.Named;
  * Gin factory for {@link TiledScaleRenderer}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface TiledScaleRendererFactory {
 
@@ -29,8 +29,10 @@ public interface TiledScaleRendererFactory {
 	String VECTOR_NAME = "vector";
 
 	@Named(RASTER_NAME)
-	TiledScaleRenderer create(Object eventSource, String crs, RasterLayer layer, HtmlContainer container, double scale);
+	TiledScaleRenderer create(Object eventSource, String crs, RasterServerLayer layer, HtmlContainer container,
+			double scale);
 
 	@Named(VECTOR_NAME)
-	TiledScaleRenderer create(Object eventSource, String crs, VectorLayer layer, HtmlContainer container, double scale);
+	TiledScaleRenderer create(Object eventSource, String crs, VectorServerLayer layer, HtmlContainer container,
+			double scale);
 }

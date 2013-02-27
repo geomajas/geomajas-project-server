@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map;
+package org.geomajas.puregwt.client.map.layer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ import org.geomajas.puregwt.client.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectionHandler;
-import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.LayerFactory;
+import org.geomajas.puregwt.client.map.MapEventBus;
+import org.geomajas.puregwt.client.map.ViewPort;
 
 import com.google.inject.Inject;
 
@@ -46,8 +46,8 @@ public final class LayersModelImpl implements LayersModel {
 	 * An ordered list of layers. The drawing order on the map is as follows: the first layer will be placed at the
 	 * bottom, the last layer on top.
 	 */
-	private List<Layer<?>> layers = new ArrayList<Layer<?>>();
-	
+	private List<Layer> layers = new ArrayList<Layer>();
+
 	@Inject
 	private LayerFactory layerFactory;
 
@@ -82,7 +82,7 @@ public final class LayersModelImpl implements LayersModel {
 		eventBus.addLayerSelectionHandler(new LayerSelectionHandler() {
 
 			public void onSelectLayer(LayerSelectedEvent event) {
-				for (Layer<?> layer : layers) {
+				for (Layer layer : layers) {
 					if (layer.isSelected() && !layer.equals(event.getLayer())) {
 						layer.setSelected(false);
 					}
@@ -94,26 +94,39 @@ public final class LayersModelImpl implements LayersModel {
 		});
 
 		// Create all the layers:
-		layers = new ArrayList<Layer<?>>();
+		layers = new ArrayList<Layer>();
 		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-			addLayer(layerInfo);
+			Layer layer = createLayer(layerInfo);
+			addLayer(layer);
 		}
 	}
 
-	public Layer<?> addLayer(ClientLayerInfo layerInfo) {
-		Layer<?> layer = null;
+	/** {@inheritDoc} */
+	public boolean addLayer(Layer layer) {
+		if (layer == null) {
+			throw new IllegalArgumentException("Layer is null.");
+		}
+		if (getLayer(layer.getId()) == null) {
+			layers.add(layer);
+			if (layer instanceof AbstractLayer) {
+				AbstractLayer aLayer = (AbstractLayer) layer;
+				aLayer.setViewPort(viewPort);
+				aLayer.setEventBus(eventBus);
+			}
+			eventBus.fireEvent(new LayerAddedEvent(layer));
+			return true;
+		}
+		return false;
+	}
+
+	private Layer createLayer(ClientLayerInfo layerInfo) {
+		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				layer = layerFactory.createRasterLayer((ClientRasterLayerInfo) layerInfo,
-						viewPort, eventBus);
-				layers.add(layer);
-				eventBus.fireEvent(new LayerAddedEvent(layer));
+				layer = layerFactory.createRasterLayer((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
 				break;
 			default:
-				layer = layerFactory.createVectorLayer((ClientVectorLayerInfo) layerInfo,
-						viewPort, eventBus);
-				layers.add(layer);
-				eventBus.fireEvent(new LayerAddedEvent(layer));
+				layer = layerFactory.createVectorLayer((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
 				break;
 		}
 		if (!mapInfo.getLayers().contains(layer.getLayerInfo())) {
@@ -123,11 +136,14 @@ public final class LayersModelImpl implements LayersModel {
 	}
 
 	public boolean removeLayer(String id) {
-		Layer<?> layer = getLayer(id);
+		Layer layer = getLayer(id);
 		if (layer != null) {
 			int index = getLayerPosition(layer);
 			layers.remove(layer);
-			mapInfo.getLayers().remove(layer.getLayerInfo());
+			if (layer instanceof ServerLayer) {
+				ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
+				mapInfo.getLayers().remove(serverLayer.getLayerInfo());
+			}
 			eventBus.fireEvent(new LayerRemovedEvent(layer, index));
 			return true;
 		}
@@ -141,11 +157,11 @@ public final class LayersModelImpl implements LayersModel {
 	 *            The layers unique identifier within this map.
 	 * @return Returns the layer, or null if it could not be found.
 	 */
-	public Layer<?> getLayer(String id) {
+	public Layer getLayer(String id) {
 		if (id == null) {
 			throw new IllegalArgumentException("Null ID passed to the getLayer method.");
 		}
-		for (Layer<?> layer : layers) {
+		for (Layer layer : layers) {
 			if (id.equals(layer.getId())) {
 				return layer;
 			}
@@ -162,7 +178,7 @@ public final class LayersModelImpl implements LayersModel {
 		return layers.size();
 	}
 
-	public boolean moveLayer(Layer<?> layer, int index) {
+	public boolean moveLayer(Layer layer, int index) {
 		int currentIndex = getLayerPosition(layer);
 		if (currentIndex < 0 || currentIndex == index) {
 			return false;
@@ -194,11 +210,11 @@ public final class LayersModelImpl implements LayersModel {
 		return true;
 	}
 
-	public boolean moveLayerUp(Layer<?> layer) {
+	public boolean moveLayerUp(Layer layer) {
 		return moveLayer(layer, getLayerPosition(layer) + 1);
 	}
 
-	public boolean moveLayerDown(Layer<?> layer) {
+	public boolean moveLayerDown(Layer layer) {
 		return moveLayer(layer, getLayerPosition(layer) - 1);
 	}
 
@@ -210,7 +226,7 @@ public final class LayersModelImpl implements LayersModel {
 	 * @return Returns the position of the layer in the map. This position determines layer order. If the layer was not
 	 *         found, than -1 is returned.
 	 */
-	public int getLayerPosition(Layer<?> layer) {
+	public int getLayerPosition(Layer layer) {
 		if (layer == null) {
 			throw new IllegalArgumentException("Null value passed to the getLayerPosition method.");
 		}
@@ -229,7 +245,7 @@ public final class LayersModelImpl implements LayersModel {
 	 *            The specified index.
 	 * @return Returns the layer, or null if the index can't be found.
 	 */
-	public Layer<?> getLayer(int index) {
+	public Layer getLayer(int index) {
 		return layers.get(index);
 	}
 
@@ -238,9 +254,9 @@ public final class LayersModelImpl implements LayersModel {
 	 * 
 	 * @return Returns the selected layer, or null if no layer is selected.
 	 */
-	public Layer<?> getSelectedLayer() {
+	public Layer getSelectedLayer() {
 		if (layers != null) {
-			for (Layer<?> layer : layers) {
+			for (Layer layer : layers) {
 				if (layer.isSelected()) {
 					return layer;
 				}

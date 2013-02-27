@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -16,7 +17,7 @@ import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 /**
- * Gin factory for {@link VectorLayer} and {@link RasterLayer} layers.
+ * Gin factory for {@link VectorServerLayer} and {@link RasterServerLayer} layers.
  * 
  * @author Jan De Moerloose
  * 
@@ -31,7 +32,7 @@ public interface LayerFactory {
 	 * @param eventBus the map event bus
 	 * @return the layer
 	 */
-	VectorLayer createVectorLayer(ClientVectorLayerInfo clientVectorLayerInfo, ViewPort viewPort,
+	VectorServerLayer createVectorLayer(ClientVectorLayerInfo clientVectorLayerInfo, ViewPort viewPort,
 			MapEventBus eventBus);
 	
 	/**
@@ -42,6 +43,6 @@ public interface LayerFactory {
 	 * @param eventBus the map event bus
 	 * @return the layer
 	 */
-	RasterLayer createRasterLayer(ClientRasterLayerInfo clientRasterLayerInfo, ViewPort viewPort,
+	RasterServerLayer createRasterLayer(ClientRasterLayerInfo clientRasterLayerInfo, ViewPort viewPort,
 			MapEventBus eventBus);
 }

@@ -27,7 +27,7 @@ public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {
 	 * 
 	 * @param layer the layer which has been refreshed
 	 */
-	public LayerRefreshedEvent(Layer<?> layer) {
+	public LayerRefreshedEvent(Layer layer) {
 		super(layer);
 	}
 

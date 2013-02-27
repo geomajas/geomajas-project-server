@@ -27,7 +27,7 @@ public class LayerAddedEvent extends BaseLayerEvent<MapCompositionHandler> {
 	 * 
 	 * @param layer the layer that was added
 	 */
-	public LayerAddedEvent(Layer<?> layer) {
+	public LayerAddedEvent(Layer layer) {
 		super(layer);
 	}
 

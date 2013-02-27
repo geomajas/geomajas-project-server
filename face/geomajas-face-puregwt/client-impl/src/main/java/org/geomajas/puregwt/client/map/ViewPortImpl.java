@@ -54,7 +54,7 @@ public final class ViewPortImpl implements ViewPort {
 	private double scale;
 
 	private Coordinate position;
-	
+
 	private boolean initialized;
 
 	// -------------------------------------------------------------------------
@@ -80,11 +80,13 @@ public final class ViewPortImpl implements ViewPort {
 
 		// if the max bounds was not configured, take the union of initial and layer bounds
 		if (BboxService.equals(maxBounds, Bbox.ALL, 1e-10)) {
-			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-				maxBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
-						.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
-				if (layerInfo.getMaxExtent() != null) {
-					maxBounds = BboxService.union(maxBounds, layerInfo.getMaxExtent());
+			maxBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
+					.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
+			if (mapInfo.getLayers() != null && mapInfo.getLayers().size() > 0) {
+				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+					if (layerInfo.getMaxExtent() != null) {
+						maxBounds = BboxService.union(maxBounds, layerInfo.getMaxExtent());
+					}
 				}
 			}
 		}
@@ -342,6 +344,7 @@ public final class ViewPortImpl implements ViewPort {
 	public boolean isInitialized() {
 		return initialized;
 	}
+
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------

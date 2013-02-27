@@ -16,8 +16,6 @@ import org.geomajas.puregwt.client.controller.MockMapEventParserFactory;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
 import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
-import org.geomajas.puregwt.client.map.LayersModel;
-import org.geomajas.puregwt.client.map.LayersModelImpl;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
@@ -29,10 +27,12 @@ import org.geomajas.puregwt.client.map.feature.MockFeatureFactory;
 import org.geomajas.puregwt.client.map.feature.MockFeatureServiceFactory;
 import org.geomajas.puregwt.client.map.gadget.MockDefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.layer.LayerFactory;
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.RasterLayerImpl;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayerImpl;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
+import org.geomajas.puregwt.client.map.layer.LayersModelImpl;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayerImpl;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayerImpl;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapRendererFactory;
@@ -60,8 +60,8 @@ public class GeomajasTestModule extends AbstractModule {
 	protected void configure() {
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
 		bind(LayersModel.class).to(LayersModelImpl.class);
-		install(new FactoryModuleBuilder().implement(VectorLayer.class, VectorLayerImpl.class)
-				.implement(RasterLayer.class, RasterLayerImpl.class).build(LayerFactory.class));
+		install(new FactoryModuleBuilder().implement(VectorServerLayer.class, VectorServerLayerImpl.class)
+				.implement(RasterServerLayer.class, RasterServerLayerImpl.class).build(LayerFactory.class));
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(MapWidget.class).to(MapWidgetTestImpl.class);
 		bind(FeatureFactory.class).to(MockFeatureFactory.class);

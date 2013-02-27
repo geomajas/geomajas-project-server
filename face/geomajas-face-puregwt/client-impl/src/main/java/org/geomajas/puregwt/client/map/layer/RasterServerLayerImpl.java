@@ -23,7 +23,6 @@ import org.geomajas.puregwt.client.service.EndPointService;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-
 /**
  * <p>
  * The client side representation of a raster layer.
@@ -31,16 +30,16 @@ import com.google.inject.assistedinject.Assisted;
  * 
  * @author Pieter De Graef
  */
-public class RasterLayerImpl extends AbstractLayer<ClientRasterLayerInfo> implements RasterLayer {
-	
+public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
+
 	private EndPointService endPointService;
-	
+
 	/**
 	 * The only constructor! Set the MapModel and the layer info.
 	 * 
 	 */
 	@Inject
-	public RasterLayerImpl(@Assisted ClientRasterLayerInfo layerInfo, @Assisted final ViewPort viewPort,
+	public RasterServerLayerImpl(@Assisted ClientRasterLayerInfo layerInfo, @Assisted final ViewPort viewPort,
 			@Assisted final MapEventBus eventBus, final EndPointService endPointService) {
 		super(layerInfo, viewPort, eventBus);
 		this.endPointService = endPointService;
@@ -51,7 +50,7 @@ public class RasterLayerImpl extends AbstractLayer<ClientRasterLayerInfo> implem
 		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
 		UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
 		url.addPath(getServerLayerId() + LEGEND_ICON_EXTENSION);
-		stylePresenters.add(new LayerStylePresenter(0, url.toString(), getTitle()));
+		stylePresenters.add(new ServerLayerStylePresenter(0, url.toString(), getTitle()));
 		return stylePresenters;
 	}
 

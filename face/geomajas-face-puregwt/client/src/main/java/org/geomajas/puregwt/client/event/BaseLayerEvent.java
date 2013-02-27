@@ -25,9 +25,9 @@ import com.google.web.bindery.event.shared.Event;
  */
 public abstract class BaseLayerEvent<H> extends Event<H> {
 
-	private final Layer<?> layer;
+	private final Layer layer;
 
-	protected BaseLayerEvent(Layer<?> layer) {
+	protected BaseLayerEvent(Layer layer) {
 		this.layer = layer;
 	}
 
@@ -36,7 +36,7 @@ public abstract class BaseLayerEvent<H> extends Event<H> {
 	 * 
 	 * @return the layer
 	 */
-	public Layer<?> getLayer() {
+	public Layer getLayer() {
 		return layer;
 	}
 }

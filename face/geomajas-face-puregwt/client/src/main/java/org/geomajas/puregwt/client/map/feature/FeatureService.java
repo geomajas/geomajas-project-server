@@ -19,7 +19,7 @@ import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 /**
  * <p>
  * Service for feature retrieval and manipulation. This service is map specific, and so the methods may assume the
- * features come from layers within the map's {@link org.geomajas.puregwt.client.map.LayersModel}.
+ * features come from layers within the map's {@link org.geomajas.puregwt.client.map.layer.LayersModel}.
  * </p>
  * 
  * @author Pieter De Graef
@@ -137,7 +137,7 @@ public interface FeatureService {
 	 * @param callback
 	 *            Callback function to apply on the result.
 	 */
-	void search(FeaturesSupported<?> layer, SearchCriterion[] criteria, LogicalOperator operator, int maxResultSize,
+	void search(FeaturesSupported layer, SearchCriterion[] criteria, LogicalOperator operator, int maxResultSize,
 			FeatureMapFunction callback);
 
 	// ------------------------------------------------------------------------
@@ -156,10 +156,10 @@ public interface FeatureService {
 	 * @param callback
 	 *            Callback function to apply on the result.
 	 */
-	void search(FeaturesSupported<?> layer, Geometry location, double buffer, FeatureMapFunction callback);
+	void search(FeaturesSupported layer, Geometry location, double buffer, FeatureMapFunction callback);
 
 	/**
-	 * Search for features within the {@link org.geomajas.puregwt.client.map.LayersModel} at the given location.
+	 * Search for features within the {@link org.geomajas.puregwt.client.map.layer.LayersModel} at the given location.
 	 * 
 	 * @param location
 	 *            The location to search at. Should be expressed in the map CRS.

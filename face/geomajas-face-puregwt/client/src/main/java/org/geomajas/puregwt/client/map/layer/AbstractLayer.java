@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.puregwt.client.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerRefreshedEvent;
@@ -25,29 +24,30 @@ import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Abstraction of the basic layer interface. Specific layer implementations should use this as a base.
+ * Abstraction of the basic layer interface. Specific layer implementations can use this as a base.
  * 
- * @param <T>
- *            The layer meta-data. Some extension of {@link ClientLayerInfo}.
  * @author Pieter De Graef
  */
-public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<T> {
+public abstract class AbstractLayer implements Layer {
 
-	protected static final String LEGEND_ICON_EXTENSION = ".png";
+	protected final String id;
 
 	protected ViewPort viewPort;
 
-	protected T layerInfo;
-
 	protected MapEventBus eventBus;
 
-	private boolean selected;
+	protected boolean selected;
 
-	private boolean markedAsVisible;
+	protected boolean markedAsVisible;
 
-	private boolean visibleAtPreviousScale;
+	protected boolean visibleAtPreviousScale;
+
+	protected String title;
+
+	private HandlerRegistration visibilityReg;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -56,19 +56,16 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 * 
-	 * @param layerInfo
-	 *            The layer configuration from which to create the layer.
 	 * @param viewPort
 	 *            The view port of the map.
 	 * @param eventBus
 	 *            The map centric event bus.
+	 * @param id
+	 *            The unique ID for this layer.
 	 */
-	public AbstractLayer(T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
-		this.layerInfo = layerInfo;
-		this.viewPort = viewPort;
-		this.eventBus = eventBus;
-		markedAsVisible = layerInfo.isVisible();
-		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
+	public AbstractLayer(String id) {
+		this.id = id;
+		markedAsVisible = true;
 	}
 
 	// ------------------------------------------------------------------------
@@ -77,22 +74,12 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	/** {@inheritDoc} */
 	public String getId() {
-		return layerInfo.getId();
-	}
-
-	/** {@inheritDoc} */
-	public String getServerLayerId() {
-		return layerInfo.getServerLayerId();
+		return id;
 	}
 
 	/** {@inheritDoc} */
 	public String getTitle() {
-		return layerInfo.getLabel();
-	}
-
-	/** {@inheritDoc} */
-	public T getLayerInfo() {
-		return layerInfo;
+		return title;
 	}
 
 	/** {@inheritDoc} */
@@ -130,13 +117,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	/** {@inheritDoc} */
 	public boolean isShowing() {
-		if (markedAsVisible) {
-			if (viewPort.getScale() >= layerInfo.getMinimumScale().getPixelPerUnit()
-					&& viewPort.getScale() <= layerInfo.getMaximumScale().getPixelPerUnit()) {
-				return true;
-			}
-		}
-		return false;
+		return markedAsVisible;
 	}
 
 	/** {@inheritDoc} */
@@ -145,7 +126,23 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	}
 
 	// ------------------------------------------------------------------------
-	// Private classes:
+	// Protected methods:
+	// ------------------------------------------------------------------------
+
+	protected void setViewPort(ViewPort viewPort) {
+		this.viewPort = viewPort;
+	}
+
+	protected void setEventBus(MapEventBus eventBus) {
+		this.eventBus = eventBus;
+		if (visibilityReg != null) {
+			visibilityReg.removeHandler();
+		}
+		visibilityReg = eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
+	}
+
+	// ------------------------------------------------------------------------
+	// Protected classes:
 	// ------------------------------------------------------------------------
 
 	/**
@@ -153,7 +150,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class LayerScaleVisibilityHandler implements ViewPortChangedHandler {
+	protected class LayerScaleVisibilityHandler implements ViewPortChangedHandler {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			onViewPortScaled(null);

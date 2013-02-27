@@ -27,7 +27,7 @@ public class LayerShowEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 	 * 
 	 * @param layer the layer that was shown
 	 */
-	public LayerShowEvent(Layer<?> layer) {
+	public LayerShowEvent(Layer layer) {
 		super(layer);
 	}
 

@@ -10,14 +10,14 @@
  */
 package org.geomajas.puregwt.client.map.layer;
 
-import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 
 /**
- * Default layer for {@link ClientRasterLayerInfo}.
+ * Default layer for {@link ClientVectorLayerInfo}.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface RasterLayer extends Layer<ClientRasterLayerInfo>, OpacitySupported {
-
+public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, LabelsSupported,
+		FeaturesSupported {
 }

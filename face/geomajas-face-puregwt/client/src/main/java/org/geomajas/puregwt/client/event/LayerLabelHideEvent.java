@@ -28,7 +28,7 @@ public class LayerLabelHideEvent extends BaseLayerEvent<LayerLabeledHandler> {
 	 * 
 	 * @param layer the layer of which labels where hidden
 	 */
-	public LayerLabelHideEvent(Layer<?> layer) {
+	public LayerLabelHideEvent(Layer layer) {
 		super(layer);
 	}
 

@@ -37,7 +37,7 @@ import com.google.inject.Injector;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
- * Test-cases for the {@link VectorLayerImpl} class.
+ * Test-cases for the {@link VectorServerLayerImpl} class.
  * 
  * @author Pieter De Graef
  */
@@ -75,7 +75,7 @@ public class VectorLayerEventTest {
 
 	@Test
 	public void testMarkedAsVisibleEvents() {
-		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 		count = 0;
 
 		eventBus.addLayerVisibilityHandler( new LayerVisibilityHandler() {
@@ -104,7 +104,7 @@ public class VectorLayerEventTest {
 
 	@Test
 	public void testShowHideEvents() {
-		VectorLayerImpl layer = new VectorLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
 
 		eventBus.addLayerVisibilityHandler( new LayerVisibilityHandler() {
 

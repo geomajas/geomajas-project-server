@@ -54,6 +54,7 @@ import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory.Type;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.service.CommandService;

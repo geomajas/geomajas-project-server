@@ -34,5 +34,5 @@ public interface FeatureMapFunction {
 	 * @param featureMap
 	 *            Map of features per layer.
 	 */
-	void execute(Map<FeaturesSupported<?>, List<Feature>> featureMap);
+	void execute(Map<FeaturesSupported, List<Feature>> featureMap);
 }

@@ -20,8 +20,6 @@ import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
-import org.geomajas.puregwt.client.map.LayersModel;
-import org.geomajas.puregwt.client.map.LayersModelImpl;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
@@ -35,10 +33,12 @@ import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceImpl;
 import org.geomajas.puregwt.client.map.gadget.DefaultMapGadgetFactoryImpl;
 import org.geomajas.puregwt.client.map.layer.LayerFactory;
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.RasterLayerImpl;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayerImpl;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
+import org.geomajas.puregwt.client.map.layer.LayersModelImpl;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayerImpl;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayerImpl;
 import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
@@ -84,8 +84,8 @@ public class GeomajasGinModule extends AbstractGinModule {
 				FeatureServiceFactory.class));
 		install(new GinFactoryModuleBuilder().implement(MapRenderer.class, MapRendererImpl.class).build(
 				MapRendererFactory.class));
-		install(new GinFactoryModuleBuilder().implement(VectorLayer.class, VectorLayerImpl.class)
-				.implement(RasterLayer.class, RasterLayerImpl.class).build(LayerFactory.class));
+		install(new GinFactoryModuleBuilder().implement(VectorServerLayer.class, VectorServerLayerImpl.class)
+				.implement(RasterServerLayer.class, RasterServerLayerImpl.class).build(LayerFactory.class));
 		install(new GinFactoryModuleBuilder().implement(MapScalesRenderer.class, LayerScalesRenderer.class).build(
 				MapScalesRendererFactory.class));
 		install(new GinFactoryModuleBuilder()
@@ -95,7 +95,6 @@ public class GeomajasGinModule extends AbstractGinModule {
 						RasterLayerScaleRenderer.class).build(TiledScaleRendererFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HtmlImage.class, HtmlImageImpl.class).build(
 				HtmlImageFactory.class));
-		
 
 		// Other:
 		bind(CommandService.class).to(CommandServiceImpl.class).in(Singleton.class);

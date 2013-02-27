@@ -20,7 +20,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
@@ -44,7 +44,7 @@ public class FeatureServiceStub {
 	private DtoConverterService converter;
 
 	@SuppressWarnings("deprecation")
-	public List<Feature> getAllFeatures(VectorLayer layer) {
+	public List<Feature> getAllFeatures(VectorServerLayer layer) {
 		List<Feature> result = new ArrayList<Feature>();
 		try {
 			CoordinateReferenceSystem crs = geoService.getCrs(layer.getLayerInfo().getCrs());

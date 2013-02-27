@@ -14,7 +14,6 @@ package org.geomajas.puregwt.client.map.layer;
 import java.util.Collection;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.puregwt.client.map.feature.Feature;
 
 /**
@@ -22,13 +21,11 @@ import org.geomajas.puregwt.client.map.feature.Feature;
  * the individual objects that make up a layer. Most methods in this interface will revolve around filtering (usually
  * using the feature attributes) and feature selection.
  * 
- * @param <T>
- *            layer info type, {@link ClientLayerInfo}
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api
-public interface FeaturesSupported<T extends ClientLayerInfo> extends Layer<T> {
+public interface FeaturesSupported extends Layer {
 
 	/**
 	 * Apply a filter on the layer. Such a filter specifies which features are to be shown on the map, and which aren't.

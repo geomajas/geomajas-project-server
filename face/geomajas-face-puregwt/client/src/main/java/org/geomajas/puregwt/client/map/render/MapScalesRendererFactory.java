@@ -18,7 +18,6 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * GIN factory for {@link MapScalesRenderer} objects.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface MapScalesRendererFactory {
 
@@ -30,6 +29,5 @@ public interface MapScalesRendererFactory {
 	 * @param htmlContainer
 	 * @return a new {@link MapRenderer}
 	 */
-	MapScalesRenderer create(ViewPort viewPort, Layer<?> layer, HtmlContainer htmlContainer);
-
+	MapScalesRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer);
 }

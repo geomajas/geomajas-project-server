@@ -12,12 +12,14 @@
 package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.gfx.GfxUtil;
+import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.service.CommandService;
 import org.geomajas.puregwt.client.service.EndPointService;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Ginjector specific for the Geomajas PureGWT client.
@@ -56,4 +58,8 @@ public interface GeomajasGinjector extends Ginjector {
 	 * @return The {@link EndPointService} singleton.
 	 */
 	CommandService getCommandService();
+	
+	HtmlImageFactory getImageFactory();
+	
+	EventBus getEventBus();
 }

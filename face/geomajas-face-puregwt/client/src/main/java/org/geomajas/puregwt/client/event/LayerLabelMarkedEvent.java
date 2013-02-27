@@ -36,7 +36,7 @@ public class LayerLabelMarkedEvent extends BaseLayerEvent<LayerLabeledHandler> {
 	 * 
 	 * @param layer the layer of which the labels where marked as visible/invisible
 	 */
-	public LayerLabelMarkedEvent(Layer<?> layer) {
+	public LayerLabelMarkedEvent(Layer layer) {
 		super(layer);
 	}
 

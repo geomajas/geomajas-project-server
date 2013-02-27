@@ -33,13 +33,12 @@ import org.geomajas.puregwt.client.service.EndPointService;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-
 /**
  * Vector layer representation.
  * 
  * @author Pieter De Graef
  */
-public class VectorLayerImpl extends AbstractLayer<ClientVectorLayerInfo> implements VectorLayer {
+public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
 
 	private Map<String, Feature> selection;
 
@@ -54,7 +53,7 @@ public class VectorLayerImpl extends AbstractLayer<ClientVectorLayerInfo> implem
 	// ------------------------------------------------------------------------
 
 	@Inject
-	public VectorLayerImpl(@Assisted ClientVectorLayerInfo layerInfo, @Assisted final ViewPort viewPort,
+	public VectorServerLayerImpl(@Assisted ClientVectorLayerInfo layerInfo, @Assisted final ViewPort viewPort,
 			@Assisted final MapEventBus eventBus, final EndPointService endPointService) {
 		super(layerInfo, viewPort, eventBus);
 		this.endPointService = endPointService;
@@ -76,7 +75,7 @@ public class VectorLayerImpl extends AbstractLayer<ClientVectorLayerInfo> implem
 			url.addPath(getServerLayerId());
 			url.addPath(styleInfo.getName());
 			url.addPath(i + LEGEND_ICON_EXTENSION);
-			stylePresenters.add(new LayerStylePresenter(i, url.toString(), sfi.getName()));
+			stylePresenters.add(new ServerLayerStylePresenter(i, url.toString(), sfi.getName()));
 		}
 		return stylePresenters;
 	}

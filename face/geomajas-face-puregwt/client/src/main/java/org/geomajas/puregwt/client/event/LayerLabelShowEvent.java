@@ -27,7 +27,7 @@ public class LayerLabelShowEvent extends BaseLayerEvent<LayerLabeledHandler> {
 	 * 
 	 * @param layer the layer of which the labels where shown
 	 */
-	public LayerLabelShowEvent(Layer<?> layer) {
+	public LayerLabelShowEvent(Layer layer) {
 		super(layer);
 	}
 

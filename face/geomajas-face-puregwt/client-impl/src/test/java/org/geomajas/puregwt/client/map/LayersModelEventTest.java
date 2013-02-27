@@ -26,6 +26,7 @@ import org.geomajas.puregwt.client.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectionHandler;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.geomajas.testdata.ReloadContext.ClassMode;
@@ -123,8 +124,8 @@ public class LayersModelEventTest {
 	public void testLayerSelection() {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer2 = layersModel.getLayer(LAYER2);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer2 = layersModel.getLayer(LAYER2);
 
 		selectId = null;
 		deselectId = null;
@@ -159,8 +160,8 @@ public class LayersModelEventTest {
 	public void testMoveLayerDown() {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer3 = layersModel.getLayer(LAYER3);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer3 = layersModel.getLayer(LAYER3);
 
 		fromIndex = 342;
 		toIndex = 342;
@@ -188,8 +189,8 @@ public class LayersModelEventTest {
 	public void testMoveLayerUp() {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer3 = layersModel.getLayer(LAYER3);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer3 = layersModel.getLayer(LAYER3);
 
 		fromIndex = 342;
 		toIndex = 342;
@@ -218,9 +219,9 @@ public class LayersModelEventTest {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
 
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer2 = layersModel.getLayer(LAYER2);
-		Layer<?> layer3 = layersModel.getLayer(LAYER3);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer2 = layersModel.getLayer(LAYER2);
+		Layer layer3 = layersModel.getLayer(LAYER3);
 
 		fromIndex = 342;
 		toIndex = 342;

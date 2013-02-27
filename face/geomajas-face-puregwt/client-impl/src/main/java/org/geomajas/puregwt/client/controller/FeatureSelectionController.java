@@ -315,9 +315,9 @@ public class FeatureSelectionController extends NavigationController {
 			this.bulk = bulk;
 		}
 
-		public void execute(Map<FeaturesSupported<?>, List<Feature>> featureMap) {
+		public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
 			if (bulk) {
-				for (FeaturesSupported<?> layer : featureMap.keySet()) {
+				for (FeaturesSupported layer : featureMap.keySet()) {
 					List<Feature> features = featureMap.get(layer);
 					if (features != null) {
 						if (!isShift) {
@@ -331,7 +331,7 @@ public class FeatureSelectionController extends NavigationController {
 					}
 				}
 			} else {
-				for (FeaturesSupported<?> layer : featureMap.keySet()) {
+				for (FeaturesSupported layer : featureMap.keySet()) {
 					List<Feature> features = featureMap.get(layer);
 					if (features != null) {
 						if (isShift) {

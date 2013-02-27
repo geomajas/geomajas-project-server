@@ -61,7 +61,7 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(FeatureSelectionHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler, Layer<?> layer) {
+	public HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler, Layer layer) {
 		return eventBus.addHandlerToSource(FeatureSelectionHandler.TYPE, source, new FeatureSelectionWrapper(handler,
 				layer));
 	}
@@ -70,7 +70,7 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(LayerLabeledHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addLayerLabeledHandler(LayerLabeledHandler handler, Layer<?> layer) {
+	public HandlerRegistration addLayerLabeledHandler(LayerLabeledHandler handler, Layer layer) {
 		return eventBus.addHandlerToSource(LayerLabeledHandler.TYPE, source, new LayerLabeledWrapper(handler, layer));
 	}
 
@@ -82,7 +82,7 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(LayerRefreshedHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addLayerRefreshedHandler(LayerRefreshedHandler handler, Layer<?> layer) {
+	public HandlerRegistration addLayerRefreshedHandler(LayerRefreshedHandler handler, Layer layer) {
 		return eventBus.addHandlerToSource(LayerRefreshedHandler.TYPE, source,
 				new LayerRefreshedWrapper(handler, layer));
 	}
@@ -91,7 +91,7 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(LayerSelectionHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler, Layer<?> layer) {
+	public HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler, Layer layer) {
 		return eventBus.addHandlerToSource(LayerSelectionHandler.TYPE, source,
 				new LayerSelectionWrapper(handler, layer));
 	}
@@ -100,7 +100,7 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(LayerStyleChangedHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler handler, Layer<?> layer) {
+	public HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler handler, Layer layer) {
 		return eventBus.addHandlerToSource(LayerStyleChangedHandler.TYPE, source, new LayerStyleChangedWrapper(handler,
 				layer));
 	}
@@ -109,7 +109,7 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(LayerVisibilityHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addLayerVisibilityHandler(LayerVisibilityHandler handler, Layer<?> layer) {
+	public HandlerRegistration addLayerVisibilityHandler(LayerVisibilityHandler handler, Layer layer) {
 		return eventBus.addHandlerToSource(LayerVisibilityHandler.TYPE, source, new LayerVisibilityWrapper(handler,
 				layer));
 	}
@@ -146,11 +146,11 @@ public class MapEventBusImpl implements MapEventBus {
 	 */
 	class FeatureSelectionWrapper implements FeatureSelectionHandler {
 
-		private Layer<?> layer;
+		private Layer layer;
 
 		private FeatureSelectionHandler handler;
 
-		public FeatureSelectionWrapper(FeatureSelectionHandler handler, Layer<?> layer) {
+		public FeatureSelectionWrapper(FeatureSelectionHandler handler, Layer layer) {
 			this.layer = layer;
 			this.handler = handler;
 		}
@@ -176,11 +176,11 @@ public class MapEventBusImpl implements MapEventBus {
 	 */
 	class LayerLabeledWrapper implements LayerLabeledHandler {
 
-		private Layer<?> layer;
+		private Layer layer;
 
 		private LayerLabeledHandler handler;
 
-		public LayerLabeledWrapper(LayerLabeledHandler handler, Layer<?> layer) {
+		public LayerLabeledWrapper(LayerLabeledHandler handler, Layer layer) {
 			this.layer = layer;
 			this.handler = handler;
 		}
@@ -213,11 +213,11 @@ public class MapEventBusImpl implements MapEventBus {
 	 */
 	class LayerRefreshedWrapper implements LayerRefreshedHandler {
 
-		private Layer<?> layer;
+		private Layer layer;
 
 		private LayerRefreshedHandler handler;
 
-		public LayerRefreshedWrapper(LayerRefreshedHandler handler, Layer<?> layer) {
+		public LayerRefreshedWrapper(LayerRefreshedHandler handler, Layer layer) {
 			this.layer = layer;
 			this.handler = handler;
 		}
@@ -238,11 +238,11 @@ public class MapEventBusImpl implements MapEventBus {
 	 */
 	class LayerSelectionWrapper implements LayerSelectionHandler {
 
-		private Layer<?> layer;
+		private Layer layer;
 
 		private LayerSelectionHandler handler;
 
-		public LayerSelectionWrapper(LayerSelectionHandler handler, Layer<?> layer) {
+		public LayerSelectionWrapper(LayerSelectionHandler handler, Layer layer) {
 			this.layer = layer;
 			this.handler = handler;
 		}
@@ -268,11 +268,11 @@ public class MapEventBusImpl implements MapEventBus {
 	 */
 	class LayerStyleChangedWrapper implements LayerStyleChangedHandler {
 
-		private Layer<?> layer;
+		private Layer layer;
 
 		private LayerStyleChangedHandler handler;
 
-		public LayerStyleChangedWrapper(LayerStyleChangedHandler handler, Layer<?> layer) {
+		public LayerStyleChangedWrapper(LayerStyleChangedHandler handler, Layer layer) {
 			this.layer = layer;
 			this.handler = handler;
 		}
@@ -293,11 +293,11 @@ public class MapEventBusImpl implements MapEventBus {
 	 */
 	class LayerVisibilityWrapper implements LayerVisibilityHandler {
 
-		private Layer<?> layer;
+		private Layer layer;
 
 		private LayerVisibilityHandler handler;
 
-		public LayerVisibilityWrapper(LayerVisibilityHandler handler, Layer<?> layer) {
+		public LayerVisibilityWrapper(LayerVisibilityHandler handler, Layer layer) {
 			this.layer = layer;
 			this.handler = handler;
 		}

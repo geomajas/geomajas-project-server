@@ -28,7 +28,7 @@ public class LayerHideEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 	 * 
 	 * @param layer the layer that was hidden
 	 */
-	public LayerHideEvent(Layer<?> layer) {
+	public LayerHideEvent(Layer layer) {
 		super(layer);
 	}
 

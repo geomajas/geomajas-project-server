@@ -11,19 +11,22 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-import org.geomajas.annotation.FutureApi;
-
-import com.google.gwt.user.client.ui.IsWidget;
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.render.MapScalesRenderer;
 
 /**
- * Presenter for a layer style. It points to an image URL and a label that is associated with that image. This
- * combination can for example be used within a legend widget.
+ * Extension interface for layer types that wish to define their own renderer.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
-@FutureApi(allMethods = true)
-public interface LayerStylePresenter extends IsWidget {
+public interface HasMapScalesRenderer {
 
-	int getIndex();
+	/**
+	 * Return the specific renderer for the layer.
+	 * 
+	 * @param container
+	 *            The container wherein the renderer should attach its content.
+	 * @return The layer specific renderer.
+	 */
+	MapScalesRenderer getRenderer(HtmlContainer container);
 }

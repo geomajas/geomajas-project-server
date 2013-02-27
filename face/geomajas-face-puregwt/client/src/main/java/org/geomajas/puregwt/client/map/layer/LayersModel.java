@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map;
+package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.MapEventBus;
+import org.geomajas.puregwt.client.map.ViewPort;
 
 
 /**
@@ -47,10 +47,10 @@ public interface LayersModel {
 	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the
 	 * list is rendered on top).
 	 * 
-	 * @param layerInfo The layer meta-data from which to build the layer.
-	 * @return the new layer.
+	 * @param layer The layer to be added to the model.
+	 * @return True or false, indicating success or not.
 	 */
-	Layer<?> addLayer(ClientLayerInfo layerInfo);
+	boolean addLayer(Layer layer);
 
 	/**
 	 * Remove a layer from this layers model. This will also remove the layer from the map.
@@ -68,7 +68,7 @@ public interface LayersModel {
 	 *            The layers unique identifier within this map.
 	 * @return Returns the layer, or null if it could not be found.
 	 */
-	Layer<?> getLayer(String id);
+	Layer getLayer(String id);
 
 	/**
 	 * Return the total number of layers within this map.
@@ -88,7 +88,7 @@ public interface LayersModel {
 	 *            The new layer order position in the layer array:
 	 * @return Returns if the re-ordering was successful or not.
 	 */
-	boolean moveLayer(Layer<?> layer, int index);
+	boolean moveLayer(Layer layer, int index);
 
 	/**
 	 * Move a layer up (=front) one place. This will automatically redraw the map to apply this new order. Note that at
@@ -99,7 +99,7 @@ public interface LayersModel {
 	 *            The layer to move more to the front.
 	 * @return Returns if the re-ordering was successful or not.
 	 */
-	boolean moveLayerUp(Layer<?> layer);
+	boolean moveLayerUp(Layer layer);
 
 	/**
 	 * Move a layer down (=back) one place. This will automatically redraw the map to apply this new order. Note that at
@@ -110,7 +110,7 @@ public interface LayersModel {
 	 *            The layer to move more to the front.
 	 * @return Returns if the re-ordering was successful or not.
 	 */
-	boolean moveLayerDown(Layer<?> layer);
+	boolean moveLayerDown(Layer layer);
 
 	/**
 	 * Get the position of a certain layer in this map model.
@@ -120,7 +120,7 @@ public interface LayersModel {
 	 * @return Returns the position of the layer in the map. This position determines layer order. If the layer was not
 	 *         found, than -1 is returned.
 	 */
-	int getLayerPosition(Layer<?> layer);
+	int getLayerPosition(Layer layer);
 
 	/**
 	 * Return the layer at a certain index. If the index can't be found, null is returned.
@@ -129,12 +129,12 @@ public interface LayersModel {
 	 *            The specified index.
 	 * @return Returns the layer, or null if the index can't be found.
 	 */
-	Layer<?> getLayer(int index);
+	Layer getLayer(int index);
 
 	/**
 	 * Return the currently selected layer within this map model.
 	 * 
 	 * @return Returns the selected layer, or null if no layer is selected.
 	 */
-	Layer<?> getSelectedLayer();
+	Layer getSelectedLayer();
 }

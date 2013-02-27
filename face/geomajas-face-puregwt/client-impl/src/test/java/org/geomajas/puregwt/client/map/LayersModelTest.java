@@ -21,8 +21,8 @@ import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.testdata.ReloadContext;
-import org.geomajas.testdata.ReloadContext.ClassMode;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
 import org.junit.Before;
@@ -113,8 +113,8 @@ public class LayersModelTest {
 	public void testLayerSelection() {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer2 = layersModel.getLayer(LAYER2);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer2 = layersModel.getLayer(LAYER2);
 
 		layer1.setSelected(true);
 		Assert.assertEquals(layer1, layersModel.getSelectedLayer());
@@ -172,9 +172,9 @@ public class LayersModelTest {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
 
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer2 = layersModel.getLayer(LAYER2);
-		Layer<?> layer3 = layersModel.getLayer(LAYER3);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer2 = layersModel.getLayer(LAYER2);
+		Layer layer3 = layersModel.getLayer(LAYER3);
 
 		layersModel.moveLayerDown(layer1); // Expect no changes.
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
@@ -197,9 +197,9 @@ public class LayersModelTest {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
 
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer2 = layersModel.getLayer(LAYER2);
-		Layer<?> layer3 = layersModel.getLayer(LAYER3);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer2 = layersModel.getLayer(LAYER2);
+		Layer layer3 = layersModel.getLayer(LAYER3);
 
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer2));
@@ -226,9 +226,9 @@ public class LayersModelTest {
 		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		layersModel.initialize(mapInfo, viewPort, eventBus);
 
-		Layer<?> layer1 = layersModel.getLayer(LAYER1);
-		Layer<?> layer2 = layersModel.getLayer(LAYER2);
-		Layer<?> layer3 = layersModel.getLayer(LAYER3);
+		Layer layer1 = layersModel.getLayer(LAYER1);
+		Layer layer2 = layersModel.getLayer(LAYER2);
+		Layer layer3 = layersModel.getLayer(LAYER3);
 
 		layersModel.moveLayer(layer1, -1); // Expect no changes.
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));

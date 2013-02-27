@@ -29,7 +29,7 @@ import com.google.inject.assistedinject.Assisted;
  */
 public class FeatureImpl implements Feature {
 
-	private final FeaturesSupported<?> layer;
+	private final FeaturesSupported layer;
 
 	private final String id;
 
@@ -49,7 +49,7 @@ public class FeatureImpl implements Feature {
 
 	@SuppressWarnings("rawtypes")
 	@Inject
-	FeatureImpl(@Assisted org.geomajas.layer.feature.Feature feature, @Assisted FeaturesSupported<?> layer) {
+	FeatureImpl(@Assisted org.geomajas.layer.feature.Feature feature, @Assisted FeaturesSupported layer) {
 		this.layer = layer;
 		id = feature.getId();
 		attributes = new HashMap<String, Attribute<?>>();
@@ -101,7 +101,7 @@ public class FeatureImpl implements Feature {
 	}
 
 	/** {@inheritDoc} */
-	public FeaturesSupported<?> getLayer() {
+	public FeaturesSupported getLayer() {
 		return layer;
 	}
 

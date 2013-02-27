@@ -14,19 +14,15 @@ package org.geomajas.puregwt.client.map.layer;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientLayerInfo;
 
 /**
  * The basic definition of a layer within the GWT client.
- * 
- * @param <T>
- *            layer info type, {@link ClientLayerInfo}
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface Layer<T extends ClientLayerInfo> {
+public interface Layer {
 
 	/**
 	 * Return this layer's client ID.
@@ -36,27 +32,12 @@ public interface Layer<T extends ClientLayerInfo> {
 	String getId();
 
 	/**
-	 * Return this layer's server ID. Multiple client side layer (connected with a map) can point to a single data
-	 * source on the back-end. This returns the actual layer name as used on the server.
-	 * 
-	 * @return id of the server layer
-	 */
-	String getServerLayerId();
-
-	/**
 	 * Return the layer's title. The difference between the ID and the title, is that the ID is used behind the screens,
 	 * while the title is the visible name to the user.
 	 * 
 	 * @return
 	 */
 	String getTitle();
-
-	/**
-	 * Return the info for this layer.
-	 * 
-	 * @return the configuration object.
-	 */
-	T getLayerInfo();
 
 	/**
 	 * Mark this layer as selected or not. Only one layer can be selected at any given time within a map.

@@ -27,7 +27,7 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.service.CommandService;
 
@@ -38,8 +38,8 @@ import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * <p>
- * Presenter for a certain fixed scale level of a {@link RasterLayer}. It retrieves, stores and displays raster tiles
- * for a single raster layer at a single scale level.
+ * Presenter for a certain fixed scale level of a {@link RasterServerLayer}. It retrieves, stores and displays raster
+ * tiles for a single raster layer at a single scale level.
  * </p>
  * <p>
  * Rendering new or extra tiles is a 2-step process: first the correct list of tiles is fetched, then their images are
@@ -58,7 +58,7 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	private final String crs;
 
-	private final RasterLayer rasterLayer;
+	private final RasterServerLayer rasterLayer;
 
 	private final HtmlContainer container;
 
@@ -87,7 +87,7 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	@Inject
 	public RasterLayerScaleRenderer(EventBus eventBus, CommandService commandService,
 			HtmlImageFactory htmlImageFactory, @Assisted Object eventSource, @Assisted String crs,
-			@Assisted RasterLayer rasterLayer, @Assisted HtmlContainer container, @Assisted double scale) {
+			@Assisted RasterServerLayer rasterLayer, @Assisted HtmlContainer container, @Assisted double scale) {
 		this.eventBus = eventBus;
 		this.commandService = commandService;
 		this.htmlImageFactory = htmlImageFactory;

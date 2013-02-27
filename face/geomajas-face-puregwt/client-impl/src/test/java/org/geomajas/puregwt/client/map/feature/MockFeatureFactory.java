@@ -20,7 +20,7 @@ import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
  */
 public class MockFeatureFactory implements FeatureFactory {
 
-	public Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported<?> layer) {
+	public Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
 		return new FeatureImpl(feature, layer);
 	}
 }

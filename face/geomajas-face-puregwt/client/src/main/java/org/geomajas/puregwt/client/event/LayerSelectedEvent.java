@@ -27,7 +27,7 @@ public class LayerSelectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 	 * 
 	 * @param layer the layer which has been selected
 	 */
-	public LayerSelectedEvent(Layer<?> layer) {
+	public LayerSelectedEvent(Layer layer) {
 		super(layer);
 	}
 

@@ -21,6 +21,7 @@ import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.user.client.ui.IsWidget;

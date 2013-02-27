@@ -33,7 +33,6 @@ import com.google.web.bindery.event.shared.Event.Type;
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
- * 
  */
 @Api(allMethods = true)
 public interface MapEventBus {
@@ -53,7 +52,7 @@ public interface MapEventBus {
 	 * @param layer the layer
 	 * @return the handler registration
 	 */
-	HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler, Layer<?> layer);
+	HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler, Layer layer);
 
 	/**
 	 * Add a layer labeling handler.
@@ -70,7 +69,7 @@ public interface MapEventBus {
 	 * @param layer the layer
 	 * @return the handler registration
 	 */
-	HandlerRegistration addLayerLabeledHandler(LayerLabeledHandler handler, Layer<?> layer);
+	HandlerRegistration addLayerLabeledHandler(LayerLabeledHandler handler, Layer layer);
 
 	/**
 	 * Add a layer order handler.
@@ -95,7 +94,7 @@ public interface MapEventBus {
 	 * @param layer the layer
 	 * @return the handler registration
 	 */
-	HandlerRegistration addLayerRefreshedHandler(LayerRefreshedHandler handler, Layer<?> layer);
+	HandlerRegistration addLayerRefreshedHandler(LayerRefreshedHandler handler, Layer layer);
 
 	/**
 	 * Add a layer selection handler.
@@ -112,7 +111,7 @@ public interface MapEventBus {
 	 * @param layer the layer
 	 * @return the handler registration
 	 */
-	HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler, Layer<?> layer);
+	HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler, Layer layer);
 
 	/**
 	 * Add a layer style change handler.
@@ -129,7 +128,7 @@ public interface MapEventBus {
 	 * @param layer the layer
 	 * @return the handler registration
 	 */
-	HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler handler, Layer<?> layer);
+	HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler handler, Layer layer);
 
 	/**
 	 * Add a layer visibility handler.
@@ -146,7 +145,7 @@ public interface MapEventBus {
 	 * @param layer the layer
 	 * @return the handler registration
 	 */
-	HandlerRegistration addLayerVisibilityHandler(LayerVisibilityHandler handler, Layer<?> layer);
+	HandlerRegistration addLayerVisibilityHandler(LayerVisibilityHandler handler, Layer layer);
 
 	/**
 	 * Add a map composition selection handler.
@@ -195,5 +194,4 @@ public interface MapEventBus {
 	 * @param event the event
 	 */
 	<H> void fireEvent(Event<H> event);
-
 }

@@ -28,7 +28,6 @@ import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
  */
 @Api(allMethods = true)
 public interface Feature {
-	
 
 	/**
 	 * Return the features unique identifier.
@@ -80,7 +79,7 @@ public interface Feature {
 	 * 
 	 * @return Returns the layer. This value can never be null.
 	 */
-	FeaturesSupported<?> getLayer();
+	FeaturesSupported getLayer();
 
 	/**
 	 * Is the logged in user allowed to edit this feature?

@@ -27,7 +27,7 @@ public class LayerStyleChangedEvent extends BaseLayerEvent<LayerStyleChangedHand
 	 * 
 	 * @param layer the layer of which the style has changed
 	 */
-	public LayerStyleChangedEvent(Layer<?> layer) {
+	public LayerStyleChangedEvent(Layer layer) {
 		super(layer);
 	}
 

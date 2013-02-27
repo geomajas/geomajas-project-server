@@ -22,8 +22,8 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
 import com.google.inject.Inject;
@@ -47,22 +47,22 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	private static final int SCALE_CACHE_SIZE = 3; // Let's keep the last 3 scales.
 
 	@Inject
-	private EventBus eventBus;
+	protected EventBus eventBus;
 
-	private final ViewPort viewPort;
+	protected final ViewPort viewPort;
 
-	private final Layer<?> layer;
+	protected final Layer layer;
 
-	private final HtmlContainer htmlContainer;
+	protected final HtmlContainer htmlContainer;
 
-	private final Map<Double, TiledScaleRenderer> tiledScaleRenderers; // A renderer per scale.
+	protected final Map<Double, TiledScaleRenderer> tiledScaleRenderers; // A renderer per scale.
 
-	private final List<Double> scales; // Keeps track of the lastly visited scales.
+	protected final List<Double> scales; // Keeps track of the lastly visited scales.
 
-	private double visibleScale;
+	protected double visibleScale;
 	
 	@Inject
-	private TiledScaleRendererFactory rasterRendererFactory;
+	protected TiledScaleRendererFactory rasterRendererFactory;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -79,7 +79,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	 *            The container wherein to render all scales.
 	 */
 	@Inject
-	public LayerScalesRenderer(@Assisted ViewPort viewPort, @Assisted Layer<?> layer,
+	public LayerScalesRenderer(@Assisted ViewPort viewPort, @Assisted Layer layer,
 			@Assisted HtmlContainer htmlContainer) {
 		this.viewPort = viewPort;
 		this.layer = layer;
@@ -196,22 +196,21 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	@SuppressWarnings("unchecked")
-	private TiledScaleRenderer getOrCreate(double scale) {
+	protected TiledScaleRenderer getOrCreate(double scale) {
 		if (tiledScaleRenderers.containsKey(scale)) {
 			return tiledScaleRenderers.get(scale);
 		}
 
 		final HtmlContainer container = new HtmlGroup();
-		container.getElement().setId("scale-" + scale);
+		//container.getElement().setId("scale-" + scale);
 		htmlContainer.insert(container, 0);
 
 		TiledScaleRenderer scalePresenter = null;
-		if (layer instanceof RasterLayer) {
-			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (RasterLayer) layer, container,
+		if (layer instanceof RasterServerLayer) {
+			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (RasterServerLayer) layer, container,
 					scale);
-		} else if (layer instanceof VectorLayer) {
-			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (VectorLayer) layer, container,
+		} else if (layer instanceof VectorServerLayer) {
+			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (VectorServerLayer) layer, container,
 					scale);
 		}
 		if (scalePresenter != null) {

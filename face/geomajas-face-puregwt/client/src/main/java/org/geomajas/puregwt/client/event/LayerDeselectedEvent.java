@@ -27,7 +27,7 @@ public class LayerDeselectedEvent extends BaseLayerEvent<LayerSelectionHandler> 
 	 * 
 	 * @param layer the layer that was deselected
 	 */
-	public LayerDeselectedEvent(Layer<?> layer) {
+	public LayerDeselectedEvent(Layer layer) {
 		super(layer);
 	}
 

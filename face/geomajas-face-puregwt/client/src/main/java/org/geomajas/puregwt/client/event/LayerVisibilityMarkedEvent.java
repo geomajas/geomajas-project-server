@@ -36,7 +36,7 @@ public class LayerVisibilityMarkedEvent extends BaseLayerEvent<LayerVisibilityHa
 	 * 
 	 * @param layer the layer of which the visibility mark has changed
 	 */
-	public LayerVisibilityMarkedEvent(Layer<?> layer) {
+	public LayerVisibilityMarkedEvent(Layer layer) {
 		super(layer);
 	}
 

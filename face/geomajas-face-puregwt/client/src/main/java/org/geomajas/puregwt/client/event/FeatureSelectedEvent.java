@@ -32,7 +32,7 @@ public class FeatureSelectedEvent extends BaseLayerEvent<FeatureSelectionHandler
 	 * @param layer the layer of the feature
 	 * @param feature the selected feature
 	 */
-	public FeatureSelectedEvent(Layer<?> layer, Feature feature) {
+	public FeatureSelectedEvent(Layer layer, Feature feature) {
 		super(layer);
 		this.feature = feature;
 	}

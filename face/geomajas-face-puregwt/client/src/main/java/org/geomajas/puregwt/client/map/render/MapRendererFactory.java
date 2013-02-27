@@ -11,8 +11,8 @@
 package org.geomajas.puregwt.client.map.render;
 
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
 
 /**
  * GIN factory for {@link MapRenderer} objects.
