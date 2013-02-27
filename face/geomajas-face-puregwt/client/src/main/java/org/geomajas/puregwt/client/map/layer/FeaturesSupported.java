@@ -24,7 +24,7 @@ import org.geomajas.puregwt.client.map.feature.Feature;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface FeaturesSupported extends Layer {
 
 	/**

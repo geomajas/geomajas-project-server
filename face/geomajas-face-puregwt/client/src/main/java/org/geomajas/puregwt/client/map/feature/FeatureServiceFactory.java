@@ -10,14 +10,15 @@
  */
 package org.geomajas.puregwt.client.map.feature;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 /**
  * GIN factory for {@link Feature} objects.
  * 
  * @author Jan De Moerloose
- * 
  */
+@Api(allMethods = true)
 public interface FeatureServiceFactory {
 
 	/**

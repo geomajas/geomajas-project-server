@@ -10,6 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.render;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -19,6 +20,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface MapScalesRendererFactory {
 
 	/**

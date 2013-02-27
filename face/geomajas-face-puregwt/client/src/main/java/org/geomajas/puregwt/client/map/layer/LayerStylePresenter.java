@@ -11,19 +11,23 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Presenter for a layer style. It points to an image URL and a label that is associated with that image. This
- * combination can for example be used within a legend widget.
+ * Presenter for a layer style.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface LayerStylePresenter extends IsWidget {
 
+	/**
+	 * Get the style index. This is used to order different styles within a layer.
+	 * 
+	 * @return The style index within a layer.
+	 */
 	int getIndex();
 }

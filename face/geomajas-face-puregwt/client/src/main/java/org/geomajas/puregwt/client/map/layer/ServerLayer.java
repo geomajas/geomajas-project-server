@@ -15,7 +15,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
 
 /**
- * The basic definition of a layer within the GWT client.
+ * The basic definition of a server-side layer within the GWT client. This is the base interface for all layers that
+ * have been defined in the backend Spring configuration.
  * 
  * @param <T>
  *            layer info type, {@link ClientLayerInfo}

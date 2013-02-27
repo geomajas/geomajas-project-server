@@ -10,6 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.feature;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 /**
@@ -17,6 +18,7 @@ import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface FeatureFactory {
 
 	/**

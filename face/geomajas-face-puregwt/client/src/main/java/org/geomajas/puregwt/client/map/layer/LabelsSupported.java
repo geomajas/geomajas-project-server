@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface LabelsSupported {
 
 	/**
