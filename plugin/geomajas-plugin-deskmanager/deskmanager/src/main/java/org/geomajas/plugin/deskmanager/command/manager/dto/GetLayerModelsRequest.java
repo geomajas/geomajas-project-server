@@ -16,26 +16,15 @@ import org.geomajas.command.CommandRequest;
  * TODO.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
 public class GetLayerModelsRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String COMMAND = "command.manager.GetLayerModels";
-	
-	private String locale; 
 
 	public String toString() {
 		return COMMAND;
 	}
-	
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-	
-	public String getLocale() {
-		return locale;
-	}
-
 }
