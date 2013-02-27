@@ -13,18 +13,16 @@ package org.geomajas.plugin.deskmanager.client.gwt.common;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.util.WidgetLayout;
 
-
 /**
  * Utility class to change default behaviour of the deskmanager layouts.
  * 
  * @author Oliver May
- *
+ * 
  * @since 1.0.0
  */
-@Api (allMethods = true)
+@Api(allMethods = true)
 public final class GdmLayout {
 
-	
 	/**
 	 * The file download url.
 	 */
@@ -34,7 +32,7 @@ public final class GdmLayout {
 	 * The file download file id.
 	 */
 	public static final String FILEDOWNLOAD_ID = "id";
-	
+
 	/**
 	 * The main map name.
 	 */
@@ -50,7 +48,6 @@ public final class GdmLayout {
 	 */
 	public static final int EXCEPTIONCODE_GEODESKINACTIVE = 10000001;
 
-
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
 	/**
@@ -59,7 +56,7 @@ public final class GdmLayout {
 	 * Attention! Update from rule in urlrewrite.xml when changing. Must end with a /!
 	 */
 	public static String geodeskPrefix = "desk/";
-	
+
 	/**
 	 * Z index for the role select.
 	 */
@@ -85,7 +82,17 @@ public final class GdmLayout {
 	 */
 	public static int loadingZindex = 300000;
 
+	/**
+	 * Average width in pixels text characters, used to calculate button size. (buttonOffset + buttonFontWidth *
+	 * title.length())
+	 */
+	public static int buttonFontWidth = 7;
+
+	/** Offset size of a button without the text, used to calculate button size. */
+	public static int buttonOffset = 28;
+
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
-	
-	private GdmLayout() {}
+
+	private GdmLayout() {
+	}
 }
