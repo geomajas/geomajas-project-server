@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dep</artifactId>
-	<version>1.13.10-SNAPSHOT</version>
+	<version>1.13.10</version>
 	<packaging>pom</packaging>
 	<name>Geomajas dependencies</name>
 	<description>
@@ -28,9 +28,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-dep</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dep-1.13.10</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dep-1.13.10</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-dep-1.13.10</url>
 	</scm>
 
 	<dependencyManagement>
