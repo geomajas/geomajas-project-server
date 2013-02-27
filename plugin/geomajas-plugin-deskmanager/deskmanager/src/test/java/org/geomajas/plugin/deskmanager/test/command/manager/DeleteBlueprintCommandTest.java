@@ -12,12 +12,12 @@ package org.geomajas.plugin.deskmanager.test.command.manager;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteGeodeskRequest;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DeleteBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.domain.Geodesk;
+import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
-import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
+import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
@@ -52,7 +52,7 @@ public class DeleteBlueprintCommandTest {
 	private CommandDispatcher dispatcher;
 
 	@Autowired
-	private GeodeskService geodeskService;
+	private BlueprintService blueprintService;
 	
 	private String userToken;
 
@@ -73,17 +73,17 @@ public class DeleteBlueprintCommandTest {
 
 	@Test
 	@Transactional
-	public void testDeleteGeodesk() throws GeomajasSecurityException {
+	public void testDeleteBlueprint() throws GeomajasSecurityException {
 
-		Geodesk gd = geodeskService.getGeodesks().get(0);
-		int count = geodeskService.getGeodesks().size();
+		Blueprint gd = blueprintService.getBlueprints().get(0);
+		int count = blueprintService.getBlueprints().size();
 		
-		DeleteGeodeskRequest request = new DeleteGeodeskRequest();
-		request.setGeodeskId(gd.getId());
+		DeleteBlueprintRequest request = new DeleteBlueprintRequest();
+		request.setBlueprintId(gd.getId());
 
-		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, request, userToken, "en");
+		CommandResponse response = dispatcher.execute(DeleteBlueprintRequest.COMMAND, request, userToken, "en");
 		Assert.assertTrue(response.getErrors().isEmpty());
-		Assert.assertTrue(geodeskService.getGeodesks().size() == count -1);
+		Assert.assertTrue(blueprintService.getBlueprints().size() == count -1);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class DeleteBlueprintCommandTest {
 	 */
 	@Test
 	public void testNotAllowed() {
-		CommandResponse response = dispatcher.execute(DeleteGeodeskRequest.COMMAND, new DeleteGeodeskRequest(),
+		CommandResponse response = dispatcher.execute(DeleteBlueprintRequest.COMMAND, new DeleteBlueprintRequest(),
 				guestToken, "en");
 
 		Assert.assertFalse(response.getExceptions().isEmpty());
