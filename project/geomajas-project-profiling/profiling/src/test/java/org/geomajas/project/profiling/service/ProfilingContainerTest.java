@@ -18,7 +18,7 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * Test to assure ProfillingContainer has good throughput and does not slow down the app too much.
+ * Test to assure ProfilingContainer has good throughput and does not slow down the app too much.
  *
  * @author Joachim Van der Auwera
  */
