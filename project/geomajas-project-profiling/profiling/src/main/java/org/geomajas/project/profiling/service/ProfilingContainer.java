@@ -59,6 +59,7 @@ public class ProfilingContainer implements ProfilingBean {
 	 *
 	 * @param ringSize ring size
 	 */
+	@Api
 	public void setRingSize(int ringSize) {
 		this.ringSize = ringSize;
 	}
@@ -87,6 +88,7 @@ public class ProfilingContainer implements ProfilingBean {
 	}
 
 	/** {@inheritDoc} */
+	@Api
 	public void clear() {
 		register("", -1);
 	}
@@ -112,6 +114,7 @@ public class ProfilingContainer implements ProfilingBean {
 	}
 
 	/** {@inheritDoc} */
+	@Api
 	public List<GroupData> getGroupData() {
 		List<GroupData> result = new ArrayList<GroupData>();
 		boolean done = false;
@@ -132,6 +135,7 @@ public class ProfilingContainer implements ProfilingBean {
 	}
 
 	/** {@inheritDoc} */
+	@Api
 	public ProfilingData getTotal() {
 		return total;
 	}
@@ -175,7 +179,7 @@ public class ProfilingContainer implements ProfilingBean {
 	}
 
 	/**
-	 * Containr which contains a {@link OneContainer}.
+	 * Container which contains a {@link OneContainer}.
 	 */
 	private static class OneContainerContainer {
 
