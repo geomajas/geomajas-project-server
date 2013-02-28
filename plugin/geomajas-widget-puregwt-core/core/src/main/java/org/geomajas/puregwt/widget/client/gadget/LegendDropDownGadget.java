@@ -194,7 +194,7 @@ public class LegendDropDownGadget implements MapGadget {
 
 	private void addAllLayers() {
 		for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-			Layer<?> layer = mapPresenter.getLayersModel().getLayer(i);
+			Layer layer = mapPresenter.getLayersModel().getLayer(i);
 			layout.addLayer(layer);
 		}
 	}

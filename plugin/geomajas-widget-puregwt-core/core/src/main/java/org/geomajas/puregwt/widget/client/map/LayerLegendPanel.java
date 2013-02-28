@@ -27,7 +27,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -48,7 +47,7 @@ public class LayerLegendPanel extends Composite {
 
 	private static final LayerLegendPanelUiBinder UI_BINDER = GWT.create(LayerLegendPanelUiBinder.class);
 
-	private final Layer<?> layer;
+	private final Layer layer;
 
 	@UiField
 	protected CheckBox visibilityToggle;
@@ -59,7 +58,7 @@ public class LayerLegendPanel extends Composite {
 	@UiField
 	protected FlexTable legendTable;
 
-	public LayerLegendPanel(MapEventBus eventBus, Layer<?> layer) {
+	public LayerLegendPanel(MapEventBus eventBus, Layer layer) {
 		this.layer = layer;
 		initWidget(UI_BINDER.createAndBindUi(this));
 
@@ -69,7 +68,7 @@ public class LayerLegendPanel extends Composite {
 
 		// Apply the legend:
 		for (LayerStylePresenter stylePresenter : layer.getStylePresenters()) {
-			addStyle(stylePresenter.getUrl(), stylePresenter.getLabel());
+			addStyle(stylePresenter);
 		}
 
 		// React to layer visibility events:
@@ -109,26 +108,14 @@ public class LayerLegendPanel extends Composite {
 	 * 
 	 * @return The layer who's styles are displayed within this panel.
 	 */
-	public Layer<?> getLayer() {
+	public Layer getLayer() {
 		return layer;
 	}
 
-	private void addStyle(String src, String text) {
+	private void addStyle(LayerStylePresenter stylePresenter) {
 		// Add a new row in the table:
 		int row = legendTable.insertRow(legendTable.getRowCount());
 		legendTable.addCell(row);
-		legendTable.addCell(row);
-
-		// Add the image to the table:
-		Image image = new Image(src);
-		image.setStyleName("gm-LayerLegendPanel-StyleImg");
-		legendTable.setWidget(row, 0, image);
-
-		// Add the label to the table:
-		if (text != null) {
-			Label label = new Label(text);
-			label.setStyleName("gm-LayerLegendPanel-StyleLabel");
-			legendTable.setWidget(row, 1, label);
-		}
+		legendTable.setWidget(row, 0, stylePresenter);
 	}
 }

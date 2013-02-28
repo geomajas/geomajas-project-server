@@ -11,6 +11,9 @@
 
 package org.geomajas.puregwt.widget.client.map;
 
+import org.geomajas.puregwt.client.event.LayerAddedEvent;
+import org.geomajas.puregwt.client.event.LayerRemovedEvent;
+import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
@@ -78,6 +81,17 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 				setOpen(!open);
 			}
 		});
+
+		mapPresenter.getEventBus().addMapCompositionHandler(new MapCompositionHandler() {
+
+			public void onLayerRemoved(LayerRemovedEvent event) {
+				removeLayer(event.getLayer());
+			}
+
+			public void onLayerAdded(LayerAddedEvent event) {
+				addLayer(event.getLayer());
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
@@ -91,7 +105,7 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 	 *            The layer who's legend to add to the drop down panel.
 	 * @return success or not.
 	 */
-	public boolean addLayer(Layer<?> layer) {
+	public boolean addLayer(Layer layer) {
 		int index = getLayerIndex(layer);
 		if (index < 0) {
 			contentPanel.add(new LayerLegendPanel(mapPresenter.getEventBus(), layer));
@@ -107,7 +121,7 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 	 *            The layer to remove.
 	 * @return success or not.
 	 */
-	public boolean removeLayer(Layer<?> layer) {
+	public boolean removeLayer(Layer layer) {
 		int index = getLayerIndex(layer);
 		if (index >= 0) {
 			contentPanel.remove(index);
@@ -191,7 +205,7 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 		ResizeEvent.fire(this, getOffsetWidth(), getOffsetHeight());
 	}
 
-	private int getLayerIndex(Layer<?> layer) {
+	private int getLayerIndex(Layer layer) {
 		for (int i = 0; i < contentPanel.getWidgetCount(); i++) {
 			LayerLegendPanel layerPanel = (LayerLegendPanel) contentPanel.getWidget(i);
 			if (layerPanel.getLayer() == layer) {
