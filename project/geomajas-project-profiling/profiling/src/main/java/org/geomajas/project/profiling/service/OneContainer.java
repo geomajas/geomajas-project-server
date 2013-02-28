@@ -50,7 +50,11 @@ public class OneContainer implements ProfilingData, Serializable {
 
 	/** {@inheritDoc} */
 	public double getAverageRunTime() {
-		return ((double) totalRunTime) / invocationCount;
+		if (invocationCount > 0) {
+			return ((double) totalRunTime) / invocationCount;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
