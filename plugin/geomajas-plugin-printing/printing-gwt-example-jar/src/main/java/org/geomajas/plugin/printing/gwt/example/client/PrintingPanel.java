@@ -11,6 +11,22 @@
 
 package org.geomajas.plugin.printing.gwt.example.client;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.WktException;
+import org.geomajas.geometry.service.WktService;
+import org.geomajas.gwt.client.gfx.paintable.Circle;
+import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.paintable.Image;
+import org.geomajas.gwt.client.gfx.paintable.Rectangle;
+import org.geomajas.gwt.client.gfx.paintable.Text;
+import org.geomajas.gwt.client.gfx.style.FontStyle;
+import org.geomajas.gwt.client.gfx.style.PictureStyle;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
+import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.gwt.example.base.SamplePanel;
@@ -27,7 +43,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 /**
  * Sample to demonstrate use of the printing plugin.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class PrintingPanel extends SamplePanel {
@@ -81,11 +97,13 @@ public class PrintingPanel extends SamplePanel {
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 		map.getMapModel().runWhenInitialized(new Runnable() {
-			
+
 			public void run() {
 				map.getMapModel().getVectorLayer("clientLayerCountriesPrinting").setLabeled(true);
 			}
 		});
+
+		map.getMapModel().addMapModelChangedHandler(new AddWorldPaintables(map));
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.addMember(toolbar);
@@ -93,8 +111,6 @@ public class PrintingPanel extends SamplePanel {
 		mapLayout.setHeight("100%");
 
 		layout.addMember(mapLayout);
-		
-		
 
 		// ---------------------------------------------------------------------
 		// Finally draw everything:
@@ -109,17 +125,72 @@ public class PrintingPanel extends SamplePanel {
 
 	@Override
 	public String[] getConfigurationFiles() {
-		return new String[] { 
-				"classpath:org/geomajas/plugin/printing/gwt/example/context/appPrinting.xml",
+		return new String[] { "classpath:org/geomajas/plugin/printing/gwt/example/context/appPrinting.xml",
 				"classpath:org/geomajas/plugin/printing/gwt/example/context/mapPrinting.xml",
 				"classpath:org/geomajas/plugin/printing/gwt/example/context/layerWmsPrinting.xml",
 				"classpath:org/geomajas/plugin/printing/gwt/example/context/layerCountriesPrinting.xml",
 				"classpath:org/geomajas/plugin/printing/gwt/example/context/clientLayerCountriesPrinting.xml",
-				"classpath:org/geomajas/plugin/printing/gwt/example/context/clientLayerWmsPrinting.xml"};
+				"classpath:org/geomajas/plugin/printing/gwt/example/context/clientLayerWmsPrinting.xml" };
 	}
 
 	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}
+
+	/**
+	 * Add some world paintables when map is loaded.
+	 */
+	class AddWorldPaintables implements MapModelChangedHandler {
+
+		private MapWidget map;
+
+		public AddWorldPaintables(MapWidget map) {
+			this.map = map;
+		}
+
+		/**
+		 * add some world paintables, these will be printed too !!!
+		 */
+		@Override
+		public void onMapModelChanged(MapModelChangedEvent event) {
+			try {
+				Rectangle bg = new Rectangle("background");
+				bg.setBounds(new Bbox(0, 0, 4000000, 4000000));
+				bg.setStyle(new ShapeStyle("#FFFFFF", 1f, "#FFFFFF", 1f, 2));
+				map.registerWorldPaintable(bg);
+				Rectangle rect = new Rectangle("my rect");
+				rect.setBounds(new Bbox(0, 0, 1000000, 1000000));
+				rect.setStyle(createStyle("#FF0000"));
+				map.registerWorldPaintable(rect);
+				Circle circle = new Circle("my circle");
+				circle.setPosition(new Coordinate(1500000, 1500000));
+				circle.setRadius(500000f);
+				circle.setStyle(createStyle("#00FF00"));
+				map.registerWorldPaintable(circle);
+				GfxGeometry triangle = new GfxGeometry("triangle");
+				Geometry geom;
+				geom = WktService
+						.toGeometry("POLYGON ((2000000 2000000, 3000000 2000000,3000000 3000000,2000000 2000000))");
+				triangle.setGeometry(GeometryConverter.toGwt(geom));
+				triangle.setStyle(createStyle("#FFFF00"));
+				map.registerWorldPaintable(triangle);
+				Image image = new Image("osgeo");
+				image.setHref("http://live.osgeo.org/_images/logo-geomajas.png");
+				image.setBounds(new Bbox(0, 2000000, 1000000, 1000000));
+				image.setStyle(new PictureStyle(0.7));
+				map.registerWorldPaintable(image);
+				Text text = new Text("my text", "Hello world", new Coordinate(2000000, 2000000), new FontStyle(
+						"#00FFF0", 50, "Verdana", "bold", "italic"));
+				map.registerWorldPaintable(text);
+			} catch (WktException e) {
+			}
+		}
+
+		private ShapeStyle createStyle(String color) {
+			return new ShapeStyle(color, 0.5f, color, 0.8f, 2);
+		}
+
+	}
+
 }

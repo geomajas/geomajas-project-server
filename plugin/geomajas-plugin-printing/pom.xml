@@ -117,7 +117,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
-				<version>1.1.0</version>
+				<version>${printing-rasterizing-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -220,7 +220,8 @@
 
 	<properties>
 		<printing-backend-version>1.11.1</printing-backend-version>
-		<printing-gwt-face-version>1.11.1</printing-gwt-face-version>
+		<printing-gwt-face-version>1.13.0-SNAPSHOT</printing-gwt-face-version>
+		<printing-rasterizing-version>1.2.0-SNAPSHOT</printing-rasterizing-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<google-gwt-version>2.4.0</google-gwt-version>
 	</properties>
