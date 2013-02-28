@@ -64,10 +64,20 @@ public class Text extends AbstractWorldPaintable {
 		return style;
 	}
 
+	/**
+	 * Get the screen space upper-left corner position of the text.
+	 * 
+	 * @return upper-left corner coordinate in screen space
+	 */
 	public Coordinate getPosition() {
 		return (Coordinate) getLocation();
 	}
 
+	/**
+	 * Set the upper-left corner position of the text.
+	 * 
+	 * @param position upper-left corner coordinate in world space
+	 */
 	public void setPosition(Coordinate position) {
 		setOriginalLocation(position);
 	}

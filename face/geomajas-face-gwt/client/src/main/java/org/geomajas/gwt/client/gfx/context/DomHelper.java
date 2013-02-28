@@ -99,6 +99,34 @@ public class DomHelper {
 	}
 
 	/**
+	 * Create or update a one-of child element in the DOM. Needs no id as it will be created/deleted with the parent.
+	 * 
+	 * @param parent the parent element
+	 * @param type the type of the element (tag name, e.g. 'image')
+	 * @return the created or updated element or null if creation failed
+	 */
+	public Element createOrUpdateSingleChild(Element parent, String type) {
+		Element result = null;
+		if (parent.getElementsByTagName(type).getLength() == 0) {
+			switch (namespace) {
+				case HTML:
+					result = Dom.createElementNS(Dom.NS_HTML, type);
+					break;
+				case SVG:
+					result = Dom.createElementNS(Dom.NS_SVG, type);
+					break;
+				case VML:
+					result = Dom.createElementNS(Dom.NS_VML, type);
+					break;
+			}
+			parent.appendChild(result);
+			return result;
+		} else {
+			return (Element) (parent.getElementsByTagName(type).getItem(0));
+		}
+	}
+
+	/**
 	 * Create or update an element in the DOM. The id will be generated.
 	 * 
 	 * @param parent
@@ -929,7 +957,9 @@ public class DomHelper {
 				Log.logDebug("Removing element " + element.getId());
 				elementToName.remove(element.getId());
 			}
-			Dom.setEventListener(element, null);
+			if(Dom.getEventListener(element) != null) {
+				Dom.setEventListener(element, null);
+			}
 			Dom.removeChild(parent, element);
 		} catch (Exception e) {
 			Log.logError("Problem during recursive delete of " + element.getId() + " from " + parent.getId() + ", " +
@@ -1004,6 +1034,9 @@ public class DomHelper {
 		if (style.getFontWeight() != null && !"".equals(style.getFontWeight())) {
 			Dom.setStyleAttribute(element, "fontWeight", style.getFontWeight());
 		}
+		if (style.getFontSize() >= 0) {
+			Dom.setStyleAttribute(element, "fontSize", style.getFontSize()+"px");
+		}
 	}
 
 	private void applyHtmlStyle(Element element, PictureStyle style) {
@@ -1069,7 +1102,7 @@ public class DomHelper {
 			css.append(";");
 		}
 		if (style.getFontSize() >= 0) {
-			css.append("stroke-width:");
+			css.append("font-size:");
 			css.append(style.getFontSize());
 			css.append(";");
 		}

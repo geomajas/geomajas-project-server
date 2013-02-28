@@ -450,19 +450,17 @@ public class VmlGraphicsContext implements GraphicsContext {
 	 */
 	public void drawText(Object parent, String name, String text, Coordinate position, FontStyle style) {
 		if (isAttached()) {
-			Element element = helper.createOrUpdateElement(parent, name, "textbox", style);
+			Element element = helper.createOrUpdateElement(parent, name, "shape", null);
 			if (element != null) {
 				// Set position, style and content:
 				applyAbsolutePosition(element, position);
-				VmlStyleUtil.applyStyle(element, style);
-
+				Element textbox = helper.createOrUpdateSingleChild(element, "textbox");
+				VmlStyleUtil.applyStyle(textbox, style);
+				// hook to upper-left corner
+				textbox.setPropertyString("inset", "0px, 0px, 0px, 0px");
+				textbox.setInnerHTML(text);
 				// Set width, because this may change otherwise...
-				int textWidth = width - (int) position.getX();
-				if (textWidth <= 0) {
-					textWidth = 10;
-				}
-				Dom.setStyleAttribute(element, "width", textWidth + "px");
-				element.setInnerText(text);
+				applyElementSize(element, getWidth(), getHeight(), false);
 			}
 		}
 	}
