@@ -11,12 +11,14 @@
 package org.geomajas.gwt.client.util;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.ExternalGraphicInfo;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.FillInfo;
+import org.geomajas.sld.FontInfo;
 import org.geomajas.sld.FormatInfo;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.GraphicInfo.ChoiceInfo;
@@ -29,6 +31,7 @@ import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SizeInfo;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
+import org.geomajas.sld.TextSymbolizerInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.WellKnownNameInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
@@ -62,12 +65,26 @@ public final class StyleUtil {
 		return userStyleInfo;
 	}
 
+	/**
+	 * Create a non-filtered rule from a feature style.
+	 * 
+	 * @param type the layer type
+	 * @param featureStyle the style
+	 * @return the rule
+	 */
 	public static RuleInfo createRule(LayerType type, FeatureStyleInfo featureStyle) {
 		SymbolizerTypeInfo symbolizer = createSymbolizer(type, featureStyle);
 		RuleInfo rule = createRule(featureStyle.getName(), featureStyle.getName(), symbolizer);
 		return rule;
 	}
-
+	
+	/**
+	 * Create a symbolizer from a feature style.
+	 * 
+	 * @param type the layer type
+	 * @param featureStyle the style
+	 * @return the symbolizer
+	 */
 	public static SymbolizerTypeInfo createSymbolizer(LayerType type, FeatureStyleInfo featureStyle) {
 		SymbolInfo symbol = featureStyle.getSymbol();
 		SymbolizerTypeInfo symbolizer = null;
@@ -320,6 +337,24 @@ public final class StyleUtil {
 		css.setName(name);
 		css.setValue(value.toString());
 		return css;
+	}
+	
+	/**
+	 * Creates a text symbolizer with the specified font style.
+	 * 
+	 * @param style font style
+	 * @return the symbolizer
+	 */
+	public static TextSymbolizerInfo createSymbolizer(FontStyleInfo style) {
+		TextSymbolizerInfo symbolizerInfo = new TextSymbolizerInfo();
+		FontInfo font = new FontInfo();
+		font.setFamily(style.getFamily());
+		font.setStyle(style.getStyle());
+		font.setWeight(style.getWeight());
+		font.setSize(style.getSize());
+		symbolizerInfo.setFont(font);
+		symbolizerInfo.setFill(createFill(style.getColor(), style.getOpacity()));
+		return symbolizerInfo;
 	}
 
 }
