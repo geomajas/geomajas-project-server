@@ -32,12 +32,20 @@ public class ClientWorldPaintableLayerInfo extends ClientLayerInfo {
 
 	// default showing
 	private boolean showing = true;
-	
+
+	/**
+	 * @see #getPaintables()
+	 * @return
+	 */
 	public List<WorldPaintableInfo> getPaintables() {
 		return paintables;
 	}
 
-	
+	/**
+	 * Set the list of world paintables.
+	 * 
+	 * @param paintables
+	 */
 	public void setPaintables(List<WorldPaintableInfo> paintables) {
 		this.paintables = paintables;
 	}
@@ -54,11 +62,10 @@ public class ClientWorldPaintableLayerInfo extends ClientLayerInfo {
 	/**
 	 * Sets the showing status of this layer. If true, the layer will be rendered, if false not.
 	 * 
-	 * @param showing
-	 *            showing status of this layer
+	 * @param showing showing status of this layer
 	 */
 	public void setShowing(boolean showing) {
 		this.showing = showing;
 	}
-	
+
 }

@@ -26,10 +26,18 @@ public class WorldEllipseInfo extends WorldPaintableInfo {
 
 	private Bbox bbox;
 
+	/**
+	 * @see #setBbox()
+	 * @return 
+	 */
 	public Bbox getBbox() {
 		return bbox;
 	}
 
+	/**
+	 * Set the bounding box of the ellipse.
+	 * @param bbox the bounding box
+	 */
 	public void setBbox(Bbox bbox) {
 		this.bbox = bbox;
 	}

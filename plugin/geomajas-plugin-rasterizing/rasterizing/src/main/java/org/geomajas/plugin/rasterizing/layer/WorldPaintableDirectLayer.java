@@ -168,7 +168,7 @@ public class WorldPaintableDirectLayer extends DirectLayer {
 							Graphics2D g = (Graphics2D) graphics.create();
 							if (style2D instanceof PolygonStyle2D) {
 								PolygonStyle2D ps = (PolygonStyle2D) style2D;
-								if(ps.getFillComposite() != null) {
+								if (ps.getFillComposite() != null) {
 									g.setComposite(ps.getFillComposite());
 								}
 							}

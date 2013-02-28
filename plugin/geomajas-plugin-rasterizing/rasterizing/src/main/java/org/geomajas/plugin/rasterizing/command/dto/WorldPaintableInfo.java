@@ -36,46 +36,84 @@ public abstract class WorldPaintableInfo implements IsInfo {
 	
 	private String legendTitle;
 
+	/**
+	 * @see #setLabel()
+	 * @return
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Set an optional label.
+	 * @param label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
+	/**
+	 * @see #setLabelSymbolizerInfo()
+	 * @return
+	 */
 	public TextSymbolizerInfo getLabelSymbolizerInfo() {
 		return labelSymbolizerInfo;
 	}
 
+	/**
+	 * Set the symbolizer for the label.
+	 * @param labelSymbolizerInfo
+	 */
 	public void setLabelSymbolizerInfo(TextSymbolizerInfo labelSymbolizerInfo) {
 		this.labelSymbolizerInfo = labelSymbolizerInfo;
 	}
 
+	/**
+	 * @see #setGeometrySymbolizerInfo()
+	 * @return
+	 */
 	public SymbolizerTypeInfo getGeometrySymbolizerInfo() {
 		return geometrySymbolizerInfo;
 	}
 
+	/**
+	 * Set the symbolizer for the geometry/ellipse/rectangle.
+	 * @param geometrySymbolizerInfo
+	 */
 	public void setGeometrySymbolizerInfo(SymbolizerTypeInfo geometrySymbolizerInfo) {
 		this.geometrySymbolizerInfo = geometrySymbolizerInfo;
 	}
 
 	
+	/**
+	 * @see #setShowInLegend()
+	 * @return
+	 */
 	public boolean isShowInLegend() {
 		return showInLegend;
 	}
 
-	
+	/**
+	 * Set if this world paintable should be shown in the legend.
+	 * @param showInLegend
+	 */
 	public void setShowInLegend(boolean showInLegend) {
 		this.showInLegend = showInLegend;
 	}
 
 	
+	/**
+	 * @see #setLegendTitle()
+	 * @return
+	 */
 	public String getLegendTitle() {
 		return legendTitle == null ? label : legendTitle;
 	}
 
-	
+	/**
+	 * Set the legend title.
+	 * @param legendTitle
+	 */
 	public void setLegendTitle(String legendTitle) {
 		this.legendTitle = legendTitle;
 	}
