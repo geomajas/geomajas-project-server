@@ -18,28 +18,45 @@ import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
+import org.geomajas.gwt.client.gfx.paintable.Circle;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.paintable.Image;
+import org.geomajas.gwt.client.gfx.paintable.Rectangle;
+import org.geomajas.gwt.client.gfx.paintable.Text;
+import org.geomajas.gwt.client.gfx.style.FontStyle;
+import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.util.StyleUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
+import org.geomajas.layer.LayerType;
+import org.geomajas.plugin.rasterizing.command.dto.ClientWorldPaintableLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.WorldEllipseInfo;
+import org.geomajas.plugin.rasterizing.command.dto.WorldGeometryInfo;
+import org.geomajas.plugin.rasterizing.command.dto.WorldImageInfo;
+import org.geomajas.plugin.rasterizing.command.dto.WorldRectangleInfo;
+import org.geomajas.plugin.rasterizing.command.dto.WorldTextInfo;
+import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.SymbolizerTypeInfo;
+import org.geomajas.sld.TextSymbolizerInfo;
 
 /**
  * Implementation for {@link ImageUrlService}.
@@ -131,22 +148,59 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 			}
 		}
 		mapRasterizingInfo.getExtraLayers().clear();
-		for (WorldPaintable worldPaintable : map.getWorldPaintables().values()) {
-			if (worldPaintable instanceof GfxGeometry) {
-				ClientGeometryLayerInfo layer = new ClientGeometryLayerInfo();
-				GfxGeometry geometry = (GfxGeometry) worldPaintable;
-				layer.getGeometries().add(GeometryConverter.toDto((Geometry) geometry.getOriginalLocation()));
-				RuleInfo rule = createRule(geometry);
-				layer.setStyle(StyleUtil.createStyle(rule));
-				layer.setLayerType(geometry.getGeometry().getLayerType());
-				layer.setLabel(geometry.getId());
-				layer.setId(geometry.getId());
-				mapRasterizingInfo.getExtraLayers().add(layer);
+		if (!map.getWorldPaintables().isEmpty()) {
+			ClientWorldPaintableLayerInfo layer = new ClientWorldPaintableLayerInfo();
+			layer.setLabel(mapInfo.getId() + ":world-paintables");
+			for (WorldPaintable worldPaintable : map.getWorldPaintables().values()) {
+				if (worldPaintable instanceof GfxGeometry) {
+					GfxGeometry geometry = (GfxGeometry) worldPaintable;
+					WorldGeometryInfo w = new WorldGeometryInfo();
+					w.setGeometrySymbolizerInfo(createSymbolizer(geometry));
+					w.setGeometry(GeometryConverter.toDto((Geometry) geometry.getOriginalLocation()));
+					w.setLabel(geometry.getId());
+					layer.getPaintables().add(w);
+				} else if (worldPaintable instanceof Circle) {
+					Circle circle = (Circle) worldPaintable;
+					WorldEllipseInfo w = new WorldEllipseInfo();
+					w.setGeometrySymbolizerInfo(createSymbolizer(circle.getStyle()));
+					w.setBbox(GeometryConverter.toDto((Bbox) circle.getOriginalLocation()));
+					w.setLabel(circle.getId());
+					layer.getPaintables().add(w);
+				} else if (worldPaintable instanceof Rectangle) {
+					Rectangle rectangle = (Rectangle) worldPaintable;
+					WorldRectangleInfo w = new WorldRectangleInfo();
+					w.setGeometrySymbolizerInfo(createSymbolizer(rectangle.getStyle()));
+					w.setBbox(GeometryConverter.toDto((Bbox) rectangle.getOriginalLocation()));
+					w.setLabel(rectangle.getId());
+					layer.getPaintables().add(w);
+				} else if (worldPaintable instanceof Image) {
+					Image image = (Image) worldPaintable;
+					WorldImageInfo w = new WorldImageInfo();
+					w.setBbox(GeometryConverter.toDto((Bbox) image.getOriginalLocation()));
+					w.setGeometrySymbolizerInfo(createSymbolizer(image.getStyle()));
+					w.setUrl(image.getHref());
+					w.setLabel(image.getId());
+					layer.getPaintables().add(w);
+				} else if (worldPaintable instanceof Text) {
+					Text text = (Text) worldPaintable;
+					WorldTextInfo w = new WorldTextInfo();
+					w.setAnchor((Coordinate) text.getOriginalLocation());
+					w.setLabelSymbolizerInfo(createTextSymbolizer(text.getStyle()));
+					w.setLabel(text.getContent());
+					layer.getPaintables().add(w);
+				}
 			}
+			mapRasterizingInfo.getExtraLayers().add(layer);
 		}
 	}
 
-	private RuleInfo createRule(GfxGeometry geometry) {
+	private SymbolizerTypeInfo createSymbolizer(PictureStyle style) {
+		PolygonSymbolizerInfo symbolizerInfo = new PolygonSymbolizerInfo();
+		symbolizerInfo.setFill(StyleUtil.createFill("#FFFFF", (float) style.getOpacity()));
+		return symbolizerInfo;
+	}
+
+	private SymbolizerTypeInfo createSymbolizer(GfxGeometry geometry) {
 		ShapeStyle shapeStyle = geometry.getStyle();
 		SymbolInfo symbol = geometry.getSymbolInfo();
 		FeatureStyleInfo fs = new FeatureStyleInfo();
@@ -157,7 +211,29 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 		fs.setStrokeWidth((int) shapeStyle.getStrokeWidth());
 		fs.setSymbol(symbol);
 		fs.setName(geometry.getId());
-		return StyleUtil.createRule(geometry.getGeometry().getLayerType(), fs);
+		return StyleUtil.createSymbolizer(geometry.getGeometry().getLayerType(), fs);
+	}
+
+	private PolygonSymbolizerInfo createSymbolizer(ShapeStyle shapeStyle) {
+		FeatureStyleInfo fs = new FeatureStyleInfo();
+		fs.setFillColor(shapeStyle.getFillColor());
+		fs.setStrokeColor(shapeStyle.getStrokeColor());
+		fs.setFillOpacity(shapeStyle.getFillOpacity());
+		fs.setStrokeOpacity(shapeStyle.getStrokeOpacity());
+		fs.setStrokeWidth((int) shapeStyle.getStrokeWidth());
+		fs.setName("");
+		return (PolygonSymbolizerInfo) StyleUtil.createSymbolizer(LayerType.POLYGON, fs);
+	}	
+
+	private TextSymbolizerInfo createTextSymbolizer(FontStyle style) {
+		FontStyleInfo font = new FontStyleInfo();
+		font.setColor(style.getFillColor());
+		font.setFamily(style.getFontFamily());
+		font.setSize(style.getFontSize());
+		font.setStyle(style.getFontStyle());
+		font.setOpacity(1f);
+		font.setWeight(style.getFontWeight());
+		return StyleUtil.createSymbolizer(font);
 	}
 
 }

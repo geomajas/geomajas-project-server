@@ -25,9 +25,11 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
+import org.geotools.referencing.CRS;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -94,6 +96,9 @@ public class RasterizingPipelineTest {
 	@Autowired
 	private VectorLayerService vectorLayerService;
 
+	@Autowired
+	private GeoService geoService;
+
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterizingpipeline";
 
 	private static final double DELTA = 1E-6;
@@ -110,6 +115,12 @@ public class RasterizingPipelineTest {
 	@After
 	public void clearSecurityContext() {
 		ThreadScopeContextHolder.clear();
+	}
+	
+	@Test
+	public void testTrans()  throws Exception {
+		System.out.println(CRS.decode("EPSG:4283").toWKT());
+		geoService.transform(new com.vividsolutions.jts.geom.Coordinate(131.5,-27.5), "EPSG:4326", "EPSG:4283");
 	}
 
 	@Test
