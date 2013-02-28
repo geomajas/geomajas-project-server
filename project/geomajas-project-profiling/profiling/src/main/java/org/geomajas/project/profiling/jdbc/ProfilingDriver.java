@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  * Wrapping JDBC driver which can be used to profile the time spent communicating with the database.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
 @Api
 public class ProfilingDriver implements Driver {
