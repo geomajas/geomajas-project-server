@@ -14,5 +14,18 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>This plugin contains some more advanced functionality for viewing and
+  formatting feature attribute information such as: </para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Hover-over Feature Info: provides Feature Info (show the feature
+      label) when the mouse cursor hovers a feature on the map</para>
+    </listitem>
+
+    <listitem>
+      <para>Custom Feature Info Window supporting a.o.: fetching feature info
+      from an external URL, grouping of attributes and custom styling.</para>
+    </listitem>
+  </itemizedlist>
 </chapter>

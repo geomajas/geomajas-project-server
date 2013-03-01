@@ -1,18 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-<!--
-  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
-  ~
-  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
-  ~
-  ~ The program is available in open source according to the GNU Affero
-  ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
-  ~ details, see LICENSE.txt in the project root.
-  -->
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the GNU Affero ~ General 
+	Public License. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-  <para></para>
+  <para/>
+
+  <section>
+    <title>How to put the mouse over tool in the tool bar</title>
+
+    <para>First you need to define the TooltipOnMouseOverMode in your
+    application context:</para>
+
+    <para><example>
+        <title>Basic bean configuration in application context</title>
+
+        <programlisting>&lt;bean name="TooltipOnMouseOverMode" class="org.geomajas.configuration.client.ClientToolInfo" /&gt;
+</programlisting>
+      </example></para>
+
+    <para><example>
+        <title>toolbar property in the ClientMapInfo bean definition</title>
+
+        <programlisting>&lt;property name="toolbar"&gt;
+ &lt;bean class="org.geomajas.configuration.client.ClientToolbarInfo"&gt;
+  &lt;property name="tools"&gt;
+   &lt;list&gt;
+...
+    &lt;ref bean="TooltipOnMouseOverMode" /&gt;
+...
+   &lt;/list&gt;
+  &lt;/property&gt;
+ &lt;/bean&gt;
+&lt;/property&gt; </programlisting>
+      </example></para>
+  </section>
+
+  <section>
+    <title>How to configure additional tool parameters</title>
+
+    <para>Some additional parameters can be configured, following example
+    shows all possible parameters:</para>
+
+    <example>
+      <title>Advanced bean configuration in application context</title>
+
+      <programlisting>&lt;bean name="TooltipOnMouseOverMode" class="org.geomajas.configuration.client.ClientToolInfo"&gt;
+ &lt;property name="parameters"&gt;
+  &lt;list&gt;
+
+   &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+    &lt;property name="name" value="pixelTolerance"/&gt;
+    &lt;property name="value" value="5"/&gt; 
+    &lt;!-- Features withing this distance will be shown in the tooltip --&gt;
+   &lt;/bean&gt;
+
+   &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+    &lt;property name="name" value="showEmptyResult"/&gt;
+    &lt;property name="value" value="true"/&gt; 
+    &lt;!-- Whether to show a message when no results are found --&gt;
+   &lt;/bean&gt;
+
+   &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+    &lt;property name="name" value="minimalMoveDistance"/&gt;
+    &lt;property name="value" value="5"/&gt; 
+    &lt;!-- The minimal amount of pixels that the mouse should move before a new tooltip pops up --&gt;
+   &lt;/bean&gt;
+
+   &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+    &lt;!-- if true shows all the identifying attributes of features instead of (only) the label attribute --&gt;
+    &lt;property name="name" value="tooltipUseFeatureDetail"/&gt;
+    &lt;property name="value" value="true"/&gt;
+   &lt;/bean&gt;
+
+   &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+    &lt;property name="name" value="layersToExclude"/&gt;
+    &lt;property name="value" value="osm,google"/&gt; 
+    &lt;!-- Comma separated list of layers that should not show in the tooltip (referenced by client layer id) --&gt;
+   &lt;/bean&gt;
+
+   &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+    &lt;property name="name" value="tooltipMaxLabelCount"/&gt;
+    &lt;property name="value" value="6"/&gt; 
+    &lt;!-- the maximum number of features for which the attributes (details) will be shown --&gt;
+   &lt;/bean&gt;
+
+  &lt;/list&gt;
+ &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>
+    </example>
+  </section>
 </chapter>
