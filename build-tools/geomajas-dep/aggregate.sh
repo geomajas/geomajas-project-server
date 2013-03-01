@@ -110,6 +110,13 @@ include "org.geomajas.documentation" "geomajas-project-sld-documentation" "1.2.0
     "incubating" "master.pdf" \
     "org.geomajas.project" "geomajas-project-sld-api" "1.1.0"
 
+include "org.geomajas.documentation" "geomajas-project-profiling-documentation" "1.0.0-SNAPSHOT" \
+    "Generic profiling project." \
+    "Generic utility profiling code for gathering number of invocations and total execution time, possible surfacing this as JMX bean. project" \
+    "incubating" "master.pdf" \
+    "" "" ""
+#    "org.geomajas.project" "geomajas-project-profiling-api" "1.0.0"
+
 
 # faces
 
