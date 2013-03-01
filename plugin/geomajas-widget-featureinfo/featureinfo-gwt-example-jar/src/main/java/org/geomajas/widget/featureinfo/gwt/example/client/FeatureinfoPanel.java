@@ -169,17 +169,9 @@ public class FeatureinfoPanel extends SamplePanel {
 
 	/** {@inheritDoc} */
 	public String[] getConfigurationFiles() {
-		return new String[]{"classpath:WEB-INF/applicationContext.xml",
-		"classpath:WEB-INF/mapMain.xml",
-		"classpath:WEB-INF/mapOverview.xml",
-		"classpath:WEB-INF/clientLayerOsm.xml",
-		"classpath:WEB-INF/clientLayerCountries.xml",
-		"classpath:WEB-INF/clientLayerCountriesWms.xml",
-		"classpath:WEB-INF/layerOsm.xml",
-		"classpath:WEB-INF/layerCountries.xml",
-		"classpath:WEB-INF/layerCountriesWms.xml",
-		"classpath:WEB-INF/clientLayerPopulatedPlaces110m.xml",
-		"classpath:WEB-INF/layerPopulatedPlaces110m.xml"};
+		return new String[]{
+		"classpath:org/geomajas/widget/featureinfo/gwt/example/context/applicationContext.xml",
+		"classpath:org/geomajas/widget/featureinfo/gwt/example/context/mapMain.xml"};
 	}
 
 	/** {@inheritDoc} */
