@@ -957,7 +957,7 @@ public class DomHelper {
 				Log.logDebug("Removing element " + element.getId());
 				elementToName.remove(element.getId());
 			}
-			if(Dom.getEventListener(element) != null) {
+			if (Dom.getEventListener(element) != null) {
 				Dom.setEventListener(element, null);
 			}
 			Dom.removeChild(parent, element);
@@ -1035,7 +1035,7 @@ public class DomHelper {
 			Dom.setStyleAttribute(element, "fontWeight", style.getFontWeight());
 		}
 		if (style.getFontSize() >= 0) {
-			Dom.setStyleAttribute(element, "fontSize", style.getFontSize()+"px");
+			Dom.setStyleAttribute(element, "fontSize", style.getFontSize() + "px");
 		}
 	}
 
