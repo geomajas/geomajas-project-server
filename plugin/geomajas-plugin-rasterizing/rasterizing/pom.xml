@@ -164,7 +164,12 @@
 			<properties>
 				<image.profile>default</image.profile>
 			</properties>
-		</profile>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+   		</profile>
 		<profile>
 			<id>hudson</id>
 			<activation>

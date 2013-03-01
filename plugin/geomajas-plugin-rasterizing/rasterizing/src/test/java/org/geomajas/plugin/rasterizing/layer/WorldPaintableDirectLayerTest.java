@@ -35,11 +35,13 @@ import org.jibx.runtime.IUnmarshallingContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml" })
 public class WorldPaintableDirectLayerTest {
 
 	@Autowired
@@ -55,8 +57,10 @@ public class WorldPaintableDirectLayerTest {
 	private boolean writeImages = false;
 
 	private static final double DELTA = 1E-6;
-
-	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/worldpaintablelayer";
+	
+	@Qualifier("WorldPaintableDirectLayerTest.path")
+	@Autowired
+	private String imagePath;
 	
 	private static int size = 400;
 
@@ -282,7 +286,7 @@ public class WorldPaintableDirectLayerTest {
 		private MapContext mapContext;
 
 		public DirectLayerAssert(DirectLayer layer, MapContext mapContext) {
-			super(IMAGE_CLASS_PATH);
+			super(imagePath);
 			this.layer = layer;
 			this.mapContext = mapContext;
 		}
