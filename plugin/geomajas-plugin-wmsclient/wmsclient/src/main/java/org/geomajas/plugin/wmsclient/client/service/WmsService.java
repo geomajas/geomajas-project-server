@@ -38,7 +38,7 @@ public interface WmsService {
 	 * @author Pieter De Graef
 	 */
 	public enum GetFeatureInfoFormat {
-		GML("application/vnd.ogc.gml"), HTML("text/html");
+		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html");
 
 		private String format;
 

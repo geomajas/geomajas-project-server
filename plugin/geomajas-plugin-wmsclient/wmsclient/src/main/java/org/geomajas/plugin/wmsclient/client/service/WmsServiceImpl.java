@@ -154,7 +154,7 @@ public class WmsServiceImpl implements WmsService {
 	/** {@inheritDoc} */
 	public void getFeatureInfo(final FeaturesSupportedWmsLayer layer, Coordinate location,
 			final Callback<List<Feature>, String> callback) {
-		String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML);
+		String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2);
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
 		command.setCommandRequest(new GetFeatureInfoRequest(url));
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetFeatureInfoResponse>() {
@@ -244,10 +244,20 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&QUERY_LAYERS=");
 		url.append(URL.encode(layer.getConfig().getLayers()));
 		url.append("&request=GetFeatureInfo");
-		url.append("&X=");
-		url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
-		url.append("&Y=");
-		url.append((int) Math.round(screenLocation.getY() - screenBounds.getY()));
+		switch (layer.getConfig().getVersion()) {
+			case v1_3_0:
+				url.append("&I=");
+				url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
+				url.append("&J=");
+				url.append((int) Math.round(screenLocation.getY() - screenBounds.getY()));
+				break;
+			case v1_1_1:
+			default:
+				url.append("&X=");
+				url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
+				url.append("&Y=");
+				url.append((int) Math.round(screenLocation.getY() - screenBounds.getY()));
+		}
 		url.append("&INFO_FORMAT=");
 		url.append(format.toString());
 
@@ -262,7 +272,7 @@ public class WmsServiceImpl implements WmsService {
 		// return new StringBuilder(proxy + layer.getConfig().getBaseUrl());
 	}
 
-	private static StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config, String crs,
+	private StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config, String crs,
 			Bbox worldBounds, int imageWidth, int imageHeight) {
 		// Parameter: service
 		int pos = url.lastIndexOf("?");
@@ -286,13 +296,23 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: bbox
 		url.append("&bbox=");
-		url.append(NUMBERFORMAT.format(worldBounds.getX()));
-		url.append(",");
-		url.append(NUMBERFORMAT.format(worldBounds.getY()));
-		url.append(",");
-		url.append(NUMBERFORMAT.format(worldBounds.getMaxX()));
-		url.append(",");
-		url.append(NUMBERFORMAT.format(worldBounds.getMaxY()));
+		if (useInvertedAxis(config.getVersion(), crs)) {
+			url.append(NUMBERFORMAT.format(worldBounds.getY()));
+			url.append(",");
+			url.append(NUMBERFORMAT.format(worldBounds.getX()));
+			url.append(",");
+			url.append(NUMBERFORMAT.format(worldBounds.getMaxY()));
+			url.append(",");
+			url.append(NUMBERFORMAT.format(worldBounds.getMaxX()));
+		} else {
+			url.append(NUMBERFORMAT.format(worldBounds.getX()));
+			url.append(",");
+			url.append(NUMBERFORMAT.format(worldBounds.getY()));
+			url.append(",");
+			url.append(NUMBERFORMAT.format(worldBounds.getMaxX()));
+			url.append(",");
+			url.append(NUMBERFORMAT.format(worldBounds.getMaxY()));
+		}
 
 		// Parameter: format
 		url.append("&format=");
@@ -307,6 +327,7 @@ public class WmsServiceImpl implements WmsService {
 			case v1_1_1:
 				url.append("&srs=");
 				break;
+			case v1_3_0:
 			default:
 				url.append("&crs=");
 				break;
@@ -325,5 +346,13 @@ public class WmsServiceImpl implements WmsService {
 
 		// Return the URL:
 		return url;
+	}
+
+	private boolean useInvertedAxis(WmsVersion version, String crs) {
+		if (WmsVersion.v1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
+				"WGS:84".equalsIgnoreCase(crs))) {
+			return true;
+		}
+		return false;
 	}
 }

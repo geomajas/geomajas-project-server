@@ -12,12 +12,15 @@
 package org.geomajas.plugin.wmsclient.server.command;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.geomajas.command.Command;
 import org.geomajas.geometry.conversion.jts.GeometryConverterService;
@@ -35,6 +38,7 @@ import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -46,38 +50,21 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, GetFeatureInfoResponse> {
 
-	private static final String WMS_1_1_1 = "1.1.1";
-
-	private static final String PARAM_VERSION = "version";
-
 	private static final String PARAM_FORMAT = "info_format";
 
 	public void execute(GetFeatureInfoRequest request, GetFeatureInfoResponse response) throws Exception {
-		List<Feature> dtoFeatures = new ArrayList<Feature>();
 		URL url = new URL(request.getUrl());
 		GML gml;
 
-		String wmsVersion = getVersionFromUrl(request.getUrl());
-		if (WMS_1_1_1.equals(wmsVersion)) {
-			gml = new GML(Version.GML2);
-		} else {
-			gml = new GML(Version.GML3);
-		}
-
 		GetFeatureInfoFormat format = getFormatFromUrl(request.getUrl());
 		switch (format) {
-			case GML:
-				FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(url.openStream());
-				FeatureIterator<SimpleFeature> it = collection.features();
-				while (it.hasNext()) {
-					try {
-						SimpleFeature feature = it.next();
-						dtoFeatures.add(toDto(feature));
-					} catch (Exception e) {
-						continue;
-					}
-				}
-				response.setFeatures(dtoFeatures);
+			case GML2:
+				gml = new GML(Version.GML2);
+				response.setFeatures(getFeaturesFromUrl(url, gml));
+				break;
+			case GML3:
+				gml = new GML(Version.GML3);
+				response.setFeatures(getFeaturesFromUrl(url, gml));
 				break;
 			default:
 				String content = readUrl(url);
@@ -87,6 +74,22 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 
 	public GetFeatureInfoResponse getEmptyCommandResponse() {
 		return new GetFeatureInfoResponse();
+	}
+
+	private List<Feature> getFeaturesFromUrl(URL url, GML gml) throws IOException, SAXException,
+			ParserConfigurationException {
+		List<Feature> dtoFeatures = new ArrayList<Feature>();
+		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(url.openStream());
+		FeatureIterator<SimpleFeature> it = collection.features();
+		while (it.hasNext()) {
+			try {
+				SimpleFeature feature = it.next();
+				dtoFeatures.add(toDto(feature));
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		return dtoFeatures;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -121,20 +124,6 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		}
 
 		return dto;
-	}
-
-	private String getVersionFromUrl(String url) {
-		try {
-			int index = url.toLowerCase().indexOf(PARAM_VERSION) + PARAM_VERSION.length() + 1;
-			String version = url.substring(index);
-			index = version.indexOf('&');
-			if (index > 0) {
-				return version.substring(0, index);
-			}
-			return version;
-		} catch (Exception e) {
-		}
-		return "1.3.0";
 	}
 
 	private GetFeatureInfoFormat getFormatFromUrl(String url) {

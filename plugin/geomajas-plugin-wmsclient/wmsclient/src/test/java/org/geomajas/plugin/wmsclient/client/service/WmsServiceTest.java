@@ -36,6 +36,8 @@ public class WmsServiceTest extends GWTTestCase {
 
 	private static final String VALUE_CRS = "EPSG:4326";
 
+	private static final String VALUE_CRS2 = "EPSG:31370";
+
 	private static final int VALUE_SIZE = 342;
 
 	private WmsService wmsService;
@@ -50,7 +52,7 @@ public class WmsServiceTest extends GWTTestCase {
 	public void testGetMapUrl() {
 		initialize(); // No Spring in a GWT unit test.
 		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS, bounds, VALUE_SIZE, VALUE_SIZE);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS2, bounds, VALUE_SIZE, VALUE_SIZE);
 
 		assertEquals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
 		assertTrue(hasParameter(getMapUrl, "service", "WMS"));
@@ -58,6 +60,26 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getMapUrl, "width", VALUE_SIZE + ""));
 		assertTrue(hasParameter(getMapUrl, "height", VALUE_SIZE + ""));
 		assertTrue(hasParameter(getMapUrl, "bbox", "0.0,1.0,100.0,101.0"));
+		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
+		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
+		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS2));
+		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
+		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
+		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
+	}
+
+	@Test
+	public void testGetMapUrlInvertedAxis() {
+		initialize(); // No Spring in a GWT unit test.
+		Bbox bounds = new Bbox(0, 1, 100, 100);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS, bounds, VALUE_SIZE, VALUE_SIZE);
+
+		assertEquals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
+		assertTrue(hasParameter(getMapUrl, "service", "WMS"));
+		assertTrue(hasParameter(getMapUrl, "layers", wmsConfig.getLayers()));
+		assertTrue(hasParameter(getMapUrl, "width", VALUE_SIZE + ""));
+		assertTrue(hasParameter(getMapUrl, "height", VALUE_SIZE + ""));
+		assertTrue(hasParameter(getMapUrl, "bbox", "1.0,0.0,101.0,100.0"));
 		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
 		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
 		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS));

@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.wmsclient.server.command;
 
+import org.geomajas.layer.feature.Feature;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
 import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoRequest;
@@ -56,6 +57,62 @@ public class GetFeatureInfoCommandTest {
 		command.execute(request, response);
 		Assert.assertNotNull(response.getWmsResponse());
 		Assert.assertTrue(response.getWmsResponse().indexOf("Texas") > 0);
+	}
+
+	@Test
+	public void testTextGml2Wms111() throws Exception {
+		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_1_1,
+				GetFeatureInfoFormat.GML2));
+		command.execute(request, response);
+		Assert.assertNull(response.getWmsResponse());
+		Assert.assertEquals(1, response.getFeatures().size());
+		Feature feature = response.getFeatures().get(0);
+		Assert.assertEquals("states.15", feature.getId());
+	}
+
+	@Test
+	public void testTextGml3Wms130() throws Exception {
+		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_3_0,
+				GetFeatureInfoFormat.GML3));
+		command.execute(request, response);
+		Assert.assertNull(response.getWmsResponse());
+		Assert.assertEquals(1, response.getFeatures().size());
+		Feature feature = response.getFeatures().get(0);
+		Assert.assertEquals("states.15", feature.getId());
+	}
+
+	@Test
+	public void testTextGml3Wms111() throws Exception {
+		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_1_1,
+				GetFeatureInfoFormat.GML3));
+		command.execute(request, response);
+		Assert.assertNull(response.getWmsResponse());
+		Assert.assertEquals(1, response.getFeatures().size());
+		Feature feature = response.getFeatures().get(0);
+		Assert.assertEquals("states.15", feature.getId());
+	}
+
+	@Test
+	public void testTextGml2Wms130() throws Exception {
+		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_3_0,
+				GetFeatureInfoFormat.GML2));
+		command.execute(request, response);
+		Assert.assertNull(response.getWmsResponse());
+		Assert.assertEquals(1, response.getFeatures().size());
+		Feature feature = response.getFeatures().get(0);
+		Assert.assertEquals("states.15", feature.getId());
 	}
 
 	private String getFeatureInfoUrl(WmsVersion version, GetFeatureInfoFormat format) {

@@ -37,7 +37,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private Callback<String, String> htmlCallback;
 
-	private GetFeatureInfoFormat format = GetFeatureInfoFormat.GML;
+	private GetFeatureInfoFormat format = GetFeatureInfoFormat.GML2;
 
 	public WmsGetFeatureInfoController() {
 		this(null);
@@ -61,7 +61,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 		// Now execute the GetFeatureInfo for each layer:
 		for (FeaturesSupportedWmsLayer layer : layers) {
 			switch (format) {
-				case GML:
+				case GML2:
 					layer.getFeatureInfo(worldLocation, gmlCallback);
 					break;
 				default:
@@ -91,7 +91,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	}
 
 	/**
-	 * Get the default GetFeatureInfoFormat. By default this is {@link GetFeatureInfoFormat#GML}.
+	 * Get the default GetFeatureInfoFormat. By default this is {@link GetFeatureInfoFormat#GML2}.
 	 * 
 	 * @return the GetFeatureInfoFormat used.
 	 */
@@ -110,7 +110,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	}
 
 	/**
-	 * Set the callback to use in case the GetFeatureInfoFormat is {@link GetFeatureInfoFormat#GML}.
+	 * Set the callback to use in case the GetFeatureInfoFormat is {@link GetFeatureInfoFormat#GML2}.
 	 * 
 	 * @param gmlCallback
 	 *            The callback to execute when the response returns. This response already contains {@link Feature}
@@ -121,7 +121,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	}
 
 	/**
-	 * Set the callback to use in case the GetFeatureInfoFormat is NOT {@link GetFeatureInfoFormat#GML}.
+	 * Set the callback to use in case the GetFeatureInfoFormat is NOT {@link GetFeatureInfoFormat#GML2}.
 	 * 
 	 * @param gmlCallback
 	 *            The callback to execute when the response returns. Note that the response is the bare boned WMS
