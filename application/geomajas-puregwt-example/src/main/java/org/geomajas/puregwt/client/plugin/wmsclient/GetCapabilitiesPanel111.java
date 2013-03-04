@@ -178,6 +178,11 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 		return new LayerBox();
 	}
 
+	/**
+	 * List box extension for WMS layer info objects.
+	 * 
+	 * @author Pieter De Graef
+	 */
 	private class LayerBox extends ValueListBox<WmsLayerInfo> {
 
 		public LayerBox() {

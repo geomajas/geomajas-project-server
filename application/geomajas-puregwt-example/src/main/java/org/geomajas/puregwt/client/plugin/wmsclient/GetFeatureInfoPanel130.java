@@ -138,6 +138,11 @@ public class GetFeatureInfoPanel130 extends ContentPanel {
 		controller.setFormat(GetFeatureInfoFormat.GML2);
 	}
 
+	/**
+	 * Callback for the GetFeatureInfo request. Selects the features on the map.
+	 * 
+	 * @author Pieter De Graef
+	 */
 	private class GetFeatureInfoGmlCallback implements Callback<List<Feature>, String> {
 
 		public void onFailure(String reason) {
@@ -152,6 +157,11 @@ public class GetFeatureInfoPanel130 extends ContentPanel {
 		}
 	}
 
+	/**
+	 * Callback for the GetFeatureInfo request. Displays the HTML on the GUI.
+	 * 
+	 * @author Pieter De Graef
+	 */
 	private class GetFeatureInfoHtmlCallback implements Callback<String, String> {
 
 		public void onFailure(String reason) {
