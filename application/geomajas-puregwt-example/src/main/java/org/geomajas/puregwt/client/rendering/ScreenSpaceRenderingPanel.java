@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.rendering;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.puregwt.client.ContentPanel;
-import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.puregwt.client.ShowcaseGinjector;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ScreenSpaceRenderingPanel extends ContentPanel {
 
-	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
+	private final ShowcaseGinjector geomajasInjector = GWT.create(ShowcaseGinjector.class);
 
 	private VectorContainer container;
 	

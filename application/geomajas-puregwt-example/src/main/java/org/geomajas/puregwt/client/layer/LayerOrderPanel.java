@@ -97,7 +97,7 @@ public class LayerOrderPanel extends ContentPanel {
 	 */
 	private class LayerDragHandler implements DragHandler {
 
-		private Layer<?> dragLayer;
+		private Layer dragLayer;
 
 		public void onDragEnd(DragEndEvent event) {
 			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0));
@@ -138,16 +138,16 @@ public class LayerOrderPanel extends ContentPanel {
 	 */
 	private final class LayerWidget extends Label {
 
-		private Layer<?> layer;
+		private final Layer layer;
 
-		private LayerWidget(Layer<?> layer) {
+		private LayerWidget(Layer layer) {
 			super(layer.getTitle());
 			setWidth("100%");
 			setStyleName("layer-block");
 			this.layer = layer;
 		}
 
-		public Layer<?> getLayer() {
+		public Layer getLayer() {
 			return layer;
 		}
 	}

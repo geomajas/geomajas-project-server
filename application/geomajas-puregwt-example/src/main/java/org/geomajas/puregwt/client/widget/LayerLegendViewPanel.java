@@ -64,7 +64,7 @@ public class LayerLegendViewPanel extends ContentPanel {
 
 			public void onMapInitialized(MapInitializationEvent event) {
 				for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-					Layer<?> layer = mapPresenter.getLayersModel().getLayer(i);
+					Layer layer = mapPresenter.getLayersModel().getLayer(i);
 					layerPanel.add(new LayerLegendPanel(mapPresenter.getEventBus(), layer));
 				}
 			}

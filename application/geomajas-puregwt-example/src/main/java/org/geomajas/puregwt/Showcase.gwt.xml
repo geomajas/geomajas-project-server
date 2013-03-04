@@ -24,6 +24,9 @@
 	<!-- Geomajas Widget plug-in -->
     <inherits name="org.geomajas.puregwt.widget.GeomajasPureGwtWidget" />
     <inherits name="org.geomajas.puregwt.widget.theme.GeomajasWidgetDefaultTheme" />
+    
+    <!-- Geomajas WMS Client plug-in -->
+    <inherits name="org.geomajas.plugin.wmsclient.GeomajasWmsClient" />
   	
     <entry-point class="org.geomajas.puregwt.client.Showcase"/>
 

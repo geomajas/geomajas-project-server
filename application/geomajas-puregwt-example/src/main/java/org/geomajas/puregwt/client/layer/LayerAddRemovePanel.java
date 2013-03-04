@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client.layer;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
@@ -119,7 +118,7 @@ public class LayerAddRemovePanel extends ContentPanel {
 	 */
 	private class LayerDragHandler implements DragHandler {
 
-		private ClientLayerInfo dragLayer;
+		private Layer dragLayer;
 
 		private State before;
 
@@ -129,18 +128,18 @@ public class LayerAddRemovePanel extends ContentPanel {
 			after = getState((LayerWidget) event.getSource());
 			int dropIndex = layerPanel.getWidgetIndex((LayerWidget) event.getSource());
 			if (before == after && after == State.ADDED) {
-				Layer<?> layer = mapPresenter.getLayersModel().getLayer(dragLayer.getId());
+				Layer layer = mapPresenter.getLayersModel().getLayer(dragLayer.getId());
 				mapPresenter.getLayersModel().moveLayer(layer, dropIndex - 1);
 			} else if (after == State.REMOVED) {
 				mapPresenter.getLayersModel().removeLayer(dragLayer.getId());
 			} else if (after == State.ADDED) {
-				Layer<?> layer = mapPresenter.getLayersModel().addLayer(dragLayer);
-				mapPresenter.getLayersModel().moveLayer(layer, dropIndex - 1);
+				mapPresenter.getLayersModel().addLayer(dragLayer);
+				mapPresenter.getLayersModel().moveLayer(dragLayer, dropIndex - 1);
 			}
 		}
 
 		public void onDragStart(DragStartEvent event) {
-			dragLayer = ((LayerWidget) event.getSource()).getInfo();
+			dragLayer = ((LayerWidget) event.getSource()).getLayer();
 			before = getState((LayerWidget) event.getSource());
 		}
 
@@ -184,18 +183,17 @@ public class LayerAddRemovePanel extends ContentPanel {
 	 */
 	private final class LayerWidget extends Label {
 
-		private ClientLayerInfo info;
+		private final Layer layer;
 
-		private LayerWidget(Layer<?> layer) {
+		private LayerWidget(Layer layer) {
 			super(layer.getTitle());
 			setWidth("100%");
 			setStyleName("layer-block");
-			this.info = (ClientLayerInfo) layer.getLayerInfo();
+			this.layer = layer;
 		}
 
-		public ClientLayerInfo getInfo() {
-			return info;
+		public Layer getLayer() {
+			return layer;
 		}
-
 	}
 }

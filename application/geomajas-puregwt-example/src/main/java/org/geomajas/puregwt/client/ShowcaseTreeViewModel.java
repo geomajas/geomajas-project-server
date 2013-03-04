@@ -24,6 +24,12 @@ import org.geomajas.puregwt.client.layer.LayerAddRemovePanel;
 import org.geomajas.puregwt.client.layer.LayerOrderPanel;
 import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
 import org.geomajas.puregwt.client.layer.TmsLayerPanel;
+import org.geomajas.puregwt.client.plugin.wmsclient.GetCapabilitiesPanel111;
+import org.geomajas.puregwt.client.plugin.wmsclient.GetCapabilitiesPanel130;
+import org.geomajas.puregwt.client.plugin.wmsclient.GetFeatureInfoPanel111;
+import org.geomajas.puregwt.client.plugin.wmsclient.GetFeatureInfoPanel130;
+import org.geomajas.puregwt.client.plugin.wmsclient.WmsClientPanel111;
+import org.geomajas.puregwt.client.plugin.wmsclient.WmsClientPanel130;
 import org.geomajas.puregwt.client.rendering.DrawingInteractionPanel;
 import org.geomajas.puregwt.client.rendering.FixedSizeWorldSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.ScreenSpaceRenderingPanel;
@@ -52,13 +58,13 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 
 	private SelectionModel<ContentPanel> selectionModel;
 
-	private GeomajasGinjector geomajasInjector;
+	private ShowcaseGinjector geomajasInjector;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ShowcaseTreeViewModel(SelectionModel<ContentPanel> selectionModel, GeomajasGinjector geomajasInjector) {
+	public ShowcaseTreeViewModel(SelectionModel<ContentPanel> selectionModel, ShowcaseGinjector geomajasInjector) {
 		this.selectionModel = selectionModel;
 		this.geomajasInjector = geomajasInjector;
 		initializeTree();
@@ -129,6 +135,16 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catList.add(catWidget);
 		catWidget.addExample(new LayerLegendViewPanel(geomajasInjector.getMapPresenter()), null);
 		catWidget.addExample(new LegendDisclosureGadgetPanel(geomajasInjector.getMapPresenter()), null);
+		
+		// Plugin: WMS client
+		Category catWmsClient = new Category("Plugin: WMS client");
+		catList.add(catWmsClient);
+		catWmsClient.addExample(new WmsClientPanel111(geomajasInjector.getMapPresenter()), null);
+		catWmsClient.addExample(new GetFeatureInfoPanel111(geomajasInjector.getMapPresenter()), null);
+		catWmsClient.addExample(new GetCapabilitiesPanel111(geomajasInjector.getMapPresenter()), null);
+		catWmsClient.addExample(new WmsClientPanel130(geomajasInjector.getMapPresenter()), null);
+		catWmsClient.addExample(new GetFeatureInfoPanel130(geomajasInjector.getMapPresenter()), null);
+		catWmsClient.addExample(new GetCapabilitiesPanel130(geomajasInjector.getMapPresenter()), null);
 	}
 
 	// ------------------------------------------------------------------------

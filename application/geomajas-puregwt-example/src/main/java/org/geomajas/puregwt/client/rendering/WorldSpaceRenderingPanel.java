@@ -11,12 +11,16 @@
 
 package org.geomajas.puregwt.client.rendering;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.Showcase;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.shape.Circle;
+import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -85,6 +89,41 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 		});
 		leftLayout.add(rectangleBtn);
 
+		Button pathBtn = new Button("Draw path");
+		pathBtn.setWidth("200");
+		pathBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Geometry geometry = new Geometry(Geometry.POLYGON, 0, 0);
+				Geometry shell = new Geometry(Geometry.LINEAR_RING, 0, 0);
+				shell.setCoordinates(new Coordinate[] { new Coordinate(5000000, -3000000),
+						new Coordinate(9000000, -3000000), new Coordinate(9000000, -9000000),
+						new Coordinate(5000000, -9000000), new Coordinate(5000000, -3000000) });
+				geometry.setGeometries(new Geometry[] { shell });
+
+				Path path = Showcase.GEOMAJASINJECTOR.getGfxUtil().toPath(geometry);
+				path.setFillColor("#0066AA");
+				path.setFillOpacity(0.4);
+				path.setStrokeColor("#004499");
+
+				container.add(path);
+
+				Geometry geometry2 = new Geometry(Geometry.POLYGON, 0, 0);
+				Geometry shell2 = new Geometry(Geometry.LINEAR_RING, 0, 0);
+				shell2.setCoordinates(new Coordinate[] { new Coordinate(5000000, -3000000),
+						new Coordinate(5001000, -3000000), new Coordinate(5001000, -3001000),
+						new Coordinate(5000000, -3001000), new Coordinate(5000000, -3000000) });
+				geometry2.setGeometries(new Geometry[] { shell2 });
+
+				Path path2 = Showcase.GEOMAJASINJECTOR.getGfxUtil().toPath(geometry2);
+				path2.setFillColor("#FFFFFF");
+				path2.setFillOpacity(0.8);
+				path2.setStrokeColor("#FF0000");
+
+				container.add(path2);
+			}
+		});
+		leftLayout.add(pathBtn);
 		Button deleteBtn = new Button("Delete all drawings");
 		deleteBtn.setWidth("200");
 		deleteBtn.addClickHandler(new ClickHandler() {

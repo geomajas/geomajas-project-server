@@ -97,7 +97,7 @@ public class LayerVisibilityPanel extends ContentPanel {
 		public void onMapInitialized(MapInitializationEvent event) {
 			// When the map initializes: add a CheckBox for every layer, so the use can toggle visibility:
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-				final Layer<?> layer = mapPresenter.getLayersModel().getLayer(i);
+				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
 				CheckBox layerCheck = new CheckBox(layer.getTitle());
 				layerCheck.setValue(layer.isMarkedAsVisible());
 

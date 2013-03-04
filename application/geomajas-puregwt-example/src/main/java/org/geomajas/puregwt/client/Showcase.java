@@ -24,11 +24,11 @@ import com.google.gwt.view.client.SingleSelectionModel;
  */
 public class Showcase implements EntryPoint {
 
-	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
+	public static final ShowcaseGinjector GEOMAJASINJECTOR = GWT.create(ShowcaseGinjector.class);
 
 	public void onModuleLoad() {
 		final SingleSelectionModel<ContentPanel> selectionModel = new SingleSelectionModel<ContentPanel>();
-		final ShowcaseLayout layout = new ShowcaseLayout(new ShowcaseTreeViewModel(selectionModel, geomajasInjector));
+		final ShowcaseLayout layout = new ShowcaseLayout(new ShowcaseTreeViewModel(selectionModel, GEOMAJASINJECTOR));
 
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
