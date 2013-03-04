@@ -15,6 +15,9 @@ import org.geomajas.puregwt.client.controller.MapEventParserFactory;
 import org.geomajas.puregwt.client.controller.MockMapEventParserFactory;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
+import org.geomajas.puregwt.client.gfx.HtmlImage;
+import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
+import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
@@ -37,6 +40,10 @@ import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapScalesRendererFactory;
+import org.geomajas.puregwt.client.map.render.RasterLayerScaleRenderer;
+import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.TiledScaleRendererFactory;
+import org.geomajas.puregwt.client.map.render.VectorLayerScaleRenderer;
 import org.geomajas.puregwt.client.service.CommandService;
 import org.geomajas.puregwt.client.service.EndPointService;
 import org.geomajas.puregwt.client.service.EndPointServiceImpl;
@@ -46,6 +53,7 @@ import org.geomajas.puregwt.client.widget.MapWidgetTestImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.name.Names;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
@@ -70,6 +78,14 @@ public class GeomajasTestModule extends AbstractModule {
 		bind(MapRendererFactory.class).to(MockMapRendererFactory.class);
 		bind(MapScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
 		bind(DefaultMapGadgetFactory.class).to(MockDefaultMapGadgetFactory.class);
+
+		install(new FactoryModuleBuilder()
+				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
+						VectorLayerScaleRenderer.class)
+				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
+						RasterLayerScaleRenderer.class).build(TiledScaleRendererFactory.class));
+		install(new FactoryModuleBuilder().implement(HtmlImage.class, HtmlImageImpl.class)
+				.build(HtmlImageFactory.class));
 
 		// Other:
 		bind(GfxUtil.class).to(GfxUtilImpl.class).in(Singleton.class);

@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -25,7 +26,9 @@ import com.google.web.bindery.event.shared.EventBus;
  * Ginjector specific for the Geomajas PureGWT client.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 @GinModules(GeomajasGinModule.class)
 public interface GeomajasGinjector extends Ginjector {
 
@@ -58,8 +61,19 @@ public interface GeomajasGinjector extends Ginjector {
 	 * @return The {@link EndPointService} singleton.
 	 */
 	CommandService getCommandService();
-	
+
+	/**
+	 * Get the image factory singleton.
+	 * 
+	 * @return The image factory singleton.
+	 */
 	HtmlImageFactory getImageFactory();
-	
+
+	/**
+	 * Get a general EventBus singleton. This EventBus should should be used outside of the map, to catch application
+	 * specific events.
+	 * 
+	 * @return A general EventBus.
+	 */
 	EventBus getEventBus();
 }
