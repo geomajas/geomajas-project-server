@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://www.dov.vlaanderen.be:80/geoserver/schemas/wms/1.1.1/WMS_MS_Capabilities.dtd">
+<WMT_MS_Capabilities version="1.1.1" updateSequence="20778">
+	<Service>
+		<Name>someName</Name>
+		<Title>someTitle</Title>
+		<Abstract>someAbstract</Abstract>
+		<KeywordList>
+			<Keyword>keyword1</Keyword>
+			<Keyword>keyword2</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>someContactPerson</ContactPerson>
+				<ContactOrganization>someContactOrganization</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>someContactPosition</ContactPosition>
+			<ContactAddress>
+				<AddressType>someAddressType</AddressType>
+				<Address>someAddress</Address>
+				<City>someCity</City>
+				<StateOrProvince>someStateOrProvince</StateOrProvince>
+				<PostCode>somePostCode</PostCode>
+				<Country>someCountry</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>someContactVoiceTelephone</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>someContactFacsimileTelephone</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>someContactElectronicMailAddress</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>someFees</Fees>
+		<AccessConstraints>someAccessConstraints</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Get>
+						<Post>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Post>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/gif</Format>
+				<Format>image/jpeg</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/plain</Format>
+				<Format>application/vnd.ogc.gml</Format>
+				<Format>text/html</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Get>
+						<Post>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Post>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<DescribeLayer>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</DescribeLayer>
+			<GetLegendGraphic>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetLegendGraphic>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+		</Exception>
+		<UserDefinedSymbolization SupportSLD="1" UserLayer="1" UserStyle="1" RemoteWFS="1" />
+		<Layer>
+			<Title>someTitle</Title>
+			<Abstract>someAbstract</Abstract>
+			<!--Limited list of EPSG projections: -->
+			<SRS>EPSG:31370</SRS>
+			<SRS>EPSG:4326</SRS>
+			<LatLonBoundingBox minx="0.0" miny="2.0" maxx="1.0" maxy="3.0" />
+			<Layer queryable="0">
+				<Name>layer1Name</Name>
+				<Title>layer1Title</Title>
+				<Abstract>layer1Abstract</Abstract>
+				<KeywordList>
+					<Keyword>keyword1</Keyword>
+					<Keyword>keyword2</Keyword>
+				</KeywordList>
+				<SRS>EPSG:31370</SRS>
+				<!--WKT definition of this CRS: PROJCS["Belge 1972 / Belgian Lambert 72", GEOGCS["Belge 1972", DATUM["Reseau National 
+					Belge 1972", SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]], TOWGS84[-106.8686, 52.2978, -103.7239, 
+					0.3366, 0.457, -1.8422, -1.2747], AUTHORITY["EPSG","6313"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 
+					0.017453292519943295], AXIS["Geodetic longitude", EAST], AXIS["Geodetic latitude", NORTH], AUTHORITY["EPSG","4313"]], PROJECTION["Lambert_Conformal_Conic_2SP", 
+					AUTHORITY["EPSG","9802"]], PARAMETER["central_meridian", 4.367486666666666], PARAMETER["latitude_of_origin", 90.0], PARAMETER["standard_parallel_1", 
+					51.166667233333335], PARAMETER["false_easting", 150000.013], PARAMETER["false_northing", 5400088.438], PARAMETER["scale_factor", 
+					1.0], PARAMETER["standard_parallel_2", 49.833333900000014], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH], 
+					AUTHORITY["EPSG","31370"]] -->
+				<LatLonBoundingBox minx="0.0" miny="2.0" maxx="1.0" maxy="3.0" />
+				<BoundingBox SRS="EPSG:31370" minx="0.0" miny="0.0" maxx="200000.0"	maxy="200000.0" />
+				<MetadataURL type="ISO19115:2003">
+					<Format>application/xml</Format>
+					<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+				</MetadataURL>
+				<Style>
+					<Name>layer1StyleName</Name>
+					<Title>layer1StyleTitle</Title>
+					<Abstract>layer1StyleAbstract</Abstract>
+					<LegendURL width="20" height="20">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer queryable="1">
+				<Name>layer2Name</Name>
+				<Title>layer2Title</Title>
+				<Abstract>layer2Abstract</Abstract>
+				<KeywordList>
+					<Keyword>keyword1</Keyword>
+					<Keyword>keyword2</Keyword>
+				</KeywordList>
+				<SRS>EPSG:31370</SRS>
+				<!--WKT definition of this CRS: PROJCS["Belge 1972 / Belgian Lambert 72", GEOGCS["Belge 1972", DATUM["Reseau National 
+					Belge 1972", SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]], TOWGS84[-106.8686, 52.2978, -103.7239, 
+					0.3366, 0.457, -1.8422, -1.2747], AUTHORITY["EPSG","6313"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 
+					0.017453292519943295], AXIS["Geodetic longitude", EAST], AXIS["Geodetic latitude", NORTH], AUTHORITY["EPSG","4313"]], PROJECTION["Lambert_Conformal_Conic_2SP", 
+					AUTHORITY["EPSG","9802"]], PARAMETER["central_meridian", 4.367486666666666], PARAMETER["latitude_of_origin", 90.0], PARAMETER["standard_parallel_1", 
+					51.166667233333335], PARAMETER["false_easting", 150000.013], PARAMETER["false_northing", 5400088.438], PARAMETER["scale_factor", 
+					1.0], PARAMETER["standard_parallel_2", 49.833333900000014], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH], 
+					AUTHORITY["EPSG","31370"]] -->
+				<LatLonBoundingBox minx="0.0" miny="2.0" maxx="1.0" maxy="3.0" />
+				<BoundingBox SRS="EPSG:31370" minx="0.0" miny="0.0" maxx="200000.0"	maxy="200000.0" />
+				<MetadataURL type="ISO19115:2003">
+					<Format>application/xml</Format>
+					<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+				</MetadataURL>
+				<Style>
+					<Name>layer2StyleName</Name>
+					<Title>layer2StyleTitle</Title>
+					<Abstract>layer2StyleAbstract</Abstract>
+					<LegendURL width="20" height="20">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="xlink" xlink:type="simple" xlink:href="http://www.geomajas.org/" />
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

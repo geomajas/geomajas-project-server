@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>This plugin provides client side WMS (Web Map Service) support. It
+  defines services to communicate with backend WMS services and it also
+  provides a client-side layer definition. The main difference with the
+  Geomajas-Layer-WMS plugin is that the layers are defined client-only. That
+  means that they are not part of the backed map composition. That in turn
+  means .....</para>
+
+  <section>
+    <title>Client-side WMS versus server-side WMS</title>
+
+    <para>As you may know, Geomajas also has the Geomajas-Layer-WMS plugin.
+    That plugin defines a server-side WMS layer. The main difference is that
+    the Geomajas-Layer-WMS plugin defines the WMS layers in the backend map
+    composition, making it available to all users. This client-side WMS plugin
+    on the other hand is able to define client WMS layers. These are available
+    only on the client that adds them, making them more flexible.</para>
+
+    <para>Note that if your WMS server is located on another domain, the
+    browser will prohibit you from accessing it directly. In that case you
+    will need to go through the server anyway, although a proxy servlet should
+    suffice. If you need extra security measures, this proxy servlet would be
+    the place to do it. The serverside WMS layer already has security measures
+    built in.</para>
+  </section>
+
+  <section>
+    <title>Supported functionalities</title>
+
+    <section>
+      <title>WMS Requests</title>
+
+      <para>This plugin provides a client WMS service definition that supports
+      WMS requests:
+      <code>org.geomajas.plugin.wmsclient.client.service.WmsService</code></para>
+
+      <para><code>This WmsService provides support for the following WMS
+      requests:</code></para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>GetCapabilities</emphasis>: Executes a WMS
+          GetCapabilities and parses the result into Java objects. This
+          capabilities object allows you to read the WMS contact information,
+          the list of supports coordinate reference systems, the list of known
+          layers, etc.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GetMap</emphasis>: A GetMap request gets an image
+          for a certain location. This request is used by the layer
+          renderer.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GetLegendGraphic</emphasis>: A GetLegendGraphic
+          request gets an image for the legend of a certain layer. This legend
+          displays styling information.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GetFeatureInfo</emphasis>: The GetFeatureInfo
+          request is used to request feature information for a specific
+          location. Depending on the return type, this information can be
+          parsed as a list of Feature objects.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Layer definitions</title>
+
+      <para>This plugin provides not one, but two layer definitions:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>WmsLayer</emphasis>: The basic WMS layer definition.
+          This will display a WMS layer on the map, and also supports the
+          GetLegendGraphic to display the legend.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>FeaturesSupportedWmsLayer</emphasis>: An extension
+          of the basic WMS layer definition that also support the
+          GetFeatureInfo request. Not all WMS layer will support this
+          feature.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Map Controllers</title>
+
+      <para>By default this plugin provides the following
+      MapControllers:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>WmsGetFeatureInfoController</emphasis>: Controller
+          that executes GetFeatureInfo requests on mouse clicks. This
+          controller does not extend the NavigationController, and can best be
+          used as a MapListener next to the default
+          NavigationController.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>GIN</title>
+
+      <para>This plugin extends the default Geomajas injection definitions, by
+      providing it's own GIN module definition and GIN injector interface.
+      Through this GIN injector, one can create new WMS Layers or acquire the
+      WmsService singleton.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Versions</title>
+
+    <para>This plugin has support for WMS version 1.1.1 and 1.3.0.</para>
+  </section>
+</chapter>
