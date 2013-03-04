@@ -172,13 +172,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	public void onGeometryIndexSelected(GeometryIndexSelectedEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
 	public void onGeometryIndexDeselected(GeometryIndexDeselectedEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
@@ -188,13 +188,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	public void onGeometryIndexDisabled(GeometryIndexDisabledEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
 	public void onGeometryIndexEnabled(GeometryIndexEnabledEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
@@ -204,13 +204,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	public void onGeometryIndexHighlightBegin(GeometryIndexHighlightBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
 	public void onGeometryIndexHighlightEnd(GeometryIndexHighlightEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
@@ -220,13 +220,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	public void onGeometryIndexMarkForDeletionBegin(GeometryIndexMarkForDeletionBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
 	public void onGeometryIndexMarkForDeletionEnd(GeometryIndexMarkForDeletionEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
@@ -236,13 +236,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	public void onGeometryIndexSnappingEnd(GeometryIndexSnappingEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
 	public void onGeometryIndexSnappingBegin(GeometryIndexSnappingBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			update(event.getGeometry(), index);
+			update(event.getGeometry(), index, false);
 		}
 	}
 
@@ -251,59 +251,86 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// ------------------------------------------------------------------------
 
 	public void onGeometryEditMove(GeometryEditMoveEvent event) {
-		// First find out what exactly must change with the move event (indices + neighbors):
-		List<GeometryIndex> toRedraw = new ArrayList<GeometryIndex>();
+		
+		// Find the elements that need updating:
+		Map<GeometryIndex, Boolean> indicesToUpdate = new HashMap<GeometryIndex, Boolean>();
 		for (GeometryIndex index : event.getIndices()) {
-			if (!toRedraw.contains(index)) {
-				toRedraw.add(index);
-				try {
-					List<GeometryIndex> neighbors = null;
-					switch (editingService.getIndexService().getType(index)) {
-						case TYPE_VERTEX:
-							neighbors = editingService.getIndexService().getAdjacentEdges(event.getGeometry(), index);
-							break;
-						case TYPE_EDGE:
-							neighbors = editingService.getIndexService()
-									.getAdjacentVertices(event.getGeometry(), index);
-							break;
-						case TYPE_GEOMETRY:
-						default:
-							neighbors = new ArrayList<GeometryIndex>();
+			if (!indicesToUpdate.containsKey(index)) {
+				indicesToUpdate.put(index, false);
+				if (!Geometry.POINT.equals(editingService.getGeometry().getGeometryType())
+						&& !Geometry.MULTI_POINT.equals(editingService.getGeometry().getGeometryType())) {
+					try {
+						List<GeometryIndex> neighbors = null;
+						switch (editingService.getIndexService().getType(index)) {
+							case TYPE_VERTEX:
+								neighbors = editingService.getIndexService().getAdjacentEdges(event.getGeometry(),
+										index);
+								if (neighbors != null) {
+									for (GeometryIndex neighborIndex : neighbors) {
+										if (!indicesToUpdate.containsKey(neighborIndex)) {
+											indicesToUpdate.put(neighborIndex, false);
+										}
+									}
+								}
+
+								// Bring neighboring vertices to the front. This helps the delete operation.
+								neighbors = editingService.getIndexService().getAdjacentVertices(event.getGeometry(),
+										index);
+								if (neighbors != null) {
+									for (GeometryIndex neighborIndex : neighbors) {
+										if (!indicesToUpdate.containsKey(neighborIndex)) {
+											indicesToUpdate.put(neighborIndex, true);
+										}
+									}
+								}
+								break;
+							case TYPE_EDGE:
+								neighbors = editingService.getIndexService().getAdjacentVertices(event.getGeometry(),
+										index);
+								if (neighbors != null) {
+									for (GeometryIndex neighborIndex : neighbors) {
+										if (!indicesToUpdate.containsKey(neighborIndex)) {
+											indicesToUpdate.put(neighborIndex, false);
+										}
+									}
+								}
+								break;
+							default:
+						}
+					} catch (GeometryIndexNotFoundException e) {
+						throw new IllegalStateException(e);
 					}
-					if (neighbors != null) {
-						toRedraw.addAll(neighbors);
-					}
-				} catch (GeometryIndexNotFoundException e) {
 				}
 			}
+		}
 
-			// Check if we need to draw the background (nice, but slows down):
-			if (styleService.getBackgroundStyle() != null && styleService.getBackgroundStyle().getFillOpacity() > 0) {
-				if (event.getGeometry().getGeometryType().equals(Geometry.POLYGON)) {
+		// Check if we need to draw the background (nice, but slows down):
+		if (styleService.getBackgroundStyle() != null && styleService.getBackgroundStyle().getFillOpacity() > 0) {
+			if (event.getGeometry().getGeometryType().equals(Geometry.POLYGON)) {
+				org.geomajas.gwt.client.spatial.geometry.Geometry transformed = mapWidget.getMapModel()
+						.getMapView().getWorldViewTransformer()
+						.worldToPan(GeometryConverter.toGwt(event.getGeometry()));
+				mapWidget.getVectorContext().drawPolygon(groups.get(baseName + ".background"), "background",
+						(Polygon) transformed, styleService.getBackgroundStyle());
+			} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)
+					&& event.getGeometry().getGeometries() != null) {
+				for (int i = 0; i < event.getGeometry().getGeometries().length; i++) {
+					Geometry polygon = event.getGeometry().getGeometries()[i];
+
 					org.geomajas.gwt.client.spatial.geometry.Geometry transformed = mapWidget.getMapModel()
-							.getMapView().getWorldViewTransformer()
-							.worldToPan(GeometryConverter.toGwt(event.getGeometry()));
-					mapWidget.getVectorContext().drawPolygon(groups.get(baseName + ".background"), "background",
+							.getMapView().getWorldViewTransformer().worldToPan(GeometryConverter.toGwt(polygon));
+					mapWidget.getVectorContext().drawPolygon(
+							groups.get(baseName + ".geometry" + i + ".background"), "background",
 							(Polygon) transformed, styleService.getBackgroundStyle());
-				} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)
-						&& event.getGeometry().getGeometries() != null) {
-					for (int i = 0; i < event.getGeometry().getGeometries().length; i++) {
-						Geometry polygon = event.getGeometry().getGeometries()[i];
-
-						org.geomajas.gwt.client.spatial.geometry.Geometry transformed = mapWidget.getMapModel()
-								.getMapView().getWorldViewTransformer().worldToPan(GeometryConverter.toGwt(polygon));
-						mapWidget.getVectorContext().drawPolygon(
-								groups.get(baseName + ".geometry" + i + ".background"), "background",
-								(Polygon) transformed, styleService.getBackgroundStyle());
-					}
 				}
 			}
 		}
 
 		// Next, redraw the list:
-		for (GeometryIndex index : toRedraw) {
-			update(event.getGeometry(), index);
+		for (GeometryIndex index : indicesToUpdate.keySet()) {
+			update(event.getGeometry(), index, indicesToUpdate.get(index));
 		}
+
 	}
 
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
@@ -429,25 +456,25 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		return styleService;
 	}
 
-	private void update(Geometry geometry, GeometryIndex index) {
+	private void update(Geometry geometry, GeometryIndex index, boolean bringToFront) {
 		try {
 			switch (editingService.getIndexService().getType(index)) {
 				case TYPE_VERTEX:
-					updateVertex(geometry, index);
+					updateVertex(geometry, index, bringToFront);
 					break;
 				case TYPE_EDGE:
-					updateEdge(geometry, index);
+					updateEdge(geometry, index, bringToFront);
 					break;
 				case TYPE_GEOMETRY:
 				default:
-					updateGeometry(geometry, index);
+					updateGeometry(geometry, index, bringToFront);
 			}
 		} catch (GeometryIndexNotFoundException e) {
 		}
 	}
 
 	// TODO make use of the findGeometryStyle method.
-	private void updateGeometry(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void updateGeometry(Geometry geometry, GeometryIndex index, boolean bringToFront) throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		boolean marked = editingService.getIndexStateService().isMarkedForDeletion(index);
@@ -472,7 +499,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 	}
 
-	private void updateVertex(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void updateVertex(Geometry geometry, GeometryIndex index, boolean bringToFront) throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		Composite parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
@@ -482,27 +509,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
 				VERTEX_SIZE, VERTEX_SIZE);
 
-		// Draw:
-		if (Dom.isIE()) {
-			if (editingService.getEditingState() == GeometryEditState.DRAGGING
-					&& editingService.getIndexStateService().isSelected(index)) {
-				// Cheap trick so switch order (since bringToFront cannot be used in IE...):
-				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, findVertexStyle(index));
-				mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, new ShapeStyle());
-			} else {
-				mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
-				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, new ShapeStyle());
-			}
-		} else {
-			if (editingService.getEditingState() == GeometryEditState.DRAGGING
-					&& editingService.getIndexStateService().isSelected(index)) {
-				mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
-			}
-			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
+		mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
+		if (bringToFront) {
+			mapWidget.getVectorContext().bringToFront(parentGroup, identifier);
 		}
 	}
 
-	private void updateEdge(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void updateEdge(Geometry geometry, GeometryIndex index, boolean bringToFront) throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
