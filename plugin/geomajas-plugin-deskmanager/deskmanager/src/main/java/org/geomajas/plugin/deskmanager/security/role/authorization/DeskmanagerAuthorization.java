@@ -65,7 +65,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	private static final long serialVersionUID = 110;
 
-	private final Logger log = LoggerFactory.getLogger(DeskmanagerAuthorizationInfo.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DeskmanagerAuthorizationInfo.class);
 
 	private static Geometry all;
 	static {
@@ -130,7 +130,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		if (geodeskId != null && !RetrieveRolesRequest.MANAGER_ID.equals(geodeskId) 
 				&& isGeodeskUseAllowed(geodeskId)) {
 			try {
-				log.debug("building magdageoauthorizationinfo");
+				LOG.debug("building magdageoauthorizationinfo");
 				Geodesk geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
 				ClientApplicationInfo geodeskInfo = applicationContext.getBean(GeodeskConfigurationService.class)
 						.createGeodeskConfiguration(geodesk, true);
