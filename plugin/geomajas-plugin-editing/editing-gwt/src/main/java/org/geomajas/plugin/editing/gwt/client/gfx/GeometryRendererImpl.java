@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.editing.gwt.client.gfx;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
@@ -474,7 +472,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	}
 
 	// TODO make use of the findGeometryStyle method.
-	private void updateGeometry(Geometry geometry, GeometryIndex index, boolean bringToFront) throws GeometryIndexNotFoundException {
+	private void updateGeometry(Geometry geometry, GeometryIndex index, boolean bringToFront)
+			throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		boolean marked = editingService.getIndexStateService().isMarkedForDeletion(index);
@@ -499,7 +498,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 	}
 
-	private void updateVertex(Geometry geometry, GeometryIndex index, boolean bringToFront) throws GeometryIndexNotFoundException {
+	private void updateVertex(Geometry geometry, GeometryIndex index, boolean bringToFront)
+			throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		Composite parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
@@ -515,7 +515,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 	}
 
-	private void updateEdge(Geometry geometry, GeometryIndex index, boolean bringToFront) throws GeometryIndexNotFoundException {
+	private void updateEdge(Geometry geometry, GeometryIndex index, boolean bringToFront)
+			throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
