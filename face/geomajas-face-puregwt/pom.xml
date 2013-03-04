@@ -110,7 +110,7 @@
 			<dependency>
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
-				<version>1.0.0.TX1</version>
+				<version>${puregwt-face-gwt-graphics-version}</version>
 			</dependency>
 
 			<dependency>
@@ -179,5 +179,6 @@
 		<puregwt-face-backend-version>1.11.1</puregwt-face-backend-version>
 		<puregwt-face-common-gwt-version>1.1.0</puregwt-face-common-gwt-version>
 		<puregwt-face-gwt-version>2.5.0</puregwt-face-gwt-version>
+		<puregwt-face-gwt-graphics-version>1.0.0.TX2</puregwt-face-gwt-graphics-version>
 	</properties>
 </project>
