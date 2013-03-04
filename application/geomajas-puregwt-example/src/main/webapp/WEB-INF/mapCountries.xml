@@ -20,21 +20,24 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="backgroundColor" value="#E0E0E0" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="strokeColor" value="#FFFF00" />
+				<property name="strokeColor" value="#FF0000" />
 				<property name="strokeOpacity" value=".75" />
 				<property name="fillOpacity" value="0" />
 			</bean>
 		</property>
 		<property name="pointSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="fillColor" value="#E0E000" />
+				<property name="fillColor" value="#E00000" />
 				<property name="fillOpacity" value=".75" />
 			</bean>
 		</property>
 		<property name="polygonSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="fillColor" value="#E0E000" />
-				<property name="fillOpacity" value=".75" />
+				<property name="fillColor" value="#F00000" />
+				<property name="fillOpacity" value=".65" />
+				<property name="strokeColor" value="#E00000" />
+				<property name="strokeWidth" value="3" />
+				<property name="strokeOpacity" value="0.8" />
 			</bean>
 		</property>
 		<property name="crs" value="EPSG:900913" />

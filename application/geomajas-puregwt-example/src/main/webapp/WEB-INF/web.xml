@@ -72,6 +72,17 @@
 		<url-pattern>/d/*</url-pattern>
 	</servlet-mapping>
 
+    <!-- Register the proxy servlet -->
+    <servlet>
+        <servlet-name>Proxy</servlet-name>
+        <servlet-class>org.geomajas.plugin.wmsclient.server.proxy.ProxyController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Proxy</servlet-name>
+        <url-pattern>/proxy/*</url-pattern>
+    </servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
