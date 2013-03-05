@@ -246,6 +246,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @param parent the potential parent element
 	 * @param child the potential child element
 	 * @return <code>true</code> if the relationship holds
+	 * @since 1.3.0
 	 */
 	public static boolean isOrHasChild(Element parent, Element child) {
 		return IMPL.isOrHasChild(parent, child);
