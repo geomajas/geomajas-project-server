@@ -22,19 +22,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="Geomajas Deskmanager" />
+				<property name="name" value="Geomajas Deskmanager gwt" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
 		<property name="backendVersion" value="${gdm-backend-version}" />
 		<property name="dependencies">
 			<list>
-				<!--
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="GWT face" />
-					<property name="version" value="${caching-gwt-version}" />
+					<property name="version" value="${gdm-gwt-version}" />
 				</bean>
-				-->
 			</list>
 		</property>
 		<property name="copyrightInfo">
@@ -44,12 +42,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="copyright" value="(c) 2008-2013 Geosparc nv"/>
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
-				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="Geomajas"/>
-					<property name="copyright" value="(c) 2005-2012, Paul Tuckey"/>
-					<property name="licenseName" value="BSD licence"/>
-					<property name="licenseUrl" value="https://code.google.com/p/urlrewritefilter/source/browse/trunk/LICENSE.txt"/>
 				</bean>
 			</list>
 		</property>

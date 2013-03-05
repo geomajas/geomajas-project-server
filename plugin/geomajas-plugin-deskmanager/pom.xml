@@ -40,14 +40,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.12.0</version>
+				<version>${gdm-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.12.0</version>
+				<version>${gdm-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -222,5 +222,11 @@
 
 		</dependencies>
 	</dependencyManagement>
+
+
+	<properties>
+		<gdm-backend-version>1.12.0</gdm-backend-version>
+		<gdm-gwt-version>1.12.0</gdm-gwt-version>
+	</properties>
 
 </project>
