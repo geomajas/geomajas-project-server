@@ -43,7 +43,7 @@ public class SaveGeodeskRequest implements CommandRequest {
 	 */
 	public static final int SAVE_CLIENTWIDGETINFO = 32;
 
-	public static final String COMMAND = "command.manager.SaveGeodesk";
+	public static final String COMMAND = "command.deskmanager.manager.SaveGeodesk";
 
 
 	private int saveBitmask;

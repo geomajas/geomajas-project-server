@@ -28,7 +28,7 @@ public class RetrieveRolesRequest implements CommandRequest {
 	
 	private String locale;
 
-	public static final String COMMAND = "command.security.RetrieveRolesCommand"; 
+	public static final String COMMAND = "command.deskmanager.security.RetrieveRolesCommand"; 
 
 	
 	/**

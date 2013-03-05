@@ -44,7 +44,7 @@ public class SaveBlueprintRequest implements CommandRequest {
 	 */
 	public static final int SAVE_CLIENTWIDGETINFO = SaveGeodeskRequest.SAVE_CLIENTWIDGETINFO;
 	
-	public static final String COMMAND = "command.manager.SaveBlueprint";
+	public static final String COMMAND = "command.deskmanager.manager.SaveBlueprint";
 
 	private int saveBitmask;
 

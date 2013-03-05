@@ -22,7 +22,7 @@ public class GetRasterLayerConfigRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetRasterLayerConfig";
+	public static final String COMMAND = "command.deskmanager.manager.GetRasterLayerConfig";
 
 	private RasterCapabilitiesInfo rasterCapabilitiesInfo;
 

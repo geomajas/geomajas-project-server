@@ -22,7 +22,7 @@ public class GetWmsCapabilitiesRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.discovery.GetWmsCapabilities";
+	public static final String COMMAND = "command.deskmanager.manager.GetWmsCapabilities";
 
 	public static final String GET_CAPABILITIES_URL = "GetCapabilitiesURL";
 

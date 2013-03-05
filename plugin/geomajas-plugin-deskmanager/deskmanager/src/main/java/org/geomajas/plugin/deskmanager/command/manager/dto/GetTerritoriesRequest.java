@@ -22,7 +22,7 @@ public class GetTerritoriesRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetGroups";
+	public static final String COMMAND = "command.deskmanager.manager.GetGroups";
 
 	public String toString() {
 		return COMMAND;

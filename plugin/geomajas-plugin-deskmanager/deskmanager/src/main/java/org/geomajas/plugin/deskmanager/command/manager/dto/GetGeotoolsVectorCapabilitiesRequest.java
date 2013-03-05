@@ -43,7 +43,7 @@ public class GetGeotoolsVectorCapabilitiesRequest implements CommandRequest {
 
 	public static final String PROPERTY_DATABASE_PASSWD = "passwd";
 
-	public static final String COMMAND = "command.manager.GetGeotoolsVectorCapabilities";
+	public static final String COMMAND = "command.deskmanager.manager.GetGeotoolsVectorCapabilities";
 
 	private Map<String, String> connectionProperties = new LinkedHashMap<String, String>();
 

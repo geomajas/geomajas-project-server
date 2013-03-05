@@ -23,7 +23,7 @@ public class GetLayerModelRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetLayerModel";
+	public static final String COMMAND = "command.deskmanager.manager.GetLayerModel";
 
 	private String id;
 

@@ -22,7 +22,7 @@ public class GetVectorLayerConfigRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetVectorLayerConfig";
+	public static final String COMMAND = "command.deskmanager.manager.GetVectorLayerConfig";
 
 	private Map<String, String> connectionProperties = new LinkedHashMap<String, String>();
 

@@ -22,7 +22,7 @@ public class GetGeodeskRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetGeodesk";
+	public static final String COMMAND = "command.deskmanager.manager.GetGeodesk";
 
 	private String geodeskId;
 

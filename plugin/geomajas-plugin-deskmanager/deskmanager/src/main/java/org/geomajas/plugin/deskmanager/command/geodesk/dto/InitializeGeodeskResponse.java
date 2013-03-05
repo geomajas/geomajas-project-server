@@ -23,7 +23,7 @@ public class InitializeGeodeskResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;
 
-	public static final String COMMAND = "command.geodesk.InitializeGeodesk";
+	public static final String COMMAND = "command.deskmanager.geodesk.InitializeGeodesk";
 
 	private String geodeskIdentifier;
 

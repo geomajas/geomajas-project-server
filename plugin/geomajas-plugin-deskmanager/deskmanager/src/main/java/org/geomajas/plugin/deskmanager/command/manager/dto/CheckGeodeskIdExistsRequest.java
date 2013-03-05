@@ -22,7 +22,7 @@ public class CheckGeodeskIdExistsRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.CheckGeodeskIdExists";
+	public static final String COMMAND = "command.deskmanager.manager.CheckGeodeskIdExists";
 
 	private String geodeskId;
 

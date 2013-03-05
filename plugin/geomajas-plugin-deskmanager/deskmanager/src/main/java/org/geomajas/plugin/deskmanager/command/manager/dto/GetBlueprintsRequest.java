@@ -24,7 +24,7 @@ public class GetBlueprintsRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COMMAND = "command.manager.GetBlueprints";
+	public static final String COMMAND = "command.deskmanager.manager.GetBlueprints";
 
 	public String toString() {
 		return COMMAND;
