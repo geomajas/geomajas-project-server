@@ -137,8 +137,9 @@ public final class GeodeskDtoUtil {
 	}
 
 	/**
-	 * Retrieve the list of ClientWidgetInfo's from a userapplications application info. This consists of the widget infos
-	 * defined in the UserApplication itself, and those defined in the {@link UserApplicationInfo#getApplicationInfo()}.
+	 * Retrieve the list of ClientWidgetInfo's from a userapplications application info. This consists of the widget
+	 * infos defined in the UserApplication itself, and those defined in the
+	 * {@link UserApplicationInfo#getApplicationInfo()}.
 	 * 
 	 * @param uai
 	 *            the user application info
