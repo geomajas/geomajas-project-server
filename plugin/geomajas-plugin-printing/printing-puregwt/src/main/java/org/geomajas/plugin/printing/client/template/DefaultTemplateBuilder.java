@@ -34,12 +34,13 @@ import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.dto.RasterizedLayersComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
-import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.layer.LayersModel;
+import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
+import org.geomajas.puregwt.client.map.layer.ServerLayer;
+import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
@@ -114,13 +115,15 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		LayersModel layersModel = this.mapPresenter.getLayersModel();
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
-			Layer<?> layer = layersModel.getLayer(i);
-			if (layer instanceof RasterLayer && layer.isShowing()) {
-				RasterLayerComponentInfo info = new RasterLayerComponentInfo();
-				RasterLayer rasterLayer = (RasterLayer) layer;
-				info.setLayerId(rasterLayer.getServerLayerId());
-				info.setStyle(rasterLayer.getLayerInfo().getStyle());
-				layers.add(info);
+			Layer layer = layersModel.getLayer(i);
+			if (layer.isShowing() && layer instanceof RasterServerLayer) {
+				if (layer instanceof ServerLayer) {
+					RasterLayerComponentInfo info = new RasterLayerComponentInfo();
+					RasterServerLayer rasterLayer = (RasterServerLayer) layer;
+					info.setLayerId(rasterLayer.getServerLayerId());
+					info.setStyle(rasterLayer.getLayerInfo().getStyle());
+					layers.add(info);
+				}
 			}
 		}
 		// use the rasterized layers way for vector layers
@@ -175,9 +178,9 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		//GWT:for (Layer layer : mapModel.getLayers()) 
 		LayersModel layersModel = this.mapPresenter.getLayersModel();
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
-			Layer<?> layer = layersModel.getLayer(i);
-			if (layer instanceof VectorLayer && layer.isShowing()) {
-				VectorLayer vectorLayer = (VectorLayer) layer;
+			Layer layer = layersModel.getLayer(i);
+			if (layer instanceof VectorServerLayer && layer.isShowing()) {
+				VectorServerLayer vectorLayer = (VectorServerLayer) layer;
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
 				//String label = layerInfo.getLabel();
 				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().
@@ -198,8 +201,8 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 					item.addChild(getLegendLabel(legend, title));
 					legend.addChild(item);
 				}
-			} else if (layer instanceof RasterLayer && layer.isShowing()) {
-				RasterLayer rasterLayer = (RasterLayer) layer;
+			} else if (layer instanceof RasterServerLayer && layer.isShowing()) {
+				RasterServerLayer rasterLayer = (RasterServerLayer) layer;
 				ClientRasterLayerInfo layerInfo = rasterLayer.getLayerInfo();
 				LegendItemComponentInfo item = new LegendItemComponentInfo();
 				LegendIconComponentInfo icon = new LegendIconComponentInfo();

@@ -94,24 +94,24 @@
         <dependency>
             <groupId>org.geomajas</groupId>
             <artifactId>geomajas-puregwt-client-impl</artifactId>
-            <version>1.0.0-M3</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.geomajas</groupId>
             <artifactId>geomajas-puregwt-client-impl</artifactId>
-            <version>1.0.0-M3</version>
+            <version>1.0.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-widget-puregwt-core</artifactId>
-            <version>1.0.0-M1</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-widget-puregwt-core</artifactId>
             <classifier>sources</classifier>
-            <version>1.0.0-M1</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 			
 		<!-- Google dependencies -->
