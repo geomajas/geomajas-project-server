@@ -1,0 +1,99 @@
+/* FORMS */
+form {
+	/*margin: 15px*/
+}
+
+form legend {
+	font-size: 16px;
+	line-height: 30px;
+	margin-bottom: 0px;
+	width: auto;
+	border-width: 0;
+}
+
+form fieldset {
+	border: solid 1px #EEEAE1;
+	margin-bottom: 20px;
+	padding: 6px; 
+}
+
+form li {
+	clear: both;
+	list-style: none;
+	padding: 5px;
+	margin: 0;
+	vertical-align:top;
+}
+
+form ul {
+	list-style-image: none;
+}
+
+form label {
+	float: left;
+	margin: 4px 5px 4px 5px;
+	width: 120px;
+}
+
+form input[type="radio"] + label {
+	width: auto;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+form input {
+/*	border: solid 1px #D8D5CD;*/
+}
+
+form input[type="text"], textarea {
+	float: left;
+	line-height: 24px;
+	background-color: #FFF;
+	padding-left: 5px;
+	font-family: sans-serif;
+	font-size: 13px;
+	color: #3F5966;
+	width: 80%;
+	resize:none;
+}
+
+form input[type="file"] {
+	float: left;
+	line-height: 24px;
+	background-color: #FFF;
+	padding-left: 5px;
+	font-family: sans-serif;
+	font-size: 13px;
+	color: #3F5966;
+	border: 1px solid #D8D5CD;
+}
+
+form input[type="radio"] {
+	float: left;
+	/* clear: both; */
+	margin: 5px 0 0;
+	border-style: hidden;
+}
+
+form input[type="checkbox"] {
+	float: left;
+	clear: both;
+	margin: 0px 5px 10px 0px;
+	border-style: hidden;
+}
+
+form select {
+	float: left;
+	height: 24px;
+	background-color: #FFF;
+	border: solid 1px #D8D5CD;
+	font-family: sans-serif;
+	font-size: 13px;
+	color: #3F5966;
+	width: 300px;
+}
+
+form input[type="submit"] {
+	clear: both;
+}
+ 
