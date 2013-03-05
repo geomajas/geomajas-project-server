@@ -10,6 +10,9 @@
  */
 package org.geomajas.gwt.client.util.impl;
 
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.user.client.Element;
+
 /**
  * Extends {@link DomImpl} for IE9 browser.
  * 
@@ -25,5 +28,24 @@ public class DomImplIE9 extends DomImpl {
 	public boolean isIE() {
 		return true;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isOrHasChild(Element parent, Element child) {
+		return noContainsIsOrHasChild(parent, child);
+	}
+
+	/**
+	 * Uses compareDocumentPosition to check parenthood as contains() does not exist for SVG in IE9.
+	 * @param parent
+	 * @param child
+	 * @return
+	 */
+	public native boolean noContainsIsOrHasChild(Node parent, Node child) /*-{
+		// For more information about compareDocumentPosition, see:
+		// http://www.quirksmode.org/blog/archives/2006/01/contains_for_mo.html
+		return (parent === child) || !!(parent.compareDocumentPosition(child) & 16);
+	}-*/;	
 
 }

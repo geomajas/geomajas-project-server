@@ -311,4 +311,15 @@ public class DomImpl {
 		}
 		return href;
 	}
+
+	/**
+	 * Determine whether one element is equal to, or the child of, another.
+	 * 
+	 * @param parent the potential parent element
+	 * @param child the potential child element
+	 * @return <code>true</code> if the relationship holds
+	 */
+	public boolean isOrHasChild(Element parent, Element child) {
+		return DOM.isOrHasChild(parent, child);
+	}
 }

@@ -239,4 +239,16 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	public static String makeUrlAbsolute(String url) {
 		return IMPL.makeUrlAbsolute(url);
 	}
+	
+	/**
+	 * Determine whether one element is equal to, or the child of, another.
+	 * 
+	 * @param parent the potential parent element
+	 * @param child the potential child element
+	 * @return <code>true</code> if the relationship holds
+	 */
+	public static boolean isOrHasChild(Element parent, Element child) {
+		return IMPL.isOrHasChild(parent, child);
+	}
+	
 }
