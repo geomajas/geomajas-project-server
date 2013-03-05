@@ -59,6 +59,8 @@ public class WmsServiceImpl implements WmsService {
 	@Inject
 	private FeatureFactory featureFactory;
 
+	private WmsUrlTransformer urlTransformer;
+
 	// ------------------------------------------------------------------------
 	// WMS GetCapabilities methods:
 	// ------------------------------------------------------------------------
@@ -76,8 +78,8 @@ public class WmsServiceImpl implements WmsService {
 	 */
 	public void getCapabilities(String baseUrl, final WmsVersion version,
 			final Callback<WmsGetCapabilitiesInfo, String> callback) {
-		StringBuilder url = asCapabilitiesUrl(baseUrl, version);
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url.toString());
+		String url = getCapabilitiesUrl(baseUrl, version);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 
@@ -112,27 +114,6 @@ public class WmsServiceImpl implements WmsService {
 		}
 	}
 
-	private StringBuilder asCapabilitiesUrl(String baseUrl, WmsVersion version) {
-		StringBuilder url = new StringBuilder(baseUrl);
-
-		// Parameter: Service
-		int pos = url.lastIndexOf("?");
-		if (pos > 0) {
-			url.append("&service=WMS");
-		} else {
-			url.append("?service=WMS");
-		}
-
-		// Parameter: Version
-		url.append("&version=");
-		url.append(version.toString());
-
-		// Parameter: request type
-		url.append("&request=GetCapabilities");
-
-		return url;
-	}
-
 	// ------------------------------------------------------------------------
 	// WmsService implementation:
 	// ------------------------------------------------------------------------
@@ -148,7 +129,7 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: request type
 		url.append("&request=GetMap");
 
-		return url.toString();
+		return finishUrl(WmsRequest.GetMap, url);
 	}
 
 	/** {@inheritDoc} */
@@ -220,7 +201,21 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: transparent
 		url.append("&transparent=true");
 
-		return url.toString();
+		return finishUrl(WmsRequest.GetLegendGraphic, url);
+	}
+
+	// ------------------------------------------------------------------------
+	// Proxy options:
+	// ------------------------------------------------------------------------
+
+	/** {@inheritDoc} */
+	public void setWmsUrlTransformer(WmsUrlTransformer urlTransformer) {
+		this.urlTransformer = urlTransformer;
+	}
+
+	/** {@inheritDoc} */
+	public WmsUrlTransformer getWmsUrlTransformer() {
+		return urlTransformer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -261,15 +256,19 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&INFO_FORMAT=");
 		url.append(format.toString());
 
-		return url.toString();
+		return finishUrl(WmsRequest.GetFeatureInfo, url);
 	}
 
 	private StringBuilder getBaseUrlBuilder(WmsLayerConfiguration config) {
 		return new StringBuilder(config.getBaseUrl());
-		// if (proxy == null) {
-		// return new StringBuilder(layer.getConfig().getBaseUrl());
-		// }
-		// return new StringBuilder(proxy + layer.getConfig().getBaseUrl());
+	}
+
+	private String finishUrl(WmsRequest request, StringBuilder builder) {
+		String url = builder.toString();
+		if (urlTransformer != null) {
+			url = urlTransformer.transform(request, url);
+		}
+		return URL.encode(url);
 	}
 
 	private StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config, String crs,
@@ -346,6 +345,27 @@ public class WmsServiceImpl implements WmsService {
 
 		// Return the URL:
 		return url;
+	}
+
+	private String getCapabilitiesUrl(String baseUrl, WmsVersion version) {
+		StringBuilder url = new StringBuilder(baseUrl);
+
+		// Parameter: Service
+		int pos = url.lastIndexOf("?");
+		if (pos > 0) {
+			url.append("&service=WMS");
+		} else {
+			url.append("?service=WMS");
+		}
+
+		// Parameter: Version
+		url.append("&version=");
+		url.append(version.toString());
+
+		// Parameter: request type
+		url.append("&request=GetCapabilities");
+
+		return finishUrl(WmsRequest.GetCapabilities, url);
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {

@@ -70,6 +70,36 @@ public interface WmsService {
 		}
 	}
 
+	/**
+	 * Supported WMS requests.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	public enum WmsRequest {
+		GetMap, GetCapabilities, GetFeatureInfo, GetLegendGraphic
+	}
+
+	/**
+	 * Transforms the given URL. This interface can, for example, be used to make sure requests make use of a proxy
+	 * servlet. A possible implementation could be: <code>return "/proxy?url=" + url;</code>
+	 * 
+	 * @author Pieter De Graef
+	 */
+	public interface WmsUrlTransformer {
+
+		/**
+		 * Transform the given URL.
+		 * 
+		 * @param request
+		 *            The WMS request that is used in the URL. It may be that you wish to add a proxy servlet to the URL
+		 *            for some requests but not all.
+		 * @param url
+		 *            The URL to transform.
+		 * @return Returns the transformed URL.
+		 */
+		String transform(WmsRequest request, String url);
+	}
+
 	// ------------------------------------------------------------------------
 	// WMS GetCapabilities methods:
 	// ------------------------------------------------------------------------
@@ -158,4 +188,24 @@ public interface WmsService {
 	 * @return Returns the URL that points to the legend image.
 	 */
 	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig);
+
+	// ------------------------------------------------------------------------
+	// Proxy options:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Apply a transformer to transform any URL that is generated within this service. This transformer can, for
+	 * examplen, be used to add a proxy servlet to any URL.
+	 * 
+	 * @param urlTransformer
+	 *            The URL transformer to use.
+	 */
+	void setWmsUrlTransformer(WmsUrlTransformer urlTransformer);
+
+	/**
+	 * Return the current URL transformer, or null if no transformer has been set yet.
+	 * 
+	 * @return The current WMS URL transformer.
+	 */
+	WmsUrlTransformer getWmsUrlTransformer();
 }

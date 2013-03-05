@@ -14,9 +14,12 @@ package org.geomajas.plugin.wmsclient.client.service;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.wmsclient.client.WmsClientGinjector;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsRequest;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsUrlTransformer;
 import org.junit.Test;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
@@ -40,9 +43,22 @@ public class WmsServiceTest extends GWTTestCase {
 
 	private static final int VALUE_SIZE = 342;
 
+	private static final String HELLOWORLD = "Hello World";
+
 	private WmsService wmsService;
 
 	private WmsLayerConfiguration wmsConfig;
+
+	private WmsUrlTransformer toHelloWorld;
+
+	public WmsServiceTest() {
+		toHelloWorld = new WmsUrlTransformer() {
+
+			public String transform(WmsRequest request, String url) {
+				return HELLOWORLD;
+			}
+		};
+	}
 
 	public String getModuleName() {
 		return "org.geomajas.plugin.wmsclient.GeomajasWmsClientTest";
@@ -101,6 +117,46 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getLegendUrl, "width", wmsConfig.getLegendWidth() + ""));
 		assertTrue(hasParameter(getLegendUrl, "height", wmsConfig.getLegendHeight() + ""));
 	}
+
+	@Test
+	public void testWmsUrlTransformer1() {
+		initialize(); // No Spring in a GWT unit test.
+		assertNull(wmsService.getWmsUrlTransformer());
+		wmsService.setWmsUrlTransformer(toHelloWorld);
+		assertEquals(toHelloWorld, wmsService.getWmsUrlTransformer());
+	}
+
+	@Test
+	public void testWmsUrlTransformer4GetMap() {
+		initialize(); // No Spring in a GWT unit test.
+
+		assertNull(wmsService.getWmsUrlTransformer());
+		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+		assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
+		assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
+
+		wmsService.setWmsUrlTransformer(toHelloWorld);
+		Bbox bounds = new Bbox(0, 1, 100, 100);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS2, bounds, VALUE_SIZE, VALUE_SIZE);
+		assertEquals(URL.encode(HELLOWORLD), getMapUrl);
+	}
+
+	@Test
+	public void testWmsUrlTransformer4GetLegend() {
+		initialize(); // No Spring in a GWT unit test.
+
+		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+		assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
+		assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
+
+		wmsService.setWmsUrlTransformer(toHelloWorld);
+		getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+		assertEquals(URL.encode(HELLOWORLD), getLegendUrl);
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
 	private void initialize() {
 		injector = GWT.create(WmsClientGinjector.class);
