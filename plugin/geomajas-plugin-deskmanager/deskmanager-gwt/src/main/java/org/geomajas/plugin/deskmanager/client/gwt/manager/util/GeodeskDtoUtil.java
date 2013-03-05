@@ -16,6 +16,8 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
+import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
@@ -47,11 +49,30 @@ public final class GeodeskDtoUtil {
 			widgetInfos.putAll(getMainMapClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
 		}
 		if (geodesk instanceof BlueprintDto) {
-			//Add from userapplication
-			widgetInfos.putAll(((BlueprintDto) geodesk).getUserApplicationInfo().getMainMapWidgetInfos());
+			widgetInfos.putAll(getMainMapClientWidgetInfo(geodesk.getUserApplicationInfo()));
 		}
-		
+
 		widgetInfos.putAll(geodesk.getMainMapClientWidgetInfos());
+		return widgetInfos;
+	}
+
+	/**
+	 * Retrieve the list of ClientWidgetInfo's from a userapplications main map. This consists of the widget infos
+	 * defined in the UserApplication itself, and those defined in the {@link UserApplicationInfo#getApplicationInfo()}.
+	 * 
+	 * @param uai
+	 *            the user application info
+	 * @return List of ClientWidgetInfo as defined in the user application
+	 */
+	public static Map<String, ClientWidgetInfo> getMainMapClientWidgetInfo(UserApplicationInfo uai) {
+		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
+
+		for (ClientMapInfo cmi : uai.getApplicationInfo().getMaps()) {
+			if (GdmLayout.MAPMAIN_ID.equals(cmi.getId())) {
+				widgetInfos.putAll(cmi.getWidgetInfo());
+			}
+		}
+		widgetInfos.putAll(uai.getMainMapWidgetInfos());
 		return widgetInfos;
 	}
 
@@ -69,10 +90,29 @@ public final class GeodeskDtoUtil {
 			widgetInfos.putAll(getOverviewMapClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
 		}
 		if (geodesk instanceof BlueprintDto) {
-			//Add from userapplication
-			widgetInfos.putAll(((BlueprintDto) geodesk).getUserApplicationInfo().getOverviewMapWidgetInfos());
+			widgetInfos.putAll(getOverviewMapClientWidgetInfo(geodesk.getUserApplicationInfo()));
 		}
 		widgetInfos.putAll(geodesk.getOverviewMapClientWidgetInfos());
+		return widgetInfos;
+	}
+
+	/**
+	 * Retrieve the list of ClientWidgetInfo's from a userapplications overview map. This consists of the widget infos
+	 * defined in the UserApplication itself, and those defined in the {@link UserApplicationInfo#getApplicationInfo()}.
+	 * 
+	 * @param uai
+	 *            the user application info
+	 * @return List of ClientWidgetInfo as defined in the user application
+	 */
+	public static Map<String, ClientWidgetInfo> getOverviewMapClientWidgetInfo(UserApplicationInfo uai) {
+		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
+
+		for (ClientMapInfo cmi : uai.getApplicationInfo().getMaps()) {
+			if (GdmLayout.MAPOVERVIEW_ID.equals(cmi.getId())) {
+				widgetInfos.putAll(cmi.getWidgetInfo());
+			}
+		}
+		widgetInfos.putAll(uai.getMainMapWidgetInfos());
 		return widgetInfos;
 	}
 
@@ -90,10 +130,25 @@ public final class GeodeskDtoUtil {
 			widgetInfos.putAll(getApplicationClientWidgetInfo(((GeodeskDto) geodesk).getBlueprint()));
 		}
 		if (geodesk instanceof BlueprintDto) {
-			//Add from userapplication
-			widgetInfos.putAll(((BlueprintDto) geodesk).getUserApplicationInfo().getApplicationWidgetInfos());
+			widgetInfos.putAll(getApplicationClientWidgetInfo(geodesk.getUserApplicationInfo()));
 		}
 		widgetInfos.putAll(geodesk.getApplicationClientWidgetInfos());
+		return widgetInfos;
+	}
+
+	/**
+	 * Retrieve the list of ClientWidgetInfo's from a userapplications application info. This consists of the widget infos
+	 * defined in the UserApplication itself, and those defined in the {@link UserApplicationInfo#getApplicationInfo()}.
+	 * 
+	 * @param uai
+	 *            the user application info
+	 * @return List of ClientWidgetInfo as defined in the user application
+	 */
+	public static Map<String, ClientWidgetInfo> getApplicationClientWidgetInfo(UserApplicationInfo uai) {
+		Map<String, ClientWidgetInfo> widgetInfos = new HashMap<String, ClientWidgetInfo>();
+
+		widgetInfos.putAll(uai.getApplicationInfo().getWidgetInfo());
+		widgetInfos.putAll(uai.getMainMapWidgetInfos());
 		return widgetInfos;
 	}
 
@@ -107,18 +162,19 @@ public final class GeodeskDtoUtil {
 	public static ClientMapInfo getMainMap(BaseGeodeskDto geodesk) {
 		return UserApplicationDtoUtil.getMainMap(geodesk.getUserApplicationInfo());
 	}
-	
+
 	/**
-	 * Retrieve the main map layers from the geodesk.
-	 * If it's a geodesk without layers, the layers from the blueprint are retrieved.
+	 * Retrieve the main map layers from the geodesk. If it's a geodesk without layers, the layers from the blueprint
+	 * are retrieved.
 	 * 
-	 * @param geodesk the geodesk
+	 * @param geodesk
+	 *            the geodesk
 	 * @return a list of layers
 	 */
 	public static List<LayerDto> getMainMapLayers(BaseGeodeskDto geodesk) {
-		if (geodesk  instanceof GeodeskDto) {
+		if (geodesk instanceof GeodeskDto) {
 			if (geodesk.getMainMapLayers() == null || geodesk.getMainMapLayers().isEmpty()) {
-				return getMainMapLayers(((GeodeskDto) geodesk).getBlueprint()); 
+				return getMainMapLayers(((GeodeskDto) geodesk).getBlueprint());
 			}
 		}
 		return geodesk.getMainMapLayers();
