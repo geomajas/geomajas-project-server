@@ -19,7 +19,10 @@ import org.geomajas.plugin.wmsclient.client.controller.WmsGetFeatureInfoControll
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.WmsTileConfiguration;
+import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsRequest;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.Showcase;
@@ -100,7 +103,7 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 		// Add a WMS layer when the map has been initialized:
 		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
-			public void onMapInitialized(MapInitializationEvent event) {				
+			public void onMapInitialized(MapInitializationEvent event) {
 				mapPresenter.getViewPort().applyBounds(new Bbox(-140, 18, 80, 40));
 
 				// Create WMS layer configuration:
@@ -125,6 +128,25 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 				mapPresenter.addMapListener(controller); // Add as listener as it should not interfere with navigation.
 			}
 		});
+
+		// Get the WmsService singleton:
+		WmsService wmsService = Showcase.GEOMAJASINJECTOR.getWmsService();
+
+		// Apply a URL transformer on the WMS Service to make sure it uses a proxy servlet for GetCapabilities and
+		// GetFeatureInfo requests:
+		wmsService.setWmsUrlTransformer(new WmsUrlTransformer() {
+
+			public String transform(WmsRequest request, String url) {
+				switch (request) {
+					case GetCapabilities:
+					case GetFeatureInfo:
+						return "proxy?url=" + url;
+					default:
+				}
+				return url;
+			}
+		});
+
 		return widget;
 	}
 

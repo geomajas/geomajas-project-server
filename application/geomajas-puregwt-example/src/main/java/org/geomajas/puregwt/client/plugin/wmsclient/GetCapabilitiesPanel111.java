@@ -20,6 +20,8 @@ import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsRequest;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.Showcase;
@@ -32,7 +34,6 @@ import org.geomajas.puregwt.widget.client.map.ResizableMapLayout;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -120,9 +121,24 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 		mapPresenter.addMapGadget(new LegendDropDownGadget());
 		mapPanel.setWidget(mapDecorator);
 
-		// Get a WmsService instance for our map:
+		// Get the WmsService singleton:
 		wmsService = Showcase.GEOMAJASINJECTOR.getWmsService();
-		
+
+		// Apply a URL transformer on the WMS Service to make sure it uses a proxy servlet for GetCapabilities and
+		// GetFeatureInfo requests:
+		wmsService.setWmsUrlTransformer(new WmsUrlTransformer() {
+
+			public String transform(WmsRequest request, String url) {
+				switch (request) {
+					case GetCapabilities:
+					case GetFeatureInfo:
+						return "proxy?url=" + url;
+					default:
+				}
+				return url;
+			}
+		});
+
 		// Parse GetCapabilities on startup:
 		onSearchButtonClicked(null);
 
@@ -137,7 +153,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 	 */
 	@UiHandler("searchButton")
 	protected void onSearchButtonClicked(ClickEvent event) {
-		String url = "proxy?url=" + URL.encode(urlBox.getText());
+		String url = urlBox.getText();
 		wmsService.getCapabilities(url, WmsVersion.v1_1_1, new Callback<WmsGetCapabilitiesInfo, String>() {
 
 			public void onFailure(String reason) {
