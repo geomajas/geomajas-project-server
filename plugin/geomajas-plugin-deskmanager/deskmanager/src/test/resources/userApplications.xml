@@ -19,6 +19,27 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				static-field="org.geomajas.plugin.deskmanager.test.service.DeskmanagerExampleDatabaseProvisioningService.CLIENTAPPLICATION_ID" />
 		</property>
 		<property name="applicationInfo" ref="defaultLoketClientInfo" />
+		<property name="mainMapWidgetInfos">
+			<list>
+				<bean class="org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo" >
+					<property name="key">UAmainMapWidgetInfo</property>
+				</bean>
+			</list>
+		</property>
+		<property name="applicationWidgetInfos">
+			<list>
+				<bean class="org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo" >
+					<property name="key">UAapplicationWidgetInfo</property>
+				</bean>
+			</list>
+		</property>
+		<property name="overviewMapWidgetInfos">
+			<list>
+				<bean class="org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo" >
+					<property name="key">UAoverviewMapWidgetInfo</property>
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 
