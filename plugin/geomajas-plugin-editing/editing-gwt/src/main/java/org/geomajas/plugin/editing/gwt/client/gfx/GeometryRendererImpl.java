@@ -261,6 +261,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 						List<GeometryIndex> neighbors = null;
 						switch (editingService.getIndexService().getType(index)) {
 							case TYPE_VERTEX:
+								// Move current vertex to the back. This helps the delete operation.
+								indicesToUpdate.put(index, true);
 								neighbors = editingService.getIndexService().getAdjacentEdges(event.getGeometry(),
 										index);
 								if (neighbors != null) {
@@ -271,13 +273,12 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 									}
 								}
 
-								// Bring neighboring vertices to the front. This helps the delete operation.
 								neighbors = editingService.getIndexService().getAdjacentVertices(event.getGeometry(),
 										index);
 								if (neighbors != null) {
 									for (GeometryIndex neighborIndex : neighbors) {
 										if (!indicesToUpdate.containsKey(neighborIndex)) {
-											indicesToUpdate.put(neighborIndex, true);
+											indicesToUpdate.put(neighborIndex, false);
 										}
 									}
 								}
@@ -498,7 +499,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 	}
 
-	private void updateVertex(Geometry geometry, GeometryIndex index, boolean bringToFront)
+	private void updateVertex(Geometry geometry, GeometryIndex index, boolean moveToBack)
 			throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
@@ -510,8 +511,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				VERTEX_SIZE, VERTEX_SIZE);
 
 		mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
-		if (bringToFront) {
-			mapWidget.getVectorContext().bringToFront(parentGroup, identifier);
+		if (moveToBack) {
+			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
 		}
 	}
 

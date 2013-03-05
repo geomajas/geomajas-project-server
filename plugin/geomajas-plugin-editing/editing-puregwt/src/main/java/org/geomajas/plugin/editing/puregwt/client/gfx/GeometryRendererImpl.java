@@ -310,6 +310,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 						List<GeometryIndex> neighbors = null;
 						switch (editService.getIndexService().getType(index)) {
 							case TYPE_VERTEX:
+								// Move current vertex to the back. This helps the delete operation.
+								indicesToUpdate.put(index, true);
 								neighbors = editService.getIndexService().getAdjacentEdges(event.getGeometry(), index);
 								if (neighbors != null) {
 									for (GeometryIndex neighborIndex : neighbors) {
@@ -319,13 +321,12 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 									}
 								}
 
-								// Bring neighboring vertices to the front. This helps the delete operation.
 								neighbors = editService.getIndexService().getAdjacentVertices(event.getGeometry(),
 										index);
 								if (neighbors != null) {
 									for (GeometryIndex neighborIndex : neighbors) {
 										if (!indicesToUpdate.containsKey(neighborIndex)) {
-											indicesToUpdate.put(neighborIndex, true);
+											indicesToUpdate.put(neighborIndex, false);
 										}
 									}
 								}
@@ -419,7 +420,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// Private methods for updating:
 	// ------------------------------------------------------------------------
 
-	private void update(GeometryIndex index, boolean bringToFront) {
+	private void update(GeometryIndex index, boolean moveToBack) {
 		try {
 			Shape shape = null;
 			if (index == null) {
@@ -435,9 +436,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				// Now update the location:
 				shapeFactory.update(shape, editService, index);
 
-				// Bring to the front if requested:
-				if (bringToFront) {
-					container.bringToFront(shape);
+				// Move to the front if requested:
+				if (moveToBack) {
+					container.moveToBack(shape);
 				}
 			}
 		} catch (GeometryIndexNotFoundException e) {

@@ -22,4 +22,6 @@
     <entry-point class="org.geomajas.plugin.editing.puregwt.example.client.Showcase"/>
 
 	<source path='client'/>
+
+	
 </module>

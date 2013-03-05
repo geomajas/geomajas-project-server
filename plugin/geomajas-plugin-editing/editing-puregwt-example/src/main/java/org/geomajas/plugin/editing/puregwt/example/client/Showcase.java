@@ -25,23 +25,18 @@ import org.geomajas.plugin.editing.puregwt.example.client.button.UndoButton;
 import org.geomajas.puregwt.client.event.MapResizedEvent;
 import org.geomajas.puregwt.client.event.MapResizedHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -65,7 +60,7 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 	private GeometryEditService editService;
 
 	private GeometryToShapeConverter geometryToShapeConverter;
-
+	
 	public void onModuleLoad() {
 		mapPresenter = INJECTOR.getMapPresenter();
 		GeometryEditor editor = INJECTOR.getGeometryEditorFactory().create(mapPresenter);
@@ -80,38 +75,8 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 		layout.addNorth(buttonPanel, 40);
 
 		// Center: map
-		final ResizeLayoutPanel mapLayout = new ResizeLayoutPanel();
-		mapLayout.setSize("100%", "100%");
-		mapLayout.add(mapPresenter.asWidget());
-
-		// Add an automatic resize handler to set the correct size when the window resizes:
-		Window.addResizeHandler(new ResizeHandler() {
-
-			public void onResize(ResizeEvent event) {
-				mapPresenter.setSize(mapLayout.getOffsetWidth(), mapLayout.getOffsetHeight());
-			}
-		});
-
-		// Calculate the correct size on load:
-		mapLayout.addAttachHandler(new AttachEvent.Handler() {
-
-			public void onAttachOrDetach(AttachEvent event) {
-				Timer timer = new Timer() {
-
-					@Override
-					public void run() {
-						int width = mapLayout.getOffsetWidth();
-						int height = mapLayout.getOffsetHeight();
-						if (width > 100 && height > 100) {
-							mapPresenter.setSize(width, height);
-						} else {
-							schedule(50);
-						}
-					}
-				};
-				timer.run();
-			}
-		});
+		final MapLayoutPanel mapLayout = new MapLayoutPanel();
+		mapLayout.setPresenter(mapPresenter);
 		layout.add(mapLayout);
 
 		// Add buttons to the button panel:
@@ -133,9 +98,9 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 		buttonPanel.add(bufferDistance);
 		buttonPanel.add(new BufferAllButton(geometryToShapeConverter, bufferDistance));
 
+		RootLayoutPanel.get().add(layout);
 		// Initialize the map:
 		mapPresenter.initialize("showcase", "mapOsm");
-		RootPanel.get().add(layout);
 	}
 
 	private Widget getBtnFreePoint() {

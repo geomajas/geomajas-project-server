@@ -34,6 +34,12 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-client</artifactId>
+		</dependency>
+		
 
 		<!-- Geomajas dependencies -->
 		<dependency>
