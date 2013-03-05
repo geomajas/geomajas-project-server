@@ -364,9 +364,9 @@ public class DomHelper {
 		if (element == null) {
 			throw new IllegalArgumentException("bringToFront failed: could not find element within group.");
 		}
-
-		parentElement.removeChild(element);
-		parentElement.appendChild(element);
+		if (parentElement.getLastChild() != element) {
+			parentElement.appendChild(element);
+		}
 	}
 
 	/**
@@ -612,10 +612,6 @@ public class DomHelper {
 	 */
 	protected void doSetController(Element element, GraphicsController controller, int eventMask) {
 		if (element != null) {
-			// int offsetX = element.getAbsoluteLeft() - rootElement.getParentElement().getAbsoluteLeft();
-			// int offsetY = element.getAbsoluteTop() - rootElement.getParentElement().getAbsoluteTop();
-			// controller.setOffsetX(offsetX);
-			// controller.setOffsetY(offsetY);
 			Dom.setEventListener(element, new EventListenerHelper(element, controller, eventMask));
 			Dom.sinkEvents(element, eventMask);
 		}
@@ -718,8 +714,8 @@ public class DomHelper {
 				case Event.ONMOUSEOUT:
 					// Only fire the mouse out event if it's leaving this
 					// widget.
-					com.google.gwt.dom.client.Element related = event.getRelatedTarget();
-					if (related != null && e.isOrHasChild(related)) {
+					Element related = event.getRelatedEventTarget().cast();
+					if (related != null && Dom.isOrHasChild(e, related)) {
 						return;
 					}
 					break;

@@ -28,8 +28,6 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -773,18 +771,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 
 	/** {@inheritDoc} */
 	public void bringToFront(final Object object, final String name) {
-		// IE has the annoying habit of not capturing events during move of elements !
-		if (Dom.isIE()) {
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-				@Override
-				public void execute() {
-					helper.bringToFront(object, name);
-				}
-			});
-		} else {
-			helper.bringToFront(object, name);
-		}
+		helper.bringToFront(object, name);
 	}
 
 	/** {@inheritDoc} */
