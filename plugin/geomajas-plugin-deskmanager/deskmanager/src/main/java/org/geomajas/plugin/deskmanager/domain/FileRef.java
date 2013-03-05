@@ -32,7 +32,7 @@ import org.hibernate.annotations.Type;
  */
 @Api(allMethods = true)
 @Entity
-@Table(name = "files")
+@Table(name = "gdm_file")
 public class FileRef implements org.geomajas.plugin.deskmanager.service.common.FileRef {
 
 	private static final long serialVersionUID = 1L;

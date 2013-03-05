@@ -45,7 +45,7 @@ import org.hibernate.annotations.Type;
  */
 @Api (allMethods = true)
 @Entity
-@Table(name = "config_layermodels")
+@Table(name = "gdm_layermodel")
 public class LayerModel implements Serializable, Comparable<LayerModel> {
 
 	private static final long serialVersionUID = 1L;
@@ -70,7 +70,7 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Index(name = "config_layermodels_clientlayer_idx")
+	@Index(name = "gdm_layermodel_clientlayer_idx")
 	@Column(name = "clientlayerid", nullable = false)
 	private String clientLayerId; // referenced Bean name
 
@@ -110,7 +110,7 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
-	@JoinTable(name = "config_layermodel_clientwidgetinfo")
+	@JoinTable(name = "gdm_layermodel_clientwidgetinfo")
 	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 	
 	// -------------------------------------------------

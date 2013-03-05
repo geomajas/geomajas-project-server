@@ -40,7 +40,7 @@ import org.hibernate.annotations.Type;
  */
 @Api (allMethods = true)
 @Entity
-@Table(name = "config_clientlayers")
+@Table(name = "gdm_clientlayer")
 public class ClientLayer {
 
 	@Id
@@ -59,7 +59,7 @@ public class ClientLayer {
 	@MapKeyClass(String.class)
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
-	@JoinTable(name = "config_clientlayer_clientwidgetinfos")
+	@JoinTable(name = "gdm_clientlayer_clientwidgetinfo")
 	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 	
 	/**

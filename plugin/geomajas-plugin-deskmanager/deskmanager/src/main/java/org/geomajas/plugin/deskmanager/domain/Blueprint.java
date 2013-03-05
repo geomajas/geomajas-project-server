@@ -47,7 +47,7 @@ import org.hibernate.annotations.Type;
  */
 @Api (allMethods = true)
 @Entity
-@Table(name = "config_blueprints")
+@Table(name = "gdm_blueprint")
 public class Blueprint implements BaseGeodesk {
 
 	private static final long serialVersionUID = 1L;
@@ -93,19 +93,19 @@ public class Blueprint implements BaseGeodesk {
 
 	@OneToMany(cascade = CascadeType.ALL/*, orphanRemoval = true*/)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "config_blueprint_mainlayer")
+	@JoinTable(name = "gdm_blueprint_mainlayer")
 	private List<ClientLayer> mainMapLayers = new ArrayList<ClientLayer>();
 
 	@OneToMany(cascade = CascadeType.ALL/*, orphanRemoval = true*/)
 	@OrderColumn(name = "sortorder")
-	@JoinTable(name = "config_blueprint_overviewlayer")
+	@JoinTable(name = "gdm_blueprint_overviewlayer")
 	private List<ClientLayer> overviewMapLayers = new ArrayList<ClientLayer>();
 
 	/**
 	 * The groups that can use this blueprint to create loketten
 	 */
 	@ManyToMany(targetEntity = Territory.class)
-	@JoinTable(name = "config_blueprint_territory", 
+	@JoinTable(name = "gdm_blueprint_territory", 
 		joinColumns = @JoinColumn(name = "blueprint_id"), inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	@OrderBy("name desc")
 	private List<Territory> groups = new ArrayList<Territory>();
@@ -114,21 +114,21 @@ public class Blueprint implements BaseGeodesk {
 	@MapKeyClass(String.class)
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
-	@JoinTable(name = "config_blueprint_applicationclientwidgetinfos")
+	@JoinTable(name = "gdm_blueprint_applicationclientwidgetinfo")
 	private Map<String, ClientWidgetInfo> applicationClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
-	@JoinTable(name = "config_blueprint_overviewmapclientwidgetinfos")
+	@JoinTable(name = "gdm_blueprint_overviewmapclientwidgetinfo")
 	private Map<String, ClientWidgetInfo> overviewMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	@ElementCollection()
 	@MapKeyClass(String.class)
 	@MapKey(type = @Type(type = "org.hibernate.type.StringType"))
 	@Type(type = "org.geomajas.plugin.deskmanager.domain.types.XmlSerialisationType")
-	@JoinTable(name = "config_blueprint_mainmapclientwidgetinfos")
+	@JoinTable(name = "gdm_blueprint_mainmapclientwidgetinfo")
 	private Map<String, ClientWidgetInfo> mainMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 	
 	// ------------------------------------------------------------------

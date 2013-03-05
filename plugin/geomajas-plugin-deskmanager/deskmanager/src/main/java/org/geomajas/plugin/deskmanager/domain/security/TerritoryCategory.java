@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * @author Kristof Heirwegh
  */
 @Entity
-@Table(name = "security_categories")
+@Table(name = "gdm_territory_category")
 public class TerritoryCategory implements Serializable {
 
 	private static final long serialVersionUID = 1L;
