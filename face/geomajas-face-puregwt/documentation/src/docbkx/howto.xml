@@ -9,12 +9,43 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-
 <chapter id="chapter-howto">
   <title>How-to</title>
 
   <para></para>
+
+  <section>
+    <title>Adding a map to a classic GWT layout</title>
+
+    <para>The MapPresenter class not only acts as the Presenter in the MVP
+    (Model-View-Presenter) model but also gives access to the View by
+    implementing the IsWidget interface. As a widget, it can be added to any
+    of the GWT layout classes with some precautions, however:<itemizedlist>
+        <listitem>
+          <para>The parent widget should implement ProvidesResize</para>
+        </listitem>
+
+        <listitem>
+          <para>The size of the map has to be set explicitly</para>
+        </listitem>
+      </itemizedlist><programlisting>ResizeLayoutPanel panel = new ResizeLayoutPanel();
+mapPresenter.setSize(100,100);
+panel.setWidget(mapPresenter);</programlisting>If the panel is resizable, a
+    custom resize handler should be registered to set the size whenever a
+    resizing event occurs.</para>
+  </section>
+
+  <section>
+    <title>Adding a map to a GWT 2.0 layout</title>
+
+    <para>A special MapLayout class is provided for adding a map to a GWT 2.0
+    layout class (class that have Layout in their name and follow a sizing
+    hierarchy). No special resize handling is needed for this case:</para>
+
+    <programlisting>MapLayoutPanel mapLayout = new MapLayoutPanel();
+mapLayout.setPresenter(mapPresenter);
+RootLayoutPanel.get().add(layout); // fills the complete browser view</programlisting>
+  </section>
 </chapter>
