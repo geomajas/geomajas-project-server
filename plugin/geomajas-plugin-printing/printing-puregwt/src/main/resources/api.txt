@@ -1,0 +1,23 @@
+// geomajas-printing-puregwt plug-in, puregwt module API, 1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout::1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String iconWaitBlank:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String iconWaitMoving:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String printPreferencesHeight:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String printPreferencesResolutionHeight:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String printPreferencesResolutionWidth:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String printPreferencesWidth:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String templateDefaultBackgroundColor:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String templateDefaultBorderColor:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String templateDefaultColor:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String templateDefaultFontFamily:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static String templateDefaultFontStyle:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static boolean templateIncludeLegend:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static boolean templateIncludeNorthArrow:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static boolean templateIncludeScaleBar:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static double templateDefaultFontSize:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static double templateMarginX:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static double templateMarginY:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static double templateNorthArrowWidth:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static int iconWaitHeight:1.0.0
+org.geomajas.plugin.printing.client.util.PrintingLayout:static int iconWaitWidth:1.0.0
+
