@@ -281,7 +281,7 @@ public class SaveLayerModelCommandTest {
 		CommandResponse response = dispatcher.execute(SaveLayerModelRequest.COMMAND, request, guestToken, "en");
 		
 		Assert.assertFalse(response.getExceptions().isEmpty());
-		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
+		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}
 
 }

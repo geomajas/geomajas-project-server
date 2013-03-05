@@ -86,6 +86,6 @@ public class InitializeGeodeskCommandTest {
 				InitializeGeodeskResponse.COMMAND, request, guestToken, "en");
 
 		Assert.assertFalse(response.getErrorMessages().isEmpty());
-		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
+		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}
 }

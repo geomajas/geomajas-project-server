@@ -108,7 +108,7 @@ public class CheckLayerModelInUseCommandTest {
 		CommandResponse response = dispatcher.execute(CheckLayerModelInUseRequest.COMMAND, request, guestToken, "en");
 
 		Assert.assertFalse(response.getErrors().isEmpty());
-		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
+		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}
 
 }

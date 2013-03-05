@@ -97,6 +97,6 @@ public class DeleteLayerModelCommandTest {
 				guestToken, "en");
 
 		Assert.assertFalse(response.getExceptions().isEmpty());
-		Assert.assertEquals(response.getExceptions().get(0).getClassName(), GeomajasSecurityException.class.getName());
+		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}
 }
