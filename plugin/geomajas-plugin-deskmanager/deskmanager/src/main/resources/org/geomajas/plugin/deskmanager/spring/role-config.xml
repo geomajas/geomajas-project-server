@@ -33,7 +33,7 @@
 		class="org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo">
 		<property name="commandsInclude">
 			<list>
-				<value>command.security.*</value>
+				<value>command.deskmanager.security.*</value>
 				<value>command.general.Log</value>
 			</list>
 		</property>
@@ -75,8 +75,8 @@
 		</property>
 		<property name="commandsExclude">
 			<list>
-				<value>command.common.SearchFeatureToCsv</value>
-				<value>command.manager.*</value>
+				<value>command.deskmanager.common.SearchFeatureToCsv</value>
+				<value>command.deskmanager.manager.*</value>
 			</list>
 		</property>
 		<property name="toolsInclude">
@@ -113,7 +113,7 @@
 		</property>
 		<property name="commandsExclude">
 			<list>
-				<value>command.manager.*</value>
+				<value>command.deskmanager.manager.*</value>
 			</list>
 		</property>
 		<property name="toolsInclude">
