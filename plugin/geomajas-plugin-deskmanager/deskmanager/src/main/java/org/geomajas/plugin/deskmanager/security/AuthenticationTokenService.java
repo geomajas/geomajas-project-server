@@ -78,7 +78,7 @@ public class AuthenticationTokenService {
 	}
 
 	public String getToken() {
-		return "ss." + UUID.randomUUID().toString();
+		return "gdm." + UUID.randomUUID().toString();
 	}
 
 }
