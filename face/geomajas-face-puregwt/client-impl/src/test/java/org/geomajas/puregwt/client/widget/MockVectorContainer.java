@@ -80,4 +80,9 @@ public class MockVectorContainer implements VectorContainer {
 	public boolean isFixedSize() {
 		return false;
 	}
+
+	@Override
+	public VectorObject moveToBack(VectorObject vo) {
+		return vo;
+	}
 }
