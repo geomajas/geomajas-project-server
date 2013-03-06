@@ -18,14 +18,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-widget-advancedviews-all</artifactId>
-	<version>1.0.0-M2</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>geomajas-widget-advancedviews plug-in parent</name>
 	<description>geomajas-widget-advancedviews plug-in grouping module</description>
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-advancedviews-all-1.0.0-M2</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-advancedviews-all-1.0.0-M2</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-advancedviews-all-1.0.0-M2</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-widget-advancedviews</url>
 	</scm>
 
 	<developers>
