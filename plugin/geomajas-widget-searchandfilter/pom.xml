@@ -59,6 +59,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-layer-wms-all</artifactId>
+                <version>${geomajas-layer-wms-version}</version>
+            </dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-searchandfilter</artifactId>
@@ -118,6 +123,7 @@
 
 	<properties>
 		<geomajas-widget-featureinfo-version>1.0.0-M2</geomajas-widget-featureinfo-version>
+        <geomajas-layer-wms-version>1.10.0</geomajas-layer-wms-version>
 		<geomajas-widget-searchandfilter-backend-version>1.11.1</geomajas-widget-searchandfilter-backend-version>
 		<geomajas-widget-searchandfilter-gwt-face-version>1.12.0</geomajas-widget-searchandfilter-gwt-face-version>
 		<geomajas-widget-searchandfilter-gwt-version>2.5.0</geomajas-widget-searchandfilter-gwt-version>
