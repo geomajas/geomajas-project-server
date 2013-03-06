@@ -12,7 +12,6 @@ package org.geomajas.widget.advancedviews.editor.client;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.BaseGeodeskWidgetEditor;
-import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditor;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.GeodeskDtoUtil;
 import org.geomajas.plugin.deskmanager.domain.dto.BaseGeodeskDto;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
@@ -21,18 +20,18 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-
 /**
  * Editor for the theme configuration. Actualy a wrapper around {@link ThemeConfigPanel}.
  * 
  * @author Oliver May
- *
+ * 
  */
 public class ThemeConfigurationEditor implements BaseGeodeskWidgetEditor {
 
 	private ThemeConfigurationPanel panel;
+
 	private VLayout layout;
-	
+
 	public ThemeConfigurationEditor() {
 		panel = new ThemeConfigurationPanel();
 
@@ -40,7 +39,7 @@ public class ThemeConfigurationEditor implements BaseGeodeskWidgetEditor {
 		layout.addMember(panel);
 		layout.setOverflow(Overflow.AUTO);
 	}
-	
+
 	@Override
 	public Canvas getCanvas() {
 		return layout;
@@ -67,8 +66,8 @@ public class ThemeConfigurationEditor implements BaseGeodeskWidgetEditor {
 		panel.setDisabled(disabled);
 	}
 
-    @Override
-    public void setBaseGeodesk(BaseGeodeskDto geodesk) {
-        panel.setMainMap(GeodeskDtoUtil.getMainMap(geodesk));
-    }
+	@Override
+	public void setBaseGeodesk(BaseGeodeskDto geodesk) {
+		panel.setMainMap(GeodeskDtoUtil.getMainMap(geodesk));
+	}
 }
