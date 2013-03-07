@@ -25,6 +25,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 	<!-- apply profiling to our service bean using AOP -->
 
+	<!-- @extract-start UseAopForProfiling, Using AOP to profile services.-->
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="beanNames" value="service*"/>
 		<property name="interceptorNames">
@@ -38,17 +39,21 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="group" value="test" />
 		<property name="profilingContainer" ref="profilingTest" />
 	</bean>
+	<!-- @extract-end -->
 
 
 	<!-- JMX profiling bean definition -->
 
+	<!-- @extract-start DefineProfilingContainer, Define a profiling container.-->
 	<bean name="profilingTest" class="org.geomajas.project.profiling.service.ProfilingContainer">
 		<property name="ringSize" value="128" />
 	</bean>
+	<!-- @extract-end -->
 
 
 	<!-- MBean server definition -->
 
+	<!-- @extract-start SetupMBeanServer, Setup an MBean server to access profiling data.-->
 	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
 		<property name="locateExistingServerIfPossible" value="true"/>
 	</bean>
@@ -65,6 +70,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 			</bean>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 </beans>
 

@@ -16,21 +16,116 @@
 
   <para></para>
 
-	<section id="dependencies">
-	  <title>Dependencies</title>
+  <section id="dependencies">
+    <title>Dependencies</title>
 
-	  <para>Make sure your include the plug-in in your project. If you are using
-	  Maven, add the following dependency to your pom:</para>
+    <para>Make sure your include the plug-in in your project. If you are using
+    Maven, add the following dependency to your pom:</para>
 
-	  <example>
-		<title>Plug-in dependency</title>
+    <example>
+      <title>Plug-in dependency</title>
 
-		<programlisting language="xml">&lt;dependency&gt;
-	  &lt;groupId&gt;org.geomajas.project&lt;/groupId&gt;
-	  &lt;artifactId&gt;geomajas-project-profiling&lt;/artifactId&gt;
-	  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
-  &lt;/dependency&gt;</programlisting>
-	  </example>
-	</section>
+      <programlisting language="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.project&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-project-profiling&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+  </section>
 
+  <section>
+    <title>Base profiling</title>
+
+    <para>For starters, you need to define a profiling container. This is done
+    in your Spring configuration file. A container allows your t read, write
+    and reset counters. You can register data in groups and also get the total
+    for all groups in the container. It is normal to have more than one
+    profiling container in your application.</para>
+
+    <xi:include href="listing/DefineProfilingContainer.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>You can now autowire the profiling container in your code and
+    register execution time for specific invocations.</para>
+
+    <example>
+      <title>Register profiling data.</title>
+
+      <programlisting>@Autowired
+@Qualifier("restProfiling")
+private ProfilingContainer profilingContainer;
+
+
+long start = System.currentTimeMillis();
+// do domething
+profilingContainer.register("some.grouping", System.currentTimeMillis() - start);</programlisting>
+    </example>
+
+    <para>In this example a qualifier was used to be able to indicate which
+    profiling container needs to be used. If there is only one, this can be
+    omitted.</para>
+  </section>
+
+  <section>
+    <title>Using AOP to profile services</title>
+
+    <para>You can use AOP to register profiling information for the methods in
+    a bean. You can configure both the profiling container to use and the
+    group for the registration.</para>
+
+    <xi:include href="listing/UseAopForProfiling.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </section>
+
+  <section>
+    <title>Profiling JDBC access</title>
+
+    <para>There is also a profiling JDBC driver which registers profiling data
+    for most JDBC related calls (it attempts to not register calls which
+    should be instantaneous, however this can sometimes depend on the JDBC
+    driver, in which case the profiling will register too little).</para>
+
+    <para>When this driver is loaded using
+    <code>Class.forName("org.geomajas.project.profiling.jdbc.ProfilingDriver")</code>
+    then you can prefix your JDBC connection string with "profiling:" to
+    assure that the profiling driver is used.</para>
+
+    <para>You still have to connect the profiling driver to your profiling
+    container though. This is for example be done using a service like
+    this.</para>
+
+    <example>
+      <title>Service which configures the JDBC profiling. </title>
+
+      <programlisting>public class JdbcProfiling implements ProfilingListener, InitializingBean {
+
+    @Autowired
+    @Qualifier("jdbcMethodProfiling")
+    private ProfilingContainer jdbcMethodProfilingContainer;
+
+    /**
+     * Registreer de profiling listener.
+     */
+    public void afterPropertiesSet() {
+        ProfilingDriver.addListener(this);
+    }
+
+    @Override
+    public void register(String group, long durationMillis) {
+        jdbcMethodProfilingContainer.register(group, durationMillis);
+    }
+}
+</programlisting>
+    </example>
+  </section>
+
+  <section>
+    <title>Making your profiling data available through JMX</title>
+
+    <para>You can use AOP to indicate which method (or which beans) need to be
+    profiled. For</para>
+
+    <xi:include href="listing/SetupMBeanServer.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </section>
 </chapter>

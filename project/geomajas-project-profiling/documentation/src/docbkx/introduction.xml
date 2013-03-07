@@ -14,5 +14,16 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The profiling project provides a some hooks which allow you to log
+  time spent (and invocation count) in pieces of code. It is especially built
+  to be easy to integrate and have a limited impact on the actual execution
+  time (thanks to the LMAX Disruptor).</para>
+
+  <para>The profiling information can be split up into groups.</para>
+
+  <para>There is JMX support to allow getting the counter information and
+  resetting through JMX (for example using JConsole).</para>
+
+  <para>There is a profiling JDBC driver which can be used to profile JDBC
+  access.</para>
 </chapter>

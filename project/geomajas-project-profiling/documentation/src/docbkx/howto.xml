@@ -26,13 +26,13 @@
     profile bean invocations, you may need to add the profiling jar in the
     classpath when running JConsole.</para>
 
-    <para>This can be done by invoking JConsole using a command like
-    this</para>
+    <para>This can be done by invoking JConsole using a command like this (you
+    may need to fix the path to the jar):</para>
 
     <informalexample>
       <programlisting>jconsole -J-Djava.class.path=$JAVA_HOME/lib/jconsole.jar:\
 $JAVA_HOME/lib/tools.jar:\
-/home/joachim/apps/java/geomajas/project/geomajas-project-profiling/profiling/target/geomajas-project-profiling-1.0.0-SNAPSHOT.jar</programlisting>
+~/.m2/repository/org/geomajas/project/geomajas-project-profiling/1.0.0/geomajas-project-profiling-1.0.0.jar</programlisting>
     </informalexample>
   </section>
 </chapter>
