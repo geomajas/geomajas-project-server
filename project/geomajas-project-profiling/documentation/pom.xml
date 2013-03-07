@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-project-profiling-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>Geomajas profiling project documentation</name>
 	<description>Geomajas profiling project documentation</description>
@@ -28,4 +28,10 @@
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
 	
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-profiling-all-1.0.0/geomajas-project-profiling-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-profiling-all-1.0.0/geomajas-project-profiling-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-project-profiling-all-1.0.0/geomajas-project-profiling-documentation</url>
+  </scm>
 </project>
