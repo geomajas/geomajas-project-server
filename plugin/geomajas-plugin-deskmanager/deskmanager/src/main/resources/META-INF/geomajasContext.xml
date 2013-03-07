@@ -46,7 +46,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="Geomajas"/>
+					<property name="key" value="Url rewrite filter"/>
 					<property name="copyright" value="(c) 2005-2012, Paul Tuckey"/>
 					<property name="licenseName" value="BSD licence"/>
 					<property name="licenseUrl" value="https://code.google.com/p/urlrewritefilter/source/browse/trunk/LICENSE.txt"/>
