@@ -77,13 +77,13 @@ template_start
 
 # main guides
 
-include "org.geomajas.documentation" "docbook-gettingstarted" "1.13.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-gettingstarted" "1.12.0-SNAPSHOT" \
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
     "org.geomajas" "geomajas-command" "1.12.0"
 
-include "org.geomajas.documentation" "docbook-devuserguide" "1.13.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-devuserguide" "1.12.0-SNAPSHOT" \
     "User guide for developers" \
     "Reference guide detailing architecture, implementation and extension possibilities of the back-end core." \
     "incubating" "User_Guide_for_Developers.pdf" \
@@ -110,7 +110,7 @@ include "org.geomajas.documentation" "geomajas-project-sld-documentation" "1.2.0
     "incubating" "master.pdf" \
     "org.geomajas.project" "geomajas-project-sld-api" "1.1.0"
 
-include "org.geomajas.documentation" "geomajas-project-profiling-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-project-profiling-documentation" "1.1.0-SNAPSHOT" \
     "Generic profiling project." \
     "Generic utility profiling code for gathering number of invocations and total execution time, possible surfacing this as JMX bean. project" \
     "incubating" "master.pdf" \
@@ -159,17 +159,17 @@ include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.11.0-SN
     "graduated" "Geotools_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-geotools" "1.10.0"
 
-include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.9.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-google-documentation" "2.1.0-SNAPSHOT" \
     "Google layer" \
     "This is a layer which allows accessing Google images as raster layer." \
     "graduated" "Google_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-google" "1.8.0"
+    "org.geomajas.plugin" "geomajas-layer-google" "2.0.0"
 
-include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.10.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.12.0-SNAPSHOT" \
     "Hibernate layer" \
     "This is a layer which allows accessing data in a GIS database using Hibernate and Hibernate Spatial." \
     "graduated" "Hibernate_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.9.0"
+    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.11.0"
 
 include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10.0-SNAPSHOT" \
     "Openstreetmap layer" \
@@ -201,17 +201,17 @@ include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.
     "graduated" "staticsecurity.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.9.0"
 
-include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.3.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.4.0-SNAPSHOT" \
     "Printing plug-in" \
     "Geomajas extension for printing." \
     "graduated" "printing.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-printing" "2.2.0"
+    "org.geomajas.plugin" "geomajas-plugin-printing" "2.3.0"
 
 include "org.geomajas.plugin" "geomajas-plugin-profiling-documentation" "1.0.0-SNAPSHOT" \
     "Profiling plug-in" \
     "Geomajas extension for profiling using JMX." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-profiling" "1.0.0"
+    "org.geomajas.plugin" "geomajas-plugin-profiling" "1.0.0-SNAPSHOT"
 
 include "org.geomajas.plugin" "caching-documentation" "2.1.0-SNAPSHOT" \
     "Caching plug-in" \
@@ -225,35 +225,41 @@ include "org.geomajas.plugin" "geocoder-documentation" "1.4.0-SNAPSHOT" \
     "graduated" "geocoder.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.3.0"
 
-include "org.geomajas.plugin" "rasterizing-documentation" "1.1.0-SNAPSHOT" \
+include "org.geomajas.plugin" "rasterizing-documentation" "1.2.0-SNAPSHOT" \
     "Rasterizing plug-in" \
     "Allows tiles to be rasterized server-side." \
     "graduated" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-rasterizing" "1.0.0"
+    "org.geomajas.plugin" "geomajas-plugin-rasterizing" "1.1.0"
 
 include "org.geomajas.widget" "geomajas-widget-advancedviews-documentation" "1.0.0-SNAPSHOT" \
     "Advanced views widget plug-in" \
     "Advanced views widget plug-in." \
     "incubating" "master.pdf" \
-    "" "" ""
+    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-SNAPSHOT"
 
 include "org.geomajas.widget" "geomajas-widget-featureinfo-documentation" "1.0.0-SNAPSHOT" \
     "Feature info widget plug-in" \
     "Feature info widget plug-in." \
     "incubating" "master.pdf" \
-    "" "" ""
+    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-SNAPSHOT"
 
 include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1.0.0-SNAPSHOT" \
     "Search and filter widget plug-in" \
     "Search and filter widget plug-in." \
     "incubating" "master.pdf" \
-    "" "" ""
+    "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-SNAPSHOT"
+
+include "org.geomajas.plugin" "geomajas-plugin-deskmanager-documentation" "1.0.0-SNAPSHOT" \
+    "Search and filter widget plug-in" \
+    "Search and filter widget plug-in." \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-plugin-deskmanager" "1.0.0-SNAPSHOT"
 
 include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNAPSHOT" \
     "Utility widgets for GWT" \
     "Utility widgets for GWT" \
     "incubating" "master.pdf" \
-    "" "" ""
+    "org.geomajas.widget" "geomajas-widget-utility" "1.0.0-SNAPSHOT"
 
 include "org.geomajas.plugin" "geomajas-plugin-javascript-api-documentation" "1.0.0-SNAPSHOT" \
     "JavaScript API plug-in" \
@@ -276,12 +282,11 @@ include "org.geomajas.plugin" "geomajas-puregwt-widget-documentation" "1.0.0-SNA
 
 # contributors guide
 
-include "org.geomajas.documentation" "docbook-contributorguide" "1.11.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-contributorguide" "1.12.0-SNAPSHOT" \
     "Contributors guide" \
     "Information for contributors of the project." \
     "incubating" "Contributor_Guide.pdf" \
     "" "" ""
-
 
 template_end
 
