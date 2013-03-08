@@ -14,6 +14,7 @@ package org.geomajas.sld.editor.client.view;
 import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
+import com.smartgwt.client.widgets.events.CloseClickEvent;
 import org.geomajas.sld.editor.common.client.GeometryType;
 import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.common.client.presenter.CreateSldDialogPresenterWidget.MyView;
@@ -33,7 +34,6 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -172,7 +172,7 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 	public void setCloseHandler(final PopupViewCloseHandler popupViewCloseHandler) {
 		winModal.addCloseClickHandler(new CloseClickHandler() {
 
-			public void onCloseClick(CloseClientEvent event) {
+			public void onCloseClick(CloseClickEvent event) {
 				popupViewCloseHandler.onClose();
 				winModal.removeFromParent();
 			}

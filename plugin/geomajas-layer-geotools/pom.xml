@@ -166,7 +166,7 @@
 		<geotools-version>2.7.5</geotools-version>
 		<geotools-extras-version>2.7.5</geotools-extras-version>
 		<geodb-version>0.7</geodb-version>
-		<google-gwt-version>2.4.0</google-gwt-version>
+		<google-gwt-version>2.5.0</google-gwt-version>
 		<geotools-spring-version>3.0.5.RELEASE</geotools-spring-version>
 	</properties>
 

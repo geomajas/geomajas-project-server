@@ -99,7 +99,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>2.5.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
@@ -169,7 +169,7 @@
 			</dependencies>
 			<properties>
 				<gwt.compiler.skip>true</gwt.compiler.skip>
-				<gwt-version>2.4.0</gwt-version>
+				<gwt-version>2.5.0</gwt-version>
 			</properties>
 		</profile>
 		<profile>

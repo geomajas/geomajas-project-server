@@ -139,7 +139,7 @@
 	<properties>
 		<google-layer-backend-version>1.11.1</google-layer-backend-version>
 		<google-gwt-face-version>1.11.1</google-gwt-face-version>
-		<google-gwt-version>2.4.0</google-gwt-version>
+		<google-gwt-version>2.5.0</google-gwt-version>
 		<google-layer-osm-version>1.8.0</google-layer-osm-version>
 	</properties>
 	

@@ -143,8 +143,8 @@
 	<properties>
 		<vendorspecificpipeline-backend-version>1.11.1</vendorspecificpipeline-backend-version>
 		<vendorspecificpipeline-gwt-face-version>1.11.1</vendorspecificpipeline-gwt-face-version>
-		<vendorspecificpipeline-gwt-version>2.4.0</vendorspecificpipeline-gwt-version>
-		<google-gwt-version>2.4.0</google-gwt-version>
+		<vendorspecificpipeline-gwt-version>2.5.0</vendorspecificpipeline-gwt-version>
+		<google-gwt-version>2.5.0</google-gwt-version>
 		<geodb-version>0.7</geodb-version>
 	</properties>
 </project>

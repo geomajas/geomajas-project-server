@@ -117,7 +117,7 @@
 			<dependency>
 				<groupId>com.smartgwt</groupId>
 				<artifactId>smartgwt</artifactId>
-				<version>2.5</version>
+				<version>3.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.smartgwt</groupId>
@@ -350,7 +350,7 @@
 	<properties>
 		<sld-spring-version>3.0.5.RELEASE</sld-spring-version>
 		<sld-jibx-version>1.2.3</sld-jibx-version>
-		<sld-gwt-version>2.4.0</sld-gwt-version>
+		<sld-gwt-version>2.5.0</sld-gwt-version>
 		<sld-geotools-version>2.7.4-GBE-276</sld-geotools-version>
 		
 		<gwtp.version>0.7</gwtp.version>

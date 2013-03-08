@@ -236,6 +236,6 @@
 		<printing-gwt-face-version>1.13.0-SNAPSHOT</printing-gwt-face-version>
 		<printing-rasterizing-version>1.2.0-SNAPSHOT</printing-rasterizing-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
-		<google-gwt-version>2.4.0</google-gwt-version>
+		<google-gwt-version>2.5.0</google-gwt-version>
 	</properties>
 </project>

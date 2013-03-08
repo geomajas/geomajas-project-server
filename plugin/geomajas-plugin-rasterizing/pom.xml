@@ -144,6 +144,6 @@
 		<rasterizing-backend-version>1.11.1</rasterizing-backend-version>
 		<rasterizing-gwt-face-version>1.13.0-SNAPSHOT</rasterizing-gwt-face-version>
 		<rasterizing-caching-version>2.0.0</rasterizing-caching-version>
-		<rasterizing-gwt-version>2.4.0</rasterizing-gwt-version>
+		<rasterizing-gwt-version>2.5.0</rasterizing-gwt-version>
 	</properties>
 </project>

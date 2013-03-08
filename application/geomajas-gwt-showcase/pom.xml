@@ -621,7 +621,7 @@
 	</repositories>
 
 	<properties>
-		<gwt-version>2.4.0</gwt-version>
+		<gwt-version>2.5.0</gwt-version>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 

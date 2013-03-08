@@ -169,6 +169,6 @@
 		<wms-layer-caching-version>2.0.0</wms-layer-caching-version>
 		<wms-layer-common-version>1.0.0-SNAPSHOT</wms-layer-common-version>
 		<wms-gwt-face-version>1.10.0</wms-gwt-face-version>
-		<google-gwt-version>2.4.0</google-gwt-version>
+		<google-gwt-version>2.5.0</google-gwt-version>
 	</properties>
 </project>
