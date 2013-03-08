@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 #TARGETDIR="/home/joachim/tmp/"
 TARGETDIR="/srv/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
@@ -43,22 +43,33 @@ _gaq.push(\[\'_trackPageview\'\]); \
 include() {
 	echo "" >> $TARGET
 	FILE="docs.zip"
-	LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$1&a=$2&v=$3&e=jar"
+	LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=$1&a=$2&v=$3&e=jar"
+	if [[ "$3" == *"SNAPSHOT"* ]]; then
+		LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$1&a=$2&v=$3&e=jar"
+	fi
 	PWD=`pwd`
 	cd $TARGETDIR
-	wget --no-check-certificate $LOCATION -O docs.zip
-	mkdir $2
-	unzip -o docs.zip -d $2
-	#rm docs.zip
+	wget -q --no-check-certificate $LOCATION -O docs.zip
+	mkdir -p $2
+	unzip -q -o docs.zip -d $2
+	if [ $? -ne 0 ]; then
+		echo ERROR processing $LOCATION
+	fi	
+	rm docs.zip
 
 	if [ -n "$8" ]
 	then
 		JDLOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=$8&a=$9&v=${10}&e=jar&c=javadoc"
-		echo $JDLOCATION
-		wget --no-check-certificate $JDLOCATION -O javadocs.zip
-		mkdir $2/javadoc
-		unzip -o javadocs.zip -d $2/javadoc
-		#rm javadocs.zip
+		if [[ "${10}" == *"SNAPSHOT"* ]]; then
+			JDLOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$8&a=$9&v=${10}&e=jar&c=javadoc"
+		fi	
+		wget -q --no-check-certificate $JDLOCATION -O javadocs.zip
+		mkdir -p $2/javadoc
+		unzip -q -o javadocs.zip -d $2/javadoc
+		if [ $? -ne 0 ]; then
+			echo ERROR processing $JDLOCATION
+		fi	
+		rm javadocs.zip
 	fi
 
 	cd $PWD
@@ -92,7 +103,7 @@ include "org.geomajas.documentation" "docbook-devuserguide" "1.12.0-SNAPSHOT" \
 
 # projects
 
-include "org.geomajas.documentation" "geomajas-project-api-documentation" "1.1.0-SNAPSHOT" \
+include "org.geomajas.project" "geomajas-project-api-annotation" "1.1.0-SNAPSHOT" \
     "API annotations project" \
     "Set of annotations to allow detailed marking of the supported API." \
     "incubating" "master.pdf" \
@@ -130,7 +141,6 @@ include "org.geomajas.documentation" "geomajas-face-puregwt-documentation" "1.0.
     "PureGWT face" \
     "GWT face for building powerful AJAX web user interfaces without depending on a widget library. Ideal for mobile." \
     "incubating" "master.pdf" \
-    "" "" ""
     "org.geomajas" "geomajas-puregwt-client" "1.0.0-M1"
 
 include "org.geomajas.documentation" "common-gwt-documentation" "1.3.0-SNAPSHOT" \
@@ -139,11 +149,11 @@ include "org.geomajas.documentation" "common-gwt-documentation" "1.3.0-SNAPSHOT"
     "incubating" "master.pdf" \
     "org.geomajas" "geomajas-face-common-gwt" "1.2.0"
 
-include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
-    "dojo face" \
-    "dojo face for building a web user interface in JavaScript using dojo toolkit." \
-    "retired" "dojo_face.pdf" \
-    "org.geomajas" "geomajas-dojo-server" "1.5.7"
+#include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.7" \
+#    "dojo face" \
+#    "dojo face for building a web user interface in JavaScript using dojo toolkit." \
+#    "retired" "dojo_face.pdf" \
+#    "org.geomajas" "geomajas-dojo-server" "1.5.7"
 
 include "org.geomajas.documentation" "geomajas-face-rest-documentation" "1.1.0-SNAPSHOT" \
     "REST face" \
@@ -169,7 +179,7 @@ include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.12.0-S
     "Hibernate layer" \
     "This is a layer which allows accessing data in a GIS database using Hibernate and Hibernate Spatial." \
     "graduated" "Hibernate_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.11.0"
+    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.10.0"
 
 include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10.0-SNAPSHOT" \
     "Openstreetmap layer" \
@@ -235,37 +245,44 @@ include "org.geomajas.widget" "geomajas-widget-advancedviews-documentation" "1.0
     "Advanced views widget plug-in" \
     "Advanced views widget plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-SNAPSHOT"
+    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-M1"
 
 include "org.geomajas.widget" "geomajas-widget-featureinfo-documentation" "1.0.0-SNAPSHOT" \
     "Feature info widget plug-in" \
     "Feature info widget plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-SNAPSHOT"
+    "org.geomajas.widget" "geomajas-widget-featureinfo" "1.0.0-M1"
+
+include "org.geomajas.widget" "geomajas-widget-layer-documentation" "1.0.0-SNAPSHOT" \
+    "Layer widget plug-in" \
+    "Layer widget plug-in." \
+    "incubating" "master.pdf" \
+    "org.geomajas.widget" "geomajas-widget-layer" "1.0.0-M2"
 
 include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1.0.0-SNAPSHOT" \
     "Search and filter widget plug-in" \
     "Search and filter widget plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-SNAPSHOT"
+    "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-M3"
 
 include "org.geomajas.plugin" "geomajas-plugin-deskmanager-documentation" "1.0.0-SNAPSHOT" \
-    "Search and filter widget plug-in" \
-    "Search and filter widget plug-in." \
+    "Deskmanager plug-in" \
+    "Deskmanager plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-deskmanager" "1.0.0-SNAPSHOT"
+    "org.geomajas.plugin" "geomajas-plugin-deskmanager-framework" "1.0.0-M3"
 
 include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNAPSHOT" \
     "Utility widgets for GWT" \
     "Utility widgets for GWT" \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-utility" "1.0.0-SNAPSHOT"
+    "org.geomajas.widget" "geomajas-widget-utility" "1.0.0-M3"
 
 include "org.geomajas.plugin" "geomajas-plugin-javascript-api-documentation" "1.0.0-SNAPSHOT" \
     "JavaScript API plug-in" \
     "JavaScript API wrapper around the GWT faces for client side integration support." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-javascript-api" "1.0.0"
+    "" "" ""
+#    "org.geomajas.plugin" "geomajas-plugin-javascript-api" "1.0.0-SNAPSHOT"
 
 include "org.geomajas.plugin" "geomajas-plugin-editing-documentation" "1.0.0-SNAPSHOT" \
     "Editing plug-in" \
