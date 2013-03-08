@@ -19,24 +19,4 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<context:component-scan base-package="org.geomajas.plugin.wmsclient.server.command"
 		name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 
-    <!-- ================================================================== -->
-    <!-- ===                 REQUEST CONFIGURATION                      === -->
-    <!-- ================================================================== -->
-
-     <bean name="requestConfiguration" class="org.geomajas.plugin.wmsclient.server.proxy.RequestConfiguration">
-        <property name="copyHeaders" value="true" />
-        <property name="cacheIdentifiers" value="png,jpeg,jpg,gif" />
-    </bean>
-
-    <!-- ================================================================== -->
-    <!-- ===              PROXY CONNECTION CONFIGURATION                === -->
-    <!-- ================================================================== -->
-
-     <bean name="connectionConfiguration" class="org.geomajas.plugin.wmsclient.server.proxy.ConnectionConfiguration">
-        <property name="targetUrl" value="http://www.geomajas.org/" />
-        <property name="connectionTimeout" value="10000" />
-        <property name="maxConnectionsPerRoute" value="20" />
-        <property name="maxConnectionsTotal" value="200" />
-    </bean>
-
 </beans>
