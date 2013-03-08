@@ -75,7 +75,7 @@
     <!-- Register the proxy servlet -->
     <servlet>
         <servlet-name>Proxy</servlet-name>
-        <servlet-class>org.geomajas.plugin.wmsclient.server.proxy.ProxyController</servlet-class>
+        <servlet-class>org.geomajas.puregwt.server.proxy.ProxyController</servlet-class>
     </servlet>
 
     <servlet-mapping>
