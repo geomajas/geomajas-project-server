@@ -269,7 +269,13 @@ include "org.geomajas.plugin" "geomajas-plugin-deskmanager-documentation" "1.0.0
     "Deskmanager plug-in" \
     "Deskmanager plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-deskmanager-framework" "1.0.0-M3"
+    "org.geomajas.plugin" "geomajas-plugin-deskmanager" "1.0.0-M4"
+
+include "org.geomajas.plugin" "geomajas-plugin-deskmanager-documentation" "1.0.0-SNAPSHOT" \
+    "Deskmanager plug-in gwt" \
+    "Deskmanager plug-in gwt." \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-plugin-deskmanager-gwt" "1.0.0-M4"
 
 include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNAPSHOT" \
     "Utility widgets for GWT" \
