@@ -324,7 +324,7 @@ include "org.geomajas.plugin" "geomajas-plugin-vendorspecificpipeline" "1.1.0-SN
     "Vendor specific pipeline plugin" \
     "Vendor specific pipeline plugin." \
     "incubating" "master.pdf" \
-    "org.geomajas.project" "geomajas-project-sld" "1.0.0"
+    "org.geomajas.plugin" "geomajas-plugin-vendorspecificpipeline" "1.0.0"
 
 # contributors guide
 
