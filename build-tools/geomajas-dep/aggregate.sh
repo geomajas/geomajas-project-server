@@ -306,7 +306,7 @@ include "org.geomajas.project" "geomajas-project-sld-documentation" "1.2.0-SNAPS
     "SLD project" \
     "SLD project." \
     "incubating" "master.pdf" \
-    "org.geomajas.project" "geomajas-project-sld" "1.1.0"
+    "org.geomajas.project" "geomajas-project-sld-api" "1.1.0"
 
 include "org.geomajas.project" "geomajas-project-sld-editor-documentation" "1.0.0-SNAPSHOT" \
     "SLD editor project" \
@@ -318,7 +318,7 @@ include "org.geomajas.project" "geomajas-project-geometry-documentation" "1.2.0-
     "Geometry project" \
     "Geometry project." \
     "incubating" "master.pdf" \
-    "org.geomajas.project" "geomajas-project-geometry" "1.0.0"
+    "org.geomajas.project" "geomajas-project-geometry-core" "1.0.0"
 
 include "org.geomajas.plugin" "geomajas-plugin-vendorspecificpipeline" "1.1.0-SNAPSHOT" \
     "Vendor specific pipeline plugin" \
