@@ -38,6 +38,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="name" value="geomajas-widget-featureinfo" />
 					<property name="version" value="${project.version}" />
 				</bean>
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<property name="name" value="WMS Layer" />
+					<property name="version" value="${geomajas-widget-featureinfo-wms-version}" />
+				</bean>
 			</list>
 		</property>
 		<property name="copyrightInfo">
