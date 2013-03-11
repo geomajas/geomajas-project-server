@@ -302,6 +302,29 @@ include "org.geomajas.plugin" "geomajas-puregwt-widget-documentation" "1.0.0-SNA
     "incubating" "master.pdf" \
     "org.geomajas.plugin" "geomajas-widget-puregwt-core" "1.0.0-M1"
 
+include "org.geomajas.project" "geomajas-project-sld-documentation" "1.2.0-SNAPSHOT" \
+    "SLD project" \
+    "SLD project." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-sld" "1.1.0"
+
+include "org.geomajas.project" "geomajas-project-sld-editor-documentation" "1.0.0-SNAPSHOT" \
+    "SLD editor project" \
+    "SLD editor project." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-sld-editor" "1.0.0-M1"
+
+include "org.geomajas.project" "geomajas-project-geometry-documentation" "1.2.0-SNAPSHOT" \
+    "Geometry project" \
+    "Geometry project." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-geometry" "1.0.0"
+
+include "org.geomajas.plugin" "geomajas-plugin-vendorspecificpipeline" "1.1.0-SNAPSHOT" \
+    "Vendor specific pipeline plugin" \
+    "Vendor specific pipeline plugin." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-sld" "1.0.0"
 
 # contributors guide
 
