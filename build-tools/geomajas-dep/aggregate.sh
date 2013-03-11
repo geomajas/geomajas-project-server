@@ -245,7 +245,7 @@ include "org.geomajas.widget" "geomajas-widget-advancedviews-documentation" "1.0
     "Advanced views widget plug-in" \
     "Advanced views widget plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-M1"
+    "org.geomajas.widget" "geomajas-widget-advancedviews" "1.0.0-M2"
 
 include "org.geomajas.widget" "geomajas-widget-featureinfo-documentation" "1.0.0-SNAPSHOT" \
     "Feature info widget plug-in" \
@@ -257,13 +257,13 @@ include "org.geomajas.widget" "geomajas-widget-layer-documentation" "1.0.0-SNAPS
     "Layer widget plug-in" \
     "Layer widget plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-layer" "1.0.0-M2"
+    "org.geomajas.widget" "geomajas-widget-layer" "1.0.0-M3"
 
 include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1.0.0-SNAPSHOT" \
     "Search and filter widget plug-in" \
     "Search and filter widget plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-M3"
+    "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-M4"
 
 include "org.geomajas.plugin" "geomajas-plugin-deskmanager-documentation" "1.0.0-SNAPSHOT" \
     "Deskmanager plug-in" \
@@ -275,7 +275,7 @@ include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNA
     "Utility widgets for GWT" \
     "Utility widgets for GWT" \
     "incubating" "master.pdf" \
-    "org.geomajas.widget" "geomajas-widget-utility" "1.0.0-M3"
+    "org.geomajas.widget" "geomajas-widget-utility" "1.0.0-M4"
 
 include "org.geomajas.plugin" "geomajas-plugin-javascript-api-documentation" "1.0.0-SNAPSHOT" \
     "JavaScript API plug-in" \
