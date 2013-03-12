@@ -296,21 +296,22 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: bbox
 		url.append("&bbox=");
 		if (useInvertedAxis(config.getVersion(), crs)) {
-			url.append(NUMBERFORMAT.format(worldBounds.getY()));
+			// Replace 
+			url.append(floatToStringWithDecimalPoint((worldBounds.getY())));
 			url.append(",");
-			url.append(NUMBERFORMAT.format(worldBounds.getX()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getX()));
 			url.append(",");
-			url.append(NUMBERFORMAT.format(worldBounds.getMaxY()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getMaxY()));
 			url.append(",");
-			url.append(NUMBERFORMAT.format(worldBounds.getMaxX()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getMaxX()));
 		} else {
-			url.append(NUMBERFORMAT.format(worldBounds.getX()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getX()));
 			url.append(",");
-			url.append(NUMBERFORMAT.format(worldBounds.getY()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getY()));
 			url.append(",");
-			url.append(NUMBERFORMAT.format(worldBounds.getMaxX()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getMaxX()));
 			url.append(",");
-			url.append(NUMBERFORMAT.format(worldBounds.getMaxY()));
+			url.append(floatToStringWithDecimalPoint(worldBounds.getMaxY()));
 		}
 
 		// Parameter: format
@@ -345,6 +346,10 @@ public class WmsServiceImpl implements WmsService {
 
 		// Return the URL:
 		return url;
+	}
+
+	private static String floatToStringWithDecimalPoint(double number) {
+		return NUMBERFORMAT.format(number).replace(",", ".");
 	}
 
 	private String getCapabilitiesUrl(String baseUrl, WmsVersion version) {
