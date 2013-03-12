@@ -131,11 +131,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-wmsclient</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing-puregwt</artifactId>
 		</dependency>
 
