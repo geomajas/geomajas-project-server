@@ -26,8 +26,11 @@
     <inherits name="org.geomajas.puregwt.widget.theme.GeomajasWidgetDefaultTheme" />
     
     <!-- Geomajas WMS Client plug-in -->
-    <inherits name="org.geomajas.plugin.wmsclient.GeomajasWmsClient" />
+    <inherits name="org.geomajas.plugin.printing.PrintingPuregwt" />
   	
+    <!-- Geomajas Printing plug-in -->
+    <inherits name="org.geomajas.plugin.wmsclient.GeomajasWmsClient" />
+    
     <entry-point class="org.geomajas.puregwt.client.Showcase"/>
 
 	<source path='client'/>

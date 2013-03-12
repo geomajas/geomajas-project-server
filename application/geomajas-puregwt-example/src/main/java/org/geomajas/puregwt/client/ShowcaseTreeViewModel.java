@@ -24,6 +24,7 @@ import org.geomajas.puregwt.client.layer.LayerAddRemovePanel;
 import org.geomajas.puregwt.client.layer.LayerOrderPanel;
 import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
 import org.geomajas.puregwt.client.layer.TmsLayerPanel;
+import org.geomajas.puregwt.client.plugin.printing.PrintingPanel;
 import org.geomajas.puregwt.client.plugin.wmsclient.GetCapabilitiesPanel111;
 import org.geomajas.puregwt.client.plugin.wmsclient.GetCapabilitiesPanel130;
 import org.geomajas.puregwt.client.plugin.wmsclient.GetFeatureInfoPanel111;
@@ -145,6 +146,11 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catWmsClient.addExample(new WmsClientPanel130(geomajasInjector.getMapPresenter()), null);
 		catWmsClient.addExample(new GetFeatureInfoPanel130(geomajasInjector.getMapPresenter()), null);
 		catWmsClient.addExample(new GetCapabilitiesPanel130(geomajasInjector.getMapPresenter()), null);
+		
+		// Plugin: Printing
+		Category catPrinting = new Category("Plugin: printing");
+		catList.add(catPrinting);
+		catPrinting.addExample(new PrintingPanel(geomajasInjector.getMapPresenter()), null);
 	}
 
 	// ------------------------------------------------------------------------

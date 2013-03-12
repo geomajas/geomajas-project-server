@@ -35,6 +35,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="mapCountries" />
 				<ref bean="mapTms" />
 				<ref bean="mapEmpty" />
+				<ref bean="mapPrinting" />
 			</list>
 		</property>
 	</bean>
