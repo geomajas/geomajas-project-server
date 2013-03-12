@@ -13,7 +13,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-    	<artifactId>geomajas-widget-featureinfo-all</artifactId>
+		<artifactId>geomajas-widget-featureinfo-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
   	</parent>
 	<groupId>org.geomajas.widget</groupId>
@@ -55,7 +55,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
-				<version>${geomajas-layer-wms-version}</version>
+				<version>${geomajas-widget-featureinfo-wms-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
