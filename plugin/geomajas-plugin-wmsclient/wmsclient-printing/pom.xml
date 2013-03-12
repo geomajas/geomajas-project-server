@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. ~ ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, 
+	Belgium. ~ ~ The program is available in open source according to the GNU Affero ~ General Public License. All contributions 
+	in this program are covered ~ by the Geomajas Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-wmsclient-all</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>geomajas-plugin-wmsclient-printing</artifactId>
+	<name>geomajas-plugin-wmsclient-printing</name>
+	<description>geomajas-plugin-wmsclient-printing</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-wmsclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing-puregwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>META-INF/geomajasContext.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>META-INF/geomajasContext.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
+</project>

@@ -33,7 +33,15 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${puregwt-face-version}</version>
+				<version>${wmsclient-puregwt-face-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing-all</artifactId>
+				<version>${wmsclient-printing-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -43,17 +51,30 @@
 				<artifactId>geomajas-plugin-wmsclient</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wmsclient</artifactId>
-				<classifier>sources</classifier>
+				<artifactId>geomajas-plugin-wmsclient-printing</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${wmsclient-httpclient-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>${wmsclient-httpclient-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<modules>
 		<module>wmsclient</module>
+		<module>wmsclient-printing</module>
 		<module>documentation</module>
 	</modules>
 
@@ -86,6 +107,8 @@
 	</profiles>
 
 	<properties>
-		<puregwt-face-version>1.0.0-SNAPSHOT</puregwt-face-version>
+		<wmsclient-puregwt-face-version>1.0.0-SNAPSHOT</wmsclient-puregwt-face-version>
+		<wmsclient-printing-version>2.4.0-SNAPSHOT</wmsclient-printing-version>
+		<wmsclient-httpclient-version>4.2.1</wmsclient-httpclient-version>
 	</properties>
 </project>
