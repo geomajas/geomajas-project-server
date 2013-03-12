@@ -12,20 +12,16 @@
 
 <module rename-to="PrintingPuregwt">
 
-	   <!-- Geomajas Client -->
+	<!-- Geomajas Client -->
     <inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
-	<!-- smartGWT specific! 
-		<inherits name="org.geomajas.plugin.rasterizing.Rasterizing" />
-	-->
-	 <inherits name="org.geomajas.plugin.printing.theme.PrintingPuregwtTheme" />
+	<inherits name="org.geomajas.plugin.printing.theme.PrintingPuregwtTheme" />
+ 	<inherits name="org.geomajas.plugin.rasterizing.Rasterizing" />
  	
-	<source path="rasterizing/command/dto" />
-	
-	<source path="printing/client" />
+	<source path="client" />
 	
 	<!-- source code from geomajas-plugin-printing (=back-end) -->
-	<source path="printing/component/dto" />
-	<source path="printing/command/dto" />
+	<source path="component/dto" />
+	<source path="command/dto" />
 	
 	
 	

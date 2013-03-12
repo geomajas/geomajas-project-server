@@ -60,6 +60,8 @@ public class PrintPanel  extends Composite {
 	private static final String URL_DOWNLOAD_YES = "1";
 	private static final String URL_DOWNLOAD_NO = "0";
 	
+	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
+	
 	/**
 	 * UI binder definition for the {@link } widget.
 	 * 
@@ -252,6 +254,7 @@ public class PrintPanel  extends Composite {
 		
 		//		startProgress();
 		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
+		mapBuilder.build(mapPresenter);
 		//TODO GWT: imageUrlService.makeRasterizable(mapWidget); //Only needed for vector layers
 		DefaultTemplateBuilder builder = new DefaultTemplateBuilder();
 
