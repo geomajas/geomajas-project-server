@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-	</dependency>
+		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -208,6 +208,18 @@
 						</property>
 					</systemProperties>
 					<argLine>-Xss512m</argLine>
+				</configuration>
+			</plugin>
+			<!-- clean GWT test cruft -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>www-test</directory>
+						</fileset>
+					</filesets>
 				</configuration>
 			</plugin>
 		</plugins>
