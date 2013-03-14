@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
@@ -30,16 +29,13 @@ import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
 import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.dto.RasterizedLayersComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
-import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
-import org.geomajas.puregwt.client.map.layer.ServerLayer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
@@ -109,41 +105,12 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
+		
+		// use rasterized layers for pure GWT
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
-		// use the normal way for raster layers (TODO: add support for dpi to rasterized part)
-		//GWT: for (Layer layer : mapModel.getLayers()) 
-		LayersModel layersModel = this.mapPresenter.getLayersModel();
-
-		for (int i = 0; i < layersModel.getLayerCount(); i++) {
-			Layer layer = layersModel.getLayer(i);
-			if (layer.isShowing() && layer instanceof RasterServerLayer) {
-				if (layer instanceof ServerLayer) {
-					RasterLayerComponentInfo info = new RasterLayerComponentInfo();
-					RasterServerLayer rasterLayer = (RasterServerLayer) layer;
-					info.setLayerId(rasterLayer.getServerLayerId());
-					info.setStyle(rasterLayer.getLayerInfo().getStyle());
-					layers.add(info);
-				}
-			}
-		}
-		// use the rasterized layers way for vector layers
- 
-		// support printing of vector layers
-
-		for (ClientLayerInfo layerInfo : mapPresenter.getConfiguration().getLayers()) {
-			// we must skip the raster layers or we have them twice !
-			if (layerInfo instanceof ClientRasterLayerInfo) {
-				RasterLayerRasterizingInfo rInfo = (RasterLayerRasterizingInfo) layerInfo
-						.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
-				if (rInfo != null) {
-					rInfo.setShowing(false);
-				}
-			}
-		}
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
 		rasterizedLayersComponentInfo.setMapInfo(mapPresenter.getConfiguration());
-		layers.add(rasterizedLayersComponentInfo);
-		
+		layers.add(rasterizedLayersComponentInfo);		
 		map.getChildren().addAll(0, layers);
 		return map;
 	}

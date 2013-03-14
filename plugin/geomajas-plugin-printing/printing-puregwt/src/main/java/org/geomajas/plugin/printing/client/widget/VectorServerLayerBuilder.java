@@ -13,9 +13,9 @@ package org.geomajas.plugin.printing.client.widget;
 import java.util.Collection;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.util.StyleUtil;
-import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -31,43 +31,46 @@ import org.geomajas.sld.RuleInfo;
 public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public void build(MapRasterizingInfo mapRasterizingInfo, MapPresenter mapPresenter, Layer layer) {
-		if (layer instanceof VectorServerLayer) {
-			VectorServerLayer vectorLayer = (VectorServerLayer) layer;
-			VectorLayerRasterizingInfo vectorRasterizingInfo = new VectorLayerRasterizingInfo();
-			vectorRasterizingInfo.setPaintGeometries(true);
-			vectorRasterizingInfo.setPaintLabels(vectorLayer.isLabeled());
-			vectorRasterizingInfo.setShowing(layer.isShowing());
-			ClientVectorLayerInfo layerInfo = (ClientVectorLayerInfo) vectorLayer.getLayerInfo();
-			vectorRasterizingInfo.setStyle(layerInfo.getNamedStyleInfo());
-			if (!vectorLayer.getSelectedFeatureIds().isEmpty()) {
-				Collection<String> selectedFeatures = vectorLayer.getSelectedFeatureIds();
-				vectorRasterizingInfo
-						.setSelectedFeatureIds(selectedFeatures.toArray(new String[selectedFeatures.size()]));
-				FeatureStyleInfo selectStyle;
-				switch (layerInfo.getLayerType()) {
-					case GEOMETRY:
-					case LINESTRING:
-					case MULTILINESTRING:
-						selectStyle = mapPresenter.getConfiguration().getLineSelectStyle();
-						break;
-					case MULTIPOINT:
-					case POINT:
-						selectStyle = mapPresenter.getConfiguration().getPointSelectStyle();
-						break;
-					case MULTIPOLYGON:
-					case POLYGON:
-						selectStyle = mapPresenter.getConfiguration().getPolygonSelectStyle();
-						break;
-					default:
-						throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());
-				}
-				selectStyle.applyDefaults();
-				RuleInfo selectionRule = StyleUtil.createRule(layerInfo.getLayerType(), selectStyle);
-				vectorRasterizingInfo.setSelectionRule(selectionRule);
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer) {
+		VectorServerLayer vectorLayer = (VectorServerLayer) layer;
+		VectorLayerRasterizingInfo vectorRasterizingInfo = new VectorLayerRasterizingInfo();
+		vectorRasterizingInfo.setPaintGeometries(true);
+		vectorRasterizingInfo.setPaintLabels(vectorLayer.isLabeled());
+		vectorRasterizingInfo.setShowing(layer.isShowing());
+		ClientVectorLayerInfo layerInfo = (ClientVectorLayerInfo) vectorLayer.getLayerInfo();
+		vectorRasterizingInfo.setStyle(layerInfo.getNamedStyleInfo());
+		if (!vectorLayer.getSelectedFeatureIds().isEmpty()) {
+			Collection<String> selectedFeatures = vectorLayer.getSelectedFeatureIds();
+			vectorRasterizingInfo.setSelectedFeatureIds(selectedFeatures.toArray(new String[selectedFeatures.size()]));
+			FeatureStyleInfo selectStyle;
+			switch (layerInfo.getLayerType()) {
+				case GEOMETRY:
+				case LINESTRING:
+				case MULTILINESTRING:
+					selectStyle = mapPresenter.getConfiguration().getLineSelectStyle();
+					break;
+				case MULTIPOINT:
+				case POINT:
+					selectStyle = mapPresenter.getConfiguration().getPointSelectStyle();
+					break;
+				case MULTIPOLYGON:
+				case POLYGON:
+					selectStyle = mapPresenter.getConfiguration().getPolygonSelectStyle();
+					break;
+				default:
+					throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());
 			}
-			layerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorRasterizingInfo);
+			selectStyle.applyDefaults();
+			RuleInfo selectionRule = StyleUtil.createRule(layerInfo.getLayerType(), selectStyle);
+			vectorRasterizingInfo.setSelectionRule(selectionRule);
 		}
+		layerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorRasterizingInfo);
+		return layerInfo;
+	}
+
+	@Override
+	public boolean supports(Layer layer) {
+		return layer instanceof VectorServerLayer;
 	}
 
 }

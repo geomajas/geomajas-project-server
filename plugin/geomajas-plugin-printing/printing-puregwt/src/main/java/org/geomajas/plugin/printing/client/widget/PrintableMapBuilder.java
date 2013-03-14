@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
@@ -30,8 +31,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 public class PrintableMapBuilder {
 
 	private List<PrintableLayerBuilder> layerBuilders = new ArrayList<PrintableLayerBuilder>();
-	
-	
+
 	public PrintableMapBuilder() {
 		layerBuilders.add(new RasterServerLayerBuilder());
 		layerBuilders.add(new VectorServerLayerBuilder());
@@ -59,13 +59,17 @@ public class PrintableMapBuilder {
 	}
 
 	public void build(MapPresenter mapPresenter) {
-		MapRasterizingInfo mapRasterizingInfo = buildMap(mapPresenter);
+		buildMap(mapPresenter);
+		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 			Layer layer = mapPresenter.getLayersModel().getLayer(i);
 			for (PrintableLayerBuilder layerBuilder : layerBuilders) {
-				layerBuilder.build(mapRasterizingInfo, mapPresenter, layer);
+				if (layerBuilder.supports(layer)) {
+					clientLayers.add(layerBuilder.build(mapPresenter, layer));
+				}
 			}
 		}
+		mapPresenter.getConfiguration().setLayers(clientLayers);
 	}
 
 }

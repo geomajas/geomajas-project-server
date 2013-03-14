@@ -10,18 +10,21 @@
  */
 package org.geomajas.plugin.printing.client.widget;
 
-import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
  * Builder that prepares a specific type of layer for printing. Server layers should enhance their existing client info,
- * other layers should add an extra layer with custom client info.
+ * other layers should return a suitable {@link ClientLayerInfo} instance that can be picked up by the rasterizing
+ * plugin.
  * 
  * @author Jan De Moerloose
  * 
  */
 public interface PrintableLayerBuilder {
 
-	void build(MapRasterizingInfo mapRasterizingInfo, MapPresenter mapPresenter, Layer layer);
+	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer);
+
+	boolean supports(Layer layer);
 }

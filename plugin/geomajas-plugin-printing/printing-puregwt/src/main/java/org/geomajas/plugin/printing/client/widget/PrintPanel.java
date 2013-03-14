@@ -318,5 +318,11 @@ public class PrintPanel  extends Composite {
 			}
 		});
 	}
+	
+	public PrintableMapBuilder getMapBuilder() {
+		return mapBuilder;
+	}
+	
+	
 
 }
