@@ -208,6 +208,7 @@
 						<directory>src/main/java</directory>
 						<includes>
 							<include>**/*.java</include>
+							<include>**/*.ui.xml</include>
 						</includes>
 					</resource>
 				</resources>
