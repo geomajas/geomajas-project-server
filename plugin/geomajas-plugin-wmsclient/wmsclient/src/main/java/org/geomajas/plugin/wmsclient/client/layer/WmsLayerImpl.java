@@ -12,10 +12,13 @@
 package org.geomajas.plugin.wmsclient.client.layer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.wmsclient.client.render.WmsScalesRenderer;
 import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererFactory;
+import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRenderer;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
@@ -103,5 +106,16 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 			renderer = rendererFactory.create(this, container);
 		}
 		return renderer;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public List<RasterTile> getCurrentTiles() {
+		if (renderer != null) {
+			WmsTiledScaleRenderer scaleRenderer = (WmsTiledScaleRenderer) renderer.getScale(viewPort.getScale());
+			return scaleRenderer.getTiles(viewPort.getBounds());
+		} else {
+			return Collections.<RasterTile>emptyList();
+		}
 	}
 }

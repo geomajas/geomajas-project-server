@@ -11,6 +11,10 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
+import java.util.List;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
 
 /**
@@ -19,4 +23,6 @@ import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
  * @author Pieter De Graef
  */
 public interface WmsTiledScaleRenderer extends TiledScaleRenderer {
+
+	List<RasterTile> getTiles(Bbox worldBounds);
 }

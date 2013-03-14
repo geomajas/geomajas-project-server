@@ -11,11 +11,13 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
@@ -92,6 +94,18 @@ public class WmsTiledScaleRendererImpl implements WmsTiledScaleRenderer {
 				renderTile(tile, new ImageCounter());
 			}
 		}
+	}
+
+	@Override
+	public List<RasterTile> getTiles(Bbox worldBounds) {
+		List<RasterTile> result = new ArrayList<RasterTile>();
+		for (RasterTile rasterTile : tiles.values()) {
+			Bbox screenBounds = getScreenBounds(worldBounds);
+			if (BboxService.intersects(screenBounds, rasterTile.getBounds())) {
+				result.add(rasterTile);
+			}
+		}
+		return result;
 	}
 
 	public void cancel() {

@@ -11,7 +11,10 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
+import java.util.List;
+
 import org.geomajas.annotation.Api;
+import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.HasMapScalesRenderer;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -55,4 +58,11 @@ public interface WmsLayer extends Layer, HasMapScalesRenderer {
 	 * @return The ViewPort, or null if the layer has not been added to a map.
 	 */
 	ViewPort getViewPort();
+
+	/**
+	 * Get the currently visible list of tiles.
+	 * 
+	 * @return the tiles
+	 */
+	List<RasterTile> getCurrentTiles();
 }
