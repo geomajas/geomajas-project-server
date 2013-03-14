@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.printing.client.widget;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -26,15 +26,19 @@ import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
 public class RasterServerLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public void build(MapRasterizingInfo mapRasterizingInfo, MapPresenter mapPresenter, Layer layer) {
-		if (layer instanceof RasterServerLayer) {
-			RasterServerLayer rasterServerLayer = (RasterServerLayer) layer;
-			ClientRasterLayerInfo layerInfo = (ClientRasterLayerInfo) rasterServerLayer.getLayerInfo();
-			RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
-			rasterInfo.setShowing(rasterServerLayer.isShowing());
-			rasterInfo.setCssStyle(rasterServerLayer.getOpacity() + "");
-			layerInfo.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterInfo);
-		}
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer) {
+		RasterServerLayer rasterServerLayer = (RasterServerLayer) layer;
+		ClientRasterLayerInfo layerInfo = (ClientRasterLayerInfo) rasterServerLayer.getLayerInfo();
+		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
+		rasterInfo.setShowing(rasterServerLayer.isShowing());
+		rasterInfo.setCssStyle(rasterServerLayer.getOpacity() + "");
+		layerInfo.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterInfo);
+		return layerInfo;
+	}
+
+	@Override
+	public boolean supports(Layer layer) {
+		return layer instanceof RasterServerLayer;
 	}
 
 }
