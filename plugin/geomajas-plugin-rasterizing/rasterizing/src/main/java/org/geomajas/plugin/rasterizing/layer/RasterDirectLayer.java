@@ -80,8 +80,11 @@ public class RasterDirectLayer extends DirectLayer {
 	protected static final int RETRY_WAIT = 100; // milliseconds
 
 	private static final String BUNDLE_NAME = "org/geomajas/plugin/rasterizing/rasterizing"; //$NON-NLS-1$
+
 	private static final String MISSING_TILE_IN_MOSAIC = "missing tile in mosaic ";
+
 	private static final String OPACITY = "opacity:";
+
 	private static final int DEFAULT_IMAGE_BUFFER_SIZE = 1024;
 
 	private final List<RasterTile> tiles;
@@ -98,8 +101,11 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private final String style;
 
-	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
+	private double tileScale = -1;
+
+	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, double tileScale, String style) {
 		super();
+		this.tileScale = tileScale;
 		this.tiles = tiles;
 		if (tileWidth < 1) {
 			tileWidth = 1;
@@ -113,6 +119,10 @@ public class RasterDirectLayer extends DirectLayer {
 		ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager();
 		manager.setDefaultMaxPerRoute(10);
 		httpClient = new DefaultHttpClient(manager);
+	}
+
+	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
+		this(tiles, tileWidth, tileHeight, -1.0, style);
 	}
 
 	@Override
@@ -195,6 +205,7 @@ public class RasterDirectLayer extends DirectLayer {
 						log.debug("rendering done, size = " + baos.toByteArray().length);
 						RasterTile mosaicTile = new RasterTile();
 						mosaicTile.setBounds(getWorldBounds(tiles));
+						log.info("application bounds = " + mosaicTile.getBounds());
 						ImageResult mosaicResult = new ImageResult(mosaicTile);
 						mosaicResult.setImage(baos.toByteArray());
 						addImage(graphics, mosaicResult, viewport);
@@ -212,16 +223,20 @@ public class RasterDirectLayer extends DirectLayer {
 		Rectangle screenArea = viewport.getScreenArea();
 		ReferencedEnvelope worldBounds = viewport.getBounds();
 		// convert map bounds to application bounds
-		double rasterScale = screenArea.getWidth() / worldBounds.getWidth();
-		Envelope applicationBounds = new Envelope(worldBounds.getMinX() * rasterScale, worldBounds.getMaxX()
-				* rasterScale, -worldBounds.getMinY() * rasterScale, -worldBounds.getMaxY() * rasterScale);
+		double printScale = screenArea.getWidth() / worldBounds.getWidth();
+		if(tileScale < 0) {
+			tileScale = printScale;
+		}
+		Envelope applicationBounds = new Envelope((worldBounds.getMinX()) * printScale,
+				(worldBounds.getMaxX()) * printScale, -(worldBounds.getMinY())
+						* printScale, -(worldBounds.getMaxY()) * printScale);
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		// find transform between image bounds and application bounds
-		double tx = (imageBounds.getX() - applicationBounds.getMinX());
-		double ty = (imageBounds.getY() - applicationBounds.getMinY());
+		double tx = (imageBounds.getX() * printScale/tileScale - applicationBounds.getMinX());
+		double ty = (imageBounds.getY() * printScale/tileScale - applicationBounds.getMinY());
 		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
-		double scaleX = imageBounds.getWidth() / image.getWidth();
-		double scaleY = imageBounds.getHeight() / image.getHeight();
+		double scaleX = imageBounds.getWidth() / image.getWidth() * printScale/tileScale;
+		double scaleY = imageBounds.getHeight() / image.getHeight() * printScale/tileScale;
 		AffineTransform transform = new AffineTransform();
 		transform.translate(tx, ty);
 		transform.scale(scaleX, scaleY);
@@ -247,7 +262,7 @@ public class RasterDirectLayer extends DirectLayer {
 		g1.dispose();
 		return opaqueCopy;
 	}
-	
+
 	private float getOpacity() {
 		String match = style;
 		// could be 'opacity:0.5;' or '0.5'
@@ -329,7 +344,6 @@ public class RasterDirectLayer extends DirectLayer {
 					tile.getBounds().getHeight());
 			if (bounds == null) {
 				bounds = new Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(), tileBounds.getHeight());
-
 			} else {
 				double minx = Math.min(tileBounds.getX(), bounds.getX());
 				double maxx = Math.max(tileBounds.getMaxX(), bounds.getMaxX());
@@ -349,11 +363,10 @@ public class RasterDirectLayer extends DirectLayer {
 		}
 	}
 
-
 	/**
-	 * Converts an image to a RGBA direct color model using a workaround via buffered image
-	 * directly calling the ColorConvert operation fails for unknown reasons ?!
-	 *
+	 * Converts an image to a RGBA direct color model using a workaround via buffered image directly calling the
+	 * ColorConvert operation fails for unknown reasons ?!
+	 * 
 	 * @param img image to convert
 	 * @return converted image
 	 */
@@ -368,7 +381,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 	/**
 	 * Image result.
-	 *
+	 * 
 	 * @author Jan De Moerloose
 	 */
 	private static class ImageResult {
@@ -396,7 +409,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 	/**
 	 * Image Exception
-	 *
+	 * 
 	 * @author Jan De Moerloose
 	 */
 	private static class ImageException extends Exception {
@@ -417,7 +430,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 	/**
 	 * Download image with a couple of retries.
-	 *
+	 * 
 	 * @author Jan De Moerloose
 	 */
 	private class RasterImageDownloadCallable implements Callable<ImageResult> {
