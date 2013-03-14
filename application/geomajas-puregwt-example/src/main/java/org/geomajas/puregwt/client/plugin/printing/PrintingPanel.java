@@ -10,8 +10,17 @@
  */
 package org.geomajas.puregwt.client.plugin.printing;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.printing.client.widget.PrintPanel;
+import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
+import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.WmsTileConfiguration;
+import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
+import org.geomajas.plugin.wmsclient.printing.client.WmsLayerBuilder;
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.Showcase;
+import org.geomajas.puregwt.client.event.MapInitializationEvent;
+import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 import org.geomajas.puregwt.widget.client.gadget.LegendDropDownGadget;
@@ -65,9 +74,29 @@ public class PrintingPanel extends ContentPanel {
 		Widget widget = UI_BINDER.createAndBindUi(this);
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapPrinting");
+		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+
+			public void onMapInitialized(MapInitializationEvent event) {
+				WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
+				wmsConfig.setFormat("image/png");
+				wmsConfig.setLayers("geosparc:provincies");
+				wmsConfig.setVersion(WmsVersion.v1_1_1);
+				wmsConfig.setBaseUrl("http://apps.geomajas.org/geoserver/geosparc/wms");
+
+				Coordinate tileOrigin = new Coordinate(mapPresenter.getViewPort().getMaximumBounds().getX(),
+						mapPresenter.getViewPort().getMaximumBounds().getY());
+				WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, tileOrigin);
+
+				WmsLayer wmsLayer = Showcase.GEOMAJASINJECTOR.getWmsLayerFactory().createWmsLayer("provincies",
+						wmsConfig, tileConfig);
+				mapPresenter.getLayersModel().addLayer(wmsLayer);
+			}
+		});
 		mapPresenter.addMapGadget(new LegendDropDownGadget());
 		mapPanel.setPresenter(mapPresenter);
-		printPanel.setWidget(new PrintPanel(mapPresenter, "puregwt-app"));
+		PrintPanel panel = new PrintPanel(mapPresenter, "puregwt-app");
+		panel.getMapBuilder().addLayerBuilder(new WmsLayerBuilder());
+		printPanel.setWidget(panel);
 		return widget;
 	}
 
