@@ -224,19 +224,18 @@ public class RasterDirectLayer extends DirectLayer {
 		ReferencedEnvelope worldBounds = viewport.getBounds();
 		// convert map bounds to application bounds
 		double printScale = screenArea.getWidth() / worldBounds.getWidth();
-		if(tileScale < 0) {
+		if (tileScale < 0) {
 			tileScale = printScale;
 		}
-		Envelope applicationBounds = new Envelope((worldBounds.getMinX()) * printScale,
-				(worldBounds.getMaxX()) * printScale, -(worldBounds.getMinY())
-						* printScale, -(worldBounds.getMaxY()) * printScale);
+		Envelope applicationBounds = new Envelope((worldBounds.getMinX()) * printScale, (worldBounds.getMaxX())
+				* printScale, -(worldBounds.getMinY()) * printScale, -(worldBounds.getMaxY()) * printScale);
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		// find transform between image bounds and application bounds
-		double tx = (imageBounds.getX() * printScale/tileScale - applicationBounds.getMinX());
-		double ty = (imageBounds.getY() * printScale/tileScale - applicationBounds.getMinY());
+		double tx = (imageBounds.getX() * printScale / tileScale - applicationBounds.getMinX());
+		double ty = (imageBounds.getY() * printScale / tileScale - applicationBounds.getMinY());
 		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
-		double scaleX = imageBounds.getWidth() / image.getWidth() * printScale/tileScale;
-		double scaleY = imageBounds.getHeight() / image.getHeight() * printScale/tileScale;
+		double scaleX = imageBounds.getWidth() / image.getWidth() * printScale / tileScale;
+		double scaleY = imageBounds.getHeight() / image.getHeight() * printScale / tileScale;
 		AffineTransform transform = new AffineTransform();
 		transform.translate(tx, ty);
 		transform.scale(scaleX, scaleY);
