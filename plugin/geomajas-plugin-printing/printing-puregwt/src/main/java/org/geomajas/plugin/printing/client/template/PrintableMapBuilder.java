@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.printing.client.widget;
+package org.geomajas.plugin.printing.client.template;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -37,7 +38,7 @@ public class PrintableMapBuilder {
 		layerBuilders.add(new VectorServerLayerBuilder());
 	}
 
-	public void addLayerBuilder(PrintableLayerBuilder layerBuilder) {
+	public void registerLayerBuilder(PrintableLayerBuilder layerBuilder) {
 		layerBuilders.add(layerBuilder);
 	}
 
@@ -58,14 +59,14 @@ public class PrintableMapBuilder {
 		return mapRasterizingInfo;
 	}
 
-	public void build(MapPresenter mapPresenter) {
+	public void build(MapPresenter mapPresenter, Bbox worldBounds, double rasterScale) {
 		buildMap(mapPresenter);
 		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 			Layer layer = mapPresenter.getLayersModel().getLayer(i);
 			for (PrintableLayerBuilder layerBuilder : layerBuilders) {
 				if (layerBuilder.supports(layer)) {
-					clientLayers.add(layerBuilder.build(mapPresenter, layer));
+					clientLayers.add(layerBuilder.build(mapPresenter, layer, worldBounds, rasterScale));
 				}
 			}
 		}

@@ -8,23 +8,37 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.printing.client.widget;
+package org.geomajas.plugin.printing.client.template;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
  * Builder that prepares a specific type of layer for printing. Server layers should enhance their existing client info,
- * other layers should return a suitable {@link ClientLayerInfo} instance that can be picked up by the rasterizing
- * plugin.
+ * other layers should return a suitable {@link ClientLayerInfo} instance that can be picked up by a
+ * {@link org.geomajas.plugin.rasterizing.api.LayerFactory} in the rasterizing plugin.
  * 
  * @author Jan De Moerloose
  * 
  */
 public interface PrintableLayerBuilder {
 
-	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer);
+	/**
+	 * 
+	 * @param mapPresenter
+	 * @param layer
+	 * @param worldBounds
+	 * @param rasterScale
+	 * @return
+	 */
+	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double rasterScale);
 
+	/**
+	 * Is the specified layer supported ?
+	 * @param layer
+	 * @return
+	 */
 	boolean supports(Layer layer);
 }

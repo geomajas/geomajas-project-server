@@ -64,10 +64,16 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 	protected boolean withArrow;
 
-	//protected MapModel mapModel;
+	// protected MapModel mapModel;
 	protected MapPresenter mapPresenter;
 
 	protected String applicationId;
+
+	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
+
+	public DefaultTemplateBuilder(PrintableMapBuilder mapBuilder) {
+		this.mapBuilder = mapBuilder;
+	}
 
 	@Override
 	public PrintTemplateInfo buildTemplate() {
@@ -75,7 +81,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		template.setId(1L);
 		template.setName("default");
 		return template;
-	}
+	}	
 
 	@Override
 	protected PageComponentInfo buildPage() {
@@ -98,19 +104,21 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		Bbox fittingBox = createFittingBox(viewPort.getBounds(), printWidth / printHeight);
 		map.setLocation(new org.geomajas.geometry.Coordinate(fittingBox.getX(), fittingBox.getY()));
 		map.setPpUnit((float) (printWidth / fittingBox.getWidth()));
-		
+
 		map.setTag("map");
-		//GWT:map.setMapId(mapModel.getMapInfo().getId());
+		// GWT:map.setMapId(mapModel.getMapInfo().getId());
 		map.setMapId(mapPresenter.getConfiguration().getId());
-		
+
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
-		
+
 		// use rasterized layers for pure GWT
+		double rasterScale = map.getPpUnit() * map.getRasterResolution() / 72;
+		mapBuilder.build(mapPresenter, fittingBox, rasterScale);
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
 		rasterizedLayersComponentInfo.setMapInfo(mapPresenter.getConfiguration());
-		layers.add(rasterizedLayersComponentInfo);		
+		layers.add(rasterizedLayersComponentInfo);
 		map.getChildren().addAll(0, layers);
 		return map;
 	}
@@ -142,16 +150,16 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		legend.setFont(style);
 		legend.setMapId(mapPresenter.getConfiguration().getId());
 		legend.setTag("legend");
-		//GWT:for (Layer layer : mapModel.getLayers()) 
+		// GWT:for (Layer layer : mapModel.getLayers())
 		LayersModel layersModel = this.mapPresenter.getLayersModel();
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer layer = layersModel.getLayer(i);
 			if (layer instanceof VectorServerLayer && layer.isShowing()) {
 				VectorServerLayer vectorLayer = (VectorServerLayer) layer;
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
-				//String label = layerInfo.getLabel();
-				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().
-					getFeatureTypeStyleList().get(0);
+				// String label = layerInfo.getLabel();
+				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList()
+						.get(0);
 				for (RuleInfo rule : fts.getRuleList()) {
 					// use title if present, name if not
 					String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
@@ -297,33 +305,32 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
-	
-	
+
 	/**
-	 * Creates the largest possible bounding box that fits  in the specified bounding 
-	 * box but has a different width/height ratio. and the same centerpoint.
+	 * Creates the largest possible bounding box that fits around the specified bounding box but has a different
+	 * width/height ratio. and the same centerpoint.
 	 * 
-	 * @param bbox 
+	 * @param bbox
 	 * @param target width/height ratio
 	 * @return bbox
 	 */
 	public Bbox createFittingBox(Bbox bbox, double newRatio) {
-		
+
 		double oldRatio = bbox.getWidth() / bbox.getHeight();
 		double newWidth = bbox.getWidth();
 		double newHeight = bbox.getHeight();
-		if (newRatio > oldRatio) {
+		if (newRatio < oldRatio) {
 			// Keep width of bbox , decrease height to fullfill newRatio
 			newHeight = newWidth / newRatio;
 		} else {
-			// Keep height of bbox , decrease width to fullfill newRatio 
-			newWidth = bbox.getHeight() * newRatio;
+			// Keep height of bbox , decrease width to fullfill newRatio
+			newWidth = newHeight * newRatio;
 		}
 		Bbox result = new Bbox(0, 0, newWidth, newHeight);
 		result.setX(bbox.getX() + (bbox.getWidth() - newWidth) / 2.0);
 		result.setY(bbox.getY() + (bbox.getHeight() - newHeight) / 2.0);
 		return result;
-		
+
 	}
 
 }

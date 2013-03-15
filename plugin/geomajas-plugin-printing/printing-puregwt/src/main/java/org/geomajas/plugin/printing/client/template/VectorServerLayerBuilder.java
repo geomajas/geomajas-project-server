@@ -8,13 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.printing.client.widget;
+package org.geomajas.plugin.printing.client.template;
 
 import java.util.Collection;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.util.StyleUtil;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -31,7 +32,7 @@ import org.geomajas.sld.RuleInfo;
 public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
 		VectorServerLayer vectorLayer = (VectorServerLayer) layer;
 		VectorLayerRasterizingInfo vectorRasterizingInfo = new VectorLayerRasterizingInfo();
 		vectorRasterizingInfo.setPaintGeometries(true);

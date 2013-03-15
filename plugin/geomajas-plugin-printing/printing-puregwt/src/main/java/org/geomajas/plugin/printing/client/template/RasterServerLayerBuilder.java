@@ -8,10 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.printing.client.widget;
+package org.geomajas.plugin.printing.client.template;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -26,7 +27,7 @@ import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
 public class RasterServerLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
 		RasterServerLayer rasterServerLayer = (RasterServerLayer) layer;
 		ClientRasterLayerInfo layerInfo = (ClientRasterLayerInfo) rasterServerLayer.getLayerInfo();
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
