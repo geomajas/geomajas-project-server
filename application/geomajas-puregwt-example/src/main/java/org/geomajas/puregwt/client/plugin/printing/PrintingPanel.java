@@ -79,15 +79,15 @@ public class PrintingPanel extends ContentPanel {
 			public void onMapInitialized(MapInitializationEvent event) {
 				WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
 				wmsConfig.setFormat("image/png");
-				wmsConfig.setLayers("geosparc:provincies");
+				wmsConfig.setLayers("osm");
 				wmsConfig.setVersion(WmsVersion.v1_1_1);
-				wmsConfig.setBaseUrl("http://apps.geomajas.org/geoserver/geosparc/wms");
+				wmsConfig.setBaseUrl("http://apps.geomajas.org/geoserver/wms");
 
 				Coordinate tileOrigin = new Coordinate(mapPresenter.getViewPort().getMaximumBounds().getX(),
 						mapPresenter.getViewPort().getMaximumBounds().getY());
 				WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, tileOrigin);
 
-				WmsLayer wmsLayer = Showcase.GEOMAJASINJECTOR.getWmsLayerFactory().createWmsLayer("provincies",
+				WmsLayer wmsLayer = Showcase.GEOMAJASINJECTOR.getWmsLayerFactory().createWmsLayer("osm",
 						wmsConfig, tileConfig);
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
@@ -95,7 +95,7 @@ public class PrintingPanel extends ContentPanel {
 		mapPresenter.addMapGadget(new LegendDropDownGadget());
 		mapPanel.setPresenter(mapPresenter);
 		PrintPanel panel = new PrintPanel(mapPresenter, "puregwt-app");
-		panel.getMapBuilder().addLayerBuilder(new WmsLayerBuilder());
+		panel.getMapBuilder().registerLayerBuilder(new WmsLayerBuilder());
 		printPanel.setWidget(panel);
 		return widget;
 	}
