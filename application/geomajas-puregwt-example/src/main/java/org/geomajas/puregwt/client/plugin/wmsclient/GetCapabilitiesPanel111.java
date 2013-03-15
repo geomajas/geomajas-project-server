@@ -106,7 +106,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 				WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
 				wmsConfig.setFormat("image/jpeg");
 				wmsConfig.setLayers("bluemarble");
-				wmsConfig.setVersion(WmsVersion.v1_1_1);
+				wmsConfig.setVersion(WmsVersion.V1_1_1);
 				wmsConfig.setBaseUrl(DEFAULT_CAPA_URL);
 
 				Coordinate tileOrigin = new Coordinate(mapPresenter.getViewPort().getMaximumBounds().getX(),
@@ -130,8 +130,8 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 
 			public String transform(WmsRequest request, String url) {
 				switch (request) {
-					case GetCapabilities:
-					case GetFeatureInfo:
+					case GETCAPABILITIES:
+					case GETFEATUREINFO:
 						return "proxy?url=" + url;
 					default:
 				}
@@ -154,7 +154,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 	@UiHandler("searchButton")
 	protected void onSearchButtonClicked(ClickEvent event) {
 		String url = urlBox.getText();
-		wmsService.getCapabilities(url, WmsVersion.v1_1_1, new Callback<WmsGetCapabilitiesInfo, String>() {
+		wmsService.getCapabilities(url, WmsVersion.V1_1_1, new Callback<WmsGetCapabilitiesInfo, String>() {
 
 			public void onFailure(String reason) {
 				Window.alert(reason);
@@ -175,7 +175,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 		wmsConfig.setBaseUrl(urlBox.getValue());
 		wmsConfig.setLayers(layerInfo.getName());
 		wmsConfig.setTransparent(true);
-		wmsConfig.setVersion(WmsVersion.v1_1_1);
+		wmsConfig.setVersion(WmsVersion.V1_1_1);
 
 		Coordinate origin = new Coordinate(layerInfo.getBoundingBox().getX(), layerInfo.getBoundingBox().getY());
 		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, origin);

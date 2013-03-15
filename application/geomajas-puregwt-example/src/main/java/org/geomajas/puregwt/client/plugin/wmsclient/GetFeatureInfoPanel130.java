@@ -109,7 +109,7 @@ public class GetFeatureInfoPanel130 extends ContentPanel {
 				// Create WMS layer configuration:
 				WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
 				wmsConfig.setLayers("states");
-				wmsConfig.setVersion(WmsVersion.v1_3_0);
+				wmsConfig.setVersion(WmsVersion.V1_3_0);
 				wmsConfig.setBaseUrl("http://apps.geomajas.org/geoserver/wms");
 
 				Coordinate tileOrigin = new Coordinate(mapPresenter.getViewPort().getMaximumBounds().getX(),
@@ -138,8 +138,8 @@ public class GetFeatureInfoPanel130 extends ContentPanel {
 
 			public String transform(WmsRequest request, String url) {
 				switch (request) {
-					case GetCapabilities:
-					case GetFeatureInfo:
+					case GETCAPABILITIES:
+					case GETFEATUREINFO:
 						return "proxy?url=" + url;
 					default:
 				}

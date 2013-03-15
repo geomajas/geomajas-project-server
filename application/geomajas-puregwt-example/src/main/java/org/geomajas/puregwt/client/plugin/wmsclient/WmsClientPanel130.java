@@ -59,7 +59,7 @@ public class WmsClientPanel130 extends ContentPanel {
 				WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
 				wmsConfig.setFormat("image/jpeg");
 				wmsConfig.setLayers("bluemarble");
-				wmsConfig.setVersion(WmsVersion.v1_3_0);
+				wmsConfig.setVersion(WmsVersion.V1_3_0);
 				wmsConfig.setBaseUrl("http://apps.geomajas.org/geoserver/wms");
 
 				Coordinate tileOrigin = new Coordinate(mapPresenter.getViewPort().getMaximumBounds().getX(),

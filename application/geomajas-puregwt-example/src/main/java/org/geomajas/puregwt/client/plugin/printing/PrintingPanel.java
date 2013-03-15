@@ -80,7 +80,7 @@ public class PrintingPanel extends ContentPanel {
 				WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
 				wmsConfig.setFormat("image/png");
 				wmsConfig.setLayers("osm");
-				wmsConfig.setVersion(WmsVersion.v1_1_1);
+				wmsConfig.setVersion(WmsVersion.V1_1_1);
 				wmsConfig.setBaseUrl("http://apps.geomajas.org/geoserver/wms");
 
 				Coordinate tileOrigin = new Coordinate(mapPresenter.getViewPort().getMaximumBounds().getX(),
