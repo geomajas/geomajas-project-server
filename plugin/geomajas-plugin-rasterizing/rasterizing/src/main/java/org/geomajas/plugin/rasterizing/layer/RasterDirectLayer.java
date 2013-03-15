@@ -146,39 +146,41 @@ public class RasterDirectLayer extends DirectLayer {
 				// create the images for the mosaic
 				List<RenderedImage> images = new ArrayList<RenderedImage>();
 				for (Future<ImageResult> future : futures) {
+					ImageResult result = null;
 					if (future.isDone()) {
 						try {
-							ImageResult result;
 							result = future.get();
 							// create a rendered image
-							RenderedImage image = JAI.create("stream", new ByteArraySeekableStream(result.getImage()));
-							// convert to common direct color model (some images have their own indexed color model)
-							RenderedImage colored = toDirectColorModel(image);
+							if (result.getImage() != null && result.getImage().length > 0) {
+								RenderedImage image = JAI.create("stream",
+										new ByteArraySeekableStream(result.getImage()));
+								// convert to common direct color model (some images have their own indexed color model)
+								RenderedImage colored = toDirectColorModel(image);
 
-							// translate to the correct position in the tile grid
-							double xOffset = result.getRasterImage().getCode().getX() * tileWidth - pixelBounds.getX();
-							double yOffset;
-							// TODO: in some cases, the y-index is up (e.g. WMS), should be down for
-							// all layers !!!!
-							if (isYIndexUp(tiles)) {
-								yOffset = result.getRasterImage().getCode().getY() * tileHeight - pixelBounds.getY();
-							} else {
-								yOffset = (pixelBounds.getMaxY() - (result.getRasterImage().getCode().getY() + 1)
-										* tileHeight);
+								// translate to the correct position in the tile grid
+								double xOffset = result.getRasterImage().getCode().getX() * tileWidth
+										- pixelBounds.getX();
+								double yOffset;
+								// TODO: in some cases, the y-index is up (e.g. WMS), should be down for
+								// all layers !!!!
+								if (isYIndexUp(tiles)) {
+									yOffset = result.getRasterImage().getCode().getY() * tileHeight
+											- pixelBounds.getY();
+								} else {
+									yOffset = (pixelBounds.getMaxY() - (result.getRasterImage().getCode().getY() + 1)
+											* tileHeight);
+								}
+								log.debug("adding to(" + xOffset + "," + yOffset + "), url = "
+										+ result.getRasterImage().getUrl());
+								RenderedImage translated = TranslateDescriptor.create(colored, (float) xOffset,
+										(float) yOffset, new InterpolationNearest(), null);
+								images.add(translated);
 							}
-							log.debug("adding to(" + xOffset + "," + yOffset + "), url = "
-									+ result.getRasterImage().getUrl());
-							RenderedImage translated = TranslateDescriptor.create(colored, (float) xOffset,
-									(float) yOffset, new InterpolationNearest(), null);
-							images.add(translated);
 						} catch (ExecutionException e) {
 							addLoadError(graphics, (ImageException) (e.getCause()), viewport);
 							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
-						} catch (InterruptedException e) {
-							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
-						} catch (MalformedURLException e) {
-							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
-						} catch (IOException e) {
+						} catch (Exception e) {
+							log.warn("Missing tile " + result.getRasterImage().getUrl());
 							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
 						}
 					}
