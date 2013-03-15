@@ -11,11 +11,13 @@
 package org.geomajas.plugin.wmsclient.printing.client;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.plugin.printing.client.widget.PrintableLayerBuilder;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.OpacitySupported;
 
@@ -28,13 +30,14 @@ import org.geomajas.puregwt.client.map.layer.OpacitySupported;
 public class WmsLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
 		WmsLayer wmsLayer = (WmsLayer) layer;
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
-		info.setTiles(wmsLayer.getCurrentTiles());
+		info.setTiles(wmsLayer.getTiles(scale, worldBounds));
 		info.setTileHeight(wmsLayer.getTileConfig().getTileHeight());
 		info.setTileWidth(wmsLayer.getTileConfig().getTileWidth());
-		info.setScale(mapPresenter.getViewPort().getScale());
+		// the actual scale may be different !
+		info.setScale(mapPresenter.getViewPort().getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST));
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
 		rasterInfo.setShowing(wmsLayer.isShowing());

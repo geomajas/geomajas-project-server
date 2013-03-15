@@ -12,14 +12,15 @@
 package org.geomajas.plugin.wmsclient.client.layer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.render.WmsScalesRenderer;
 import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererFactory;
-import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRenderer;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
+import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.AbstractLayer;
@@ -42,6 +43,9 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Inject
 	protected WmsService wmsService;
+
+	@Inject
+	protected WmsTileService tileService;
 
 	@Inject
 	private WmsScalesRendererFactory rendererFactory;
@@ -108,14 +112,33 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return renderer;
 	}
 	
+	
+	
 	/** {@inheritDoc} */
 	@Override
-	public List<RasterTile> getCurrentTiles() {
-		if (renderer != null) {
-			WmsTiledScaleRenderer scaleRenderer = (WmsTiledScaleRenderer) renderer.getScale(viewPort.getScale());
-			return scaleRenderer.getTiles(viewPort.getBounds());
-		} else {
-			return Collections.<RasterTile>emptyList();
+	public List<RasterTile> getTiles(double scale, Bbox worldBounds) {
+		List<TileCode> codes = tileService.getTileCodesForBounds(getViewPort(), tileConfig,
+				worldBounds, scale);
+		List<RasterTile> tiles = new ArrayList<RasterTile>();
+		if (!codes.isEmpty()) {
+			double actualScale = viewPort.getZoomStrategy().getZoomStepScale(codes.get(0).getTileLevel());
+			for (TileCode code : codes) {
+				Bbox bounds = tileService.getWorldBoundsForTile(getViewPort(), tileConfig, code);
+				RasterTile tile = new RasterTile(getScreenBounds(actualScale, bounds), code.toString());
+				tile.setCode(code);
+				tile.setUrl(wmsService.getMapUrl(getConfig(), getCrs(), bounds, tileConfig.getTileWidth(),
+						tileConfig.getTileHeight()));
+				tiles.add(tile);
+			}
 		}
+		return tiles;
 	}
+	
+	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
+		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
+				Math.round(scale * worldBounds.getMaxX()) - Math.round(scale * worldBounds.getX()), Math.round(scale
+						* worldBounds.getMaxY())
+						- Math.round(scale * worldBounds.getY()));
+	}
+
 }
