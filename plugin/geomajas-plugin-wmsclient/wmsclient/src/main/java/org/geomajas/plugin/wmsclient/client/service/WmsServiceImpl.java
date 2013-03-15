@@ -92,10 +92,10 @@ public class WmsServiceImpl implements WmsService {
 						Document messageDom = XMLParser.parse(response.getText());
 						WmsGetCapabilitiesInfo capabilities;
 						switch (version) {
-							case v1_1_1:
+							case V1_1_1:
 								capabilities = new WmsGetCapabilitiesInfo111(messageDom.getDocumentElement());
 								break;
-							case v1_3_0:
+							case V1_3_0:
 								capabilities = new WmsGetCapabilitiesInfo130(messageDom.getDocumentElement());
 								break;
 							default:
@@ -129,7 +129,7 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: request type
 		url.append("&request=GetMap");
 
-		return finishUrl(WmsRequest.GetMap, url);
+		return finishUrl(WmsRequest.GETMAP, url);
 	}
 
 	/** {@inheritDoc} */
@@ -201,7 +201,7 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: transparent
 		url.append("&transparent=true");
 
-		return finishUrl(WmsRequest.GetLegendGraphic, url);
+		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);
 	}
 
 	// ------------------------------------------------------------------------
@@ -240,13 +240,13 @@ public class WmsServiceImpl implements WmsService {
 		url.append(URL.encode(layer.getConfig().getLayers()));
 		url.append("&request=GetFeatureInfo");
 		switch (layer.getConfig().getVersion()) {
-			case v1_3_0:
+			case V1_3_0:
 				url.append("&I=");
 				url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
 				url.append("&J=");
 				url.append((int) Math.round(screenLocation.getY() - screenBounds.getY()));
 				break;
-			case v1_1_1:
+			case V1_1_1:
 			default:
 				url.append("&X=");
 				url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
@@ -256,7 +256,7 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&INFO_FORMAT=");
 		url.append(format.toString());
 
-		return finishUrl(WmsRequest.GetFeatureInfo, url);
+		return finishUrl(WmsRequest.GETFEATUREINFO, url);
 	}
 
 	private StringBuilder getBaseUrlBuilder(WmsLayerConfiguration config) {
@@ -324,10 +324,10 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: crs/srs
 		switch (config.getVersion()) {
-			case v1_1_1:
+			case V1_1_1:
 				url.append("&srs=");
 				break;
-			case v1_3_0:
+			case V1_3_0:
 			default:
 				url.append("&crs=");
 				break;
@@ -370,11 +370,11 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: request type
 		url.append("&request=GetCapabilities");
 
-		return finishUrl(WmsRequest.GetCapabilities, url);
+		return finishUrl(WmsRequest.GETCAPABILITIES, url);
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.v1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
+		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
 				"WGS:84".equalsIgnoreCase(crs))) {
 			return true;
 		}

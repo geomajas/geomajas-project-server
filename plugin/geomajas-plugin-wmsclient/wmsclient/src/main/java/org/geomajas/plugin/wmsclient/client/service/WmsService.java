@@ -57,7 +57,7 @@ public interface WmsService {
 	 * @author Pieter De Graef
 	 */
 	public enum WmsVersion {
-		v1_1_1("1.1.1"), v1_3_0("1.3.0");
+		V1_1_1("1.1.1"), V1_3_0("1.3.0");
 
 		private String version;
 
@@ -76,7 +76,18 @@ public interface WmsService {
 	 * @author Pieter De Graef
 	 */
 	public enum WmsRequest {
-		GetMap, GetCapabilities, GetFeatureInfo, GetLegendGraphic
+		GETMAP("GetMap"), GETCAPABILITIES("GetCapabilities"), GETFEATUREINFO("GetFeatureInfo"), GETLEGENDGRAPHIC(
+				"GetLegendGraphic");
+
+		private String request;
+
+		private WmsRequest(String request) {
+			this.request = request;
+		}
+
+		public String toString() {
+			return request;
+		}
 	}
 
 	/**

@@ -40,7 +40,7 @@ public class GetFeatureInfoCommandTest {
 		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_1_1,
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
 				GetFeatureInfoFormat.HTML));
 		command.execute(request, response);
 		Assert.assertNotNull(response.getWmsResponse());
@@ -52,7 +52,7 @@ public class GetFeatureInfoCommandTest {
 		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_3_0,
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
 				GetFeatureInfoFormat.HTML));
 		command.execute(request, response);
 		Assert.assertNotNull(response.getWmsResponse());
@@ -64,7 +64,7 @@ public class GetFeatureInfoCommandTest {
 		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_1_1,
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
 				GetFeatureInfoFormat.GML2));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -78,7 +78,7 @@ public class GetFeatureInfoCommandTest {
 		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_3_0,
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
 				GetFeatureInfoFormat.GML3));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -92,7 +92,7 @@ public class GetFeatureInfoCommandTest {
 		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_1_1,
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
 				GetFeatureInfoFormat.GML3));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -106,7 +106,7 @@ public class GetFeatureInfoCommandTest {
 		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.v1_3_0,
+		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
 				GetFeatureInfoFormat.GML2));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -119,13 +119,13 @@ public class GetFeatureInfoCommandTest {
 		String crs = "crs";
 		String x = "i";
 		String y = "j";
-		if (version.equals(WmsVersion.v1_1_1)) {
+		if (version.equals(WmsVersion.V1_1_1)) {
 			crs = "srs";
 			x = "x";
 			y = "y";
 		}
 		String bbox = "-100.0,22.0,-84.0,38.0";
-		if (version.equals(WmsVersion.v1_3_0)) {
+		if (version.equals(WmsVersion.V1_3_0)) {
 			bbox = "22.0,-100.0,38.0,-84.0"; // Invert Axis order in WMS 1.3.0....
 		}
 

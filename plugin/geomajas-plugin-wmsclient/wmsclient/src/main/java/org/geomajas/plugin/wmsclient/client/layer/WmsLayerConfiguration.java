@@ -39,7 +39,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private boolean transparent = true;
 
-	private WmsVersion version = WmsVersion.v1_3_0;
+	private WmsVersion version = WmsVersion.V1_3_0;
 
 	private int legendWidth = 20;
 
