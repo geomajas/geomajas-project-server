@@ -13,7 +13,6 @@ package org.geomajas.puregwt.client.gfx;
 import org.geomajas.puregwt.client.service.DomService;
 
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -30,9 +29,9 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
+public abstract class AbstractHtmlObject implements HtmlObject {
 
-	private Widget parent;
+	private Widget widget;
 
 	private double opacity = 1;
 
@@ -46,12 +45,11 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 	 * @param tagName
 	 *            The tag-name of the HTML that should be created (DIV, IMG, ...).
 	 */
-	public AbstractHtmlObject(String tagName) {
-		Element element = DOM.createElement(tagName);
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "width", "100%");
-		DOM.setStyleAttribute(element, "height", "100%");
-		setElement(element);
+	public AbstractHtmlObject(Widget widget) {
+		this.widget = widget;
+		DOM.setStyleAttribute(widget.getElement(), "position", "absolute");
+		DOM.setStyleAttribute(widget.getElement(), "width", "100%");
+		DOM.setStyleAttribute(widget.getElement(), "height", "100%");
 	}
 
 	/**
@@ -64,12 +62,11 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 	 * @param height
 	 *            The height for this element, expressed in pixels.
 	 */
-	public AbstractHtmlObject(String tagName, int width, int height) {
-		Element element = DOM.createElement(tagName);
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "width", width + "px");
-		DOM.setStyleAttribute(element, "height", height + "px");
-		setElement(element);
+	public AbstractHtmlObject(Widget widget, int width, int height) {
+		this.widget = widget;
+		DOM.setStyleAttribute(widget.getElement(), "position", "absolute");
+		DOM.setStyleAttribute(widget.getElement(), "width", width + "px");
+		DOM.setStyleAttribute(widget.getElement(), "height", height + "px");
 	}
 
 	/**
@@ -86,14 +83,13 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 	 * @param left
 	 *            How many pixels should this object be placed from the left (relative to the parent origin).
 	 */
-	public AbstractHtmlObject(String tagName, int width, int height, int top, int left) {
-		Element element = DOM.createElement(tagName);
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "width", width + "px");
-		DOM.setStyleAttribute(element, "height", height + "px");
-		DomService.setTop(element, top);
-		DomService.setLeft(element, left);
-		setElement(element);
+	public AbstractHtmlObject(Widget widget, int width, int height, int top, int left) {
+		this.widget = widget;
+		DOM.setStyleAttribute(widget.getElement(), "position", "absolute");
+		DOM.setStyleAttribute(widget.getElement(), "width", width + "px");
+		DOM.setStyleAttribute(widget.getElement(), "height", height + "px");
+		DomService.setTop(widget.getElement(), top);
+		DomService.setLeft(widget.getElement(), left);
 	}
 
 	// ------------------------------------------------------------------------
@@ -101,59 +97,39 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 	// ------------------------------------------------------------------------
 
 	public Widget getParent() {
-		return parent;
-	}
-
-	public void setParent(Widget parent) {
-		Widget oldParent = this.parent;
-		if (parent == null) {
-			if (oldParent != null && oldParent.isAttached()) {
-				onDetach();
-				assert !isAttached() : "Failure of " + this.getClass().getName() + " to call super.onDetach()";
-			}
-			this.parent = null;
-		} else {
-			if (oldParent != null) {
-				throw new IllegalStateException("Cannot set a new parent without first clearing the old parent");
-			}
-			this.parent = parent;
-			if (parent.isAttached()) {
-				onAttach();
-				assert isAttached() : "Failure of " + this.getClass().getName() + " to call super.onAttach()";
-			}
-		}
+		return widget.getParent();
 	}
 
 	public int getWidth() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "width"));
+		return sizeToInt(DOM.getStyleAttribute(widget.getElement(), "width"));
 	}
 
 	public void setWidth(int width) {
-		DOM.setStyleAttribute(getElement(), "width", width + "px");
+		DOM.setStyleAttribute(widget.getElement(), "width", width + "px");
 	}
 
 	public int getHeight() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "height"));
+		return sizeToInt(DOM.getStyleAttribute(widget.getElement(), "height"));
 	}
 
 	public void setHeight(int height) {
-		DOM.setStyleAttribute(getElement(), "height", height + "px");
+		DOM.setStyleAttribute(widget.getElement(), "height", height + "px");
 	}
 
 	public int getLeft() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "left"));
+		return sizeToInt(DOM.getStyleAttribute(widget.getElement(), "left"));
 	}
 
 	public void setLeft(int left) {
-		DomService.setLeft(getElement(), left);
+		DomService.setLeft(widget.getElement(), left);
 	}
 
 	public int getTop() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "top"));
+		return sizeToInt(DOM.getStyleAttribute(widget.getElement(), "top"));
 	}
 
 	public void setTop(int top) {
-		DomService.setTop(getElement(), top);
+		DomService.setTop(widget.getElement(), top);
 	}
 
 	public double getOpacity() {
@@ -162,13 +138,28 @@ public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
-		DOM.setStyleAttribute(getElement(), "filter", "alpha(opacity=" + (opacity * 100) + ")");
-		DOM.setStyleAttribute(getElement(), "opacity", Double.toString(opacity));
+		DOM.setStyleAttribute(widget.getElement(), "filter", "alpha(opacity=" + (opacity * 100) + ")");
+		DOM.setStyleAttribute(widget.getElement(), "opacity", Double.toString(opacity));
 	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
+
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		widget.setVisible(visible);
+	}
+
+	@Override
+	public boolean isVisible() {
+		return widget.isVisible();
+	}
 
 	private int sizeToInt(String size) {
 		int position = size.indexOf('p');

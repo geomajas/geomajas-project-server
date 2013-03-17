@@ -11,12 +11,8 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.gwt.client.util.Dom;
-
-import com.google.gwt.dom.client.Node;
+import org.geomajas.puregwt.client.widget.DivPanel;
 
 /**
  * <p>
@@ -34,8 +30,6 @@ import com.google.gwt.dom.client.Node;
  */
 public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 
-	private List<HtmlObject> children = new ArrayList<HtmlObject>();
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -45,35 +39,29 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * set to 100%. We always set the width and height, because XHTML does not like DIV's without sizing attributes.
 	 */
 	public HtmlGroup() {
-		super("div");
+		super(new DivPanel());
 	}
 
 	/**
 	 * Create an HTML container widget that represents a DIV element.
 	 * 
-	 * @param width
-	 *            The width for this container, expressed in pixels.
-	 * @param height
-	 *            The height for this container, expressed in pixels.
+	 * @param width The width for this container, expressed in pixels.
+	 * @param height The height for this container, expressed in pixels.
 	 */
 	public HtmlGroup(int width, int height) {
-		super("div", width, height);
+		super(new DivPanel(), width, height);
 	}
 
 	/**
 	 * Create an HTML container widget that represents a DIV element.
 	 * 
-	 * @param width
-	 *            The width for this container, expressed in pixels.
-	 * @param height
-	 *            The height for this container, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this container be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this container be placed from the left (relative to the parent origin).
+	 * @param width The width for this container, expressed in pixels.
+	 * @param height The height for this container, expressed in pixels.
+	 * @param top How many pixels should this container be placed from the top (relative to the parent origin).
+	 * @param left How many pixels should this container be placed from the left (relative to the parent origin).
 	 */
 	public HtmlGroup(int width, int height, int top, int left) {
-		super("div", width, height, top, left);
+		super(new DivPanel(), width, height, top, left);
 	}
 
 	// ------------------------------------------------------------------------
@@ -85,66 +73,37 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * which means that they are added on top of the visibility stack and thus may obscure other children. Take this
 	 * order into account when adding children.
 	 * 
-	 * @param child
-	 *            The actual child to add.
+	 * @param child The actual child to add.
 	 */
 	public void add(HtmlObject child) {
-		child.setParent(this);
-		getElement().appendChild(child.getElement());
-		children.add(child);
+		asDivPanel().add(child);
 	}
 
 	/**
 	 * Insert a new child HtmlObject in the list at a certain index. The position will determine it's place in the
 	 * visibility stack, where the first element lies at the bottom and the last element on top.
 	 * 
-	 * @param child
-	 *            The actual child to add.
-	 * @param beforeIndex
-	 *            The position in the list where this child should end up.
+	 * @param child The actual child to add.
+	 * @param beforeIndex The position in the list where this child should end up.
 	 */
 	public void insert(HtmlObject child, int beforeIndex) {
-		if (beforeIndex >= getChildCount()) {
-			add(child);
-			return;
-		}
-		Node beforeNode = getElement().getChild(beforeIndex);
-		getElement().insertBefore(child.getElement(), beforeNode);
-		child.setParent(this);
-
-		List<HtmlObject> newChildList = new ArrayList<HtmlObject>();
-		for (int i = 0; i < children.size(); i++) {
-			if (i == beforeIndex) {
-				newChildList.add(child);
-			}
-			newChildList.add(children.get(i));
-		}
-		children = newChildList;
+		asDivPanel().insertBefore(child, beforeIndex);
 	}
 
 	/**
 	 * Remove a child element from the list.
 	 * 
-	 * @param child
-	 *            The actual child to remove.
+	 * @param child The actual child to remove.
 	 * @return Returns true or false indicating whether or not removal was successful.
 	 */
 	public boolean remove(HtmlObject child) {
-		int index = getIndex(child);
-		if (index >= 0) {
-			getElement().removeChild(getElement().getChild(index));
-			children.remove(index);
-			child.setParent(null);
-			return true;
-		}
-		return false;
+		return asDivPanel().remove(child);
 	}
 
 	/**
 	 * Bring a certain child to the front. In reality this child is moved to the back of the list.
 	 * 
-	 * @param child
-	 *            The child to bring to the front.
+	 * @param child The child to bring to the front.
 	 */
 	public void bringToFront(HtmlObject child) {
 		if (remove(child)) {
@@ -154,10 +113,7 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 
 	/** Remove all children from this container. */
 	public void clear() {
-		while (getElement().hasChildNodes()) {
-			getElement().removeChild(getElement().getFirstChild());
-		}
-		children.clear();
+		asDivPanel().clear();
 	}
 
 	/**
@@ -166,54 +122,57 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * @return The total number of children in this container.
 	 */
 	public int getChildCount() {
-		return children.size();
+		return asDivPanel().getChildCount();
 	}
 
 	/**
 	 * Get the child at a certain index.
 	 * 
-	 * @param index
-	 *            The index to look for a child.
+	 * @param index The index to look for a child.
 	 * @return The actual child if it was found.
 	 */
 	public HtmlObject getChild(int index) {
-		return children.get(index);
+		return (HtmlObject) (asDivPanel().getChild(index));
 	}
 
 	/**
 	 * Apply the given matrix transformation onto this container object. This transformation is taken literally, it does
 	 * not stack onto a current transformation should there be one.
 	 * 
-	 * @param scale
-	 *            The zooming factor.
-	 * @param x
-	 *            The x origin to where we want this container to zoom.
-	 * @param y
-	 *            The y origin to where we want this container to zoom.
+	 * @param scale The zooming factor.
+	 * @param x The x origin to where we want this container to zoom.
+	 * @param y The y origin to where we want this container to zoom.
 	 */
 	public void applyScale(double scale, int x, int y) {
 		if (Dom.isIE()) {
-			Dom.setStyleAttribute(getElement(), "zoom", Double.toString(scale));
+			Dom.setStyleAttribute(asWidget().getElement(), "zoom", Double.toString(scale));
 		} else {
-			Dom.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
-			Dom.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
-			Dom.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
-			Dom.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
+			Dom.setStyleAttribute(asWidget().getElement(), "MozTransform", "scale(" + scale + ")");
+			Dom.setStyleAttribute(asWidget().getElement(), "MozTransformOrigin", x + "px " + y + "px");
+			Dom.setStyleAttribute(asWidget().getElement(), "WebkitTransform", "scale(" + scale + ")");
+			Dom.setStyleAttribute(asWidget().getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
 		}
 		// Safari - if webkit stuff doesn't work, try: -o-transform: rotate(-90deg) translate(0px, -45px);
 	}
 
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private int getIndex(HtmlObject child) {
-		for (int i = 0; i < children.size(); i++) {
-			HtmlObject img = children.get(i);
-			if (img.equals(child)) {
-				return i;
-			}
-		}
-		return -1;
+	public void setHeight(String height) {
+		asWidget().setHeight(height);
 	}
+
+	public void setWidth(String width) {
+		asWidget().setWidth(width);
+	}
+
+	public void setSize(String width, String height) {
+		asWidget().setSize(width, height);
+	}
+
+	public void setPixelSize(int width, int height) {
+		asWidget().setPixelSize(width, height);
+	}
+
+	protected DivPanel asDivPanel() {
+		return (DivPanel) asWidget();
+	}
+
 }

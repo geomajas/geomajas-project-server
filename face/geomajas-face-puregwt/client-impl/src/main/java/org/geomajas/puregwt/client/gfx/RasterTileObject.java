@@ -14,7 +14,6 @@ package org.geomajas.puregwt.client.gfx;
 import org.geomajas.puregwt.client.map.render.VectorTilePresenter.TileView;
 
 import com.google.gwt.core.client.Callback;
-import com.google.gwt.user.client.DOM;
 
 /**
  * TileView implementation for rasterized tiles. Basically this class is a simple widget that represents an HTML IMG tag
@@ -53,6 +52,6 @@ public class RasterTileObject extends HtmlImageImpl implements TileView {
 	 *            The URL to the actual image representing the tile.
 	 */
 	public void setContent(String content) {
-		DOM.setElementProperty(getElement(), "src", content);
+		setSrc(content);
 	}
 }

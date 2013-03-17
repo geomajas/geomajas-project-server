@@ -12,7 +12,6 @@ package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.annotation.FutureApi;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -39,26 +38,11 @@ import com.google.gwt.user.client.ui.Widget;
 public interface HtmlObject extends IsWidget {
 
 	/**
-	 * Get the element that represents this object in the DOM tree.
-	 * 
-	 * @return The element that represents this object in the DOM tree.
-	 */
-	Element getElement();
-
-	/**
 	 * Get the parent widget for this HtmlObject.
 	 * 
 	 * @return The parent widget.
 	 */
 	Widget getParent();
-
-	/**
-	 * Set the parent for this object.
-	 * 
-	 * @param parent
-	 *            The parent widget.
-	 */
-	void setParent(Widget parent);
 
 	/**
 	 * Sets the object's width pixels. This width does not include decorations such as border, margin, and padding.

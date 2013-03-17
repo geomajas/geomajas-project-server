@@ -329,6 +329,7 @@ public class MapRendererImpl implements MapRenderer {
 		int delay = fetchDelay >= millis ? 0 : fetchDelay;
 		if (Dom.isIE()) {
 			delay = 0;
+			millis = 0;
 		}
 
 		// Calculate the map translation for the requested scale:

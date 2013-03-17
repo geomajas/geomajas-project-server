@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ErrorEvent;
@@ -19,10 +20,9 @@ import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Image;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
-import org.geomajas.gwt.client.util.Dom;
 
 /**
  * <p>
@@ -92,7 +92,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
 	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
 	 */
-	public HtmlImageImpl( String src,  int width,  int height,  int top, int left) {
+	public HtmlImageImpl(String src, int width, int height, int top, int left) {
 		this(src, width, height, top, left, null);
 	}
 
@@ -107,8 +107,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param onLoadingDone Call-back to be executed when the image finished loading, or when an error occurs while
 	 *        loading.
 	 */
-	public HtmlImageImpl( String src,  int width,  int height,  int top,
-			 int left,  Callback<String, String> onLoadingDone) {
+	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone) {
 		this(src, width, height, top, left, onLoadingDone, 0);
 	}
 
@@ -124,12 +123,14 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 *        loading.
 	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
-	public HtmlImageImpl( String src,  int width,  int height,  int top,
-			 int left,  Callback<String, String> onLoadingDone,  int nrRetries) {
-		super("img", width, height, top, left);
-
-		DOM.setStyleAttribute(getElement(), "border", "none");
-		DOM.setElementProperty(getElement(), "src", Dom.makeUrlAbsolute(src));
+	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone,
+			int nrRetries) {
+		super(new Image(Dom.makeUrlAbsolute(src)));
+		setWidth(width);
+		setHeight(height);
+		setTop(top);
+		setLeft(left);
+		DOM.setStyleAttribute(asWidget().getElement(), "border", "none");
 		// set visible when loaded !
 		setVisible(false);
 		onLoadingDone(onLoadingDone, nrRetries);
@@ -150,10 +151,9 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
 	public void onLoadingDone(Callback<String, String> onLoadingDone, int nrRetries) {
-		DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
 		ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone, nrRetries);
-		addHandler(reloader, LoadEvent.getType());
-		addHandler(reloader, ErrorEvent.getType());
+		asImage().addLoadHandler(reloader);
+		asImage().addErrorHandler(reloader);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @return The pointer to the actual image.
 	 */
 	public String getSrc() {
-		return DOM.getElementProperty(getElement(), "src");
+		return asImage().getUrl();
 	}
 
 	/**
@@ -171,7 +171,11 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param src The new image pointer.
 	 */
 	public void setSrc(String src) {
-		DOM.setImgSrc(getElement(), src);
+		asImage().setUrl(src);
+	}
+
+	protected Image asImage() {
+		return (Image) asWidget();
 	}
 
 	/**
@@ -205,7 +209,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 		public void onError(ErrorEvent event) {
 			nrAttempts--;
 			if (nrAttempts > 0) {
-				DOM.setImgSrc(getElement(), src);
+				asImage().setUrl(src);
 			} else if (onDoneLoading != null) {
 				onDoneLoading.onFailure(src);
 			}
