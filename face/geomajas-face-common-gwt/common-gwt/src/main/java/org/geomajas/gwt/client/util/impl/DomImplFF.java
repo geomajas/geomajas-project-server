@@ -10,6 +10,7 @@
  */
 package org.geomajas.gwt.client.util.impl;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -47,5 +48,27 @@ public class DomImplFF extends DomImpl {
 	public boolean isFireFox() {
 		return true;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isTransformationSupported() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setTransform(Element element, String transform) {
+		DOM.setStyleAttribute(element, "MozTransform", transform);
+	}	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setTransformOrigin(Element element, String origin) {
+		DOM.setStyleAttribute(element, "MozTransformOrigin", origin);
+	}
+
 
 }

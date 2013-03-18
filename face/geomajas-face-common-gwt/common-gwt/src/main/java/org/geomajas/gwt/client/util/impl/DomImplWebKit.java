@@ -10,6 +10,9 @@
  */
 package org.geomajas.gwt.client.util.impl;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+
 /**
  * Extends {@link DomImpl} for Webkit browsers (Safari, Chrome).
  * 
@@ -40,6 +43,27 @@ public class DomImplWebKit extends DomImpl {
 	@Override
 	public boolean isWebkit() {
 		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isTransformationSupported() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setTransform(Element element, String transform) {
+		DOM.setStyleAttribute(element, "WebkitTransform", transform);
+	}	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setTransformOrigin(Element element, String origin) {
+		DOM.setStyleAttribute(element, "WebkitTransformOrigin", origin);
 	}
 
 }

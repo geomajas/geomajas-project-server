@@ -322,4 +322,37 @@ public class DomImpl {
 	public boolean isOrHasChild(Element parent, Element child) {
 		return DOM.isOrHasChild(parent, child);
 	}
+	
+	/**
+	 * Is the browser supporting transformations? Not all browsers support alternatives, so this check can be necessary.
+	 * 
+	 * @return true or false - yes or no.
+	 * @since 1.3.0
+	 */
+	public boolean isTransformationSupported() {
+		return false;
+	}
+	
+	/**
+	 * Set the CSS3 transform property (e.g. 'scale(2)').
+	 * 
+	 * @param element
+	 * @param transform
+	 * @since 1.3.0
+	 */
+	public void setTransform(Element element, String transform) {
+		throw new RuntimeException("Transformation unsupported");
+	}
+
+	/**
+	 * Set the CSS3 transform-origin property (defaults to center, e.g. '10 px 20 px').
+	 * 
+	 * @param element
+	 * @param origin
+	 * @since 1.3.0
+	 */
+	public void setTransformOrigin(Element element, String origin) {
+		throw new RuntimeException("Transformation origin unsupported");
+	}
+
 }

@@ -252,4 +252,36 @@ public class Dom extends com.google.gwt.user.client.DOM {
 		return IMPL.isOrHasChild(parent, child);
 	}
 	
+	/**
+	 * Is the browser supporting transformations? Not all browsers offer alternatives, so this check can be necessary.
+	 * 
+	 * @return true or false - yes or no.
+	 * @since 1.3.0
+	 */
+	public static boolean isTransformationSupported() {
+		return IMPL.isTransformationSupported();
+	}
+	
+	/**
+	 * Set the CSS3 transform property (e.g. 'scale(2)').
+	 * 
+	 * @param element
+	 * @param transform
+	 * @since 1.3.0
+	 */
+	public static void setTransform(Element element, String transform) {
+		IMPL.setTransform(element, transform);
+	}	
+
+	/**
+	 * Set the CSS3 transform-origin property (defaults to center, e.g. '10 px 20 px').
+	 * 
+	 * @param element
+	 * @param origin
+	 * @since 1.3.0
+	 */
+	public static void setTransformOrigin(Element element, String origin) {
+		IMPL.setTransformOrigin(element, origin);
+	}	
+
 }

@@ -11,6 +11,7 @@
 package org.geomajas.gwt.client.util.impl;
 
 import com.google.gwt.dom.client.Node;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -47,5 +48,26 @@ public class DomImplIE9 extends DomImpl {
 		// http://www.quirksmode.org/blog/archives/2006/01/contains_for_mo.html
 		return (parent === child) || !!(parent.compareDocumentPosition(child) & 16);
 	}-*/;	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isTransformationSupported() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setTransform(Element element, String transform) {
+		DOM.setStyleAttribute(element, "msTransform", transform);
+	}	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setTransformOrigin(Element element, String origin) {
+		DOM.setStyleAttribute(element, "msTransformOrigin", origin);
+	}
 
 }

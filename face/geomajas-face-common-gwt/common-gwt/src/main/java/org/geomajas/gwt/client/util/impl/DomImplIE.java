@@ -91,6 +91,23 @@ public class DomImplIE extends DomImpl {
 		throw new RuntimeException("SVG unsupported");
 	}
 
-
+	/**
+	 * Only very limited support for transformations, so {@link #supportsTransformations()} still returns false.
+	 * 
+	 * @param element
+	 * @param transform
+	 * @since 1.3.0
+	 */
+	public void setTransform(Element element, String transform) {
+		if (transform.contains("scale")) {
+			try {
+				String scaleValue = transform.substring(transform.indexOf("scale(") + 6);
+				scaleValue = scaleValue.substring(0, scaleValue.indexOf(")"));
+				Dom.setStyleAttribute(element, "zoom", scaleValue);
+			} catch (Exception e) {
+				Log.logWarn("Unparseable transformation, should be limited to scaling in IE<9: " + transform, e);
+			}
+		}
+	}
 
 }
