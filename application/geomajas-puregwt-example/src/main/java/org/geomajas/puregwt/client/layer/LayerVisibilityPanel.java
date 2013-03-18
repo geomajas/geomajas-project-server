@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.layer;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
@@ -95,6 +96,7 @@ public class LayerVisibilityPanel extends ContentPanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
+			mapPresenter.getViewPort().applyBounds(new Bbox(1000000, 4000000, 500000, 500000));
 			// When the map initializes: add a CheckBox for every layer, so the use can toggle visibility:
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
