@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.map.ViewPort;
@@ -146,7 +147,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		if (scalePresenter != null) {
 			if (visible) {
 				visibleScale = scale;
-				scalePresenter.getHtmlContainer().applyScale(1, 0, 0);
+				if (Dom.isTransformationSupported()) {
+					scalePresenter.getHtmlContainer().applyScale(1, 0, 0);
+				}
 				scalePresenter.getHtmlContainer().setVisible(true);
 			} else if (scale != visibleScale) {
 				scalePresenter.getHtmlContainer().setVisible(false);

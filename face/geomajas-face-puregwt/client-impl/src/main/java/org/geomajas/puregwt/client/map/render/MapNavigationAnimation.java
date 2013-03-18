@@ -183,7 +183,7 @@ public class MapNavigationAnimation extends Animation {
 			MapScalesRenderer presenter = mapScalesRenderers.get(i);
 			TiledScaleRenderer scalePresenter = presenter.getVisibleScale();
 			if (scalePresenter != null) {
-				if (i < nrAnimatedLayers && !Dom.isIE()) {
+				if (i < nrAnimatedLayers && Dom.isTransformationSupported()) {
 					scalePresenter.getHtmlContainer().applyScale(currentScale, 0, 0);
 					scalePresenter.getHtmlContainer().setLeft((int) Math.round(currentX));
 					scalePresenter.getHtmlContainer().setTop((int) Math.round(currentY));

@@ -66,7 +66,7 @@ public final class DomService {
 	 *            The left value.
 	 */
 	public static void setLeft(Element element, String left) {
-		setTop(element, sizeToInt(left));
+		setLeft(element, sizeToInt(left));
 	}
 
 	/**

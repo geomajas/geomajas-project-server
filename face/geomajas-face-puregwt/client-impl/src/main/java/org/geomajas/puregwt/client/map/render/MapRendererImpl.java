@@ -327,7 +327,7 @@ public class MapRendererImpl implements MapRenderer {
 	private void navigateTo(Bbox bounds, double scale, int millis) {
 		navigationBusy = true;
 		int delay = fetchDelay >= millis ? 0 : fetchDelay;
-		if (Dom.isIE()) {
+		if ((Dom.isIE() && !Dom.isSvg())) {
 			delay = 0;
 			millis = 0;
 		}
