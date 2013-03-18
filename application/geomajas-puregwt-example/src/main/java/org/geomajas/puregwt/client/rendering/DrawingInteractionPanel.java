@@ -23,10 +23,9 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -67,7 +66,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return mapDecorator;
 	}
-
+	
 	/**
 	 * Map initialization handler that draws a rectangle in screen space.
 	 * 
@@ -93,11 +92,6 @@ public class DrawingInteractionPanel extends ContentPanel {
 			rectangle.addMouseDownHandler(dragHandler);
 			rectangle.addMouseUpHandler(dragHandler);
 			rectangle.addMouseMoveHandler(dragHandler);
-			rectangle.addMouseOutHandler(dragHandler);
-			text.addMouseDownHandler(dragHandler);
-			text.addMouseUpHandler(dragHandler);
-			text.addMouseMoveHandler(dragHandler);
-			text.addMouseOutHandler(dragHandler);
 		}
 	}
 
@@ -106,7 +100,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class DragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler {
+	private class DragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler {
 
 		private boolean dragging;
 
@@ -116,30 +110,36 @@ public class DrawingInteractionPanel extends ContentPanel {
 
 		public void onMouseMove(MouseMoveEvent event) {
 			if (dragging) {
+				// notice that you can drag outside the visible map bounds !!!
+				// applications may limit dragging to mouse positions inside the map
 				int deltaX = event.getX() - startX;
 				int deltaY = event.getY() - startY;
 				rectangle.setX(rectangle.getX() + deltaX);
 				rectangle.setY(rectangle.getY() + deltaY);
 				text.setX(text.getX() + deltaX);
 				text.setY(text.getY() + deltaY);
+				event.stopPropagation();
 			}
 		}
 
-		public void onMouseUp(MouseUpEvent event) {
-			dragging = false;
-		}
-
 		public void onMouseDown(MouseDownEvent event) {
+			// let the rectangle capture all events
+			DOM.setCapture(rectangle.getElement());
 			dragging = true;
 			startX = event.getX();
 			startY = event.getY();
-
+			// prevent native drag/drop
+			event.getNativeEvent().preventDefault();
 			// Stop the event from reaching the map controller: no panning while we're dragging the rectangle.
 			event.stopPropagation();
 		}
 
-		public void onMouseOut(MouseOutEvent arg0) {
+		public void onMouseUp(MouseUpEvent event) {
 			dragging = false;
+			// release event capture
+			DOM.releaseCapture(rectangle.getElement());
+			event.stopPropagation();
 		}
+
 	}
 }

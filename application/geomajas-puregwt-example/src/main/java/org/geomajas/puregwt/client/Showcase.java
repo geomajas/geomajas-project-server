@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
@@ -41,6 +41,6 @@ public class Showcase implements EntryPoint {
 			}
 		});
 
-		RootPanel.get().add(layout);
+		RootLayoutPanel.get().add(layout);
 	}
 }

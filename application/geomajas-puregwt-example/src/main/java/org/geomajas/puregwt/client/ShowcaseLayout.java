@@ -19,7 +19,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.TreeViewModel;
@@ -29,7 +29,7 @@ import com.google.gwt.view.client.TreeViewModel;
  * 
  * @author Pieter De Graef
  */
-public class ShowcaseLayout extends Composite {
+public class ShowcaseLayout extends ResizeComposite {
 
 	/**
 	 * UI binder interface for this showcase layout.

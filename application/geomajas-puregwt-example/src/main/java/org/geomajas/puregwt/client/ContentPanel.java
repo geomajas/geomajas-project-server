@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.user.client.ui.LazyPanel;
+import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public abstract class ContentPanel extends LazyPanel {
+public abstract class ContentPanel extends LazyPanel implements RequiresResize {
 
 	private ContentPanelView view;
 
@@ -43,6 +44,14 @@ public abstract class ContentPanel extends LazyPanel {
 		view.setDescription(getDescription());
 		view.setContentWidget(getContentWidget());
 		return view;
+	}
+
+	@Override
+	public void onResize() {
+		Widget widget = getWidget();
+		if (widget instanceof RequiresResize) {
+			((RequiresResize) widget).onResize();
+		}
 	}
 
 	public MapPresenter getMapPresenter() {
