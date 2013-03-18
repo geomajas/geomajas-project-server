@@ -180,18 +180,41 @@ public final class LayersModelImpl implements LayersModel {
 
 	public boolean moveLayer(Layer layer, int index) {
 		int currentIndex = getLayerPosition(layer);
-		if (currentIndex < 0 || currentIndex == index) {
-			return false;
-		}
-		ClientLayerInfo layerInfo = mapInfo.getLayers().get(currentIndex);
-
 		// Check the new index:
 		if (index < 0) {
 			index = 0;
 		} else if (index > layers.size() - 1) {
 			index = layers.size() - 1;
 		}
+		if (currentIndex < 0 || currentIndex == index) {
+			return false;
+		}
 
+		
+		ClientLayerInfo layerInfo = null;
+		int newIndexMapInfo = -1;
+		// Check if both the layer with whom the specified layer will swap (concerning the ordering) and 
+		// the specified layer are server layers. If so their position in the mapInfo.getLayers() must also be swapped 
+		if (layer instanceof ServerLayer && layers.get(index) instanceof ServerLayer) {
+			ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
+			layerInfo = serverLayer.getLayerInfo();
+			
+			int idx = 0;
+			for (ClientLayerInfo layerInMapInfo : mapInfo.getLayers()) {
+				if (layerInMapInfo.getId().equals(layerInfo.getId())) {
+					
+					if (index > currentIndex) {
+						newIndexMapInfo = idx + 1; 
+					} else {
+						newIndexMapInfo = idx - 1;
+					}
+					break; // Stop when found
+				}
+				idx++;
+			}
+		}
+
+		
 		// Index might have been altered; check again if it is really a change:
 		if (currentIndex == index) {
 			return false;
@@ -199,11 +222,13 @@ public final class LayersModelImpl implements LayersModel {
 
 		// First remove the layer from the list:
 		layers.remove(layer);
-		mapInfo.getLayers().remove(layerInfo);
-
 		// Change the order:
 		layers.add(index, layer);
-		mapInfo.getLayers().add(index, layerInfo);
+
+		if (layerInfo != null && newIndexMapInfo >= 0) {
+			mapInfo.getLayers().remove(layerInfo); // remove from mapInfo.layers
+			mapInfo.getLayers().add(newIndexMapInfo, layerInfo); // put back (changed order)
+		}
 
 		// Send out the correct event:
 		eventBus.fireEvent(new LayerOrderChangedEvent(currentIndex, index));
