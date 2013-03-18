@@ -182,7 +182,7 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: layers
 		url.append("&layer=");
-		url.append(URL.encode(wmsConfig.getLayers()));
+		url.append(wmsConfig.getLayers()); // No URL.encode here!
 
 		// Parameter: request type
 		url.append("&request=GetLegendGraphic");
@@ -237,7 +237,7 @@ public class WmsServiceImpl implements WmsService {
 				layer.getTileConfig().getTileHeight());
 
 		url.append("&QUERY_LAYERS=");
-		url.append(URL.encode(layer.getConfig().getLayers()));
+		url.append(layer.getConfig().getLayers()); // No URL.encode here!
 		url.append("&request=GetFeatureInfo");
 		switch (layer.getConfig().getVersion()) {
 			case V1_3_0:
@@ -283,7 +283,7 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: layers
 		url.append("&layers=");
-		url.append(URL.encode(config.getLayers()));
+		url.append(config.getLayers()); // No URL.encode here, performed in finishUrl
 
 		// Parameter: width
 		url.append("&width=");
@@ -332,7 +332,7 @@ public class WmsServiceImpl implements WmsService {
 				url.append("&crs=");
 				break;
 		}
-		url.append(URL.encode(crs));
+		url.append(crs);  // No URL.encode here, performed in finishUrl
 
 		// Parameter: styles
 		url.append("&styles=");
