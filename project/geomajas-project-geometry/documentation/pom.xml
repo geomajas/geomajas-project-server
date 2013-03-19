@@ -20,7 +20,7 @@
 
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-geometry-documentation</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Geomajas Geometry documentation</name>
@@ -29,10 +29,4 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-geometry-all-1.1.0/geomajas-project-geometry-documentation</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-geometry-all-1.1.0/geomajas-project-geometry-documentation</developerConnection>
-    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-project-geometry-all-1.1.0/geomajas-project-geometry-documentation</url>
-  </scm>
 </project>
