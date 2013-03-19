@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-common-gwt-all</artifactId>
-	<version>1.3.0</version>
+	<version>1.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>common-gwt plug-in parent</name>
 	<description>common-gwt plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-common-gwt-all-1.3.0</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-common-gwt-all-1.3.0</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-common-gwt-all-1.3.0</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-common-gwt</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-common-gwt</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-common-gwt</url>
 	</scm>
 
 	<dependencyManagement>
