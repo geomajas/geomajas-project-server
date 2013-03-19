@@ -138,8 +138,7 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 
 			public String transform(WmsRequest request, String url) {
 				switch (request) {
-					case GETCAPABILITIES:
-					case GETFEATUREINFO:
+					case GETCAPABILITIES:  /* Not for GETFEATUREINFO ! */
 						return "proxy?url=" + url;
 					default:
 				}
