@@ -105,9 +105,9 @@ public class ImageServiceVectorTileTest {
 
 	private static final double DELTA = 0.01;
 
-//	@Qualifier("ImageServiceVectorTileTest.path")
-//	@Autowired
-	private String imagePath = "org/geomajas/plugin/rasterizing/images/imageservice/hudson/vectortile";
+	@Qualifier("ImageServiceVectorTileTest.path")
+	@Autowired
+	private String imagePath;
 
 	@Before
 	public void login() {
@@ -166,8 +166,7 @@ public class ImageServiceVectorTileTest {
 		getMultiLineLabelStyle().getFont().setSize(8);
 		// italic
 		getMultiLineLabelStyle().getFont().setStyle("italic");
-		// disabled because of RAST-71
-//		checkMultiLine("multiline_black_1_labeled_font_italic.png", true, true);
+		checkMultiLine("multiline_black_1_labeled_font_italic.png", true, true);
 		getMultiLineLabelStyle().getFont().setStyle("normal");
 		// weight
 		getMultiLineLabelStyle().getFont().setWeight("bold");
@@ -222,8 +221,7 @@ public class ImageServiceVectorTileTest {
 		getPointLabelStyle().getFont().setSize(8);
 		// italic
 		getPointLabelStyle().getFont().setStyle("italic");
-		// disabled because of RAST-71
-//		checkPoint("point_black_1_labeled_font_italic.png", true, true);
+		checkPoint("point_black_1_labeled_font_italic.png", true, true);
 		getPointLabelStyle().getFont().setStyle("normal");
 		// weight
 		getPointLabelStyle().getFont().setWeight("bold");
@@ -275,8 +273,7 @@ public class ImageServiceVectorTileTest {
 		getMultiPolygonLabelStyle().getFont().setSize(8);
 		// italic
 		getMultiPolygonLabelStyle().getFont().setStyle("italic");
-		// disabled because of RAST-71
-//		checkMultiPolygon("multipolygon_black_1_labeled_font_italic.png", true, true);
+		checkMultiPolygon("multipolygon_black_1_labeled_font_italic.png", true, true);
 		getMultiPolygonLabelStyle().getFont().setStyle("normal");
 		// weight
 		getMultiPolygonLabelStyle().getFont().setWeight("bold");
