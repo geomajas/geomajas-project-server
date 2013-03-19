@@ -83,6 +83,27 @@
     &lt;inherits name="org.geomajas.plugin.rasterizing.Rasterizing"/&gt;
 &lt;/module&gt;</programlisting>
     </informalexample>
+
+    <para>There is also a dependency for the pure GWT face. For the pure GWT
+    face, the toolbar actions have not yet been implemented, though. The
+    dependency just contains a module definition that includes the DTO
+    objects. This dependency is useful for pure GWT plugins that need to
+    communicate with rasterizing backend, like the Simple Printing
+    Plugin:</para>
+
+    <para><informalexample>
+        <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt; 
+    &lt;artifactId&gt;geomajas-plugin-rasterizing-puregwt&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+      </informalexample>In this case you should add the same module
+    inheritance to your GWT module descriptor:</para>
+
+    <para><informalexample>
+        <programlisting>&lt;module&gt;
+    &lt;inherits name="org.geomajas.plugin.rasterizing.Rasterizing"/&gt;
+&lt;/module&gt;</programlisting>
+      </informalexample></para>
   </section>
 
   <section>
@@ -221,12 +242,14 @@
           <row>
             <entry>request parameters</entry>
 
-            <entry><itemizedlist>
+            <entry>
+              <itemizedlist>
                 <listitem>
                   <para>clientMapInfo: the map info with the rasterizing
                   extensions</para>
                 </listitem>
-              </itemizedlist></entry>
+              </itemizedlist>
+            </entry>
           </row>
 
           <row>
@@ -245,7 +268,8 @@
           <row>
             <entry>response parameters</entry>
 
-            <entry><itemizedlist>
+            <entry>
+              <itemizedlist>
                 <listitem>
                   <para>mapKey: cache key for the map image</para>
                 </listitem>
@@ -261,7 +285,8 @@
                 <listitem>
                   <para>legendUrl: URL of the legend image</para>
                 </listitem>
-              </itemizedlist></entry>
+              </itemizedlist>
+            </entry>
           </row>
         </tbody>
       </tgroup>
