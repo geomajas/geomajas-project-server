@@ -18,7 +18,7 @@
 	</parent>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-face-gwt-documentation</artifactId>
-	<version>1.13.0</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas GWT face documentation</name>
 	<description>Geomajas GWT face documentation</description>
@@ -62,10 +62,4 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.13.0/geomajas-face-gwt-documentation</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.13.0/geomajas-face-gwt-documentation</developerConnection>
-    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-gwt-1.13.0/geomajas-face-gwt-documentation</url>
-  </scm>
 </project>
