@@ -15,7 +15,7 @@
 	<parent>
 		<artifactId>geomajas-plugin-rasterizing-all</artifactId>
 		<groupId>org.geomajas.plugin</groupId>
-		<version>1.2.0-M1</version>
+		<version>1.2.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-rasterizing-gwt-example</artifactId>
@@ -25,9 +25,9 @@
 	<url>http://www.geomajas.org/</url>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/plugin/geomajas-plugin-rasterizing/rasterizing-gwt-example/tags/geomajas-plugin-rasterizing-all-1.2.0-M1/rasterizing-gwt-example</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/geomajas-plugin-rasterizing/rasterizing-gwt-example/tags/geomajas-plugin-rasterizing-all-1.2.0-M1/rasterizing-gwt-example</developerConnection>
-		<url>https://svn.geomajas.org/majas/plugin/geomajas-plugin-rasterizing/rasterizing-gwt-example/tags/geomajas-plugin-rasterizing-all-1.2.0-M1/rasterizing-gwt-example</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/plugin/geomajas-plugin-rasterizing/rasterizing-gwt-example</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/geomajas-plugin-rasterizing/rasterizing-gwt-example</developerConnection>
+		<url>https://svn.geomajas.org/majas/plugin/geomajas-plugin-rasterizing/rasterizing-gwt-example</url>
 	</scm> 
 
 	<licenses>
