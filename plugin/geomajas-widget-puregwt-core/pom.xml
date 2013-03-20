@@ -99,7 +99,7 @@
 
 	<properties>
 		<widget-puregwt-core-backend-version>1.11.0</widget-puregwt-core-backend-version>
-		<widget-puregwt-core-puregwt-face-version>1.0.0-SNAPSHOT</widget-puregwt-core-puregwt-face-version>
+		<widget-puregwt-core-puregwt-face-version>1.0.0-M4</widget-puregwt-core-puregwt-face-version>
 	</properties>
 
 </project>
