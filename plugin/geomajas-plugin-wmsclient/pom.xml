@@ -28,6 +28,12 @@
 	<name>geomajas-plugin-wmsclient plug-in parent</name>
 	<description>geomajas-plugin-wmsclient plug-in grouping module</description>
 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-wmsclient</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-wmsclient</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-wmsclient</url>
+	</scm>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
