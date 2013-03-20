@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-gwt</artifactId>
-	<version>1.14.0-SNAPSHOT</version>
+	<version>1.13.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas gwt face</name>
 	<description>Geomajas gwt face</description>
@@ -182,7 +182,7 @@
 	<properties>
 		<gwt-face-backend-version>1.11.1</gwt-face-backend-version>
 		<gwt-face-gwt-version>2.5.0</gwt-face-gwt-version>
-		<gwt-face-common-gwt-version>1.3.0-SNAPSHOT</gwt-face-common-gwt-version>
+		<gwt-face-common-gwt-version>1.3.0</gwt-face-common-gwt-version>
 		<gwt-face-smartgwt-version>3.1</gwt-face-smartgwt-version>
 	</properties>
 	
