@@ -275,10 +275,10 @@
 
 	<properties>
 		<printing-backend-version>1.11.1</printing-backend-version>
-		<printing-gwt-face-version>1.13.0-SNAPSHOT</printing-gwt-face-version>
-		<printing-puregwt-face-version>1.0.0-SNAPSHOT</printing-puregwt-face-version>
-		<printing-widget-puregwt-version>1.0.0-SNAPSHOT</printing-widget-puregwt-version>
-		<printing-rasterizing-version>1.2.0-SNAPSHOT</printing-rasterizing-version>
+		<printing-gwt-face-version>1.13.0</printing-gwt-face-version>
+		<printing-puregwt-face-version>1.0.0-M4</printing-puregwt-face-version>
+		<printing-widget-puregwt-version>1.0.0-M2</printing-widget-puregwt-version>
+		<printing-rasterizing-version>1.2.0-M1</printing-rasterizing-version>
 		<printing-gwt-version>2.5.0</printing-gwt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
