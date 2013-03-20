@@ -17,15 +17,15 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>geomajas-face-puregwt</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M4</version>
 	<packaging>pom</packaging>
 	<name>Geomajas PureGWT face</name>
 	<description>Geomajas PureGWT face</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-puregwt</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M4</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M4</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-puregwt-1.0.0-M4</url>
 	</scm>
 
 	<developers>
