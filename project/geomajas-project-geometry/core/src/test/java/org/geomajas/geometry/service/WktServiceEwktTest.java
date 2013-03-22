@@ -94,7 +94,7 @@ public class WktServiceEwktTest {
 	@Test
 	public void testParsePolygon() throws WktException {
 		Assert.assertEquals(EWKT_EXT + "POLYGON EMPTY", WktService.toEwkt(new Geometry(Geometry.POLYGON, SRID, 0)));
-		Assert.assertEquals(EWKT_EXT + "POLYGON ((10.0 10.0, 10.0 20.0, 20.0 20.0, 10.0 10.0),"
+		Assert.assertEquals(EWKT_EXT + "POLYGON ((10.0 10.0, 10.0 20.0, 20.0 20.0, 10.0 10.0), "
 				+ "(14.0 14.0, 14.0 16.0, 16.0 16.0, 14.0 14.0))", WktService.toEwkt(polygon));
 	}
 
@@ -102,14 +102,14 @@ public class WktServiceEwktTest {
 	public void testParseMultiPoint() throws WktException {
 		Assert.assertEquals(EWKT_EXT + "MULTIPOINT EMPTY",
 				WktService.toEwkt(new Geometry(Geometry.MULTI_POINT, SRID, 0)));
-		Assert.assertEquals(EWKT_EXT + "MULTIPOINT ((10.0 20.0),(20.0 20.0))", WktService.toEwkt(multiPoint));
+		Assert.assertEquals(EWKT_EXT + "MULTIPOINT ((10.0 20.0), (20.0 20.0))", WktService.toEwkt(multiPoint));
 	}
 
 	@Test
 	public void testParseMultiLineString() throws WktException {
 		Assert.assertEquals(EWKT_EXT + "MULTILINESTRING EMPTY",
 				WktService.toEwkt(new Geometry(Geometry.MULTI_LINE_STRING, SRID, 0)));
-		Assert.assertEquals(EWKT_EXT + "MULTILINESTRING ((10.0 10.0, 10.0 20.0, 20.0 20.0),(14.0 14.0, 14.0 16.0))",
+		Assert.assertEquals(EWKT_EXT + "MULTILINESTRING ((10.0 10.0, 10.0 20.0, 20.0 20.0), (14.0 14.0, 14.0 16.0))",
 				WktService.toEwkt(multiLineString));
 	}
 
@@ -117,8 +117,8 @@ public class WktServiceEwktTest {
 	public void testParseMultiPolygon() throws WktException {
 		Assert.assertEquals(EWKT_EXT + "MULTIPOLYGON EMPTY",
 				WktService.toEwkt(new Geometry(Geometry.MULTI_POLYGON, SRID, 0)));
-		Assert.assertEquals(EWKT_EXT + "MULTIPOLYGON (((10.0 10.0, 10.0 20.0, 20.0 20.0, 10.0 10.0),"
-				+ "(14.0 14.0, 14.0 16.0, 16.0 16.0, 14.0 14.0)),((10.0 10.0, 10.0 20.0, 20.0 20.0, 10.0 10.0)))",
+		Assert.assertEquals(EWKT_EXT + "MULTIPOLYGON (((10.0 10.0, 10.0 20.0, 20.0 20.0, 10.0 10.0), "
+				+ "(14.0 14.0, 14.0 16.0, 16.0 16.0, 14.0 14.0)), ((10.0 10.0, 10.0 20.0, 20.0 20.0, 10.0 10.0)))",
 				WktService.toEwkt(multiPolygon));
 	}
 
@@ -147,11 +147,11 @@ public class WktServiceEwktTest {
 
 	@Test
 	public void formatPointCornerCases() {
+		// lenient parsing (GEOM-13), we allow the following
 		try {
 			WktService.toGeometry(EWKT_EXT + "POINT(10.0 20.0)");
-			Assert.fail();
 		} catch (WktException e) {
-			// We expect to get here.
+			Assert.fail();
 		}
 
 		try {
@@ -191,7 +191,7 @@ public class WktServiceEwktTest {
 
 	@Test
 	public void formatLineString() throws WktException {
-		Geometry geometry = WktService.toGeometry(EWKT_EXT + "LINESTRING (1.0 2.0, 3.0 4.0)");
+		Geometry geometry = WktService.toGeometry(EWKT_EXT + "LINESTRING(1.0 2.0, 3.0 4.0)");
 		Assert.assertEquals(Geometry.LINE_STRING, geometry.getGeometryType());
 		Assert.assertEquals(1.0, geometry.getCoordinates()[0].getX());
 		Assert.assertEquals(2.0, geometry.getCoordinates()[0].getY());

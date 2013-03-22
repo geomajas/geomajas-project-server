@@ -130,7 +130,17 @@ public final class WktService {
 	/** Parse a WKT string. No EWKT here! */
 	private static Geometry parseWkt(String wkt) throws WktException {
 		if (wkt != null) {
-			String type = typeWktToGeom(wkt.substring(0, wkt.indexOf(' ')).trim());
+			int i1 = wkt.indexOf('(');
+			int i2 = wkt.indexOf(' ');
+			// allow both '(' and ' ('
+			int i = Math.min(i1, i2);
+			if (i < 0) {
+				i = (i1 > 0 ? i1 : i2);
+			}
+			String type = null;
+			if (i >= 0) {
+				type = typeWktToGeom(wkt.substring(0, i).trim());
+			}
 			if (type == null) {
 				throw new WktException(ERR_MSG + "type of geometry not supported");
 			}
@@ -243,92 +253,78 @@ public final class WktService {
 	}
 
 	private static String toWktPoint(Geometry geometry) {
-		if (isEmpty(geometry)) {
-			return "POINT EMPTY";
-		}
-		return "POINT (" + geometry.getCoordinates()[0].getX() + " " + geometry.getCoordinates()[0].getY() + ")";
-	}
-
-	private static String toWktLineString(Geometry geometry) {
-		if (isEmpty(geometry)) {
-			return "LINESTRING EMPTY";
-		}
-		StringBuilder builder = new StringBuilder("LINESTRING (");
-		for (int i = 0; i < geometry.getCoordinates().length; i++) {
-			if (i > 0) {
-				builder.append(", ");
-			}
-			builder.append(geometry.getCoordinates()[i].getX());
-			builder.append(" ");
-			builder.append(geometry.getCoordinates()[i].getY());
-		}
-		builder.append(")");
+		StringBuilder builder = new StringBuilder();
+		builder.append("POINT ");
+		appendCoordinates(geometry, builder);
 		return builder.toString();
 	}
 
 	private static String toWktPolygon(Geometry geometry) {
-		if (isEmpty(geometry)) {
-			return "POLYGON EMPTY";
-		}
-		StringBuilder builder = new StringBuilder("POLYGON (");
-		if (geometry.getGeometries() != null) {
-			for (int i = 0; i < geometry.getGeometries().length; i++) {
-				if (i > 0) {
-					builder.append(",");
-				}
-				String ringWkt = toWktLineString(geometry.getGeometries()[i]);
-				builder.append(ringWkt.substring(ringWkt.indexOf('(')));
-			}
-		}
-		builder.append(")");
+		StringBuilder builder = new StringBuilder();
+		builder.append("POLYGON ");
+		appendCoordinates(geometry, builder);
+		return builder.toString();
+	}
+
+	private static String toWktLineString(Geometry geometry) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("LINESTRING ");
+		appendCoordinates(geometry, builder);
 		return builder.toString();
 	}
 
 	private static String toWktMultiPoint(Geometry geometry) {
-		if (isEmpty(geometry)) {
-			return "MULTIPOINT EMPTY";
-		}
-		StringBuilder builder = new StringBuilder("MULTIPOINT (");
-		for (int i = 0; i < geometry.getGeometries().length; i++) {
-			if (i > 0) {
-				builder.append(",");
-			}
-			String pointWkt = toWktPoint(geometry.getGeometries()[i]);
-			builder.append(pointWkt.substring(pointWkt.indexOf('(')));
-		}
-		builder.append(")");
-		return builder.toString();
-	}
-
-	private static String toWktMultiLineString(Geometry geometry) {
-		if (isEmpty(geometry)) {
-			return "MULTILINESTRING EMPTY";
-		}
-		StringBuilder builder = new StringBuilder("MULTILINESTRING (");
-		for (int i = 0; i < geometry.getGeometries().length; i++) {
-			if (i > 0) {
-				builder.append(",");
-			}
-			String lineWkt = toWktLineString(geometry.getGeometries()[i]);
-			builder.append(lineWkt.substring(lineWkt.indexOf('(')));
-		}
-		builder.append(")");
+		StringBuilder builder = new StringBuilder();
+		builder.append("MULTIPOINT ");
+		appendCoordinates(geometry, builder);
 		return builder.toString();
 	}
 
 	private static String toWktMultiPolygon(Geometry geometry) {
-		if (isEmpty(geometry)) {
-			return "MULTIPOLYGON EMPTY";
-		}
-		StringBuilder builder = new StringBuilder("MULTIPOLYGON (");
-		for (int i = 0; i < geometry.getGeometries().length; i++) {
-			if (i > 0) {
-				builder.append(",");
-			}
-			String polygonWkt = toWktPolygon(geometry.getGeometries()[i]);
-			builder.append(polygonWkt.substring(polygonWkt.indexOf('(')));
-		}
-		builder.append(")");
+		StringBuilder builder = new StringBuilder();
+		builder.append("MULTIPOLYGON ");
+		appendCoordinates(geometry, builder);
 		return builder.toString();
+	}
+
+	private static String toWktMultiLineString(Geometry geometry) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("MULTILINESTRING ");
+		appendCoordinates(geometry, builder);
+		return builder.toString();
+	}
+
+	private static void appendCoordinates(Geometry geometry, StringBuilder builder) {
+		if (isEmpty(geometry)) {
+			builder.append("EMPTY");
+		} else {
+			// multi-geometry
+			if (geometry.getGeometries() != null) {
+				builder.append("(");
+				for (int i = 0; i < geometry.getGeometries().length; i++) {
+					if (i > 0) {
+						builder.append(", ");
+					}
+					appendCoordinates(geometry.getGeometries()[i], builder);
+				}
+				builder.append(")");
+			// single geometry
+			} else {
+				builder.append("(");
+				for (int i = 0; i < geometry.getCoordinates().length; i++) {
+					if (i > 0) {
+						builder.append(", ");
+					}
+					appendCoordinate(geometry.getCoordinates()[i], builder);
+				}
+				builder.append(")");
+			}
+		}
+	}
+
+	private static void appendCoordinate(Coordinate coordinate, StringBuilder builder) {
+		builder.append(coordinate.getX());
+		builder.append(" ");
+		builder.append(coordinate.getY());
 	}
 }
