@@ -140,7 +140,7 @@ public class WktServiceTest {
 	public void testParseEmptyPoint() throws WktException {
 		Geometry geometry = WktService.toGeometry("POINT EMPTY");
 		Assert.assertEquals(Geometry.POINT, geometry.getGeometryType());
-		Assert.assertEquals(0, geometry.getCoordinates().length);
+		Assert.assertNull(geometry.getCoordinates());
 		Assert.assertNull(geometry.getGeometries());
 	}
 
