@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-expert-webapp</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas SLD editor</name>
-	<description>Geomajas SLD editor (GWT)</description>
+	<name>Geomajas SLD editor (expert)</name>
+	<description>Geomajas expert SLD editor (GWT)</description>
 
 	<dependencies>
 		<dependency>

@@ -20,7 +20,7 @@
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas SLD GWT client library</name>
+	<name>Geomajas SLD GWT client library (expert)</name>
 	<description>Geomajas expert SLD editor (GWT)</description>
 
 	<dependencies>
