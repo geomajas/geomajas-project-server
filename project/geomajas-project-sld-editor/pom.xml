@@ -40,6 +40,8 @@
 		<module>common-gwt</module>
 		<module>puregwt</module>
 		<module>webapp</module>
+		<module>expert-gwt</module>
+		<module>expert-gwt-webapp</module>
 	</modules>
 
 	<dependencyManagement>
@@ -68,6 +70,11 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-sld-editor-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -301,6 +308,14 @@
 				<artifactId>gwt-dev</artifactId>
 				<version>${sld-gwt-version}</version>
 			</dependency>
+
+			<!-- Expert -->
+			<dependency>
+				<groupId>org.geomajas.codemirror</groupId>
+				<artifactId>codemirror</artifactId>
+				<version>3.1-SNAPSHOT</version>
+			</dependency>
+		
 
             <!-- Test dependencies -->
             <dependency>
