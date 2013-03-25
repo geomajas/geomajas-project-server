@@ -11,6 +11,8 @@
 
 package org.geomajas.servlet;
 
+import java.io.Serializable;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
@@ -35,12 +37,14 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Api
-public class AutomaticDispatcherUrlService implements DispatcherUrlService {
+public class AutomaticDispatcherUrlService implements DispatcherUrlService, Serializable {
+
+	private static final long serialVersionUID = 110L;
 
 	private static final String X_FORWARD_HOST_HEADER = "X-Forwarded-Host";
 	private static final String X_GWT_MODULE_HEADER = "X-GWT-Module-Base";
 
-	private Logger log = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
 	
 	private String localDispatcherUrl;
 
@@ -48,7 +52,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 	public String getDispatcherUrl() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		if (null == requestAttributes || !(requestAttributes instanceof ServletRequestAttributes)) {
-			log.warn("Trying to automatically get the dispatcher URL, but not running inside a servlet request. " +
+			LOG.warn("Trying to automatically get the dispatcher URL, but not running inside a servlet request. " +
 					"You are recommended to use StaticDispatcherUrlService");
 			return "./d/"; // use relative URL as back-up, will fail in many cases
 		}
@@ -60,7 +64,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		// X-Forwarded-Host if behind a reverse proxy, fallback to general method.
 		// Alternative we could use the gwt module url to guess the real URL.
 		if (null != request.getHeader(X_FORWARD_HOST_HEADER)) {
-			log.warn("AutomaticDispatcherService detected a X-Forwarded-Host header which means the server is " +
+			LOG.warn("AutomaticDispatcherService detected a X-Forwarded-Host header which means the server is " +
 					"accessed using a reverse proxy server. This might cause problems in some cases. You are " +
 					"recommended to configure your tomcat connector to be aware of the original url. " +
 					"(see http://tomcat.apache.org/tomcat-6.0-doc/proxy-howto.html )");
