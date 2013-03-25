@@ -11,7 +11,7 @@
 
 package org.geomajas.servlet;
 
-import java.io.Serializable;
+import javax.servlet.http.HttpServletRequest;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.service.DispatcherUrlService;
@@ -24,8 +24,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * {@link org.geomajas.service.DispatcherUrlService} which tries to automatically detect the dispatcher server address.
  *
@@ -35,16 +33,16 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.10.0
  */
 @Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Api
-public class AutomaticDispatcherUrlService implements DispatcherUrlService, Serializable {
+public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
 	private static final long serialVersionUID = 110L;
 
 	private static final String X_FORWARD_HOST_HEADER = "X-Forwarded-Host";
 	private static final String X_GWT_MODULE_HEADER = "X-GWT-Module-Base";
 
-	private static final Logger LOG = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
+	private final Logger log = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
 	
 	private String localDispatcherUrl;
 
@@ -52,7 +50,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService, Seri
 	public String getDispatcherUrl() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		if (null == requestAttributes || !(requestAttributes instanceof ServletRequestAttributes)) {
-			LOG.warn("Trying to automatically get the dispatcher URL, but not running inside a servlet request. " +
+			log.warn("Trying to automatically get the dispatcher URL, but not running inside a servlet request. " +
 					"You are recommended to use StaticDispatcherUrlService");
 			return "./d/"; // use relative URL as back-up, will fail in many cases
 		}
@@ -64,7 +62,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService, Seri
 		// X-Forwarded-Host if behind a reverse proxy, fallback to general method.
 		// Alternative we could use the gwt module url to guess the real URL.
 		if (null != request.getHeader(X_FORWARD_HOST_HEADER)) {
-			LOG.warn("AutomaticDispatcherService detected a X-Forwarded-Host header which means the server is " +
+			log.warn("AutomaticDispatcherService detected a X-Forwarded-Host header which means the server is " +
 					"accessed using a reverse proxy server. This might cause problems in some cases. You are " +
 					"recommended to configure your tomcat connector to be aware of the original url. " +
 					"(see http://tomcat.apache.org/tomcat-6.0-doc/proxy-howto.html )");
