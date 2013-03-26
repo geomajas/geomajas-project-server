@@ -151,7 +151,9 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>src/main/webapp/sldEditor</directory>
+							<directory>src/main/webapp/org.geomajas.sld.editor.expert.sldEditor</directory>
+							<directory>src/main/gwt-unitCache</directory>
+							<directory>src/main/webapp/WEB-INF/deploy</directory>
 						</fileset>
 					</filesets>
 				</configuration>

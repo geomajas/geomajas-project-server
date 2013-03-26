@@ -18,7 +18,6 @@ import org.geomajas.sld.editor.common.client.GeometryType;
  * @author An Buyle
  * 
  */
-
 public interface SldGeneralInfo {
 
 	String getNameOfLayer();

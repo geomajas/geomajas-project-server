@@ -10,10 +10,16 @@
  */
 package org.geomajas.sld.editor.expert.client.gin;
 
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 import org.geomajas.sld.editor.expert.client.SldEditorPlaceManager;
+import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
+import org.geomajas.sld.editor.expert.client.model.SldManager;
+import org.geomajas.sld.editor.expert.client.model.SldManagerImpl;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
 import org.geomajas.sld.editor.expert.client.presenter.SmartGwtRootPresenter;
 import org.geomajas.sld.editor.expert.client.view.SldEditorView;
+import org.geomajas.sld.editor.expert.client.view.ViewUtilImpl;
 
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
@@ -33,29 +39,22 @@ public class ClientModule extends AbstractPresenterModule {
 
 	@Override
 	protected void configure() {
-
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
 		bind(TokenFormatter.class).to(ParameterTokenFormatter.class).in(Singleton.class);
 		bind(RootPresenter.class).asEagerSingleton();
 		bind(GoogleAnalytics.class).to(GoogleAnalyticsImpl.class).in(Singleton.class);
-
 		bind(PlaceManager.class).to(SldEditorPlaceManager.class).in(Singleton.class); // rebind if needed
-
 		bind(SmartGwtRootPresenter.class).asEagerSingleton();
 
+		bind(SldManager.class).to(SldManagerImpl.class).in(Singleton.class);
+		bind(ViewUtil.class).to(ViewUtilImpl.class).in(Singleton.class);
+
+		// i18n
+		bind(SldEditorMessages.class).in(Singleton.class);
+		bind(SldEditorExpertMessages.class).in(Singleton.class);
+		
 		bindPresenter(SldEditorExpertPresenter.class,
 				SldEditorExpertPresenter.MyView.class, SldEditorView.class,
 				SldEditorExpertPresenter.MyProxy.class);
-
-		// bindPresenter(StyledLayerDescriptorListPresenter.class,
-		// StyledLayerDescriptorListPresenter.MyView.class,
-		// StyledLayerDescriptorListView.class,
-		// StyledLayerDescriptorListPresenter.MyProxy.class);
-		//
-		// bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class,
-		// CreateSldDialogPresenterWidget.MyView.class,
-		// CreateSldDialogView.class); // Used by
-		// StyledLayerDescriptorListPresenter
-
 	}
 }

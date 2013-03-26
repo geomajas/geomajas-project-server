@@ -10,6 +10,8 @@
  */
 package org.geomajas.sld.editor.expert.client.gin;
 
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.model.SldManager;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
 
 import com.google.gwt.inject.client.Ginjector;
@@ -25,8 +27,9 @@ public interface ClientGinjector extends Ginjector {
 	
 	EventBus getEventBus();
 	PlaceManager getPlaceManager();
-	// SldManager getSldManager();
-
+	SldManager getSldManager();
+	SldEditorMessages getSldEditorMessages();
+	
 	// -- own presenters
 	Provider<SldEditorExpertPresenter> getSldEditorExpertPresenter();
 	

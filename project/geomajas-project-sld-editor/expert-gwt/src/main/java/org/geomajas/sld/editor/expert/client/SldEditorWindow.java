@@ -10,6 +10,12 @@
  */
 package org.geomajas.sld.editor.expert.client;
 
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
+import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
+import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
+
+import com.google.gwt.core.shared.GWT;
+import com.google.web.bindery.event.shared.EventBus;
 import com.smartgwt.client.widgets.Window;
 
 /**
@@ -19,15 +25,26 @@ import com.smartgwt.client.widgets.Window;
  */
 public class SldEditorWindow extends Window {
 
-	public SldEditorWindow() {
+	private static final SldEditorExpertMessages EXP_MSG = GWT.create(SldEditorExpertMessages.class);
+
+	private SldEditorPanel editor;
+	
+	public SldEditorWindow(EventBus eventBus, ViewUtil viewUtil, SldEditorExpertPresenter.MyView view) {
 		setAutoSize(true);
-		setTitle("Expert SLD Editor");
+		setTitle(EXP_MSG.windowTitle());
 		setAutoCenter(true);
 		setCanDragReposition(true);
 		setCanDragResize(false);
 		setShowMinimizeButton(false);
 
-		addItem(new SldEditorPanel());
+		editor = new SldEditorPanel(eventBus, viewUtil, view);
+		addItem(editor);
+	}
+
+	// ---------------------------------------------------------------
+
+	public SldEditorPanel getEditor() {
+		return editor;
 	}
 
 }
