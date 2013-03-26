@@ -16,13 +16,18 @@ import java.util.List;
 import org.geomajas.command.CommandResponse;
 
 /**
+ * Response of the WMS capabilities. Contains a list of rastercapabilities info and the default application crs.
+ * 
  * @author Jan De Moerloose
+ * @author Oliver May
  */
 public class GetWmsCapabilitiesResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
 	private List<RasterCapabilitiesInfo> rasterCapabilities = new ArrayList<RasterCapabilitiesInfo>();
+	
+	private String defaultCrs;
 
 	public List<RasterCapabilitiesInfo> getRasterCapabilities() {
 		return rasterCapabilities;
@@ -30,6 +35,23 @@ public class GetWmsCapabilitiesResponse extends CommandResponse {
 
 	public void setRasterCapabilities(List<RasterCapabilitiesInfo> rasterCapabilities) {
 		this.rasterCapabilities = rasterCapabilities;
+	}
+
+	/**
+	 * Set the default deskmanager instance crs.
+	 * 
+	 * @param defaultCrs the defaultCrs to set
+	 */
+	public void setDefaultCrs(String defaultCrs) {
+		this.defaultCrs = defaultCrs;
+	}
+
+	/**
+	 * Get the default deskmanager instance crs.
+	 * @return the defaultCrs
+	 */
+	public String getDefaultCrs() {
+		return defaultCrs;
 	}
 
 }

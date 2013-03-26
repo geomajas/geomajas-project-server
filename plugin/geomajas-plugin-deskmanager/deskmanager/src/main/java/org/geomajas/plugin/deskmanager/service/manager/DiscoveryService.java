@@ -35,6 +35,13 @@ public interface DiscoveryService {
 			String layerName)
 			throws IOException, DeskmanagerException;
 
+	/**
+	 * Get list of Raster Capabilities for each layer, for each CRS that is available on the server.
+	 * 
+	 * @param connectionProperties the connection parameters
+	 * @return the list of layers
+	 * @throws Exception
+	 */
 	List<RasterCapabilitiesInfo> getRasterCapabilities(Map<String, String> connectionProperties) throws Exception;
 
 	DynamicRasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,

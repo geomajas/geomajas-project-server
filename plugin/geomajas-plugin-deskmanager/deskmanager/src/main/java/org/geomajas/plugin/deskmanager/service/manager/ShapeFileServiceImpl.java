@@ -26,6 +26,7 @@ import javax.annotation.Resource;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
@@ -91,8 +92,8 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	@Autowired
 	private GeoService geoService;
 
-	@Resource(name = "deskmanager.defaultCrs")
-	private String defaultCrs;
+	@Resource(name = "defaultLoketClientInfo")
+	private ClientApplicationInfo defaultGeodesk;
 
 	public boolean importShapeFile(String shpFileName, String layerName) {
 		log.info("Importing Shapefile using Geotools: " + shpFileName);
@@ -155,7 +156,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 
 		CoordinateReferenceSystem sourceCrs = sourceStore.getSchema().getGeometryDescriptor()
 				.getCoordinateReferenceSystem();
-		CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultCrs);
+		CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultGeodesk.getMaps().get(0).getCrs());
 		boolean lenient = true; // allow for some error due to different datums
 		MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
 

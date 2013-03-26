@@ -10,7 +10,10 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager;
 
+import javax.annotation.Resource;
+
 import org.geomajas.command.Command;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesResponse;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
@@ -36,9 +39,13 @@ public class GetWmsCapabilitiesCommand implements
 
 	@Autowired
 	private DiscoveryService discoServ;
+	
+	@Resource(name = "defaultLoketClientInfo")
+	private ClientApplicationInfo defaultGeodesk;
 
 	public void execute(GetWmsCapabilitiesRequest request, GetWmsCapabilitiesResponse response) throws Exception {
 		response.setRasterCapabilities(discoServ.getRasterCapabilities(request.getConnectionProperties()));
+		response.setDefaultCrs(defaultGeodesk.getMaps().get(0).getCrs());
 	}
 
 	public GetWmsCapabilitiesResponse getEmptyCommandResponse() {

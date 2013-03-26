@@ -13,8 +13,11 @@ package org.geomajas.plugin.deskmanager.test.command.manager;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesResponse;
@@ -53,6 +56,9 @@ public class GetWmsCapabilitiesCommandTest {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
+	
+	@Resource(name = "defaultLoketClientInfo")
+	private ClientApplicationInfo defaultGeodesk;
 
 	private String userToken;
 
@@ -89,6 +95,23 @@ public class GetWmsCapabilitiesCommandTest {
 		Assert.assertTrue(response.getErrorMessages().isEmpty());
 		Assert.assertNotNull(response.getRasterCapabilities().size() > 0);
 	}
+	
+	@Test
+	public void testDefaultCrs() throws Exception {
+		// Get configuration object.
+		Map<String, String> connection = new HashMap<String, String>();
+		connection.put(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL,
+				"http://apps.geomajas.org/geoserver/geosparc/ows?service=wms&version=1.1.0&request=GetCapabilities");
+
+		GetWmsCapabilitiesRequest request = new GetWmsCapabilitiesRequest();
+		request.setConnectionProperties(connection);
+		
+		GetWmsCapabilitiesResponse response = (GetWmsCapabilitiesResponse) dispatcher
+				.execute(GetWmsCapabilitiesRequest.COMMAND, request, userToken, "en");
+
+		Assert.assertEquals(defaultGeodesk.getMaps().get(0).getCrs(), response.getDefaultCrs());
+	}
+	
 
 	/**
 	 * Test security.

@@ -126,6 +126,7 @@ public class WmsChooseLayerStep extends WizardStepPanel {
 					new DataCallback<List<RasterCapabilitiesInfo>>() {
 
 						public void execute(List<RasterCapabilitiesInfo> result) {
+							//First add all map crs
 							for (RasterCapabilitiesInfo wli : result) {
 								ListGridRecord lgr = new ListGridRecord();
 								lgr.setAttribute(FLD_NAME, wli.getName());
@@ -134,6 +135,7 @@ public class WmsChooseLayerStep extends WizardStepPanel {
 								lgr.setAttribute(FLD_INFO, wli);
 								grid.addData(lgr);
 							}
+							//First add all other crs
 						}
 					}, new DataCallback<String>() {
 

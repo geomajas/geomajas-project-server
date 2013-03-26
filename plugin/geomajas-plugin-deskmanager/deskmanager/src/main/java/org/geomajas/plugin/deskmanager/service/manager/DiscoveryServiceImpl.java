@@ -33,6 +33,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -40,6 +41,7 @@ import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.layer.Layer;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.geotools.GeoToolsLayer;
 import org.geomajas.layer.wms.WmsLayer;
@@ -115,6 +117,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	@Autowired
 	private CloneService cloneService;
+
+	@Resource(name = "defaultLoketClientInfo")
+	private ClientApplicationInfo defaultGeodesk;
 
 	@Autowired(required = false)
 	private Map<String, ClientLayerInfo> clientLayerInfoMap = new LinkedHashMap<String, ClientLayerInfo>();
@@ -259,32 +264,46 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 		WMSCapabilities capabilities = wms.getCapabilities();
 		List<RasterCapabilitiesInfo> layers = new ArrayList<RasterCapabilitiesInfo>();
+
+		List<RasterCapabilitiesInfo> nonNativeLayers = new ArrayList<RasterCapabilitiesInfo>();
+
 		for (org.geotools.data.ows.Layer owsLayer : WMSUtils.getNamedLayers(capabilities)) {
-			RasterCapabilitiesInfo info = new RasterCapabilitiesInfo();
-			Crs crs = null;
-			// the getSrs() set is unordered, but we want the declared SRS ! workaround using bounding boxes ?
-			if (owsLayer.getBoundingBoxes() != null) {
-				crs = geoService.getCrs2(owsLayer.getBoundingBoxes().keySet().iterator().next());
-			} else {
-				crs = geoService.getCrs2(owsLayer.getSrs().iterator().next());
+			if (owsLayer.getSrs().contains(defaultGeodesk.getMaps().get(0).getCrs())) { // Only add default crs
+				layers.add(buildRasterInfo(wms, owsLayer, defaultGeodesk.getMaps().get(0).getCrs()));
+			} else { // Add all available crs-es
+				for (String srs : owsLayer.getSrs()) {
+					try {
+						nonNativeLayers.add(buildRasterInfo(wms, owsLayer, srs));
+					} catch (LayerException e) {
+						log.warn("Got unknown crs from wms server, ignoring: {}", srs);
+					}
+				}
 			}
-			info.setCrs(geoService.getCodeFromCrs(crs));
-			info.setName(owsLayer.getName());
-			info.setExtent(toBbox(owsLayer.getEnvelope(crs)));
-			info.setDescription(owsLayer.getTitle());
-			// create a sample request
-			GetMapRequest request = wms.createGetMapRequest();
-			request.setFormat("image/png");
-			request.setTransparent(true);
-			request.setSRS(info.getCrs());
-			request.setBBox(new CRSEnvelope(owsLayer.getEnvelope(crs)));
-			request.addLayer(owsLayer);
-			info.setPreviewUrl(request.getFinalURL().toExternalForm());
-			GetMapRequest baseRequest = wms.createGetMapRequest();
-			info.setBaseUrl(baseRequest.getFinalURL().toExternalForm());
-			layers.add(info);
 		}
+		layers.addAll(nonNativeLayers);
 		return layers;
+	}
+
+	private RasterCapabilitiesInfo buildRasterInfo(WebMapServer wms, org.geotools.data.ows.Layer owsLayer, String srs)
+			throws LayerException {
+		RasterCapabilitiesInfo info = new RasterCapabilitiesInfo();
+		Crs crs = geoService.getCrs2(srs);
+		info.setCrs(geoService.getCodeFromCrs(crs));
+		info.setName(owsLayer.getName());
+		info.setExtent(toBbox(owsLayer.getEnvelope(crs)));
+		info.setDescription(owsLayer.getTitle());
+		// create a sample request
+		GetMapRequest request = wms.createGetMapRequest();
+		request.setFormat("image/png");
+		request.setTransparent(true);
+		request.setSRS(info.getCrs());
+		request.setBBox(new CRSEnvelope(owsLayer.getEnvelope(crs)));
+		request.addLayer(owsLayer);
+		info.setPreviewUrl(request.getFinalURL().toExternalForm());
+		GetMapRequest baseRequest = wms.createGetMapRequest();
+		baseRequest.setTransparent(true);
+		info.setBaseUrl(baseRequest.getFinalURL().toExternalForm());
+		return info;
 	}
 
 	private Bbox toBbox(GeneralEnvelope envelope) {
@@ -413,8 +432,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	// -------------------------------------------------
 
-	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) 
-	throws Exception {
+	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
 					.getId());
