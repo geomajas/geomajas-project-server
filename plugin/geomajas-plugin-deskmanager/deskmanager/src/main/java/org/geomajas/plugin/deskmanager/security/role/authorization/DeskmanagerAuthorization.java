@@ -51,9 +51,9 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
- * Authorization object for the deskmanager plugin. This object acts as a facade to the different instances of 
+ * Authorization object for the deskmanager plugin. This object acts as a facade to the different instances of
  * {@link org.geomajas.plugin.deskmanager.security.role.authorization.configuration.DeskmanagerAuthorizationInfo}
- * configured in the applicationContext. 
+ * configured in the applicationContext.
  * 
  * Thise objects get serialized by the cache. Only profile, geodeskId, and deskmanagerAuthorizationInfo get serialized.
  * 
@@ -82,6 +82,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	private String geodeskId;
 
 	private DeskmanagerAuthorizationInfo deskmanagerAuthorizationInfo;
+
 	// End of serialized fields
 
 	private transient Geodesk geodesk;
@@ -99,14 +100,18 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	/**
 	 * Default constructor for deserialization.
 	 */
-	public DeskmanagerAuthorization() { }
+	public DeskmanagerAuthorization() {
+	}
 
 	/**
 	 * Construct a Authorization object with the given parameters.
 	 * 
-	 * @param profile the user profile.
-	 * @param geodeskId the geodesk id this authorization is valid for.
-	 * @param applicationContext the applicationcontext (for wiring).
+	 * @param profile
+	 *            the user profile.
+	 * @param geodeskId
+	 *            the geodesk id this authorization is valid for.
+	 * @param applicationContext
+	 *            the applicationcontext (for wiring).
 	 */
 	public DeskmanagerAuthorization(Profile profile, String geodeskId, ApplicationContext applicationContext) {
 		this.profile = profile;
@@ -127,8 +132,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 				profile.getRole().toString()).clone();
 
 		// Add geodesk specific authorization
-		if (geodeskId != null && !RetrieveRolesRequest.MANAGER_ID.equals(geodeskId) 
-				&& isGeodeskUseAllowed(geodeskId)) {
+		if (geodeskId != null && !RetrieveRolesRequest.MANAGER_ID.equals(geodeskId) && isGeodeskUseAllowed(geodeskId)) {
 			try {
 				LOG.debug("building magdageoauthorizationinfo");
 				Geodesk geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
@@ -138,7 +142,12 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 				if (geodeskInfo != null) {
 					for (ClientMapInfo map : geodeskInfo.getMaps()) {
 						for (ClientLayerInfo layer : map.getLayers()) {
-							deskmanagerAuthorizationInfo.getVisibleLayersInclude().add(layer.getServerLayerId());
+							// Add layers if they are public, or the user is not guest.
+							if (!profile.getRole().equals(Role.GUEST)
+									|| layerModelService.
+									getLayerModelByClientLayerIdInternal(layer.getId()).isPublic()) {
+								deskmanagerAuthorizationInfo.getVisibleLayersInclude().add(layer.getServerLayerId());
+							}
 						}
 					}
 				}
@@ -237,7 +246,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 														// this
 			// won't
 			// work!
-			return Restrictions.and(Restrictions.eq("active", true), 
+			return Restrictions.and(Restrictions.eq("active", true),
 					Restrictions.eq("groups.id", getTerritory().getId()));
 		}
 		return Restrictions.sqlRestriction("1 = ?", 2, new IntegerType());
@@ -447,6 +456,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	/**
 	 * Get the role defined by this authorization.
+	 * 
 	 * @return the role.
 	 */
 	public Role getRole() {
@@ -455,6 +465,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	/**
 	 * Get the territory of this authorization.
+	 * 
 	 * @return
 	 */
 	public Territory getTerritory() {
@@ -463,14 +474,16 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	/**
 	 * Get the profile of this authorization.
+	 * 
 	 * @return the profile
 	 */
 	public Profile getProfile() {
 		return profile;
 	}
-	
+
 	/**
 	 * Get the geodesk id of this authorization.
+	 * 
 	 * @return
 	 */
 	public String getGeodeskId() {

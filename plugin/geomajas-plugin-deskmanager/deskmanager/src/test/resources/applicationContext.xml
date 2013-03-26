@@ -25,6 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<import resource="layerBeans1.xml"/>
 	<import resource="layerBeans2.xml"/>
 	<import resource="layerBeans3.xml"/>
+	<import resource="layerPrivateBeans1.xml"/>
 	
 	<!-- Instructs Spring to perform declarative transaction management on annotated classes -->
 	<tx:annotation-driven transaction-manager="transactionManager" />

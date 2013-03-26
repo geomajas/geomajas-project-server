@@ -23,6 +23,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 							<ref bean="layerBeans1Layer" />
 							<ref bean="layerBeans2Layer" />
 							<ref bean="layerBeans3Layer" />
+							<ref bean="layerPrivateBeans1Layer" />
 						</list>
 					</property>
 					<property name="layerTree">
@@ -42,6 +43,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 														<ref bean="layerBeans1Layer" />
 														<ref bean="layerBeans2Layer" />
 														<ref bean="layerBeans3Layer" />
+														<ref bean="layerPrivateBeans1Layer" />
 													</list>
 												</property>
 												<property name="expanded" value="true" />

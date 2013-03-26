@@ -55,7 +55,7 @@ public class GeodeskConfigurationServiceTest {
 	
 	private static final int DEFAULT_OVERVIEW_LAYERS = 1;
 
-	private static final int DEFAULT_MAIN_LAYERS = 3;
+	private static final int DEFAULT_MAIN_LAYERS = 4;
 
 	@Autowired
 	private GeodeskService geodeskService;

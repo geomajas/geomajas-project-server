@@ -71,7 +71,7 @@ public class BlueprintLayers extends AbstractConfigurationLayout implements Blue
 
 			public void execute(GetClientLayersResponse result) {
 				layerSelect.setValues(null, result.getLayers(), blueprint.getMainMapLayers(),
-						blueprint.isPublic());
+						!blueprint.isPublic());
 				fireChangedHandler();
 			}
 

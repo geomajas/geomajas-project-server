@@ -96,17 +96,17 @@ public class LayerSelectPanel extends HLayout {
 	 * @param sourceLayers the available layers from the blueprint or userapplication
 	 * @param userLayers the available layers for the user
 	 * @param selectedLayers the layers already selected
-	 * @param includePublic whether to include public layers.
+	 * @param includeNonPublic whether to include public layers.
 	 */
 	public void setValues(List<LayerDto> sourceLayers, List<LayerDto> userLayers, List<LayerDto> selectedLayers, 
-			boolean includePublic) {
+			boolean includeNonPublic) {
 		clearValues();
 		if (sourceLayers != null) {
 			//Reverse order
 			ListIterator<LayerDto> li = sourceLayers.listIterator(sourceLayers.size());
 			while (li.hasPrevious()) {
 				LayerDto layer = li.previous();
-				if (!layer.getLayerModel().isPublic() || includePublic) {
+				if (layer.getLayerModel().isPublic() || includeNonPublic) {
 					if (selectedLayers == null || !selectedLayers.contains(layer)) {
 						ListGridRecord record = new ListGridRecord();
 						if (layer.getClientLayerInfo() != null) {
@@ -127,7 +127,7 @@ public class LayerSelectPanel extends HLayout {
 			ListIterator<LayerDto> li = userLayers.listIterator(userLayers.size());
 			while (li.hasPrevious()) {
 				LayerDto layer = li.previous();
-				if (!layer.getLayerModel().isPublic() || includePublic) {
+				if (layer.getLayerModel().isPublic() || includeNonPublic) {
 					if ( (selectedLayers == null || !selectedLayers.contains(layer)) &&   
 							(sourceLayers == null || !sourceLayers.contains(layer)) ) {
 						ListGridRecord record = new ListGridRecord();

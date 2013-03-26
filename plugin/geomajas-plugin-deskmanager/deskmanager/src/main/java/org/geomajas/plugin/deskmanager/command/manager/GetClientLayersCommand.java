@@ -22,7 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Get an ordered list of all allowed layers for the current user, including layerModel and layerInfo.
+ * Get an ordered list of all allowed layers for the current user, including layerModel and layerInfo. The purpose
+ * of this command is to provide a list of layers that can be added to the layers of a specific geodesk or blueprint.
  * 
  * @author Oliver May
  * @author Kristof Heirwegh

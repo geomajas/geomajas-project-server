@@ -73,10 +73,10 @@ public class GeodeskLayers extends AbstractConfigurationLayout implements Geodes
 				if (geodesk.getMainMapLayers() == null || geodesk.getMainMapLayers().size() == 0) {
 					//If no layers is set, present default from blueprint
 					layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),
-							geodesk.getBlueprint().getMainMapLayers(), geodesk.isPublic());
+							geodesk.getBlueprint().getMainMapLayers(), !geodesk.isPublic());
 				} else {
 					layerSelect.setValues(geodesk.getBlueprint().getMainMapLayers(), result.getLayers(),
-							geodesk.getMainMapLayers(), geodesk.isPublic());
+							geodesk.getMainMapLayers(), !geodesk.isPublic());
 				}
 				fireChangedHandler();
 			}
