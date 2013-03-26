@@ -17,8 +17,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -33,7 +31,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @since 1.10.0
  */
 @Component
-@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Api
 public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
