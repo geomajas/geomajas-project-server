@@ -22,7 +22,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<context:component-scan base-package="org.geomajas.sld" />
 
-	<bean id="sldService" class="org.geomajas.sld.internal.service.SldServiceImpl">
+	<bean id="sldService" class="org.geomajas.sld.editor.expert.server.service.InMemorySldServiceImpl">
 		<property name="directory" value="WEB-INF/sld"/>
 	</bean>
 
