@@ -92,7 +92,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	@Autowired
 	private GeoService geoService;
 
-	@Resource(name = "defaultLoketClientInfo")
+	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo defaultGeodesk;
 
 	public boolean importShapeFile(String shpFileName, String layerName) {

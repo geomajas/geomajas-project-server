@@ -40,7 +40,7 @@ public class GetWmsCapabilitiesCommand implements
 	@Autowired
 	private DiscoveryService discoServ;
 	
-	@Resource(name = "defaultLoketClientInfo")
+	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo defaultGeodesk;
 
 	public void execute(GetWmsCapabilitiesRequest request, GetWmsCapabilitiesResponse response) throws Exception {

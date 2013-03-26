@@ -118,7 +118,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	@Autowired
 	private CloneService cloneService;
 
-	@Resource(name = "defaultLoketClientInfo")
+	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo defaultGeodesk;
 
 	@Autowired(required = false)
