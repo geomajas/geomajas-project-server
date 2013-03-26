@@ -345,47 +345,6 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 	}
 
-	// private VectorLayer createVectorLayer(DynamicVectorLayerConfiguration configuration) throws Exception {
-	// GeoToolsLayer gtl = new GeoToolsLayer();
-	// if (clientLayerInfoMap.containsKey(configuration.getClientVectorLayerInfo().getId())) {
-	// throw new Exception("ClientlayerId is already taken!");
-	// }
-	// if (serverLayerMap.containsKey(configuration.getClientVectorLayerInfo().getServerLayerId())) {
-	// throw new Exception("ServerlayerId is already taken!");
-	// }
-	//
-	// gtl.setId(configuration.getClientVectorLayerInfo().getServerLayerId());
-	// gtl.setParameters(configuration.getParameters());
-	// gtl.setLayerInfo(configuration.getVectorLayerInfo());
-	// return gtl;
-	// }
-
-	// private RasterLayer createRasterLayer(DynamicRasterLayerConfiguration configuration) throws Exception {
-	// // TODO
-	// throw new NotImplementedException("TODO");
-	//
-	// // GeoToolsLayer gtl = new GeoToolsLayer();
-	// // if (clientLayerMap.containsKey(configuration.getClientVectorLayerInfo().getId()))
-	// // throw new Exception("ClientlayerId is already taken!");
-	// // if (serverLayerMap.containsKey(configuration.getClientVectorLayerInfo().getServerLayerId()))
-	// // throw new Exception("ServerlayerId is already taken!");
-	// //
-	// // gtl.setId(configuration.getClientVectorLayerInfo().getServerLayerId());
-	// // gtl.setParameters(configuration.getParameters());
-	// // gtl.setLayerInfo(configuration.getVectorLayerInfo());
-	// // return gtl;
-	// }
-
-	// private Layer<?> createLayer(DynamicLayerConfiguration lc) throws Exception {
-	// if (lc instanceof DynamicVectorLayerConfiguration) {
-	// return createVectorLayer((DynamicVectorLayerConfiguration) lc);
-	// } else if (lc instanceof DynamicRasterLayerConfiguration) {
-	// return createRasterLayer((DynamicRasterLayerConfiguration) lc);
-	// } else {
-	// return null;
-	// }
-	// }
-
 	public Map<String, Object> createBeanLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
@@ -432,7 +391,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	// -------------------------------------------------
 
-	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
+	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) 
+		throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
 					.getId());
