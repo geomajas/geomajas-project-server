@@ -255,6 +255,10 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	private BufferedImage makeOpaque(BufferedImage image) {
+		if (image.getType() == BufferedImage.TYPE_CUSTOM) {
+			log.warn("makeOpaque {} Unknown Image Type 0: ", getTitle());
+			return image;
+		}
 		BufferedImage opaqueCopy = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 		Graphics2D g1 = opaqueCopy.createGraphics();
 		g1.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getOpacity()));
