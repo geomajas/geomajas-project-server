@@ -29,6 +29,6 @@ public interface SldService {
 
 	RawSld findTemplateByName(String name) throws SldException;
 
-	RawSld saveOrUpdate(RawSld sld) throws SldException;
-
+	boolean validate(RawSld sld) throws SldException;
+	
 }

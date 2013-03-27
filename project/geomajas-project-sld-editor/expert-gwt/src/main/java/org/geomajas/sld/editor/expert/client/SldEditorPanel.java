@@ -15,21 +15,20 @@ import java.util.List;
 
 import org.geomajas.codemirror.client.widget.CodeMirrorPanel;
 import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
-import org.geomajas.sld.editor.common.client.view.ViewUtil;
-import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldValidateEvent;
 import org.geomajas.sld.editor.expert.client.presenter.event.TemplateSelectEvent;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.web.bindery.event.shared.EventBus;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -48,11 +47,10 @@ public class SldEditorPanel extends VLayout {
 	private ToolStrip buttonBar;
 	private SelectItem templateSelect;
 	private SldEditorExpertPresenter.MyView view;
-	private ViewUtil viewUtil;
+	private String oldTemplate;
 
-	public SldEditorPanel(EventBus eventBus, ViewUtil viewUtil, SldEditorExpertPresenter.MyView view) {
+	public SldEditorPanel(EventBus eventBus, SldEditorExpertPresenter.MyView view) {
 		super(0);
-		this.viewUtil = viewUtil;
 		this.view = view;
 
 		buttonBar = new ToolStrip();
@@ -77,14 +75,43 @@ public class SldEditorPanel extends VLayout {
 		templateSelect.setValueMap(data);
 	}
 	
-	public void setData(RawSld raw) {
-		codeArea.getEditor().setContent(raw.getXml());
+	public void setData(String xml) {
+		// because of codemirrorFoefelare we can't guarantee that the widget already exists, so deferring it if not.
+		if (codeArea.getEditor() != null) {
+			codeArea.getEditor().setContent(xml == null ? "" : xml);
+			codeArea.getEditor().clearHistory();
+		} else {
+			codeArea.setInitialData(xml);
+		}
 	}
 
+	public void selectTemplateCancelled() {
+		templateSelect.setValue(oldTemplate);
+	}
+	
+	public String getData() {
+		return codeArea.getEditor().getContent();
+	}
+
+	/**
+	 * Please not that you cannot actually set dirty == true, only to false;
+	 * @param dirty
+	 */
+	public void setDataDirty(boolean dirty) {
+		if (!dirty && codeArea.getEditor() != null) {
+			codeArea.getEditor().markClean();
+		}
+	}
+	
+	public boolean isDataDirty() {
+		return !codeArea.getEditor().isClean();
+	}
+	
 	public void clearValues() {
 		codeArea.getEditor().setContent("");
-		
-		// should this clear the templates dropdownbox?
+		codeArea.getEditor().markClean();
+		templateSelect.clearValue();
+		// templateSelect.setValueMap(new LinkedHashMap<String, String>());
 	}
 	
 	// ---------------------------------------------------------------
@@ -96,7 +123,7 @@ public class SldEditorPanel extends VLayout {
 		saveBtn.setTooltip(MSG.saveButtonTooltip());
 		saveBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				onSave();
+				SldValidateEvent.fire(view, new SldValidateEvent(true));
 			}
 		});
 		
@@ -105,7 +132,7 @@ public class SldEditorPanel extends VLayout {
 		cancelBtn.setTitle(MSG.cancelButtonTitle());
 		cancelBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				onCancel();
+				SldCancelEvent.fire(view);
 			}
 		});
 
@@ -115,54 +142,26 @@ public class SldEditorPanel extends VLayout {
 		validateBtn.setTooltip(EXP_MSG.validateButtonTooltip());
 		validateBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				onValidate();
+				SldValidateEvent.fire(view);
 			}
 		});
 		
 		templateSelect = new SelectItem();
 		templateSelect.setTitle(EXP_MSG.templateSelectTitle());
 		templateSelect.setTooltip(EXP_MSG.templateSelectTooltip());
-		//fontItem.setShowTitle(false);
-		templateSelect.setWidth(150);
-		templateSelect.addChangedHandler(new ChangedHandler() {
-			public void onChanged(ChangedEvent event) {
-				// check dirty or not empty
-//				viewUtil.showYesNoMessage("Bent u zeker dat u de SLD '" + record.getAttribute(SLD_NAME_ATTRIBUTE_NAME)
-//						+ "' wilt verwijderen?", new YesNoCallback() {
-//
-//					public void onYes() {
-//						SldListRemoveEvent.fire(StyledLayerDescriptorListView.this);
-//					}
-//
-//					public void onNo() {
-//					}
-//
-//					public void onCancel() {
-//					}
-//				});
-
-				TemplateSelectEvent.fire(view, (String) templateSelect.getValue());
+		templateSelect.setWidth(250);
+		templateSelect.addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				oldTemplate = (String) event.getOldValue();
+				TemplateSelectEvent.fire(view, (String) event.getValue());
 			}
 		});
 		
 		buttonBar.addFormItem(templateSelect);
 		buttonBar.addButton(validateBtn);
 		buttonBar.addSeparator();
-		buttonBar.addButton(cancelBtn);
 		buttonBar.addButton(saveBtn);
-	}
-
-	// ---------------------------------------------------------------
-
-	private void onSave() {
-		SC.say("Saving...");
-	}
-	
-	private void onCancel() {
-		SC.say("Canceling...");
-	}
-	
-	private void onValidate() {
-		SC.say("Validating...");
+		buttonBar.addFill();  
+		buttonBar.addButton(cancelBtn);
 	}
 }

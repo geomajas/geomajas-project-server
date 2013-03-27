@@ -10,23 +10,29 @@
  */
 package org.geomajas.sld.editor.expert.client;
 
+import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.editor.expert.client.gin.SldEditorClientGinjector;
+import org.geomajas.sld.editor.expert.client.i18n.Messages;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent.SldCancelledHandler;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.HTMLFlow;
 
 /**
  * Entry point of SmartGWT SLD editor.
  * 
- * @author An Buyle
- * @author Jan De Moerloose
+ * @author Kristof Heirwegh
  */
 public class SldEditorEntryPoint implements EntryPoint {
 
-	private final SldEditorClientGinjector ginjector = GWT
-			.create(SldEditorClientGinjector.class);
+	private static final Messages MSG = GWT.create(Messages.class);
+	
+	private final SldEditorClientGinjector ginjector = GWT.create(SldEditorClientGinjector.class);
 
 	public void onModuleLoad() {
 		DelayedBindRegistry.bind(ginjector);
@@ -42,8 +48,35 @@ public class SldEditorEntryPoint implements EntryPoint {
 		htmlFlow.setContents(contents);
 		htmlFlow.draw();
 
-		// -- now show the SL editor in a window
-		ginjector.getPlaceManager().revealCurrentPlace();
-	}
+		// -- Add a SaveEventListener, you can also add cancel / close listeners
+		ginjector.getSldEditorExpertPresenter().get().addSldSaveHandler(new SldSaveHandler() {
+			public void onSldSave(SldSaveEvent event) {
+				SC.say(MSG.onSave());
+				
+				// -- get the data:
+				// ginjector.getSldEditorExpertPresenter().get().getModel().getCurrentSld().getXml();
+				// you can also check if data changed in the model
+				
+				// -- if you wish the editor to close at this point, call:
+				// ginjector.getSldEditorExpertPresenter().get().closeEditor();
+			}
+		});
 
+		ginjector.getSldEditorExpertPresenter().get().addSldCancelledHandler(new SldCancelledHandler() {
+			public void onSldCancelled(SldCancelledEvent event) {
+				SC.say(MSG.onCancel());
+				
+				// -- if you wish the editor to close at this point, call:
+				// ginjector.getSldEditorExpertPresenter().get().closeEditor();
+			}
+		});
+
+		// -- load an sld
+//		String yourXmlDataHere = "<test></test>";
+//		ginjector.getSldEditorExpertPresenter().get().loadSld(yourXmlDataHere, "name", "title");
+
+		// -- now show the SLD editor in a window
+		ginjector.getPlaceManager().revealCurrentPlace();
+		
+	}
 }

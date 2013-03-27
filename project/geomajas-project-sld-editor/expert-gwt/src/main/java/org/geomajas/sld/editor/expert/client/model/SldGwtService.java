@@ -28,8 +28,10 @@ public interface SldGwtService extends RemoteService {
 	List<SldInfo> findTemplates() throws SldException;
 
 	RawSld findTemplateByName(String name) throws SldException;
+	
+	boolean validate(RawSld raw) throws SldException;
 
-	RawSld saveOrUpdate(RawSld sld) throws SldException;
+	// RawSld saveOrUpdate(RawSld sld) throws SldException;
 
 //	RawSld create(RawSld sld) throws SldException;
 //

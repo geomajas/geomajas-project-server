@@ -14,6 +14,8 @@ package org.geomajas.sld.editor.expert.server.service;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +24,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.FileUtils;
+import org.geomajas.sld.NamedLayerInfo;
+import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.UserLayerInfo;
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 import org.geomajas.sld.editor.expert.client.domain.SldInfoImpl;
 import org.geomajas.sld.service.SldException;
+import org.jibx.runtime.BindingDirectory;
+import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IMarshallingContext;
+import org.jibx.runtime.IUnmarshallingContext;
+import org.jibx.runtime.JiBXException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -71,8 +81,10 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 							RawSld raw = new RawSld();
 							raw.setXml(FileUtils.readFileToString(file, FILE_ENCODING));
 							String fileName = StringUtils.stripFilenameExtension(file.getName());
+							StyledLayerDescriptorInfo tmp = parseXml(fileName, raw.getXml());
 							raw.setName(fileName);
-							raw.setTitle(fileName);
+							raw.setTitle(tmp.getTitle());
+							raw.setVersion(tmp.getVersion());
 							log.info("added sld '{}' to service", fileName);
 							allSlds.put(raw.getName(), raw);
 						}
@@ -98,50 +110,73 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 		return allSlds.get(name);
 	}
 
-//	public void validate(Object obj) throws SldException {
-//		IBindingFactory bfact;
-//		try {
-//			bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
-//			IMarshallingContext mctx = bfact.createMarshallingContext();
-//			StringWriter writer = new StringWriter();
-//			mctx.setOutput(writer);
-//			mctx.marshalDocument(obj);
-//			if (log.isDebugEnabled()) {
-//				log.debug(writer.toString());
-//			}
-//		} catch (JiBXException e) {
-//			throw new SldException("Validation error", e);
-//		}
-//	}
-
-
-	public RawSld saveOrUpdate(RawSld sld) throws SldException {
-		return null;
-//		validate(sld);
-//		allSlds.put(sld.getName(), sld);
-//		writeChanges(sld);
-//		StyledLayerDescriptorInfo newValue = allSlds.get(sld.getName());
-//		return newValue;
+	/**
+	 * Convert raw xml to StyledLayerDescriptorInfo.
+	 * 
+	 * @param name
+	 * @param raw
+	 * @return
+	 * @throws JiBXException
+	 */
+	public StyledLayerDescriptorInfo parseXml(String name, String raw) throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(new StringReader(raw));
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
+		if (sld.getName() == null) {
+			sld.setName(name);
+		}
+		if (sld.getTitle() == null) {
+			sld.setTitle(getTitle(sld, name));
+		}
+		return sld;
+	}
+	
+	/**
+	 * Test by marshalling.
+	 * @param sld
+	 * @throws SldException
+	 */
+	public void validate(StyledLayerDescriptorInfo sld) throws SldException {
+		IBindingFactory bfact;
+		try {
+			bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+			IMarshallingContext mctx = bfact.createMarshallingContext();
+			StringWriter writer = new StringWriter();
+			mctx.setOutput(writer);
+			mctx.marshalDocument(sld);
+			if (log.isDebugEnabled()) {
+				log.debug(writer.toString());
+			}
+		} catch (JiBXException e) {
+			throw new SldException("Validation error", e);
+		}
 	}
 
-	
-	// ---------------------------------------------------------------
-	
-//	private void writeChanges(StyledLayerDescriptorInfo sld) {
-//	IBindingFactory bfact;
-//	try {
-//		bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
-//		IMarshallingContext mctx = bfact.createMarshallingContext();
-//		mctx.setIndent(4);
-//		File outFile = new File(getDirectory().getFile(), sld.getName() + "-modified.sld");
-//		FileWriter writer = new FileWriter(outFile);
-//		mctx.setOutput(writer);
-//		mctx.marshalDocument(sld);
-//		log.info("SLD " + outFile.getAbsolutePath() + " written");
-//	} catch (JiBXException e) {
-//	} catch (IOException e) {
-//	}
-//}
+	/**
+	 * Test by unmarshalling
+	 * @param sld
+	 * @throws SldException
+	 */
+	public boolean validate(RawSld sld) throws SldException {
+		try {
+			parseXml("", sld.getXml());
+			return true;
+		} catch (JiBXException e) {
+			return false;
+		}
+	}
 
+	// ---------------------------------------------------------------
+
+	private String getTitle(StyledLayerDescriptorInfo sld, String fallback) {
+		if (sld.getChoiceList() != null && sld.getChoiceList().size() > 0) {
+			NamedLayerInfo nli = sld.getChoiceList().get(0).getNamedLayer();
+			if (nli != null && nli.getName() != null) { return nli.getName(); };
+			UserLayerInfo uli = sld.getChoiceList().get(0).getUserLayer();
+			if (uli != null && uli.getName() != null) { return uli.getName(); }
+		}
+		return fallback;
+	}
 
 }

@@ -10,13 +10,23 @@
  */
 package org.geomajas.sld.editor.expert.client.view;
 
-import java.util.List;
-
-import org.geomajas.sld.editor.common.client.view.ViewUtil;
+import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent.SldCloseHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.editor.expert.client.SldEditorWindow;
-import org.geomajas.sld.editor.expert.client.domain.RawSld;
-import org.geomajas.sld.editor.expert.client.domain.SldInfo;
+import org.geomajas.sld.editor.expert.client.model.SldModel;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelEvent.SldCancelHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent.SldCancelledHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldLoadedEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldLoadedEvent.SldLoadedHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldValidateEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldValidateEvent.SldValidateHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldValidatedEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldValidatedEvent.SldValidatedHandler;
 import org.geomajas.sld.editor.expert.client.presenter.event.TemplateLoadedEvent;
 import org.geomajas.sld.editor.expert.client.presenter.event.TemplateLoadedEvent.TemplateLoadedHandler;
 import org.geomajas.sld.editor.expert.client.presenter.event.TemplateNamesLoadedEvent;
@@ -40,12 +50,10 @@ public class SldEditorView extends PopupViewImpl implements SldEditorExpertPrese
 
 	private SldEditorWindow w;
 	private final EventBus eventBus;
-	private final ViewUtil viewUtil;
 	
 	@Inject
-	public SldEditorView(EventBus eventBus, ViewUtil viewUtil) {
+	public SldEditorView(EventBus eventBus) {
 		super(eventBus);
-		this.viewUtil = viewUtil;
 		this.eventBus = eventBus;
 	}
 
@@ -53,21 +61,39 @@ public class SldEditorView extends PopupViewImpl implements SldEditorExpertPrese
 
 	public Widget asWidget() {
 		if (w == null) {
-			w = new SldEditorWindow(eventBus, viewUtil, this);
+			w = new SldEditorWindow(eventBus, this);
 		}
 		return w;
 	}
 
-	public void setTemplates(List<SldInfo> templates) {
-		w.getEditor().setTemplates(templates);
+	public void setTemplates(SldModel model) {
+		w.getEditor().setTemplates(model.getTemplateNames());
 	}
 
-	public void setData(RawSld raw) {
-		w.getEditor().setData(raw);
-	}
-
-	public void clear() {
+	public void clearData() {
 		w.getEditor().clearValues();
+	}
+
+
+	public void modelToView(SldModel model, boolean keepDirty) {
+		if (w == null) { asWidget(); }
+		w.getEditor().setData(model.getRawSld().getXml());
+		w.getEditor().setDataDirty(keepDirty); // tricky ;-)
+	}
+
+	public void viewToModel(SldModel model) {
+		model.getRawSld().setXml(w.getEditor().getData());
+		model.setDirty(w.getEditor().isDataDirty());
+	}
+
+	public void selectTemplateCancelled() {
+		w.getEditor().selectTemplateCancelled();
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		w.hide();
 	}
 
 	// ---------------------------------------------------------------
@@ -86,5 +112,33 @@ public class SldEditorView extends PopupViewImpl implements SldEditorExpertPrese
 
 	public HandlerRegistration addTemplateLoadedHandler(TemplateLoadedHandler handler) {
 		return eventBus.addHandler(TemplateLoadedEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldLoadedHandler(SldLoadedHandler handler) {
+		return eventBus.addHandler(SldLoadedEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldSaveHandler(SldSaveHandler handler) {
+		return eventBus.addHandler(SldSaveEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldCloseHandler(SldCloseHandler handler) {
+		return eventBus.addHandler(SldCloseEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldValidateHandler(SldValidateHandler handler) {
+		return eventBus.addHandler(SldValidateEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldCancelHandler(SldCancelHandler handler) {
+		return eventBus.addHandler(SldCancelEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldCancelledHandler(SldCancelledHandler handler) {
+		return eventBus.addHandler(SldCancelledEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldValidatedHandler(SldValidatedHandler handler) {
+		return eventBus.addHandler(SldValidatedEvent.getType(), handler);
 	}
 }

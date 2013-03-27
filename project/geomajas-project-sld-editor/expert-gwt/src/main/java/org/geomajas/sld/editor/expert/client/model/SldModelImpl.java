@@ -1,6 +1,10 @@
 package org.geomajas.sld.editor.expert.client.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
+import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 
 /**
  * Basic implementation of SldModel.
@@ -11,14 +15,19 @@ public class SldModelImpl implements SldModel {
 
 	private boolean dirty;
 	private boolean valid;
-	private RawSld rawSld;
+	private RawSld rawSld = new RawSld();
+	private RawSld template;
+	private List<SldInfo> templateNames = new ArrayList<SldInfo>();
 
 	public String getName() {
 		return rawSld.getName();
 	}
 
+	/**
+	 * @return true if there is a rawSld and dirty bit is set.
+	 */
 	public boolean isDirty() {
-		return dirty;
+		return rawSld != null && dirty;
 	}
 
 	public void setDirty(boolean dirty) {
@@ -46,10 +55,31 @@ public class SldModelImpl implements SldModel {
 
 	public void setRawSld(RawSld rawSld) {
 		this.rawSld = rawSld;
-		this.dirty = true;
 	}
 
 	public String getTitle() {
 		return rawSld.getTitle();
+	}
+	
+	public RawSld getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(RawSld template) {
+		this.template = template;
+	}
+
+	public List<SldInfo> getTemplateNames() {
+		return templateNames;
+	}
+	
+	/**
+	 * Does not clear templateNames.
+	 */
+	public void clear() {
+		rawSld = new RawSld();
+		dirty = false;
+		valid = false;
+		template = null;
 	}
 }

@@ -10,7 +10,6 @@
  */
 package org.geomajas.sld.editor.expert.client;
 
-import org.geomajas.sld.editor.common.client.view.ViewUtil;
 import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
 
@@ -29,15 +28,17 @@ public class SldEditorWindow extends Window {
 
 	private SldEditorPanel editor;
 	
-	public SldEditorWindow(EventBus eventBus, ViewUtil viewUtil, SldEditorExpertPresenter.MyView view) {
+	public SldEditorWindow(EventBus eventBus, SldEditorExpertPresenter.MyView view) {
 		setAutoSize(true);
 		setTitle(EXP_MSG.windowTitle());
 		setAutoCenter(true);
 		setCanDragReposition(true);
 		setCanDragResize(false);
 		setShowMinimizeButton(false);
+		setShowCloseButton(false);
+		setIsModal(true);
 
-		editor = new SldEditorPanel(eventBus, viewUtil, view);
+		editor = new SldEditorPanel(eventBus, view);
 		addItem(editor);
 	}
 

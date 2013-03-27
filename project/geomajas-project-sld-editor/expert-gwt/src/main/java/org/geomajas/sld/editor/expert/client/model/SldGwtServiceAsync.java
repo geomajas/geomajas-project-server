@@ -28,7 +28,9 @@ public interface SldGwtServiceAsync {
 
 	void findTemplateByName(String name, AsyncCallback<RawSld> callback);
 
-	void saveOrUpdate(RawSld sld, AsyncCallback<RawSld> callback);
+	void validate(RawSld raw, AsyncCallback<Boolean> callback);
+
+	// void saveOrUpdate(RawSld sld, AsyncCallback<RawSld> callback);
 
 	//	void remove(String name, AsyncCallback<Boolean> callback);
 

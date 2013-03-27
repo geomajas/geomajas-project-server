@@ -11,25 +11,14 @@
 
 package org.geomajas.sld.editor.expert.client.i18n;
 
-import com.google.gwt.i18n.client.Messages;
-
 /**
- * Localization constants for the GWT Expert SldEditor.
+ * Localization constants.
  * 
  * @author Kristof Heirwegh
  */
-public interface SldEditorExpertMessages extends Messages {
-
-	String windowTitle();
+public interface Messages extends com.google.gwt.i18n.client.Messages {
 	
-	String validateButtonTitle();
-	String validateButtonTooltip();
-	String validationFailed();
-	String validationSucceeded();
-	
-	String templateSelectTitle();
-	String templateSelectTooltip();
-	
-	String confirmLoseDirtyData();
+	String onSave();
+	String onCancel();
 
 }

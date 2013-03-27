@@ -37,7 +37,7 @@ public class SldGwtServiceImpl implements SldGwtService {
 		return sldService.findTemplateByName(name);
 	}
 
-	public RawSld saveOrUpdate(RawSld sld) throws SldException {
-		return sldService.saveOrUpdate(sld);
+	public boolean validate(RawSld raw) throws SldException {
+		return sldService.validate(raw);
 	}
 }
