@@ -54,7 +54,7 @@ public class GeonamesGeocoderServiceTest {
 
 		list.clear();
 		list.add("booischot");
-		result = geocoder.getLocation(list, 50, null);
+		result = geocoder.getLocation(list, 500, null);
 		Assert.assertNotNull("Geonames may be down", result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());
@@ -63,7 +63,7 @@ public class GeonamesGeocoderServiceTest {
 
 		list.clear();
 		list.add("london");
-		result = geocoder.getLocation(list, 50, null);
+		result = geocoder.getLocation(list, 500, null);		
 		Assert.assertNotNull("Geonames may be down", result);
 		int londonWorldCount = result.length;
 		Assert.assertTrue(londonWorldCount > 1);
@@ -71,14 +71,14 @@ public class GeonamesGeocoderServiceTest {
 		list.clear();
 		list.add("london");
 		list.add("UK");
-		result = geocoder.getLocation(list, 50, null);
+		result = geocoder.getLocation(list, 500, null);
 		Assert.assertNotNull("Geonames may be down", result);
 		Assert.assertTrue(result.length > 1);
 		Assert.assertTrue(result.length < londonWorldCount);
 
 		list.clear();
 		list.add("blablabla");
-		result = geocoder.getLocation(list, 50, null);
+		result = geocoder.getLocation(list, 500, null);
 		Assert.assertNotNull("Geonames may be down", result);
 		Assert.assertTrue(0 == result.length);
 	}
