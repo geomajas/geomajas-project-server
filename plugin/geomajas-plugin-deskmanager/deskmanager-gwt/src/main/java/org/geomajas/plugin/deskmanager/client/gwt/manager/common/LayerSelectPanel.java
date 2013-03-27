@@ -138,7 +138,7 @@ public class LayerSelectPanel extends HLayout {
 						}
 						record.setAttribute(LayerListGrid.FLD_PUBLIC, layer.getLayerModel().isPublic());
 						record.setAttribute(LayerListGrid.FLD_OBJECT, layer);
-						record.setAttribute(LayerListGrid.FLD_USER, true);
+						record.setAttribute(LayerListGrid.FLD_USER, !layer.getLayerModel().isReadOnly());
 						sourceLayersGrid.addData(record);
 					}
 				}
