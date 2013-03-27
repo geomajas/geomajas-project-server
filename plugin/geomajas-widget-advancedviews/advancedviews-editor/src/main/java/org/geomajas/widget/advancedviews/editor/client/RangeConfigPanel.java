@@ -107,7 +107,8 @@ public class RangeConfigPanel extends Layout {
 
 			public void onChanged(ChangedEvent event) {
 				ScaleInfo scale = themeConfigurationPanel.getState().getRangeConfig().getMinimumScale();
-				if (Double.parseDouble(minScale.getValueAsString()) <= Double.parseDouble(maxScale.getValueAsString())) {
+				if (Double.parseDouble(minScale.getValueAsString()) <= 
+						Double.parseDouble(maxScale.getValueAsString())) {
 					SC.warn(MESSAGES.themeConfigInvalidRangeWarning());
 					minScale.setValue(scale.getDenominator());
 					return;
@@ -124,7 +125,8 @@ public class RangeConfigPanel extends Layout {
 
 			public void onChanged(ChangedEvent event) {
 				ScaleInfo scale = themeConfigurationPanel.getState().getRangeConfig().getMaximumScale();
-				if (Double.parseDouble(minScale.getValueAsString()) <= Double.parseDouble(maxScale.getValueAsString())) {
+				if (Double.parseDouble(minScale.getValueAsString()) <= 
+						Double.parseDouble(maxScale.getValueAsString())) {
 					SC.warn(MESSAGES.themeConfigInvalidRangeWarning());
 					maxScale.setValue(scale.getDenominator());
 					return;
