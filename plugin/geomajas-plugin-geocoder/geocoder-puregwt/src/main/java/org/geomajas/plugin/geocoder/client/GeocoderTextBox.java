@@ -17,6 +17,11 @@ import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
@@ -30,8 +35,15 @@ import com.google.gwt.user.client.ui.TextBox;
  * @author Pieter De Graef
  */
 public class GeocoderTextBox extends TextBox {
+	
+	private static final String GM_GEOCODER_GADGET_TEXT_BOX = "gm-GeocoderGadget-textBox";
+	/**
+	 * Extra css to style the tip
+	 */
+	private static final String GM_GEOCODER_GADGET_TIP = "gm-GeocoderGadget-tip";
 
 	private GeocoderPresenter geocoderPresenter;
+	private GeocoderMessages messages = GWT.create(GeocoderMessages.class);
 
 	public GeocoderTextBox(final MapPresenter mapPresenter) {
 		geocoderPresenter = new GeocoderPresenter(mapPresenter, this);
@@ -44,6 +56,30 @@ public class GeocoderTextBox extends TextBox {
 				}
 			}
 		});
+		
+		setStyleName(GM_GEOCODER_GADGET_TEXT_BOX);
+		setValue(messages.findPlaceOnMap());
+		addStyleName(GM_GEOCODER_GADGET_TIP);
+		
+		addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				if (messages.findPlaceOnMap().equals(getValue())) {
+					setValue(null);
+					removeStyleName(GM_GEOCODER_GADGET_TIP);
+				}
+			}
+		});
+		addBlurHandler(new BlurHandler() {
+			
+			public void onBlur(BlurEvent event) {
+				if (getValue() == null || "".equals(getValue())) {
+					setValue(messages.findPlaceOnMap());
+					addStyleName(GM_GEOCODER_GADGET_TIP);
+				}
+			}
+		});
+
 	}
 
 	public void goToLocation() {

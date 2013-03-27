@@ -23,4 +23,6 @@ public interface GeocoderMessages extends Messages {
 	String alternativeSelectTitle();
 
 	String locationNotFound(String searchString);
+
+	String findPlaceOnMap();
 }

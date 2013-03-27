@@ -44,9 +44,10 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 
 	private String servicePattern = ".*";
 
+	private HandlerManager handlerManager;
+	
 	private GeocoderMessages messages = GWT.create(GeocoderMessages.class);
 
-	private HandlerManager handlerManager;
 
 	/**
 	 * Create geocoder widget which allows searching a location from a string.

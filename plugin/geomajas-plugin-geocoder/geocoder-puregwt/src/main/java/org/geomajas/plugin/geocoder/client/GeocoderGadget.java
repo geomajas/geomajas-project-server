@@ -13,8 +13,6 @@ package org.geomajas.plugin.geocoder.client;
 
 import org.geomajas.puregwt.client.map.gadget.AbstractMapGadget;
 
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -39,15 +37,13 @@ public class GeocoderGadget extends AbstractMapGadget {
 	
 	private static final String GM_GEOCODER_GADGET_GLASS = "gm-GeocoderGadget-glass";
 	private static final String GM_GEOCODER_GADGET = "gm-GeocoderGadget";
-	private static final String GM_GEOCODER_GADGET_TEXT_BOX = "gm-GeocoderGadget-textBox";
 	static final String GM_GEOCODER_GADGET_TEXT_BOX_WITH_ALTS = "gm-GeocoderGadget-textBox-withAlts";
+	
 	/**
-	 * Extra css to style the tip
+	 * Extra css to style the tip.
 	 */
-	private static final String GM_GEOCODER_GADGET_TIP = "gm-GeocoderGadget-tip";
 	static final String GM_GEOCODER_GADGET_ALT_PANEL = "gm-GeocoderGadget-altPanel";
 	static final String GM_GEOCODER_GADGET_ALT_LABEL = "gm-GeocoderGadget-altLabel";
-	private static final String FIND_PLACE_ON_MAP = "Find place on map";
 	
 	private FlowPanel layout;
 	private GeocoderTextBox box;
@@ -70,30 +66,7 @@ public class GeocoderGadget extends AbstractMapGadget {
 	private void buildGui() {
 		layout = new FlowPanel();
 		layout.setStyleName(GM_GEOCODER_GADGET);
-
 		box = new GeocoderTextBox(mapPresenter);
-		box.setStyleName(GM_GEOCODER_GADGET_TEXT_BOX);
-		box.setValue(FIND_PLACE_ON_MAP);
-		box.addStyleName(GM_GEOCODER_GADGET_TIP);
-		
-		box.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
-				if (FIND_PLACE_ON_MAP.equals(box.getValue())) {
-					box.setValue(null);
-					box.removeStyleName(GM_GEOCODER_GADGET_TIP);
-				}
-			}
-		});
-		box.addBlurHandler(new BlurHandler() {
-			
-			public void onBlur(BlurEvent event) {
-				if (box.getValue() == null || "".equals(box.getValue())) {
-					box.setValue(FIND_PLACE_ON_MAP);
-					box.addStyleName(GM_GEOCODER_GADGET_TIP);
-				}
-			}
-		});
 		layout.add(box);
 		layout.add(createMagnifyingGlass());
 		StopPropagationHandler stopHandler = new StopPropagationHandler();
