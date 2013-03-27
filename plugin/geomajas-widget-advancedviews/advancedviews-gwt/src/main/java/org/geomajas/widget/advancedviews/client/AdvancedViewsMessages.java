@@ -62,6 +62,7 @@ public interface AdvancedViewsMessages extends Messages {
 	String themeConfigRangeAddInline();
 	String themeConfigRangeAdd();
 	String themeConfigLayerSelect();
+	String themeConfigInvalidRangeWarning();
 	
 	String detailTabThemes();
 }
