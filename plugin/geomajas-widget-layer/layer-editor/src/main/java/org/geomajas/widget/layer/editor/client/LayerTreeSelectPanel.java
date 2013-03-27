@@ -208,6 +208,12 @@ public class LayerTreeSelectPanel extends HLayout {
 		filterSourceTree();
 	}
 
+	/**
+	 * Recursive function to adapt configuration nodes, to gwt treenodes.
+	 *  
+	 * @param node the node to convert
+	 * @return the converted node and children
+	 */
 	private LayerTreeNode toTreeNode(ClientAbstractNodeInfo node) {
 		LayerTreeNode tn = null;
 		if (node instanceof ClientBranchNodeInfo) {
@@ -222,7 +228,6 @@ public class LayerTreeSelectPanel extends HLayout {
 				}
 			}
 			tn.setChildren(children.toArray(new LayerTreeNode[children.size()]));
-			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, true); // no such thing as non-public folders
 		} else if (node instanceof ClientLayerNodeInfo) {
 			LayerDto layerDto = layers.get(((ClientLayerNodeInfo) node).getLayerId());
 			// Don't add if layerModel is null (layer is orphin)!
@@ -230,14 +235,13 @@ public class LayerTreeSelectPanel extends HLayout {
 				return null;
 			}
 			tn = new LayerTreeNode(node, layerDto);
-			tn.setAttribute(LayerTreeNode.FLD_PUBLIC, layerDto.getLayerModel().isPublic());
 		}
 		return tn;
 	}
 
 	private void filterSourceTree() {
 		for (TreeNode node : targetTree.getAllNodes()) {
-			TreeNode lefty = sourceTree.findById(node.getName());
+			TreeNode lefty = sourceTree.find(node.getName());
 			if (lefty != null) {
 				if (!sourceTree.isLeaf(lefty)) {
 					sourceTree.addList(sourceTree.getChildren(lefty), sourceTree.getRoot());

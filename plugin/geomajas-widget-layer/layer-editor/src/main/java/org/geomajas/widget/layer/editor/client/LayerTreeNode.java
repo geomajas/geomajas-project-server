@@ -25,9 +25,9 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class LayerTreeNode extends TreeNode {
 
-	public static final String FLD_NAME = "name";
+	public static final String FLD_NAME = "fld_name";
 
-	public static final String FLD_PUBLIC = "public";
+	public static final String FLD_PUBLIC = "fld_public";
 
 	private ClientAbstractNodeInfo node;
 
@@ -45,17 +45,22 @@ public class LayerTreeNode extends TreeNode {
 		this.layer = layer;
 		if (node instanceof ClientBranchNodeInfo) {
 			setName(((ClientBranchNodeInfo) node).getLabel());
+			setAttribute(FLD_NAME, ((ClientBranchNodeInfo) node).getLabel());
+			setAttribute(LayerTreeNode.FLD_PUBLIC, true); // no such thing as non-public folders
 			setIsFolder(true);
 		} else if (node instanceof ClientLayerNodeInfo) {
+			setID(layer.getClientLayerIdReference());
+			setName(layer.getClientLayerIdReference());
 			if (layer != null) {
 				if (layer.getClientLayerInfo() != null) {
-					setName(layer.getClientLayerInfo().getLabel());
+					setAttribute(FLD_NAME, layer.getClientLayerInfo().getLabel());
 				} else if (layer.getReferencedLayerInfo() != null) {
-					setName(layer.getReferencedLayerInfo().getLabel());
+					setAttribute(FLD_NAME, layer.getReferencedLayerInfo().getLabel());
 				} else if (layer.getLayerModel() != null) {
-					setName(layer.getLayerModel().getName());
+					setAttribute(FLD_NAME, layer.getLayerModel().getName());
 				}
 			}
+			setAttribute(LayerTreeNode.FLD_PUBLIC, layer.getLayerModel().isPublic());
 			setIsFolder(false);
 		}
 	}
