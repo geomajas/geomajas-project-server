@@ -18,6 +18,7 @@ import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
+import org.geomajas.plugin.deskmanager.test.TestConst;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
@@ -87,6 +88,8 @@ public class CreateGeodeskCommandTest {
 		Assert.assertTrue(response.getErrors().isEmpty());
 		Assert.assertEquals(request.getName(), response.getGeodesk().getName());
 		Assert.assertEquals(request.getBlueprintId(), response.getGeodesk().getBlueprint().getId());
+		Assert.assertEquals(TestConst.DEFAULT_MAIN_LAYERS, response.getGeodesk().getMainMapLayers().size());
+		Assert.assertEquals(TestConst.DEFAULT_OVERVIEW_LAYERS, response.getGeodesk().getOverviewMapLayers().size());
 	}
 
 	/**

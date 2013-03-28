@@ -44,6 +44,7 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.geotools.GeoToolsLayer;
+import org.geomajas.layer.wms.WmsAuthentication;
 import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
@@ -384,8 +385,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		params.put(BaseRasterLayerBeanFactory.LAYER_INFO, rlc.getRasterLayerInfo());
 		params.put(WmsLayerBeanFactory.BASE_WMS_URL, rlc.getParameterValue(WmsLayerBeanFactory.BASE_WMS_URL));
 		if (rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME) != null) {
-			params.put(WmsLayerBeanFactory.WMS_USERNAME, rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME));
-			params.put(WmsLayerBeanFactory.WMS_PASSWORD, rlc.getParameterValue(WmsLayerBeanFactory.WMS_PASSWORD));
+			WmsAuthentication auth = new WmsAuthentication();
+			auth.setUser(rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME));
+			auth.setPassword(rlc.getParameterValue(WmsLayerBeanFactory.WMS_PASSWORD));
+			params.put("authentication", auth);
 		}
 	}
 

@@ -25,6 +25,7 @@ import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
+import org.geomajas.plugin.deskmanager.test.TestConst;
 import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
@@ -53,10 +54,6 @@ public class GeodeskConfigurationServiceTest {
 
 	private static final String KWI_KEY2 = "KWI_KEY2";
 	
-	private static final int DEFAULT_OVERVIEW_LAYERS = 1;
-
-	private static final int DEFAULT_MAIN_LAYERS = 4;
-
 	@Autowired
 	private GeodeskService geodeskService;
 
@@ -312,13 +309,13 @@ public class GeodeskConfigurationServiceTest {
 
 		ClientApplicationInfo cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
 		Assert.assertNotNull(getMainMap(cai).getLayers());
-		Assert.assertTrue(getMainMap(cai).getLayers().size() == DEFAULT_MAIN_LAYERS);
+		Assert.assertTrue(getMainMap(cai).getLayers().size() == TestConst.DEFAULT_MAIN_LAYERS);
 
 		// Remove all layers from blueprint, this copies the default configuration from the userapplication
 		blueprint.getMainMapLayers().clear();
 		blueprintService.saveOrUpdateBlueprint(blueprint);
 		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
-		Assert.assertTrue(getMainMap(cai).getLayers().size() == DEFAULT_MAIN_LAYERS);
+		Assert.assertTrue(getMainMap(cai).getLayers().size() == TestConst.DEFAULT_MAIN_LAYERS);
 
 		// Remove all and add two layers to blueprint
 		ClientLayer clientLayer1 = new ClientLayer();
@@ -365,7 +362,7 @@ public class GeodeskConfigurationServiceTest {
 		blueprint.getMainMapLayers().clear();
 		blueprintService.saveOrUpdateBlueprint(blueprint);
 		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
-		Assert.assertTrue(getMainMap(cai).getLayers().size() == DEFAULT_MAIN_LAYERS);
+		Assert.assertTrue(getMainMap(cai).getLayers().size() == TestConst.DEFAULT_MAIN_LAYERS);
 	}
 
 	@Test
@@ -375,13 +372,13 @@ public class GeodeskConfigurationServiceTest {
 
 		ClientApplicationInfo cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
 		Assert.assertNotNull(getOverviewMap(cai).getLayers());
-		Assert.assertTrue(getOverviewMap(cai).getLayers().size() == DEFAULT_OVERVIEW_LAYERS);
+		Assert.assertTrue(getOverviewMap(cai).getLayers().size() == TestConst.DEFAULT_OVERVIEW_LAYERS);
 
 		// Remove all layers from blueprint, this copies the default configuration from the userapplication
 		blueprint.getOverviewMapLayers().clear();
 		blueprintService.saveOrUpdateBlueprint(blueprint);
 		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
-		Assert.assertTrue(getOverviewMap(cai).getLayers().size() == DEFAULT_OVERVIEW_LAYERS);
+		Assert.assertTrue(getOverviewMap(cai).getLayers().size() == TestConst.DEFAULT_OVERVIEW_LAYERS);
 
 		// Remove all and add two layers to blueprint
 		ClientLayer clientLayer1 = new ClientLayer();
@@ -428,7 +425,7 @@ public class GeodeskConfigurationServiceTest {
 		blueprint.getOverviewMapLayers().clear();
 		blueprintService.saveOrUpdateBlueprint(blueprint);
 		cai = geodeskConfigurationService.createClonedGeodeskConfiguration(geodesk, true);
-		Assert.assertTrue(getOverviewMap(cai).getLayers().size() == DEFAULT_OVERVIEW_LAYERS);
+		Assert.assertTrue(getOverviewMap(cai).getLayers().size() == TestConst.DEFAULT_OVERVIEW_LAYERS);
 	}
 
 	private static ClientMapInfo getMainMap(ClientApplicationInfo cai) {

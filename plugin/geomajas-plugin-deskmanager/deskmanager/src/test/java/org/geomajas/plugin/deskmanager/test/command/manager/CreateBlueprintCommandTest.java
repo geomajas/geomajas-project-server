@@ -17,6 +17,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.CreateBlueprintReques
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
+import org.geomajas.plugin.deskmanager.test.TestConst;
 import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityManager;
@@ -81,6 +82,8 @@ public class CreateBlueprintCommandTest {
 		Assert.assertNotNull(response.getBlueprint());
 		Assert.assertEquals(request.getName(), response.getBlueprint().getName());
 		Assert.assertEquals(request.getUserApplicationKey(), response.getBlueprint().getUserApplicationKey());
+		Assert.assertEquals(TestConst.DEFAULT_MAIN_LAYERS, response.getBlueprint().getMainMapLayers().size());
+		Assert.assertEquals(TestConst.DEFAULT_OVERVIEW_LAYERS, response.getBlueprint().getOverviewMapLayers().size());
 	}
 
 	/**
