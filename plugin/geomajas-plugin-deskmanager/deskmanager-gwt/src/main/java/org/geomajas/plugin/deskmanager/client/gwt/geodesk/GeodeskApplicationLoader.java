@@ -131,7 +131,7 @@ public class GeodeskApplicationLoader {
 	 *
 	 */
 	public interface LoadingCallback {
-		public void loaded(Widget w);
+		void loaded(Widget w);
 	}
 
 }
