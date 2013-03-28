@@ -16,7 +16,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.widgets.layout.Layout;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Interface for the deskmanager applications.
@@ -33,7 +33,7 @@ public interface UserApplication extends UserApplicationConfiguration {
 	 * 
 	 * Be sure that setGeodeskId() and setClientApplicationInfo() are set.
 	 */
-	Layout loadGeodesk();
+	Widget loadGeodesk();
 	
 	/**
 	 * Set the application Id.

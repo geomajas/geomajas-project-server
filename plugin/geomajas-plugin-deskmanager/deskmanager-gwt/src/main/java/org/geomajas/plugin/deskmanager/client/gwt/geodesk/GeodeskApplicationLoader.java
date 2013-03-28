@@ -25,9 +25,8 @@ import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResp
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.layout.Layout;
-import com.smartgwt.client.widgets.layout.VLayout;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Main class for deskmanager applications. This entrypoint will show a loading screen and will load the deskmanager
@@ -60,10 +59,10 @@ public class GeodeskApplicationLoader {
 	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is
 	 * loaded from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
 	 * 
-	 * @param parentLayout the layout to add the application to.
+	 * @param callback called when everything is drawn and ready to add to the application
 	 */
-	public void loadApplication(final Layout parentLayout) {
-		loadApplication(parentLayout, null);
+	public void loadApplication(final LoadingCallback callback) {
+		loadApplication(callback, null);
 	}
 	
 	/**
@@ -76,10 +75,10 @@ public class GeodeskApplicationLoader {
 	 * You can add a user application handler that is called once the user application is loaded and added to the 
 	 * layout.
 	 * 
-	 * @param parentLayout the layout to add the application to.
+	 * @param callback called when everything is drawn and ready to add to the layout
 	 * @param handler the user application handler
 	 */
-	public void loadApplication(final Layout parentLayout, final UserApplicationHandler handler) {
+	public void loadApplication(final LoadingCallback callback, final UserApplicationHandler handler) {
 		// First Install a loading screen
 		// FIXME: i18n
 		loadScreen = new LoadingScreen();
@@ -88,7 +87,7 @@ public class GeodeskApplicationLoader {
 
 		String geodeskId = GeodeskUrlUtil.getGeodeskId();
 		if (geodeskId == null) {
-			SC.warn(MESSAGES.noGeodeskIdGivenError());
+			Window.alert(MESSAGES.noGeodeskIdGivenError());
 			return;
 		}
 
@@ -113,15 +112,7 @@ public class GeodeskApplicationLoader {
 
 				// Load the geodesk
 				// Build main layout
-				VLayout layout = new VLayout();
-				layout.setWidth100();
-				layout.setHeight100();
-				layout.setMargin(0);
-				Layout loketLayout = geodesk.loadGeodesk();
-				// Finaly add the geodesk to the main layout and draw
-				layout.addMember(loketLayout);
-
-				parentLayout.addMember(layout);
+				callback.loaded(geodesk.loadGeodesk());
 				
 				if (handler != null) {
 					handler.onUserApplicationLoad(new UserApplicationEvent(geodesk));
@@ -131,6 +122,16 @@ public class GeodeskApplicationLoader {
 
 		// Get application info for the geodesk
 		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
+	}
+	
+	/**
+	 * Callback that is called when the geodesk is loaded.
+	 * 
+	 * @author Oliver May
+	 *
+	 */
+	public interface LoadingCallback {
+		public void loaded(Widget w);
 	}
 
 }
