@@ -75,27 +75,31 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 	public void loadDynamicLayers() {
 		log.info("Loading dynamic layers");
-		try {
 
+		try {
 			// -- clientside / namedstyleinfo --
 			List<BeanDefinitionHolder> holders = new ArrayList<BeanDefinitionHolder>();
 			List<NamedObject> objects = new ArrayList<NamedObject>();
 			List<String> clientLayerIds = new ArrayList<String>();
 			for (LayerModel lm : layerModelService.getDynamicLayerModelsInternal()) {
 				log.info(" - creating a dynamic layer for: " + lm.getName());
-				clientLayerIds.add(lm.getClientLayerId());
+				try {
+					clientLayerIds.add(lm.getClientLayerId());
 
-				updateLayerProperties(lm.getDynamicLayerConfiguration());
-				objects.addAll(getClientLayerInfoObject(lm.getDynamicLayerConfiguration()));
+					updateLayerProperties(lm.getDynamicLayerConfiguration());
+					objects.addAll(getClientLayerInfoObject(lm.getDynamicLayerConfiguration()));
 
-				// -- serverside layer bean has to be processed separately --
-				Map<String, Object> params = discoService.createBeanLayerDefinitionParameters(lm
-						.getDynamicLayerConfiguration());
-				holders.addAll(beanFactoryService.createBeans(params));
+					// -- serverside layer bean has to be processed separately --
+					Map<String, Object> params = discoService.createBeanLayerDefinitionParameters(lm
+							.getDynamicLayerConfiguration());
+					holders.addAll(beanFactoryService.createBeans(params));
 
-				// Add layer to the dynamicLayersApplication for dto postprocessing
-				applicationInfo.getMaps().get(0).getLayers().add(
-						lm.getDynamicLayerConfiguration().getClientLayerInfo());
+					// Add layer to the dynamicLayersApplication for dto postprocessing
+					applicationInfo.getMaps().get(0).getLayers()
+							.add(lm.getDynamicLayerConfiguration().getClientLayerInfo());
+				} catch (Exception e) {
+					log.warn("Error loading dynamic layers: " + e.getMessage());
+				}
 			}
 
 			NamedObjectImpl applicationInfoNamedObject = new NamedObjectImpl(applicationInfo,
@@ -107,7 +111,7 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 			log.info(" - finished loading dynamic layers into context.");
 		} catch (Exception e) {
-			log.warn("Error loading dynamic layers: " + e.getMessage());
+			log.warn("Error activating dynamic layers: " + e.getMessage());
 		}
 	}
 
@@ -122,8 +126,8 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 		}
 
 		if (lc.getParameter(DynamicLayerConfiguration.PARAM_SOURCE_TYPE) != null
-				&& DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(
-						lc.getParameter(DynamicLayerConfiguration.PARAM_SOURCE_TYPE).getValue())) {
+				&& DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(lc.getParameter(
+						DynamicLayerConfiguration.PARAM_SOURCE_TYPE).getValue())) {
 			lc.getParameters().clear();
 
 			// inject private properties for shapelayers
