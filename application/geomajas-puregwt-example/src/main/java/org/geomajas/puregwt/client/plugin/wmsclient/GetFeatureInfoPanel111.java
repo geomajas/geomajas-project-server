@@ -138,7 +138,7 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 
 			public String transform(WmsRequest request, String url) {
 				switch (request) {
-					case GETCAPABILITIES:  /* Not for GETFEATUREINFO ! */
+					case GETCAPABILITIES: /* Not for GETFEATUREINFO ! */
 						return "proxy?url=" + url;
 					default:
 				}
@@ -183,15 +183,24 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class GetFeatureInfoHtmlCallback implements Callback<String, String> {
+	private class GetFeatureInfoHtmlCallback implements Callback<Object, String> {
 
 		public void onFailure(String reason) {
 			Window.alert("GetFeatureInfo has failed: " + reason);
 		}
 
-		public void onSuccess(String result) {
+		@SuppressWarnings("unchecked")
+		public void onSuccess(Object result) {
 			wmsLayer.clearSelectedFeatures();
-			htmlDescription.setHTML(result);
+			if (result instanceof String) {
+				htmlDescription.setHTML((String) result);
+			} else if (result instanceof List<?>) {
+				List<Feature> features = (List<Feature>) result;
+				wmsLayer.clearSelectedFeatures();
+				for (Feature feature : features) {
+					wmsLayer.selectFeature(feature);
+				}
+			}
 		}
 	}
 }

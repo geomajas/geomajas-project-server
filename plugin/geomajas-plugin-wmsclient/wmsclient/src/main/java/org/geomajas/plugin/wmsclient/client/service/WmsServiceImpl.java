@@ -152,14 +152,18 @@ public class WmsServiceImpl implements WmsService {
 
 	/** {@inheritDoc} */
 	public void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, GetFeatureInfoFormat format,
-			final Callback<String, String> callback) {
+			final Callback<Object, String> callback) {
 		String url = getFeatureInfoUrl(layer, location, format);
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
 		command.setCommandRequest(new GetFeatureInfoRequest(url));
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetFeatureInfoResponse>() {
 
 			public void execute(GetFeatureInfoResponse response) {
-				callback.onSuccess(response.getWmsResponse());
+				if (response.getFeatures() != null) {
+					callback.onSuccess(response.getFeatures());
+				} else {
+					callback.onSuccess(response.getWmsResponse());
+				}
 			}
 		});
 	}

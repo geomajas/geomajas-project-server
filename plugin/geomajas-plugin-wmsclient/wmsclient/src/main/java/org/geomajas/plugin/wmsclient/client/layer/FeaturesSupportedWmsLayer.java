@@ -61,5 +61,5 @@ public interface FeaturesSupportedWmsLayer extends WmsLayer, FeaturesSupported {
 	 *            location, they will be returned here. Note that the callback returns a string on success. It is up to
 	 *            you to parse this.
 	 */
-	void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<String, String> callback);
+	void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback);
 }

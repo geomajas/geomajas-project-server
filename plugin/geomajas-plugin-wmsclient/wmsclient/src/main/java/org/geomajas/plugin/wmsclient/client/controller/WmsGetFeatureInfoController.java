@@ -35,7 +35,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private Callback<List<Feature>, String> gmlCallback;
 
-	private Callback<String, String> htmlCallback;
+	private Callback<Object, String> htmlCallback;
 
 	private GetFeatureInfoFormat format = GetFeatureInfoFormat.GML2;
 
@@ -127,7 +127,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 *            The callback to execute when the response returns. Note that the response is the bare boned WMS
 	 *            GetFeatureInfo. It is up to you to parse it.
 	 */
-	public void setHtmlCallback(Callback<String, String> htmlCallback) {
+	public void setHtmlCallback(Callback<Object, String> htmlCallback) {
 		this.htmlCallback = htmlCallback;
 	}
 }

@@ -179,13 +179,15 @@ public interface WmsService {
 	 * @param location
 	 *            The location to search at. Must be in the map CRS.
 	 * @param format
-	 *            The requested format for the response.
+	 *            The requested format for the response. Depending on this format, the callback will receive a different
+	 *            answer from the server.
 	 * @param cb
-	 *            The callback that will return the response from the WMS server directly as a string. It is up to you
-	 *            to parse this response.
+	 *            The callback that will return the response from the WMS server. The type of object in the response,
+	 *            depends on the requested format. In case the format is GML, a list of features will be returned,
+	 *            otherwise, the result will be a string containing the HTTP body.
 	 */
 	void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, GetFeatureInfoFormat format,
-			Callback<String, String> cb);
+			Callback<Object, String> cb);
 
 	// ------------------------------------------------------------------------
 	// WMS GetLegendGraphic methods:
@@ -201,12 +203,12 @@ public interface WmsService {
 	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig);
 
 	// ------------------------------------------------------------------------
-	// Proxy options:
+	// URL transformation options (for proxy):
 	// ------------------------------------------------------------------------
 
 	/**
 	 * Apply a transformer to transform any URL that is generated within this service. This transformer can, for
-	 * examplen, be used to add a proxy servlet to any URL.
+	 * example, be used to add a proxy servlet to any URL.
 	 * 
 	 * @param urlTransformer
 	 *            The URL transformer to use.

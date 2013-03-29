@@ -110,7 +110,7 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	/** {@inheritDoc} */
 	@Override
-	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<String, String> callback) {
+	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback) {
 		wmsService.getFeatureInfo(this, location, format, callback);
 	}
 }
