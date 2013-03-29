@@ -301,13 +301,13 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 				
 				outer = new VStack();
 				outer.setOverflow(Overflow.VISIBLE);
-				outer.setWidth100();
+				outer.setWidth(GuwLayout.ribbonButtonWidth);
 				outer.setAutoHeight();
 				outer.addMember(icon);
-				if (showTitles) {
+				if (showTitles || GuwLayout.hideRibbonTitles) {
 					titleLabel.setBaseStyle(getBaseStyle() + "LargeTitle");
 					titleLabel.setAutoHeight();
-					titleLabel.setWidth100();
+					titleLabel.setWidth(GuwLayout.ribbonButtonWidth);
 					outer.addMember(titleLabel);
 				}
 				outer.setAlign(Alignment.CENTER);

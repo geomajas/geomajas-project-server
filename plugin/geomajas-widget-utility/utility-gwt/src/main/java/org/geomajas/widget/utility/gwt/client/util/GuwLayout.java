@@ -44,6 +44,12 @@ public final class GuwLayout {
 	public static Overflow ribbonBarOverflow = Overflow.AUTO;
 	/** Overflow of the ribbon tabs. */
 	public static Overflow ribbonTabOverflow = Overflow.AUTO;
+	
+	/** Width of the ribbon buttons, 100% means fit to text. */
+	public static String ribbonButtonWidth = "100%";
+
+	/** Hide titles in the ribbon bar. */
+	public static boolean hideRibbonTitles = false;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 	/**
