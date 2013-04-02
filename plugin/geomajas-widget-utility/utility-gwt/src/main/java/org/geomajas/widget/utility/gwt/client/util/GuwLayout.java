@@ -49,7 +49,7 @@ public final class GuwLayout {
 	public static String ribbonButtonWidth = "100%";
 
 	/** Hide titles in the ribbon bar. */
-	public static boolean hideRibbonTitles = false;
+	public static boolean hideRibbonTitles;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 	/**

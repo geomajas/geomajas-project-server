@@ -43,8 +43,7 @@ public class DropDownRibbonButton extends RibbonButton {
 	private DropDownPanel dropDownPanel;
 		
 	public DropDownRibbonButton(final DropDownButtonAction action, List<ClientToolInfo> tools, MapWidget mapWidget) {
-		super(new ToolbarButtonAction(action));
-		createPanel(action, tools, mapWidget);
+		this(action, 24, TitleAlignment.BOTTOM, tools, mapWidget);
 	}
 	
 	public DropDownRibbonButton(final DropDownButtonAction action, int iconSize,
@@ -99,7 +98,9 @@ public class DropDownRibbonButton extends RibbonButton {
 			setTooltip(value);
 		} else if ("panelWidth".equals(key)) {
 			dropDownPanel.setWidth(Integer.parseInt(value));
-		} 
+		} else {
+			super.configure(key, value);
+		}
 	}
 	
 	@Override
