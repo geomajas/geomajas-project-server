@@ -60,6 +60,8 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	protected MenuItem masterBtn;
 
 	protected VLayout panel;
+	
+	private boolean showShadow;
 
 	public ExpandingThemeWidget(MapWidget mapWidget) {
 		super(mapWidget);
@@ -70,6 +72,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 		setShowShadow(true);
 		setOverflow(Overflow.HIDDEN);
 		setKeepInParentRect(true);
+		addStyleName("themeWidget");
 	}
 
 	protected void buildWidget() {
@@ -122,6 +125,11 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 		addChild(masterBtn);
 		markForRedraw();
 	}
+	
+	public void setShowShadow(boolean showShadow) {
+		super.setShowShadow(showShadow);
+		this.showShadow = showShadow;
+	}
 
 	private void showPanel() {
 		if (panel == null) {
@@ -129,8 +137,9 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			panel.setPadding(5);
 			panel.setAutoHeight();
 			panel.setWidth(menuWidth);
-			panel.setShowShadow(true);
+			panel.setShowShadow(showShadow);
 			panel.setBackgroundImage(BACKGROUND_IMG);
+			panel.addStyleName("themeWidget-selectionPanel");
 			panel.addMouseOutHandler(new MouseOutHandler() {
 
 				public void onMouseOut(MouseOutEvent event) {
@@ -228,7 +237,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 	public Canvas createCategory(String title) {
 		Label cat = new Label(title);
-		cat.setStyleName("themeCategory");
+		cat.setStyleName("themeWidget-selectionPanelTitle");
 		cat.setWidth100();
 		cat.setHeight(20);
 		return cat;
@@ -241,9 +250,9 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	 */
 	public static class MenuItem extends HLayout implements Button {
 
-		private static final String DESCRIPTION_HOVER_STYLENAME = "themeWidgetDescriptionHover";
+		private static final String DESCRIPTION_HOVER_STYLENAME = "themeWidget-selectionPanelHover";
 
-		private static final String DESCRIPTION_STYLENAME = "themeWidgetDescription";
+		private static final String DESCRIPTION_STYLENAME = "themeWidget-selectionPanelItem";
 
 		private final Img img;
 
