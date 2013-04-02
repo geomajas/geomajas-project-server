@@ -203,7 +203,6 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	protected void renderTile(RasterTile tile, Callback<String, String> callback) {
 		HtmlImage image = htmlImageFactory.create(tile.getUrl(), tile.getBounds(), callback);
-		//image.setOpacity(rasterLayer.getOpacity());
 		container.add(image);
 	}
 
