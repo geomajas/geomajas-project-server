@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:style>
+        .button {
+        	float: right;
+        }
+    </ui:style>
+
+    <g:HTMLPanel width="100%" height="100%">
+        <table cellpadding="0" cellspacing="10" width="100%" height="100%">
+            <tr>
+                <td width="250px" valign="top">
+                    <h2>Change layer opacity</h2>
+                    <p>Use a value between 0 and 100, where 0 means completely transparent and 100 means complete
+                        visibility:</p>
+                    <g:TextBox ui:field="opacityBox" width="100%">100</g:TextBox>
+                    <g:Button ui:field="applyBtn" addStyleNames="{style.button}">Apply</g:Button>
+                </td>
+
+                <td height="100%">
+                    <g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
+                </td>
+            </tr>
+        </table>
+    </g:HTMLPanel>
+
+</ui:UiBinder> 
