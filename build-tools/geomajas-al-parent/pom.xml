@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-al-parent</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas parent module for Apache licensed projects</name>
 	<description>
@@ -29,9 +29,9 @@
 	<url>http://www.geomajas.org/</url>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-al-parent-1.2.0</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-al-parent-1.2.0</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-al-parent-1.2.0</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-al-parent</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-al-parent</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-al-parent</url>
 	</scm>
 
 	<licenses>
