@@ -53,7 +53,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	protected WmsScalesRenderer renderer;
 
 	@Inject
-	protected WmsLayerImpl(@Assisted String title, @Assisted WmsLayerConfiguration wmsConfig, 
+	protected WmsLayerImpl(@Assisted String title, @Assisted WmsLayerConfiguration wmsConfig,
 			@Assisted WmsTileConfiguration tileConfig) {
 		super(wmsConfig.getLayers());
 
@@ -98,6 +98,20 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	// ------------------------------------------------------------------------
+	// OpacitySupported implementation:
+	// ------------------------------------------------------------------------
+
+	/** {@inheritDoc} */
+	public void setOpacity(double opacity) {
+		renderer.getHtmlContainer().setOpacity(opacity);
+	}
+
+	/** {@inheritDoc} */
+	public double getOpacity() {
+		return renderer.getHtmlContainer().getOpacity();
+	}
+
+	// ------------------------------------------------------------------------
 	// HasMapScalesRenderer implementation:
 	// ------------------------------------------------------------------------
 
@@ -111,14 +125,11 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		}
 		return renderer;
 	}
-	
-	
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public List<RasterTile> getTiles(double scale, Bbox worldBounds) {
-		List<TileCode> codes = tileService.getTileCodesForBounds(getViewPort(), tileConfig,
-				worldBounds, scale);
+		List<TileCode> codes = tileService.getTileCodesForBounds(getViewPort(), tileConfig, worldBounds, scale);
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
 		if (!codes.isEmpty()) {
 			double actualScale = viewPort.getZoomStrategy().getZoomStepScale(codes.get(0).getTileLevel());
@@ -133,12 +144,11 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		}
 		return tiles;
 	}
-	
+
 	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
 		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
 				Math.round(scale * worldBounds.getMaxX()) - Math.round(scale * worldBounds.getX()), Math.round(scale
 						* worldBounds.getMaxY())
 						- Math.round(scale * worldBounds.getY()));
 	}
-
 }

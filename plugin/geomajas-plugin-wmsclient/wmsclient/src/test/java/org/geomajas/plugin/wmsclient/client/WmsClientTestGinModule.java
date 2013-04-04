@@ -22,10 +22,10 @@ import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererImpl;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRenderer;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererFactory;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererImpl;
-import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
-import org.geomajas.plugin.wmsclient.client.service.WmsTileServiceImpl;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsServiceImpl;
+import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
+import org.geomajas.plugin.wmsclient.client.service.WmsTileServiceImpl;
 import org.geomajas.puregwt.client.controller.MapEventParserFactory;
 import org.geomajas.puregwt.client.controller.MockMapEventParserFactory;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
@@ -33,17 +33,15 @@ import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
 import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
-import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
+import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
-import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.feature.FeatureFactory;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.feature.MockFeatureFactory;
 import org.geomajas.puregwt.client.map.feature.MockFeatureServiceFactory;
-import org.geomajas.puregwt.client.map.gadget.MockDefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.layer.LayerFactory;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.layer.LayersModelImpl;
@@ -92,7 +90,6 @@ public class WmsClientTestGinModule extends AbstractModule {
 		bind(FeatureServiceFactory.class).to(MockFeatureServiceFactory.class);
 		bind(MapRendererFactory.class).to(MockMapRendererFactory.class);
 		bind(MapScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
-		bind(DefaultMapGadgetFactory.class).to(MockDefaultMapGadgetFactory.class);
 
 		install(new FactoryModuleBuilder()
 				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),

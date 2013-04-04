@@ -38,8 +38,8 @@ public interface WmsService {
 	 * @author Pieter De Graef
 	 */
 	public enum GetFeatureInfoFormat {
-		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html"), TEXT("text/plain"), JSON(
-				"application/json");
+		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html"), TEXT("text/plain"),
+			JSON("application/json");
 
 		private String format;
 

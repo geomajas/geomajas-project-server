@@ -19,6 +19,7 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.HasMapScalesRenderer;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.OpacitySupported;
 
 /**
  * <p>
@@ -31,7 +32,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface WmsLayer extends Layer, HasMapScalesRenderer {
+public interface WmsLayer extends Layer, OpacitySupported, HasMapScalesRenderer {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.
@@ -62,6 +63,7 @@ public interface WmsLayer extends Layer, HasMapScalesRenderer {
 
 	/**
 	 * Get the tiles for the specified scale and world bounds.
+	 * 
 	 * @param scale
 	 * @param worldBounds
 	 * @return
