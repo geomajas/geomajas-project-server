@@ -9,16 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.widget.client.gadget;
+package org.geomajas.puregwt.widget.client.map;
 
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.widget.client.map.LegendDropDown;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -31,10 +28,8 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -43,7 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class LegendDropDownGadget implements MapGadget {
+public class LegendDropDownWidget implements IsWidget {
 
 	private MapPresenter mapPresenter;
 
@@ -124,31 +119,6 @@ public class LegendDropDownGadget implements MapGadget {
 		return layout;
 	}
 
-	/** {@inheritDoc} */
-	public void beforeDraw(MapPresenter mapPresenter) {
-		this.mapPresenter = mapPresenter;
-	}
-
-	/** {@inheritDoc} */
-	public Alignment getHorizontalAlignment() {
-		return Alignment.END;
-	}
-
-	/** {@inheritDoc} */
-	public Alignment getVerticalAlignment() {
-		return Alignment.BEGIN;
-	}
-
-	/** {@inheritDoc} */
-	public int getHorizontalMargin() {
-		return 5;
-	}
-
-	/** {@inheritDoc} */
-	public int getVerticalMargin() {
-		return 5;
-	}
-
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
@@ -198,33 +168,4 @@ public class LegendDropDownGadget implements MapGadget {
 			layout.addLayer(layer);
 		}
 	}
-
-	public int getWidth() {
-		return asWidget().getOffsetWidth();
-	}
-
-	public int getHeight() {
-		return asWidget().getOffsetHeight();
-	}
-
-	public void setWidth(int width) {
-		asWidget().setWidth(width + "px");
-	}
-
-	public void setHeight(int height) {
-		asWidget().setHeight(height + "px");
-	}
-
-	public void setTop(int top) {
-		asWidget().getElement().getStyle().setTop(top, Unit.PX);
-	}
-
-	public void setLeft(int left) {
-		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
-	}
-
-	public void addResizeHandler(ResizeHandler resizeHandler) {
-		asWidget().addHandler(resizeHandler, ResizeEvent.getType());
-	}
-	
 }
