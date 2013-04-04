@@ -36,7 +36,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
  * 
  * @author Jan De Moerloose
  * @author Emiel Ackermann
- * 
  */
 public class CommandServiceImpl implements CommandService {
 	
@@ -50,7 +49,7 @@ public class CommandServiceImpl implements CommandService {
 	}
 
 	/** {@inheritDoc} */
-	public Deferred execute(GwtCommand command, CommandCallback... callback) {
+	public Deferred execute(GwtCommand command, CommandCallback<?>... callback) {
 		return GwtCommandDispatcher.getInstance().execute(command, callback);
 	}
 

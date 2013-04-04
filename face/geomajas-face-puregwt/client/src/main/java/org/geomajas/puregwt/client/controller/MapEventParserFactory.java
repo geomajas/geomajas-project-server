@@ -17,7 +17,6 @@ import org.geomajas.puregwt.client.map.MapPresenter;
  * GIN factory for {@link MapEventParser} objects.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface MapEventParserFactory {
 

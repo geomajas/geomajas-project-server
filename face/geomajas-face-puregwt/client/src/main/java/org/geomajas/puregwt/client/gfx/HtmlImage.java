@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.core.client.Callback;
 
@@ -29,7 +29,7 @@ import com.google.gwt.core.client.Callback;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi
+@Api(allMethods = true)
 public interface HtmlImage extends HtmlObject {
 
 	/**

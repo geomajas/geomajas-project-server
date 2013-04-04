@@ -14,7 +14,6 @@ package org.geomajas.puregwt.client.gfx;
  * Implemented by containers that support transparency/opacity.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface Transparent {
 
@@ -24,5 +23,4 @@ public interface Transparent {
 	 * @param opacity opacity
 	 */
 	void setOpacity(double opacity);
-
 }

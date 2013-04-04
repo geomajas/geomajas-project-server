@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 /**
  * <p>
@@ -33,7 +33,7 @@ import org.geomajas.annotation.FutureApi;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi
+@Api(allMethods = true)
 public interface HtmlContainer extends HtmlObject {
 
 	/**

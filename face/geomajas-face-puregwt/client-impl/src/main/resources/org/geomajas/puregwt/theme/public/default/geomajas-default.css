@@ -176,9 +176,6 @@
 	margin: 0px;
 	padding: 2px 3px;
 	border: 0px;
-	top: 0px;
-	left: 0px;
-	position: absolute;
 	background: #FFFFFF;
 }
 
@@ -191,4 +188,5 @@
 	font-family: Verdana, Arial;
 	font-size: 11px;
 	font-weight: normal;
+	white-space: nowrap;
 }

@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,14 +27,13 @@ import com.google.gwt.user.client.ui.Widget;
  * HtmlContainer) it is possible to attach multiple other HtmlObjects to create a tree structure.
  * </p>
  * <p>
- * Note that this interface extends the {@link IsWidget} interface, so DOM manipulation is always possible through the
- * {@link Widget} or {@link Element} objects.
+ * Note that this interface extends the {@link IsWidget} interface, so DOM manipulation is always possible.
  * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi
+@Api(allMethods = true)
 public interface HtmlObject extends IsWidget {
 
 	/**

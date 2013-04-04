@@ -8,9 +8,9 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.map.render;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -19,9 +19,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * GIN factory for {@link MapScalesRenderer} objects.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public interface MapScalesRendererFactory {
 
 	/**

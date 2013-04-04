@@ -19,7 +19,6 @@ import org.geomajas.puregwt.client.gfx.GfxUtilImpl;
 import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
-import org.geomajas.puregwt.client.map.DefaultMapGadgetFactory;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
@@ -31,7 +30,6 @@ import org.geomajas.puregwt.client.map.feature.FeatureImpl;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceFactory;
 import org.geomajas.puregwt.client.map.feature.FeatureServiceImpl;
-import org.geomajas.puregwt.client.map.gadget.DefaultMapGadgetFactoryImpl;
 import org.geomajas.puregwt.client.map.layer.LayerFactory;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.layer.LayersModelImpl;
@@ -76,7 +74,6 @@ public class GeomajasGinModule extends AbstractGinModule {
 		bind(LayersModel.class).to(LayersModelImpl.class);
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(MapWidget.class).to(MapWidgetImpl.class);
-		bind(DefaultMapGadgetFactory.class).to(DefaultMapGadgetFactoryImpl.class);
 		install(new GinFactoryModuleBuilder().implement(Feature.class, FeatureImpl.class).build(FeatureFactory.class));
 		install(new GinFactoryModuleBuilder().implement(MapEventParser.class, MapEventParserImpl.class).build(
 				MapEventParserFactory.class));

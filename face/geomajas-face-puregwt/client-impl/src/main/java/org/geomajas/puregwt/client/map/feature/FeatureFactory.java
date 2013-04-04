@@ -8,26 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.map.feature;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 /**
  * GIN factory for {@link Feature} objects.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
  */
-@Api(allMethods = true)
-public interface FeatureServiceFactory {
+public interface FeatureFactory {
 
 	/**
-	 * creates a {@link FeatureService} using the given {@link MapPresenter}.
+	 * creates a {@link Feature} from a DTO feature and layer.
 	 * 
-	 * @param mapPresenter
-	 *            the map presenter
-	 * @return a new {@link FeatureService}
+	 * @param feature
+	 *            the DTO feature
+	 * @param layer
+	 *            the layer
+	 * @return a new {@link Feature}
 	 */
-	FeatureService create(MapPresenter mapPresenter);
+	Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer);
 }

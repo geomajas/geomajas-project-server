@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface VectorContainer extends VectorObjectContainer, Transparent, Transformable, IsWidget {
 
 	/**

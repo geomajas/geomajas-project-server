@@ -12,6 +12,7 @@ package org.geomajas.puregwt.client.gfx;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.vaadin.gwtgraphics.client.Transformable;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -21,8 +22,9 @@ import com.google.gwt.user.client.ui.IsWidget;
  * adding/removing shapes and transformations.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 
 	/**
@@ -46,14 +48,10 @@ public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 	 */
 	void removeShape(CanvasShape shape);
 
-	/**
-	 * Removes all shapes from the container.
-	 */
+	/** Removes all shapes from the container. */
 	void clear();
 
-	/**
-	 * Forces repaint.
-	 */
+	/** Forces repaint. */
 	void repaint();
 
 	/**
@@ -63,6 +61,4 @@ public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 	 * @param height
 	 */
 	void setPixelSize(int width, int height);
-	
-	
 }

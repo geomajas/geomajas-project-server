@@ -18,7 +18,6 @@ import com.google.gwt.core.client.Callback;
  * Gin factory for HTML images.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface HtmlImageFactory {
 

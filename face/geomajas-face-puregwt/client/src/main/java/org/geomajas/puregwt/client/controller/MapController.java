@@ -18,15 +18,14 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 
 /**
  * <p>
- * General interface for an event controller set on a map that catches different types of mouse events. Implementations
- * than decide how to react on these events. Since a <code>MapController</code> receives the original mouse events, it
- * can influence their behavior. As such only one <code>MapController</code> can be active at any one time on a
- * {@link MapPresenter}.
+ * General interface for an event controller that catches different types of mouse events on a map. Implementations of
+ * this interface must than decide how to react on these events. Since a <code>MapController</code> receives the
+ * original mouse events, it can influence their behavior. As such only one <code>MapController</code> can be active at
+ * any one time on a {@link MapPresenter}.
  * </p>
  * <p>
- * If you only need to react to certain events, within it having any influence on map behavior, take a look at the
- * {@link MapListener} interface. It is a definition for passive mouse event listeners on a map for which many can be
- * registered simultaneously.
+ * Note that the {@link MapPresenter} also has a {@link MapPresenter#addMapListener(MapController)} method that allows
+ * setting multiple <code>MapController</code>s as passive listeners to mouse events.
  * </p>
  * 
  * @author Pieter De Graef

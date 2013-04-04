@@ -182,7 +182,7 @@ public class VectorTilePresenter {
 						siblings.add(relatedTile);
 					}
 					if (tile.getContentType() == VectorTileContentType.STRING_CONTENT) {
-						// TODO implement me.
+						// TODO implement me or throw an exception. Do something damnit!
 						// display = new VectorTileObject();
 						// display.setContent(tile.getFeatureContent());
 						// renderer.getVectorContainer().add((VectorTileObject) display);

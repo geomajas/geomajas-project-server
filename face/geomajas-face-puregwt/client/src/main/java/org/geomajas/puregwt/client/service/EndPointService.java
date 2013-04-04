@@ -72,5 +72,4 @@ public interface EndPointService {
 	 * @since 1.0.0
 	 */
 	void setDispatcherUrl(String dispatcherUrl);
-
 }

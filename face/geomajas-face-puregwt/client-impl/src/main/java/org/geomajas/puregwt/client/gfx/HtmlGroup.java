@@ -11,8 +11,18 @@
 
 package org.geomajas.puregwt.client.gfx;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.geomajas.gwt.client.util.Dom;
-import org.geomajas.puregwt.client.widget.DivPanel;
+
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * <p>
@@ -45,8 +55,10 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	/**
 	 * Create an HTML container widget that represents a DIV element.
 	 * 
-	 * @param width The width for this container, expressed in pixels.
-	 * @param height The height for this container, expressed in pixels.
+	 * @param width
+	 *            The width for this container, expressed in pixels.
+	 * @param height
+	 *            The height for this container, expressed in pixels.
 	 */
 	public HtmlGroup(int width, int height) {
 		super(new DivPanel(), width, height);
@@ -55,10 +67,14 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	/**
 	 * Create an HTML container widget that represents a DIV element.
 	 * 
-	 * @param width The width for this container, expressed in pixels.
-	 * @param height The height for this container, expressed in pixels.
-	 * @param top How many pixels should this container be placed from the top (relative to the parent origin).
-	 * @param left How many pixels should this container be placed from the left (relative to the parent origin).
+	 * @param width
+	 *            The width for this container, expressed in pixels.
+	 * @param height
+	 *            The height for this container, expressed in pixels.
+	 * @param top
+	 *            How many pixels should this container be placed from the top (relative to the parent origin).
+	 * @param left
+	 *            How many pixels should this container be placed from the left (relative to the parent origin).
 	 */
 	public HtmlGroup(int width, int height, int top, int left) {
 		super(new DivPanel(), width, height, top, left);
@@ -73,7 +89,8 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * which means that they are added on top of the visibility stack and thus may obscure other children. Take this
 	 * order into account when adding children.
 	 * 
-	 * @param child The actual child to add.
+	 * @param child
+	 *            The actual child to add.
 	 */
 	public void add(HtmlObject child) {
 		asDivPanel().add(child);
@@ -83,8 +100,10 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * Insert a new child HtmlObject in the list at a certain index. The position will determine it's place in the
 	 * visibility stack, where the first element lies at the bottom and the last element on top.
 	 * 
-	 * @param child The actual child to add.
-	 * @param beforeIndex The position in the list where this child should end up.
+	 * @param child
+	 *            The actual child to add.
+	 * @param beforeIndex
+	 *            The position in the list where this child should end up.
 	 */
 	public void insert(HtmlObject child, int beforeIndex) {
 		asDivPanel().insertBefore(child, beforeIndex);
@@ -93,7 +112,8 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	/**
 	 * Remove a child element from the list.
 	 * 
-	 * @param child The actual child to remove.
+	 * @param child
+	 *            The actual child to remove.
 	 * @return Returns true or false indicating whether or not removal was successful.
 	 */
 	public boolean remove(HtmlObject child) {
@@ -103,7 +123,8 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	/**
 	 * Bring a certain child to the front. In reality this child is moved to the back of the list.
 	 * 
-	 * @param child The child to bring to the front.
+	 * @param child
+	 *            The child to bring to the front.
 	 */
 	public void bringToFront(HtmlObject child) {
 		if (remove(child)) {
@@ -128,7 +149,8 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	/**
 	 * Get the child at a certain index.
 	 * 
-	 * @param index The index to look for a child.
+	 * @param index
+	 *            The index to look for a child.
 	 * @return The actual child if it was found.
 	 */
 	public HtmlObject getChild(int index) {
@@ -139,15 +161,18 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * Apply the given matrix transformation onto this container object. This transformation is taken literally, it does
 	 * not stack onto a current transformation should there be one.
 	 * 
-	 * @param scale The zooming factor.
-	 * @param x The x origin to where we want this container to zoom.
-	 * @param y The y origin to where we want this container to zoom.
+	 * @param scale
+	 *            The zooming factor.
+	 * @param x
+	 *            The x origin to where we want this container to zoom.
+	 * @param y
+	 *            The y origin to where we want this container to zoom.
 	 */
 	public void applyScale(double scale, int x, int y) {
 		Dom.setTransform(asWidget().getElement(), "scale(" + scale + ")");
 		Dom.setTransformOrigin(asWidget().getElement(), x + "px " + y + "px");
 	}
-	
+
 	public void setHeight(String height) {
 		asWidget().setHeight(height);
 	}
@@ -168,4 +193,97 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		return (DivPanel) asWidget();
 	}
 
+	/**
+	 * What is the purpose of this widget? Why not use a FlowPanel???
+	 * 
+	 * @author Jan De Moerloose
+	 */
+	public static class DivPanel extends Panel {
+
+		private List<IsWidget> children = new ArrayList<IsWidget>();
+
+		public DivPanel() {
+			Element element = DOM.createElement("div");
+			setElement(element);
+		}
+
+		public int getChildCount() {
+			return children.size();
+		}
+
+		public IsWidget getChild(int index) {
+			if (index < children.size()) {
+				return children.get(index);
+			}
+			return null;
+		}
+
+		public void insertBefore(IsWidget child, int beforeIndex) {
+			if (beforeIndex >= children.size()) {
+				add(child);
+				return;
+			}
+			Node beforeNode = getElement().getChild(beforeIndex);
+			getElement().insertBefore(child.asWidget().getElement(), beforeNode);
+
+			List<IsWidget> newChildList = new ArrayList<IsWidget>();
+			for (int i = 0; i < children.size(); i++) {
+				if (i == beforeIndex) {
+					newChildList.add(child);
+				}
+				newChildList.add(children.get(i));
+			}
+			children = newChildList;
+			adopt(child.asWidget());
+		}
+
+		@Override
+		public Iterator<Widget> iterator() {
+			List<Widget> widgets = new ArrayList<Widget>();
+			for (IsWidget child : children) {
+				widgets.add(child.asWidget());
+			}
+			return widgets.iterator();
+		}
+
+		public void add(IsWidget child) {
+			children.add(child);
+			getElement().appendChild(child.asWidget().getElement());
+			adopt(child.asWidget());
+		}
+
+		public void add(Widget child) {
+			getElement().appendChild(child.getElement());
+			children.add(child);
+			adopt(child);
+		}
+
+		@Override
+		public boolean remove(IsWidget child) {
+			int index = getIndex(child);
+			if (index >= 0) {
+				orphan(child.asWidget());
+				getElement().removeChild(getElement().getChild(index));
+				children.remove(index);
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean remove(Widget child) {
+			throw new UnsupportedOperationException("Use remove(IsWidget) instead");
+		}
+
+		private int getIndex(IsWidget child) {
+			for (int i = 0; i < children.size(); i++) {
+				IsWidget img = children.get(i);
+				if (img.equals(child)) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
+	}
 }

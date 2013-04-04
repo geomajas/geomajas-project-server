@@ -33,14 +33,16 @@ public interface CommandService {
 	/**
 	 * The execution function. Executes a server side command.
 	 * 
-	 * @param command The command to be executed. This command is a wrapper around the actual request object.
-	 * @param callback A <code>CommandCallback</code> function to be executed when the command successfully returns. The
-	 *        callbacks may implement CommunicationExceptionCallback or CommandExceptionCallback to allow error
-	 *        handling.
+	 * @param command
+	 *            The command to be executed. This command is a wrapper around the actual request object.
+	 * @param callback
+	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns. The
+	 *            callbacks may implement CommunicationExceptionCallback or CommandExceptionCallback to allow error
+	 *            handling.
 	 * @return deferred object which can be used to add extra callbacks
 	 * @since 1.0.0
 	 */
-	Deferred execute(final GwtCommand command, final CommandCallback... callback);
+	Deferred execute(final GwtCommand command, final CommandCallback<?>... callback);
 
 	/**
 	 * Request a user login. Requests a new user token to be obtained.
@@ -51,7 +53,7 @@ public interface CommandService {
 
 	/**
 	 * Invalidate the current user token. This may automatically force a requests for a new user token to be obtained.
-	 *
+	 * 
 	 * @since 1.0.0
 	 */
 	void logout();
@@ -63,7 +65,7 @@ public interface CommandService {
 	 * @since 1.0.0
 	 */
 	String getUserToken();
-	
+
 	/**
 	 * Add handler which is notified when the user token changes.
 	 * 
