@@ -227,7 +227,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	/** {@inheritDoc} */
-	public AbsolutePanel getMapGadgetContainer() {
+	public AbsolutePanel getWidgetContainer() {
 		return this;
 	}
 

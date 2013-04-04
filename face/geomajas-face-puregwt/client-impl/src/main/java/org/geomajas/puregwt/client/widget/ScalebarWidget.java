@@ -9,9 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.gadget;
+package org.geomajas.puregwt.client.widget;
 
-import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.UnitType;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
@@ -24,24 +24,26 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * MapGadget implementation that shows a scale bar on the map.
+ * Map widget that shows a scale bar on the map. This widget is meant to be added to the map's widget pane (see
+ * {@link MapPresenter#getWidgetPane()}).
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-public class ScalebarGadget extends AbstractMapGadget {
+@Api(allMethods = true)
+public class ScalebarWidget extends AbstractMapWidget {
 
 	/**
-	 * UI binder definition for the {@link ScalebarGadget} widget.
+	 * UI binder definition for the {@link ScalebarWidget} widget.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface ScalebarGadgetUiBinder extends UiBinder<Widget, ScalebarGadget> {
+	interface ScalebarGadgetUiBinder extends UiBinder<Widget, ScalebarWidget> {
 	}
 
 	private static final ScalebarGadgetUiBinder UI_BINDER = GWT.create(ScalebarGadgetUiBinder.class);
@@ -82,26 +84,17 @@ public class ScalebarGadget extends AbstractMapGadget {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ScalebarGadget(ClientMapInfo mapInfo) {
-		setHorizontalAlignment(Alignment.BEGIN);
-		setVerticalAlignment(Alignment.END);
-		this.unitType = mapInfo.getDisplayUnitType();
-		this.unitLength = mapInfo.getUnitLength();
-	}
+	/**
+	 * Create a new instance for the given map.
+	 * 
+	 * @param mapPresenter
+	 *            The map presenter.
+	 */
+	public ScalebarWidget(MapPresenter mapPresenter) {
+		super(mapPresenter);
+		this.unitType = mapPresenter.getConfiguration().getServerConfiguration().getDisplayUnitType();
+		this.unitLength = mapPresenter.getConfiguration().getServerConfiguration().getUnitLength();
 
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
-
-	public Widget asWidget() {
-		if (layout == null) {
-			buildGui();
-		}
-		return layout;
-	}
-
-	public void beforeDraw(MapPresenter mapPresenter) {
-		super.beforeDraw(mapPresenter);
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
 			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
@@ -118,6 +111,18 @@ public class ScalebarGadget extends AbstractMapGadget {
 	}
 
 	// ------------------------------------------------------------------------
+	// MapGadget implementation:
+	// ------------------------------------------------------------------------
+
+	/** Get the widget layout. */
+	public Widget asWidget() {
+		if (layout == null) {
+			buildGui();
+		}
+		return layout;
+	}
+
+	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
@@ -125,6 +130,8 @@ public class ScalebarGadget extends AbstractMapGadget {
 		layout = UI_BINDER.createAndBindUi(this);
 		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		layout.getElement().getStyle().setHeight(19, Unit.PX);
+		layout.getElement().getStyle().setBottom(0, Unit.PX);
+		layout.getElement().getStyle().setLeft(0, Unit.PX);
 		redrawScale();
 	}
 
@@ -133,6 +140,8 @@ public class ScalebarGadget extends AbstractMapGadget {
 		scaleBarElement.setInnerText(formatUnits(widthInUnits));
 		scaleBarElement.getStyle().setWidth(widthInPixels, Unit.PX);
 		layout.getElement().getStyle().setWidth(widthInPixels + 10, Unit.PX);
+		layout.getElement().getStyle().setBottom(0, Unit.PX);
+		layout.getElement().getStyle().setLeft(0, Unit.PX);
 	}
 
 	/**

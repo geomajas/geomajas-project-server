@@ -9,12 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.gadget;
+package org.geomajas.puregwt.client.widget;
 
-import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -25,26 +23,18 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.layout.client.Layout.Alignment;
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Simple base implementation of a {@link MapGadget}. This can be used as a base for your gadgets.
+ * Simple base implementation of a widget that can be placed on top of the map.
  * 
  * @author Pieter De Graef
  */
-public abstract class AbstractMapGadget implements MapGadget {
+public abstract class AbstractMapWidget implements IsWidget {
 
-	protected MapPresenter mapPresenter;
+	protected final MapPresenter mapPresenter;
 
-	protected int horizontalMargin;
-
-	protected int verticalMargin;
-
-	protected Alignment horizontalAlignment = Alignment.BEGIN;
-
-	protected Alignment verticalAlignment = Alignment.BEGIN;
-
-	public void beforeDraw(MapPresenter mapPresenter) {
+	public AbstractMapWidget(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 
@@ -52,62 +42,7 @@ public abstract class AbstractMapGadget implements MapGadget {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	public int getHorizontalMargin() {
-		return horizontalMargin;
-	}
-
-	public void setHorizontalMargin(int horizontalMargin) {
-		this.horizontalMargin = horizontalMargin;
-	}
-
-	public int getVerticalMargin() {
-		return verticalMargin;
-	}
-
-	public void setVerticalMargin(int verticalMargin) {
-		this.verticalMargin = verticalMargin;
-	}
-
-	public Alignment getHorizontalAlignment() {
-		return horizontalAlignment;
-	}
-
-	public void setHorizontalAlignment(Alignment horizontalAlignment) {
-		this.horizontalAlignment = horizontalAlignment;
-	}
-
-	public Alignment getVerticalAlignment() {
-		return verticalAlignment;
-	}
-
-	public void setVerticalAlignment(Alignment verticalAlignment) {
-		this.verticalAlignment = verticalAlignment;
-	}
-
-	public int getWidth() {
-		return asWidget().getOffsetWidth();
-	}
-
-	public int getHeight() {
-		return asWidget().getOffsetHeight();
-	}
-
-	public void setWidth(int width) {
-		asWidget().setWidth(width + "px");
-	}
-
-	public void setHeight(int height) {
-		asWidget().setHeight(height + "px");
-	}
-
-	public void setTop(int top) {
-		asWidget().getElement().getStyle().setTop(top, Unit.PX);
-	}
-
-	public void setLeft(int left) {
-		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
-	}
-
+	/** TODO remove this method?? */
 	public void addResizeHandler(ResizeHandler resizeHandler) {
 		asWidget().addHandler(resizeHandler, ResizeEvent.getType());
 	}
@@ -118,7 +53,8 @@ public abstract class AbstractMapGadget implements MapGadget {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	public class StopPropagationHandler implements MouseDownHandler, MouseUpHandler, ClickHandler, DoubleClickHandler {
+	public class StopPropagationHandler implements MouseDownHandler, MouseUpHandler, ClickHandler, 
+			DoubleClickHandler {
 
 		public void onDoubleClick(DoubleClickEvent event) {
 			event.stopPropagation();

@@ -9,15 +9,18 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.gadget;
+package org.geomajas.puregwt.client.widget;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -29,18 +32,21 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Map gadget that displays four panning arrows at the top-left of the map.
+ * Map widget that displays four panning arrows at the top-left of the map. This widget is meant to be added to the
+ * map's widget pane (see {@link MapPresenter#getWidgetPane()}).
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-public class PanningGadget extends AbstractMapGadget {
+@Api(allMethods = true)
+public class PanningWidget extends AbstractMapWidget {
 
 	/**
-	 * UI binder definition for the {@link PanningGadget} widget.
+	 * UI binder definition for the {@link PanningWidget} widget.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface PanningGadgetUiBinder extends UiBinder<Widget, PanningGadget> {
+	interface PanningGadgetUiBinder extends UiBinder<Widget, PanningWidget> {
 	}
 
 	private static final PanningGadgetUiBinder UI_BINDER = GWT.create(PanningGadgetUiBinder.class);
@@ -67,15 +73,21 @@ public class PanningGadget extends AbstractMapGadget {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public PanningGadget() {
-		setHorizontalMargin(DEFAULT_LEFT);
-		setVerticalMargin(DEFAULT_TOP);
+	/**
+	 * Create a new instance for the given map.
+	 * 
+	 * @param mapPresenter
+	 *            The map presenter.
+	 */
+	public PanningWidget(MapPresenter mapPresenter) {
+		super(mapPresenter);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
+	/** Get the widget layout. */
 	public Widget asWidget() {
 		if (layout == null) {
 			buildGui();
@@ -90,6 +102,8 @@ public class PanningGadget extends AbstractMapGadget {
 	private void buildGui() {
 		layout = UI_BINDER.createAndBindUi(this);
 		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		layout.getElement().getStyle().setTop(DEFAULT_TOP, Unit.PX);
+		layout.getElement().getStyle().setLeft(DEFAULT_LEFT, Unit.PX);
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
 		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
@@ -184,5 +198,4 @@ public class PanningGadget extends AbstractMapGadget {
 			previousProgress = progress;
 		}
 	}
-
 }

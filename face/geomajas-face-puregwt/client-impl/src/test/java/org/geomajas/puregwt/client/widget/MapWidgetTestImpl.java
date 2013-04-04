@@ -30,7 +30,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasWidgets.ForIsWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -141,10 +141,6 @@ public class MapWidgetTestImpl implements MapWidget {
 	public void onResize() {
 	}
 
-	public HasWidgets.ForIsWidget getMapGadgetContainer() {
-		return new GadgetContainer();
-	}
-
 	public int getHeight() {
 		return 500;
 	}
@@ -173,5 +169,11 @@ public class MapWidgetTestImpl implements MapWidget {
 
 	@Override
 	public void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis) {
+	}
+
+	@Override
+	public AbsolutePanel getWidgetContainer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

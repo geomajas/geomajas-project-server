@@ -61,5 +61,4 @@ public class MapPresenterTest implements MapInitializationHandler {
 	public void onMapInitialized(MapInitializationEvent event) {
 		initialized = true;
 	}
-
 }

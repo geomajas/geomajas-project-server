@@ -9,8 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.gadget;
+package org.geomajas.puregwt.client.widget;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
@@ -32,7 +33,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -40,18 +40,21 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Map gadget that displays a butten for each zoom step on the map. Also displays a zoom in and zoom out button.
+ * Map widget that displays a button for each zoom step on the map. Also displays a zoom in and zoom out button.This
+ * widget is meant to be added to the map's widget pane (see {@link MapPresenter#getWidgetPane()}).
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-public class ZoomStepGadget extends AbstractMapGadget {
+@Api(allMethods = true)
+public class ZoomStepWidget extends AbstractMapWidget {
 
 	/**
-	 * UI binder definition for the {@link ZoomStepGadget} widget.
+	 * UI binder definition for the {@link ZoomStepWidget} widget.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface ZoomStepGadgetUiBinder extends UiBinder<Widget, ZoomStepGadget> {
+	interface ZoomStepGadgetUiBinder extends UiBinder<Widget, ZoomStepWidget> {
 	}
 
 	private static final ZoomStepGadgetUiBinder UI_BINDER = GWT.create(ZoomStepGadgetUiBinder.class);
@@ -60,9 +63,9 @@ public class ZoomStepGadget extends AbstractMapGadget {
 
 	private static final int ZOOMBUTTON_HEIGHT = 20;
 
-	private int gadgetTop;
+	private int top;
 
-	private int gadgetLeft;
+	private int left;
 
 	private ViewPort viewPort;
 
@@ -86,41 +89,41 @@ public class ZoomStepGadget extends AbstractMapGadget {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ZoomStepGadget(int gadgetTop, int gadgetLeft) {
-		this.gadgetTop = gadgetTop;
-		this.gadgetLeft = gadgetLeft;
-		setHorizontalMargin(gadgetLeft);
-		setVerticalMargin(gadgetTop);
-		setHorizontalAlignment(Alignment.BEGIN);
-		setVerticalAlignment(Alignment.BEGIN);
+	/**
+	 * Create a new instance for the given map.
+	 * 
+	 * @param mapPresenter
+	 *            The map presenter.
+	 */
+	public ZoomStepWidget(MapPresenter mapPresenter, int top, int left) {
+		super(mapPresenter);
+		this.top = top;
+		this.left = left;
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
+	/** Get the widget layout. */
 	public Widget asWidget() {
 		if (layout == null) {
 			buildGui();
+			mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+
+				public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+				}
+
+				public void onViewPortScaled(ViewPortScaledEvent event) {
+					positionZoomHandle();
+				}
+
+				public void onViewPortChanged(ViewPortChangedEvent event) {
+					positionZoomHandle();
+				}
+			});
 		}
 		return layout;
-	}
-
-	public void beforeDraw(MapPresenter mapPresenter) {
-		super.beforeDraw(mapPresenter);
-		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			}
-
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				positionZoomHandle();
-			}
-
-			public void onViewPortChanged(ViewPortChangedEvent event) {
-				positionZoomHandle();
-			}
-		});
 	}
 
 	// ------------------------------------------------------------------------
@@ -131,6 +134,8 @@ public class ZoomStepGadget extends AbstractMapGadget {
 		viewPort = mapPresenter.getViewPort();
 		layout = UI_BINDER.createAndBindUi(this);
 		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		layout.getElement().getStyle().setTop(top, Unit.PX);
+		layout.getElement().getStyle().setLeft(left, Unit.PX);
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 
 		// Calculate height:
@@ -195,8 +200,8 @@ public class ZoomStepGadget extends AbstractMapGadget {
 
 		// Add the zoom handle:
 		ZoomStephandler zoomStepHandler = new ZoomStephandler();
-		zoomStepHandler.setMinY(gadgetTop + ZOOMBUTTON_HEIGHT);
-		zoomStepHandler.setMaxY(gadgetTop + ZOOMBUTTON_HEIGHT + (viewPort.getZoomStrategy().getZoomStepCount() - 1)
+		zoomStepHandler.setMinY(top + ZOOMBUTTON_HEIGHT);
+		zoomStepHandler.setMaxY(top + ZOOMBUTTON_HEIGHT + (viewPort.getZoomStrategy().getZoomStepCount() - 1)
 				* ZOOMSTEP_HEIGHT);
 		zoomHandle.addDomHandler(zoomStepHandler, MouseDownEvent.getType());
 		layout.addDomHandler(zoomStepHandler, MouseUpEvent.getType());
@@ -208,25 +213,17 @@ public class ZoomStepGadget extends AbstractMapGadget {
 	}
 
 	private void stretchLayout() {
-		setHorizontalMargin(0);
-		setVerticalMargin(0);
 		layout.getElement().getStyle().setTop(0, Unit.PX);
 		layout.getElement().getStyle().setLeft(0, Unit.PX);
 		layout.setSize(viewPort.getMapWidth() + "px", viewPort.getMapHeight() + "px");
 		stretched = true;
-		setHorizontalAlignment(Alignment.STRETCH);
-		setVerticalAlignment(Alignment.STRETCH);
 		applyPositions();
 	}
 
 	private void shrinkLayout() {
-		setHorizontalMargin(gadgetLeft);
-		setVerticalMargin(gadgetTop);
-		setHorizontalAlignment(Alignment.BEGIN);
-		setVerticalAlignment(Alignment.BEGIN);
 		stretched = false;
-		layout.getElement().getStyle().setTop(gadgetTop, Unit.PX);
-		layout.getElement().getStyle().setLeft(gadgetLeft, Unit.PX);
+		layout.getElement().getStyle().setTop(top, Unit.PX);
+		layout.getElement().getStyle().setLeft(left, Unit.PX);
 		int y = viewPort.getZoomStrategy().getZoomStepCount() * ZOOMSTEP_HEIGHT;
 		layout.setSize("24px", (y + 1 + (ZOOMBUTTON_HEIGHT * 2)) + "px");
 		applyPositions();
@@ -255,11 +252,11 @@ public class ZoomStepGadget extends AbstractMapGadget {
 	}
 
 	private int getBaseTop() {
-		return stretched ? gadgetTop : 0;
+		return stretched ? top : 0;
 	}
 
 	private int getBaseLeft() {
-		return stretched ? gadgetLeft : 0;
+		return stretched ? left : 0;
 	}
 
 	// ------------------------------------------------------------------------

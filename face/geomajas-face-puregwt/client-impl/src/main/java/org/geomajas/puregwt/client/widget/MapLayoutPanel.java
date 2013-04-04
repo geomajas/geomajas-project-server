@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.widget;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.Scheduler;
@@ -22,11 +23,34 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
  * resizes. Call {@link #setPresenter(MapPresenter)} before adding the panel to the general layout.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class MapLayoutPanel extends SimpleLayoutPanel {
 
 	private MapPresenter presenter;
+
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
+
+	/** Create a new map layout instance. */
+	public MapLayoutPanel() {
+	}
+
+	/**
+	 * Create a new map layout instance.
+	 * 
+	 * @param mapPresenter
+	 *            Immediately apply a map onto this layout.
+	 */
+	public MapLayoutPanel(MapPresenter mapPresenter) {
+		setPresenter(mapPresenter);
+	}
+
+	// ------------------------------------------------------------------------
+	// Public methods:
+	// ------------------------------------------------------------------------
 
 	/**
 	 * Set the map presenter. Call this method before adding this widget to the layout.
@@ -37,6 +61,15 @@ public class MapLayoutPanel extends SimpleLayoutPanel {
 		this.presenter = presenter;
 		setWidget(presenter);
 		onResize();
+	}
+
+	/**
+	 * Get the map presenter.
+	 * 
+	 * @return The map presenter.
+	 */
+	public MapPresenter getMapPresenter() {
+		return presenter;
 	}
 
 	@Override
@@ -52,5 +85,4 @@ public class MapLayoutPanel extends SimpleLayoutPanel {
 		}
 		super.onResize();
 	}
-
 }

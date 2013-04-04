@@ -9,12 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.gadget;
+package org.geomajas.puregwt.client.widget;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -26,18 +29,21 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Map gadget that displays zoom in, zoom out and zoom to maximum extent buttons.
+ * Map widget that displays zoom in, zoom out and zoom to maximum extent buttons. This widget is meant to be added to
+ * the map's widget pane (see {@link MapPresenter#getWidgetPane()}).
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-public class SimpleZoomGadget extends AbstractMapGadget {
+@Api(allMethods = true)
+public class SimpleZoomWidget extends AbstractMapWidget {
 
 	/**
-	 * UI binder definition for the {@link SimpleZoomGadget} widget.
+	 * UI binder definition for the {@link SimpleZoomWidget} widget.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface SimpleZoomGadgetUiBinder extends UiBinder<Widget, SimpleZoomGadget> {
+	interface SimpleZoomGadgetUiBinder extends UiBinder<Widget, SimpleZoomWidget> {
 	}
 
 	private static final SimpleZoomGadgetUiBinder UI_BINDER = GWT.create(SimpleZoomGadgetUiBinder.class);
@@ -57,15 +63,25 @@ public class SimpleZoomGadget extends AbstractMapGadget {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public SimpleZoomGadget(int top, int left) {
-		setHorizontalMargin(left);
-		setVerticalMargin(top);
+	/**
+	 * Create a widget with zoom in, zoom out and zoom to maximum extent button.
+	 * 
+	 * @param mapPresenter
+	 *            The map to show this widget on.
+	 * @param top
+	 * @param left
+	 */
+	public SimpleZoomWidget(MapPresenter mapPresenter, int top, int left) {
+		super(mapPresenter);
+		asWidget().getElement().getStyle().setTop(top, Unit.PX);
+		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
+	/** Get the widget layout. */
 	public Widget asWidget() {
 		if (layout == null) {
 			buildGui();

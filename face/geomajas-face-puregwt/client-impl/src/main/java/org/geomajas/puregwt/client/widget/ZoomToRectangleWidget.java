@@ -9,8 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.gadget;
+package org.geomajas.puregwt.client.widget;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
@@ -28,6 +29,7 @@ import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -49,12 +51,15 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Map gadget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
- * rectangle after hitting this button.
+ * Map widget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
+ * rectangle after hitting this button. This widget is meant to be added to the map's widget pane (see
+ * {@link MapPresenter#getWidgetPane()}).
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-public class ZoomToRectangleGadget extends AbstractMapGadget {
+@Api(allMethods = true)
+public class ZoomToRectangleWidget extends AbstractMapWidget {
 
 	private VectorContainer container;
 
@@ -68,38 +73,42 @@ public class ZoomToRectangleGadget extends AbstractMapGadget {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ZoomToRectangleGadget(int top, int left) {
-		setHorizontalMargin(left);
-		setVerticalMargin(top);
+	/**
+	 * Create a new instance for the given map.
+	 * 
+	 * @param mapPresenter
+	 *            The map presenter.
+	 */
+	public ZoomToRectangleWidget(MapPresenter mapPresenter, int top, int left) {
+		super(mapPresenter);
+		asWidget().getElement().getStyle().setTop(top, Unit.PX);
+		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
+	/** Get the widget layout. */
 	public Widget asWidget() {
 		if (layout == null) {
 			buildGui();
+			mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+
+				public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+					cleanup();
+				}
+
+				public void onViewPortScaled(ViewPortScaledEvent event) {
+					cleanup();
+				}
+
+				public void onViewPortChanged(ViewPortChangedEvent event) {
+					cleanup();
+				}
+			});
 		}
 		return layout;
-	}
-
-	public void beforeDraw(MapPresenter mapPresenter) {
-		super.beforeDraw(mapPresenter);
-		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-				cleanup();
-			}
-
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				cleanup();
-			}
-
-			public void onViewPortChanged(ViewPortChangedEvent event) {
-				cleanup();
-			}
-		});
 	}
 
 	// ------------------------------------------------------------------------
