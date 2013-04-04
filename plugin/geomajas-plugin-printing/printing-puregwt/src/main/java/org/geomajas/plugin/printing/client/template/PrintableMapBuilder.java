@@ -53,7 +53,7 @@ public class PrintableMapBuilder {
 		FontStyleInfo font = new FontStyleInfo();
 		font.applyDefaults();
 		legendRasterizingInfo.setFont(font);
-		ClientMapInfo mapInfo = mapPresenter.getConfiguration();
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getServerConfiguration();
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
 		return mapRasterizingInfo;
@@ -70,7 +70,6 @@ public class PrintableMapBuilder {
 				}
 			}
 		}
-		mapPresenter.getConfiguration().setLayers(clientLayers);
+		mapPresenter.getConfiguration().getServerConfiguration().setLayers(clientLayers);
 	}
-
 }

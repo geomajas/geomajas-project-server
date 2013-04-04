@@ -107,7 +107,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 		map.setTag("map");
 		// GWT:map.setMapId(mapModel.getMapInfo().getId());
-		map.setMapId(mapPresenter.getConfiguration().getId());
+		map.setMapId(mapPresenter.getConfiguration().getServerConfiguration().getId());
 
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
@@ -117,7 +117,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		mapBuilder.build(mapPresenter, fittingBox, rasterScale);
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
-		rasterizedLayersComponentInfo.setMapInfo(mapPresenter.getConfiguration());
+		rasterizedLayersComponentInfo.setMapInfo(mapPresenter.getConfiguration().getServerConfiguration());
 		layers.add(rasterizedLayersComponentInfo);
 		map.getChildren().addAll(0, layers);
 		return map;
@@ -148,7 +148,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		style.setStyle(PrintingLayout.templateDefaultFontStyle);
 		style.setSize((int) PrintingLayout.templateDefaultFontSize);
 		legend.setFont(style);
-		legend.setMapId(mapPresenter.getConfiguration().getId());
+		legend.setMapId(mapPresenter.getConfiguration().getServerConfiguration().getId());
 		legend.setTag("legend");
 		// GWT:for (Layer layer : mapModel.getLayers())
 		LayersModel layersModel = this.mapPresenter.getLayersModel();

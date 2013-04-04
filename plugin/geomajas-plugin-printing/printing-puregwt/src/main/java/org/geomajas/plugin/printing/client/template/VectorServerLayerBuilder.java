@@ -48,15 +48,15 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 				case GEOMETRY:
 				case LINESTRING:
 				case MULTILINESTRING:
-					selectStyle = mapPresenter.getConfiguration().getLineSelectStyle();
+					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getLineSelectStyle();
 					break;
 				case MULTIPOINT:
 				case POINT:
-					selectStyle = mapPresenter.getConfiguration().getPointSelectStyle();
+					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getPointSelectStyle();
 					break;
 				case MULTIPOLYGON:
 				case POLYGON:
-					selectStyle = mapPresenter.getConfiguration().getPolygonSelectStyle();
+					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getPolygonSelectStyle();
 					break;
 				default:
 					throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());
