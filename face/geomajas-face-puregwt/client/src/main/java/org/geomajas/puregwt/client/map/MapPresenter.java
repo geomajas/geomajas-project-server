@@ -12,10 +12,8 @@
 package org.geomajas.puregwt.client.map;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.gfx.CanvasContainer;
@@ -24,6 +22,7 @@ import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -98,7 +97,7 @@ public interface MapPresenter extends IsWidget {
 	 * @return Returns the world vector container.
 	 */
 	VectorContainer addWorldContainer();
-	
+
 	/**
 	 * <p>
 	 * Create a new container in world space wherein one can render new canvas objects and return it. Note that all
@@ -165,32 +164,6 @@ public interface MapPresenter extends IsWidget {
 	 * @return The feature service.
 	 */
 	FeatureService getFeatureService();
-
-	/**
-	 * Get the full set of currently active map gadgets.
-	 * 
-	 * @return The full set of currently active map gadgets.
-	 */
-	Set<MapGadget> getMapGadgets();
-
-	/**
-	 * Add a new gadget to the map. These gadgets are autonomous entities that can draw themselves in screen space, and
-	 * react to certain events from the view port.
-	 * 
-	 * @param mapGadget
-	 *            The new gadget to add to the map.
-	 */
-	void addMapGadget(MapGadget mapGadget);
-
-	/**
-	 * Remove a gadget from the map. These gadgets are autonomous entities that can draw themselves in screen space, and
-	 * react to certain events from the view port.
-	 * 
-	 * @param mapGadget
-	 *            The gadget to remove from the map.
-	 * @return Was the removal successful or not?
-	 */
-	boolean removeMapGadget(MapGadget mapGadget);
 
 	/**
 	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for
@@ -267,15 +240,17 @@ public interface MapPresenter extends IsWidget {
 	MapEventParser getMapEventParser();
 
 	/**
-	 * <p>
-	 * Get the server-side configuration object associated with this map. This configuration only becomes available
-	 * after the map has been successfully initialized, as this object first needs to be fetched from the server.
-	 * </p>
-	 * <p>
-	 * Never change the values within this object!
-	 * </p>
+	 * Get a panel onto which widgets can be freely added. This panel is always of the same size of the map, and resizes
+	 * with the map.
 	 * 
-	 * @return The server-side configuration object associated with this map.
+	 * @return A panel onto which widgets can be added.
 	 */
-	ClientMapInfo getConfiguration();
+	AbsolutePanel getWidgetPane();
+
+	/**
+	 * Get the map configuration object. This object contains the server-side configuration and a series of map hints.
+	 * 
+	 * @return The configuration object for this map.
+	 */
+	MapConfiguration getConfiguration();
 }
