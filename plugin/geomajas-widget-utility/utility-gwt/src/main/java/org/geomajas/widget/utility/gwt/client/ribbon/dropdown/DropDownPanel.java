@@ -120,12 +120,13 @@ public class DropDownPanel extends VStack {
 			if (ButtonLayoutStyle.ICON_AND_TITLE.equals(buttonButtonLayoutStyle)) {
 				button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonIconSize, 
 						TitleAlignment.RIGHT);
+				button.setHeight(GuwLayout.DropDown.ribbonBarDropDownButtonIconSize + 4);
 			} else if (ButtonLayoutStyle.ICON_TITLE_AND_DESCRIPTION.equals(buttonButtonLayoutStyle)) {
 				button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonDescriptionIconSize, 
 						TitleAlignment.RIGHT);
+				button.setHeight(GuwLayout.DropDown.ribbonBarDropDownButtonDescriptionIconSize + 4);
 			}
 			button.setOverflow(Overflow.VISIBLE);
-			button.setAutoHeight();
 			button.setWidth100();
 			button.setMargin(2);
 			button.addClickHandler(new ClickHandler() {
