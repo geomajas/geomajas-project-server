@@ -69,7 +69,16 @@ public class RolesWindow implements ProfileSelectionWindow {
 
 			public void execute(RetrieveRolesResponse response) {
 				// If only one role, use default
-				if (response.getRoles().size() == 1) {
+				Entry<String, ProfileDto> guest = null;
+				for (Entry<String, ProfileDto> role : response.getRoles().entrySet()) {
+					if (role.getValue().getRole().equals(Role.GUEST)) {
+						guest = role;
+					}
+				}
+
+				if (guest != null) {
+					callback.execute(guest.getKey(), guest.getValue());
+				} else if (response.getRoles().size() == 1) {
 					for (Entry<String, ProfileDto> role : response.getRoles().entrySet()) {
 						callback.execute(role.getKey(), role.getValue());
 					}
