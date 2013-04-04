@@ -15,14 +15,8 @@ import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -46,41 +40,12 @@ public class MapFillPanel extends ContentPanel {
 
 	public Widget getContentWidget() {
 		// Define the left layout:
-		final DockLayoutPanel layout = new DockLayoutPanel(Unit.PX);
+		final MapLayoutPanel layout = new MapLayoutPanel();
 		layout.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		layout.add(mapPresenter.asWidget());
-
-		// Add an automatic resize handler to set the correct size when the window resizes:
-		Window.addResizeHandler(new ResizeHandler() {
-
-			public void onResize(ResizeEvent event) {
-				mapPresenter.setSize(layout.getOffsetWidth(), layout.getOffsetHeight());
-			}
-		});
-
-		// Calculate the correct size on load:
-		layout.addAttachHandler(new AttachEvent.Handler() {
-
-			public void onAttachOrDetach(AttachEvent event) {
-				Timer timer = new Timer() {
-
-					@Override
-					public void run() {
-						int width = layout.getOffsetWidth();
-						int height = layout.getOffsetHeight();
-						if (width != 0 && height != 0) {
-							mapPresenter.setSize(width, height);
-						} else {
-							schedule(50);
-						}
-					}
-				};
-				timer.run();
-			}
-		});
+		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapOsm");

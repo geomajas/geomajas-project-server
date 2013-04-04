@@ -28,8 +28,8 @@ import org.geomajas.puregwt.client.Showcase;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.widget.client.gadget.LegendDropDownGadget;
-import org.geomajas.puregwt.widget.client.map.ResizableMapLayout;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
+import org.geomajas.puregwt.widget.client.map.LegendDropDownWidget;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
@@ -96,7 +96,7 @@ public class GetCapabilitiesPanel130 extends ContentPanel {
 		urlBox.setText(DEFAULT_CAPA_URL);
 
 		// Define the whole layout:
-		ResizableMapLayout mapDecorator = new ResizableMapLayout(mapPresenter);
+		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel(mapPresenter);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapEmpty");
@@ -118,8 +118,8 @@ public class GetCapabilitiesPanel130 extends ContentPanel {
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
 		});
-		mapPresenter.addMapGadget(new LegendDropDownGadget());
-		mapPanel.setWidget(mapDecorator);
+		mapPresenter.getWidgetPane().add(new LegendDropDownWidget());
+		mapPanel.setWidget(mapLayoutPanel);
 
 		// Get the WmsService singleton:
 		wmsService = Showcase.GEOMAJASINJECTOR.getWmsService();

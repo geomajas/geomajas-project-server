@@ -12,16 +12,16 @@
 package org.geomajas.puregwt.client.plugin.wmsclient;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.plugin.wmsclient.client.layer.WmsTileConfiguration;
-import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
+import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.Showcase;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.widget.client.map.ResizableMapLayout;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -49,7 +49,7 @@ public class WmsClientPanel111 extends ContentPanel {
 	@Override
 	public Widget getContentWidget() {
 		// Define the whole layout:
-		ResizableMapLayout mapDecorator = new ResizableMapLayout(mapPresenter);
+		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel(mapPresenter);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapEmpty");
@@ -71,6 +71,6 @@ public class WmsClientPanel111 extends ContentPanel {
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
 		});
-		return mapDecorator.asWidget();
+		return mapLayoutPanel.asWidget();
 	}
 }

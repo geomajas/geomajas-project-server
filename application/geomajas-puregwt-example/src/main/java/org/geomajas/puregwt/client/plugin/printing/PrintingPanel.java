@@ -23,7 +23,7 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.widget.client.gadget.LegendDropDownGadget;
+import org.geomajas.puregwt.widget.client.map.LegendDropDownWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -92,7 +92,7 @@ public class PrintingPanel extends ContentPanel {
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
 		});
-		mapPresenter.addMapGadget(new LegendDropDownGadget());
+		mapPresenter.getWidgetPane().add(new LegendDropDownWidget());
 		mapPanel.setPresenter(mapPresenter);
 		PrintPanel panel = new PrintPanel(mapPresenter, "puregwt-app");
 		panel.getMapBuilder().registerLayerBuilder(new WmsLayerBuilder());

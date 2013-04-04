@@ -13,8 +13,7 @@ package org.geomajas.puregwt.client.widget;
 
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.widget.client.gadget.LegendDropDownGadget;
-import org.geomajas.puregwt.widget.client.map.ResizableMapLayout;
+import org.geomajas.puregwt.widget.client.map.LegendDropDownWidget;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -48,11 +47,11 @@ public class LegendDisclosureGadgetPanel extends ContentPanel {
 	public Widget getContentWidget() {
 		// Create the MapPresenter:
 		mapPresenter.initialize("puregwt-app", "mapLegend");
-		ResizableMapLayout mapLayout = new ResizableMapLayout(mapPresenter);
+		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel(mapPresenter);
 
-		LegendDropDownGadget mapGadget = new LegendDropDownGadget();
-		mapPresenter.addMapGadget(mapGadget);
+		LegendDropDownWidget legendWidget = new LegendDropDownWidget();
+		mapPresenter.getWidgetPane().add(legendWidget);
 
-		return mapLayout.asWidget();
+		return mapLayoutPanel.asWidget();
 	}
 }

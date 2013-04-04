@@ -17,7 +17,6 @@ import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.widget.client.map.LayerLegendPanel;
-import org.geomajas.puregwt.widget.client.map.ResizableMapLayout;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -71,8 +70,8 @@ public class LayerLegendViewPanel extends ContentPanel {
 		});
 
 		// Define the whole layout:
-		ResizableMapLayout mapDecorator = new ResizableMapLayout(mapPresenter);
-		layout.add(mapDecorator);
+		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel(mapPresenter);
+		layout.add(mapLayoutPanel);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapLegend");

@@ -30,7 +30,7 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.Feature;
-import org.geomajas.puregwt.widget.client.map.ResizableMapLayout;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
@@ -95,7 +95,7 @@ public class GetFeatureInfoPanel130 extends ContentPanel {
 	public Widget getContentWidget() {
 		// Define the whole layout:
 		Widget widget = UI_BINDER.createAndBindUi(this);
-		mapPanel.add(new ResizableMapLayout(mapPresenter));
+		mapPanel.add(new MapLayoutPanel(mapPresenter));
 
 		// Initialize the map:
 		mapPresenter.initialize("puregwt-app", "mapEmpty");
@@ -138,7 +138,7 @@ public class GetFeatureInfoPanel130 extends ContentPanel {
 
 			public String transform(WmsRequest request, String url) {
 				switch (request) {
-					case GETCAPABILITIES:  /* Not for GETFEATUREINFO ! */
+					case GETCAPABILITIES: /* Not for GETFEATUREINFO ! */
 						return "proxy?url=" + url;
 					default:
 				}
