@@ -199,7 +199,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 				FeatureInfo fi = new FeatureInfo();
 				PrimitiveAttributeInfo identifier = null;
 				for (AttributeDescriptor ad : sft.getAttributeDescriptors()) {
-					if (!(ad instanceof GeometryDescriptorImpl)) { // geometry atrributes are special
+					if (!(ad instanceof GeometryDescriptorImpl) // geometry atrributes are special
+							&& !ad.getLocalName().contains(".") // ignore attributes with points in name
+							&& !ad.getLocalName().contains("/")) { // ignore attributes with slash in name
 						PrimitiveAttributeInfo pai = toPrimitiveAttributeInfo(ad);
 						fi.getAttributes().add(pai);
 						if (ad.getType().isIdentified() && identifier == null) {
@@ -302,8 +304,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		request.addLayer(owsLayer);
 		info.setPreviewUrl(request.getFinalURL().toExternalForm());
 		GetMapRequest baseRequest = wms.createGetMapRequest();
-		baseRequest.setTransparent(true);
-		info.setBaseUrl(baseRequest.getFinalURL().toExternalForm());
+		info.setBaseUrl(baseRequest.getFinalURL().toExternalForm().replaceFirst("\\?.*", ""));
 		return info;
 	}
 
@@ -384,6 +385,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		params.put(BeanFactory.CLASS_NAME, WmsLayer.class.getName());
 		params.put(BaseRasterLayerBeanFactory.LAYER_INFO, rlc.getRasterLayerInfo());
 		params.put(WmsLayerBeanFactory.BASE_WMS_URL, rlc.getParameterValue(WmsLayerBeanFactory.BASE_WMS_URL));
+		//TODO: all these parameters should be configurable too
+		params.put("useProxy", true);
+		params.put("useCache", true);
+		List<Parameter> parameters = new ArrayList<Parameter>();
+		parameters.add(new Parameter("TRANSPARENT", "true"));
+		params.put("parameters", parameters);
 		if (rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME) != null) {
 			WmsAuthentication auth = new WmsAuthentication();
 			auth.setUser(rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME));
