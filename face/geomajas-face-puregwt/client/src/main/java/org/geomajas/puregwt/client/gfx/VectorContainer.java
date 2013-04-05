@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.annotation.Api;
 import org.vaadin.gwtgraphics.client.Transformable;
+import org.vaadin.gwtgraphics.client.Transparent;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -41,5 +42,4 @@ public interface VectorContainer extends VectorObjectContainer, Transparent, Tra
 	 * @return Whether or not this container and all it's children are visible.
 	 */
 	boolean isVisible();
-	
 }

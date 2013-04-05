@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.vaadin.gwtgraphics.client.Transformable;
+import org.vaadin.gwtgraphics.client.Transparent;
 
 import com.google.gwt.user.client.ui.IsWidget;
 

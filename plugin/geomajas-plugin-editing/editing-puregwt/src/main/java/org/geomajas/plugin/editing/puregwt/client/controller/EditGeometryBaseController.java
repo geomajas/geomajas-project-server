@@ -64,8 +64,8 @@ public class EditGeometryBaseController extends AbstractMapController {
 	public void onActivate(MapPresenter mapPresenter) {
 		super.onActivate(mapPresenter);
 		idleController.onActivate(mapPresenter);
-		insertController.setMaxBounds(mapPresenter.getConfiguration().getMaxBounds());
-		dragController.setMaxBounds(mapPresenter.getConfiguration().getMaxBounds());
+		insertController.setMaxBounds(mapPresenter.getConfiguration().getServerConfiguration().getMaxBounds());
+		dragController.setMaxBounds(mapPresenter.getConfiguration().getServerConfiguration().getMaxBounds());
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
