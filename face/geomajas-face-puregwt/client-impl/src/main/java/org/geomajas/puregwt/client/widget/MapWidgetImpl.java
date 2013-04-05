@@ -18,13 +18,13 @@ import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.CanvasContainerImpl;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
-import org.geomajas.puregwt.client.gfx.Transparent;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.gfx.VectorGroup;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Transformable;
+import org.vaadin.gwtgraphics.client.Transparent;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
