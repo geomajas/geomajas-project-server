@@ -191,8 +191,8 @@
 
 	<properties>
 		<geomajas-plugin-editing-backend-version>1.11.1</geomajas-plugin-editing-backend-version>
-		<geomajas-plugin-editing-common-gwt-face-version>1.4.0-SNAPSHOT</geomajas-plugin-editing-common-gwt-face-version>
-		<geomajas-plugin-editing-gwt-face-version>1.14.0-SNAPSHOT</geomajas-plugin-editing-gwt-face-version>
+		<geomajas-plugin-editing-common-gwt-face-version>1.3.0</geomajas-plugin-editing-common-gwt-face-version>
+		<geomajas-plugin-editing-gwt-face-version>1.13.0</geomajas-plugin-editing-gwt-face-version>
 		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
 		<geomajas-plugin-editing-gwt-version>2.5.0</geomajas-plugin-editing-gwt-version>
 	</properties>
