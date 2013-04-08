@@ -321,7 +321,6 @@ public final class MapPresenterImpl implements MapPresenter {
 				eventBus.fireEvent(new MapInitializationEvent());
 			}
 		});
-		setSize(640, 480);
 	}
 
 	/** {@inheritDoc} */
