@@ -82,16 +82,18 @@ public class WmsTiledScaleRendererImpl implements WmsTiledScaleRenderer {
 	}
 
 	public void render(Bbox bounds) {
-		List<TileCode> tilesForBounds = tileService.getTileCodesForBounds(layer.getViewPort(), layer.getTileConfig(),
-				bounds, scale);
-		for (TileCode tileCode : tilesForBounds) {
-			if (!tiles.containsKey(tileCode.toString())) {
-				RasterTile tile = createTile(tileCode);
+		if (layer.isShowing()) {
+			List<TileCode> tilesForBounds = tileService.getTileCodesForBounds(layer.getViewPort(),
+					layer.getTileConfig(), bounds, scale);
+			for (TileCode tileCode : tilesForBounds) {
+				if (!tiles.containsKey(tileCode.toString())) {
+					RasterTile tile = createTile(tileCode);
 
-				// Add the tile to the list and render it:
-				tiles.put(tileCode.toString(), tile);
-				nrLoadingTiles++;
-				renderTile(tile, new ImageCounter());
+					// Add the tile to the list and render it:
+					tiles.put(tileCode.toString(), tile);
+					nrLoadingTiles++;
+					renderTile(tile, new ImageCounter());
+				}
 			}
 		}
 	}
