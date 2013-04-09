@@ -44,13 +44,13 @@ public class AlternativesPanel extends PopupPanel implements SelectAlternativeHa
 		super(true);
 		this.box = box;
 		box.setSelectAlternativeHandler(this);
-		setStyleName(GeocoderGadget.GM_GEOCODER_GADGET_ALT_PANEL);
+		setStyleName(GeocoderWidget.GM_GEOCODER_GADGET_ALT_PANEL);
 		verticalPanel = new VerticalPanel();
 		add(verticalPanel);
 		addCloseHandler(new CloseHandler<PopupPanel>() {
 			
 			public void onClose(CloseEvent<PopupPanel> event) {
-				box.removeStyleName(GeocoderGadget.GM_GEOCODER_GADGET_TEXT_BOX_WITH_ALTS);
+				box.removeStyleName(GeocoderWidget.GM_GEOCODER_GADGET_TEXT_BOX_WITH_ALTS);
 			}
 		});
 	}
@@ -74,7 +74,7 @@ public class AlternativesPanel extends PopupPanel implements SelectAlternativeHa
 		for (GetLocationForStringAlternative alternative : event.getAlternatives()) {
 			final String altText = alternative.getCanonicalLocation();
 			Label altLabel = new Label(altText);
-			altLabel.setStyleName(GeocoderGadget.GM_GEOCODER_GADGET_ALT_LABEL);
+			altLabel.setStyleName(GeocoderWidget.GM_GEOCODER_GADGET_ALT_LABEL);
 			altLabel.addClickHandler(new ClickHandler() {
 				
 				public void onClick(ClickEvent event) {
@@ -85,7 +85,7 @@ public class AlternativesPanel extends PopupPanel implements SelectAlternativeHa
 			verticalPanel.add(altLabel);
 		}
 		show();
-		box.addStyleName(GeocoderGadget.GM_GEOCODER_GADGET_TEXT_BOX_WITH_ALTS);
+		box.addStyleName(GeocoderWidget.GM_GEOCODER_GADGET_TEXT_BOX_WITH_ALTS);
 	}
 
 }

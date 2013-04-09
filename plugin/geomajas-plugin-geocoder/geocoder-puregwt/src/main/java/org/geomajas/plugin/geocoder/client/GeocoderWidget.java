@@ -11,8 +11,10 @@
 
 package org.geomajas.plugin.geocoder.client;
 
-import org.geomajas.puregwt.client.map.gadget.AbstractMapGadget;
+import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.widget.AbstractMapWidget;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -33,7 +35,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Emiel Ackermann
  *
  */
-public class GeocoderGadget extends AbstractMapGadget {
+public class GeocoderWidget extends AbstractMapWidget {
 	
 	private static final String GM_GEOCODER_GADGET_GLASS = "gm-GeocoderGadget-glass";
 	private static final String GM_GEOCODER_GADGET = "gm-GeocoderGadget";
@@ -48,9 +50,10 @@ public class GeocoderGadget extends AbstractMapGadget {
 	private FlowPanel layout;
 	private GeocoderTextBox box;
 
-	public GeocoderGadget(int top, int left) {
-		setHorizontalMargin(left);
-		setVerticalMargin(top);
+	public GeocoderWidget(MapPresenter mapPresenter, int top, int left) {
+		super(mapPresenter);
+		asWidget().getElement().getStyle().setTop(top, Unit.PX);
+		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
 	}
 	
 	/**
