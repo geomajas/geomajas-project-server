@@ -16,6 +16,7 @@ import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -47,6 +48,12 @@ public class LegendDropDownWidget implements IsWidget {
 	private int closeDelay = 3000;
 
 	private Timer timer;
+
+	public LegendDropDownWidget(MapPresenter mapPresenter) {
+		this.mapPresenter = mapPresenter;
+		asWidget().getElement().getStyle().setTop(5, Unit.PX);
+		asWidget().getElement().getStyle().setRight(5, Unit.PX);
+	}
 
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
