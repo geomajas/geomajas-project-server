@@ -17,6 +17,7 @@ import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -40,8 +41,10 @@ public class MapFillPanel extends ContentPanel {
 
 	public Widget getContentWidget() {
 		// Define the left layout:
+		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
 		final MapLayoutPanel layout = new MapLayoutPanel();
-		layout.setSize("100%", "100%");
+		resizeLayoutPanel.setWidget(layout);
+		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
@@ -49,7 +52,7 @@ public class MapFillPanel extends ContentPanel {
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapOsm");
-		return layout;
+		return resizeLayoutPanel;
 	}
 
 	/**
