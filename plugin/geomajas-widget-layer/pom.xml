@@ -18,14 +18,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-widget-layer-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M4</version>
 	<packaging>pom</packaging>
 	<name>geomajas-widget-layer plug-in parent</name>
 	<description>geomajas-widget-layer plug-in grouping module</description>
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-layer</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-layer</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-widget-layer</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-layer-all-1.0.0-M4</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-layer-all-1.0.0-M4</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-layer-all-1.0.0-M4</url>
 	</scm>
 
 	<developers>
