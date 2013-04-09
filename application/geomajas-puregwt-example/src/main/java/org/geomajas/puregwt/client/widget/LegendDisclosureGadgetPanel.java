@@ -49,8 +49,9 @@ public class LegendDisclosureGadgetPanel extends ContentPanel {
 		mapPresenter.initialize("puregwt-app", "mapLegend");
 		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel(mapPresenter);
 
-		LegendDropDownWidget legendWidget = new LegendDropDownWidget();
+		LegendDropDownWidget legendWidget = new LegendDropDownWidget(mapPresenter);
 		mapPresenter.getWidgetPane().add(legendWidget);
+		mapLayoutPanel.setSize("600px", "400px");
 
 		return mapLayoutPanel.asWidget();
 	}

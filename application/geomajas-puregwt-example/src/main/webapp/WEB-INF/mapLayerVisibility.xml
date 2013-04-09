@@ -86,6 +86,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="visible" value="true" />
 					<property name="style" value="1" />
 				</bean>
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmCycleLayer">
+					<property name="serverLayerId" value="osmCycle" />
+					<property name="label" value="OpenCycleMap" />
+					<property name="visible" value="false" />
+					<property name="style" value="1" />
+				</bean>
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
 					<property name="serverLayerId" value="layerCountries110m" />
 					<property name="label" value="Countries" />

@@ -92,7 +92,7 @@ public class PrintingPanel extends ContentPanel {
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
 		});
-		mapPresenter.getWidgetPane().add(new LegendDropDownWidget());
+		mapPresenter.getWidgetPane().add(new LegendDropDownWidget(mapPresenter));
 		mapPanel.setPresenter(mapPresenter);
 		PrintPanel panel = new PrintPanel(mapPresenter, "puregwt-app");
 		panel.getMapBuilder().registerLayerBuilder(new WmsLayerBuilder());

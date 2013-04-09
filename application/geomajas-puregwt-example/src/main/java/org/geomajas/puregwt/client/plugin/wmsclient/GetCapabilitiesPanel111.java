@@ -40,7 +40,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -71,7 +71,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 	protected ValueListBox<WmsLayerInfo> layerBox;
 
 	@UiField
-	protected SimplePanel mapPanel;
+	protected SimpleLayoutPanel mapPanel;
 
 	private WmsService wmsService;
 
@@ -118,7 +118,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
 		});
-		mapPresenter.getWidgetPane().add(new LegendDropDownWidget());
+		mapPresenter.getWidgetPane().add(new LegendDropDownWidget(mapPresenter));
 		mapPanel.setWidget(mapLayoutPanel);
 
 		// Get the WmsService singleton:

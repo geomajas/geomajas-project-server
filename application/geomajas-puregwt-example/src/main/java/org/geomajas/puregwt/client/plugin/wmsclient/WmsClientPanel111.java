@@ -23,6 +23,7 @@ import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -71,6 +72,9 @@ public class WmsClientPanel111 extends ContentPanel {
 				mapPresenter.getLayersModel().addLayer(wmsLayer);
 			}
 		});
-		return mapLayoutPanel.asWidget();
+		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
+		resizeLayoutPanel.setWidget(mapLayoutPanel);
+		resizeLayoutPanel.setSize("100%", "100%");
+		return resizeLayoutPanel;
 	}
 }

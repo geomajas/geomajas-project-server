@@ -41,7 +41,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -75,7 +75,7 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 	protected HTML htmlDescription;
 
 	@UiField
-	protected SimplePanel mapPanel;
+	protected SimpleLayoutPanel mapPanel;
 
 	public GetFeatureInfoPanel111(MapPresenter mapPresenter) {
 		super(mapPresenter);
@@ -95,7 +95,7 @@ public class GetFeatureInfoPanel111 extends ContentPanel {
 	public Widget getContentWidget() {
 		// Define the whole layout:
 		Widget widget = UI_BINDER.createAndBindUi(this);
-		mapPanel.add(new MapLayoutPanel(mapPresenter));
+		mapPanel.setWidget(new MapLayoutPanel(mapPresenter));
 
 		// Initialize the map:
 		mapPresenter.initialize("puregwt-app", "mapEmpty");
