@@ -68,7 +68,7 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	// Settings and status variables:
 
-	private double mapExtentScaleAtFetch = 2;
+	private double mapExtentScaleAtFetch = 1;
 
 	private Deferred deferred;
 
@@ -124,32 +124,34 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	/** {@inheritDoc} */
 	public void render(final Bbox bounds) {
-		// First we check whether or not the requested bounds is already rendered:
-		if (currentTileBounds != null && BboxService.contains(currentTileBounds, bounds)) {
-			onTilesRendered(container, scale);
-			return; // Bounds already rendered, nothing to do here.
-		}
-
-		// Scale the bounds to fetch tiles for (we want a bigger area than the map bounds):
-		currentTileBounds = BboxService.scale(bounds, mapExtentScaleAtFetch);
-
-		// Create the command:
-		GetRasterTilesRequest request = new GetRasterTilesRequest();
-		request.setBbox(new org.geomajas.geometry.Bbox(currentTileBounds.getX(), currentTileBounds.getY(),
-				currentTileBounds.getWidth(), currentTileBounds.getHeight()));
-		request.setCrs(crs);
-		request.setLayerId(rasterLayer.getServerLayerId());
-		request.setScale(scale);
-		GwtCommand command = new GwtCommand(GetRasterTilesRequest.COMMAND);
-		command.setCommandRequest(request);
-
-		// Execute the fetch, and render on success:
-		deferred = commandService.execute(command, new AbstractCommandCallback<GetRasterTilesResponse>() {
-
-			public void execute(GetRasterTilesResponse response) {
-				addTiles(response.getRasterData());
+		if (rasterLayer.isShowing()) {
+			// First we check whether or not the requested bounds is already rendered:
+			if (currentTileBounds != null && BboxService.contains(currentTileBounds, bounds)) {
+				onTilesRendered(container, scale);
+				return; // Bounds already rendered, nothing to do here.
 			}
-		});
+
+			// Scale the bounds to fetch tiles for (we want a bigger area than the map bounds):
+			currentTileBounds = BboxService.scale(bounds, mapExtentScaleAtFetch);
+
+			// Create the command:
+			GetRasterTilesRequest request = new GetRasterTilesRequest();
+			request.setBbox(new org.geomajas.geometry.Bbox(currentTileBounds.getX(), currentTileBounds.getY(),
+					currentTileBounds.getWidth(), currentTileBounds.getHeight()));
+			request.setCrs(crs);
+			request.setLayerId(rasterLayer.getServerLayerId());
+			request.setScale(scale);
+			GwtCommand command = new GwtCommand(GetRasterTilesRequest.COMMAND);
+			command.setCommandRequest(request);
+
+			// Execute the fetch, and render on success:
+			deferred = commandService.execute(command, new AbstractCommandCallback<GetRasterTilesResponse>() {
+
+				public void execute(GetRasterTilesResponse response) {
+					addTiles(response.getRasterData());
+				}
+			});
+		}
 	}
 
 	public boolean isRendered() {
