@@ -63,7 +63,7 @@ public class SldEditorPanel extends VLayout {
 		addMember(codeArea);
 
 		createActions();
-		// make configurable
+		// TODO make configurable
 	}
 
 	public void setTemplates(List<SldInfo> templates) {
@@ -94,7 +94,7 @@ public class SldEditorPanel extends VLayout {
 	}
 
 	/**
-	 * Please not that you cannot actually set dirty == true, only to false;
+	 * Please note that you cannot actually set dirty == true, only to false.
 	 * @param dirty
 	 */
 	public void setDataDirty(boolean dirty) {

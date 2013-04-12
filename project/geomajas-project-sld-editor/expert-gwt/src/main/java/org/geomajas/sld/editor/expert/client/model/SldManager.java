@@ -10,7 +10,6 @@
  */
 package org.geomajas.sld.editor.expert.client.model;
 
-
 /**
  * The main model class of the SLD editor.
  * 
@@ -19,8 +18,8 @@ package org.geomajas.sld.editor.expert.client.model;
 public interface SldManager {
 
 	/**
-	 * Fetch all the Templates from the server (asynchronously). Instead of passing a callback here, clients should use the
-	 * model events to get registered of changes to the current list of SLD's.
+	 * Fetch all the Templates from the server (asynchronously). Instead of passing a callback here, clients should use
+	 * the model events to get registered of changes to the current list of SLD's.
 	 */
 	void fetchTemplateNames();
 
@@ -29,7 +28,7 @@ public interface SldManager {
 	 * model events to get registered of changes to the current list of SLD's.
 	 */
 	void fetchTemplate(String name);
-	
+
 	/**
 	 * Get the currently selected SLD.
 	 * 
@@ -38,8 +37,8 @@ public interface SldManager {
 	SldModel getModel();
 
 	/**
-	 * Validate the current SLD (asynchronously). Will throw Validated  or SaveEvent.
+	 * Validate the current SLD (asynchronously). Will throw Validated or SaveEvent.
 	 */
 	void validateCurrent(boolean saveAfterValidation);
-	
+
 }

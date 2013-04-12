@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the Apache
+ * License, Version 2.0. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.sld.editor.expert.client.domain;
 
 
@@ -42,28 +52,26 @@ public class RawSld extends SldInfoImpl {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) { return true; }
+		if (obj == null) { return false; }
+		if (getClass() != obj.getClass()) {	return false; }
+		
 		RawSld other = (RawSld) obj;
 		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
+			if (other.name != null) { return false; }
+		} else if (!name.equals(other.name)) { 
+			return false; 
+		}
 		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
+			if (other.title != null) { return false; }
+		} else if (!title.equals(other.title)) {
+			return false; 
+		}
 		if (version == null) {
-			if (other.version != null)
-				return false;
-		} else if (!version.equals(other.version))
+			if (other.version != null) { return false; }
+		} else if (!version.equals(other.version)) {
 			return false;
+		}
 		return true;
 	}
 }

@@ -66,24 +66,27 @@ public class SldEditorExpertPresenter extends
 	public static final String NAMETOKEN = "sld-editor-expert";
 
 	private static final SldEditorExpertMessages EXP_MSG = GWT.create(SldEditorExpertMessages.class);
-	
+
 	private final SldManager manager;
 	private final ViewUtil viewUtil;
-	
+
 	/**
 	 * {@link SldEditorExpertPresenter}'s view.
 	 */
-	public interface MyView extends View, 
-			HasTemplateSelectHandlers, HasTemplateNamesLoadedHandlers, HasTemplateLoadedHandlers,
-			HasSldLoadedHandlers, HasSldCloseHandlers, HasSldSaveHandlers, 
-			HasSldValidateHandlers, HasSldValidatedHandlers,
-			HasSldCancelHandlers, HasSldCancelledHandlers {
-		
+	public interface MyView extends View, HasTemplateSelectHandlers, HasTemplateNamesLoadedHandlers,
+			HasTemplateLoadedHandlers, HasSldLoadedHandlers, HasSldCloseHandlers, HasSldSaveHandlers,
+			HasSldValidateHandlers, HasSldValidatedHandlers, HasSldCancelHandlers, HasSldCancelledHandlers {
+
 		void setTemplates(SldModel model);
+
 		void selectTemplateCancelled();
+
 		void clearData();
+
 		void modelToView(SldModel model, boolean keepDirty);
+
 		void viewToModel(SldModel model);
+
 		void hide();
 	}
 
@@ -92,7 +95,8 @@ public class SldEditorExpertPresenter extends
 	 */
 	@ProxyStandard
 	@NameToken(NAMETOKEN)
-	public interface MyProxy extends ProxyPlace<SldEditorExpertPresenter> {	}
+	public interface MyProxy extends ProxyPlace<SldEditorExpertPresenter> {
+	}
 
 	@Inject
 	public SldEditorExpertPresenter(EventBus eventBus, MyView view, MyProxy proxy, final SldManager manager,
@@ -104,8 +108,10 @@ public class SldEditorExpertPresenter extends
 
 	/**
 	 * Add your own custom SaveEventListener.
-	 * <p>Save does not automatically close the editing window.
-	 * <br/ >Call presenter.closeEditor() to close the editor afterwards.
+	 * <p>
+	 * Save does not automatically close the editing window. <br/ >
+	 * Call presenter.closeEditor() to close the editor afterwards.
+	 * 
 	 * @param handler
 	 */
 	public void addSldSaveHandler(SldSaveHandler handler) {
@@ -114,15 +120,17 @@ public class SldEditorExpertPresenter extends
 
 	/**
 	 * Add your own custom CancelledEventListener.
+	 * 
 	 * @param handler
 	 */
 	public void addSldCancelledHandler(SldCancelledHandler handler) {
 		registerHandler(getView().addSldCancelledHandler(handler));
 	}
-	
+
 	/**
 	 * Send a close editor event.
-	 * <p>(please note that dirty is not checked, eg. widget is unconditionally closed. Use cancel to check first)
+	 * <p>
+	 * (please note that dirty is not checked, eg. widget is unconditionally closed. Use cancel to check first)
 	 */
 	public void closeEditor() {
 		SldCloseEvent.fire(this);
@@ -130,6 +138,7 @@ public class SldEditorExpertPresenter extends
 
 	/**
 	 * Conveniencemethod to load data into the editor.
+	 * 
 	 * @param rawXml
 	 */
 	public void loadSld(final String rawXml, final String name, final String title) {
@@ -143,17 +152,18 @@ public class SldEditorExpertPresenter extends
 		m.getRawSld().setXml(rawXml);
 		SldLoadedEvent.fire(SldEditorExpertPresenter.this);
 	}
-	
+
 	/**
 	 * The editors model, get the xml data here.
+	 * 
 	 * @return
 	 */
 	public SldModel getModel() {
 		return manager.getModel();
 	}
-	
+
 	// ---------------------------------------------------------------
-	
+
 	protected void revealInParent() {
 		RevealRootContentEvent.fire(this, this);
 	}
@@ -168,7 +178,7 @@ public class SldEditorExpertPresenter extends
 	protected void onSldLoaded(SldLoadedEvent event) {
 		getView().modelToView(manager.getModel(), event.isKeepDirty());
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -201,9 +211,11 @@ public class SldEditorExpertPresenter extends
 							SldCancelledEvent.fire(SldEditorExpertPresenter.this);
 						}
 
-						public void onNo() { }
+						public void onNo() {
+						}
 
-						public void onCancel() { }
+						public void onCancel() {
+						}
 					});
 				} else {
 					manager.getModel().clear();
@@ -228,25 +240,31 @@ public class SldEditorExpertPresenter extends
 				SldLoadedEvent.fire(SldEditorExpertPresenter.this, new SldLoadedEvent(true));
 			}
 		}));
-		
+
 		registerHandler(getView().addTemplateNamesLoadedHandler(new TemplateNamesLoadedHandler() {
 			public void onTemplateNamesLoaded(TemplateNamesLoadedEvent event) {
 				getView().setTemplates(manager.getModel());
 			}
 		}));
-		
+
 		registerHandler(getView().addTemplateSelectHandler(new TemplateSelectHandler() {
 			public void onTemplateSelect(final TemplateSelectEvent event) {
-				String content = (manager.getModel().getRawSld() != null ? manager.getModel().getRawSld().getXml() : null);
+				String content = (manager.getModel().getRawSld() != null ? manager.getModel().getRawSld().getXml()
+						: null);
 				if (manager.getModel().isDirty() || (content != null && !"".equals(content))) {
 					viewUtil.showYesNoMessage(EXP_MSG.confirmLoseDirtyData(), new YesNoCallback() {
 						public void onYes() {
 							manager.fetchTemplate(event.getTemplateName());
 						}
 
-						public void onNo() { revert(); }
-						public void onCancel() { revert(); }
-						
+						public void onNo() {
+							revert();
+						}
+
+						public void onCancel() {
+							revert();
+						}
+
 						private void revert() {
 							getView().selectTemplateCancelled();
 						}

@@ -16,7 +16,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Event that returns the result of a validationRequest
+ * Event that returns the result of a validationRequest.
  * 
  * @author Kristof Heirwegh
  */

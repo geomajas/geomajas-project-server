@@ -38,7 +38,7 @@ public class SldLoadedEvent extends GwtEvent<SldLoadedEvent.SldLoadedHandler> {
 	}
 	
 	/**
-	 * Should the state be kept dirty (will happen in case you load from a template)
+	 * Should the state be kept dirty (will happen in case you load from a template).
 	 * @return
 	 */
 	public boolean isKeepDirty() {

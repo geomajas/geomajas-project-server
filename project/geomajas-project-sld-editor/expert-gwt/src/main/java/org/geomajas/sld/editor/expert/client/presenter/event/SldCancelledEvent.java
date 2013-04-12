@@ -16,7 +16,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Event fired when the cancel event was successful
+ * Event fired when the cancel event was successful.
  * 
  * @author Kristof Heirwegh
  * 

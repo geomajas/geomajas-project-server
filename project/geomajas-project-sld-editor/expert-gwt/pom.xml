@@ -46,8 +46,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.geomajas.codemirror</groupId>
-			<artifactId>codemirror</artifactId>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-codemirror-gwt</artifactId>
 		</dependency>
 
 		<!--  GWTP  -->

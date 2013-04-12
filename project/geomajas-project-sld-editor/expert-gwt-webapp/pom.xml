@@ -116,12 +116,19 @@
 						<artifactId>gwt-dev</artifactId>
 						<version>${sld-gwt-version}</version>
 					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-servlet</artifactId>
+						<version>${sld-gwt-version}</version>
+					</dependency>
 				</dependencies>
 				<configuration>
+					<modules>
+						<module>org.geomajas.sld.editor.expert.sldEditor</module>
+					</modules>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<module>org.geomajas.sld.editor.expert.sldEditor</module>
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>
@@ -152,7 +159,11 @@
 					<filesets>
 						<fileset>
 							<directory>src/main/webapp/org.geomajas.sld.editor.expert.sldEditor</directory>
+						</fileset>
+						<fileset>
 							<directory>src/main/gwt-unitCache</directory>
+						</fileset>
+						<fileset>
 							<directory>src/main/webapp/WEB-INF/deploy</directory>
 						</fileset>
 					</filesets>
@@ -163,9 +174,7 @@
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
 				<version>1.2.1</version>
-		
 				<configuration>
-		
 					<!-- Container configuration -->
 					<container>
 						<containerId>tomcat7x</containerId>
@@ -193,10 +202,8 @@
 							</deployable>
 						</deployables>
 					</deployer>
-		
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 

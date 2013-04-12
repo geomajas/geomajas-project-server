@@ -44,7 +44,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 public class SldManagerImpl implements SldManager, 
 		HasTemplateLoadedHandlers, HasSldValidatedHandlers, HasSldSaveHandlers {
 
-	private static final Logger logger = Logger.getLogger(SldManagerImpl.class.getName());
+	private final Logger log = Logger.getLogger(SldManagerImpl.class.getName());
 
 	private final SldGwtServiceAsync service = GWT.create(SldGwtService.class);
 
@@ -73,7 +73,7 @@ public class SldManagerImpl implements SldManager,
 				TemplateNamesLoadedEvent.fire(SldManagerImpl.this);
 			}
 			public void onFailure(Throwable caught) {
-				logger.log(Level.SEVERE, "fetchTemplateNames failed", caught);
+				log.log(Level.SEVERE, "fetchTemplateNames failed", caught);
 			}
 		});
 	}
@@ -86,7 +86,7 @@ public class SldManagerImpl implements SldManager,
 				TemplateLoadedEvent.fire(SldManagerImpl.this);
 			}
 			public void onFailure(Throwable caught) {
-				logger.log(Level.SEVERE, "findTemplateByName failed", caught);
+				log.log(Level.SEVERE, "findTemplateByName failed", caught);
 			}
 		});
 	}

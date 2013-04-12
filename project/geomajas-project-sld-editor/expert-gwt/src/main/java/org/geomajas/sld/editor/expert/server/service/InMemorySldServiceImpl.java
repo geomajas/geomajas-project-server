@@ -58,14 +58,6 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 
 	private Resource directory;
 
-	public Resource getDirectory() {
-		return directory;
-	}
-
-	public void setDirectory(Resource directory) {
-		this.directory = directory;
-	}
-	
 	@PostConstruct
 	void init() throws SldException {
 		if (getDirectory() != null) {
@@ -97,6 +89,14 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	}
 
 	// ---------------------------------------------------------------
+	
+	public Resource getDirectory() {
+		return directory;
+	}
+
+	public void setDirectory(Resource directory) {
+		this.directory = directory;
+	}
 	
 	public List<SldInfo> findTemplates() throws SldException {
 		List<SldInfo> res = new ArrayList<SldInfo>();
@@ -134,6 +134,7 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	
 	/**
 	 * Test by marshalling.
+	 * 
 	 * @param sld
 	 * @throws SldException
 	 */
@@ -154,7 +155,8 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	}
 
 	/**
-	 * Test by unmarshalling
+	 * Test by unmarshalling.
+	 * 
 	 * @param sld
 	 * @throws SldException
 	 */
@@ -172,7 +174,7 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	private String getTitle(StyledLayerDescriptorInfo sld, String fallback) {
 		if (sld.getChoiceList() != null && sld.getChoiceList().size() > 0) {
 			NamedLayerInfo nli = sld.getChoiceList().get(0).getNamedLayer();
-			if (nli != null && nli.getName() != null) { return nli.getName(); };
+			if (nli != null && nli.getName() != null) { return nli.getName(); }
 			UserLayerInfo uli = sld.getChoiceList().get(0).getUserLayer();
 			if (uli != null && uli.getName() != null) { return uli.getName(); }
 		}
