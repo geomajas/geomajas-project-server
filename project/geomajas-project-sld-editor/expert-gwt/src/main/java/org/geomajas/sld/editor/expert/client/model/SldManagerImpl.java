@@ -56,7 +56,7 @@ public class SldManagerImpl implements SldManager,
 	public SldManagerImpl(EventBus eventBus) {
 		this.eventBus = eventBus;
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
-		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sld");
+		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sldTemplates");
 	}
 
 	public void fireEvent(GwtEvent<?> event) {
