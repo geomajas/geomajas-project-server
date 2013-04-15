@@ -38,11 +38,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Geocoder service using the Yahoo! PlaceFinder.
- * See <a href="http://developer.yahoo.com/geo/placefinder/">http://developer.yahoo.com/geo/placefinder/</a>
- *
+ * Geocoder service using the Yahoo! PlaceFinder. See <a
+ * href="http://developer.yahoo.com/geo/placefinder/">http://developer.yahoo.com/geo/placefinder/</a>
+ * 
  * @author Joachim Van der Auwera
+ * @deprecated the service is no longer available, replaced by 
+ * <a href="http://developer.yahoo.com/blogs/ydn/introducing-boss-geo-next-chapter-boss-53654.html">
+ * BOSS Geo</a>
  */
+@Deprecated
 public class YahooPlaceFinderGeocoderService implements GeocoderService {
 
 	private final Logger log = LoggerFactory.getLogger(YahooPlaceFinderGeocoderService.class);
