@@ -107,11 +107,16 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	public void setMapSize(int width, int height) {
-		position = transform(new Coordinate(width / 2, height / 2), RenderSpace.SCREEN, RenderSpace.WORLD);
-		this.mapWidth = width;
-		this.mapHeight = height;
-		if (zoomStrategy != null) {
-			zoomStrategy.setMapSize(width, height);
+		if (this.mapWidth != width || this.mapHeight != height) {
+			position = transform(new Coordinate(width / 2, height / 2), RenderSpace.SCREEN, RenderSpace.WORLD);
+			this.mapWidth = width;
+			this.mapHeight = height;
+			if (zoomStrategy != null) {
+				zoomStrategy.setMapSize(width, height);
+			}
+			if (eventBus != null) {
+				eventBus.fireEvent(new ViewPortChangedEvent(this));
+			}
 		}
 	}
 

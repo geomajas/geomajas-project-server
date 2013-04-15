@@ -147,7 +147,35 @@ public class ViewPortEventTest {
 		reg.removeHandler();
 	}
 
-	// ------------------------------------------------------------------------
+	@Test
+	public void testResize() {
+		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertNull(event);
+
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
+		viewPort.setMapSize(500, 500);
+		
+		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertTrue(viewPort.getPosition().equalsDelta(new Coordinate(-62.5, 62.5), 0.00001));
+		Assert.assertNotNull(event);
+		Assert.assertTrue(event instanceof ViewPortChangedEvent);
+
+		reg.removeHandler();
+	}
+
+	@Test
+	public void testResizeSameSize() {
+		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertNull(event);
+
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowNoEventsHandler());
+		viewPort.setMapSize(viewPort.getMapWidth(), viewPort.getMapHeight());
+		
+		Assert.assertNull(event);
+
+		reg.removeHandler();
+	}
+// ------------------------------------------------------------------------
 	// Private classes that allows only one type of event to be fired.
 	// ------------------------------------------------------------------------
 

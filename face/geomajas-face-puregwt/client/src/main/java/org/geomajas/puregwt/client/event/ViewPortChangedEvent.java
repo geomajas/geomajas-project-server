@@ -18,7 +18,7 @@ import com.google.web.bindery.event.shared.Event;
 
 /**
  * Event that is fired when the view on the {@link ViewPort} has been changed so that both scaling and translation have
- * occurred.
+ * occurred or the view has resized.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
