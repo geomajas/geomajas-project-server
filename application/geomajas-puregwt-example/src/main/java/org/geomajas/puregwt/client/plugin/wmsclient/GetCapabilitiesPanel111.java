@@ -185,7 +185,7 @@ public class GetCapabilitiesPanel111 extends ContentPanel {
 		mapPresenter.getLayersModel().addLayer(layer);
 
 		// Make sure we enable animation for our newly add layer - it's just nicer:
-		mapPresenter.getMapRenderer().setNrAnimatedLayers(mapPresenter.getLayersModel().getLayerCount());
+		mapPresenter.getConfiguration().setAnimated(layer, true);
 	}
 
 	@UiFactory
