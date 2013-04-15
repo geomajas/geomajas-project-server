@@ -12,6 +12,7 @@ package org.geomajas.sld.editor.expert.client.model;
 
 import java.util.List;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 
@@ -30,6 +31,10 @@ public interface SldGwtServiceAsync {
 
 	void validate(RawSld raw, AsyncCallback<Boolean> callback);
 
+	void convertRawToDescriptor(RawSld raw, AsyncCallback<StyledLayerDescriptorInfo> callback);
+	
+	void convertDescriptorToRaw(StyledLayerDescriptorInfo sldi, AsyncCallback<RawSld> callback);
+	
 	// void saveOrUpdate(RawSld sld, AsyncCallback<RawSld> callback);
 
 	//	void remove(String name, AsyncCallback<Boolean> callback);

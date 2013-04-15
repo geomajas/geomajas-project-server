@@ -13,6 +13,7 @@ package org.geomajas.sld.editor.expert.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 
@@ -26,6 +27,7 @@ public class SldModelImpl implements SldModel {
 	private boolean dirty;
 	private boolean valid;
 	private RawSld rawSld = new RawSld();
+	private StyledLayerDescriptorInfo sldDescriptor;
 	private RawSld template;
 	private List<SldInfo> templateNames = new ArrayList<SldInfo>();
 
@@ -91,5 +93,17 @@ public class SldModelImpl implements SldModel {
 		dirty = false;
 		valid = false;
 		template = null;
+		sldDescriptor = null;
+	}
+	
+	/**
+	 * Will only be correct/filled in if sld has been validated/saved.
+	 */
+	public StyledLayerDescriptorInfo getSldDescriptor() {
+		return sldDescriptor;
+	}
+	
+	public void setSldDescriptor(StyledLayerDescriptorInfo sldDescriptor) {
+		this.sldDescriptor = sldDescriptor;
 	}
 }

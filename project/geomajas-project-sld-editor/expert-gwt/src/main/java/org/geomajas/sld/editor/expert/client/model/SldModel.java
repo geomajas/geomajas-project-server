@@ -12,6 +12,7 @@ package org.geomajas.sld.editor.expert.client.model;
 
 import java.util.List;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 
@@ -34,9 +35,16 @@ public interface SldModel extends SldInfo {
 	void setValid(boolean valid);
 	
 	RawSld getRawSld();
-	
+
 	void setRawSld(RawSld rawSld);
 	
+	/**
+	 * Will only be correct/filled in if sld has been validated/saved.
+	 */
+	StyledLayerDescriptorInfo getSldDescriptor();
+
+	void setSldDescriptor(StyledLayerDescriptorInfo sldDescriptor);
+
 	void setTemplate(RawSld rawSld);
 
 	/**

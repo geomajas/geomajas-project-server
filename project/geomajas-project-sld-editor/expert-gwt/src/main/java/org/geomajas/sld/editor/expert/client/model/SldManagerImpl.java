@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.HasSldSaveHandlers;
 import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
@@ -41,8 +42,8 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * @author Kristof Heirwegh
  */
-public class SldManagerImpl implements SldManager, 
-		HasTemplateLoadedHandlers, HasSldValidatedHandlers, HasSldSaveHandlers {
+public class SldManagerImpl implements SldManager, HasTemplateLoadedHandlers, HasSldValidatedHandlers,
+		HasSldSaveHandlers {
 
 	private final Logger log = Logger.getLogger(SldManagerImpl.class.getName());
 
@@ -72,6 +73,7 @@ public class SldManagerImpl implements SldManager,
 				}
 				TemplateNamesLoadedEvent.fire(SldManagerImpl.this);
 			}
+
 			public void onFailure(Throwable caught) {
 				log.log(Level.SEVERE, "fetchTemplateNames failed", caught);
 			}
@@ -85,12 +87,13 @@ public class SldManagerImpl implements SldManager,
 				model.setTemplate(result);
 				TemplateLoadedEvent.fire(SldManagerImpl.this);
 			}
+
 			public void onFailure(Throwable caught) {
 				log.log(Level.SEVERE, "findTemplateByName failed", caught);
 			}
 		});
 	}
-	
+
 	public void validateCurrent(final boolean saveAfterValidation) {
 		service.validate(model.getRawSld(), new AsyncCallback<Boolean>() {
 			public void onFailure(Throwable caught) {
@@ -102,7 +105,19 @@ public class SldManagerImpl implements SldManager,
 				if (result != null && result) {
 					model.setValid(true);
 					if (saveAfterValidation) {
-						SldSaveEvent.fire(SldManagerImpl.this);
+						service.convertRawToDescriptor(model.getRawSld(),
+								new AsyncCallback<StyledLayerDescriptorInfo>() {
+									public void onSuccess(StyledLayerDescriptorInfo result) {
+										model.setSldDescriptor(result);
+										SldSaveEvent.fire(SldManagerImpl.this);
+									}
+
+									public void onFailure(Throwable caught) {
+										// should not happen as validation was OK.
+										SldValidatedEvent.fireInValid(SldManagerImpl.this);
+										model.setValid(false);
+									}
+								});
 					} else {
 						SldValidatedEvent.fireValid(SldManagerImpl.this);
 					}
@@ -118,19 +133,22 @@ public class SldManagerImpl implements SldManager,
 	public HandlerRegistration addTemplateLoadedHandler(TemplateLoadedHandler handler) {
 		return eventBus.addHandler(TemplateLoadedEvent.getType(), handler);
 	}
-	
+
 	public HandlerRegistration addSldValidatedHandler(SldValidatedHandler handler) {
 		return eventBus.addHandler(SldValidatedEvent.getType(), handler);
 	}
-	
+
 	public HandlerRegistration addSldSaveHandler(SldSaveHandler handler) {
 		return eventBus.addHandler(SldSaveEvent.getType(), handler);
 	}
 
 	// ---------------------------------------------------------------
-	
+
 	public SldModel getModel() {
 		return model;
 	}
 
+	public void convertToRawSld(StyledLayerDescriptorInfo sldi, AsyncCallback<RawSld> callback) {
+		service.convertDescriptorToRaw(sldi, callback);
+	}
 }

@@ -10,6 +10,11 @@
  */
 package org.geomajas.sld.editor.expert.client.model;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.editor.expert.client.domain.RawSld;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 /**
  * The main model class of the SLD editor.
  * 
@@ -41,4 +46,10 @@ public interface SldManager {
 	 */
 	void validateCurrent(boolean saveAfterValidation);
 
+	/**
+	 * Convert a {@link StyledLayerDescriptorInfo} to rawXml so it can be used with this editor.
+	 * 
+	 * @param sldi
+	 */
+	void convertToRawSld(StyledLayerDescriptorInfo sldi, AsyncCallback<RawSld> callback);
 }

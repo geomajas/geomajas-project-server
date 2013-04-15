@@ -26,6 +26,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
@@ -35,6 +36,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 /**
  * The main editor panel containing toolbar and textarea.
+ * <p>Template dropdownbox is only shown when templates are actually loaded.
  * 
  * @author Kristof Heirwegh
  */
@@ -73,6 +75,7 @@ public class SldEditorPanel extends VLayout {
 		}
 		templateSelect.clearValue();
 		templateSelect.setValueMap(data);
+		((DynamicForm) buttonBar.getMember(0)).setVisible(data.size() > 0);
 	}
 	
 	public void setData(String xml) {
@@ -163,5 +166,6 @@ public class SldEditorPanel extends VLayout {
 		buttonBar.addButton(saveBtn);
 		buttonBar.addFill();  
 		buttonBar.addButton(cancelBtn);
+		((DynamicForm) buttonBar.getMember(0)).setVisible(false);
 	}
 }

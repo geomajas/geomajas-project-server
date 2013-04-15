@@ -31,5 +31,7 @@ public interface SldEditorExpertMessages extends Messages {
 	String templateSelectTooltip();
 	
 	String confirmLoseDirtyData();
+	
+	String failedToParseSldObject();
 
 }

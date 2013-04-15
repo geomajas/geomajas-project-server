@@ -12,6 +12,7 @@ package org.geomajas.sld.editor.expert.server;
 
 import java.util.List;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 import org.geomajas.sld.editor.expert.client.model.SldGwtService;
@@ -40,4 +41,13 @@ public class SldGwtServiceImpl implements SldGwtService {
 	public boolean validate(RawSld raw) throws SldException {
 		return sldService.validate(raw);
 	}
+
+	public StyledLayerDescriptorInfo convertRawToDescriptor(RawSld raw) throws SldException {
+		return sldService.toSldI(raw);
+	}
+
+	public RawSld convertDescriptorToRaw(StyledLayerDescriptorInfo sldi) throws SldException {
+		return sldService.toXml(sldi);
+	}
+	
 }

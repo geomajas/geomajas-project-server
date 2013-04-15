@@ -92,7 +92,7 @@ public class SldEditorView extends PopupViewImpl implements SldEditorExpertPrese
 	
 	@Override
 	public void hide() {
-		super.hide();
+		// super.hide();
 		w.hide();
 	}
 

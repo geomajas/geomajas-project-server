@@ -54,7 +54,8 @@ public class SldEditorEntryPoint implements EntryPoint {
 				SC.say(MSG.onSave());
 				
 				// -- get the data:
-				// ginjector.getSldEditorExpertPresenter().get().getModel().getCurrentSld().getXml();
+				// as raw xml string: ginjector.getSldEditorExpertPresenter().get().getModel().getRawSld().getXml();
+				// or as object: ginjector.getSldEditorExpertPresenter().get().getModel().getSldDescriptor();
 				// you can also check if data changed in the model
 				
 				// -- if you wish the editor to close at this point, call:
@@ -74,7 +75,9 @@ public class SldEditorEntryPoint implements EntryPoint {
 		// -- load an sld
 //		String yourXmlDataHere = "<test></test>";
 //		ginjector.getSldEditorExpertPresenter().get().loadSld(yourXmlDataHere, "name", "title");
-
+		// -- or use StyledSldLayerDescriptorInfo;
+//		ginjector.getSldEditorExpertPresenter().get().loadSld(sldObject);
+		
 		// -- now show the SLD editor in a window
 		ginjector.getPlaceManager().revealCurrentPlace();
 		

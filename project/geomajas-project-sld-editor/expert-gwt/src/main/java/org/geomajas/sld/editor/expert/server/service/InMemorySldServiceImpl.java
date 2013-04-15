@@ -111,25 +111,33 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	}
 
 	/**
+	 * Convert StyledLayerDescriptorInfo to raw xml.
+	 * 
+	 * @param sldi
+	 * @return rawSld
+	 * @throws SldException
+	 */
+	public RawSld toXml(StyledLayerDescriptorInfo sldi) throws SldException {
+		try {
+			return parseSldI(sldi);
+		} catch (JiBXException e) {
+			throw new SldException("Validation error", e);
+		}
+	}
+
+	/**
 	 * Convert raw xml to StyledLayerDescriptorInfo.
 	 * 
-	 * @param name
-	 * @param raw
-	 * @return
-	 * @throws JiBXException
+	 * @param sld
+	 * @return StyledLayerDescriptorInfo
+	 * @throws SldException
 	 */
-	public StyledLayerDescriptorInfo parseXml(String name, String raw) throws JiBXException {
-		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
-		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
-		Object object = uctx.unmarshalDocument(new StringReader(raw));
-		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
-		if (sld.getName() == null) {
-			sld.setName(name);
+	public StyledLayerDescriptorInfo toSldI(RawSld sld) throws SldException {
+		try {
+			return parseXml(sld.getName(), sld.getXml());
+		} catch (JiBXException e) {
+			throw new SldException("Validation error", e);
 		}
-		if (sld.getTitle() == null) {
-			sld.setTitle(getTitle(sld, name));
-		}
-		return sld;
 	}
 	
 	/**
@@ -139,16 +147,8 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	 * @throws SldException
 	 */
 	public void validate(StyledLayerDescriptorInfo sld) throws SldException {
-		IBindingFactory bfact;
 		try {
-			bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
-			IMarshallingContext mctx = bfact.createMarshallingContext();
-			StringWriter writer = new StringWriter();
-			mctx.setOutput(writer);
-			mctx.marshalDocument(sld);
-			if (log.isDebugEnabled()) {
-				log.debug(writer.toString());
-			}
+			parseSldI(sld);
 		} catch (JiBXException e) {
 			throw new SldException("Validation error", e);
 		}
@@ -170,6 +170,34 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	}
 
 	// ---------------------------------------------------------------
+
+	private StyledLayerDescriptorInfo parseXml(String name, String raw) throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(new StringReader(raw));
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
+		if (sld.getName() == null) {
+			sld.setName(name);
+		}
+		if (sld.getTitle() == null) {
+			sld.setTitle(getTitle(sld, name));
+		}
+		return sld;
+	}
+	
+	private RawSld parseSldI(StyledLayerDescriptorInfo sld) throws JiBXException {
+		RawSld res = new RawSld();
+		IBindingFactory bfact;
+		bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IMarshallingContext mctx = bfact.createMarshallingContext();
+		StringWriter writer = new StringWriter();
+		mctx.setOutput(writer);
+		mctx.marshalDocument(sld);
+		res.setXml(writer.toString());
+		res.setName(sld.getName());
+		res.setTitle(sld.getTitle() == null ? getTitle(sld, "?") : sld.getTitle());
+		return res;
+	}
 
 	private String getTitle(StyledLayerDescriptorInfo sld, String fallback) {
 		if (sld.getChoiceList() != null && sld.getChoiceList().size() > 0) {

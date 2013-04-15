@@ -12,6 +12,7 @@ package org.geomajas.sld.editor.expert.client.model;
 
 import java.util.List;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 import org.geomajas.sld.service.SldException;
@@ -30,6 +31,10 @@ public interface SldGwtService extends RemoteService {
 	RawSld findTemplateByName(String name) throws SldException;
 	
 	boolean validate(RawSld raw) throws SldException;
+
+	StyledLayerDescriptorInfo convertRawToDescriptor(RawSld raw) throws SldException;
+	
+	RawSld convertDescriptorToRaw(StyledLayerDescriptorInfo sldi) throws SldException;
 
 	// RawSld saveOrUpdate(RawSld sld) throws SldException;
 

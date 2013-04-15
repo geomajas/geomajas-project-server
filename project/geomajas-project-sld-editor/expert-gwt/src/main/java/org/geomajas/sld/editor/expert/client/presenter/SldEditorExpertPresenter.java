@@ -10,6 +10,7 @@
  */
 package org.geomajas.sld.editor.expert.client.presenter;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent;
 import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent.HasSldCloseHandlers;
 import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent.SldCloseHandler;
@@ -17,6 +18,7 @@ import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.HasSld
 import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.editor.common.client.view.ViewUtil;
 import org.geomajas.sld.editor.common.client.view.ViewUtil.YesNoCallback;
+import org.geomajas.sld.editor.expert.client.domain.RawSld;
 import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
 import org.geomajas.sld.editor.expert.client.model.SldManager;
 import org.geomajas.sld.editor.expert.client.model.SldModel;
@@ -45,6 +47,7 @@ import org.geomajas.sld.editor.expert.client.presenter.event.TemplateSelectEvent
 import org.geomajas.sld.editor.expert.client.presenter.event.TemplateSelectEvent.TemplateSelectHandler;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Presenter;
@@ -151,6 +154,25 @@ public class SldEditorExpertPresenter extends
 		m.getRawSld().setTitle(title);
 		m.getRawSld().setXml(rawXml);
 		SldLoadedEvent.fire(SldEditorExpertPresenter.this);
+	}
+
+	/**
+	 * Conveniencemethod to load data into the editor.
+	 * <p>
+	 * Note that this is an async call, it will take some time before the data appears in the editor.
+	 * 
+	 * @param sldi
+	 */
+	public void loadSld(final StyledLayerDescriptorInfo sldi) {
+		manager.convertToRawSld(sldi, new AsyncCallback<RawSld>() {
+			public void onSuccess(RawSld result) {
+				loadSld(result.getXml(), result.getName(), result.getTitle());
+			}
+
+			public void onFailure(Throwable caught) {
+				loadSld(EXP_MSG.failedToParseSldObject(), sldi.getName(), sldi.getTitle());
+			}
+		});
 	}
 
 	/**
