@@ -28,6 +28,11 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
+		</dependency>
 
 
 		<!-- Google dependencies -->

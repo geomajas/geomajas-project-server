@@ -1,6 +1,7 @@
 <module>
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
 	<inherits name="com.smartgwt.SmartGwt" />
+	<inherits name="org.geomajas.sld.editor.expert.GeomajasSldExpertSmartGwt"/>
 
 	<source path="client/gwt/common" />
 	<source path="client/gwt/manager" />
@@ -15,4 +16,8 @@
 	<source path="configuration" />
 
 	<entry-point class='org.geomajas.plugin.deskmanager.client.gwt.manager.impl.ManagerEntryPoint' />
+	
+	<!-- This is required for Gwt-Platform Proxy's generator -->
+	<define-configuration-property name="gin.ginjector" is-multi-valued="false" />
+	<set-configuration-property name="gin.ginjector" value="org.geomajas.plugin.deskmanager.client.gwt.manager.gin.DeskmanagerClientGinjector" />
 </module>

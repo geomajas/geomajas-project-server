@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.LayerWidgetEditor;
@@ -23,6 +24,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFac
 import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFactoryRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.SensibleScaleConverter;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.ExpertSldEditorHelper;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 import com.google.gwt.core.client.GWT;
@@ -51,13 +53,12 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * @author Kristof Heirwegh
  */
 public class LayerConfigurationWindow extends Window {
-	
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private static final int TABSET_WIDTH = 600;
 	private static final int TABSET_HEIGHT = 300;
-	
-	
+
 	private static final int FORMITEM_WIDTH = 300;
 	public static final String FLD_NAME = "Name";
 
@@ -78,11 +79,13 @@ public class LayerConfigurationWindow extends Window {
 	private TextItem maxScale;
 
 	private TabSet tabset;
-	
-	private TabSet widgetTabset;
-	
-	private List<WidgetEditorHandler> widgetEditors = new ArrayList<WidgetEditorHandler>();
 
+	private TabSet widgetTabset;
+
+	private List<WidgetEditorHandler> widgetEditors = new ArrayList<WidgetEditorHandler>();
+	
+	private ExpertSldEditorHelper styleHelper;
+	
 
 	/**
 	 * Construct a layer configuration window.
@@ -94,7 +97,7 @@ public class LayerConfigurationWindow extends Window {
 	public LayerConfigurationWindow(LayerDto layerDto, BooleanCallback callback) {
 		this.layer = layerDto;
 		this.callback = callback;
-		
+
 		setAutoSize(true);
 		setCanDragReposition(true);
 		setCanDragResize(false);
@@ -112,7 +115,12 @@ public class LayerConfigurationWindow extends Window {
 		tabset.setWidth(TABSET_WIDTH);
 		tabset.setHeight(TABSET_HEIGHT);
 		tabset.addTab(createSettingsTab());
-		
+
+		if (layerDto.getReferencedLayerInfo() instanceof ClientVectorLayerInfo) {
+			tabset.addTab(createStijlTab());
+			styleHelper = new ExpertSldEditorHelper((ClientVectorLayerInfo) layerDto.getReferencedLayerInfo());
+		}
+
 		widgetTabset = new TabSet();
 		widgetTabset.setTabBarPosition(Side.LEFT);
 		widgetTabset.setWidth100();
@@ -122,7 +130,7 @@ public class LayerConfigurationWindow extends Window {
 		Tab tab = new Tab(MESSAGES.geodeskDetailTabWidgets());
 		tab.setPane(widgetTabset);
 		tabset.addTab(tab);
-		
+
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
@@ -182,7 +190,7 @@ public class LayerConfigurationWindow extends Window {
 		form.setNumCols(2);
 		form.setTitleOrientation(TitleOrientation.LEFT);
 
-		label = new TextItem(FLD_NAME );
+		label = new TextItem(FLD_NAME);
 		label.setTitle(MESSAGES.layerConfigurationName());
 		label.setRequired(true);
 		label.setWidth(FORMITEM_WIDTH);
@@ -216,10 +224,30 @@ public class LayerConfigurationWindow extends Window {
 		form.setFields(label, publicLayer, defaultVisible, minScale, maxScale);
 
 		tab.setPane(form);
-		
+
 		return tab;
 	}
-	
+
+	private Tab createStijlTab() {
+		Tab tab = new Tab(MESSAGES.layerConfigurationLayerStyle());
+		VLayout vl = new VLayout(10);
+		vl.setMargin(10);
+
+		IButton openStyleEditor = new IButton(MESSAGES.layerConfigExpertEditorBtn());
+		openStyleEditor.setIcon(WidgetLayout.iconEdit);
+		openStyleEditor.setAutoFit(true);
+		openStyleEditor.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				styleHelper.showExpertStyleEditor();
+			}
+		});
+
+		vl.addMember(openStyleEditor);
+
+		tab.setPane(vl);
+		return tab;
+	}
+
 	public void show() {
 		form.clearValues();
 		publicLayer.setValue(layer.getLayerModel().isPublic());
@@ -235,7 +263,7 @@ public class LayerConfigurationWindow extends Window {
 
 		clearWidgetTabs();
 		loadWidgetTabs(layer);
-		
+
 		super.show();
 	}
 
@@ -257,11 +285,15 @@ public class LayerConfigurationWindow extends Window {
 			cli.setLabel(label.getValueAsString());
 			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
 			cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
-			
+
 			for (WidgetEditorHandler h : widgetEditors) {
 				h.save(layer);
 			}
-			
+
+			if (styleHelper != null) { // only if vectorlayer
+				styleHelper.apply((ClientVectorLayerInfo) cli);
+			}
+
 			hide();
 			destroy();
 			if (callback != null) {
@@ -272,8 +304,8 @@ public class LayerConfigurationWindow extends Window {
 
 	private void restored() {
 		if (layer.getClientLayerInfo() != null || !layer.getWidgetInfo().isEmpty()) {
-			SC.ask(MESSAGES.layerConfigConfirmRestoreTitle(), 
-					MESSAGES.layerConfigConfirmRestoreText(), new BooleanCallback() {
+			SC.ask(MESSAGES.layerConfigConfirmRestoreTitle(), MESSAGES.layerConfigConfirmRestoreText(),
+					new BooleanCallback() {
 
 						public void execute(Boolean value) {
 							if (value) {
@@ -286,7 +318,7 @@ public class LayerConfigurationWindow extends Window {
 					});
 		}
 	}
-	
+
 	/**
 	 * Clear all custom widget tabs from the last blueprint.
 	 */
@@ -316,12 +348,12 @@ public class LayerConfigurationWindow extends Window {
 	 * @param editorFactory
 	 *            the editor factory
 	 * @param widgetInfos
-	 *            all the widget infos 
-	 * @param layerDto 
+	 *            all the widget infos
+	 * @param layerDto
 	 *            the layer model
 	 */
-	private void addWidgetTab(final WidgetEditorFactory editorFactory,
-			final Map<String, ClientWidgetInfo> widgetInfos, final LayerDto layerDto) {
+	private void addWidgetTab(final WidgetEditorFactory editorFactory, final Map<String, ClientWidgetInfo> widgetInfos,
+			final LayerDto layerDto) {
 		if (editorFactory != null) {
 			Tab tab = new Tab(editorFactory.getName());
 			final WidgetEditor editor = editorFactory.createEditor();
@@ -329,38 +361,40 @@ public class LayerConfigurationWindow extends Window {
 				((LayerWidgetEditor) editor).setLayer(layerDto.getLayerModel());
 			}
 			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
-			
+
 			// Create tab layout
 			VLayout layout = new VLayout();
 			layout.setMargin(5);
-			
+
 			widgetEditors.add(new WidgetEditorHandler() {
-				
+
 				@Override
 				public void save(LayerDto layer) {
 					layer.getWidgetInfo().put(editorFactory.getKey(), editor.getWidgetConfiguration());
 				}
 			});
-			
+
 			layout.addMember(editor.getCanvas());
 			tab.setPane(layout);
 
 			widgetTabset.addTab(tab);
 		}
 	}
-	
+
 	/**
 	 * Interface for handling widget editors.
 	 * 
 	 * @author Oliver May
-	 *
+	 * 
 	 */
 	private interface WidgetEditorHandler {
 		/**
 		 * Set the correct information in the layer dto.
-		 * @param layer the layer dto
+		 * 
+		 * @param layer
+		 *            the layer dto
 		 */
 		void save(LayerDto layer);
 	}
-	
+
 }

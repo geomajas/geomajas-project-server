@@ -215,6 +215,7 @@ public interface ManagerMessages extends Messages {
 
 	String layerConfigurationConfigureLayer();
 	String layerConfigurationLayerProperties();
+	String layerConfigurationLayerStyle();
 	String layerConfigurationName();
 	String layerConfigurationNameTooltip();
 	String layerConfigurationPublicLayer();
@@ -226,7 +227,8 @@ public interface ManagerMessages extends Messages {
 	String layerConfigurationMaximumScaleTooltip();
 	String layerConfigConfirmRestoreText();
 	String layerConfigConfirmRestoreTitle();
-
+	String layerConfigExpertEditorBtn();
+	String layerConfigExpertEditorMalformedSldException();
 	
 	String layerListGridColumnPublicTooltip();
 	String layerListGridConfigurate();

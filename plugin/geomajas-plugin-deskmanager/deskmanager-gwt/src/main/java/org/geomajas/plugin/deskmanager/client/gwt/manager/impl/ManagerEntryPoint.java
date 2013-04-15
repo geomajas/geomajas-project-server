@@ -10,14 +10,35 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.impl;
 
+import org.geomajas.plugin.deskmanager.client.gwt.manager.gin.DeskmanagerClientGinjector;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.gwtplatform.mvp.client.DelayedBindRegistry;
 
 /**
  * @author Oliver May
- * 
+ * @author Kristof Heirwegh
  */
 public class ManagerEntryPoint implements EntryPoint {
 
+	private final DeskmanagerClientGinjector ginjector = GWT.create(DeskmanagerClientGinjector.class);
+
+	public DeskmanagerClientGinjector getGinjector() {
+		return ginjector;
+	}
+
+	private static ManagerEntryPoint instance;
+	
+	public ManagerEntryPoint() {
+		instance = this;
+	}
+	
 	public void onModuleLoad() {
+		DelayedBindRegistry.bind(ginjector);
+	}
+	
+	public static ManagerEntryPoint getInstance() {
+		return instance;
 	}
 }

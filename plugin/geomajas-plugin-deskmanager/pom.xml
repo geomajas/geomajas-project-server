@@ -70,7 +70,7 @@
 				<version>7.2.0.v20101020</version>
 			</dependency>
 
-			<!--######### Geomajas: then plugins ######### -->
+			<!--######### Geomajas: the plugins ######### -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
@@ -112,6 +112,11 @@
 				<version>1.0.0-M2</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
+				<version>${gdm-sldeditor-version}</version>
 			</dependency>
 
 			<dependency>
@@ -223,10 +228,10 @@
 		</dependencies>
 	</dependencyManagement>
 
-
 	<properties>
 		<gdm-backend-version>1.12.0</gdm-backend-version>
 		<gdm-gwt-version>1.12.0</gdm-gwt-version>
+		<gdm-sldeditor-version>1.0.0-SNAPSHOT</gdm-sldeditor-version>
 	</properties>
 
 </project>
