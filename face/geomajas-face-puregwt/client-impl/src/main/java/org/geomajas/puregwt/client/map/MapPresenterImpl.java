@@ -261,7 +261,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	/** {@inheritDoc} */
 	public void initialize(String applicationId, String id) {
-		mapRenderer = mapRendererFactory.create(layersModel, viewPort, display.getMapHtmlContainer());
+		mapRenderer = mapRendererFactory.create(layersModel, viewPort, configuration, display.getMapHtmlContainer());
 
 		eventBus.addViewPortChangedHandler(mapRenderer);
 		eventBus.addLayerOrderChangedHandler(mapRenderer);
@@ -489,6 +489,11 @@ public final class MapPresenterImpl implements MapPresenter {
 		return display.getWidgetContainer();
 	}
 
+	private int getAnimationMillis() {
+		Long time = (Long) configuration.getMapHintValue(MapConfiguration.ANIMATION_TIME);
+		return time == null ? 0 : time.intValue();
+	}
+
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
@@ -500,32 +505,24 @@ public final class MapPresenterImpl implements MapPresenter {
 	 */
 	private class WorldContainerRenderer implements ViewPortChangedHandler {
 
-		private int animationMillis = 400;
-
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			display.scheduleTransform(matrix.getXx(), matrix.getYy(), matrix.getDx(), matrix.getDy(), animationMillis);
+			display.scheduleTransform(matrix.getXx(), matrix.getYy(), matrix.getDx(), matrix.getDy(),
+					getAnimationMillis());
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			// We must translate as well because zooming and keeping the same center point
 			// also involves a translation (scale origin != center point) !!!
-			display.scheduleTransform(matrix.getXx(), matrix.getYy(), matrix.getDx(), matrix.getDy(), animationMillis);
+			display.scheduleTransform(matrix.getXx(), matrix.getYy(), matrix.getDx(), matrix.getDy(),
+					getAnimationMillis());
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (Transformable transformable : display.getWorldTransformables()) {
 				transformable.setTranslation(matrix.getDx(), matrix.getDy());
-			}
-		}
-
-		public void setDelayMillis(int animationMillis) {
-			if (animationMillis == 0) {
-				this.animationMillis = 10;
-			} else if (animationMillis > 0) {
-				this.animationMillis = animationMillis;
 			}
 		}
 	}
@@ -599,10 +596,5 @@ public final class MapPresenterImpl implements MapPresenter {
 				paths.remove(feature.getId());
 			}
 		}
-	}
-
-	public void setAnimationMillis(int animationMillis) {
-		mapRenderer.setAnimationMillis(animationMillis);
-		worldContainerRenderer.setDelayMillis(animationMillis);
 	}
 }

@@ -20,7 +20,6 @@ import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
-import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -51,26 +50,8 @@ public interface MapPresenter extends IsWidget {
 	 */
 	MapEventBus getEventBus();
 
-	/**
-	 * Return the widget that displays the map in the HTML page.
-	 */
+	/** Return the widget that displays the map in the HTML page. */
 	Widget asWidget();
-
-	/**
-	 * Set a new renderer on the map. This renderer is responsible for making sure the map is always renderer correctly.
-	 * 
-	 * @param mapRenderer
-	 *            The new map renderer responsible for rendering the map.
-	 */
-	void setMapRenderer(MapRenderer mapRenderer);
-
-	/**
-	 * Set the number of milliseconds an animated navigation sequence should last.
-	 * 
-	 * @param animationMillis
-	 *            The number of milliseconds an animated navigation sequence should last.
-	 */
-	void setAnimationMillis(int animationMillis);
 
 	/**
 	 * Apply a new width and height on the map. Both parameters are expressed in pixels.
@@ -224,13 +205,6 @@ public interface MapPresenter extends IsWidget {
 	 *            The new cursor to apply.
 	 */
 	void setCursor(String cursor);
-
-	/**
-	 * Get the renderer for the map. This object will always make sure the map is correctly rendered.
-	 * 
-	 * @return The renderer for the map.
-	 */
-	MapRenderer getMapRenderer();
 
 	/**
 	 * Get an event parser specific for this map. This object can derive locations from mouse or touch events etc.

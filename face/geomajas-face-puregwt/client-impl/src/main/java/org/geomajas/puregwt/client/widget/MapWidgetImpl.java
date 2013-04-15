@@ -66,6 +66,7 @@ import com.google.inject.Inject;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
@@ -86,7 +87,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// List of all world containers:
 	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
-	
+
 	// List of all world canvas containers:
 	private List<CanvasContainer> worldCanvases = new ArrayList<CanvasContainer>();
 
@@ -114,7 +115,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// Attach a DrawingArea inside the clipping area (used for vector rendering):
 		drawingArea = new DrawingArea(100, 100);
 		add(drawingArea, 0, 0);
-		
 
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
@@ -346,7 +346,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		scaler.setYy(yy);
 		scaler.schedule(animationMillis);
 	}
-	
+
 	@Override
 	public void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis) {
 		for (Transformable t : getWorldTransformables()) {
@@ -372,7 +372,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		private double xx = 1.0;
 
 		private double yy = 1.0;
-		
+
 		private double dx;
 
 		private double dy;
@@ -394,15 +394,14 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		public void setYy(double yy) {
 			this.yy = yy;
 		}
-		
+
 		public void setDx(double dx) {
 			this.dx = dx;
 		}
-		
+
 		public void setDy(double dy) {
 			this.dy = dy;
-		}		
-		
+		}
 	}
 
 	/**
@@ -420,8 +419,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 				}
 			}
 		}
-		
-		
+
 		protected void onComplete() {
 			for (Transformable t : getWorldTransformables()) {
 				if (t instanceof Transparent) {
@@ -430,5 +428,4 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 			}
 		}
 	}
-
 }

@@ -11,19 +11,16 @@
 
 package org.geomajas.puregwt.client.map.render;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 
 /**
  * Representation of a single scale level for a certain layer. Implementations should focus on getting the required
  * tiles from the server and displaying them. No general transformation should be applied, as that is the task for the
- * {@link MapScalesRenderer}.
+ * {@link LayerScalesRenderer}.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public interface TiledScaleRenderer {
 
 	/**

@@ -11,15 +11,11 @@
 
 package org.geomajas.puregwt.client.map.render;
 
-import org.geomajas.annotation.Api;
-
 /**
  * Abstract definition of a mathematical function that determines the route from one location to another.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public abstract class AbstractNavigationFunction {
 
 	protected double beginX;

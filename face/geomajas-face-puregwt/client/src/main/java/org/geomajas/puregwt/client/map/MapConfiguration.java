@@ -26,6 +26,25 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 public interface MapConfiguration {
 
 	// ------------------------------------------------------------------------
+	// List of known map hints:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Parameter that determines whether or not animation is used during navigation. This setting overrides the
+	 * individual layer animation settings in the {@link MapConfiguration}. It's value should be of type
+	 * <code>Boolean</code>.
+	 */
+	String ANIMATION_ENABLED = "animation_enabled";
+
+	/**
+	 * Parameter used to determine how long the animations should take during navigation (zooming). The value should be
+	 * expressed in milliseconds. It's value should be of type <code>Long</code>.
+	 * 
+	 * @since 1.0.0
+	 */
+	String ANIMATION_TIME = "animation_time";
+
+	// ------------------------------------------------------------------------
 	// Working with map hints:
 	// ------------------------------------------------------------------------
 
@@ -37,7 +56,7 @@ public interface MapConfiguration {
 	 * @param value
 	 *            The new actual value. If the value is null, an IllegalArgumentException is thrown.
 	 */
-	void setMapHintValue(MapHints hint, Object value);
+	void setMapHintValue(String hint, Object value);
 
 	/**
 	 * Get the value for a specific map hint. All hints have a default value, so this method will never return
@@ -45,9 +64,9 @@ public interface MapConfiguration {
 	 * 
 	 * @param hint
 	 *            The hint to retrieve the current value for.
-	 * @return The map hint value. See the {@link MapHints} to check what class this value should be.
+	 * @return The map hint value.
 	 */
-	Object getMapHintValue(MapHints hint);
+	Object getMapHintValue(String hint);
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:

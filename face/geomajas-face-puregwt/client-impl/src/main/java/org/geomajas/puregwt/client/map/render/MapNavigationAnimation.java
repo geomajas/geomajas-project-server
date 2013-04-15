@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.puregwt.client.map.MapConfiguration;
 
 import com.google.gwt.animation.client.Animation;
 
@@ -25,13 +26,13 @@ import com.google.gwt.animation.client.Animation;
  */
 public class MapNavigationAnimation extends Animation {
 
-	private AbstractNavigationFunction function;
+	private final MapConfiguration configuration;
 
-	private int nrAnimatedLayers = 1;
+	private AbstractNavigationFunction function;
 
 	private boolean running;
 
-	protected List<MapScalesRenderer> mapScalesRenderers;
+	protected List<LayerScalesRenderer> mapScalesRenderers;
 
 	private double currentScale;
 
@@ -44,8 +45,9 @@ public class MapNavigationAnimation extends Animation {
 	// ------------------------------------------------------------------------
 
 	/** Initialize the animation. */
-	public MapNavigationAnimation(AbstractNavigationFunction function) {
+	public MapNavigationAnimation(MapConfiguration configuration, AbstractNavigationFunction function) {
 		super();
+		this.configuration = configuration;
 		this.function = function;
 	}
 
@@ -73,7 +75,7 @@ public class MapNavigationAnimation extends Animation {
 	 * @param millis
 	 *            The time in milliseconds this animation should run.
 	 */
-	public void start(List<MapScalesRenderer> layerPresenters, double sourceScale, double targetScale,
+	public void start(List<LayerScalesRenderer> layerPresenters, double sourceScale, double targetScale,
 			Coordinate sourcePosition, Coordinate targetPosition, int millis) {
 		this.mapScalesRenderers = layerPresenters;
 
@@ -130,30 +132,11 @@ public class MapNavigationAnimation extends Animation {
 	}
 
 	/**
-	 * Get the number of layers that should be animated when navigating.
-	 * 
-	 * @return The number of layers that should be animated when navigating.
-	 */
-	public int getNrAnimatedLayers() {
-		return nrAnimatedLayers;
-	}
-
-	/**
-	 * Set the total number of layers that should be animated when navigating.
-	 * 
-	 * @param nrAnimatedLayers
-	 *            The number of layers that should be animated when navigating.
-	 */
-	public void setNrAnimatedLayers(int nrAnimatedLayers) {
-		this.nrAnimatedLayers = nrAnimatedLayers;
-	}
-
-	/**
 	 * Get the current list of map scale renderers.
 	 * 
 	 * @return The current list of map scale renderers.
 	 */
-	public List<MapScalesRenderer> getMapScaleRenderers() {
+	public List<LayerScalesRenderer> getMapScaleRenderers() {
 		return mapScalesRenderers;
 	}
 
@@ -180,10 +163,10 @@ public class MapNavigationAnimation extends Animation {
 		}
 
 		for (int i = 0; i < mapScalesRenderers.size(); i++) {
-			MapScalesRenderer presenter = mapScalesRenderers.get(i);
+			LayerScalesRenderer presenter = mapScalesRenderers.get(i);
 			TiledScaleRenderer scalePresenter = presenter.getVisibleScale();
 			if (scalePresenter != null) {
-				if (i < nrAnimatedLayers && Dom.isTransformationSupported()) {
+				if (configuration.isAnimated(presenter.getLayer()) && Dom.isTransformationSupported()) {
 					scalePresenter.getHtmlContainer().applyScale(currentScale, 0, 0);
 					scalePresenter.getHtmlContainer().setLeft((int) Math.round(currentX));
 					scalePresenter.getHtmlContainer().setTop((int) Math.round(currentY));
@@ -200,7 +183,7 @@ public class MapNavigationAnimation extends Animation {
 	 */
 	protected void onCancel() {
 		running = false;
-		for (MapScalesRenderer presenter : mapScalesRenderers) {
+		for (LayerScalesRenderer presenter : mapScalesRenderers) {
 			presenter.cancel();
 		}
 	}

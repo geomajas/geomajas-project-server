@@ -20,7 +20,6 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerOrderChangedEvent;
@@ -36,6 +35,7 @@ import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.gfx.HtmlObject;
+import org.geomajas.puregwt.client.map.MapConfiguration;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.HasMapScalesRenderer;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -60,9 +60,11 @@ public class MapRendererImpl implements MapRenderer {
 
 	private final ViewPort viewPort;
 
-	private final Map<Layer, MapScalesRenderer> layerRenderers;
+	private final MapConfiguration configuration;
 
 	private final HtmlContainer htmlContainer;
+
+	private final Map<Layer, LayerScalesRenderer> layerRenderers;
 
 	private final MapNavigationAnimation animation;
 
@@ -75,8 +77,6 @@ public class MapRendererImpl implements MapRenderer {
 	private int fetchDelay = 100; // Delay for fetching scale levels. Results in less requests.
 
 	// Keeping track of the navigation animation:
-
-	private int animationMillis = 400;
 
 	private double previousScale;
 
@@ -92,15 +92,17 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
+
 	@Inject
 	public MapRendererImpl(@Assisted LayersModel layersModel, @Assisted final ViewPort viewPort,
-			@Assisted HtmlContainer htmlContainer) {
+			@Assisted MapConfiguration configuration, @Assisted HtmlContainer htmlContainer) {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
+		this.configuration = configuration;
 		this.htmlContainer = htmlContainer;
 
-		this.layerRenderers = new HashMap<Layer, MapScalesRenderer>();
-		this.animation = new MapNavigationAnimation(new LinearNavigationFunction()) {
+		this.layerRenderers = new HashMap<Layer, LayerScalesRenderer>();
+		this.animation = new MapNavigationAnimation(configuration, new LinearNavigationFunction()) {
 
 			protected void onComplete() {
 				super.onComplete();
@@ -120,12 +122,13 @@ public class MapRendererImpl implements MapRenderer {
 
 	public void onLayerAdded(LayerAddedEvent event) {
 		Layer layer = event.getLayer();
+		configuration.setAnimated(event.getLayer(), true);
 
 		HtmlGroup layerContainer = new HtmlGroup(htmlContainer.getWidth(), htmlContainer.getHeight());
 		layerContainer.setVisible(layer.isShowing());
 		htmlContainer.add(layerContainer);
 
-		MapScalesRenderer layerRenderer = null;
+		LayerScalesRenderer layerRenderer = null;
 		if (layer instanceof HasMapScalesRenderer) {
 			layerRenderer = ((HasMapScalesRenderer) layer).getRenderer(layerContainer);
 		} else {
@@ -148,7 +151,7 @@ public class MapRendererImpl implements MapRenderer {
 	public void onLayerRemoved(LayerRemovedEvent event) {
 		Layer layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
-			MapScalesRenderer layerRenderer = layerRenderers.get(layer);
+			LayerScalesRenderer layerRenderer = layerRenderers.get(layer);
 			layerRenderer.cancel();
 			layerRenderer.clear();
 			layerRenderers.remove(layer);
@@ -184,7 +187,7 @@ public class MapRendererImpl implements MapRenderer {
 	public void onShow(LayerShowEvent event) {
 		Layer layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
-			MapScalesRenderer layerRenderer = layerRenderers.get(layer);
+			LayerScalesRenderer layerRenderer = layerRenderers.get(layer);
 			layerRenderer.ensureScale(viewPort.getScale(), viewPort.getBounds());
 			layerRenderer.getHtmlContainer().setVisible(true);
 		}
@@ -221,7 +224,7 @@ public class MapRendererImpl implements MapRenderer {
 
 	public void onLayerRefreshed(LayerRefreshedEvent event) {
 		Layer layer = event.getLayer();
-		MapScalesRenderer renderer = layerRenderers.get(layer);
+		LayerScalesRenderer renderer = layerRenderers.get(layer);
 		if (renderer != null) {
 			renderer.clear();
 			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
@@ -245,14 +248,14 @@ public class MapRendererImpl implements MapRenderer {
 			if (first) {
 				navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
 			} else {
-				navigateTo(viewPort.getBounds(), viewPort.getScale(), animationMillis);
+				navigateTo(viewPort.getBounds(), viewPort.getScale(), getAnimationTime());
 			}
 		}
 	}
 
 	public void onViewPortScaled(ViewPortScaledEvent event) {
 		if (viewPort.getScale() > 0) {
-			navigateTo(viewPort.getBounds(), viewPort.getScale(), animationMillis);
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), getAnimationTime());
 		}
 	}
 
@@ -260,29 +263,6 @@ public class MapRendererImpl implements MapRenderer {
 		if (viewPort.getScale() > 0 && !animation.isRunning()) {
 			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
 		}
-	}
-
-	// ------------------------------------------------------------------------
-	// MapRenderer public methods:
-	// ------------------------------------------------------------------------
-
-	public void setMapExtentScaleAtFetch(double scale) {
-	}
-
-	public int getAnimationMillis() {
-		return animationMillis;
-	}
-
-	public void setAnimationMillis(int animationMillis) {
-		this.animationMillis = animationMillis;
-	}
-
-	public int getNrAnimatedLayers() {
-		return animation.getNrAnimatedLayers();
-	}
-
-	public void setNrAnimatedLayers(int nrAnimatedLayers) {
-		animation.setNrAnimatedLayers(nrAnimatedLayers);
 	}
 
 	// ------------------------------------------------------------------------
@@ -299,7 +279,7 @@ public class MapRendererImpl implements MapRenderer {
 		// Bring the current scale to the font and make it visible (for all layers):
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer layer = layersModel.getLayer(i);
-			MapScalesRenderer presenter = layerRenderers.get(layer);
+			LayerScalesRenderer presenter = layerRenderers.get(layer);
 			if (presenter != null) {
 				presenter.bringScaleToFront(currentScale);
 				presenter.setScaleVisibility(currentScale, true);
@@ -316,7 +296,7 @@ public class MapRendererImpl implements MapRenderer {
 			// Make the previous scale invisible:
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);
-				MapScalesRenderer presenter = layerRenderers.get(layer);
+				LayerScalesRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenter.setScaleVisibility(previousScale, false);
 				}
@@ -327,7 +307,9 @@ public class MapRendererImpl implements MapRenderer {
 	private void navigateTo(Bbox bounds, double scale, int millis) {
 		navigationBusy = true;
 		int delay = fetchDelay >= millis ? 0 : fetchDelay;
-		if ((Dom.isIE() && !Dom.isSvg())) {
+		Boolean animationEnabled = (Boolean) configuration.getMapHintValue(MapConfiguration.ANIMATION_ENABLED);
+		// if ((Dom.isIE() && !Dom.isSvg()) || !animationEnabled) {
+		if (!animationEnabled) {
 			delay = 0;
 			millis = 0;
 		}
@@ -354,10 +336,10 @@ public class MapRendererImpl implements MapRenderer {
 			ensureScale(scale, bounds, delay);
 
 			// Create an ordered list of presenters for the animation.
-			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();
+			List<LayerScalesRenderer> presenters = new ArrayList<LayerScalesRenderer>();
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);
-				MapScalesRenderer presenter = layerRenderers.get(layer);
+				LayerScalesRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenters.add(presenter);
 				}
@@ -372,6 +354,11 @@ public class MapRendererImpl implements MapRenderer {
 		fetchTimer.cancel();
 		fetchTimer.setTargetLocation(scale, bounds);
 		fetchTimer.schedule(delay);
+	}
+
+	private int getAnimationTime() {
+		Long millis = (Long) configuration.getMapHintValue(MapConfiguration.ANIMATION_TIME);
+		return millis == null ? 0 : millis.intValue();
 	}
 
 	/**
@@ -395,10 +382,10 @@ public class MapRendererImpl implements MapRenderer {
 
 		public void run() {
 			// Ensure the scale at the requested location:
-			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();
+			List<LayerScalesRenderer> presenters = new ArrayList<LayerScalesRenderer>();
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);
-				MapScalesRenderer presenter = layerRenderers.get(layer);
+				LayerScalesRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenter.ensureScale(scale, bounds);
 					if (first) {

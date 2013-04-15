@@ -24,9 +24,13 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  */
 public class MapConfigurationImpl implements MapConfiguration {
 
+	public static final Boolean ANIMATION_ENABLED_DEFAULT = true;
+
+	public static final Long ANIMATION_TIME_DEFAULT = 400L;
+
 	private final Map<Layer, Boolean> layerAnimation;
 
-	private final Map<MapHints, Object> hintValues;
+	private final Map<String, Object> hintValues;
 
 	private ClientMapInfo mapInfo;
 
@@ -35,8 +39,12 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	protected MapConfigurationImpl() {
-		hintValues = new HashMap<MapHints, Object>();
+		hintValues = new HashMap<String, Object>();
 		layerAnimation = new HashMap<Layer, Boolean>();
+
+		// Now apply the default values:
+		setMapHintValue(MapConfiguration.ANIMATION_ENABLED, ANIMATION_ENABLED_DEFAULT);
+		setMapHintValue(MapConfiguration.ANIMATION_TIME, ANIMATION_TIME_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
@@ -44,7 +52,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public void setMapHintValue(MapHints hint, Object value) {
+	public void setMapHintValue(String hint, Object value) {
 		if (value == null) {
 			throw new IllegalArgumentException("Null value passed.");
 		}
@@ -55,7 +63,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	}
 
 	/** {@inheritDoc} */
-	public Object getMapHintValue(MapHints hint) {
+	public Object getMapHintValue(String hint) {
 		return hintValues.get(hint);
 	}
 
@@ -80,6 +88,9 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	/** {@inheritDoc} */
 	public boolean isAnimated(Layer layer) {
+		if (!layerAnimation.containsKey(layer)) {
+			return false;
+		}
 		return layerAnimation.get(layer);
 	}
 

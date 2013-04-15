@@ -22,7 +22,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  */
 public class MockMapScalesRendererFactory implements MapScalesRendererFactory {
 
-	public MapScalesRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer) {
-		return new LayerScalesRenderer(viewPort, layer, htmlContainer);
+	public LayerScalesRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer) {
+		return new LayerScalesRendererImpl(viewPort, layer, htmlContainer);
 	}
 }

@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map.render;
 
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.MapConfiguration;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
 
@@ -22,7 +23,8 @@ import org.geomajas.puregwt.client.map.layer.LayersModel;
  */
 public class MockMapRendererFactory implements MapRendererFactory {
 
-	public MapRenderer create(LayersModel layersModel, ViewPort viewPort, HtmlContainer htmlContainer) {
+	public MapRenderer create(LayersModel layersModel, ViewPort viewPort, MapConfiguration configuration,
+			HtmlContainer htmlContainer) {
 		return new MockMapRenderer();
 	}
 }

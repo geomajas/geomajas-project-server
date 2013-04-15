@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.render.MapScalesRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
 
 /**
  * Extension interface for layer types that wish to define their own renderer.
@@ -28,5 +28,5 @@ public interface HasMapScalesRenderer {
 	 *            The container wherein the renderer should attach its content.
 	 * @return The layer specific renderer.
 	 */
-	MapScalesRenderer getRenderer(HtmlContainer container);
+	LayerScalesRenderer getRenderer(HtmlContainer container);
 }
