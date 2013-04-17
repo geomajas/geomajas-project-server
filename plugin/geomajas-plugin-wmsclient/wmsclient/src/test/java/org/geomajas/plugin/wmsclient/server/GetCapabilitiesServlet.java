@@ -32,10 +32,6 @@ public class GetCapabilitiesServlet extends HttpServlet {
 	private static final String CAPA_111_FILE = "GetCapabilities111.xml";
 
 	private static final String CAPA_130_FILE = "GetCapabilities130.xml";
-	
-	public GetCapabilitiesServlet() {
-		System.out.println();
-	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String version = (String) req.getParameter("version");
