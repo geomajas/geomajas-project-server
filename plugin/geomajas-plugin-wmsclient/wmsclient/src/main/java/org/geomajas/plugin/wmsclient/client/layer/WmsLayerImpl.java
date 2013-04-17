@@ -25,7 +25,7 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.AbstractLayer;
 import org.geomajas.puregwt.client.map.layer.LayerStylePresenter;
-import org.geomajas.puregwt.client.map.render.MapScalesRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -119,7 +119,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	 * Get the specific renderer for this type of layer. This will return a scale-based renderer that used a
 	 * {@link org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererImpl} for each resolution.
 	 */
-	public MapScalesRenderer getRenderer(HtmlContainer container) {
+	public LayerScalesRenderer getRenderer(HtmlContainer container) {
 		if (renderer == null) {
 			renderer = rendererFactory.create(this, container);
 		}

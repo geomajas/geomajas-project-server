@@ -14,7 +14,7 @@ package org.geomajas.plugin.wmsclient.client.render;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
-import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScalesRendererImpl;
 import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
 
 import com.google.inject.Inject;
@@ -25,7 +25,7 @@ import com.google.inject.assistedinject.Assisted;
  * 
  * @author Pieter De Graef
  */
-public class WmsScalesRendererImpl extends LayerScalesRenderer implements WmsScalesRenderer {
+public class WmsScalesRendererImpl extends LayerScalesRendererImpl implements WmsScalesRenderer {
 
 	@Inject
 	private WmsTiledScaleRendererFactory scaleRendererFactory;
