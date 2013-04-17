@@ -16,6 +16,9 @@ import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.Transparent;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
+import com.google.gwt.event.dom.client.HasAllMouseHandlers;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
@@ -26,7 +29,8 @@ import com.google.gwt.user.client.ui.IsWidget;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface VectorContainer extends VectorObjectContainer, Transparent, Transformable, IsWidget {
+public interface VectorContainer extends VectorObjectContainer, HasClickHandlers, HasAllMouseHandlers,
+		HasDoubleClickHandlers, Transparent, Transformable, IsWidget {
 
 	/**
 	 * Determine container visibility.
