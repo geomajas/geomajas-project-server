@@ -12,9 +12,6 @@
 package org.geomajas.puregwt.client.general;
 
 import org.geomajas.puregwt.client.ContentPanel;
-import org.geomajas.puregwt.client.event.LayerHideEvent;
-import org.geomajas.puregwt.client.event.LayerShowEvent;
-import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
@@ -49,9 +46,11 @@ public class ViewPortEventPanel extends ContentPanel {
 	}
 
 	public String getDescription() {
-		return "This example shows the events that accompany the changes to the view port or visible area of the map.<br/>"
-				+ "Events are fired when the view port is translated (panning), scaled (zooming) or changed in a non-trivial way (e.g resize)";
+		return "This example shows the events that accompany the changes to the view port or visible"
+				+ " area of the map.<br/>Events are fired when the view port is translated (panning),"
+				+ " scaled (zooming) or changed in a non-trivial way (e.g resize)";
 	}
+
 
 	public Widget getContentWidget() {
 		// Define the left layout:
