@@ -1,0 +1,7 @@
+.CodeMirror {
+	height: 100%;
+}
+
+.CodeMirror-collapserange { 
+	width: .6em;
+}

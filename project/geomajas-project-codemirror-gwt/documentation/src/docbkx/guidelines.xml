@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the Apache ~ License, 
+	Version 2.0. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-howto">
+	<title>Development guidelines</title>
+
+	<para>Look at the ExampleEntryPoint class in the example project for a
+		basic use of the codemirror panel.</para>
+
+	<para>
+		The initial configuration can be set with the Config object.
+		<br />
+		It behaves like a key-value set, most common keys are provided as
+		static strings in the Config class. See the codemirror website for a
+		detailed description of what all these options do.
+	</para>
+
+	<para>
+		You can also change these options live once the widget is created by
+		getting the wrapper object from the panel:
+		<code>
+			CodeMirrorPanel panel = new CodeMirrorPanel();
+			...
+
+			CodeMirrorWrapper editor = panel.getEditor();
+
+			editor.setOption(Config.MODE, "json");
+  		</code>
+		Some convenience setters and getters are provided. The most important
+		one of which will be the 'getContent()'
+		which retrieves the text that
+		was typed into the editor.
+		<code>
+			CodeMirrorPanel panel = new CodeMirrorPanel();
+			...
+
+			CodeMirrorWrapper editor = panel.getEditor();
+
+			String result =
+			editor.getContent();
+  		</code>
+	</para>
+	
+	<para>
+	If you wish to use a custom theme or addon, the best place to add the is your 'Application.gwt.xml'. 
+	Add them like you would any other javascript or css resource.<br />
+	Look at the codemirror samples and just add the same js and css resources to your module.
+	<code><![CDATA[
+		<?xml version="1.0" encoding="UTF-8"?>
+		<module>
+			<inherits name='com.google.gwt.user.User' />
+			<inherits name="com.google.gwt.i18n.I18N"/>
+		
+			<script src="lib/codemirror.js" />
+			<script src="mode/xml/xml.js" />
+			<script src="mode/css/css.js" />
+		    <script src="mode/htmlmixed/htmlmixed.js" />
+		
+			<script src="addon/edit/closetag.js" />
+		    <script src="addon/fold/collapserange.js" />
+		
+			<stylesheet src="lib/codemirror.css" />
+			<stylesheet src="codemirrorCustom.css" />
+		</module>
+		]]>
+	</code>
+	PS: these are the resources that are already provided, no need to include them again.
+	</para>
+</chapter>
