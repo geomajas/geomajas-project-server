@@ -136,6 +136,7 @@ public class ExpertSldEditorHelper {
 			return null;
 		}
 		StyledLayerDescriptorInfo sldi = new StyledLayerDescriptorInfo();
+		sldi.setVersion("1.0.0");
 		sldi.setName(layer.getId());
 		sldi.setTitle(layer.getLabel());
 		ChoiceInfo ci = new ChoiceInfo();

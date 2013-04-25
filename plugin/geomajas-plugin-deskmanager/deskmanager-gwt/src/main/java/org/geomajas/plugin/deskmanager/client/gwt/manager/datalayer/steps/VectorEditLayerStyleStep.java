@@ -10,12 +10,16 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.gwt.client.util.Notify;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
+import org.geomajas.plugin.deskmanager.client.gwt.manager.util.SldUtils;
 import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 
 import com.google.gwt.core.client.GWT;
@@ -48,22 +52,22 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 
 		form = new DynamicForm();
 		picker = new ColorPickerItem("selectColor", MESSAGES.vectorEditLayerStyleStepSelectColor() + ": ");
+		picker.setValue("CCCCCC");
 		picker.addChangedHandler(new ChangedHandler() {
-
-			@Override
 			public void onChanged(ChangedEvent event) {
-				FeatureStyleInfo fs = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getFeatureStyles()
-						.get(0);
-				fs.setFillColor(picker.getValueAsString());
-				fs.setFillOpacity(0.5f);
-				fs.setStrokeColor(picker.getValueAsString());
+				Map<String, Object> props = new HashMap<String, Object>();
+				props.put(SldUtils.FILLCOLOR, picker.getValueAsString());
+				props.put(SldUtils.STROKECOLOR, picker.getValueAsString());
+				props.put(SldUtils.FILLOPACITY, 0.5f);
+				props.put(SldUtils.STROKEOPACITY, 1f);
+				layerConfig.getClientVectorLayerInfo().getNamedStyleInfo()
+						.setUserStyle(SldUtils.createSimpleSldStyle(layerConfig.getClientVectorLayerInfo(), props));				
 			}
 		});
 		label = new TextItem("styleLabel", MESSAGES.vectorEditLayerStyleStepStyleName() + ": ");
 		label.addChangedHandler(new ChangedHandler() {
-			
-			@Override
 			public void onChanged(ChangedEvent event) {
+				// FIXME REMOVE
 				FeatureStyleInfo fs = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getFeatureStyles()
 				.get(0);
 				fs.setName(label.getValueAsString());
@@ -81,7 +85,9 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 
 	public void setData(DynamicVectorLayerConfiguration layerConfig) {
 		this.layerConfig = layerConfig;
-		layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().applyDefaults();
+		
+		// FIXME
+		Map<String, Object> props = SldUtils.getProperties(layerConfig.getClientVectorLayerInfo());
 		FeatureStyleInfo fs = layerConfig.getClientVectorLayerInfo().getNamedStyleInfo().getFeatureStyles().get(0);
 		picker.setValue(fs.getFillColor());
 	}
@@ -107,6 +113,7 @@ public class VectorEditLayerStyleStep extends WizardStepPanel {
 
 	@Override
 	public void stepFinished() {
+		// FIXME
 		EditLayerSettingsStep nextStep = (EditLayerSettingsStep) parent
 				.getStep(NewLayerModelWizardWindow.STEP_EDIT_LAYER_SETTINGS);
 		if (nextStep != null) {
