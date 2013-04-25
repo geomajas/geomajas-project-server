@@ -50,8 +50,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
@@ -76,7 +76,7 @@ public class SldEditorExpertPresenter extends
 	/**
 	 * {@link SldEditorExpertPresenter}'s view.
 	 */
-	public interface MyView extends View, HasTemplateSelectHandlers, HasTemplateNamesLoadedHandlers,
+	public interface MyView extends PopupView, HasTemplateSelectHandlers, HasTemplateNamesLoadedHandlers,
 			HasTemplateLoadedHandlers, HasSldLoadedHandlers, HasSldCloseHandlers, HasSldSaveHandlers,
 			HasSldValidateHandlers, HasSldValidatedHandlers, HasSldCancelHandlers, HasSldCancelledHandlers {
 
@@ -188,6 +188,7 @@ public class SldEditorExpertPresenter extends
 
 	protected void revealInParent() {
 		RevealRootContentEvent.fire(this, this);
+		// RevealRootPopupContentEvent.fire(this, this); // can't (easily) use SmartGWT.
 	}
 
 	@Override
@@ -252,6 +253,8 @@ public class SldEditorExpertPresenter extends
 				manager.getModel().clear();
 				getView().clearData();
 				getView().hide();
+				// hide by setting another presenter (or null) into the slot
+				RevealRootContentEvent.fire(SldEditorExpertPresenter.this, null);
 			}
 		}));
 

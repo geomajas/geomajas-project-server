@@ -74,7 +74,6 @@ public class SldEditorView extends PopupViewImpl implements SldEditorExpertPrese
 		w.getEditor().clearValues();
 	}
 
-
 	public void modelToView(SldModel model, boolean keepDirty) {
 		if (w == null) { asWidget(); }
 		w.getEditor().setData(model.getRawSld().getXml());
@@ -92,8 +91,9 @@ public class SldEditorView extends PopupViewImpl implements SldEditorExpertPrese
 	
 	@Override
 	public void hide() {
-		// super.hide();
 		w.hide();
+		w.destroy();
+		w = null;
 	}
 
 	// ---------------------------------------------------------------

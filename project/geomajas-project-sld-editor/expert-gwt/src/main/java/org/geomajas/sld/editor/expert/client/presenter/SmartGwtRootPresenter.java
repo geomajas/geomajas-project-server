@@ -45,7 +45,9 @@ public class SmartGwtRootPresenter extends RootPresenter {
 
 		@Override
 		public void setInSlot(Object slot, Widget content) {
-			((BaseWidget) content).draw();
+			if (content != null) {
+				((BaseWidget) content).draw();
+			}
 		}
 		//Called as a consequence of ginjector.getPlaceManager().revealCurrentPlace();
 		public void lockScreen() {
@@ -81,7 +83,7 @@ public class SmartGwtRootPresenter extends RootPresenter {
 	public void onRevealRootPopupContent(final RevealRootPopupContentEvent revealContentEvent) {
 		addToPopupSlot(revealContentEvent.getContent());
 		// always show pop-up !
-		revealContentEvent.getContent().getView().show();
+		// revealContentEvent.getContent().getView().show();
 	}
 
 }
