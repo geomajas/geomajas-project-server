@@ -55,32 +55,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<ref bean="clientLayerPopulatedPlaces110m" />
 			</list>
 		</property>
-		<property name="layerTree">
-			<bean name="legendMapTree"
-				class="org.geomajas.configuration.client.ClientLayerTreeInfo">
-				<property name="tools">
-					<list>
-						<ref bean="LayerVisibleTool" />
-						<ref bean="LayerLabeledTool" />
-						<ref bean="LayerRefreshAction" />
-					</list>
-				</property>
-				<property name="treeNode">
-					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
-						<property name="label" value="Layers" />
-						<property name="layers">
-							<list>
-								<ref bean="clientLayerWms" />
-								<ref bean="clientLayerCountries110m" />
-								<ref bean="clientLayerRivers50m" />
-								<ref bean="clientLayerPopulatedPlaces110m" />
-							</list>
-						</property>
-						<property name="expanded" value="true" />
-					</bean>
-				</property>
-			</bean>
-		</property>
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerRivers50m">

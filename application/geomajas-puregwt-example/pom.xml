@@ -191,7 +191,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<module>org.geomajas.puregwt.Showcase</module>
+					<module>org.geomajas.puregwt.example.Showcase</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
