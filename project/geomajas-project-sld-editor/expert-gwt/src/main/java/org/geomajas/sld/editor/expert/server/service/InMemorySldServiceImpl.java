@@ -119,6 +119,9 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 	 */
 	public RawSld toXml(StyledLayerDescriptorInfo sldi) throws SldException {
 		try {
+			if (sldi.getVersion() == null) {
+				sldi.setVersion("1.0.0");
+			}
 			return parseSldI(sldi);
 		} catch (JiBXException e) {
 			throw new SldException("Validation error", e);
@@ -182,6 +185,9 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 		if (sld.getTitle() == null) {
 			sld.setTitle(getTitle(sld, name));
 		}
+		if (sld.getVersion() == null) {
+			sld.setVersion("1.0.0");
+		}
 		return sld;
 	}
 	
@@ -192,9 +198,11 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 		IMarshallingContext mctx = bfact.createMarshallingContext();
 		StringWriter writer = new StringWriter();
 		mctx.setOutput(writer);
+		mctx.getXmlWriter().setIndentSpaces(2, "\n", ' ');
 		mctx.marshalDocument(sld);
 		res.setXml(writer.toString());
 		res.setName(sld.getName());
+		res.setVersion(sld.getVersion());
 		res.setTitle(sld.getTitle() == null ? getTitle(sld, "?") : sld.getTitle());
 		return res;
 	}
