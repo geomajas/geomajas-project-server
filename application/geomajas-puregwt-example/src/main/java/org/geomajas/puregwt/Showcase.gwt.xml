@@ -22,18 +22,18 @@
     <inherits name="org.geomajas.puregwt.theme.GeomajasDefaultTheme" />
 
 	<!-- Geomajas Widget plug-in -->
-    <inherits name="org.geomajas.puregwt.widget.GeomajasPureGwtWidget" />
+<!--     <inherits name="org.geomajas.puregwt.widget.GeomajasPureGwtWidget" />
     <inherits name="org.geomajas.puregwt.widget.theme.GeomajasWidgetDefaultTheme" />
-    
+ -->    
     <!-- Geomajas WMS Client plug-in -->
-    <inherits name="org.geomajas.plugin.wmsclient.GeomajasWmsClient" />
-  	
+<!--     <inherits name="org.geomajas.plugin.wmsclient.GeomajasWmsClient" />
+ -->  	
     <!-- Geomajas Printing plug-in -->
-    <inherits name="org.geomajas.plugin.printing.PrintingPuregwt" />
-
+<!--     <inherits name="org.geomajas.plugin.printing.PrintingPuregwt" />
+ -->
     <!-- Geomajas WMS Client plug-in -->
-    <inherits name="org.geomajas.plugin.wmsclient.printing.GeomajasWmsClientPrinting" />
-    
+<!--     <inherits name="org.geomajas.plugin.wmsclient.printing.GeomajasWmsClientPrinting" />
+ -->    
     <entry-point class="org.geomajas.puregwt.client.Showcase"/>
 
 	<source path='client'/>

@@ -25,20 +25,10 @@ import org.geomajas.puregwt.client.layer.LayerAddRemovePanel;
 import org.geomajas.puregwt.client.layer.LayerOpacityPanel;
 import org.geomajas.puregwt.client.layer.LayerOrderPanel;
 import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
-import org.geomajas.puregwt.client.layer.TmsLayerPanel;
-import org.geomajas.puregwt.client.plugin.printing.PrintingPanel;
-import org.geomajas.puregwt.client.plugin.wmsclient.GetCapabilitiesPanel111;
-import org.geomajas.puregwt.client.plugin.wmsclient.GetCapabilitiesPanel130;
-import org.geomajas.puregwt.client.plugin.wmsclient.GetFeatureInfoPanel111;
-import org.geomajas.puregwt.client.plugin.wmsclient.GetFeatureInfoPanel130;
-import org.geomajas.puregwt.client.plugin.wmsclient.WmsClientPanel111;
-import org.geomajas.puregwt.client.plugin.wmsclient.WmsClientPanel130;
 import org.geomajas.puregwt.client.rendering.DrawingInteractionPanel;
 import org.geomajas.puregwt.client.rendering.FixedSizeWorldSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.ScreenSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.WorldSpaceRenderingPanel;
-import org.geomajas.puregwt.client.widget.LayerLegendViewPanel;
-import org.geomajas.puregwt.client.widget.LegendDisclosureGadgetPanel;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.prefetch.RunAsyncCode;
@@ -116,7 +106,6 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		// Layer Manipulation:
 		Category catLayerMan = new Category("Layer Manipulation");
 		catList.add(catLayerMan);
-		catLayerMan.addExample(new TmsLayerPanel(geomajasInjector.getMapPresenter()), null);
 		catLayerMan.addExample(new LayerVisibilityPanel(geomajasInjector.getMapPresenter()), null);
 		catLayerMan.addExample(new LayerOpacityPanel(geomajasInjector.getMapPresenter()), null);
 		catLayerMan.addExample(new LayerOrderPanel(geomajasInjector.getMapPresenter()), null);
@@ -134,27 +123,6 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catDrawing.addExample(new WorldSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
 		catDrawing.addExample(new FixedSizeWorldSpaceRenderingPanel(geomajasInjector.getMapPresenter()), null);
 		catDrawing.addExample(new DrawingInteractionPanel(geomajasInjector.getMapPresenter()), null);
-
-		// Widget plug-in:
-		Category catWidget = new Category("Widgets");
-		catList.add(catWidget);
-		catWidget.addExample(new LayerLegendViewPanel(geomajasInjector.getMapPresenter()), null);
-		catWidget.addExample(new LegendDisclosureGadgetPanel(geomajasInjector.getMapPresenter()), null);
-		
-		// Plugin: WMS client
-		Category catWmsClient = new Category("Plugin: WMS client");
-		catList.add(catWmsClient);
-		catWmsClient.addExample(new WmsClientPanel111(geomajasInjector.getMapPresenter()), null);
-		catWmsClient.addExample(new GetFeatureInfoPanel111(geomajasInjector.getMapPresenter()), null);
-		catWmsClient.addExample(new GetCapabilitiesPanel111(geomajasInjector.getMapPresenter()), null);
-		catWmsClient.addExample(new WmsClientPanel130(geomajasInjector.getMapPresenter()), null);
-		catWmsClient.addExample(new GetFeatureInfoPanel130(geomajasInjector.getMapPresenter()), null);
-		catWmsClient.addExample(new GetCapabilitiesPanel130(geomajasInjector.getMapPresenter()), null);
-		
-		// Plugin: Printing
-		Category catPrinting = new Category("Plugin: printing");
-		catList.add(catPrinting);
-		catPrinting.addExample(new PrintingPanel(geomajasInjector.getMapPresenter()), null);
 	}
 
 	// ------------------------------------------------------------------------

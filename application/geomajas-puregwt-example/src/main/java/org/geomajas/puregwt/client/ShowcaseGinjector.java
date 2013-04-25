@@ -11,9 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.plugin.wmsclient.client.WmsClientGinModule;
-import org.geomajas.plugin.wmsclient.client.WmsClientGinjector;
-
 import com.google.gwt.inject.client.GinModules;
 
 /**
@@ -21,6 +18,6 @@ import com.google.gwt.inject.client.GinModules;
  * 
  * @author Pieter De Graef
  */
-@GinModules({ GeomajasGinModule.class, WmsClientGinModule.class })
-public interface ShowcaseGinjector extends WmsClientGinjector, GeomajasGinjector {
+@GinModules({ GeomajasGinModule.class })
+public interface ShowcaseGinjector extends GeomajasGinjector {
 }
