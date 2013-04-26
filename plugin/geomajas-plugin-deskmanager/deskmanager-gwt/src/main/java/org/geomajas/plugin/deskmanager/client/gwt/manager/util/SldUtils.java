@@ -7,19 +7,27 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.layer.LayerType;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
+import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.FillInfo;
 import org.geomajas.sld.GraphicInfo;
+import org.geomajas.sld.GraphicInfo.ChoiceInfo;
+import org.geomajas.sld.LabelInfo;
 import org.geomajas.sld.LineSymbolizerInfo;
 import org.geomajas.sld.MarkInfo;
+import org.geomajas.sld.NamedStyleInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SizeInfo;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
+import org.geomajas.sld.TextSymbolizerInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.WellKnownNameInfo;
+import org.geomajas.sld.expression.ExpressionInfo;
+import org.geomajas.sld.expression.PropertyNameInfo;
 
 import com.google.gwt.core.client.GWT;
 
@@ -30,14 +38,15 @@ import com.google.gwt.core.client.GWT;
  */
 public class SldUtils {
 	
-	public static final String FILLCOLOR = "fillColor";
-	public static final String FILLOPACITY = "fillOpacity";
-	public static final String STROKECOLOR = "strokeColor";
-	public static final String STROKEOPACITY = "strokeOpacity";
-	public static final String STROKEWIDTH = "strokeWidth";
+	public static final String FILLCOLOR = "fill";
+	public static final String FILLOPACITY = "fill-opacity";
+	public static final String STROKECOLOR = "stroke";
+	public static final String STROKEOPACITY = "stroke-opacity";
+	public static final String STROKEWIDTH = "stroke-width";
 	public static final String SIZE = "size";
-	public static final String WELLKNOWNNAME = "wellKnownName"; // MARK
-	public static final String STYLENAME = "styleName"; // default = namedStyleInfo.getName();
+	public static final String WELLKNOWNNAME = "well-known-name"; // MARK
+	public static final String STYLENAME = "style-name"; // default = namedStyleInfo.getName();
+	public static final String LABELFEATURENAME = "label-field-name";
 	
 	public static final String DEFAULT_FILLCOLOR = "#CCCCCC";
 	public static final Float DEFAULT_FILLOPACITY = 0.5f;
@@ -50,13 +59,15 @@ public class SldUtils {
 	private SldUtils() {
 	}
 
-	public static UserStyleInfo createSimpleSldStyle(ClientVectorLayerInfo cvli, Map<String, Object> properties) {
+	public static UserStyleInfo createSimpleSldStyle(DynamicVectorLayerConfiguration dvc, Map<String, Object> properties) {
 		UserStyleInfo usi = new UserStyleInfo();
-		usi.setTitle(getPropValue(STYLENAME, properties, cvli.getNamedStyleInfo().getName()));
+		usi.setTitle(getPropValue(STYLENAME, properties, dvc.getClientVectorLayerInfo().getNamedStyleInfo().getName()));
+		usi.setName(usi.getTitle());
 		FeatureTypeStyleInfo fsi = new FeatureTypeStyleInfo();
+		fsi.setName(usi.getTitle());
 		usi.getFeatureTypeStyleList().add(fsi);
 
-		RuleInfo ri = createRule(cvli.getLayerType(), properties);
+		RuleInfo ri = createRule(dvc.getVectorLayerInfo().getLayerType(), properties);
 		fsi.getRuleList().add(ri);
 
 		return usi;
@@ -75,6 +86,7 @@ public class SldUtils {
 	 */
 	public static RuleInfo createRule(LayerType type, Map<String, Object> properties) {
 		RuleInfo rule = new RuleInfo();
+		rule.setName(getPropValue(STYLENAME, properties, "default"));
 		List<SymbolizerTypeInfo> symbolizerList = new ArrayList<SymbolizerTypeInfo>();
 		SymbolizerTypeInfo symbolizer = null;
 
@@ -111,14 +123,23 @@ public class SldUtils {
 
 		symbolizerList.add(symbolizer);
 		rule.setSymbolizerList(symbolizerList);
+		
+		// -- set a textsymbolizer
+		if (properties.containsKey(LABELFEATURENAME)) {
+			TextSymbolizerInfo tsi = new TextSymbolizerInfo();
+			tsi.setLabel(new LabelInfo());
+			PropertyNameInfo pni = new PropertyNameInfo();
+			pni.setValue(properties.get(LABELFEATURENAME).toString());
+			tsi.getLabel().getExpressionList().add(pni);
+			symbolizerList.add(tsi);
+		}
+		
 		return rule;
 	}
 
 	public static Map<String, Object> getProperties(ClientVectorLayerInfo cvli) {
 		return getProperties(cvli.getNamedStyleInfo().getUserStyle());
 	}
-	
-	
 	
 	/**
 	 * This will extract the properties from the sld (first occurence / best effort (not every posibility is checked)).
@@ -134,32 +155,144 @@ public class SldUtils {
 			SymbolizerTypeInfo symbolizer = extractSymbolizer(usi);
 			if (symbolizer != null) {
 				if (symbolizer instanceof PointSymbolizerInfo) {
-					
+					extractProperties((PointSymbolizerInfo) symbolizer, props);
 				} else if (symbolizer instanceof LineSymbolizerInfo) {
-					
+					extractProperties((LineSymbolizerInfo) symbolizer, props);
 				} else if (symbolizer instanceof PolygonSymbolizerInfo) {
-					
+					extractProperties((PolygonSymbolizerInfo) symbolizer, props);
+				}
+			}
+			TextSymbolizerInfo textSym = extractTextSymbolizer(usi);
+			if (textSym != null && textSym.getLabel() != null && textSym.getLabel().getExpressionList().size() > 0) {
+				if (textSym.getLabel().getExpressionList().get(0) instanceof PropertyNameInfo) {
+					props.put(LABELFEATURENAME, textSym.getLabel().getExpressionList().get(0).getValue());
 				}
 			}
 		}
 		return props;
 	}
-	
+
 	// ---------------------------------------------------------------
 
+	public static String getPropValue(String propName, Map<String, Object> properties, String defaultValue) {
+		if (properties.containsKey(propName)) {
+			return (String) properties.get(propName);
+		} else {
+			return defaultValue;
+		}
+	}
+
+	public static Float getPropValue(String propName, Map<String, Object> properties, Float defaultValue) {
+		if (properties.containsKey(propName)) {
+			return (Float) properties.get(propName);
+		} else {
+			return defaultValue;
+		}
+	}
+
+	// ---------------------------------------------------------------
+
+	private static void extractProperties(PointSymbolizerInfo psi, Map<String, Object> properties) {
+		if (psi.getGraphic() != null && psi.getGraphic() != null) {
+			if (psi.getGraphic().getSize() != null && psi.getGraphic().getSize().getValue() != null) {
+				properties.put(SIZE, Float.valueOf(psi.getGraphic().getSize().getValue()));
+			}
+			if (psi.getGraphic().getChoiceList() != null && psi.getGraphic().getChoiceList().size() > 0) {
+				ChoiceInfo ci = psi.getGraphic().getChoiceList().get(0);
+				if (ci.getMark() != null) {
+					if (ci.getMark().getStroke() != null && ci.getMark().getStroke().getCssParameterList() != null) {
+						List<CssParameterInfo> plist = ci.getMark().getStroke().getCssParameterList();
+						properties.put(STROKECOLOR, extractCssPropertyValue(STROKECOLOR, plist, DEFAULT_STROKECOLOR));
+						properties.put(STROKEOPACITY, extractCssPropertyValue(STROKEOPACITY, plist, DEFAULT_STROKEOPACITY));
+						properties.put(STROKEWIDTH, extractCssPropertyValue(STROKEWIDTH, plist, DEFAULT_STROKEWIDTH));
+					}
+					if (ci.getMark().getFill() != null && ci.getMark().getFill().getCssParameterList() != null) {
+						List<CssParameterInfo> plist = ci.getMark().getFill().getCssParameterList();
+						properties.put(FILLCOLOR, extractCssPropertyValue(FILLCOLOR, plist, DEFAULT_FILLCOLOR));
+						properties.put(FILLOPACITY, extractCssPropertyValue(FILLOPACITY, plist, DEFAULT_FILLOPACITY));
+					}
+					if (ci.getMark().getWellKnownName() != null && ci.getMark().getWellKnownName().getWellKnownName() != null) {
+						properties.put(WELLKNOWNNAME, ci.getMark().getWellKnownName().getWellKnownName());
+					}
+				}
+			}
+		}
+	}
+
+	private static void extractProperties(LineSymbolizerInfo lsi, Map<String, Object> properties) {
+		if (lsi.getStroke() != null && lsi.getStroke().getCssParameterList() != null) {
+			List<CssParameterInfo> plist = lsi.getStroke().getCssParameterList();
+			properties.put(STROKECOLOR, extractCssPropertyValue(STROKECOLOR, plist, DEFAULT_STROKECOLOR));
+			properties.put(STROKEOPACITY, extractCssPropertyValue(STROKEOPACITY, plist, DEFAULT_STROKEOPACITY));
+			properties.put(STROKEWIDTH, extractCssPropertyValue(STROKEWIDTH, plist, DEFAULT_STROKEWIDTH));
+		}
+	}
+
+	private static void extractProperties(PolygonSymbolizerInfo psi, Map<String, Object> properties) {
+		if (psi.getStroke() != null && psi.getStroke().getCssParameterList() != null) {
+			List<CssParameterInfo> plist = psi.getStroke().getCssParameterList();
+			properties.put(STROKECOLOR, extractCssPropertyValue(STROKECOLOR, plist, DEFAULT_STROKECOLOR));
+			properties.put(STROKEOPACITY, extractCssPropertyValue(STROKEOPACITY, plist, DEFAULT_STROKEOPACITY));
+			properties.put(STROKEWIDTH, extractCssPropertyValue(STROKEWIDTH, plist, DEFAULT_STROKEWIDTH));
+		}
+		if (psi.getFill() != null && psi.getFill().getCssParameterList() != null) {
+			List<CssParameterInfo> plist = psi.getFill().getCssParameterList();
+			properties.put(FILLCOLOR, extractCssPropertyValue(FILLCOLOR, plist, DEFAULT_FILLCOLOR));
+			properties.put(FILLOPACITY, extractCssPropertyValue(FILLOPACITY, plist, DEFAULT_FILLOPACITY));
+		}
+	}
+
+	private static Object extractCssPropertyValue(String key, List<CssParameterInfo> cssParameterList, Object defaultValue) {
+		for (CssParameterInfo cpi : cssParameterList) {
+			if (cpi.getName().equals(key)) {
+				if (defaultValue == null) {
+					return null;
+				} else if (defaultValue instanceof Float) {
+					return Float.valueOf(cpi.getValue());
+				} else if (defaultValue instanceof String) {
+					return cpi.getValue().toString();
+				} else {
+					return cpi.getValue();
+				}
+			}
+		}
+		return defaultValue;
+	}
+	
 	private static SymbolizerTypeInfo extractSymbolizer(UserStyleInfo usi) {
 		if (usi.getFeatureTypeStyleList() != null && usi.getFeatureTypeStyleList().size() > 0) {
 			FeatureTypeStyleInfo ftsi = usi.getFeatureTypeStyleList().get(0);
 			if (ftsi.getRuleList() != null && ftsi.getRuleList().size() > 0) {
 				RuleInfo ri = ftsi.getRuleList().get(0);
 				if (ri.getSymbolizerList() != null && ri.getSymbolizerList().size() > 0) {
-					return ri.getSymbolizerList().get(0);
+					for (SymbolizerTypeInfo sti : ri.getSymbolizerList()) {
+						if (!(sti instanceof TextSymbolizerInfo)) {
+							return sti;
+						}
+					}
 				}
 			}
 		}
 		return null;
 	}
 	
+	private static TextSymbolizerInfo extractTextSymbolizer(UserStyleInfo usi) {
+		if (usi.getFeatureTypeStyleList() != null && usi.getFeatureTypeStyleList().size() > 0) {
+			FeatureTypeStyleInfo ftsi = usi.getFeatureTypeStyleList().get(0);
+			if (ftsi.getRuleList() != null && ftsi.getRuleList().size() > 0) {
+				RuleInfo ri = ftsi.getRuleList().get(0);
+				if (ri.getSymbolizerList() != null && ri.getSymbolizerList().size() > 0) {
+					for (SymbolizerTypeInfo sti : ri.getSymbolizerList()) {
+						if (sti instanceof TextSymbolizerInfo) {
+							return (TextSymbolizerInfo) sti;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	private static MarkInfo createMark(Map<String, Object> properties) {
 		MarkInfo mi = new MarkInfo();
 		mi.setWellKnownName(new WellKnownNameInfo());
@@ -188,23 +321,5 @@ public class SldUtils {
 		SizeInfo si = new SizeInfo();
 		si.setValue(getPropValue(SIZE, properties, DEFAULT_SIZE));
 		return si;
-	}
-	
-	// ---------------------------------------------------------------
-
-	private static String getPropValue(String propName, Map<String, Object> properties, String defaultValue) {
-		if (properties.containsKey(propName)) {
-			return (String) properties.get(propName);
-		} else {
-			return defaultValue;
-		}
-	}
-
-	private static Float getPropValue(String propName, Map<String, Object> properties, Float defaultValue) {
-		if (properties.containsKey(propName)) {
-			return (Float) properties.get(propName);
-		} else {
-			return defaultValue;
-		}
 	}
 }

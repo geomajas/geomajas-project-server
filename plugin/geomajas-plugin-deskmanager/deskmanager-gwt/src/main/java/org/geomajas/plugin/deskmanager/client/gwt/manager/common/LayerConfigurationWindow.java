@@ -25,6 +25,7 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFac
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.SensibleScaleConverter;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.ExpertSldEditorHelper;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 import com.google.gwt.core.client.GWT;
@@ -116,9 +117,12 @@ public class LayerConfigurationWindow extends Window {
 		tabset.setHeight(TABSET_HEIGHT);
 		tabset.addTab(createSettingsTab());
 
-		if (layerDto.getReferencedLayerInfo() instanceof ClientVectorLayerInfo) {
+		ClientLayerInfo config = layerDto.getClientLayerInfo() == null ? layer.getReferencedLayerInfo() : layer
+				.getClientLayerInfo();
+		
+		if (config instanceof ClientVectorLayerInfo) {
 			tabset.addTab(createStijlTab());
-			styleHelper = new ExpertSldEditorHelper((ClientVectorLayerInfo) layerDto.getReferencedLayerInfo());
+			styleHelper = new ExpertSldEditorHelper((ClientVectorLayerInfo) config);
 		}
 
 		widgetTabset = new TabSet();
@@ -269,6 +273,7 @@ public class LayerConfigurationWindow extends Window {
 
 	private void cancelled() {
 		hide();
+		destroy();
 		if (callback != null) {
 			callback.execute(false);
 		}
@@ -277,7 +282,7 @@ public class LayerConfigurationWindow extends Window {
 	private void saved() {
 		if (form.validate()) {
 			if (layer.getClientLayerInfo() == null) {
-				layer.setCLientLayerInfo(layer.getReferencedLayerInfo());
+				layer.setClientLayerInfo(layer.getReferencedLayerInfo()); // clone??
 			}
 			ClientLayerInfo cli = layer.getClientLayerInfo();
 			cli.setLayerInfo(null);
@@ -286,12 +291,12 @@ public class LayerConfigurationWindow extends Window {
 			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
 			cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
 
-			for (WidgetEditorHandler h : widgetEditors) {
-				h.save(layer);
-			}
-
 			if (styleHelper != null) { // only if vectorlayer
 				styleHelper.apply((ClientVectorLayerInfo) cli);
+			}
+
+			for (WidgetEditorHandler h : widgetEditors) {
+				h.save(layer);
 			}
 
 			hide();
@@ -302,14 +307,19 @@ public class LayerConfigurationWindow extends Window {
 		}
 	}
 
+	@Override
+	public void destroy() {
+		styleHelper.destroy();
+		super.destroy();
+	}
+
 	private void restored() {
 		if (layer.getClientLayerInfo() != null || !layer.getWidgetInfo().isEmpty()) {
 			SC.ask(MESSAGES.layerConfigConfirmRestoreTitle(), MESSAGES.layerConfigConfirmRestoreText(),
 					new BooleanCallback() {
-
 						public void execute(Boolean value) {
 							if (value) {
-								layer.setCLientLayerInfo(null);
+								layer.setClientLayerInfo(null);
 								layer.getWidgetInfo().clear();
 								hide();
 								callback.execute(true);

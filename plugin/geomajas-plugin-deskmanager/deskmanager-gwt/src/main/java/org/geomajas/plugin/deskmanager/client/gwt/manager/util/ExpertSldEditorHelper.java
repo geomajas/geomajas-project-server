@@ -10,6 +10,9 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -24,6 +27,7 @@ import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent;
 import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent.SldCancelledHandler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -42,7 +46,10 @@ public class ExpertSldEditorHelper {
 	private boolean initialized;
 	private boolean styleDataChanged;
 	private UserStyleInfo styleData;
+	private String styleName;
 
+	private final List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+	
 	public ExpertSldEditorHelper(ClientVectorLayerInfo layer) {
 		this.layer = layer;
 		extractUserStyleInfo();
@@ -58,10 +65,11 @@ public class ExpertSldEditorHelper {
 			NamedStyleInfo nsi = cli.getNamedStyleInfo();
 			if (nsi == null) {
 				nsi = new NamedStyleInfo();
-				nsi.setName(layer.getLabel());
 				cli.setNamedStyleInfo(nsi);
 			}
 			nsi.setUserStyle(styleData);
+			nsi.setName(styleName);
+			nsi.setSldStyleName(styleName);
 		}
 	}
 
@@ -69,12 +77,24 @@ public class ExpertSldEditorHelper {
 		initializeExpertEditor();
 		ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter().get().forceReveal();
 	}
-	
+
+	/**
+	 * This will remove/cancel any eventlisteners and other resources.
+	 * <p>You should not (re)use this object after calling destroy();
+	 */
+	public void destroy() {
+		for (HandlerRegistration hr : handlers) {
+			hr.removeHandler();
+		}
+		handlers.clear();
+		styleData = null;
+	}
+
 	// ---------------------------------------------------------------
 
 	private void initializeExpertEditor() {
 		if (!initialized) {
-			ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter().get()
+			handlers.add(ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter().get()
 					.addSldSaveHandler(new SldSaveHandler() {
 						public void onSldSave(SldSaveEvent event) {
 							if (extractData()) {
@@ -82,15 +102,15 @@ public class ExpertSldEditorHelper {
 										.closeEditor();
 							}
 						}
-					});
+					}));
 
-			ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter().get()
+			handlers.add(ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter().get()
 					.addSldCancelledHandler(new SldCancelledHandler() {
 						public void onSldCancelled(SldCancelledEvent event) {
 							ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter().get()
 									.closeEditor();
 						}
-					});
+					}));
 			initialized = true;
 		}
 
@@ -104,6 +124,7 @@ public class ExpertSldEditorHelper {
 	private boolean extractData() {
 		styleDataChanged = true;
 		styleData = null;
+		styleName = "";
 
 		// Find the userstyle.
 		StyledLayerDescriptorInfo sldi = ManagerEntryPoint.getInstance().getGinjector().getSldEditorExpertPresenter()
@@ -113,6 +134,7 @@ public class ExpertSldEditorHelper {
 				NamedLayerInfo nli = sldi.getChoiceList().get(0).getNamedLayer();
 				if (nli != null && nli.getChoiceList() != null && nli.getChoiceList().size() > 0) {
 					styleData = nli.getChoiceList().get(0).getUserStyle();
+					styleName = nli.getName();
 				}
 			}
 		}
@@ -126,8 +148,9 @@ public class ExpertSldEditorHelper {
 
 	private void extractUserStyleInfo() {
 		NamedStyleInfo nsi = layer.getNamedStyleInfo();
-		if (nsi != null && nsi.getUserStyle() != null) {
+		if (nsi.getUserStyle() != null) {
 			styleData = nsi.getUserStyle();
+			styleName = nsi.getName();
 		}
 	}
 
@@ -137,12 +160,11 @@ public class ExpertSldEditorHelper {
 		}
 		StyledLayerDescriptorInfo sldi = new StyledLayerDescriptorInfo();
 		sldi.setVersion("1.0.0");
-		sldi.setName(layer.getId());
-		sldi.setTitle(layer.getLabel());
 		ChoiceInfo ci = new ChoiceInfo();
 		org.geomajas.sld.NamedLayerInfo.ChoiceInfo ci2 = new org.geomajas.sld.NamedLayerInfo.ChoiceInfo();
 		sldi.getChoiceList().add(ci);
 		ci.setNamedLayer(new NamedLayerInfo());
+		ci.getNamedLayer().setName(styleName);
 		ci.getNamedLayer().getChoiceList().add(ci2);
 		ci2.setUserStyle(styleData);
 		return sldi;

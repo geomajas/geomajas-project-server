@@ -57,7 +57,7 @@ public class LayerDto implements Serializable {
 	/**
 	 * @param layerInfo the layerInfo to set
 	 */
-	public void setCLientLayerInfo(ClientLayerInfo layerInfo) {
+	public void setClientLayerInfo(ClientLayerInfo layerInfo) {
 		this.layerInfo = layerInfo;
 	}
 

@@ -98,7 +98,7 @@ public class SaveGeodeskCommandTest {
 		LayerDto cl = glsresp.getLayers().get(0);
 		Assert.assertNull(cl.getClientLayerInfo());
 		Assert.assertNull(cl.getWidgetInfo().get("TEST"));
-		cl.setCLientLayerInfo(cl.getReferencedLayerInfo());
+		cl.setClientLayerInfo(cl.getReferencedLayerInfo());
 		cl.getWidgetInfo().put("TEST", new MyClientWidgetInfo("testSaveLayers"));
 		bpDto.getMainMapLayers().clear();
 		bpDto.getMainMapLayers().add(cl);

@@ -440,7 +440,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			log.warn("DeskmanagerClientLayerInfo not found for layer: " + layer.getLayerModel().getClientLayerId()
 					+ ", not adding clientLayerinfo. You might need to remove these layers");
 		}
-		dto.setCLientLayerInfo(layer.getClientLayerInfo());
+		dto.setClientLayerInfo(layer.getClientLayerInfo());
 		dto.setLayerModel(toDto(layer.getLayerModel(), false));
 		return dto;
 	}
