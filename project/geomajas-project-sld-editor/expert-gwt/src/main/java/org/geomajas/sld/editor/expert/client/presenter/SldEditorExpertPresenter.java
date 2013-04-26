@@ -50,6 +50,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.annotations.NameToken;
@@ -117,8 +118,8 @@ public class SldEditorExpertPresenter extends
 	 * 
 	 * @param handler
 	 */
-	public void addSldSaveHandler(SldSaveHandler handler) {
-		registerHandler(getView().addSldSaveHandler(handler));
+	public HandlerRegistration addSldSaveHandler(SldSaveHandler handler) {
+		return getView().addSldSaveHandler(handler);
 	}
 
 	/**
@@ -126,8 +127,8 @@ public class SldEditorExpertPresenter extends
 	 * 
 	 * @param handler
 	 */
-	public void addSldCancelledHandler(SldCancelledHandler handler) {
-		registerHandler(getView().addSldCancelledHandler(handler));
+	public HandlerRegistration addSldCancelledHandler(SldCancelledHandler handler) {
+		return getView().addSldCancelledHandler(handler);
 	}
 
 	/**
