@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.steps;
 
+import java.util.Map;
+
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.NewLayerModelWizardWindow;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.Wizard;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.datalayer.WizardStepPanel;
@@ -18,9 +20,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DataCallback;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.DiscoveryCommService;
 import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
-
-import java.util.Map;
-
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;

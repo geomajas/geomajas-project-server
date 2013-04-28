@@ -25,7 +25,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.manager.editor.WidgetEditorFac
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.service.SensibleScaleConverter;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.util.ExpertSldEditorHelper;
-import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 
 import com.google.gwt.core.client.GWT;
