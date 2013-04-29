@@ -18,6 +18,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
+import org.geomajas.plugin.deskmanager.service.common.DynamicLayerLoadService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 	@Autowired
 	private LayerModelService layerModelService;
 
+	@Autowired
+	private DynamicLayerLoadService loadService;
+
 	/** {@inheritDoc} */
 	public void execute(SaveLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
@@ -57,6 +61,7 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 				if (target == null) {
 					throw new IllegalArgumentException("No datalayer found for id: " + request.getLayerModel().getId());
 				} else {
+					boolean reloadLayers = false;
 					LayerModel source = dtoService.fromDto(request.getLayerModel());
 					if ((SaveLayerModelRequest.SAVE_CLIENTWIDGETINFO & request.getSaveBitmask()) > 0) {
 						target.getWidgetInfo().clear();
@@ -84,12 +89,23 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 							target.setLayerType(source.getDynamicLayerConfiguration().getServerLayerInfo()
 									.getLayerType().getGeometryType());
 							target.setDynamicLayerConfiguration(source.getDynamicLayerConfiguration());
+							reloadLayers = true;
 						}
 
 					}
 
 					layerModelService.saveOrUpdateLayerModel(target);
 					response.setLayerModel(dtoService.toDto(target, false));
+
+					if (reloadLayers) {
+						try {
+							loadService.loadDynamicLayers();
+						} catch (Exception orig) {
+							Exception e = new Exception("Unexpected error removing layer.", orig);
+							log.error(e.getLocalizedMessage());
+							throw e;
+						}
+					}
 				}
 			}
 		} catch (GeomajasSecurityException e) {
