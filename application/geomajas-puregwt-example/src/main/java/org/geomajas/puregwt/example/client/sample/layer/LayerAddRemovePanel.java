@@ -11,23 +11,24 @@
 
 package org.geomajas.puregwt.example.client.sample.layer;
 
-import org.geomajas.puregwt.client.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.event.MapInitializationHandler;
+import org.geomajas.puregwt.client.event.LayerAddedEvent;
+import org.geomajas.puregwt.client.event.LayerRemovedEvent;
+import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
-import com.allen_sauer.gwt.dnd.client.DragEndEvent;
-import com.allen_sauer.gwt.dnd.client.DragHandler;
-import com.allen_sauer.gwt.dnd.client.DragStartEvent;
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.allen_sauer.gwt.dnd.client.VetoDragException;
-import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
-import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,61 +37,41 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Jan De Moerloose
  */
-public class LayerAddRemovePanel extends ContentPanel {
+public class LayerAddRemovePanel implements SamplePanel {
 
-	public LayerAddRemovePanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
+	/**
+	 * UI binder for this widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface MyUiBinder extends UiBinder<Widget, LayerAddRemovePanel> {
 	}
 
-	private PickupDragController layerDragController;
+	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
-	private VerticalPanel layerPanel;
+	private MapPresenter mapPresenter;
 
-	private Label addedMarker;
+	@UiField
+	protected VerticalPanel layerAddedPanel;
 
-	private Label removedMarker;
+	@UiField
+	protected VerticalPanel layerRemovedPanel;
 
-	public String getTitle() {
-		return "Adding/Removing layers";
-	}
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
 
-	public String getDescription() {
-		return "Example that demonstrates the ability to add layers to/remove layers from the map. "
-				+ "Try dragging the labels from the 'Added layers' section to the 'Removed layers' section and back.";
-	}
-
-	public Widget getContentWidget() {
+	public Widget asWidget() {
 		// Define the left layout:
-		VerticalPanel leftLayout = new VerticalPanel();
-		leftLayout.setSize("200px", "100%");
-		leftLayout.add(new HTML("<h3>Layers:</h3>"));
-		AbsolutePanel dndBoundary = new AbsolutePanel();
-		dndBoundary.setSize("200px", "100%");
-		leftLayout.add(dndBoundary);
-		layerPanel = new VerticalPanel();
-		addedMarker = new Label("Added layers:");
-		addedMarker.setWidth("100%");
-		removedMarker = new Label("Removed layers:");
-		removedMarker.setWidth("100%");
-		layerPanel.add(addedMarker);
-		layerPanel.add(removedMarker);
-		dndBoundary.add(layerPanel);
-
-		layerDragController = new PickupDragController(dndBoundary, false);
-		layerDragController.setBehaviorMultipleSelection(false);
-		layerDragController.registerDropController(new VerticalPanelDropController(layerPanel));
-		layerDragController.addDragHandler(new LayerDragHandler());
+		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(640, 480);
-		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
+		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
 
-		// Define the whole layout:
-		HorizontalPanel layout = new HorizontalPanel();
-		layout.add(leftLayout);
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
-		layout.add(mapDecorator);
+		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapLegend");
@@ -102,94 +83,97 @@ public class LayerAddRemovePanel extends ContentPanel {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Added/Removed state.
-	 * 
-	 * @author Jan De Moerloose
-	 * 
-	 */
-	enum State {
-		ADDED, REMOVED
-	};
-
-	/**
-	 * DragHandler that triggers the moving of layers in the LayersModel.
+	 * When layers are added or removed, display them in the correct panel.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class LayerDragHandler implements DragHandler {
+	private class MyMapCompositionHandler implements MapCompositionHandler {
 
-		private Layer dragLayer;
-
-		private State before;
-
-		private State after;
-
-		public void onDragEnd(DragEndEvent event) {
-			after = getState((LayerWidget) event.getSource());
-			int dropIndex = layerPanel.getWidgetIndex((LayerWidget) event.getSource());
-			if (before == after && after == State.ADDED) {
-				Layer layer = mapPresenter.getLayersModel().getLayer(dragLayer.getId());
-				mapPresenter.getLayersModel().moveLayer(layer, dropIndex - 1);
-			} else if (after == State.REMOVED) {
-				mapPresenter.getLayersModel().removeLayer(dragLayer.getId());
-			} else if (after == State.ADDED) {
-				mapPresenter.getLayersModel().addLayer(dragLayer);
-				mapPresenter.getLayersModel().moveLayer(dragLayer, dropIndex - 1);
+		public void onLayerAdded(LayerAddedEvent event) {
+			GWT.log("Added: " + event.getLayer().getTitle());
+			Layer layer = event.getLayer();
+			for (int i = 0; i < layerRemovedPanel.getWidgetCount(); i++) {
+				LayerRemovedWidget widget = (LayerRemovedWidget) layerRemovedPanel.getWidget(i);
+				if (layer.equals(widget.getLayer())) {
+					layerRemovedPanel.remove(i);
+				}
 			}
+			layerAddedPanel.add(new LayerAddedWidget(layer));
 		}
 
-		public void onDragStart(DragStartEvent event) {
-			dragLayer = ((LayerWidget) event.getSource()).getLayer();
-			before = getState((LayerWidget) event.getSource());
-		}
+		public void onLayerRemoved(LayerRemovedEvent event) {
+			GWT.log("Removed: " + event.getLayer().getTitle());
+			Layer layer = event.getLayer();
+			for (int i = 0; i < layerAddedPanel.getWidgetCount(); i++) {
+				LayerAddedWidget widget = (LayerAddedWidget) layerAddedPanel.getWidget(i);
+				if (layer == widget.getLayer()) {
+					layerAddedPanel.remove(i);
 
-		State getState(Widget w) {
-			int dragIndex = layerPanel.getWidgetIndex(w);
-			int removedIndex = layerPanel.getWidgetIndex(removedMarker);
-			return dragIndex < removedIndex ? State.ADDED : State.REMOVED;
-		}
-
-		public void onPreviewDragEnd(DragEndEvent event) throws VetoDragException {
-			int dropIndex = layerPanel.getWidgetIndex((LayerWidget) event.getSource());
-			if (dropIndex == 0) {
-				throw new VetoDragException();
+				}
 			}
-		}
-
-		public void onPreviewDragStart(DragStartEvent event) throws VetoDragException {
+			layerRemovedPanel.add(new LayerRemovedWidget(layer));
 		}
 	}
 
 	/**
-	 * When the map initializes: add draggable layer labels to the layer panel.
+	 * Layer representation on the GUI.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class MyMapInitializationHandler implements MapInitializationHandler {
-
-		public void onMapInitialized(MapInitializationEvent event) {
-			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-				LayerWidget widget = new LayerWidget(mapPresenter.getLayersModel().getLayer(i));
-				layerDragController.makeDraggable(widget);
-				layerPanel.insert(widget, layerPanel.getWidgetCount() - 1);
-			}
-		}
-	}
-
-	/**
-	 * Definition of a layer label widget.
-	 * 
-	 * @author Jan De Moerloose
-	 */
-	private final class LayerWidget extends Label {
+	private final class LayerAddedWidget extends HorizontalPanel {
 
 		private final Layer layer;
 
-		private LayerWidget(Layer layer) {
-			super(layer.getTitle());
-			setWidth("100%");
-			setStyleName("layer-block");
+		private LayerAddedWidget(final Layer layer) {
 			this.layer = layer;
+			setWidth("100%");
+			Button removeBtn = new Button("Remove");
+			removeBtn.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					mapPresenter.getLayersModel().removeLayer(layer.getId());
+				}
+			});
+			add(removeBtn);
+			add(new Label(layer.getTitle()));
+			if (layerAddedPanel.getWidgetCount() % 2 == 1) {
+				setStyleName(Showcase.RESOURCE.css().sampleEvenRow());
+			} else {
+				setStyleName(Showcase.RESOURCE.css().sampleOddRow());
+			}
+		}
+
+		public Layer getLayer() {
+			return layer;
+		}
+	}
+
+	/**
+	 * Layer representation on the GUI.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private final class LayerRemovedWidget extends HorizontalPanel {
+
+		private final Layer layer;
+
+		private LayerRemovedWidget(final Layer layer) {
+			this.layer = layer;
+			setWidth("100%");
+			Button removeBtn = new Button("Add");
+			removeBtn.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					mapPresenter.getLayersModel().addLayer(layer);
+				}
+			});
+			add(removeBtn);
+			add(new Label(layer.getTitle()));
+			if (layerAddedPanel.getWidgetCount() % 2 == 1) {
+				setStyleName(Showcase.RESOURCE.css().sampleEvenRow());
+			} else {
+				setStyleName(Showcase.RESOURCE.css().sampleOddRow());
+			}
 		}
 
 		public Layer getLayer() {

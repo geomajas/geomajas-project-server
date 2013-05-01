@@ -9,23 +9,16 @@
  * details, see LICENSE.txt in the project root.
  */
 
-.banner {
-	font-size: 48px;
-	font-weight: bold;
-	color: #FFFFFF;
-	text-align: right;
-	line-height: 100px;
-	border-bottom: 1px solid #337428;
-	background-color: #337428;
-}
+package org.geomajas.puregwt.example.client.i18n;
 
-.layer-block {
-	width: 100%;
-	margin-bottom: 5px;
-	background: #E6F6E6;
-	padding: 3px;
-	border: 1px solid #C0D6C0;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-	line-height: 24px;
+import com.google.gwt.i18n.client.Messages;
+
+/**
+ * General application messages. These are messages used anywhere in the GUI.
+ * 
+ * @author Pieter De Graef
+ */
+public interface ApplicationMessages extends Messages {
+
+	String commandError();
 }

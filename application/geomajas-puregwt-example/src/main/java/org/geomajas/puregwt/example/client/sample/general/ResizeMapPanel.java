@@ -14,15 +14,16 @@ package org.geomajas.puregwt.example.client.sample.general;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -30,65 +31,53 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class ResizeMapPanel extends ContentPanel {
+public class ResizeMapPanel implements SamplePanel {
 
-	public ResizeMapPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
+	/**
+	 * UI binder for this widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface MyUiBinder extends UiBinder<Widget, ResizeMapPanel> {
 	}
 
-	public String getTitle() {
-		return "Map resize";
-	}
+	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
-	public String getDescription() {
-		return "This example shows map resizing capabilities.";
-	}
+	private MapPresenter mapPresenter;
 
-	public Widget getContentWidget() {
-		// Define the left layout:
-		VerticalPanel leftLayout = new VerticalPanel();
-		leftLayout.setSize("220px", "100%");
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
 
-		leftLayout.add(new HTML("<h3>Resize the map:</h3>"));
-
-		Button resizeBtn = new Button("Enlarge map");
-		resizeBtn.setWidth("200");
-		resizeBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent arg0) {
-				int width = mapPresenter.getViewPort().getMapWidth() + 20;
-				int height = mapPresenter.getViewPort().getMapHeight() + 15;
-				mapPresenter.setSize(width, height);
-			}
-		});
-		leftLayout.add(resizeBtn);
-
-		Button shrinkBtn = new Button("Shrink map");
-		shrinkBtn.setWidth("200");
-		shrinkBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent arg0) {
-				int width = mapPresenter.getViewPort().getMapWidth() - 20;
-				int height = mapPresenter.getViewPort().getMapHeight() - 15;
-				mapPresenter.setSize(width, height);
-			}
-		});
-		leftLayout.add(shrinkBtn);
+	public Widget asWidget() {
+		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the mapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
 		// Define the whole layout:
-		HorizontalPanel layout = new HorizontalPanel();
-		layout.add(leftLayout);
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
-		layout.add(mapDecorator);
+		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return layout;
+	}
+
+	@UiHandler("enlargeButton")
+	public void onEnlargeBtnClicked(ClickEvent event) {
+		int width = mapPresenter.getViewPort().getMapWidth() + 20;
+		int height = mapPresenter.getViewPort().getMapHeight() + 15;
+		mapPresenter.setSize(width, height);
+	}
+
+	@UiHandler("shrinkButton")
+	public void onShrinkBtnClicked(ClickEvent event) {
+		int width = mapPresenter.getViewPort().getMapWidth() - 20;
+		int height = mapPresenter.getViewPort().getMapHeight() - 15;
+		mapPresenter.setSize(width, height);
 	}
 
 	/**

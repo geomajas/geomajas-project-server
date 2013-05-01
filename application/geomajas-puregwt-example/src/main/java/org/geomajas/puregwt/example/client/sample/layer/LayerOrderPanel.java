@@ -15,7 +15,8 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -23,11 +24,13 @@ import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.VerticalPanelDropController;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,34 +39,34 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class LayerOrderPanel extends ContentPanel {
+public class LayerOrderPanel implements SamplePanel {
 
-	public LayerOrderPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
+	/**
+	 * UI binder for this widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface MyUiBinder extends UiBinder<Widget, LayerOrderPanel> {
 	}
+
+	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
+
+	private MapPresenter mapPresenter;
 
 	private PickupDragController layerDragController;
 
-	private VerticalPanel layerPanel;
+	@UiField
+	protected VerticalPanel layerPanel;
 
-	public String getTitle() {
-		return "Changing layer order";
-	}
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
 
-	public String getDescription() {
-		return "Example that demonstrates the ability to change layer order. Try dragging the labels up and down.";
-	}
+	@UiField
+	protected AbsolutePanel dndBoundary;
 
-	public Widget getContentWidget() {
+	public Widget asWidget() {
 		// Define the left layout:
-		VerticalPanel leftLayout = new VerticalPanel();
-		leftLayout.setSize("200px", "100%");
-		leftLayout.add(new HTML("<h3>Layers:</h3>"));
-		AbsolutePanel dndBoundary = new AbsolutePanel();
-		dndBoundary.setSize("200px", "100%");
-		leftLayout.add(dndBoundary);
-		layerPanel = new VerticalPanel();
-		dndBoundary.add(layerPanel);
+		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		layerDragController = new PickupDragController(dndBoundary, false);
 		layerDragController.setBehaviorMultipleSelection(false);
@@ -71,15 +74,14 @@ public class LayerOrderPanel extends ContentPanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
 		// Define the whole layout:
-		HorizontalPanel layout = new HorizontalPanel();
-		layout.add(leftLayout);
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
-		layout.add(mapDecorator);
+		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapLegend");
@@ -100,7 +102,7 @@ public class LayerOrderPanel extends ContentPanel {
 		private Layer dragLayer;
 
 		public void onDragEnd(DragEndEvent event) {
-			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0));
+			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0)) - 1;
 			mapPresenter.getLayersModel().moveLayer(dragLayer, dropIndex);
 		}
 
@@ -138,12 +140,11 @@ public class LayerOrderPanel extends ContentPanel {
 	 */
 	private final class LayerWidget extends Label {
 
-		private final Layer layer;
+		private Layer layer;
 
 		private LayerWidget(Layer layer) {
 			super(layer.getTitle());
 			setWidth("100%");
-			setStyleName("layer-block");
 			this.layer = layer;
 		}
 

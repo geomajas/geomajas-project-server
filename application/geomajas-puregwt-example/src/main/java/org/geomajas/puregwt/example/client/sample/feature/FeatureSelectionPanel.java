@@ -16,15 +16,17 @@ import org.geomajas.puregwt.client.controller.FeatureSelectionController.Selecti
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -32,36 +34,35 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class FeatureSelectionPanel extends ContentPanel {
+public class FeatureSelectionPanel implements SamplePanel {
+
+	/**
+	 * UI binder for this widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface MyUiBinder extends UiBinder<Widget, FeatureSelectionPanel> {
+	}
+
+	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
+
+	private MapPresenter mapPresenter;
 
 	private FeatureSelectionController featureSelectionController;
 
-	public FeatureSelectionPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
-	}
+	@UiField
+	protected RadioButton clickOnly;
 
-	public String getTitle() {
-		return "Feature Selection";
-	}
+	@UiField
+	protected RadioButton clickAndDrag;
 
-	public String getDescription() {
-		return "This example demonstrates the use of the FeatureSelectionController. This controller allows the user "
-				+ "to select features on the map.";
-	}
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
 
-	public Widget getContentWidget() {
+	public Widget asWidget() {
+		Widget layout = UI_BINDER.createAndBindUi(this);
+
 		featureSelectionController = new FeatureSelectionController();
-
-		// Create a vertical option panel:
-		VerticalPanel verticalPanel = new VerticalPanel();
-		verticalPanel.setWidth("200px");
-		verticalPanel.setSpacing(5);
-
-		// Use a radio button to determine the selection method:
-		Label selectionType = new Label("Choose a selection method for the map controller:");
-		RadioButton clickOnly = new RadioButton("selection_type", "Click only");
-		clickOnly.setValue(true);
-		RadioButton clickAndDrag = new RadioButton("selection_type", "Click and Drag");
 
 		clickOnly.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
@@ -79,20 +80,14 @@ public class FeatureSelectionPanel extends ContentPanel {
 				}
 			}
 		});
-		verticalPanel.add(selectionType);
-		verticalPanel.add(clickOnly);
-		verticalPanel.add(clickAndDrag);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter.setSize(480, 480);
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
+		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-
-		// Define the whole layout:
-		HorizontalPanel layout = new HorizontalPanel();
-		layout.add(verticalPanel);
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
-		layout.add(mapDecorator);
+		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapCountries");

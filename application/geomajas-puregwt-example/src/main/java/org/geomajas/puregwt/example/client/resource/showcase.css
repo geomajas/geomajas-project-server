@@ -1,0 +1,293 @@
+/* HTML default elements */
+@external a;
+a,a:visited,a:hover {
+	text-decoration: none;
+	color: #C0C0C0;
+	padding: 3px 3px 3px 10px;
+	display: block;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	color: #337428;
+}
+
+/* Showcase styles */
+.clickable {
+	cursor: pointer;
+}
+
+@sprite .background {
+	gwt-image: 'background';
+}
+
+@sprite .header {
+	gwt-image: 'header';
+	width: 100%;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 32px;
+	border-top-left-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	border-top-right-radius: 5px;
+	-moz-border-radius-topright: 5px;
+}
+
+@sprite .subHeader {
+	gwt-image: 'subHeader';
+	background-color: #F0F0F0;
+	background-position: right bottom;
+	width: 100%;
+	height: 100%;
+}
+
+.categoryBlock {
+	float: left;
+	min-height: 120px;
+	padding: 5px 10px;
+}
+
+.categoryBlockTitle {
+	color: #C0C0C0;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.sampleBlockPanel {
+	background: #F0F0F0; /* for non-css3 browsers */
+	background: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), to(#E8E8E8)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #F6F6F6,  #E8E8E8); /* for firefox 3.6+ */
+	width: 100%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 2px solid #D0D0D0;
+	float: left;
+	display: inline;
+	margin: 5px;
+	overflow:auto;
+}
+
+.sampleBlockPanel:hover {
+	cursor: pointer;
+	background: #E0E0E0; /* for non-css3 browsers */
+	background: -webkit-gradient(linear, left top, left bottom, from(#E8E8E8), to(#D8D8D8)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #E8E8E8,  #D8D8D8); /* for firefox 3.6+ */
+	border: 2px solid #337428;
+}
+
+.sampleBlockTitle {
+	color: #222222;
+	font-weight: bold;
+	padding-left: 10px;
+	line-height: 24px;
+	border-bottom: 1px solid #E0E0E0;
+	height: 24px;
+}
+
+.sampleBlockDescription {
+	color: #444444;
+	font-weight: normal;
+	padding: 5px 10px;
+}
+
+.sampleBlockCategory {
+	color: #777777;
+	font-style: italic;
+	padding: 0px 20px 5px 20px;
+	height: 16px;
+}
+
+
+/* Often used styles for the samples */
+@sprite .sampleLayout {
+	gwt-image: 'sampleBackground';
+	background-color: #FFFFFF;
+	background-position: right bottom;
+	width: 100%;
+	height: 100%;
+	border-top: 1px solid #C0C0C0;
+}
+
+.sampleLeftLayout {
+	padding-right: 10px;
+	border-right: 1px solid #C0C0C0;
+	vertical-align: top;
+	width: 350px;
+}
+
+.sampleContentLayout {
+	vertical-align: top;
+}
+
+.sampleOddRow {
+	padding: 3px 10px;
+	background: #E0E0E0;
+	border: 0px;
+	margin: 0px;
+}
+
+.sampleEvenRow {
+	padding: 3px 10px;
+	background: #FFFFFF;
+	border: 0px;
+	margin: 0px;
+}
+
+.sampleHasBorder {
+	border: 1px solid #C0C0C0;
+}
+
+/* Panel border styles: */
+@sprite .panelTopLeft {
+	gwt-image: 'panelTopLeft';
+}
+
+@sprite .panelTop {
+	gwt-image: 'panelTop';
+}
+
+@sprite .panelTopRight {
+	gwt-image: 'panelTopRight';
+}
+
+@sprite .panelRight {
+	gwt-image: 'panelRight';
+}
+
+@sprite .panelBottomRight {
+	gwt-image: 'panelBottomRight';
+}
+
+@sprite .panelBottom {
+	gwt-image: 'panelBottom';
+}
+
+@sprite .panelBottomLeft {
+	gwt-image: 'panelBottomLeft';
+}
+
+@sprite .panelLeft {
+	gwt-image: 'panelLeft'';
+}
+
+@sprite .panelMiddle {
+	gwt-image: 'panelMiddle';
+}
+
+/* GWT Decorated Popup Panel */
+@external gwt-DecoratedPopupPanel, popupTopLeft, popupTopCenter, popupTopRight, popupMiddleRight, popupBottomRight, popupBottomCenter, popupBottomLeft, popupMiddleLeft, popupMiddleCenter;
+@sprite .gwt-DecoratedPopupPanel .popupTopLeft {
+	gwt-image: 'panelTopLeft';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupTopCenter {
+	gwt-image: 'panelTop';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupTopRight {
+	gwt-image: 'panelTopRight';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupMiddleRight {
+	gwt-image: 'panelRight';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupBottomRight {
+	gwt-image: 'panelBottomRight';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupBottomCenter {
+	gwt-image: 'panelBottom';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupBottomLeft {
+	gwt-image: 'panelBottomLeft';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupMiddleLeft {
+	gwt-image: 'panelLeft';
+}
+
+@sprite .gwt-DecoratedPopupPanel .popupMiddleCenter {
+	gwt-image: 'panelMiddle';
+}
+
+/* GWT Decorated Panel */
+@external gwt-DecoratorPanel, topLeft, topCenter, topRight, middleRight, bottomRight, bottomCenter, bottomLeft, middleLeft, middleCenter, middleCenterInner;
+@sprite .gwt-DecoratorPanel .topLeft {
+	gwt-image: 'panelTopLeft';
+}
+
+@sprite .gwt-DecoratorPanel .topCenter {
+	gwt-image: 'panelTop';
+}
+
+@sprite .gwt-DecoratorPanel .topRight {
+	gwt-image: 'panelTopRight';
+}
+
+@sprite .gwt-DecoratorPanel .middleRight {
+	gwt-image: 'panelRight';
+}
+
+@sprite .gwt-DecoratorPanel .bottomRight {
+	gwt-image: 'panelBottomRight';
+}
+
+@sprite .gwt-DecoratorPanel .bottomCenter {
+	gwt-image: 'panelBottom';
+}
+
+@sprite .gwt-DecoratorPanel .bottomLeft {
+	gwt-image: 'panelBottomLeft';
+}
+
+@sprite .gwt-DecoratorPanel .middleLeft {
+	gwt-image: 'panelLeft';
+}
+
+@sprite .gwt-DecoratorPanel .middleCenter {
+	gwt-image: 'panelMiddle';
+}
+
+.gwt-DecoratorPanel .middleCenterInner {
+	width: 100%;
+	height: 100%;
+}
+
+/* Overriding other default GWT styles */
+@external gwt-Button, gwt-Label;
+@sprite .gwt-Button {
+	gwt-image: 'header';
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	color: #FFFFFF;
+	padding: 1px 15px;
+	border: 1px solid #333333;
+}
+
+.gwt-Button:hover {
+	border: 1px solid #999999;
+	text-decoration: underline;
+}
+
+.gwt-Label {
+	line-height: 32px;
+	font-weight: bold;
+}
+
+@external gwt-DialogBox, Caption;
+.gwt-DialogBox .Caption {
+	background: #282A2C;
+	color: #F0F0F0;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 8px 10px;
+	margin-top: 8px;
+	cursor: move;
+	border-top: 0px;
+	border-bottom: 3px solid #337428;
+}

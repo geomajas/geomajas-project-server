@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.example.client.sample.layer;
 
-import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
@@ -20,15 +20,18 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -37,50 +40,42 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class LayerVisibilityPanel extends ContentPanel {
+public class LayerVisibilityPanel implements SamplePanel {
 
-	private VerticalPanel layerCheckBoxLayout;
-
-	private VerticalPanel layerEventLayout;
-
-	public LayerVisibilityPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
+	/**
+	 * UI binder for this widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface MyUiBinder extends UiBinder<Widget, LayerVisibilityPanel> {
 	}
 
-	public String getTitle() {
-		return "Layer Visibility";
-	}
+	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
-	public String getDescription() {
-		return "This example shows the events that accompany the toggling of a layer's visibility.<br/>Note that the" +
-				" 'countries' layer has been configured to be visible only on medium scale lavels. When zooming too" +
-				" far in or out, the countries layer will never be visible.";
-	}
+	private MapPresenter mapPresenter;
 
-	public Widget getContentWidget() {
-		// Define the left layout:
-		VerticalPanel leftLayout = new VerticalPanel();
-		leftLayout.setSize("220px", "100%");
+	@UiField
+	protected VerticalPanel layerCheckBoxLayout;
 
-		leftLayout.add(new HTML("<h3>Layers:</h3>"));
-		layerCheckBoxLayout = new VerticalPanel();
-		leftLayout.add(layerCheckBoxLayout);
+	@UiField
+	protected VerticalPanel layerEventLayout;
 
-		leftLayout.add(new HTML("<h3>Events:</h3>"));
-		layerEventLayout = new VerticalPanel();
-		leftLayout.add(layerEventLayout);
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
+
+	public Widget asWidget() {
+		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.getEventBus().addLayerVisibilityHandler(new MyLayerVisibilityHandler());
 
 		// Define the whole layout:
-		HorizontalPanel layout = new HorizontalPanel();
-		layout.add(leftLayout);
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
-		layout.add(mapDecorator);
+		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapLayerVisibility");
@@ -96,7 +91,6 @@ public class LayerVisibilityPanel extends ContentPanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			mapPresenter.getViewPort().applyBounds(new Bbox(1000000, 4000000, 500000, 500000));
 			// When the map initializes: add a CheckBox for every layer, so the use can toggle visibility:
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
@@ -114,6 +108,11 @@ public class LayerVisibilityPanel extends ContentPanel {
 				});
 				layerCheckBoxLayout.add(layerCheck);
 			}
+
+			// Now zoom in a lot, because the countries layer is not visible at high altitudes:
+			double scale = mapPresenter.getViewPort().getScale();
+			mapPresenter.getViewPort().applyPosition(new Coordinate(0, 7000000));
+			mapPresenter.getViewPort().applyScale(scale * 64);
 		}
 	}
 

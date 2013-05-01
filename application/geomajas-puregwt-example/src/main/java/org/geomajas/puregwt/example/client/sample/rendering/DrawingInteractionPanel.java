@@ -15,7 +15,8 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
@@ -23,10 +24,13 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -34,27 +38,20 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class DrawingInteractionPanel extends ContentPanel {
+public class DrawingInteractionPanel implements SamplePanel {
+
+	private MapPresenter mapPresenter;
+
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
 
 	private Rectangle rectangle;
 
 	private Text text;
 
-	public DrawingInteractionPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
-	}
-
-	public String getTitle() {
-		return "Drawing interaction";
-	}
-
-	public String getDescription() {
-		return "This example shows how to add custom user interaction on custom drawings. In this particular case a "
-				+ "rectangle is drawn that can be dragged around.";
-	}
-
-	public Widget getContentWidget() {
+	public Widget asWidget() {
 		// Create the MapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -66,7 +63,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return mapDecorator;
 	}
-	
+
 	/**
 	 * Map initialization handler that draws a rectangle in screen space.
 	 * 
@@ -92,6 +89,11 @@ public class DrawingInteractionPanel extends ContentPanel {
 			rectangle.addMouseDownHandler(dragHandler);
 			rectangle.addMouseUpHandler(dragHandler);
 			rectangle.addMouseMoveHandler(dragHandler);
+			rectangle.addMouseOutHandler(dragHandler);
+			text.addMouseDownHandler(dragHandler);
+			text.addMouseUpHandler(dragHandler);
+			text.addMouseMoveHandler(dragHandler);
+			text.addMouseOutHandler(dragHandler);
 		}
 	}
 
@@ -100,7 +102,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class DragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler {
+	private class DragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler {
 
 		private boolean dragging;
 
@@ -110,36 +112,30 @@ public class DrawingInteractionPanel extends ContentPanel {
 
 		public void onMouseMove(MouseMoveEvent event) {
 			if (dragging) {
-				// notice that you can drag outside the visible map bounds !!!
-				// applications may limit dragging to mouse positions inside the map
 				int deltaX = event.getX() - startX;
 				int deltaY = event.getY() - startY;
 				rectangle.setX(rectangle.getX() + deltaX);
 				rectangle.setY(rectangle.getY() + deltaY);
 				text.setX(text.getX() + deltaX);
 				text.setY(text.getY() + deltaY);
-				event.stopPropagation();
 			}
-		}
-
-		public void onMouseDown(MouseDownEvent event) {
-			// let the rectangle capture all events
-			DOM.setCapture(rectangle.getElement());
-			dragging = true;
-			startX = event.getX();
-			startY = event.getY();
-			// prevent native drag/drop
-			event.getNativeEvent().preventDefault();
-			// Stop the event from reaching the map controller: no panning while we're dragging the rectangle.
-			event.stopPropagation();
 		}
 
 		public void onMouseUp(MouseUpEvent event) {
 			dragging = false;
-			// release event capture
-			DOM.releaseCapture(rectangle.getElement());
+		}
+
+		public void onMouseDown(MouseDownEvent event) {
+			dragging = true;
+			startX = event.getX();
+			startY = event.getY();
+
+			// Stop the event from reaching the map controller: no panning while we're dragging the rectangle.
 			event.stopPropagation();
 		}
 
+		public void onMouseOut(MouseOutEvent arg0) {
+			dragging = false;
+		}
 	}
 }

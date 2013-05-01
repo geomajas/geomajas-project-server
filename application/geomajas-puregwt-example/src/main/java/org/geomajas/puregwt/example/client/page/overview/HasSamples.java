@@ -9,18 +9,20 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.example.client.resource;
+package org.geomajas.puregwt.example.client.page.overview;
 
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
+import java.util.List;
+
+import org.geomajas.puregwt.example.client.sample.ShowcaseSampleDefinition;
+
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Resource bundle for everything that is used in the showcase examples.
+ * Base definition for the sample overview GUI.
  * 
  * @author Pieter De Graef
  */
-public interface ShowcaseResources extends ClientBundle {
+public interface HasSamples extends IsWidget {
 
-	@Source("image/geomajas_logo.png")
-	ImageResource geomajasLogo();
+	void setData(List<ShowcaseSampleDefinition> data);
 }

@@ -15,7 +15,8 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Ellipse;
@@ -24,12 +25,11 @@ import org.vaadin.gwtgraphics.client.shape.Text;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -37,124 +37,88 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class FixedSizeWorldSpaceRenderingPanel extends ContentPanel {
+public class FixedSizeWorldSpaceRenderingPanel implements SamplePanel {
+
+	/**
+	 * UI binder for this widget.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface MyUiBinder extends UiBinder<Widget, FixedSizeWorldSpaceRenderingPanel> {
+	}
+
+	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
+
+	private MapPresenter mapPresenter;
 
 	private VectorContainer container;
 
-	public FixedSizeWorldSpaceRenderingPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
-	}
+	@UiField
+	protected ResizeLayoutPanel mapPanel;
 
-	public String getTitle() {
-		return "World space (fixed size)";
-	}
-
-	public String getDescription() {
-		return "This example shows the fixed size rendering of vector objects in world space. For more information"
-				+ " regarding screen space and world space, visit the javadocs (TODO make this a link).<br/>"
-				+ "Notice that unlike normal world space rendering the objects retain their size, while still "
-				+ "keeping their position in world space.";
-	}
-
-	public Widget getContentWidget() {
-		// Define the left layout:
-		VerticalPanel leftLayout = new VerticalPanel();
-		leftLayout.setSize("220px", "100%");
-
-		leftLayout.add(new HTML("<h3>Drawing options:</h3>"));
-
-		Button circleBtn = new Button("Draw circle");
-		circleBtn.setWidth("200");
-		circleBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Circle circle = new Circle(200000, 5000000, 10);
-				circle.setFillColor("#FF0000");
-				circle.setFillOpacity(1);
-				circle.setStrokeOpacity(0);
-				container.add(circle);
-			}
-		});
-		leftLayout.add(circleBtn);
-
-		Button ellipseBtn = new Button("Draw ellipse");
-		ellipseBtn.setWidth("200");
-		ellipseBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Ellipse ellipse = new Ellipse(300000, 2000000, 20, 30);
-				ellipse.setFillColor("#0000FF");
-				ellipse.setFillOpacity(1);
-				ellipse.setStrokeOpacity(0);
-				container.add(ellipse);
-			}
-		});
-		leftLayout.add(ellipseBtn);
-
-		Button rectangleBtn = new Button("Draw rectangle");
-		rectangleBtn.setWidth("200");
-		rectangleBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Rectangle rectangle = new Rectangle(-5000000, -2000000, 40, 80);
-				rectangle.setFillColor("#FFFF00");
-				rectangle.setFillOpacity(1);
-				rectangle.setStrokeOpacity(0);
-				container.add(rectangle);
-			}
-		});
-		leftLayout.add(rectangleBtn);
-
-		Button imageBtn = new Button("Draw image");
-		imageBtn.setWidth("200");
-		imageBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Image image = new Image(6000000, -3000000, 24, 24, GWT.getModuleBaseURL()
-						+ "image/layer/city1.png");
-				container.add(image);
-			}
-		});
-		leftLayout.add(imageBtn);
-
-		Button textBtn = new Button("Draw text");
-		textBtn.setWidth("200");
-		textBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Text text = new Text(-6000000, 1000000, "Hello World");
-				text.setFillColor("#0066AA");
-				text.setFillOpacity(1);
-				text.setStrokeOpacity(0);
-				container.add(text);
-			}
-		});
-		leftLayout.add(textBtn);
-
-		Button deleteBtn = new Button("Delete all drawings");
-		deleteBtn.setWidth("200");
-		deleteBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent arg0) {
-				container.clear();
-			}
-		});
-		leftLayout.add(deleteBtn);
+	public Widget asWidget() {
+		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(640, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
 		// Define the whole layout:
-		HorizontalPanel layout = new HorizontalPanel();
-		layout.add(leftLayout);
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
-		layout.add(mapDecorator);
+		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapOsm");
 		return layout;
+	}
+
+	@UiHandler("circleBtn")
+	public void onCircleBtnClicked(ClickEvent event) {
+		Circle circle = new Circle(200000, 5000000, 10);
+		circle.setFillColor("#FF0000");
+		circle.setFillOpacity(1);
+		circle.setStrokeOpacity(0);
+		container.add(circle);
+	}
+
+	@UiHandler("ellipseBtn")
+	public void onEllipseBtnClicked(ClickEvent event) {
+		Ellipse ellipse = new Ellipse(300000, 2000000, 20, 30);
+		ellipse.setFillColor("#0000FF");
+		ellipse.setFillOpacity(1);
+		ellipse.setStrokeOpacity(0);
+		container.add(ellipse);
+	}
+
+	@UiHandler("rectangleBtn")
+	public void onRectangleBtnClicked(ClickEvent event) {
+		Rectangle rectangle = new Rectangle(-5000000, -2000000, 40, 80);
+		rectangle.setFillColor("#FFFF00");
+		rectangle.setFillOpacity(1);
+		rectangle.setStrokeOpacity(0);
+		container.add(rectangle);
+	}
+
+	@UiHandler("imageBtn")
+	public void onImageBtnClicked(ClickEvent event) {
+		Image image = new Image(6000000, -3000000, 24, 24, GWT.getModuleBaseURL() + "image/layer/city1.png");
+		container.add(image);
+	}
+
+	@UiHandler("textBtn")
+	public void onTextBtnClicked(ClickEvent event) {
+		Text text = new Text(-6000000, 1000000, "Hello World");
+		text.setFillColor("#0066AA");
+		text.setFillOpacity(1);
+		text.setStrokeOpacity(0);
+		container.add(text);
+	}
+
+	@UiHandler("deleteBtn")
+	public void onDeleteAllBtnClicked(ClickEvent event) {
+		container.clear();
 	}
 
 	/**

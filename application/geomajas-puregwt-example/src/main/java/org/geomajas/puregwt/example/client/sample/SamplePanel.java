@@ -9,18 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.example.client;
+package org.geomajas.puregwt.example.client.sample;
 
-import org.geomajas.puregwt.client.GeomajasGinModule;
-import org.geomajas.puregwt.client.GeomajasGinjector;
-
-import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Ginjector specific for this showcase application.
+ * General definition of a content panel for a single example in the showcase.
  * 
  * @author Pieter De Graef
  */
-@GinModules({ GeomajasGinModule.class })
-public interface ShowcaseGinjector extends GeomajasGinjector {
+public interface SamplePanel extends IsWidget {
 }

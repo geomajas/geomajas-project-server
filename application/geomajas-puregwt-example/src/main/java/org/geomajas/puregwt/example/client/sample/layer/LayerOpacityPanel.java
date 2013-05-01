@@ -14,7 +14,8 @@ package org.geomajas.puregwt.example.client.sample.layer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.OpacitySupported;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class LayerOpacityPanel extends ContentPanel {
+public class LayerOpacityPanel implements SamplePanel {
 
 	private static final int MAX_OPACITY = 100;
 
@@ -46,20 +47,19 @@ public class LayerOpacityPanel extends ContentPanel {
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
+	private MapPresenter mapPresenter;
+
 	@UiField
 	protected TextBox opacityBox;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
 
-	public LayerOpacityPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
-	}
-
-	public Widget getContentWidget() {
+	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(640, 480);
 
 		// Define the whole layout:
@@ -99,13 +99,5 @@ public class LayerOpacityPanel extends ContentPanel {
 				opacityBox.setValue(MAX_OPACITY + "");
 			}
 		}
-	}
-
-	public String getTitle() {
-		return "Layer opacity";
-	}
-
-	public String getDescription() {
-		return "This showcase demonstrates changing a layer's opacity.";
 	}
 }

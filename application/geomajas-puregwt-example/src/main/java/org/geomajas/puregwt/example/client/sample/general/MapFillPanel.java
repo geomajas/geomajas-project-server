@@ -15,7 +15,8 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.example.client.ContentPanel;
+import org.geomajas.puregwt.example.client.Showcase;
+import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,28 +26,19 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class MapFillPanel extends ContentPanel {
+public class MapFillPanel implements SamplePanel {
+	
+	private MapPresenter mapPresenter;
 
-	public MapFillPanel(MapPresenter mapPresenter) {
-		super(mapPresenter);
-	}
-
-	public String getTitle() {
-		return "Full screen map";
-	}
-
-	public String getDescription() {
-		return "This example shows how to let the map fill up an area on the page.";
-	}
-
-	public Widget getContentWidget() {
-		// Define the left layout:
+	public Widget asWidget() {
+		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
 		final MapLayoutPanel layout = new MapLayoutPanel();
 		resizeLayoutPanel.setWidget(layout);
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
+		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		layout.setPresenter(mapPresenter);
 
