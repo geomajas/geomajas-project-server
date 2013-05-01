@@ -15,7 +15,7 @@
 
 	<g:HorizontalPanel width="100%">
 		<g:HTMLPanel>
-			<div ui:field="titleElement" style="float: left;" />
+			<div ui:field="titleElement" style="float: left; font-size: 14px;" />
 		</g:HTMLPanel>
 		<w:ClickableImage ui:field="closeIcon" normalResource="{resource.iconClose}" hoverResource="{resource.iconCloseHover}"
 			title="Close this sample and go back to the overview page." addStyleNames="{style.closeBtn}" />

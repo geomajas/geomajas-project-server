@@ -21,6 +21,9 @@ import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -80,18 +83,32 @@ public class NavigationOptionPanel implements SamplePanel {
 
 		// Initialize the map, and return the layout:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.initialize("puregwt-app", "mapCountries");
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);
 
+		// Make sure the text box also reacts to the "Enter" key:
+		millisBox.addKeyUpHandler(new KeyUpHandler() {
+
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					changeAnimationMillis();
+				}
+			}
+		});
+
 		return layout;
 	}
 
 	@UiHandler("millisBtn")
 	protected void onMillisButtonClicked(ClickEvent event) {
+		changeAnimationMillis();
+	}
+
+	private void changeAnimationMillis() {
 		String txt = millisBox.getValue();
 		long time = defaultMillis;
 		try {

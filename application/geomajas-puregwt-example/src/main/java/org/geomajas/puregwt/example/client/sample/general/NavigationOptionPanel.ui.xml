@@ -14,27 +14,31 @@
 		}
 	</ui:style>
 
-	<g:HTMLPanel width="100%" height="100%">
-		<table cellpadding="0" cellspacing="10" width="100%" height="100%">
-			<tr>
-				<td width="220" class="{resource.css.sampleLeftLayout}">
-					<h3>Toggle Animation:</h3>
-					<g:CheckBox ui:field="enableAnimation" checked="true">Turn animation for navigation on or off</g:CheckBox>
+	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
+		<g:west size="350">
+			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
+				<h3>Toggle Animation:</h3>
+				<g:CheckBox ui:field="enableAnimation" checked="true">Turn animation for navigation on or off</g:CheckBox>
 
-					<h3>Navigation time:</h3>
-					<p>Navigation animation time in milliseconds:</p>
-					<g:TextBox ui:field="millisBox" width="100%">400</g:TextBox>
-					<g:Button ui:field="millisBtn" addStyleNames="{style.okButton}">Ok</g:Button>
+				<br />
+				<br />
 
-					<h3 class="{style.gimmeRoom}">Enable or disable animation for specific layers:</h3>
-					<g:VerticalPanel ui:field="layerPanel" width="100%" />
-				</td>
+				<h3>Navigation time:</h3>
+				<p>Navigation animation time in milliseconds:</p>
+				<g:TextBox ui:field="millisBox" width="97%">400</g:TextBox>
+				<g:Button ui:field="millisBtn" addStyleNames="{style.okButton}">Ok</g:Button>
 
-				<td class="{resource.css.sampleContentLayout}">
-					<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
-				</td>
-			</tr>
-		</table>
-	</g:HTMLPanel>
+				<br />
+
+				<h3 class="{style.gimmeRoom}">Enable or disable animation for specific layers:</h3>
+				<g:VerticalPanel ui:field="layerPanel" width="97%" />
+			</g:HTMLPanel>
+		</g:west>
+		<g:center>
+			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
+				<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
+			</g:SimplePanel>
+		</g:center>
+	</g:DockLayoutPanel>
 
 </ui:UiBinder> 

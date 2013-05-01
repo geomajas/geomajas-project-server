@@ -63,6 +63,9 @@ public interface ShowcaseCssResource extends CssResource {
 	@ClassName("sampleContentLayout")
 	String sampleContentLayout();
 
+	@ClassName("sampleRow")
+	String sampleRow();
+
 	@ClassName("sampleOddRow")
 	String sampleOddRow();
 

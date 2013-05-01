@@ -83,8 +83,10 @@ public class FeatureSelectionPanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
+
+		// Add the map to the GUI, using a decorator for nice borders:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);

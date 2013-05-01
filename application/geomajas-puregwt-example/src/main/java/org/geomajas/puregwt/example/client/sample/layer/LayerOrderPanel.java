@@ -75,7 +75,7 @@ public class LayerOrderPanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
 		// Define the whole layout:

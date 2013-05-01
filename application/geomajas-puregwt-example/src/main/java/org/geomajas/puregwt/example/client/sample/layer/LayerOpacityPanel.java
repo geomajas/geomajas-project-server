@@ -19,6 +19,9 @@ import org.geomajas.puregwt.example.client.sample.SamplePanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -60,7 +63,7 @@ public class LayerOpacityPanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
@@ -69,11 +72,25 @@ public class LayerOpacityPanel implements SamplePanel {
 
 		// Initialize the map, and return the layout:
 		mapPresenter.initialize("puregwt-app", "mapOsm");
+		
+		// Make sure the text box also reacts to the "Enter" key:
+		opacityBox.addKeyUpHandler(new KeyUpHandler() {
+			
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					changeOpacity();
+				}
+			}
+		});
 		return layout;
 	}
 
 	@UiHandler("applyBtn")
 	public void onApplyClicked(ClickEvent event) {
+		changeOpacity();
+	}
+	
+	private void changeOpacity() {
 		if (mapPresenter.getLayersModel().getLayerCount() == 0) {
 			return;
 		}

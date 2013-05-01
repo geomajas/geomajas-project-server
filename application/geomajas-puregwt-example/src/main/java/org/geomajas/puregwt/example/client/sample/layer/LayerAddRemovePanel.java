@@ -66,7 +66,7 @@ public class LayerAddRemovePanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
 
 		DecoratorPanel mapDecorator = new DecoratorPanel();
@@ -90,7 +90,6 @@ public class LayerAddRemovePanel implements SamplePanel {
 	private class MyMapCompositionHandler implements MapCompositionHandler {
 
 		public void onLayerAdded(LayerAddedEvent event) {
-			GWT.log("Added: " + event.getLayer().getTitle());
 			Layer layer = event.getLayer();
 			for (int i = 0; i < layerRemovedPanel.getWidgetCount(); i++) {
 				LayerRemovedWidget widget = (LayerRemovedWidget) layerRemovedPanel.getWidget(i);
@@ -102,7 +101,6 @@ public class LayerAddRemovePanel implements SamplePanel {
 		}
 
 		public void onLayerRemoved(LayerRemovedEvent event) {
-			GWT.log("Removed: " + event.getLayer().getTitle());
 			Layer layer = event.getLayer();
 			for (int i = 0; i < layerAddedPanel.getWidgetCount(); i++) {
 				LayerAddedWidget widget = (LayerAddedWidget) layerAddedPanel.getWidget(i);
@@ -136,11 +134,7 @@ public class LayerAddRemovePanel implements SamplePanel {
 			});
 			add(removeBtn);
 			add(new Label(layer.getTitle()));
-			if (layerAddedPanel.getWidgetCount() % 2 == 1) {
-				setStyleName(Showcase.RESOURCE.css().sampleEvenRow());
-			} else {
-				setStyleName(Showcase.RESOURCE.css().sampleOddRow());
-			}
+			setStyleName(Showcase.RESOURCE.css().sampleRow());
 		}
 
 		public Layer getLayer() {
@@ -169,11 +163,7 @@ public class LayerAddRemovePanel implements SamplePanel {
 			});
 			add(removeBtn);
 			add(new Label(layer.getTitle()));
-			if (layerAddedPanel.getWidgetCount() % 2 == 1) {
-				setStyleName(Showcase.RESOURCE.css().sampleEvenRow());
-			} else {
-				setStyleName(Showcase.RESOURCE.css().sampleOddRow());
-			}
+			setStyleName(Showcase.RESOURCE.css().sampleRow());
 		}
 
 		public Layer getLayer() {

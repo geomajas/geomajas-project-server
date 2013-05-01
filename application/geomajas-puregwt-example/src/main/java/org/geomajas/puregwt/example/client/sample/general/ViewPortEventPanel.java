@@ -62,7 +62,7 @@ public class ViewPortEventPanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addViewPortChangedHandler(new MyViewPortChangedHandler());
 
 		// Define the whole layout:
@@ -111,17 +111,17 @@ public class ViewPortEventPanel implements SamplePanel {
 
 		@Override
 		public void onViewPortChanged(ViewPortChangedEvent event) {
-			eventLayout.add(new Label("onViewPortChanged: " + event.getViewPort().getBounds()));
+			eventLayout.add(new Label("ViewPortChangedEvent"));
 		}
 
 		@Override
 		public void onViewPortScaled(ViewPortScaledEvent event) {
-			eventLayout.add(new Label("onViewPortScaled: " + event.getViewPort().getBounds()));
+			eventLayout.add(new Label("ViewPortScaledEvent"));
 		}
 
 		@Override
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			eventLayout.add(new Label("onViewPortTranslated: " + event.getViewPort().getBounds()));
+			eventLayout.add(new Label("ViewPortTranslatedEvent"));
 		}
 	}
 }

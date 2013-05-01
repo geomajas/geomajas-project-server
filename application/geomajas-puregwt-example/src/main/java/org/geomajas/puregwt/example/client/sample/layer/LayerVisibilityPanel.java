@@ -68,7 +68,7 @@ public class LayerVisibilityPanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.getEventBus().addLayerVisibilityHandler(new MyLayerVisibilityHandler());
 

@@ -67,7 +67,7 @@ public class LayerRefreshPanel implements SamplePanel {
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = Showcase.GEOMAJASINJECTOR.getMapPresenter();
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.getEventBus().addLayerRefreshedHandler(new MyLayerRefreshedHandler());
 
@@ -134,11 +134,7 @@ public class LayerRefreshPanel implements SamplePanel {
 			});
 			add(removeBtn);
 			add(new Label(layer.getTitle()));
-			if (layerBtnLayout.getWidgetCount() % 2 == 1) {
-				setStyleName(Showcase.RESOURCE.css().sampleEvenRow());
-			} else {
-				setStyleName(Showcase.RESOURCE.css().sampleOddRow());
-			}
+			setStyleName(Showcase.RESOURCE.css().sampleRow());
 		}
 	}
 }
