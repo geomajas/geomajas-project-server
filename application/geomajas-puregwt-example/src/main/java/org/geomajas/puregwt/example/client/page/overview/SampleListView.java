@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.geomajas.puregwt.example.client.Showcase;
-import org.geomajas.puregwt.example.client.page.sample.SamplePage;
 import org.geomajas.puregwt.example.client.resource.DataGridResource;
 import org.geomajas.puregwt.example.client.sample.ShowcaseSampleDefinition;
 
