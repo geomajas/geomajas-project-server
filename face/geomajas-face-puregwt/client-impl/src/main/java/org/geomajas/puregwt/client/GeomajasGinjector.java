@@ -33,7 +33,8 @@ import com.google.web.bindery.event.shared.EventBus;
 public interface GeomajasGinjector extends Ginjector {
 
 	/**
-	 * Create a new empty map. This map still needs to be initialized (so it fetches a configuration).
+	 * Create a new empty map. This map still needs to be initialized (it needs to fetch a configuration from the
+	 * server, only then is it initialized, and are any layers available).
 	 * 
 	 * @return An empty map.
 	 */
