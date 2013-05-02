@@ -35,21 +35,12 @@ public interface ShowcaseResource extends ClientBundle {
 	@Source("image/geomajas_logo_bg.png")
 	ImageResource geomajasLogoBg();
 
-	@Source("image/geosparc_banner.png")
-	ImageResource geosparcBanner();
-
-	@Source("image/background.jpg")
-	ImageResource background();
+	@Source("image/sample_bg.png")
+	ImageResource sampleBackground();
 
 	@Source("image/header.png")
 	@ImageOptions(repeatStyle = RepeatStyle.Horizontal)
 	ImageResource header();
-
-	@Source("image/sub_header.png")
-	ImageResource subHeader();
-
-	@Source("image/sample_bg.png")
-	ImageResource sampleBackground();
 
 	// Icons:
 
@@ -126,4 +117,26 @@ public interface ShowcaseResource extends ClientBundle {
 	@Source("image/panel/panel_middle.png")
 	@ImageOptions(repeatStyle = RepeatStyle.Both)
 	ImageResource panelMiddle();
+	
+	// DialogBox:
+
+	@Source("image/dialogbox/panel_middle.png")
+	ImageResource dialogCenter();
+
+	@Source("image/dialogbox/panel_top_left.png")
+	@ImageOptions(width = 8, repeatStyle = RepeatStyle.None)
+	ImageResource dialogTopLeft();
+
+	@Source("image/dialogbox/panel_top_right.png")
+	@ImageOptions(width = 8, repeatStyle = RepeatStyle.None)
+	ImageResource dialogTopRight();
+
+	@Source("image/dialogbox/panel_bottom_left.png")
+	@ImageOptions(width = 8, height = 8, repeatStyle = RepeatStyle.None)
+	ImageResource dialogBottomLeft();
+
+	@Source("image/dialogbox/panel_bottom_right.png")
+	@ImageOptions(width = 8, height = 8, repeatStyle = RepeatStyle.None)
+	ImageResource dialogBottomRight();
+
 }

@@ -49,9 +49,6 @@ public class SampleBlockView extends ScrollPanel implements HasSamples {
 				public void onClick(ClickEvent event) {
 					event.stopPropagation();
 					Showcase.showSample(sample);
-//					SamplePage page = new SamplePage(overviewPage);
-//					page.setSamplePanelFactory(sample);
-//					Showcase.LAYOUT.setPage(page);
 				}
 			}, ClickEvent.getType());
 		}

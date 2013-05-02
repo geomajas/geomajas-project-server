@@ -3,7 +3,6 @@
 a,a:visited,a:hover {
 	text-decoration: none;
 	color: #C0C0C0;
-	padding: 3px 3px 3px 10px;
 }
 a:hover {
 	text-decoration: underline;
@@ -17,10 +16,6 @@ h1,h2,h3,h4,h5,h6 {
 /* Showcase styles */
 .clickable {
 	cursor: pointer;
-}
-
-@sprite .background {
-	gwt-image: 'background';
 }
 
 @sprite .header {
@@ -40,18 +35,6 @@ h1,h2,h3,h4,h5,h6 {
 	background-color: #F0F0F0;
 	width: 100%;
 	height: 100%;
-}
-
-.categoryBlock {
-	float: left;
-	min-height: 120px;
-	padding: 5px 10px;
-}
-
-.categoryBlockTitle {
-	color: #C0C0C0;
-	font-weight: bold;
-	padding: 5px;
 }
 
 .sampleBlockPanel {
@@ -110,14 +93,14 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .sampleLeftLayout {
-	border-right: 1px solid #C0C0C0;
 	vertical-align: top;
-	margin-right: 10px;
-	padding-right: 10px;
 }
 
 .sampleContentLayout {
+	border-left: 1px solid #C0C0C0;
 	vertical-align: top;
+	margin-left: 10px;
+	padding-left: 10px;
 }
 
 .sampleRow {
@@ -126,20 +109,6 @@ h1,h2,h3,h4,h5,h6 {
 	border-top: 1px solid #C0C0C0;
 	border-bottom: 1px solid #C0C0C0;
 	margin-top: -1px;
-}
-
-.sampleOddRow {
-	padding: 3px 10px;
-	background: #E0E0E0;
-	border: 0px;
-	margin: 0px;
-}
-
-.sampleEvenRow {
-	padding: 3px 10px;
-	background: #FFFFFF;
-	border: 0px;
-	margin: 0px;
 }
 
 .sampleHasBorder {
@@ -285,7 +254,7 @@ h1,h2,h3,h4,h5,h6 {
 	font-weight: bold;
 }
 
-@external gwt-DialogBox, Caption, gwt-PopupPanelGlass;
+@external gwt-DialogBox, Caption, dialogContent, dialogTopCenter, dialogMiddleCenter, dialogBottomCenter, dialogMiddleLeft, dialogMiddleRight, dialogTopLeftInner, dialogTopRightInner, dialogBottomLeftInner, dialogBottomRightInner, dialogTopLeft, dialogTopRight,dialogBottomLeft, dialogBottomRight;
 .gwt-DialogBox .Caption {
 	background: #282A2C;
 	color: #F0F0F0;
@@ -298,6 +267,97 @@ h1,h2,h3,h4,h5,h6 {
 	border-bottom: 3px solid #337428;
 }
 
+.gwt-DialogBox .dialogContent {
+}
+
+@sprite .gwt-DialogBox .dialogTopCenter {
+	gwt-image: "dialogCenter";
+	background-repeat: repeat-x;
+}
+
+.gwt-DialogBox .dialogMiddleCenter {
+	padding: 0px;
+	background: white;
+}
+
+@sprite .gwt-DialogBox .dialogBottomCenter {
+	gwt-image: "dialogCenter";
+	background-repeat: repeat-x;
+}
+
+@sprite .gwt-DialogBox .dialogMiddleLeft {
+	gwt-image: "dialogCenter";
+	background-repeat: repeat-y;
+}
+
+@sprite .gwt-DialogBox .dialogMiddleRight {
+	gwt-image: "dialogCenter";
+	background-repeat: repeat-y;
+}
+
+.gwt-DialogBox .dialogTopLeftInner {
+	width: 8px;
+	zoom: 1;
+}
+
+.gwt-DialogBox .dialogTopRightInner {
+	width: 8px;
+	zoom: 1;
+}
+
+.gwt-DialogBox .dialogBottomLeftInner {
+	width: 8px;
+	height: 8px;
+	zoom: 1;
+}
+
+.gwt-DialogBox .dialogBottomRightInner {
+	width: 8px;
+	height: 8px;
+	zoom: 1;
+}
+
+@sprite .gwt-DialogBox .dialogTopLeft {
+	gwt-image: "dialogTopLeft";
+	height: auto;
+}
+
+@sprite .gwt-DialogBox .dialogTopRight {
+	gwt-image: "dialogTopRight";
+	height: auto;
+}
+
+@sprite .gwt-DialogBox .dialogBottomLeft {
+	gwt-image: "dialogBottomLeft";
+}
+
+@sprite .gwt-DialogBox .dialogBottomRight {
+	gwt-image: "dialogBottomRight";
+}
+
+* html .gwt-DialogBox .dialogTopLeftInner {
+	width: 8px;
+	overflow: hidden;
+}
+
+* html .gwt-DialogBox .dialogTopRightInner {
+	width: 8px;
+	overflow: hidden;
+}
+
+* html .gwt-DialogBox .dialogBottomLeftInner {
+	width: 8px;
+	height: 8px;
+	overflow: hidden;
+}
+
+* html .gwt-DialogBox .dialogBottomRightInner {
+	width: 8px;
+	height: 8px;
+	overflow: hidden;
+}
+
+@external gwt-PopupPanelGlass;
 .gwt-PopupPanelGlass {
     background-color: #000000;
     opacity: 0.5;

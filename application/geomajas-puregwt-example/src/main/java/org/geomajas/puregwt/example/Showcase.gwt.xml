@@ -15,8 +15,9 @@
 
 	<inherits name='com.google.gwt.user.User'/>
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
-    <inherits name="org.geomajas.puregwt.example.public.ShowcaseTheme" />
-
+	<inherits name="com.google.gwt.user.theme.standard.Standard" />
+<!--     <inherits name="org.geomajas.puregwt.example.public.ShowcaseTheme" />
+ -->
 	<!-- Geomajas Client -->
     <inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
     <inherits name="org.geomajas.puregwt.theme.GeomajasDefaultTheme" />

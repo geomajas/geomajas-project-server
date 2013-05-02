@@ -23,20 +23,11 @@ public interface ShowcaseCssResource extends CssResource {
 	@ClassName("clickable")
 	String clickable();
 
-	@ClassName("background")
-	String background();
-
 	@ClassName("header")
 	String header();
 
 	@ClassName("subHeader")
 	String subHeader();
-
-	@ClassName("categoryBlock")
-	String categoryBlock();
-
-	@ClassName("categoryBlockTitle")
-	String categoryBlockTitle();
 
 	@ClassName("sampleBlockPanel")
 	String sampleBlockPanel();
@@ -65,12 +56,6 @@ public interface ShowcaseCssResource extends CssResource {
 
 	@ClassName("sampleRow")
 	String sampleRow();
-
-	@ClassName("sampleOddRow")
-	String sampleOddRow();
-
-	@ClassName("sampleEvenRow")
-	String sampleEvenRow();
 
 	@ClassName("sampleHasBorder")
 	String sampleHasBorder();

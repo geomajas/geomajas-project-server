@@ -80,10 +80,7 @@ public class SampleListView extends Composite implements HasSamples {
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
 			public void onSelectionChange(SelectionChangeEvent event) {
-				ShowcaseSampleDefinition sample = selectionModel.getSelectedObject();
-				SamplePage page = new SamplePage();
-				page.setSamplePanelFactory(sample);
-				Showcase.LAYOUT.setPage(page);
+				Showcase.showSample(selectionModel.getSelectedObject());
 			}
 		});
 
