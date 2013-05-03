@@ -88,7 +88,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 			throw e;
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error saving blueprint.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

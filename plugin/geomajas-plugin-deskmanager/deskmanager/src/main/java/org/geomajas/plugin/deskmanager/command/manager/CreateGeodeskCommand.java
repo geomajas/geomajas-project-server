@@ -94,7 +94,7 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, Geode
 			}
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error creating geodesk layer.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

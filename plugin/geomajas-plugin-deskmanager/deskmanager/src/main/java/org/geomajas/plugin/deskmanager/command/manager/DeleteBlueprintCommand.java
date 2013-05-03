@@ -58,7 +58,7 @@ public class DeleteBlueprintCommand implements Command<DeleteBlueprintRequest, C
 			}
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error removing blueprint.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

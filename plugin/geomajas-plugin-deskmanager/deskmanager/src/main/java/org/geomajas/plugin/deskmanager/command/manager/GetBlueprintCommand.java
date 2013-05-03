@@ -46,7 +46,7 @@ public class GetBlueprintCommand implements Command<GetBlueprintRequest, Bluepri
 			response.setBlueprint(dtoService.toDto(blueprintService.getBlueprintById(request.getBlueprintId()), true));
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error fetching blueprints.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

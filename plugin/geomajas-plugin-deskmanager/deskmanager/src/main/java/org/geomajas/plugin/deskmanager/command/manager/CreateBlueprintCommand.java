@@ -50,7 +50,7 @@ public class CreateBlueprintCommand implements Command<CreateBlueprintRequest, B
 			response.setBlueprint(dtoService.toDto(bp, false));
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error creating blueprint.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

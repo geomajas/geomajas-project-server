@@ -45,7 +45,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GeodeskResp
 			response.setGeodesk(dtoService.toDto(geodeskService.getGeodeskById(request.getGeodeskId()), true));
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error fetching geodesk.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

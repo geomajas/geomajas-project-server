@@ -56,7 +56,7 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 			}
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error removing geodesk.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}

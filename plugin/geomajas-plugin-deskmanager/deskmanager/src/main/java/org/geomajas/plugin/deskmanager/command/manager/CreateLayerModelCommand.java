@@ -101,7 +101,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 			loadService.loadDynamicLayers();
 		} catch (Exception orig) {
 			Exception e = new Exception("Unexpected error removing layer.", orig);
-			log.error(e.getLocalizedMessage());
+			log.error(e.getLocalizedMessage(), orig);
 			throw e;
 		}
 	}
