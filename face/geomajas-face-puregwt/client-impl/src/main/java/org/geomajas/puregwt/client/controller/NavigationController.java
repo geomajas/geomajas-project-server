@@ -18,6 +18,7 @@ import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -159,14 +160,29 @@ public class NavigationController extends AbstractMapController {
 	}
 
 	/** {@inheritDoc} */
+	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
+		final boolean isNorth;
+		if (event.getDeltaY() == 0) {
+			isNorth = (getWheelDelta(event.getNativeEvent()) < 0);
+		} else {
+			isNorth = event.isNorth();
+		}
+		Coordinate location = getLocation(event, RenderSpace.WORLD);
+		scrollZoomTo(isNorth, location);
+	}
+
+	protected native int getWheelDelta(NativeEvent evt) /*-{
+		return Math.round(-evt.wheelDelta) || 0;
+	}-*/;
+
+	protected void scrollZoomTo(boolean isNorth, Coordinate location) {
 		ViewPort viewPort = mapPresenter.getViewPort();
 		int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-		if (event.isNorth()) {
+		if (isNorth) {
 			if (index > 0) {
 				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1), viewPort.transform(
-							new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1), location);
 				} else {
 					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
 				}
@@ -174,8 +190,7 @@ public class NavigationController extends AbstractMapController {
 		} else {
 			if (index < viewPort.getZoomStrategy().getZoomStepCount() - 1) {
 				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1), viewPort.transform(
-							new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1), location);
 				} else {
 					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
 				}
