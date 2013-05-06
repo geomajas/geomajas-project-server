@@ -83,7 +83,7 @@ public class InMemorySldServiceImpl implements org.geomajas.sld.editor.expert.se
 					}
 				}
 			} catch (Exception e) { // NOSONAR
-				throw new SldException("Could not initialize SLD service", e);
+				log.warn("Error while initilizing SLD service.", e);
 			}
 		}
 	}
