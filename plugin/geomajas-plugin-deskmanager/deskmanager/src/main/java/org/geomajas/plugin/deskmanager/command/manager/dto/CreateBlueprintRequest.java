@@ -27,6 +27,8 @@ public class CreateBlueprintRequest implements CommandRequest {
 	
 	private String userApplicationKey;
 
+	private boolean publik;
+
 	/**
 	 * Get the user application key.
 	 * @return the user application key.
@@ -55,5 +57,19 @@ public class CreateBlueprintRequest implements CommandRequest {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param publik the publik to set
+	 */
+	public void setPublic(boolean publik) {
+		this.publik = publik;
+	}
+
+	/**
+	 * @return the publik
+	 */
+	public boolean isPublic() {
+		return publik;
 	}
 }

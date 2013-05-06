@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
+import java.util.HashMap;
+
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.common.ManagerTab;
@@ -29,15 +31,15 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Frontend presentation of a selectable list of blueprints, and a panel that contains configuration options of the
- * selected blueprint. 
+ * selected blueprint.
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
  */
 public class Blueprints extends VLayout implements EditSessionHandler, ManagerTab {
-	
+
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private IButton buttonNew;
 
 	private BlueprintGrid grid;
@@ -63,12 +65,14 @@ public class Blueprints extends VLayout implements EditSessionHandler, ManagerTa
 		buttonNew.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Window w = new ChooseUserAppNameWindow(new DataCallback<String>() {
+				Window w = new ChooseUserAppNameWindow(new DataCallback<HashMap<String, Object>>() {
 
-					public void execute(String result) {
-						if (result != null && !"".equals(result)) {
+					public void execute(HashMap<String, Object> result) {
+						if (result != null && result.containsKey("userApplication") && result.containsKey("public") 
+								&& result.containsKey("name")) {
 							//TODO: i18n
-							ManagerCommandService.createNewBlueprint(result, "[New Blueprint]");
+							ManagerCommandService.createNewBlueprint(result.get("userApplication").toString(), 
+									(Boolean) result.get("public"), result.get("name").toString());
 						}
 					}
 				});

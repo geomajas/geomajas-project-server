@@ -86,9 +86,11 @@ public class DeskmanagerSecurityContext extends DefaultSecurityContext implement
 		sb.append(getProfile().getFirstName());
 		sb.append(" ");
 		sb.append(getProfile().getSurname());
-		sb.append(" (");
-		sb.append(getProfile().getTerritory().getName());
-		sb.append(")");
+		if (getProfile().getTerritory() != null) {
+			sb.append(" (");
+			sb.append(getProfile().getTerritory().getName());
+			sb.append(")");
+		}
 		return sb.toString();
 	}
 

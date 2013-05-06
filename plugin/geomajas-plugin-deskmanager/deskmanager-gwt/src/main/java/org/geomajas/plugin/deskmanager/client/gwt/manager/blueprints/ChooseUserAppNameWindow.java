@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.manager.blueprints;
 
+import java.util.HashMap;
+
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.manager.i18n.ManagerMessages;
@@ -23,14 +25,16 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * TODO.
+ * Window that asks for information when creating a new blueprint.
  * 
- * @author Jan De Moerloose
+ * @author Oliver May
  *
  */
 public class ChooseUserAppNameWindow extends Window {
@@ -39,7 +43,7 @@ public class ChooseUserAppNameWindow extends Window {
 	
 	private static final int FORMITEM_WIDTH = 300;
 
-	private DataCallback<String> callback;
+	private DataCallback<HashMap<String, Object>> callback;
 
 	private DynamicForm form;
 
@@ -47,11 +51,15 @@ public class ChooseUserAppNameWindow extends Window {
 
 	private SelectItem userappName;
 
+	private CheckboxItem publik;
+
+	private TextItem blueprintName;
+
 	/**
-	 * @param callback returns userAppName or null if cancelled.
+	 * @param dataCallback returns userAppName or null if cancelled.
 	 */
-	public ChooseUserAppNameWindow(DataCallback<String> callback) {
-		this.callback = callback;
+	public ChooseUserAppNameWindow(DataCallback<HashMap<String, Object>> dataCallback) {
+		this.callback = dataCallback;
 
 		setAutoSize(true);
 		setCanDragReposition(true);
@@ -78,8 +86,18 @@ public class ChooseUserAppNameWindow extends Window {
 		userappName.setTitle(MESSAGES.chooseAppTitle());
 		userappName.setTooltip("<nobr>" + MESSAGES.chooseAppTooltip() + "</nobr>");
 		userappName.setValueMap(UserApplicationRegistry.getInstance().getUserApplicationNames());
-		form.setFields(userappName);
 
+		publik = new CheckboxItem();
+		publik.setRequired(true);
+		publik.setTitle(MESSAGES.blueprintSettingsPublic());
+
+		blueprintName = new TextItem();
+		blueprintName.setRequired(true);
+		blueprintName.setTitle(MESSAGES.blueprintSettingsNameBlueprint());
+		blueprintName.setValue(MESSAGES.newBlueprintButtonText());
+
+		form.setFields(userappName, publik, blueprintName);
+		
 		// ----------------------------------------------------------
 
 		HLayout buttons = new HLayout(10);
@@ -124,7 +142,12 @@ public class ChooseUserAppNameWindow extends Window {
 		if (form.validate()) {
 			hide();
 			if (callback != null) {
-				callback.execute(userappName.getValueAsString());
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("userApplication", userappName.getValueAsString());
+				map.put("public", publik.getValue());
+				map.put("name", blueprintName.getValueAsString());
+				
+				callback.execute(map);
 			}
 			destroy();
 		}

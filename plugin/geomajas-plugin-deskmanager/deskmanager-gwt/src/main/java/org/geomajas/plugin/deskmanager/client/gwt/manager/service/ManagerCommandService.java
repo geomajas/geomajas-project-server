@@ -166,10 +166,11 @@ public final class ManagerCommandService {
 	 * @param name
 	 *            the preferred name for the blueprint.
 	 */
-	public static void createNewBlueprint(String userApplicationName, String name) {
+	public static void createNewBlueprint(String userApplicationName, boolean publik, String name) {
 		CreateBlueprintRequest request = new CreateBlueprintRequest();
 		request.setName(name);
 		request.setUserApplicationKey(userApplicationName);
+		request.setPublic(publik);
 		GwtCommand command = new GwtCommand(CreateBlueprintRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command,
