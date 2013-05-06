@@ -35,7 +35,6 @@ import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -44,7 +43,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class BlueprintSettings extends AbstractConfigurationLayout implements BlueprintSelectionHandler {
 
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
-	
+
 	private static final DateTimeFormat DATE_FORMATTER = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 
 	private static final int FORMITEM_WIDTH = 300;
@@ -70,8 +69,6 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 	private CheckboxItem limitToLoketTerritory;
 
 	private CheckboxItem limitToUserTerritory;
-
-	private boolean containsNonPublicLayers;
 
 	public BlueprintSettings() {
 		super();
@@ -125,21 +122,12 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 		publiek.setTitle(MESSAGES.blueprintSettingsPublic());
 		publiek.setWrapTitle(false);
 		publiek.setPrompt(MESSAGES.blueprintAttributePublicTooltip());
+		publiek.setDisabled(true);
 		publiek.addChangeHandler(new ChangeHandler() {
 
 			public void onChange(ChangeEvent event) {
-				if (containsNonPublicLayers) {
-					SC.warn(MESSAGES.blueprintSettingsWarnCannotBePublic());
-					event.cancel();
-				}
-			}
-		});
-		publiek.addChangedHandler(new com.smartgwt.client.widgets.form.fields.events.ChangedHandler() {
-
-			public void onChanged(ChangedEvent event) {
-				boolean val = publiek.getValueAsBoolean();
-				limitToLoketTerritory.setDisabled(!val);
-				limitToUserTerritory.setDisabled(val);
+				SC.warn(MESSAGES.blueprintSettingsWarnCannotBePublic());
+				event.cancel();
 			}
 		});
 
@@ -169,11 +157,10 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 		addMember(group);
 	}
 
-	
 	public void onBlueprintSelectionChange(BlueprintEvent bpe) {
 		setBlueprint(bpe.getBlueprint());
 	}
-	
+
 	public void setBlueprint(BlueprintDto blueprint) {
 		form.clearValues();
 		this.blueprint = blueprint;
@@ -190,9 +177,6 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 			limitToLoketTerritory.setDisabled(!blueprint.isPublic());
 			limitToUserTerritory.setDisabled(blueprint.isPublic());
 
-			//FIXME
-//			containsNonPublicLayers = (blueprint.getLayerTree() == null ? false : blueprint.getLayerTree()
-//					.containsNonPublicLayers());
 		}
 		fireChangedHandler();
 	}
@@ -240,15 +224,12 @@ public class BlueprintSettings extends AbstractConfigurationLayout implements Bl
 		return true;
 	}
 
-
 	public boolean onResetClick(ClickEvent event) {
 		return false;
 	}
 
-
 	public boolean isDefault() {
 		return true;
 	}
-
 
 }

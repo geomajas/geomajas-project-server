@@ -90,6 +90,7 @@ public class ChooseUserAppNameWindow extends Window {
 		publik = new CheckboxItem();
 		publik.setRequired(true);
 		publik.setTitle(MESSAGES.blueprintSettingsPublic());
+		publik.setTooltip(MESSAGES.blueprintAttributePublicTooltip());
 
 		blueprintName = new TextItem();
 		blueprintName.setRequired(true);
