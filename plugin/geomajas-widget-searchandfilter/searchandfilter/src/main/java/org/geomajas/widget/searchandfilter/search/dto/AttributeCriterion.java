@@ -73,6 +73,9 @@ public class AttributeCriterion implements Criterion {
 	}
 	
 	public String getDisplayText() {
+		if (displayText == null) {
+			return toString();
+		}
 		return displayText;
 	}
 	
