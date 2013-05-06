@@ -245,7 +245,7 @@ public class NavigationController extends AbstractMapController {
 		dragging = false;
 		mapPresenter.setCursor("default");
 		// release capture
-		if(rectangle != null) {
+		if (rectangle != null) {
 			DOM.releaseCapture(rectangle.getElement());
 			getContainer().remove(rectangle);
 		}

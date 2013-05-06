@@ -22,7 +22,6 @@ import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.user.client.DOM;
 
 /**
