@@ -54,7 +54,7 @@ public class NavigationOptionPanel implements SamplePanel {
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
-	private final int defaultMillis = 400;
+	private final long defaultMillis = 400;
 
 	private MapPresenter mapPresenter;
 
