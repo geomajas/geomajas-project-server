@@ -34,7 +34,7 @@ public interface MapConfiguration {
 	 * individual layer animation settings in the {@link MapConfiguration}. It's value should be of type
 	 * <code>Boolean</code>.
 	 */
-	String ANIMATION_ENABLED = "animation_enabled";
+	MapHint<Boolean> ANIMATION_ENABLED = new MapHint<Boolean>("animation_enabled");
 
 	/**
 	 * Parameter used to determine how long the animations should take during navigation (zooming). The value should be
@@ -42,7 +42,7 @@ public interface MapConfiguration {
 	 * 
 	 * @since 1.0.0
 	 */
-	String ANIMATION_TIME = "animation_time";
+	MapHint<Long> ANIMATION_TIME = new MapHint<Long>("animation_time");
 
 	// ------------------------------------------------------------------------
 	// Working with map hints:
@@ -56,17 +56,17 @@ public interface MapConfiguration {
 	 * @param value
 	 *            The new actual value. If the value is null, an IllegalArgumentException is thrown.
 	 */
-	void setMapHintValue(String hint, Object value);
+	<T> void setMapHintValue(MapHint<T> hint, T value);
 
 	/**
 	 * Get the value for a specific map hint. All hints have a default value, so this method will never return
 	 * <code>null</code>.
 	 * 
-	 * @param hint
-	 *            The hint to retrieve the current value for.
+	 * @param hint The hint to retrieve the current value for.
 	 * @return The map hint value.
 	 */
-	Object getMapHintValue(String hint);
+	<T> T getMapHintValue(MapHint<T> hint);
+
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:

@@ -30,7 +30,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	private final Map<Layer, Boolean> layerAnimation;
 
-	private final Map<String, Object> hintValues;
+	private Map<MapHint<?>, Object> hintValues;
 
 	private ClientMapInfo mapInfo;
 
@@ -39,7 +39,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	protected MapConfigurationImpl() {
-		hintValues = new HashMap<String, Object>();
+		hintValues = new HashMap<MapHint<?>, Object>();
 		layerAnimation = new HashMap<Layer, Boolean>();
 
 		// Now apply the default values:
@@ -52,19 +52,17 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public void setMapHintValue(String hint, Object value) {
+	public <T> void setMapHintValue(MapHint<T> hint, T value) {
 		if (value == null) {
 			throw new IllegalArgumentException("Null value passed.");
-		}
-		if (hintValues.containsKey(hint)) {
-			hintValues.remove(hint);
 		}
 		hintValues.put(hint, value);
 	}
 
 	/** {@inheritDoc} */
-	public Object getMapHintValue(String hint) {
-		return hintValues.get(hint);
+	@SuppressWarnings("unchecked")
+	public <T> T getMapHintValue(MapHint<T> hint) {
+		return (T) hintValues.get(hint);
 	}
 
 	// ------------------------------------------------------------------------
