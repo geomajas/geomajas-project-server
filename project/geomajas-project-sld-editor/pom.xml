@@ -1,15 +1,12 @@
-<!--
-  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
-  ~
-  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
-  ~
-  ~ The program is available in open source according to the GNU Affero
-  ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
-  ~ details, see LICENSE.txt in the project root.
-  -->
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the GNU Affero ~ General 
+	Public License. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-al-parent</artifactId>
@@ -53,7 +50,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-sld-all</artifactId>
@@ -114,7 +111,7 @@
 				<artifactId>gt-xsd-sld</artifactId>
 				<version>${sld-geotools-version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>net.sf.gwt-widget</groupId>
 				<artifactId>gwt-sl</artifactId>
@@ -195,71 +192,76 @@
 				<version>${sld-jibx-version}</version>
 			</dependency>
 
-          	<!-- TODO: needed?  -->
-          	<dependency>
-      			<groupId>com.google.appengine</groupId>
-      			<artifactId>appengine-api-1.0-sdk</artifactId>
-      			<version>1.6.1</version>
-    		</dependency>
-          
-           <!--  GWTP  -->
-           <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-mvp-client</artifactId>
-                <version>${gwtp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-dispatch-client</artifactId>
-                <version>${gwtp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-dispatch-server-guice</artifactId>
-                <version>${gwtp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-dispatch-server-spring</artifactId>
-                <version>${gwtp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-processors</artifactId>
-                <version>${gwtp.version}</version>
-             </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-all</artifactId>
-                <version>${gwtp.version}</version>
-            </dependency>
+			<!-- TODO: needed? -->
+			<dependency>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>appengine-api-1.0-sdk</artifactId>
+				<version>1.6.1</version>
+			</dependency>
 
-           <!-- DI dependencies -->
-            <dependency>
-                <groupId>com.google.inject</groupId>
-                <artifactId>guice</artifactId>
-                <version>${guice.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.inject.extensions</groupId>
-                <artifactId>guice-servlet</artifactId>
-                <version>${guice.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.inject.extensions</groupId>
-                <artifactId>guice-assistedinject</artifactId>
-                <version>${guice.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>aopalliance</groupId>
-                <artifactId>aopalliance</artifactId>
-                <version>${aopalliance.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.gwt.inject</groupId>
-                <artifactId>gin</artifactId>
-                <version>${gin.version}</version>
-            </dependency>
+			<!-- GWTP -->
+			<dependency>
+				<groupId>com.gwtplatform</groupId>
+				<artifactId>gwtp-mvp-client</artifactId>
+				<version>${gwtp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gwtplatform</groupId>
+				<artifactId>gwtp-dispatch-client</artifactId>
+				<version>${gwtp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gwtplatform</groupId>
+				<artifactId>gwtp-dispatch-server-guice</artifactId>
+				<version>${gwtp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gwtplatform</groupId>
+				<artifactId>gwtp-dispatch-server-spring</artifactId>
+				<version>${gwtp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gwtplatform</groupId>
+				<artifactId>gwtp-processors</artifactId>
+				<version>${gwtp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gwtplatform</groupId>
+				<artifactId>gwtp-all</artifactId>
+				<version>${gwtp.version}</version>
+			</dependency>
+
+			<!-- DI dependencies -->
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>${guice.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject.extensions</groupId>
+				<artifactId>guice-servlet</artifactId>
+				<version>${guice.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject.extensions</groupId>
+				<artifactId>guice-assistedinject</artifactId>
+				<version>${guice.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>aopalliance</groupId>
+				<artifactId>aopalliance</artifactId>
+				<version>${aopalliance.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt.inject</groupId>
+				<artifactId>gin</artifactId>
+				<version>${gin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
 			<dependency>
 				<groupId>org.jboss</groupId>
 				<artifactId>jboss-serialization</artifactId>
@@ -306,19 +308,19 @@
 				<version>${codemirror.version}</version>
 			</dependency>
 
-            <!-- Test dependencies -->
-            <dependency>
-                <groupId>org.jukito</groupId>
-                <artifactId>jukito</artifactId>
-                <version>${jukito.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
+			<!-- Test dependencies -->
+			<dependency>
+				<groupId>org.jukito</groupId>
+				<artifactId>jukito</artifactId>
+				<version>${jukito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -356,12 +358,12 @@
 		<sld-jibx-version>1.2.3</sld-jibx-version>
 		<sld-gwt-version>2.5.0</sld-gwt-version>
 		<sld-geotools-version>2.7.4-GBE-276</sld-geotools-version>
-		
+
 		<gwtp.version>0.7</gwtp.version>
 		<gin.version>1.5.0</gin.version>
 		<guice.version>3.0</guice.version>
-        <jukito.version>1.1</jukito.version>
-        <mockito.version>1.8.5</mockito.version>
+		<jukito.version>1.1</jukito.version>
+		<mockito.version>1.8.5</mockito.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<codemirror.version>3.1.0-SNAPSHOT</codemirror.version>
 	</properties>

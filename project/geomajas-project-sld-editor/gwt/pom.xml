@@ -49,35 +49,6 @@
       	     <!--    <version>1.6.1</version>  -->
       	   </dependency>
        
-
-   <!--  GWTP  -->
-           <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-mvp-client</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-dispatch-client</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-dispatch-server-guice</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-dispatch-server-spring</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-processors</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp-all</artifactId>
-            </dependency>
-
-     
-       
        <!-- DI dependencies -->
         <dependency>
             <groupId>com.google.inject</groupId>
