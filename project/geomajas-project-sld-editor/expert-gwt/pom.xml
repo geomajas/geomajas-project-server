@@ -69,14 +69,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gwtplatform</groupId>
-			<artifactId>gwtp-crawler</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.gwtplatform</groupId>
-			<artifactId>gwtp-crawler-service</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.gwtplatform</groupId>
 			<artifactId>gwtp-processors</artifactId>
 		</dependency>
 		<dependency>
