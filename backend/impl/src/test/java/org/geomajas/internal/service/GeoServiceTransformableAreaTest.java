@@ -30,6 +30,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * Test for {@link org.geomajas.service.GeoService} implementation.
@@ -53,6 +54,13 @@ public class GeoServiceTransformableAreaTest {
 		Geometry geometry = getLineString();
 		geometry = geoService.transform(geometry, LONLAT, LAMBERT72);
 		assertTransformedLineString(geometry);
+	}
+
+	@Test
+	public void transformSingletonCollection() throws Exception {
+		Geometry geometry = getSingletonCollection();
+		geometry = geoService.transform(geometry, LONLAT, LAMBERT72);
+		assertTransformedSingletonCollection(geometry);
 	}
 
 	@Test
@@ -96,10 +104,21 @@ public class GeoServiceTransformableAreaTest {
 		Assert.assertEquals(1050557.6016714368, coordinates[4].y, DELTA);
 	}
 
+	private void assertTransformedSingletonCollection(Geometry geometry) throws Exception{
+		Geometry other = new WKTReader().read("MULTIPOLYGON (((916069.2725946752 -4681456.019741627," +
+				" 816814.0780157829 -3375273.893574928, 1989027.1569152088 -3206277.3997935494," +
+				" 2262764.7192248604 -4487307.231534244, 916069.2725946752 -4681456.019741627)))");
+		Assert.assertTrue(geometry.equalsExact(other, DELTA));
+	}
+
 	private Geometry getLineString() {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
 		return factory.createLineString(new Coordinate[] {
 				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
+	}
+
+	private Geometry getSingletonCollection() throws Exception {
+		return new WKTReader().read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 10, 10 10)))");
 	}
 
 	@Test

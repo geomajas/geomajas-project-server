@@ -290,7 +290,7 @@ public final class GeoServiceImpl implements GeoService {
 		try {
 			if (crsTransform.isTransforming()) {
 				Geometry transformableArea = crsTransform.getTransformableGeometry();
-				if (null != transformableArea) {
+				if (null != transformableArea && !transformableArea.covers(source)) {
 					source = source.intersection(transformableArea);
 				}
 				return JTS.transform(source, crsTransform);
