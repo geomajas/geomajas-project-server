@@ -116,6 +116,29 @@
 					<streamLogs>true</streamLogs>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sonatype-deploy</id>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>geomajas-nexus-deploy</id>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+						<configuration>
+							<altDeploymentRepository>private-nexus-snapshots::default::http://apps.geomajas.org/nexus/content/repositories/archetype-snapshots</altDeploymentRepository>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 	</build>
 </project> 
