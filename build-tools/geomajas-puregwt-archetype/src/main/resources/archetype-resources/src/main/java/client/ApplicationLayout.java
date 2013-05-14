@@ -15,6 +15,7 @@
 package ${package}.client;
 
 import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.puregwt.client.map.MapConfiguration;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.GWT;
@@ -52,7 +53,7 @@ public class ApplicationLayout extends Composite {
 		initWidget(UI_BINDER.createAndBindUi(this));
 		mapPresenter = INJECTOR.getMapPresenter();
 		mapPresenter.initialize("app", "mapOsm");
-		mapPresenter.getMapRenderer().setAnimationMillis(300);
+		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 300L);
 		ResizableMapLayout mapLayout = new ResizableMapLayout(mapPresenter);
 		contentPanel.setWidget(mapLayout);
 	}
