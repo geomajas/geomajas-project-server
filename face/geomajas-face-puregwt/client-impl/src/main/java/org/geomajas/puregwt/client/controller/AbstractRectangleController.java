@@ -21,8 +21,7 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.event.dom.client.MouseOutEvent;
 
 /**
  * <p>
@@ -84,6 +83,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	/** {@inheritDoc} */
 	public void onDown(HumanInputEvent<?> event) {
 		if (!isRightMouseButton(event)) {
+			dragging = true;
 			begin = getLocation(event, RenderSpace.SCREEN);
 			shift = event.isShiftKeyDown();
 			rectangle = new Rectangle((int) begin.getX(), (int) begin.getY(), 0, 0);
@@ -92,30 +92,14 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 			rectangle.setStrokeColor(strokeColor);
 			rectangle.setStrokeOpacity(strokeOpacity);
 			rectangle.setStrokeWidth(strokeWidth);
-			// prepare capturing all events with this rectangle...
-			rectangle.addMouseMoveHandler(this);
-			rectangle.addMouseUpHandler(this);
 			getContainer().add(rectangle);
-			dragging = true;
-			// capture all events with the dragging rectangle
-			DOM.setCapture(rectangle.getElement());
 		}
 	}
-	
-	/** {@inheritDoc} */
-	public void onMouseMove(MouseMoveEvent event) {
-		// DOM.setCapture() is active !
-		if (event.getSource() == rectangle) {
-			onDrag(event);
-		}
-	}
-
 
 	/** {@inheritDoc} */
 	public void onUp(HumanInputEvent<?> event) {
-		// DOM.setCapture() is active !
-		if (event.getSource() == rectangle) {
-			DOM.releaseCapture(rectangle.getElement());
+		// Assure dragging or clicking started inside this widget
+		if (dragging) {
 			shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
 			updateRectangle(event);
 
@@ -132,7 +116,12 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		updateRectangle(event);
 	}
 
-	
+	/** {@inheritDoc} */
+	public void onMouseOut(MouseOutEvent event) {
+		stopDragging();
+		dragging = false;
+	}
+
 	/**
 	 * Overwrite this method to handle the actual selection. The bounds variable contains the selected area.
 	 * 

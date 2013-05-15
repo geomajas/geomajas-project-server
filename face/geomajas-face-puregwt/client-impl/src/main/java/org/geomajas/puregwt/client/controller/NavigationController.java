@@ -15,10 +15,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -27,7 +25,6 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.user.client.DOM;
 
 /**
  * Generic navigation map controller. This controller allows for panning and zooming on the map in many different ways.
@@ -75,10 +72,6 @@ public class NavigationController extends AbstractMapController {
 
 	private ScrollZoomType scrollZoomType = ScrollZoomType.ZOOM_POSITION;
 
-	protected Rectangle rectangle;
-
-	protected VectorContainer container;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -118,15 +111,6 @@ public class NavigationController extends AbstractMapController {
 			dragging = true;
 			dragOrigin = getLocation(event, RenderSpace.SCREEN);
 			mapPresenter.setCursor("move");
-			// capture all events with an invisible rectangle (we need an element for setCapture())
-			rectangle = new Rectangle(0, 0, 0, 0);
-			rectangle.setFillOpacity(0);
-			rectangle.setStrokeOpacity(0);
-			// the rectangle captures all events, but we still have to register ourselves...
-			rectangle.addMouseMoveHandler(this);
-			rectangle.addMouseUpHandler(this);
-			getContainer().add(rectangle);
-			DOM.setCapture(rectangle.getElement());
 		}
 		lastClickPosition = getLocation(event, RenderSpace.WORLD);
 	}
@@ -136,8 +120,7 @@ public class NavigationController extends AbstractMapController {
 		if (zooming) {
 			zoomToRectangleController.onUp(event);
 			zooming = false;
-		} else if (event.getSource() == rectangle) {
-			// DOM.setCapture() is active !
+		} else if (dragging) {
 			stopPanning(event);
 		}
 	}
@@ -146,8 +129,8 @@ public class NavigationController extends AbstractMapController {
 	public void onMouseMove(MouseMoveEvent event) {
 		if (zooming) {
 			zoomToRectangleController.onMouseMove(event);
-		} else if (event.getSource() == rectangle) {
-			// DOM.setCapture() is active !
+		} else if (dragging) {
+			// updateView(event);
 			super.onMouseMove(event);
 		}
 	}
@@ -157,14 +140,14 @@ public class NavigationController extends AbstractMapController {
 		updateView(event);
 	}
 
-	/** {@inheritDoc} */
-	public void onMouseOut(MouseOutEvent event) {
-		if (zooming) {
-			zoomToRectangleController.onMouseOut(event);
-		} else {
-			stopPanning(null);
-		}
-	}
+//	/** {@inheritDoc} */
+//	public void onMouseOut(MouseOutEvent event) {
+//		if (zooming) {
+//			zoomToRectangleController.onMouseOut(event);
+//		} else {
+//			stopPanning(null);
+//		}
+//	}
 
 	/** {@inheritDoc} */
 	public void onDoubleClick(DoubleClickEvent event) {
@@ -244,11 +227,6 @@ public class NavigationController extends AbstractMapController {
 	protected void stopPanning(HumanInputEvent<?> event) {
 		dragging = false;
 		mapPresenter.setCursor("default");
-		// release capture
-		if (rectangle != null) {
-			DOM.releaseCapture(rectangle.getElement());
-			getContainer().remove(rectangle);
-		}
 		if (null != event) {
 			updateView(event);
 		}
@@ -264,12 +242,4 @@ public class NavigationController extends AbstractMapController {
 		mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
 		dragOrigin = end;
 	}
-	
-	private VectorContainer getContainer() {
-		if (container == null) {
-			container = mapPresenter.addScreenContainer();
-		}
-		return container;
-	}
-
 }
