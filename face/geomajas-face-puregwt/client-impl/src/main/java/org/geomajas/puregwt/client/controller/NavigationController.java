@@ -140,14 +140,14 @@ public class NavigationController extends AbstractMapController {
 		updateView(event);
 	}
 
-//	/** {@inheritDoc} */
-//	public void onMouseOut(MouseOutEvent event) {
-//		if (zooming) {
-//			zoomToRectangleController.onMouseOut(event);
-//		} else {
-//			stopPanning(null);
-//		}
-//	}
+	/** {@inheritDoc} */
+	public void onMouseOut(MouseOutEvent event) {
+		if (zooming) {
+			zoomToRectangleController.onMouseOut(event);
+		} else {
+			stopPanning(null);
+		}
+	}
 
 	/** {@inheritDoc} */
 	public void onDoubleClick(DoubleClickEvent event) {
