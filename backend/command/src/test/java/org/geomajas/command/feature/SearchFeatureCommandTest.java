@@ -273,7 +273,7 @@ public class SearchFeatureCommandTest {
 		Assert.assertEquals("Country 3", features[0].getLabel());
 		geometry = features[0].getGeometry();
 		Assert.assertNotNull(geometry);
-		coor = geometry.getGeometries()[0].getCoordinates()[0];
+		coor = geometry.getGeometries()[0].getGeometries()[0].getCoordinates()[0];
 		// remark, this value is obtained using a test run, not externally verified
 		Assert.assertEquals(-111319.49079327357, coor.getX(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(0, coor.getY(), DOUBLE_TOLERANCE);
