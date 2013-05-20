@@ -12,29 +12,29 @@
 	<description>Geomajas deskmanager consist of dynamic configuration tools for geomajas.</description>
 
 	<dependencies>
-
+		<!-- Getting the correct version for selenium -->
 		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.geotools.jdbc</groupId>
-			<artifactId>gt-jdbc-h2</artifactId>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- end -->
 
-		<!-- Dependencies for dynamic layers -->
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-shapefile</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-wms</artifactId>
-		</dependency>
-		
-		
 		<!-- Rewrite url's for geodesks -->
 		<dependency>
 			<groupId>org.tuckey</groupId>
@@ -55,10 +55,6 @@
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
@@ -75,6 +71,10 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
 
 		<!-- dependencies for file uploading -->
@@ -120,11 +120,6 @@
 			<artifactId>geomajas-plugin-printing</artifactId>
 		</dependency>
 		
-		<!-- wfs support, for runtime configuration -->
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-wfs</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
@@ -132,6 +127,32 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
+
+		<!-- Dependencies for dynamic layers -->
+		<dependency>
+			<groupId>org.geotools.jdbc</groupId>
+			<artifactId>gt-jdbc-postgis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wfs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-data</artifactId>
 		</dependency>
 
 		<dependency>
@@ -167,6 +188,18 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+		</dependency>
+		
+		<!--  Testing -->
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools.jdbc</groupId>
+			<artifactId>gt-jdbc-h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
