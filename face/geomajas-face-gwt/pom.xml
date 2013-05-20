@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.9</version>
+		<version>1.1.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -136,16 +136,17 @@
 				<version>${gwt-face-smartgwt-version}</version>
 			</dependency>
 
+			<!-- newer versions for selenium -->
 			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-java</artifactId>
-				<version>2.31.0</version>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.7</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-server</artifactId>
-				<version>2.31.0</version>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
