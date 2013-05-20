@@ -32,17 +32,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-impl</artifactId>
-			<scope>test</scope>
-		</dependency>
 
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-main</artifactId>
-		</dependency>
-		
 		<dependency>
 			<groupId>com.twmacinta</groupId>
 			<artifactId>fast-md5</artifactId>
@@ -66,6 +56,11 @@
 			<artifactId>trove</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
