@@ -170,10 +170,11 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- These versions are used for Selenium -->
+		<!-- These versions are used by Selenium -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<!-- end -->
 
@@ -317,7 +318,7 @@
 		<dependency>
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt-skins</artifactId>
-			<version>2.4</version>
+			<version>3.1</version>
 		</dependency>
 
 	</dependencies>
