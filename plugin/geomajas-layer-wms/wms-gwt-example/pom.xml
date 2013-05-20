@@ -25,6 +25,17 @@
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
+		<!-- These versions are used by Selenium -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3</artifactId>
+		</dependency>
+		<!-- end -->
+	
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
