@@ -48,11 +48,6 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.geotools</groupId>
-				<artifactId>gt-epsg-wkt</artifactId>
-				<version>2.7.4</version>
-			</dependency>
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${geomajas-widget-featureinfo-wms-version}</version>
