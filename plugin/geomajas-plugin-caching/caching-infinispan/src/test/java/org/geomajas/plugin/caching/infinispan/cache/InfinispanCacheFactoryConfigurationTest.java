@@ -16,25 +16,31 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.spring.ThreadScopeContextHolder;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Test for the configuration options in {@link InfinispanCacheFactory}.
  *
  * @author Joachim Van der Auwera
  */
+@TestExecutionListeners(listeners = {ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/dummySecurity.xml", "/org/geomajas/spring/testRecorder.xml", "/infinispanConfigurationContext.xml" })
+@ReloadContext
 public class InfinispanCacheFactoryConfigurationTest {
 
 	@Autowired
@@ -53,15 +59,6 @@ public class InfinispanCacheFactoryConfigurationTest {
 		cacheManagerService.drop(null);
 		recorder.clear();
 		ThreadScopeContextHolder.clear();
-	}
-
-	@DirtiesContext
-	@Test
-	/**
-	 * A dummy method to force the reload of the context. By forcing a reload we are sure that the TestRecorder
-	 * has not been cleared by other tests after the postconfiguration phase (application contexts are cached). 
-	 */
-	public void reloadContext() {
 	}
 
 	/**
