@@ -38,6 +38,7 @@
 		<module>geomajas-project-sld</module>
 		<module>geomajas-project-sld-editor</module>
 		<module>geomajas-project-profiling</module>
+		<module>geomajas-project-codemirror-gwt</module>
 	</modules>
 
 </project>
