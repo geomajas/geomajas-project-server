@@ -185,19 +185,20 @@
 				<version>1.0</version>
 			</dependency>
 			
+			<!-- GEOTOOLS -->
 			<dependency>
 				<groupId>com.vividsolutions</groupId>
 				<artifactId>jts</artifactId>
-				<version>1.12</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geotools</groupId>
-				<artifactId>gt-main</artifactId>
-				<version>${geotools-version}</version>
+				<version>1.13</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-api</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-main</artifactId>
 				<version>${geotools-version}</version>
 			</dependency>
 			<dependency>
@@ -210,10 +211,10 @@
 				<artifactId>gt-cql</artifactId>
 				<version>${geotools-version}</version>
 			</dependency>
-			<dependency>
+ 			<dependency>
 				<groupId>org.geotools</groupId>
-				<artifactId>gt-epsg-wkt</artifactId>
-				<version>${geotools-epsg-wkt-version}</version>
+				<artifactId>gt-epsg-hsql</artifactId>
+				<version>${geotools-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>
@@ -231,9 +232,60 @@
 				<version>${geotools-version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-data</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-jdbc</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools.jdbc</groupId>
+				<artifactId>gt-jdbc-postgis</artifactId>
+				<version>${geotools-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.postgis</groupId>
+						<artifactId>postgis-driver</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools.jdbc</groupId>
+				<artifactId>gt-jdbc-h2</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-shapefile</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.geotools.xsd</groupId>
 				<artifactId>gt-xsd-sld</artifactId>
 				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-geojson</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+
+			<!-- obsolete - do not use, use epsg-hsql instead -->
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-epsg-wkt</artifactId>
+				<version>xx-do-not-use</version>
 			</dependency>
 
 			<dependency>
@@ -291,8 +343,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<geotools-version>2.7.5</geotools-version>
-		<geotools-epsg-wkt-version>2.6.3</geotools-epsg-wkt-version>
+		<geotools-version>9.2</geotools-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 

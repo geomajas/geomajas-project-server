@@ -63,6 +63,7 @@ public class GeoServiceTest {
 	private static final String MERCATOR = "EPSG:900913";
 	private static final String LONLAT = "EPSG:4326";
 	private static final String LAMBERT72 = "EPSG:31300";
+	private static final String LAMBERT72_2 = "EPSG:31370";
 
 	@Autowired
 	private GeoService geoService;
@@ -394,25 +395,40 @@ public class GeoServiceTest {
 		Assert.assertEquals(my, mc.y, DELTA);
 	}
 
+	/**
+	 * This is a coordinate and its transformation given by a member from AGIV and is held to be "TRUE".
+	 */
+	@Test
+	public void transformCoordinateLambert72Test() throws Exception {
+		Coordinate source = new Coordinate(4.468493, 50.856057);
+		Coordinate target = geoService.transform(source, LONLAT, LAMBERT72_2);
+		Assert.assertNotNull(target);
+		
+		// expected result: 157022.870 171745.084 (31370)
+		// discrepancy +- 20 cm.
+		Assert.assertEquals(157022.9162798329, target.x, DELTA);
+		Assert.assertEquals(171745.2290776642, target.y, DELTA);
+	}
+
 
 	private void assertTransformedLineString(Geometry geometry) {
+		System.out.println(geometry.toString());
 		Coordinate[] coordinates = geometry.getCoordinates();
 		Assert.assertEquals(4, coordinates.length);
-		Assert.assertEquals(243226.22754535213, coordinates[0].x, DELTA);
-		Assert.assertEquals(-5562215.514234281, coordinates[0].y, DELTA);
-		Assert.assertEquals(3571200.025158979, coordinates[1].x, DELTA);
-		Assert.assertEquals(-4114095.376986935, coordinates[1].y, DELTA);
-		Assert.assertEquals(-5635607.7135451175, coordinates[2].x, DELTA);
-		Assert.assertEquals(488062.62359615415, coordinates[2].y, DELTA);
-		Assert.assertEquals(3219426.4637164664, coordinates[3].x, DELTA);
-		Assert.assertEquals(1050557.6016714368, coordinates[3].y, DELTA);
+		Assert.assertEquals(243228.2415398722, coordinates[0].x, DELTA);
+		Assert.assertEquals(-5562212.2922869185, coordinates[0].y, DELTA);
+		Assert.assertEquals(3571198.1691051605, coordinates[1].x, DELTA);
+		Assert.assertEquals(-4114094.247419103, coordinates[1].y, DELTA);
+		Assert.assertEquals(-5635610.296096718, coordinates[2].x, DELTA);
+		Assert.assertEquals(488056.5712725008, coordinates[2].y, DELTA);
+		Assert.assertEquals(3219427.718819718, coordinates[3].x, DELTA);
+		Assert.assertEquals(1050557.615059331, coordinates[3].y, DELTA);
 	}
 
 	private Geometry getLineString() {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
 		return factory.createLineString(new Coordinate[] {
 				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
-
 	}
 	
 	public class ThrowingTransform extends CrsTransformImpl {
@@ -461,7 +477,6 @@ public class GeoServiceTest {
 		public Bbox getTransformableBbox() {
 			return null;
 		}
-		
 	}
 
 }

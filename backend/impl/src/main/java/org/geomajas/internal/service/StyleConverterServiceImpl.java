@@ -890,12 +890,18 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			case MULTIPOINT:
 				PointSymbolizer ps = styleBuilder.createPointSymbolizer();
 				GraphicalSymbol symbol = createSymbol(featureStyle);
+				Expression size = null;
 				if (symbol instanceof Mark) {
-					ps.getGraphic().setSize(((Mark) symbol).getSize());
+					SymbolInfo info = featureStyle.getSymbol();
+					if (info.getRect() != null) {
+						size = styleBuilder.literalExpression((int) info.getRect().getW());
+					} else if (info.getCircle() != null) {
+						size = styleBuilder.literalExpression(2 * (int) info.getCircle().getR());
+					} // else {} already handled by createSymbol()
 				} else {
-					Expression size = styleBuilder.literalExpression(featureStyle.getSymbol().getImage().getHeight());
-					ps.getGraphic().setSize(size);
+					size = styleBuilder.literalExpression(featureStyle.getSymbol().getImage().getHeight());
 				}
+				ps.getGraphic().setSize(size);
 				ps.getGraphic().graphicalSymbols().clear();
 				ps.getGraphic().graphicalSymbols().add(createSymbol(featureStyle));
 				symbolizer = ps;
@@ -944,10 +950,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			if (info.getRect() != null) {
 				// TODO: do rectangles by adding custom factory ?
 				mark = styleBuilder.createMark(MARK_SQUARE);
-				mark.setSize(styleBuilder.literalExpression((int) info.getRect().getW()));
 			} else if (info.getCircle() != null) {
 				mark = styleBuilder.createMark(MARK_CIRCLE);
-				mark.setSize(styleBuilder.literalExpression(2 * (int) info.getCircle().getR()));
 			} else {
 				throw new IllegalArgumentException(
 						"Feature style should have either an image, a circle or a rectangle defined. Style name: " +

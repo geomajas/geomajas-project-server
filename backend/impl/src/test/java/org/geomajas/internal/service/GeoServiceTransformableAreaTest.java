@@ -92,29 +92,30 @@ public class GeoServiceTransformableAreaTest {
 	private void assertTransformedLineString(Geometry geometry) {
 		Coordinate[] coordinates = geometry.getCoordinates();
 		Assert.assertEquals(5, coordinates.length);
-		Assert.assertEquals(243226.22754535213, coordinates[0].x, DELTA);
-		Assert.assertEquals(-5562215.514234281, coordinates[0].y, DELTA);
-		Assert.assertEquals(3571200.025158979, coordinates[1].x, DELTA);
-		Assert.assertEquals(-4114095.376986935, coordinates[1].y, DELTA);
-		Assert.assertEquals(-1559247.1313968082, coordinates[2].x, DELTA);
-		Assert.assertEquals(4925007.245555261, coordinates[2].y, DELTA);
-		Assert.assertEquals(-1576250.1368931415, coordinates[3].x, DELTA);
-		Assert.assertEquals(4991112.851941023, coordinates[3].y, DELTA);
-		Assert.assertEquals(3219426.4637164664, coordinates[4].x, DELTA);
-		Assert.assertEquals(1050557.6016714368, coordinates[4].y, DELTA);
+		Assert.assertEquals(243228.2415398722, coordinates[0].x, DELTA);
+		Assert.assertEquals(-5562212.2922869185, coordinates[0].y, DELTA);
+		Assert.assertEquals(3571198.1691051605, coordinates[1].x, DELTA);
+		Assert.assertEquals(-4114094.247419103, coordinates[1].y, DELTA);
+		Assert.assertEquals(-1559252.030797058, coordinates[2].x, DELTA);
+		Assert.assertEquals(4925010.054948342, coordinates[2].y, DELTA);
+		Assert.assertEquals(-1576255.123949388, coordinates[3].x, DELTA);
+		Assert.assertEquals(4991115.69215949, coordinates[3].y, DELTA);
+		Assert.assertEquals(3219427.718819718, coordinates[4].x, DELTA);
+		Assert.assertEquals(1050557.615059331, coordinates[4].y, DELTA);
 	}
 
-	private void assertTransformedSingletonCollection(Geometry geometry) throws Exception{
-		Geometry other = new WKTReader().read("MULTIPOLYGON (((916069.2725946752 -4681456.019741627," +
-				" 816814.0780157829 -3375273.893574928, 1989027.1569152088 -3206277.3997935494," +
-				" 2262764.7192248604 -4487307.231534244, 916069.2725946752 -4681456.019741627)))");
+	private void assertTransformedSingletonCollection(Geometry geometry) throws Exception {
+		Geometry other = new WKTReader()
+				.read("MULTIPOLYGON (((916070.1613269304 -4681453.714615687, 816814.8052582608" +
+						" -3375272.8502673274, 1989027.0198933315 -3206276.455371815, 2262764.0933861886" +
+						" -4487305.15962547, 916070.1613269304 -4681453.714615687)))");
 		Assert.assertTrue(geometry.equalsExact(other, DELTA));
 	}
 
 	private Geometry getLineString() {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
-		return factory.createLineString(new Coordinate[] {
-				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
+		return factory.createLineString(new Coordinate[] { new Coordinate(5, 4), new Coordinate(30, 10),
+				new Coordinate(120, 150), new Coordinate(50, 50) });
 	}
 
 	private Geometry getSingletonCollection() throws Exception {
@@ -124,8 +125,8 @@ public class GeoServiceTransformableAreaTest {
 	@Test
 	public void transformOutsideAreaTest() throws Exception {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
-		Geometry geometry = factory.createLineString(new Coordinate[] {
-				new Coordinate(110, 50), new Coordinate(120, 60)});
+		Geometry geometry = factory.createLineString(new Coordinate[] { new Coordinate(110, 50),
+				new Coordinate(120, 60) });
 		geometry = geoService.transform(geometry, LONLAT, LAMBERT72);
 		Assert.assertTrue(geometry.isEmpty());
 	}
@@ -134,10 +135,10 @@ public class GeoServiceTransformableAreaTest {
 	public void transformBboxTest() throws Exception {
 		Bbox bbox = new Bbox(50, 50, 100, 10);
 		Bbox transformed = geoService.transform(bbox, LONLAT, LAMBERT72);
-		Assert.assertEquals(2574604.73895413, transformed.getX(), DELTA);
-		Assert.assertEquals(1050557.6016714368, transformed.getY(), DELTA);
-		Assert.assertEquals(5261856.632877763, transformed.getMaxX(), DELTA);
-		Assert.assertEquals(4226349.363675014, transformed.getMaxY(), DELTA);
+		Assert.assertEquals(2574606.0591756646, transformed.getX(), DELTA);
+		Assert.assertEquals(1050557.615059331, transformed.getY(), DELTA);
+		Assert.assertEquals(5261861.8686517235, transformed.getMaxX(), DELTA);
+		Assert.assertEquals(4226351.290823512, transformed.getMaxY(), DELTA);
 	}
 
 	@Test
@@ -154,10 +155,10 @@ public class GeoServiceTransformableAreaTest {
 	public void transformEnvelopeTest() throws Exception {
 		Envelope envelope = new Envelope(50, 150, 50, 60);
 		Envelope transformed = geoService.transform(envelope, LONLAT, LAMBERT72);
-		Assert.assertEquals(2574604.73895413, transformed.getMinX(), DELTA);
-		Assert.assertEquals(1050557.6016714368, transformed.getMinY(), DELTA);
-		Assert.assertEquals(5261856.632877763, transformed.getMaxX(), DELTA);
-		Assert.assertEquals(4226349.363675014, transformed.getMaxY(), DELTA);
+		Assert.assertEquals(2574606.0591756646, transformed.getMinX(), DELTA);
+		Assert.assertEquals(1050557.615059331, transformed.getMinY(), DELTA);
+		Assert.assertEquals(5261861.8686517235, transformed.getMaxX(), DELTA);
+		Assert.assertEquals(4226351.290823512, transformed.getMaxY(), DELTA);
 	}
 
 	@Test

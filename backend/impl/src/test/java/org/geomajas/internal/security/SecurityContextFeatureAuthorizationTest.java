@@ -27,12 +27,16 @@ import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.allowall.AllowAllAuthorization;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Testing of FeatureAuthorization related data in the security context.
@@ -40,8 +44,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = {ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class})
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml"})
+@ReloadContext
 public class SecurityContextFeatureAuthorizationTest {
 
 	private static final String LAYER_ID = "beans";
@@ -69,11 +76,11 @@ public class SecurityContextFeatureAuthorizationTest {
 		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		feature.setAttributes(attributes);
 		attributes.put(ATTRIBUTE_ID, new StringAttribute("bla"));
-		Assert.assertTrue(securityContext.isFeatureVisible(LAYER_ID, feature));
-		Assert.assertTrue(securityContext.isFeatureUpdateAuthorized(LAYER_ID, feature));
-		Assert.assertTrue(securityContext.isFeatureUpdateAuthorized(LAYER_ID, feature, feature));
-		Assert.assertTrue(securityContext.isFeatureDeleteAuthorized(LAYER_ID, feature));
-		Assert.assertTrue(securityContext.isFeatureCreateAuthorized(LAYER_ID, feature));
+		Assert.assertTrue("1", securityContext.isFeatureVisible(LAYER_ID, feature));
+		Assert.assertTrue("2", securityContext.isFeatureUpdateAuthorized(LAYER_ID, feature));
+		Assert.assertTrue("3", securityContext.isFeatureUpdateAuthorized(LAYER_ID, feature, feature));
+		Assert.assertTrue("4", securityContext.isFeatureDeleteAuthorized(LAYER_ID, feature));
+		Assert.assertTrue("5", securityContext.isFeatureCreateAuthorized(LAYER_ID, feature));
 	}
 
 	@Test

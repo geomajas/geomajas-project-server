@@ -28,20 +28,27 @@ import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.allowall.AllowAllAuthorization;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Testing of AttributeAuthorization related data in the security context.
  *
  * @author Joachim Van der Auwera
  */
+@TestExecutionListeners(listeners = {ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml"})
+@ReloadContext
 public class SecurityContextAttributeAuthorizationTest {
 
 	private static final String LAYER_ID = "beans";
@@ -129,16 +136,16 @@ public class SecurityContextAttributeAuthorizationTest {
 		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		feature.setAttributes(attributes);
 		attributes.put(ATTRIBUTE_ID, new StringAttribute("bla"));
-		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
-		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
+		Assert.assertTrue("1", securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
+		Assert.assertTrue("2", securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 
 		feature.getAttributes().put(ATTRIBUTE_ID, new StringAttribute("vis"));
-		Assert.assertFalse(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
-		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
+		Assert.assertFalse("3", securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
+		Assert.assertTrue("4", securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 
 		feature.getAttributes().put(ATTRIBUTE_ID, new StringAttribute("upd"));
-		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
-		Assert.assertFalse(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
+		Assert.assertTrue("5", securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
+		Assert.assertFalse("6", securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 	}
 
 	private Authentication getAuthentication(int which) {

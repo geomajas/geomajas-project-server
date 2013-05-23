@@ -517,13 +517,13 @@ public final class GeoServiceImpl implements GeoService {
 				labelPoint = geometry.getCentroid().getCoordinate();
 			}
 		}
-		if (null == labelPoint && null != geometry) {
+		if (null != geometry && null == labelPoint) {
 			Point centroid = geometry.getCentroid();
 			if (null != centroid) {
 				labelPoint = centroid.getCoordinate();
 			}
 		}
-		if (null != labelPoint && (Double.isNaN(labelPoint.x) || Double.isNaN(labelPoint.y))) {
+		if (null != geometry && null != labelPoint && (Double.isNaN(labelPoint.x) || Double.isNaN(labelPoint.y))) {
 			labelPoint = new Coordinate(geometry.getCoordinate());
 		}
 		return null == labelPoint ? null : new Coordinate(labelPoint);

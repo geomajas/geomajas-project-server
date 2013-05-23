@@ -59,8 +59,7 @@ public class AllowAllAuthorization implements BaseAuthorization, AreaAuthorizati
 	protected Geometry getAuthorizedArea(String layerId) {
 		if (null == biggestGeometry) {
 			// build Geometry which covers biggest possible area
-			Envelope maxBounds = new Envelope(-Double.MAX_VALUE, Double.MAX_VALUE,
-					-Double.MAX_VALUE, Double.MAX_VALUE);
+			Envelope maxBounds = new Envelope(-Float.MAX_VALUE, Float.MAX_VALUE, -Float.MAX_VALUE, Float.MAX_VALUE);
 			PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
 			GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
 			biggestGeometry = geometryFactory.toGeometry(maxBounds);
