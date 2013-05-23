@@ -60,7 +60,7 @@ public class FeatureinfoPanel extends SamplePanel {
 		}
 	};
 	
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getViewPanel() {
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
@@ -162,19 +162,19 @@ public class FeatureinfoPanel extends SamplePanel {
 				new CustomCountriesFeatureInfoCanvasBuilder());
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public String getDescription() {
 		return MESSAGES.applicationDescription();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[]{
 		"classpath:org/geomajas/widget/featureinfo/gwt/example/context/applicationContext.xml",
 		"classpath:org/geomajas/widget/featureinfo/gwt/example/context/mapMain.xml"};
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

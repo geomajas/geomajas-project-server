@@ -50,12 +50,12 @@ public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 	@Autowired
 	private GeoService geoservice;
 
-	/** {@inheritDoc} */
+	@Override
 	public SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		return toSimpleFeatureType(vectorLayerInfo, null);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public SimpleFeature toSimpleFeature(InternalFeature feature, SimpleFeatureType featureType) {
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
 		List<Object> attr = new ArrayList<Object>();
@@ -77,7 +77,7 @@ public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo, List<String> attributeNames)
 			throws LayerException {
 

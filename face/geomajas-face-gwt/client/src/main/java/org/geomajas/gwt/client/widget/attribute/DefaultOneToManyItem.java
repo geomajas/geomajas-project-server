@@ -87,7 +87,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		item = new OneToManyLink();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void toItem(OneToManyAttribute attribute) {
 		// deep clone to allow separation of object and form state
 		for (AssociationValue value : attribute.getValue()) {
@@ -95,7 +95,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void fromItem(OneToManyAttribute attribute) {
 		List<AssociationValue> values = new ArrayList<AssociationValue>();
 		// deep clone to allow separation of object and form state
@@ -105,13 +105,13 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		attribute.setValue(values);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clearValue() {
 		detailForm.clear();
 		masterGrid.clearValues();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		featureInfo = attributeInfo.getFeature();
 		window = new KeepInScreenWindow();
@@ -135,7 +135,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		applyButton.setTooltip(I18nProvider.getAttribute().btnApplyTooltip());
 		applyButton.addClickHandler(new ClickHandler() {
 
-			/** {@inheritDoc} */
+			@Override
 			public void onClick(ClickEvent event) {
 				if (detailForm.validate() && selectedValue != null) {
 					for (Map.Entry<String, Attribute<?>> entry : selectedValue.getAllAttributes().entrySet()) {
@@ -154,7 +154,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		newButton.setTooltip(I18nProvider.getAttribute().btnNewTooltip());
 		newButton.addClickHandler(new ClickHandler() {
 
-			/** {@inheritDoc} */
+			@Override
 			public void onClick(ClickEvent event) {
 				selectedValue = createInstance();
 				detailForm.clear();
@@ -170,7 +170,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		deleteButton.setTooltip(I18nProvider.getAttribute().btnDeleteTooltip());
 		deleteButton.addClickHandler(new ClickHandler() {
 
-			/** {@inheritDoc} */
+			@Override
 			public void onClick(ClickEvent event) {
 				if (selectedValue != null) {
 					if (masterGrid.deleteValue(selectedValue)) {
@@ -278,7 +278,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 			setTooltip(I18nProvider.getAttribute().one2ManyMoreTooltip());
 			addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
-				/** {@inheritDoc} */
+				@Override
 				public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
 					openEditor();
 				}

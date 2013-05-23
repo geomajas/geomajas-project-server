@@ -32,17 +32,17 @@ public class InfinispanCacheService implements CacheService {
 		this.cache = cache;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void put(String key, Object object) {
 		cache.putAsync(key, object);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object get(String key) {
 		return cache.get(key);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <TYPE> TYPE get(String key, Class<TYPE> type) {
 		Object res = get(key);
@@ -52,17 +52,17 @@ public class InfinispanCacheService implements CacheService {
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void remove(String key) {
 		cache.remove(key);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clear() {
 		cache.clear();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void drop() {
 		clear();
 	}

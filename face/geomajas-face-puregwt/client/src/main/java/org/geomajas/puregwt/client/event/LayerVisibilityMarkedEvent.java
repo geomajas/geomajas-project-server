@@ -40,7 +40,7 @@ public class LayerVisibilityMarkedEvent extends BaseLayerEvent<LayerVisibilityHa
 		super(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<LayerVisibilityHandler> getAssociatedType() {
 		return LayerVisibilityHandler.TYPE;

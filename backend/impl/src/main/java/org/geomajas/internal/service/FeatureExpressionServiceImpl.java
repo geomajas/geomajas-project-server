@@ -62,7 +62,7 @@ public class FeatureExpressionServiceImpl implements FeatureExpressionService {
 		propertyAccessors.add(new InternalFeaturePropertyAccessor());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object evaluate(String expression, InternalFeature feature) throws LayerException {
 		StandardEvaluationContext context = new StandardEvaluationContext(feature);
 		// set a new list of accessors, custom accessors first !
@@ -81,7 +81,7 @@ public class FeatureExpressionServiceImpl implements FeatureExpressionService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setVariables(Map<String, Object> variables) {
 		this.variables.putAll(variables);
 	}

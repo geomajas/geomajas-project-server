@@ -67,7 +67,7 @@ public class FeatureServiceImpl implements FeatureService {
 	// Searching features by attributes:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void search(final FeaturesSupported layer, SearchCriterion[] criteria, LogicalOperator operator,
 			int maxResultSize, final FeatureMapFunction callback) {
 		SearchFeatureRequest request = new SearchFeatureRequest();
@@ -102,7 +102,7 @@ public class FeatureServiceImpl implements FeatureService {
 	// Searching features by location:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void search(final FeaturesSupported layer, Geometry location, double buffer,
 			final FeatureMapFunction callback) {
 		SearchByLocationRequest request = new SearchByLocationRequest();
@@ -135,7 +135,7 @@ public class FeatureServiceImpl implements FeatureService {
 		});
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void search(Geometry location, double buffer, QueryType queryType, SearchLayerType searchType, float ratio,
 			final FeatureMapFunction callback) {
 		SearchByLocationRequest request = new SearchByLocationRequest();

@@ -220,7 +220,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public SearchByLocationResponse getEmptyCommandResponse() {
 		return new SearchByLocationResponse();
 	}

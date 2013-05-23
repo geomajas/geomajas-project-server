@@ -35,12 +35,12 @@ public class LayerSelectedEvent extends GwtEvent<LayerSelectionHandler> {
 		this.layer = layer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<LayerSelectionHandler> getAssociatedType() {
 		return LayerSelectionHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(LayerSelectionHandler selectLayerHandler) {
 		selectLayerHandler.onSelectLayer(this);
 	}

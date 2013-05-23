@@ -69,12 +69,12 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public GetLocationForStringResponse getEmptyCommandResponse() {
 		return new GetLocationForStringResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetLocationForStringRequest request, GetLocationForStringResponse response) throws Exception {
 		String location = request.getLocation();
 		if (null == location) {

@@ -95,23 +95,23 @@ public class GeometryCriterion implements Criterion {
 		this.operator = operator;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isValid() {
 		return (serverLayerIds != null && serverLayerIds.size() > 0 && geometry != null && operator > 0 && operator < 5)
 		;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void serverLayerIdVisitor(Set<String> layerIds) {
 		layerIds.addAll(serverLayerIds);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<Criterion> getCriteria() {
 		return new ArrayList<Criterion>();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		switch (operator) {

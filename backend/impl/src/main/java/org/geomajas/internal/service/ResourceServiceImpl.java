@@ -41,7 +41,7 @@ public class ResourceServiceImpl implements ResourceService {
 	@Autowired(required = false)
 	private List<ResourceInfo> resourcesInfos;
 
-	/** {@inheritDoc} */
+	@Override
 	public Resource find(String location) throws GeomajasException {
 		Resource resource = applicationContext.getResource(location);
 		if (resource.exists()) {
@@ -72,12 +72,12 @@ public class ResourceServiceImpl implements ResourceService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<String> getRootPaths() {
 		return rootPaths;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setRootPaths(List<String> rootPaths) {
 		this.rootPaths = rootPaths;
 	}

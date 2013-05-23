@@ -75,7 +75,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		this.vectorLayerInfo = vectorLayerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		AbstractAttributeInfo attributeInfo = getAttributeInfoMap().get(name);
 		if (null == attributeInfo) {
@@ -88,7 +88,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
@@ -103,12 +103,12 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		return attribs;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int getSrid() throws LayerException {
 		return srid;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Geometry geom = (Geometry) asFeature(feature).getDefaultGeometry();
 		if (geom instanceof MultiLineString && vectorLayerInfo.getLayerType() == LayerType.LINESTRING) {
@@ -121,13 +121,13 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		return (Geometry) geom.clone();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId(Object feature) throws LayerException {
 		SimpleFeature realFeature = asFeature(feature);
 		return realFeature.getID();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object newInstance() throws LayerException {
 		String id = Long.toString(nextId);
 		nextId++;
@@ -135,7 +135,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 				new Object[getSchema().getAttributeCount()], getSchema(), id);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object newInstance(String id) throws LayerException {
 		return CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
 				new Object[getSchema().getAttributeCount()], getSchema(), id);
@@ -146,7 +146,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		asFeature(feature).setDefaultGeometry(geometry);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean canHandle(Object feature) {
 		return feature instanceof SimpleFeature;
 	}

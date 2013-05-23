@@ -102,15 +102,13 @@ public class MarkInfo implements Serializable {
 		this.stroke = stroke;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public java.lang.String toString() {
 		return "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
 				+ this.getStroke() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
 			return true;
@@ -145,8 +143,7 @@ public class MarkInfo implements Serializable {
 		return other instanceof MarkInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

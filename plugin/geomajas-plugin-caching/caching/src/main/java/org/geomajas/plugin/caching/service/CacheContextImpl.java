@@ -31,17 +31,17 @@ public class CacheContextImpl implements CacheContext {
 
 	private final Map<String, Object> map = new HashMap<String, Object>();
 
-	/** {@inheritDoc} */
+	@Override
 	public void put(String key, Object object) {
 		map.put(key, object);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object get(String key) {
 		return map.get(key);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public <TYPE> TYPE get(String key, Class<TYPE> type) {
 		Object res = get(key);
 		if (type.isInstance(res)) {

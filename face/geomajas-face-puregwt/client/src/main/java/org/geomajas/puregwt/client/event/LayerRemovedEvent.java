@@ -36,7 +36,7 @@ public class LayerRemovedEvent extends BaseLayerEvent<MapCompositionHandler> {
 		this.index = index;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<MapCompositionHandler> getAssociatedType() {
 		return MapCompositionHandler.TYPE;

@@ -117,7 +117,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		return selected;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void updateShowing() {
 		updateShowing(true);
 	}
@@ -176,7 +176,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		return layerInfo.getId();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public MapModel getMapModel() {
 		return mapModel;
 	}
@@ -231,18 +231,18 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		return layerInfo.getMaximumScale().getPixelPerUnit();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setLabeled(boolean labeled) {
 		this.labeled = labeled;
 		handlerManager.fireEvent(new LayerLabeledEvent(this));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowing() {
 		return showing;
 	}

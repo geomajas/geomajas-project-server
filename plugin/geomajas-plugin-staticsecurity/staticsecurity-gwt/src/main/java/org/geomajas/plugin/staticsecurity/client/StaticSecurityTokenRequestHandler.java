@@ -45,7 +45,7 @@ public class StaticSecurityTokenRequestHandler implements TokenRequestHandler {
 		this.slogan = slogan;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void login(final TokenChangedHandler tokenChangedHandler) {
 		final TokenRequestWindow tokenRequestWindow =
 				new TokenRequestWindow(new LoginTokenChangedHandler(tokenChangedHandler));
@@ -62,7 +62,7 @@ public class StaticSecurityTokenRequestHandler implements TokenRequestHandler {
 			this.tokenChangedHandler = tokenChangedHandler;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onTokenChanged(TokenChangedEvent event) {
 			tokenChangedHandler.onTokenChanged(event);
 		}

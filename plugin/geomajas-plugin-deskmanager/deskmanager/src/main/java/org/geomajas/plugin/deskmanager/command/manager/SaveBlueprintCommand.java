@@ -50,7 +50,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 	@Autowired
 	private TerritoryService groupService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(SaveBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			if (request.getBlueprint() == null) {
@@ -93,7 +93,7 @@ public class SaveBlueprintCommand implements Command<SaveBlueprintRequest, Bluep
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public BlueprintResponse getEmptyCommandResponse() {
 		return new BlueprintResponse();
 	}

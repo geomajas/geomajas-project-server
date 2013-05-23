@@ -141,7 +141,7 @@ public class LayerModelServiceImpl implements LayerModelService {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public DeskmanagerClientLayerInfo getExtraInfo(ClientLayerInfo cli) {
 		if (cli.getUserData() != null && cli.getUserData() instanceof DeskmanagerClientLayerInfo) {
 			return (DeskmanagerClientLayerInfo) cli.getUserData();

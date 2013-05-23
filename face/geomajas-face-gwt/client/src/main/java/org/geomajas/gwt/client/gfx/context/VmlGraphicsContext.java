@@ -720,12 +720,12 @@ public class VmlGraphicsContext implements GraphicsContext {
 		helper.moveElement(name, sourceParent, targetParent);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void bringToFront(Object object, String name) {
 		helper.bringToFront(object, name);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void moveToBack(Object object, String name) {
 		helper.moveToBack(object, name);
 	}

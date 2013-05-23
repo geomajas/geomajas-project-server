@@ -31,12 +31,12 @@ public class MapModelEvent extends GwtEvent<MapModelHandler> {
 	/** Event type. */
 	public static final Type<MapModelHandler> TYPE = new Type<MapModelHandler>();
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<MapModelHandler> getAssociatedType() {
 		return TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(MapModelHandler mapViewHandler) {
 		mapViewHandler.onMapModelChange(this);
 	}

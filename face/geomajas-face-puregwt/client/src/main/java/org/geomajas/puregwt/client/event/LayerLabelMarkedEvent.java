@@ -40,7 +40,7 @@ public class LayerLabelMarkedEvent extends BaseLayerEvent<LayerLabeledHandler> {
 		super(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<LayerLabeledHandler> getAssociatedType() {
 		return LayerLabeledHandler.TYPE;

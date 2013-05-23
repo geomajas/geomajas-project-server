@@ -28,7 +28,7 @@ import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
  */
 public class WmsTileServiceImpl implements WmsTileService {
 
-	/** {@inheritDoc} */
+	@Override
 	public List<TileCode> getTileCodesForBounds(ViewPort viewPort, WmsTileConfiguration tileConfig, Bbox bounds,
 			double scale) {
 		List<TileCode> codes = new ArrayList<TileCode>();
@@ -66,7 +66,7 @@ public class WmsTileServiceImpl implements WmsTileService {
 		return codes;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Bbox getWorldBoundsForTile(ViewPort viewPort, WmsTileConfiguration tileConfig, TileCode tileCode) {
 		double resolution = 1 / viewPort.getZoomStrategy().getZoomStepScale(tileCode.getTileLevel());
 		double worldTileWidth = tileConfig.getTileWidth() * resolution;
@@ -77,7 +77,7 @@ public class WmsTileServiceImpl implements WmsTileService {
 		return new Bbox(x, y, worldTileWidth, worldTileHeight);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TileCode getTileCodeForLocation(ViewPort viewPort, WmsTileConfiguration tileConfig, Coordinate location,
 			double scale) {
 		double actualScale = viewPort.getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST);

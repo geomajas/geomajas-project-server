@@ -39,12 +39,12 @@ public abstract class AbstractGeometryIndexMapHandler implements MapEventParser,
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 		return eventParser.getLocation(event, renderSpace);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Element getTarget(HumanInputEvent<?> event) {
 		return eventParser.getTarget(event);
 	}

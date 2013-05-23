@@ -72,17 +72,17 @@ public abstract class AbstractLayer implements Layer {
 	// Layer implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getTitle() {
 		return title;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 		if (selected) {
@@ -92,12 +92,12 @@ public abstract class AbstractLayer implements Layer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isSelected() {
 		return selected;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setMarkedAsVisible(boolean markedAsVisible) {
 		this.markedAsVisible = markedAsVisible;
 		eventBus.fireEvent(new LayerVisibilityMarkedEvent(this));
@@ -110,17 +110,17 @@ public abstract class AbstractLayer implements Layer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isMarkedAsVisible() {
 		return markedAsVisible;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowing() {
 		return markedAsVisible;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void refresh() {
 		eventBus.fireEvent(new LayerRefreshedEvent(this));
 	}

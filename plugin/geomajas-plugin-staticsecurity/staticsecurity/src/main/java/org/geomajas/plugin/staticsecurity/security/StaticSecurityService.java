@@ -27,12 +27,12 @@ public class StaticSecurityService implements SecurityService {
 	@Autowired
 	private AuthenticationTokenService authenticationTokenService;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return SECURITY_SERVICE_ID; 
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Authentication getAuthentication(String token) {
 		return authenticationTokenService.getAuthentication(token);
 	}

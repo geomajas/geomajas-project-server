@@ -39,12 +39,12 @@ public class FeatureDeselectedEvent extends JsEvent<FeatureDeselectedHandler> im
 		this.feature = feature;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Class<FeatureDeselectedHandler> getType() {
 		return FeatureDeselectedHandler.class;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(FeatureDeselectedHandler handler) {
 		handler.onFeatureDeselected(this);
 	}

@@ -77,20 +77,20 @@ public class FeatureAuthorizationInfo extends LayerAuthorizationInfo {
 			this.info = info;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isFeatureVisible(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null && check(feature, layer.getVisibleIncludes(), layer.getVisibleExcludes());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&
 					check(feature, layer.getUpdateAuthorizedIncludes(), layer.getUpdateAuthorizedExcludes());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature,
 												 InternalFeature newFeature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
@@ -98,14 +98,14 @@ public class FeatureAuthorizationInfo extends LayerAuthorizationInfo {
 					check(newFeature, layer.getUpdateAuthorizedIncludes(), layer.getUpdateAuthorizedExcludes());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&
 					check(feature, layer.getDeleteAuthorizedIncludes(), layer.getDeleteAuthorizedExcludes());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null && layer.isCreateAuthorized();

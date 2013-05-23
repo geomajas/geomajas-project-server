@@ -35,7 +35,7 @@ public class ScaleLevelRenderedEvent extends GwtEvent<ScaleLevelRenderedHandler>
 		this.scale = scale;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<ScaleLevelRenderedHandler> getAssociatedType() {
 		return ScaleLevelRenderedHandler.TYPE;

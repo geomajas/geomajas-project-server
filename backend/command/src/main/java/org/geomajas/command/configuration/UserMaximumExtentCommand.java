@@ -61,12 +61,12 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	@Autowired
 	private SecurityContext securityContext;
 
-	/** {@inheritDoc} */
+	@Override
 	public UserMaximumExtentResponse getEmptyCommandResponse() {
 		return new UserMaximumExtentResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(UserMaximumExtentRequest request, UserMaximumExtentResponse response) throws Exception {
 		String[] layers;
 		ArrayList<String> tempLayers = new ArrayList<String>();

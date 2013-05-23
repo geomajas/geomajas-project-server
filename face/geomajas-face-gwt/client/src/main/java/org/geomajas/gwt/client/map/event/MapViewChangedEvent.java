@@ -83,12 +83,12 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 		return type;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(MapViewChangedHandler handler) {
 		handler.onMapViewChanged(this);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public final Type<MapViewChangedHandler> getAssociatedType() {
 		return type;
 	}

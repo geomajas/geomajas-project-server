@@ -31,15 +31,13 @@ public class RotationInfo extends ParameterValueTypeInfo implements Serializable
 
 	private static final long serialVersionUID = 100;
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "RotationInfo()";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -58,14 +56,17 @@ public class RotationInfo extends ParameterValueTypeInfo implements Serializable
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof RotationInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

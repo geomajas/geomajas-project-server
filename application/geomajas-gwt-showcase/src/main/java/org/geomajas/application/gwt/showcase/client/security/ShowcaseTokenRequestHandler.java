@@ -31,7 +31,7 @@ public class ShowcaseTokenRequestHandler implements TokenRequestHandler {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
-	/** {@inheritDoc} */
+	@Override
 	public void login(TokenChangedHandler tokenChangedHandler) {
 		SsecAccess.login(userId, password, tokenChangedHandler);
 	}

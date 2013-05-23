@@ -57,7 +57,7 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, Geode
 	@Autowired
 	private DtoConverterService dtoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(CreateGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			if (request.getBlueprintId() == null || "".equals(request.getBlueprintId())) {
@@ -99,7 +99,7 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, Geode
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeodeskResponse getEmptyCommandResponse() {
 		return new GeodeskResponse();
 	}

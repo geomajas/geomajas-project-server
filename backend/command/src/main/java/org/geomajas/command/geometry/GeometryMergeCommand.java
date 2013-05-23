@@ -43,12 +43,12 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 	@Autowired
 	private DtoConverterService converter;
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryMergeResponse getEmptyCommandResponse() {
 		return new GeometryMergeResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GeometryMergeRequest request, GeometryMergeResponse response) throws Exception {
 		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
 		if (clientGeometries == null || clientGeometries.size() == 0) {

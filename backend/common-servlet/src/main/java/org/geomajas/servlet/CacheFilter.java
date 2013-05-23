@@ -106,11 +106,11 @@ public class CacheFilter implements Filter {
 	// Filter implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void destroy() {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void init(FilterConfig config) throws ServletException {
 		ServletContext context = config.getServletContext();
 		String param;
@@ -158,7 +158,7 @@ public class CacheFilter implements Filter {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "AvoidUsingHardCodedIP",
 			justification = "double-safe check on localhost, ease configuration for development")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException,

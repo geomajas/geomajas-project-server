@@ -55,7 +55,7 @@ public class GeocoderPanel extends SamplePanel {
 		}
 	};
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
@@ -134,12 +134,12 @@ public class GeocoderPanel extends SamplePanel {
 		return dataSource;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDescription() {
 		return MESSAGES.geocoderDescription();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[]{"classpath:org/geomajas/plugin/geocoder/gwt/example/context/geocoder.xml",
 				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/appGeocoder.xml",
@@ -147,7 +147,7 @@ public class GeocoderPanel extends SamplePanel {
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml"};
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

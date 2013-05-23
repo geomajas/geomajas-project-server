@@ -79,12 +79,12 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	// RibbonGroup implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public RibbonColumn getColumn(int index) {
 		return columns.get(index);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addColumn(RibbonColumn ribbonColumn) {
 		if (ribbonColumn == null) {
 			throw new IllegalArgumentException("Cannot add RibbonColumn with null value.");
@@ -94,7 +94,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		memberLayout.addMember(ribbonColumn.asWidget());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addColumn(RibbonColumn ribbonColumn, int index) {
 		if (ribbonColumn == null) {
 			throw new IllegalArgumentException("Cannot add RibbonColumn with null value.");
@@ -104,7 +104,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		memberLayout.addMember(ribbonColumn.asWidget(), index);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeColumn(RibbonColumn ribbonColumn) {
 		if (ribbonColumn == null) {
 			throw new IllegalArgumentException("Cannot remove RibbonColumn with null value.");
@@ -113,7 +113,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		memberLayout.removeMember((Canvas) ribbonColumn.asWidget());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeColumn(int index) {
 		removeColumn(getColumn(index));
 	}
@@ -122,23 +122,23 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		return id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setShowTitle(boolean showTitle) {
 		this.showTitle = showTitle;
 		titleLabel.setVisible(showTitle);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowTitle() {
 		return showTitle;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getTitle() {
 		return title;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTitle(String title) {
 		this.title = title;
 	}

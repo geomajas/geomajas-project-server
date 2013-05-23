@@ -154,7 +154,7 @@ public class SingleMapAddon extends MapAddon {
 		this.height = height;
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		this.group = group;
 		GraphicsContext vectorContext = mapWidget.getVectorContext();

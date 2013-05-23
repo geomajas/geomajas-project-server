@@ -101,7 +101,7 @@ public final class LayersModelImpl implements LayersModel {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean addLayer(Layer layer) {
 		if (layer == null) {
 			throw new IllegalArgumentException("Layer is null.");

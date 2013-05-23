@@ -99,7 +99,7 @@ public class GeometryIndex {
 		return value;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof GeometryIndex)) {
 			return false;
@@ -111,7 +111,7 @@ public class GeometryIndex {
 		return type == index.getType() && value == index.getValue() && hasChild() == index.hasChild();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int hashCode() {
 		if (hasChild()) {
 			return (getChild().hashCode() + value) * type.hashCode();
@@ -119,7 +119,7 @@ public class GeometryIndex {
 		return (37 + value) * type.hashCode();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String toString() {
 		if (child != null) {
 			return type.toString() + "-" + value + " / " + child.toString();

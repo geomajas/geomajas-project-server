@@ -31,7 +31,7 @@ public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {
 		super(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<LayerRefreshedHandler> getAssociatedType() {
 		return LayerRefreshedHandler.TYPE;

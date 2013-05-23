@@ -46,7 +46,7 @@ public class GooglePanel extends SamplePanel {
 		}
 	};
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();

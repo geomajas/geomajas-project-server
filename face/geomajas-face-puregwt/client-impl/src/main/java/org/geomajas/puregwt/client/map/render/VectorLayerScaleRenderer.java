@@ -85,17 +85,17 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTilesRendered(HtmlContainer container, double scale) {
 		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), eventSource);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public double getScale() {
 		return scale;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void cancel() {
 		// Perhaps we where busy fetching the correct tiles?
 		if (deferred != null) {
@@ -106,7 +106,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 		// Perhaps we where busy rendering the tiles?
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void render(Bbox bbox) {
 		// Only fetch when inside the layer bounds:
 		if (BboxService.intersects(bbox, layerBounds) && vectorLayer.isShowing()) {

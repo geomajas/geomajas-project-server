@@ -194,16 +194,14 @@ public class StrokeInfo implements Serializable {
 			this.graphicStroke = graphicStroke;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "StrokeInfo.ChoiceInfo(choiceSelect=" + this.choiceSelect + ", graphicFill=" + this.getGraphicFill()
 					+ ", graphicStroke=" + this.getGraphicStroke() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -230,14 +228,17 @@ public class StrokeInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ChoiceInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -294,15 +295,13 @@ public class StrokeInfo implements Serializable {
 		getCssParameterList().add(new CssParameterInfo(STROKE_OPACITY, Float.toString(f)));
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "StrokeInfo(choice=" + this.getChoice() + ", cssParameterList=" + this.getCssParameterList() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -326,14 +325,17 @@ public class StrokeInfo implements Serializable {
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof StrokeInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

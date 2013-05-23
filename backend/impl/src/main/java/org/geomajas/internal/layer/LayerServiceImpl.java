@@ -31,7 +31,7 @@ public class LayerServiceImpl implements LayerService {
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public Crs getCrs(Layer layer) throws LayerException {
 		CoordinateReferenceSystem check = layer.getCrs();
 		if (check instanceof Crs) {

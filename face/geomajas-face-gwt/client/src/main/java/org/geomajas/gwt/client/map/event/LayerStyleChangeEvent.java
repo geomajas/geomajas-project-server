@@ -44,12 +44,12 @@ public class LayerStyleChangeEvent extends GwtEvent<LayerStyleChangedHandler> {
 		return layer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<LayerStyleChangedHandler> getAssociatedType() {
 		return LayerStyleChangedHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(LayerStyleChangedHandler layerStyleChangedHandler) {
 		layerStyleChangedHandler.onLayerStyleChange(this);
 	}

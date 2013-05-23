@@ -40,12 +40,12 @@ public class TransformGeometryCommand implements Command<TransformGeometryReques
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public TransformGeometryResponse getEmptyCommandResponse() {
 		return new TransformGeometryResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(TransformGeometryRequest request, TransformGeometryResponse response) throws Exception {
 		Crs sourceCrs = geoService.getCrs2(request.getSourceCrs());
 		Crs targetCrs = geoService.getCrs2(request.getTargetCrs());

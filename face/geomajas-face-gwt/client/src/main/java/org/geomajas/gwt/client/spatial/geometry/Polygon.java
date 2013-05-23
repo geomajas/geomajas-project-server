@@ -97,7 +97,7 @@ public class Polygon extends AbstractGeometry {
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createPolygon(exteriorRing, interiorRings);
 	}

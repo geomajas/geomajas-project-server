@@ -48,13 +48,13 @@ public abstract class AbstractMapController extends AbstractController implement
 	// MapController implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onActivate(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 		eventParser = mapPresenter.getMapEventParser();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeactivate(MapPresenter mapPresenter) {
 	}
 }

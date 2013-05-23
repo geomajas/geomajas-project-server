@@ -44,12 +44,12 @@ public class LayerLabeledEvent extends GwtEvent<LayerChangedHandler> {
 		return layer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<LayerChangedHandler> getAssociatedType() {
 		return LayerChangedHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(LayerChangedHandler layerChangedHandler) {
 		layerChangedHandler.onLabelChange(this);
 	}

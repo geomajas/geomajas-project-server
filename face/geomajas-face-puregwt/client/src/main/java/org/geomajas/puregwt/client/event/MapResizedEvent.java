@@ -38,7 +38,7 @@ public class MapResizedEvent extends Event<MapResizedHandler> {
 		this.mapHeight = mapHeight;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<MapResizedHandler> getAssociatedType() {
 		return MapResizedHandler.TYPE;

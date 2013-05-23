@@ -225,16 +225,14 @@ public class UserLayerInfo implements Serializable {
 			this.remoteOWS = remoteOWS;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "UserLayerInfo.ChoiceInfo(choiceSelect=" + this.choiceSelect + ", inlineFeature="
 					+ this.getInlineFeature() + ", remoteOWS=" + this.getRemoteOWS() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -261,14 +259,17 @@ public class UserLayerInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ChoiceInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -280,16 +281,14 @@ public class UserLayerInfo implements Serializable {
 		}
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "UserLayerInfo(name=" + this.getName() + ", choice=" + this.getChoice() + ", layerFeatureConstraints="
 				+ this.getLayerFeatureConstraints() + ", userStyleList=" + this.getUserStyleList() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -321,14 +320,17 @@ public class UserLayerInfo implements Serializable {
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof UserLayerInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

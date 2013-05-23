@@ -45,7 +45,7 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 		this.endPointService = endPointService;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<LayerStylePresenter> getStylePresenters() {
 		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
 		UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());

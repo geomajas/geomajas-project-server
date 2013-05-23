@@ -231,12 +231,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public DynamicForm getWidget() {
 		return formWidget;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 
@@ -254,12 +254,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isDisabled() {
 		return disabled;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean validate() {
 		boolean validate = true;
 		for (FormItem item : formWidget.getFields()) {
@@ -280,7 +280,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		manager.fireEvent(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addItemChangedHandler(ItemChangedHandler handler) {
 		MultiHandlerRegistration registration = new MultiHandlerRegistration();
 		// Due to custom made FormItems, we can't set the handler on the form anymore...
@@ -321,7 +321,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void toForm(String name, Attribute<?> attribute) {
 		AbstractReadOnlyAttributeInfo info = attributeInfoMap.get(name);
 		if (info == null || !isIncluded(info)) {
@@ -374,7 +374,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void fromForm(String name, Attribute<?> attribute) {
 		AbstractReadOnlyAttributeInfo info = attributeInfoMap.get(name);
 		if (null == attribute || null == info || !isIncluded(info) || !(info instanceof EditableAttributeInfo)) {
@@ -438,7 +438,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clear() {
 		formWidget.clearValues();
 		// the above does not call clearValue() on every item ?!! so do it explicitly

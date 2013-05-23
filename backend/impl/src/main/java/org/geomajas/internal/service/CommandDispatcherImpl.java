@@ -166,7 +166,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public long getCommandCount() {
 		return commandCount;
 	}

@@ -31,12 +31,12 @@ public class DispatchStartedEvent extends JsEvent<DispatchStartedHandler> implem
 	public DispatchStartedEvent() {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Class<DispatchStartedHandler> getType() {
 		return DispatchStartedHandler.class;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(DispatchStartedHandler handler) {
 		handler.onDispatchStarted(this);
 	}

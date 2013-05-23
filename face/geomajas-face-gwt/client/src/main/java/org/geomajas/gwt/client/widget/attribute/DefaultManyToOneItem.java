@@ -32,12 +32,12 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 		selectItem = new SelectItem();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public SelectItem getItem() {
 		return selectItem;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void toItem(ManyToOneAttribute attribute) {
 		if (attribute != null && attribute.getValue() != null) {
 			// value field = id as text field !
@@ -47,7 +47,7 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void fromItem(ManyToOneAttribute attribute) {
 		ListGridRecord record = selectItem.getSelectedRecord();
 		if (record != null) {
@@ -58,12 +58,12 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clearValue() {
 		selectItem.clearValue();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		selectItem.setValueField(ManyToOneDataSource.ASSOCIATION_ITEM_VALUE_FIELD_NAME);
 		selectItem.setOptionDataSource(new ManyToOneDataSource(attributeInfo, attributeProvider));

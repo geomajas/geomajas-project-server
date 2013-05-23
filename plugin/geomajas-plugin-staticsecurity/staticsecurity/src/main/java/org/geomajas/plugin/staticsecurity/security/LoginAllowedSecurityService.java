@@ -25,12 +25,12 @@ import org.geomajas.security.SecurityService;
  */
 public class LoginAllowedSecurityService implements SecurityService {
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return "staticsecurity.LoginAllowed";
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Authentication getAuthentication(String authenticationToken) {
 		Authentication auth = new Authentication();
 		auth.setAuthorizations(new BaseAuthorization[]{new LoginAuthorization()});
@@ -43,39 +43,39 @@ public class LoginAllowedSecurityService implements SecurityService {
 	 */
 	private static final class LoginAuthorization implements BaseAuthorization {
 
-		/** {@inheritDoc} */
+		@Override
 		public String getId() {
 			return "staticsecurity.LoginAuthorization";
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isToolAuthorized(String toolId) {
 			return false;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isCommandAuthorized(String commandName) {
 			return LoginRequest.COMMAND.equals(commandName) ||
 					LogoutRequest.COMMAND.equals(commandName) ||
 					LogRequest.COMMAND.equals(commandName);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isLayerVisible(String layerId) {
 			return false;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isLayerUpdateAuthorized(String layerId) {
 			return false;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isLayerCreateAuthorized(String layerId) {
 			return false;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isLayerDeleteAuthorized(String layerId) {
 			return false;
 		}

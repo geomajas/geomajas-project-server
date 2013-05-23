@@ -90,7 +90,11 @@ public class SearchFavourite implements Serializable, Cloneable {
 		this.lastChangeBy = lastChangeBy;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Clone object.
+	 *
+	 * @return cloned object
+	 */
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		SearchFavourite newFav = new SearchFavourite();
 		newFav.setCreator(creator);

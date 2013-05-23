@@ -55,12 +55,12 @@ public class EditingEvent extends GwtEvent<EditingHandler> {
 		this.editingEventType = editingEventType;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<EditingHandler> getAssociatedType() {
 		return EditingHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(EditingHandler editingHandler) {
 		editingHandler.onEditingChange(this);
 	}

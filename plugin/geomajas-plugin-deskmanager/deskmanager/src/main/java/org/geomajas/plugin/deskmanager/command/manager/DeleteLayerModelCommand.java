@@ -36,7 +36,7 @@ public class DeleteLayerModelCommand implements Command<DeleteLayerModelRequest,
 	@Autowired
 	private LayerModelService layerModelService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(DeleteLayerModelRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getId() == null) {
@@ -61,7 +61,7 @@ public class DeleteLayerModelCommand implements Command<DeleteLayerModelRequest,
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

@@ -33,13 +33,13 @@ public class CheckGeodeskIdExistsCommand implements Command<CheckGeodeskIdExists
 	@Autowired
 	private GeodeskService geodeskService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(CheckGeodeskIdExistsRequest request, CheckGeodeskIdExistsResponse response)
 			throws GeomajasSecurityException {
 		response.setExists(geodeskService.geodeskIdExists(request.getGeodeskId()));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CheckGeodeskIdExistsResponse getEmptyCommandResponse() {
 		return new CheckGeodeskIdExistsResponse();
 	}

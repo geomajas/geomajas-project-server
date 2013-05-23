@@ -40,7 +40,7 @@ public class GetGeodesksCommand implements Command<GetGeodesksRequest, GetGeodes
 	@Autowired
 	private DtoConverterService converterService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetGeodesksRequest request, GetGeodesksResponse response) throws Exception {
 
 		List<GeodeskDto> geodesks = new ArrayList<GeodeskDto>();
@@ -53,7 +53,7 @@ public class GetGeodesksCommand implements Command<GetGeodesksRequest, GetGeodes
 		response.setGeodesks(geodesks);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GetGeodesksResponse getEmptyCommandResponse() {
 		return new GetGeodesksResponse();
 	}

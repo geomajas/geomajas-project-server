@@ -110,7 +110,7 @@ public class FeatureSelectionController extends NavigationController {
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onActivate(MapPresenter mapPresenter) {
 		// Activate all 3 controllers:
 		super.onActivate(mapPresenter);
@@ -118,7 +118,7 @@ public class FeatureSelectionController extends NavigationController {
 		selectionRectangleController.onActivate(mapPresenter);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -130,7 +130,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDown(HumanInputEvent<?> event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -144,7 +144,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -157,7 +157,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDrag(HumanInputEvent<?> event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -168,7 +168,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onUp(HumanInputEvent<?> event) {
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
@@ -190,7 +190,7 @@ public class FeatureSelectionController extends NavigationController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		super.onMouseOut(event);
 		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {

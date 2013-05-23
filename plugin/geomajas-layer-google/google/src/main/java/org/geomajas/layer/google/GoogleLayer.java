@@ -135,7 +135,7 @@ public class GoogleLayer implements RasterLayer {
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -153,7 +153,7 @@ public class GoogleLayer implements RasterLayer {
 		this.maxZoomlevel = maxZoomLevel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RasterLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
@@ -350,7 +350,7 @@ public class GoogleLayer implements RasterLayer {
 		return source + apiString + sizeString;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<RasterTile> paint(CoordinateReferenceSystem targetCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		if (isTilesEnabled()) {

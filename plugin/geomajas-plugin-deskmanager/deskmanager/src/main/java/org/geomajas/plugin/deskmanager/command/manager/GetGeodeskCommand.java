@@ -39,7 +39,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GeodeskResp
 	@Autowired
 	private DtoConverterService dtoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			response.setGeodesk(dtoService.toDto(geodeskService.getGeodeskById(request.getGeodeskId()), true));
@@ -50,7 +50,7 @@ public class GetGeodeskCommand implements Command<GetGeodeskRequest, GeodeskResp
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeodeskResponse getEmptyCommandResponse() {
 		return new GeodeskResponse();
 	}

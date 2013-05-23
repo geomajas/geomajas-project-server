@@ -41,7 +41,7 @@ public class StaticDispatcherUrlService implements DispatcherUrlService {
 		this.dispatcherUrl = dispatcherUrl;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDispatcherUrl() {
 		return dispatcherUrl;
 	}

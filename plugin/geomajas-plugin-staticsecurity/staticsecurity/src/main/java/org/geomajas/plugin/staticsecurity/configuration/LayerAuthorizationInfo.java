@@ -259,7 +259,7 @@ public class LayerAuthorizationInfo implements AuthorizationInfo {
 		this.deleteAuthorizedLayersExclude = deleteAuthorizedLayersExclude;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public BaseAuthorization getAuthorization() {
 		return new LayerAuthorization(this);
 	}

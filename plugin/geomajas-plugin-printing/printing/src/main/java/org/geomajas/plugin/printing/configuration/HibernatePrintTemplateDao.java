@@ -28,7 +28,7 @@ public class HibernatePrintTemplateDao implements PrintTemplateDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	/** {@inheritDoc} */
+	@Override
 	public void merge(PrintTemplate template) throws IOException {
 		sessionFactory.getCurrentSession().save(template);
 	}

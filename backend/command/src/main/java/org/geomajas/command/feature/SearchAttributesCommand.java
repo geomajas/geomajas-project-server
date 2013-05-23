@@ -43,12 +43,12 @@ public class SearchAttributesCommand implements Command<SearchAttributesRequest,
 	@Autowired
 	private VectorLayerService layerService;
 
-	/** {@inheritDoc} */
+	@Override
 	public SearchAttributesResponse getEmptyCommandResponse() {
 		return new SearchAttributesResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(SearchAttributesRequest request, SearchAttributesResponse response) throws Exception {
 		String layerId = request.getLayerId();
 		if (null == layerId) {

@@ -43,12 +43,12 @@ public class GetUsersCommand implements Command<GetUsersRequest, GetUsersRespons
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
 
-	/** {@inheritDoc} */
+	@Override
 	public GetUsersResponse getEmptyCommandResponse() {
 		return new GetUsersResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetUsersRequest request, GetUsersResponse response) throws Exception {
 		HashSet<String> users = new HashSet<String>();
 		// check the user directories

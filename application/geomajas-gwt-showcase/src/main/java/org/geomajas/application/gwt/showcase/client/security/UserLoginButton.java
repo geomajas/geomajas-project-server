@@ -62,7 +62,7 @@ public class UserLoginButton extends IButton {
 			this.user = user;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onClick(ClickEvent clickEvent) {
 			ShowcaseTokenRequestHandler.userId = user;
 			ShowcaseTokenRequestHandler.password = user;

@@ -27,7 +27,7 @@ public class AndCriterion implements Criterion {
 
 	// ----------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public List<Criterion> getCriteria() {
 		if (criteria == null) {
 			criteria = new ArrayList<Criterion>();
@@ -39,7 +39,7 @@ public class AndCriterion implements Criterion {
 		this.criteria = criteria;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isValid() {
 		if (criteria != null  && criteria.size() > 0) {
 			for (Criterion critter : criteria) {
@@ -53,14 +53,14 @@ public class AndCriterion implements Criterion {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void serverLayerIdVisitor(Set<String> layerIds) {
 		for (Criterion criterion : getCriteria()) {
 			criterion.serverLayerIdVisitor(layerIds);
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;

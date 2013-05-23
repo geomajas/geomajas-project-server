@@ -88,13 +88,13 @@ public class NavigationController extends AbstractMapController {
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onActivate(MapPresenter mapPresenter) {
 		super.onActivate(mapPresenter);
 		zoomToRectangleController.onActivate(mapPresenter);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		super.onMouseDown(event);
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
@@ -103,7 +103,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDown(HumanInputEvent<?> event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
 			zooming = true;
@@ -115,7 +115,7 @@ public class NavigationController extends AbstractMapController {
 		lastClickPosition = getLocation(event, RenderSpace.WORLD);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onUp(HumanInputEvent<?> event) {
 		if (zooming) {
 			zoomToRectangleController.onUp(event);
@@ -125,7 +125,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		if (zooming) {
 			zoomToRectangleController.onMouseMove(event);
@@ -135,12 +135,12 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDrag(HumanInputEvent<?> event) {
 		updateView(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		if (zooming) {
 			zoomToRectangleController.onMouseOut(event);
@@ -149,7 +149,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
 		// Zoom in on the event location:
 		Bbox bounds = mapPresenter.getViewPort().getBounds();
@@ -159,7 +159,7 @@ public class NavigationController extends AbstractMapController {
 		mapPresenter.getViewPort().applyBounds(newBounds);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
 		final boolean isNorth;

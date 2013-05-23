@@ -38,7 +38,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 
 	private int height;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getLayerId() {
 		return layerId;
 	}
@@ -52,7 +52,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 		this.layerId = layerId;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public UserStyleInfo getUserStyle() {
 		return userStyle;
 	}
@@ -66,7 +66,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 		this.userStyle = userStyle;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public NamedStyleInfo getNamedStyle() {
 		return namedStyle;
 	}
@@ -80,7 +80,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 		this.namedStyle = namedStyle;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RuleInfo getRule() {
 		return rule;
 	}
@@ -94,7 +94,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 		this.rule = rule;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public double getScale() {
 		return scale;
 	}
@@ -108,7 +108,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 		this.scale = scale;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int getWidth() {
 		return width;
 	}
@@ -122,7 +122,7 @@ public class DefaultLegendGraphicMetadata implements LegendGraphicMetadata {
 		this.width = width;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int getHeight() {
 		return height;
 	}

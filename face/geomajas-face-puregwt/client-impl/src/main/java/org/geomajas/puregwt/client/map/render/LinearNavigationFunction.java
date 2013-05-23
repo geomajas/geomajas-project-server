@@ -19,7 +19,7 @@ package org.geomajas.puregwt.client.map.render;
  */
 public class LinearNavigationFunction extends AbstractNavigationFunction {
 
-	/** {@inheritDoc} */
+	@Override
 	public double[] getLocation(double progress) {
 		double x = beginX + progress * (endX - beginX);
 		double y = beginY + progress * (endY - beginY);

@@ -38,7 +38,7 @@ public class GetClientLayersCommand implements Command<GetClientLayersRequest, G
 	@Autowired
 	private DtoConverterService converterService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetClientLayersRequest request, GetClientLayersResponse response) throws Exception {
 		for (LayerModel model : layerModelService.getLayerModels()) {
 			ClientLayer layer = new ClientLayer();
@@ -47,7 +47,7 @@ public class GetClientLayersCommand implements Command<GetClientLayersRequest, G
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GetClientLayersResponse getEmptyCommandResponse() {
 		return new GetClientLayersResponse();
 	}

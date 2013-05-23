@@ -39,12 +39,12 @@ public class LayersModelChangedEvent extends JsEvent<LayersModelChangedHandler> 
 		this.layersModel = layersModel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Class<LayersModelChangedHandler> getType() {
 		return LayersModelChangedHandler.class;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(LayersModelChangedHandler handler) {
 		handler.onLayersModelChanged(this);
 	}

@@ -36,7 +36,7 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 	@Autowired
 	private GeodeskService loketService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(DeleteGeodeskRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getGeodeskId() == null) {
@@ -61,7 +61,7 @@ public class DeleteGeodeskCommand implements Command<DeleteGeodeskRequest, Comma
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

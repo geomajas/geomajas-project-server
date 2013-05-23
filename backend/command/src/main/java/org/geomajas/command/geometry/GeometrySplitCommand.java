@@ -42,12 +42,12 @@ public class GeometrySplitCommand implements Command<GeometrySplitRequest, Geome
 	@Autowired
 	private DtoConverterService converter;
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometrySplitResponse getEmptyCommandResponse() {
 		return new GeometrySplitResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GeometrySplitRequest request, GeometrySplitResponse response) throws Exception {
 		// Check the parameters:
 		if (null == request.getGeometry()) {

@@ -70,11 +70,11 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	// GraphicsController implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onActivate() {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeactivate() {
 	}
 
@@ -82,37 +82,37 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	// Keeping the API check happy - Mouse handling methods:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		super.onMouseDown(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		super.onMouseUp(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		super.onMouseMove(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		super.onMouseOut(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		super.onMouseOver(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
 		super.onMouseWheel(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
 		super.onDoubleClick(event);
 	}
@@ -240,7 +240,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 */
 	private class GwtMapEventParser implements MapEventParser {
 
-		/** {@inheritDoc} */
+		@Override
 		public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 			switch (renderSpace) {
 				case WORLD:
@@ -261,7 +261,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 			}
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Element getTarget(HumanInputEvent<?> event) {
 			EventTarget target = event.getNativeEvent().getEventTarget();
 			if (Element.is(target)) {

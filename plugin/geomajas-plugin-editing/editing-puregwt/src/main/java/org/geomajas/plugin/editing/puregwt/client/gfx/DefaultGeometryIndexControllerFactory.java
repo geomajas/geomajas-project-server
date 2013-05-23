@@ -131,7 +131,7 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	// GeometryIndexControllerFactory implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public MapController create(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (index == null) {

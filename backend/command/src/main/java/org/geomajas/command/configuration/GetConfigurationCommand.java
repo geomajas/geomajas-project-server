@@ -40,12 +40,12 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 	@Autowired
 	private GetMapConfigurationCommand mapConfigurationCommand;
 
-	/** {@inheritDoc} */
+	@Override
 	public GetConfigurationResponse getEmptyCommandResponse() {
 		return new GetConfigurationResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");

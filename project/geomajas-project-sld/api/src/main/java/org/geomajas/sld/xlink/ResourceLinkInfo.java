@@ -159,15 +159,13 @@ public class ResourceLinkInfo implements Serializable {
 			this.role = role;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ResourceLinkInfo.RoleInfo(role=" + this.getRole() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -187,14 +185,17 @@ public class ResourceLinkInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof RoleInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -235,21 +236,19 @@ public class ResourceLinkInfo implements Serializable {
 		/**
 		 * Set the 'title' attribute value.
 		 * 
-		 * @param title
+		 * @param title title
 		 */
 		public void setTitle(String title) {
 			this.title = title;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ResourceLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -269,14 +268,17 @@ public class ResourceLinkInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof TitleInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -323,15 +325,13 @@ public class ResourceLinkInfo implements Serializable {
 			this.label = label;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ResourceLinkInfo.LabelInfo(label=" + this.getLabel() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -351,14 +351,17 @@ public class ResourceLinkInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof LabelInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -368,16 +371,14 @@ public class ResourceLinkInfo implements Serializable {
 		}
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "ResourceLinkInfo(type=" + this.getType() + ", role=" + this.getRole() + ", title=" + this.getTitle()
 				+ ", label=" + this.getLabel() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -409,14 +410,17 @@ public class ResourceLinkInfo implements Serializable {
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ResourceLinkInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

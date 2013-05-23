@@ -63,12 +63,12 @@ public class RasterTile implements Tile, Paintable {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TileCode getCode() {
 		return code;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Bbox getBounds() {
 		return bbox;
 	}
@@ -82,7 +82,7 @@ public class RasterTile implements Tile, Paintable {
 		return id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		visitor.visit(this, group);
 	}

@@ -47,17 +47,17 @@ public class ShowCoordinatesModalAction extends ToolbarModalAction implements Co
 		this.setTooltip(MESSAGES.showCoordinatesActionTooltip());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(new ShowCoordinatesController(mapWidget, showWorldCoordinates, showViewCoordinates));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("showWorldCoordinates".equals(key)) {
 			showWorldCoordinates = Boolean.parseBoolean(value);

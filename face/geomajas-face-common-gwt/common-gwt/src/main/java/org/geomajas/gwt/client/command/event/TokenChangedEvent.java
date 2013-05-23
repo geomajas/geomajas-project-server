@@ -63,13 +63,13 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 		this.loginPending = loginPending;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Type getAssociatedType() {
 		return TokenChangedHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(TokenChangedHandler tokenChangedHandler) {
 		tokenChangedHandler.onTokenChanged(this);
 	}

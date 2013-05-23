@@ -31,7 +31,7 @@ public class ButtonGroup extends ToolbarBaseAction implements ConfigurableAction
 		super("", "", "");
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("title".equals(key)) {
 			setTitle(value);

@@ -29,7 +29,7 @@ public class NoInvalidateIndexFactory implements CacheIndexFactory {
 
 	private static final NoInvalidateIndexService INSTANCE = new NoInvalidateIndexService();
 
-	/** {@inheritDoc} */
+	@Override
 	public CacheIndexService create(Layer layer, CacheCategory category) {
 		return INSTANCE;
 	}

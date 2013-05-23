@@ -44,7 +44,7 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	// GeometryIndexStyleFactory implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public FeatureStyleInfo create(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (index == null) {

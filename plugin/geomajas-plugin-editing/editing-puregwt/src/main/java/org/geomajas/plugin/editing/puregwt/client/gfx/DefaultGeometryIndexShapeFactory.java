@@ -57,7 +57,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	// GeometryEditShapeFactory implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Shape create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException {
 		if (index == null) {
 			return createGeometry(editService, index);
@@ -72,7 +72,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void update(Shape shape, GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (index != null) {

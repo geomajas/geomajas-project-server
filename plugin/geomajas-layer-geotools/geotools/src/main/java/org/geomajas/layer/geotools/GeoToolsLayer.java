@@ -110,7 +110,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private long cooldownTimeBetweenInitializationRetries = DEFAULT_COOLDOWN_TIME;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -199,7 +199,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		this.cooldownTimeBetweenInitializationRetries = cooldownTimeBetweenInitializationRetries;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -217,22 +217,22 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		this.layerInfo = layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isCreateCapable() {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isUpdateCapable() {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isDeleteCapable() {
 		return true;
 	}
@@ -304,7 +304,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Transactional(rollbackFor = { Throwable.class })
 	public Object create(Object feature) throws LayerException {
 		SimpleFeatureSource source = getFeatureSource();
@@ -371,7 +371,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Transactional(rollbackFor = { Throwable.class })
 	public void delete(String featureId) throws LayerException {
 		SimpleFeatureSource source = getFeatureSource();
@@ -396,7 +396,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Transactional(rollbackFor = { Throwable.class })
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		if (exists(getFeatureModel().getId(feature))) {
@@ -407,7 +407,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return feature;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object read(String featureId) throws LayerException {
 		Filter filter = filterService.createFidFilter(new String[] { featureId });
 		Iterator<?> iterator = getElements(filter, 0, 0);
@@ -418,12 +418,12 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Envelope getBounds() throws LayerException {
 		return getBounds(null);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Envelope getBounds(Filter filter) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
@@ -467,7 +467,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public FeatureModel getFeatureModel() {
 		if (!featureModelUsable) {
 			retryInitFeatures();

@@ -56,7 +56,7 @@ public class CacheCategory {
 		return name;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String toString() {
 		return name;
 	}

@@ -160,7 +160,7 @@ public class MultiGeometryPanel extends SamplePanel {
 		return menuButton;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getViewPanel() {
 		MapWidget map = new MapWidget("mapGepEditing2", "appEditing");
 		GeometryEditor editor = new GeometryEditorImpl(map);
@@ -188,12 +188,12 @@ public class MultiGeometryPanel extends SamplePanel {
 		return layout;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDescription() {
 		return MESSAGES.multiGeometryDescription();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[]{"classpath:org/geomajas/plugin/editing/gwt/example/context/appEditing.xml",
 				"classpath:org/geomajas/plugin/editing/gwt/example/context/clientLayerCountries.xml",
@@ -203,7 +203,7 @@ public class MultiGeometryPanel extends SamplePanel {
 				"classpath:org/geomajas/gwt/example/base/layerCountries.xml"};
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

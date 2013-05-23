@@ -68,7 +68,7 @@ public final class FilterServiceImpl implements FilterService {
 		FF = CommonFactoryFinder.getFilterFactory2(hints);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createBetweenFilter(String name, String lower, String upper) {
 		PropertyName attribute = FF.property(name);
 		Expression d1 = FF.literal(lower);
@@ -76,14 +76,14 @@ public final class FilterServiceImpl implements FilterService {
 		return FF.between(attribute, d1, d2);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createLikeFilter(String name, String pattern) {
 
 		PropertyName attribute = FF.property(name);
 		return FF.like(attribute, pattern, "*", "?", "\\");
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createCompareFilter(String name, String comparator, String value) {
 		PropertyName attribute = FF.property(name);
 		Expression val = FF.literal(value);
@@ -107,7 +107,7 @@ public final class FilterServiceImpl implements FilterService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createCompareFilter(String name, String comparator, Date value) {
 		PropertyName attribute = FF.property(name);
 		Expression val = FF.literal(value);
@@ -131,12 +131,12 @@ public final class FilterServiceImpl implements FilterService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createGeometryTypeFilter(String geomName, String geometryType) {
 		return FF.equals(FF.literal(geometryType), FF.function("geometryType", FF.property(geomName)));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createLogicFilter(Filter filter1, String logic, Filter filter2) {
 		if ("and".equalsIgnoreCase(logic)) {
 			return FF.and(filter1, filter2);
@@ -149,7 +149,7 @@ public final class FilterServiceImpl implements FilterService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createFidFilter(String[] featureIDs) {
 		HashSet<Identifier> ids = new HashSet<Identifier>();
 		for (String id : featureIDs) {
@@ -158,72 +158,72 @@ public final class FilterServiceImpl implements FilterService {
 		return FF.id(ids);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createContainsFilter(Geometry geometry, String geomName) {
 		Expression nameExpression = FF.property(geomName);
 		Literal geomLiteral = FF.literal(geometry);
 		return FF.contains(nameExpression, geomLiteral);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createWithinFilter(Geometry geometry, String geomName) {
 		Expression nameExpression = FF.property(geomName);
 		Literal geomLiteral = FF.literal(geometry);
 		return FF.within(nameExpression, geomLiteral);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createIntersectsFilter(Geometry geometry, String geomName) {
 		Expression nameExpression = FF.property(geomName);
 		Literal geomLiteral = FF.literal(geometry);
 		return FF.intersects(nameExpression, geomLiteral);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createTouchesFilter(Geometry geometry, String geomName) {
 		Expression nameExpression = FF.property(geomName);
 		Literal geomLiteral = FF.literal(geometry);
 		return FF.touches(nameExpression, geomLiteral);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createBboxFilter(String epsg, Envelope bbox, String geomName) {
 		return FF.bbox(geomName, bbox.getMinX(), bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY(), epsg);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createBboxFilter(Crs crs, Envelope bbox, String geomName) {
 		return FF.bbox(FF.property(geomName), new ReferencedEnvelope(bbox, crs));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createOverlapsFilter(Geometry geometry, String geomName) {
 		Expression nameExpression = FF.property(geomName);
 		Literal geomLiteral = FF.literal(geometry);
 		return FF.overlaps(nameExpression, geomLiteral);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createTrueFilter() {
 		return Filter.INCLUDE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createFalseFilter() {
 		return Filter.EXCLUDE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void registerFeatureModel(FeatureModel featureModel) {
 		FeatureModelRegistry.getRegistry().register(featureModel);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createAndFilter(Filter left, Filter right) {
 		return FF.and(left, right);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Filter createOrFilter(Filter left, Filter right) {
 		return FF.or(left, right);
 	}

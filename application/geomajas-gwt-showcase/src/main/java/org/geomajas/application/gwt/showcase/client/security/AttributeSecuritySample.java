@@ -59,7 +59,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		}
 	};
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
 		layout.setMembersMargin(10);

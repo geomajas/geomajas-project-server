@@ -51,12 +51,12 @@ public class PersistTransactionCommand implements Command<PersistTransactionRequ
 	@Autowired
 	private VectorLayerService layerService;
 
-	/** {@inheritDoc} */
+	@Override
 	public PersistTransactionResponse getEmptyCommandResponse() {
 		return new PersistTransactionResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(PersistTransactionRequest request, PersistTransactionResponse response) throws Exception {
 		if (null == request.getFeatureTransaction()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "featureTransaction");

@@ -104,12 +104,12 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute<?> toDto(Object object, AttributeInfo info) throws GeomajasException {
 		return toDto(object, (AbstractAttributeInfo) info);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute<?> toDto(Object object, AbstractAttributeInfo info) throws GeomajasException {
 		if (info instanceof PrimitiveAttributeInfo) {
 			if (object instanceof Object[]) {
@@ -352,12 +352,12 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return dto;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Feature toDto(InternalFeature feature) throws GeomajasException {
 		return toDto(feature, VectorLayerService.FEATURE_INCLUDE_ALL);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public InternalFeature toInternal(Feature dto) throws GeomajasException {
 		if (dto == null) {
 			return null;
@@ -377,7 +377,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	// Geometry conversion:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
@@ -389,7 +389,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;

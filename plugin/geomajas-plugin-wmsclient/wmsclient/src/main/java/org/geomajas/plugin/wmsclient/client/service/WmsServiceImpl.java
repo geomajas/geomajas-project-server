@@ -118,7 +118,7 @@ public class WmsServiceImpl implements WmsService {
 	// WmsService implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String getMapUrl(WmsLayerConfiguration wmsConfig, String crs, Bbox worldBounds, int imageWidth,
 			int imageHeight) {
 		StringBuilder url = getBaseUrlBuilder(wmsConfig);
@@ -132,7 +132,7 @@ public class WmsServiceImpl implements WmsService {
 		return finishUrl(WmsRequest.GETMAP, url);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void getFeatureInfo(final FeaturesSupportedWmsLayer layer, Coordinate location,
 			final Callback<List<Feature>, String> callback) {
 		String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2);
@@ -150,7 +150,7 @@ public class WmsServiceImpl implements WmsService {
 		});
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, GetFeatureInfoFormat format,
 			final Callback<Object, String> callback) {
 		String url = getFeatureInfoUrl(layer, location, format);
@@ -172,7 +172,7 @@ public class WmsServiceImpl implements WmsService {
 	// WMS GetLegendGraphic methods:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
 		StringBuilder url = getBaseUrlBuilder(wmsConfig);
 
@@ -212,12 +212,12 @@ public class WmsServiceImpl implements WmsService {
 	// Proxy options:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void setWmsUrlTransformer(WmsUrlTransformer urlTransformer) {
 		this.urlTransformer = urlTransformer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public WmsUrlTransformer getWmsUrlTransformer() {
 		return urlTransformer;
 	}

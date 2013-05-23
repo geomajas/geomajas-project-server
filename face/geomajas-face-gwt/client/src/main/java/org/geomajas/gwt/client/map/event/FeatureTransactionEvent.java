@@ -41,12 +41,12 @@ public class FeatureTransactionEvent extends GwtEvent<FeatureTransactionHandler>
 		return featureTransaction;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<FeatureTransactionHandler> getAssociatedType() {
 		return FeatureTransactionHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(FeatureTransactionHandler featureSelectionHandler) {
 		featureSelectionHandler.onTransactionSuccess(this);
 	}

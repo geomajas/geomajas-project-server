@@ -47,26 +47,26 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	// FeaturesSupported implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public void setFilter(String filter) {
 		this.filter = filter;
 		refresh();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public String getFilter() {
 		return filter;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public boolean isFeatureSelected(String featureId) {
 		return selection.containsKey(featureId);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public boolean selectFeature(Feature feature) {
 		if (!selection.containsValue(feature) && feature.getLayer() == this) {
@@ -76,7 +76,7 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public boolean deselectFeature(Feature feature) {
 		if (selection.containsKey(feature.getId())) {
@@ -87,7 +87,7 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public void clearSelectedFeatures() {
 		for (Feature feature : selection.values()) {
@@ -96,19 +96,19 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 		selection.clear();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Collection<String> getSelectedFeatureIds() {
 		return selection.keySet();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public void getFeatureInfo(Coordinate location, Callback<List<Feature>, String> callback) {
 		wmsService.getFeatureInfo(this, location, callback);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback) {
 		wmsService.getFeatureInfo(this, location, format, callback);

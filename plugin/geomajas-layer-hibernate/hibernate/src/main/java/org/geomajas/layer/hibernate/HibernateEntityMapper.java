@@ -49,12 +49,12 @@ public class HibernateEntityMapper implements EntityMapper {
 		this.sessionFactory = sessionFactory;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Entity findOrCreateEntity(String dataSourceName, Object id) throws LayerException {
 		return new HibernateEntity(dataSourceName, id);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Entity asEntity(Object object) throws LayerException {
 		if (object == null) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM);
@@ -108,18 +108,18 @@ public class HibernateEntityMapper implements EntityMapper {
 			return object;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Object getId(String name) throws LayerException {
 			return metadata.getIdentifier(object, (SessionImplementor) sessionFactory.getCurrentSession());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Entity getChild(String name) throws LayerException {
 			Object child = (object == null ? null : metadata.getPropertyValue(object, name, EntityMode.POJO));
 			return child == null ? null : new HibernateEntity(child);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void setChild(String name, Entity entity) throws LayerException {
 			if (entity != null) {
 				metadata.setPropertyValue(object, name, ((HibernateEntity) entity).getObject(), EntityMode.POJO);
@@ -128,7 +128,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			}
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public EntityCollection getChildCollection(String name) throws LayerException {
 			Type type = metadata.getPropertyType(name);
 			if (type instanceof CollectionType) {
@@ -147,12 +147,12 @@ public class HibernateEntityMapper implements EntityMapper {
 			}
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void setAttribute(String name, Object value) throws LayerException {
 			metadata.setPropertyValue(object, name, value, EntityMode.POJO);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Object getAttribute(String name) throws LayerException {
 			if (metadata.getIdentifierPropertyName().equals(name)) {
 				return getId(name);
@@ -202,7 +202,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			this.parent = parent;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Iterator<Entity> iterator() {
 			Collection<Entity> entities = new ArrayList<Entity>();
 			for (Object bean : objects) {
@@ -211,7 +211,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			return entities.iterator();
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		@SuppressWarnings("unchecked")
 		public void addEntity(Entity entity) throws LayerException {
 			Object object = ((HibernateEntity) entity).getObject();
@@ -222,7 +222,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			objects.add(object);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void removeEntity(Entity entity) throws LayerException {
 			Object object = ((HibernateEntity) entity).getObject();
 			// remove parent from many-to-one

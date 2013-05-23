@@ -40,7 +40,7 @@ public class ResourceSerializationPolicyLocator implements SerializationPolicyLo
 
 	private List<Resource> policyRoots = new ArrayList<Resource>();
 
-	/** {@inheritDoc} */
+	@Override
 	public SerializationPolicy loadPolicy(HttpServletRequest request, String moduleBaseURL, String strongName) {
 
 		SerializationPolicy serializationPolicy = null;

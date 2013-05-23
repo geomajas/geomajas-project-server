@@ -69,7 +69,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		entityMapper = new HibernateEntityMapper(getSessionFactory());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		try {
 			return entityMappingService.getAttribute(feature, getFeatureInfo(), entityMapper, name);
@@ -78,7 +78,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		try {
@@ -96,14 +96,14 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId(Object feature) throws LayerException {
 		Entity entity = entityMapper.asEntity(feature);
 		Object id = entity.getId(getFeatureInfo().getIdentifier().getName());
 		return id == null ? null : id.toString();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Object obj = getAttributeRecursively(feature, getGeometryAttributeName());
 		if (obj == null) {
@@ -116,19 +116,19 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
 		entityMappingService.setAttributes(feature, getFeatureInfo(), entityMapper, (Map) attributes);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		Entity entity = entityMapper.asEntity(feature);
 		entity.setAttribute(getGeometryAttributeName(), geometry);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object newInstance() throws LayerException {
 		try {
 			return getEntityMetadata().instantiate(null, (SessionImplementor) getSessionFactory().getCurrentSession());
@@ -138,7 +138,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object newInstance(String id) throws LayerException {
 		try {
 			Serializable ser = (Serializable) ConvertUtils.convert(id, getEntityMetadata().getIdentifierType()
@@ -150,17 +150,17 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int getSrid() {
 		return srid;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getGeometryAttributeName() throws LayerException {
 		return fixName(getFeatureInfo().getGeometryType().getName());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean canHandle(Object feature) {
 		try {
 			return getEntityMetadata().getEntityName().equals(feature.getClass().getName());

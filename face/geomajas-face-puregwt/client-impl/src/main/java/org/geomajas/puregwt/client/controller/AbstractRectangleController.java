@@ -74,13 +74,13 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onActivate(MapPresenter mapPresenter) {
 		super.onActivate(mapPresenter);
 		getContainer();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDown(HumanInputEvent<?> event) {
 		if (!isRightMouseButton(event)) {
 			dragging = true;
@@ -96,7 +96,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onUp(HumanInputEvent<?> event) {
 		// Assure dragging or clicking started inside this widget
 		if (dragging) {
@@ -111,12 +111,12 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDrag(HumanInputEvent<?> event) {
 		updateRectangle(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		stopDragging();
 		dragging = false;

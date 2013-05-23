@@ -41,12 +41,12 @@ public class GeometryConvexHullCommand implements Command<GeometryConvexHullRequ
 	@Autowired
 	private DtoConverterService converter;
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryConvexHullResponse getEmptyCommandResponse() {
 		return new GeometryConvexHullResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GeometryConvexHullRequest request, GeometryConvexHullResponse response) throws Exception {
 		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
 		if (clientGeometries == null || clientGeometries.size() == 0) {

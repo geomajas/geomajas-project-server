@@ -31,7 +31,7 @@ public class LayerSelectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 		super(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<LayerSelectionHandler> getAssociatedType() {
 		return LayerSelectionHandler.TYPE;

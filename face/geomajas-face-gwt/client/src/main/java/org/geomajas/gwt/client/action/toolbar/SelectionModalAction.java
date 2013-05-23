@@ -65,18 +65,18 @@ public class SelectionModalAction extends ToolbarModalAction implements Configur
 		this.map = mapWidget;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelect(ClickEvent event) {
 		map.setController(new SelectionController(map, clickTimeout, coverageRatio, priorityToSelectedLayer,
 				pixelTolerance));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeselect(ClickEvent event) {
 		map.setController(null);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("clickTimeout".equals(key)) {
 			clickTimeout = Integer.parseInt(value);

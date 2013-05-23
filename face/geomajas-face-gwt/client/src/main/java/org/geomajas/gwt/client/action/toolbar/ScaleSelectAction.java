@@ -33,7 +33,7 @@ public class ScaleSelectAction extends ToolbarBaseAction implements ToolbarCanva
 		scaleSelect = new ScaleSelect(mapWidget);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getCanvas() {
 		return scaleSelect;
 	}

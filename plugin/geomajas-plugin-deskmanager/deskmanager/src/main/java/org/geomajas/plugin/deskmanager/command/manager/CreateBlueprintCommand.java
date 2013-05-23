@@ -40,7 +40,7 @@ public class CreateBlueprintCommand implements Command<CreateBlueprintRequest, B
 	@Autowired
 	private DtoConverterService dtoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(CreateBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			Blueprint bp = new Blueprint();
@@ -56,7 +56,7 @@ public class CreateBlueprintCommand implements Command<CreateBlueprintRequest, B
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public BlueprintResponse getEmptyCommandResponse() {
 		return new BlueprintResponse();
 	}

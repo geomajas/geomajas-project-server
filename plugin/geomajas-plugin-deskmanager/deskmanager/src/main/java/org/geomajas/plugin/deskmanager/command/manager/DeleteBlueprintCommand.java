@@ -37,7 +37,7 @@ public class DeleteBlueprintCommand implements Command<DeleteBlueprintRequest, C
 	@Autowired
 	private BlueprintService blueprintService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(DeleteBlueprintRequest request, CommandResponse response) throws Exception {
 		try {
 			if (request.getBlueprintId() == null) {
@@ -63,7 +63,7 @@ public class DeleteBlueprintCommand implements Command<DeleteBlueprintRequest, C
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

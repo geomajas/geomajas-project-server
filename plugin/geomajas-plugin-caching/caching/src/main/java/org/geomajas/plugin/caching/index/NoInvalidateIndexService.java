@@ -29,27 +29,27 @@ public class NoInvalidateIndexService implements CacheIndexService {
 
 	private static final List<String> EMPTY_LIST = Collections.unmodifiableList(new ArrayList<String>());
 
-	/** {@inheritDoc} */
+	@Override
 	public void put(String key, Envelope envelope) {
 		// nothing to do
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void remove(String key) {
 		// nothing to do
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clear() {
 		// nothing to do
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void drop() {
 		// nothing to do
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<String> getOverlappingKeys(Envelope envelope) {
 		return EMPTY_LIST;
 	}

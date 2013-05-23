@@ -140,22 +140,22 @@ public class TmsLayer implements RasterLayer {
 	// RasterLayer implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public RasterLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return state.getCrs();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		log.debug("Fetching TMS tiles for bounds : {}", bounds.toString());

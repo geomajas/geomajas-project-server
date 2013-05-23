@@ -94,42 +94,42 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	// Handler registration:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditStartHandler(GeometryEditStartHandler handler) {
 		return eventBus.addHandler(GeometryEditStartHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler handler) {
 		return eventBus.addHandler(GeometryEditStopHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditShapeChangedHandler(GeometryEditShapeChangedHandler handler) {
 		return eventBus.addHandler(GeometryEditShapeChangedHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditInsertHandler(GeometryEditInsertHandler handler) {
 		return eventBus.addHandler(GeometryEditInsertHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditMoveHandler(GeometryEditMoveHandler handler) {
 		return eventBus.addHandler(GeometryEditMoveHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditRemoveHandler(GeometryEditRemoveHandler handler) {
 		return eventBus.addHandler(GeometryEditRemoveHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditChangeStateHandler(GeometryEditChangeStateHandler handler) {
 		return eventBus.addHandler(GeometryEditChangeStateHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler handler) {
 		return eventBus.addHandler(GeometryEditTentativeMoveHandler.TYPE, handler);
 	}
@@ -138,7 +138,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	// Methods concerning Workflow:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void start(Geometry geometry) {
 		if (started) {
 			return;
@@ -151,12 +151,12 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		eventBus.fireEvent(new GeometryEditStartEvent(geometry));
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public boolean isStarted() {
 		return started;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry stop() {
 		started = false;
 		setEditingState(GeometryEditState.IDLE);
@@ -174,12 +174,12 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	// Methods concerning editing state:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryEditState getEditingState() {
 		return state;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setEditingState(GeometryEditState state) {
 		this.state = state;
 		eventBus.fireEvent(new GeometryEditChangeStateEvent(state));
@@ -189,23 +189,23 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	// Methods regarding the insert move events:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTentativeMoveOrigin(Coordinate tentativeMoveOrigin) {
 		this.tentativeMoveOrigin = tentativeMoveOrigin;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTentativeMoveLocation(Coordinate tentativeMoveLocation) {
 		this.tentativeMoveLocation = tentativeMoveLocation;
 		eventBus.fireEvent(new GeometryEditTentativeMoveEvent(tentativeMoveOrigin, tentativeMoveLocation));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getTentativeMoveLocation() {
 		return tentativeMoveLocation;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getTentativeMoveOrigin() {
 		return tentativeMoveOrigin;
 	}
@@ -214,32 +214,36 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	// Getters:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndexService getIndexService() {
 		return indexService;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndexStateService getIndexStateService() {
 		return indexStateService;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndex getInsertIndex() {
 		return insertIndex;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setInsertIndex(GeometryIndex insertIndex) {
 		this.insertIndex = insertIndex;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get access to the event bus.
+	 *
+	 * @return event bus
+	 */
 	protected EventBus getEventBus() {
 		return eventBus;
 	}
@@ -248,64 +252,64 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	// GeometryIndexOperation Service implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void undo() throws GeometryOperationFailedException {
 		operationService.undo();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean canUndo() {
 		return operationService.canUndo();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void redo() throws GeometryOperationFailedException {
 		operationService.redo();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean canRedo() {
 		return operationService.canRedo();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void startOperationSequence() throws GeometryOperationFailedException {
 		operationService.startOperationSequence();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void stopOperationSequence() {
 		operationService.stopOperationSequence();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isOperationSequenceActive() {
 		return operationService.isOperationSequenceActive();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void move(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
 		operationService.move(indices, coordinates);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void insert(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
 		operationService.insert(indices, coordinates);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException {
 		operationService.remove(indices);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
 		return operationService.addEmptyChild();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}

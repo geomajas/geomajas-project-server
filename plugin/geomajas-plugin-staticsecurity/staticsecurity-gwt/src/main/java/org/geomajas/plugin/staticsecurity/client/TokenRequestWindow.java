@@ -107,7 +107,7 @@ public class TokenRequestWindow extends Window implements TokenChangedHandler {
 		finishLoginHandler = tokenChangedHandler;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTokenChanged(TokenChangedEvent event) {
 		String token = event.getToken();
 		if (null != token && token.length() > 0) {

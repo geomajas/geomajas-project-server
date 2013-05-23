@@ -64,7 +64,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// Layer implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public List<LayerStylePresenter> getStylePresenters() {
 		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
 
@@ -84,23 +84,23 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// FeaturesSupported implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void setFilter(String filter) {
 		this.filter = filter;
 		refresh();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getFilter() {
 		return filter;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isFeatureSelected(String featureId) {
 		return selection.containsKey(featureId);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean selectFeature(Feature feature) {
 		if (!selection.containsValue(feature) && feature.getLayer() == this) {
 			selection.put(feature.getId(), feature);
@@ -109,7 +109,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean deselectFeature(Feature feature) {
 		if (selection.containsKey(feature.getId())) {
 			selection.remove(feature.getId());
@@ -119,7 +119,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clearSelectedFeatures() {
 		for (Feature feature : selection.values()) {
 			eventBus.fireEvent(new FeatureDeselectedEvent(this, feature));
@@ -127,7 +127,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		selection.clear();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Collection<String> getSelectedFeatureIds() {
 		return selection.keySet();
 	}
@@ -136,7 +136,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// LabelsSupported implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void setLabeled(boolean labeled) {
 		this.labeled = labeled;
 		if (labeled) {
@@ -146,7 +146,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isLabeled() {
 		return labeled;
 	}

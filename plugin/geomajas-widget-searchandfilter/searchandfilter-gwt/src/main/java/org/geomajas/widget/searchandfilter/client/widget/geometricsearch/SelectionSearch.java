@@ -70,7 +70,7 @@ public class SelectionSearch extends AbstractGeometricSearchMethod implements Fe
 		frmBuffer.reset();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void initialize(MapWidget mapWidget, GeometryUpdateHandler handler) {
 		super.initialize(mapWidget, handler);
 		mapWidget.getMapModel().addFeatureSelectionHandler(this);

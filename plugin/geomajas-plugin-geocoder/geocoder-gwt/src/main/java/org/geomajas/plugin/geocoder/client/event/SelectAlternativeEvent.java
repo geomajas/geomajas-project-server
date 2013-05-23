@@ -32,13 +32,13 @@ public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
 	private MapWidget mapWidget;
 	private List<GetLocationForStringAlternative> alternatives;
 
-	/** {@inheritDoc} */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Type getAssociatedType() {
 		return SelectAlternativeHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(SelectAlternativeHandler handler) {
 		handler.onSelectAlternative(this);
 	}

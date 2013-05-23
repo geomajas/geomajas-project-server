@@ -54,7 +54,7 @@ public class StaticAuthenticationService implements AuthenticationService, UserD
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
 
-	/** {@inheritDoc} */
+	@Override
 	public String convertPassword(final String user, final String password) {
 		String converted = encode(PREFIX + user + password);
 		if (converted.endsWith(PADDING)) {
@@ -63,7 +63,7 @@ public class StaticAuthenticationService implements AuthenticationService, UserD
 		return converted;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public UserInfo isAuthenticated(String login, String convertedPassword) {
 		List<UserInfo> users = securityServiceInfo.getUsers();
 		if (null != users) {

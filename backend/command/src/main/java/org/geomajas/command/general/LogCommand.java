@@ -28,12 +28,12 @@ public class LogCommand implements Command<LogRequest, CommandResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(LogCommand.class);
 
-	/** {@inheritDoc} */
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(LogRequest request, CommandResponse response) throws Exception {
 		switch (request.getLevel()) {
 			case LogRequest.LEVEL_DEBUG:

@@ -23,34 +23,34 @@ import org.geomajas.plugin.caching.service.CacheService;
 @Api
 public class NoCacheCacheService implements CacheService {
 
-	/** {@inheritDoc} */
+	@Override
 	public void put(String key, Object object) {
 		// do nothing
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object get(String key) {
 		// do nothing
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public <TYPE> TYPE get(String key, Class<TYPE> type) {
 		// do nothing
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void remove(String key) {
 		// do nothing
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clear() {
 		// do nothing
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void drop() {
 		// do nothing
 	}

@@ -66,12 +66,12 @@ public class FeatureImpl implements Feature {
 	// Feature implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object getAttributeValue(String attributeName) {
 		Attribute<?> attribute = attributes.get(attributeName);
 		if (attribute != null) {
@@ -80,37 +80,37 @@ public class FeatureImpl implements Feature {
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getLabel() {
 		return label;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Map<String, Attribute<?>> getAttributes() {
 		return attributes;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isSelected() {
 		return layer.isFeatureSelected(id);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public FeaturesSupported getLayer() {
 		return layer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isUpdatable() {
 		return updatable;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isDeletable() {
 		return deletable;
 	}

@@ -48,32 +48,32 @@ public class CommandServiceImpl implements CommandService {
 		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(callback);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Deferred execute(GwtCommand command, CommandCallback<?>... callback) {
 		return GwtCommandDispatcher.getInstance().execute(command, callback);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void login() {
 		GwtCommandDispatcher.getInstance().login();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void logout() {
 		GwtCommandDispatcher.getInstance().logout();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getUserToken() {
 		return GwtCommandDispatcher.getInstance().getUserToken();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
 		return GwtCommandDispatcher.getInstance().addTokenChangedHandler(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
 		GwtCommandDispatcher.getInstance().setTokenRequestHandler(tokenRequestHandler);		
 	}
@@ -86,7 +86,7 @@ public class CommandServiceImpl implements CommandService {
 	public class CommandExceptionCallbackImpl implements
 			CommandExceptionCallback, CommunicationExceptionCallback {
 
-		/** {@inheritDoc} */
+		@Override
 		public void onCommandException(CommandResponse response) {
 			String msg = null;
 			String stack = null;
@@ -101,7 +101,7 @@ public class CommandServiceImpl implements CommandService {
 			showDialog(msg, stack);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onCommunicationException(Throwable error) {
 			if (null != error) {
 				String msg = messages.commandCommunicationError() + ":\n" + error.getMessage();
@@ -188,16 +188,16 @@ public class CommandServiceImpl implements CommandService {
 				super(msg);
 			}
 
-			/** {@inheritDoc} */
+			@Override
 			public String getHTML() {
 				return null;
 			}
 
-			/** {@inheritDoc} */
+			@Override
 			public void setHTML(String html) {
 			}
 
-			/** {@inheritDoc} */
+			@Override
 			public void setHTML(SafeHtml html) {
 			}
 			

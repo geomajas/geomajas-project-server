@@ -38,7 +38,7 @@ public class CommandProfilingInterceptor implements MethodInterceptor {
 		this.profilingContainer = profilingContainer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	// CHECKSTYLE THROWS_THROWABLE: OFF
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		long start = System.currentTimeMillis();

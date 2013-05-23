@@ -40,7 +40,7 @@ public class GetBlueprintCommand implements Command<GetBlueprintRequest, Bluepri
 	@Autowired
 	private DtoConverterService dtoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetBlueprintRequest request, BlueprintResponse response) throws Exception {
 		try {
 			response.setBlueprint(dtoService.toDto(blueprintService.getBlueprintById(request.getBlueprintId()), true));
@@ -51,7 +51,7 @@ public class GetBlueprintCommand implements Command<GetBlueprintRequest, Bluepri
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public BlueprintResponse getEmptyCommandResponse() {
 		return new BlueprintResponse();
 	}

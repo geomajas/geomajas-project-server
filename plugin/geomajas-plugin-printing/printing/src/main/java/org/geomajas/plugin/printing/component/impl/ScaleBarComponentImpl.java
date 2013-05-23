@@ -305,7 +305,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		return (MapComponentImpl) getParent();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int getTicNumber() {
 		return ticNumber;
 	}
@@ -314,7 +314,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		this.ticNumber = ticNumber;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getUnit() {
 		return unit;
 	}

@@ -56,7 +56,7 @@ public class MultiLineString extends AbstractGeometry {
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createMultiLineString(lineStrings);
 	}
@@ -99,7 +99,7 @@ public class MultiLineString extends AbstractGeometry {
 		this.lineStrings = lineStrings;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public double getLength() {
 		double len = 0;
 		if (!isEmpty()) {
@@ -110,7 +110,7 @@ public class MultiLineString extends AbstractGeometry {
 		return len;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getCentroid() {
 		if (isEmpty()) {
 			return null;
@@ -151,7 +151,7 @@ public class MultiLineString extends AbstractGeometry {
 		return distance;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEmpty() {
 		return (lineStrings == null || lineStrings.length == 0);
 	}
@@ -185,7 +185,7 @@ public class MultiLineString extends AbstractGeometry {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Bbox getBounds() {
 		Bbox bounds = null;
 		if (!isEmpty()) {
@@ -200,7 +200,7 @@ public class MultiLineString extends AbstractGeometry {
 		return bounds;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getCoordinate() {
 		if (isEmpty()) {
 			return null;
@@ -225,7 +225,7 @@ public class MultiLineString extends AbstractGeometry {
 		return coordinates;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public LayerType getLayerType() {
 		return LayerType.MULTILINESTRING;
 	}
@@ -246,7 +246,7 @@ public class MultiLineString extends AbstractGeometry {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String toWkt() {
 		if (isEmpty()) {
 			return "MULTILINESTRING EMPTY";

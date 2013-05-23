@@ -40,7 +40,7 @@ public class RefreshConfigurationCommand implements Command<RefreshConfiguration
 
 	private final Logger log = LoggerFactory.getLogger(RefreshConfigurationCommand.class);
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(RefreshConfigurationRequest request, RefreshConfigurationResponse response) throws Exception {
 		if (context instanceof ReconfigurableApplicationContext) {
 			ReconfigurableApplicationContext rollback = (ReconfigurableApplicationContext) context;
@@ -65,7 +65,7 @@ public class RefreshConfigurationCommand implements Command<RefreshConfiguration
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RefreshConfigurationResponse getEmptyCommandResponse() {
 		return new RefreshConfigurationResponse();
 	}

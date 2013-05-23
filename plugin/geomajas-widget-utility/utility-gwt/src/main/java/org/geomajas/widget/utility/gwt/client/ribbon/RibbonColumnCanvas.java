@@ -41,7 +41,7 @@ public class RibbonColumnCanvas implements RibbonColumn {
 		canvas = ((ToolbarCanvas) toolbarButtonCanvas.getToolbarAction()).getCanvas();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Widget asWidget() {
 		canvas.setAutoHeight();
 		VerticalAlignment verticalAlignment = toolbarButtonCanvas.getVerticalAlignment();
@@ -49,7 +49,7 @@ public class RibbonColumnCanvas implements RibbonColumn {
 		return canvas;
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if (toolbarButtonCanvas instanceof ConfigurableAction) {
 			ConfigurableAction ca = (ConfigurableAction) toolbarButtonCanvas;
@@ -57,12 +57,12 @@ public class RibbonColumnCanvas implements RibbonColumn {
 		}
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEnabled() {
 		return !canvas.isDisabled();
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public void setEnabled(boolean enabled) {
 		canvas.setDisabled(!enabled);
 	}

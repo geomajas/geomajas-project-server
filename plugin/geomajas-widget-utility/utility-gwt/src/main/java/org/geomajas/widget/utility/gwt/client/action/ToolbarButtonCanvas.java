@@ -57,7 +57,7 @@ public class ToolbarButtonCanvas implements ButtonAction, HasEnabledHandlers {
 		this.toolbarAction = toolbarAction;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("verticalAlignment".equalsIgnoreCase(key)) {
 			verticalAlignment = VerticalAlignment.valueOf(value.toUpperCase());
@@ -75,12 +75,12 @@ public class ToolbarButtonCanvas implements ButtonAction, HasEnabledHandlers {
 		return verticalAlignment;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEnabled() {
 		return !toolbarAction.isDisabled();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addEnabledHandler(EnabledHandler handler) {
 		return toolbarAction.addToolbarActionHandler(new ToolbarActionForwarder(handler));
 	}
@@ -97,12 +97,12 @@ public class ToolbarButtonCanvas implements ButtonAction, HasEnabledHandlers {
 			this.handler = handler;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onToolbarActionEnabled(ToolbarActionEnabledEvent event) {
 			handler.onEnabled(new EnabledEvent(ToolbarButtonCanvas.this));
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onToolbarActionDisabled(ToolbarActionDisabledEvent event) {
 			handler.onDisabled(new DisabledEvent(ToolbarButtonCanvas.this));
 		}

@@ -68,7 +68,7 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("icon".equalsIgnoreCase(key)) {
 			setIcon(value);
@@ -86,32 +86,32 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getIcon() {
 		return toolbarAction.getIcon();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setIcon(String icon) {
 		toolbarAction.setIcon(icon);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getTitle() {
 		return toolbarAction.getTitle();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTitle(String title) {
 		toolbarAction.setTitle(title);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getTooltip() {
 		return toolbarAction.getTooltip();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTooltip(String tooltip) {
 		toolbarAction.setTooltip(tooltip);
 	}
@@ -120,21 +120,21 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 		return toolbarAction;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public ButtonLayoutStyle getButtonLayoutStyle() {
 		return toolbarAction.getButtonLayoutStyle();
 	}
-	/** {@inheritDoc} */
+	@Override
 	public void setButtonLayoutStyle(ButtonLayoutStyle buttonLayoutStyle) {
 		toolbarAction.setButtonLayoutStyle(buttonLayoutStyle);
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEnabled() {
 		return !toolbarAction.isDisabled();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addEnabledHandler(EnabledHandler handler) {
 		return toolbarAction.addToolbarActionHandler(new ToolbarActionForwarder(handler));
 	}
@@ -152,26 +152,26 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 			this.handler = handler;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onToolbarActionEnabled(ToolbarActionEnabledEvent event) {
 			handler.onEnabled(new EnabledEvent(ToolbarButtonAction.this));
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onToolbarActionDisabled(ToolbarActionDisabledEvent event) {
 			handler.onDisabled(new DisabledEvent(ToolbarButtonAction.this));
 		}
 
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setRibbonColumn(RibbonColumn column) {
 		if (toolbarAction instanceof RibbonColumnAware) {
 			((RibbonColumnAware) toolbarAction).setRibbonColumn(column);
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RibbonColumn getRibbonColumn() {
 		if (toolbarAction instanceof RibbonColumnAware) {
 			return ((RibbonColumnAware) toolbarAction).getRibbonColumn();

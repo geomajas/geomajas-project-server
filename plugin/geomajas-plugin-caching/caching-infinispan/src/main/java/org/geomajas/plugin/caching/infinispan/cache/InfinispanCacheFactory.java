@@ -173,7 +173,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 		return ciCaches;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CacheService create(Layer layer, CacheCategory category) {
 		CacheSelector cacheSelector = new CacheSelector(category, layer);
 		CacheService cacheService;

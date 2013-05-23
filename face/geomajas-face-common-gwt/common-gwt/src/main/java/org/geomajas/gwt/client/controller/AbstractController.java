@@ -95,12 +95,12 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// MapEventParser implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 		return eventParser.getLocation(event, renderSpace);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Element getTarget(HumanInputEvent<?> event) {
 		return eventParser.getTarget(event);
 	}
@@ -109,7 +109,7 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 		this.eventParser = eventParser;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isRightMouseButton(HumanInputEvent<?> event) {
 		if (event instanceof MouseEvent<?>) {
 			return ((MouseEvent<?>) event).getNativeButton() == NativeEvent.BUTTON_RIGHT;
@@ -121,19 +121,19 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Methods for aligning mouse and touch events:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDown(HumanInputEvent<?> event) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onUp(HumanInputEvent<?> event) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDrag(HumanInputEvent<?> event) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isDragging() {
 		return dragging;
 	}
@@ -142,38 +142,38 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Mouse Handler implementations:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		dragging = true;
 		onDown(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		dragging = false;
 		onUp(event);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging) {
 			onDrag(event);
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseOver(MouseOverEvent event) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
 	}
 
@@ -181,28 +181,28 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Touch Handler implementations:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTouchStart(TouchStartEvent event) {
 		onDown(event);
 		event.stopPropagation();
 		event.preventDefault();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTouchMove(TouchMoveEvent event) {
 		onDrag(event);
 		event.stopPropagation();
 		event.preventDefault();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTouchEnd(TouchEndEvent event) {
 		onUp(event);
 		event.stopPropagation();
 		event.preventDefault();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTouchCancel(TouchCancelEvent event) {
 		onUp(event);
 		event.stopPropagation();

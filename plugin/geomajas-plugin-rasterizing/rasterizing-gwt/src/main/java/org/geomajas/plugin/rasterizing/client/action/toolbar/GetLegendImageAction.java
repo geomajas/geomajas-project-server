@@ -101,7 +101,7 @@ public class GetLegendImageAction extends ToolbarAction implements ConfigurableA
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("showAllLayers".equals(key)) {
 			setShowAllLayers(Boolean.parseBoolean(value));

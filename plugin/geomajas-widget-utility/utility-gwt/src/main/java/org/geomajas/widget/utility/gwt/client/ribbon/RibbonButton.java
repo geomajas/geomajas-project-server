@@ -192,27 +192,27 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setButtonBaseStyle(String buttonBaseStyle) {
 		setBaseStyle(buttonBaseStyle);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setShowTitles(boolean showTitles) {
 		this.showTitles = showTitles;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowTitles() {
 		return showTitles;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTitleAlignment(TitleAlignment titleAlignment) {
 		this.titleAlignment = titleAlignment;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TitleAlignment getTitleAlignment() {
 		return titleAlignment;
 	}
@@ -226,17 +226,17 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		return outer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEnabled() {
 		return !isDisabled();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setEnabled(boolean enabled) {
 		setDisabled(!enabled);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if (PARAMETER_SELECTED.equalsIgnoreCase(key)) {
 			if (buttonAction instanceof RadioAction) {
@@ -374,12 +374,12 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 */
 	class ActionEnabler implements EnabledHandler {
 
-		/** {@inheritDoc} */
+		@Override
 		public void onEnabled(EnabledEvent event) {
 			setEnabled(true);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onDisabled(DisabledEvent event) {
 			setEnabled(false);
 		}

@@ -134,7 +134,7 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 	// HasCloseHandlers implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addCloseHandler(CloseHandler<LegendDropDown> handler) {
 		return addHandler(handler, CloseEvent.getType());
 	}
@@ -143,7 +143,7 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 	// HasOpenHandlers implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addOpenHandler(OpenHandler<LegendDropDown> handler) {
 		return addHandler(handler, OpenEvent.getType());
 	}

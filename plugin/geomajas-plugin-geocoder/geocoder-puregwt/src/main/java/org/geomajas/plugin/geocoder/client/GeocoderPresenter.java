@@ -162,12 +162,12 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		return handlerManager.addHandler(SelectLocationHandler.TYPE, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelectAlternative(SelectAlternativeEvent event) {
 		// TODO implement me...
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelectLocation(SelectLocationEvent event) {
 		mapPresenter.getViewPort().applyBounds(event.getBbox());
 		geocoderTextBox.setValue(event.getCanonicalLocation());

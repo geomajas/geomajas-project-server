@@ -103,12 +103,12 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void onTilesRendered(HtmlContainer container, double scale) {
 		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), eventSource);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void cancel() {
 		if (deferred != null) {
 			deferred.cancel();
@@ -117,12 +117,12 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public double getScale() {
 		return scale;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void render(final Bbox bounds) {
 		if (rasterLayer.isShowing()) {
 			// First we check whether or not the requested bounds is already rendered:

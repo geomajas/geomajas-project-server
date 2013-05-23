@@ -52,7 +52,7 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		this.name = name;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void marshal(Object obj, IMarshallingContext ictx) throws JiBXException {
 		// make sure the parameters are as expected
 		if (!(obj instanceof OverlapBehaviorInfo)) {
@@ -68,17 +68,17 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isExtension(String mapname) {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isPresent(IUnmarshallingContext ctx) throws JiBXException {
 		return ctx.isAt(uri, name);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object unmarshal(Object obj, IUnmarshallingContext ictx) throws JiBXException {
 		// make sure we're at the appropriate start tag
 		UnmarshallingContext ctx = (UnmarshallingContext) ictx;
@@ -108,15 +108,13 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		return overlapBehaviorInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "OverlapBehaviorMarshaller(uri=" + this.uri + ", index=" + this.index + ", name=" + this.name + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -141,14 +139,17 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof OverlapBehaviorMarshaller;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

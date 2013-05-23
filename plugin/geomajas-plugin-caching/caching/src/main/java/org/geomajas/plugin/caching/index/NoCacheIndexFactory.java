@@ -27,7 +27,7 @@ public class NoCacheIndexFactory implements CacheIndexFactory {
 
 	private static final NoCacheIndexService INSTANCE = new NoCacheIndexService();
 
-	/** {@inheritDoc} */
+	@Override
 	public CacheIndexService create(Layer layer, CacheCategory category) {
 		return INSTANCE;
 	}

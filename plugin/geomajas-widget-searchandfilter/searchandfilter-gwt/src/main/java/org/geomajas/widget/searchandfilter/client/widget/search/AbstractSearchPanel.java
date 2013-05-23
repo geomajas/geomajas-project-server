@@ -144,7 +144,7 @@ public abstract class AbstractSearchPanel extends Canvas {
 	 */
 	public abstract VectorLayer getFeatureSearchVectorLayer();
 
-	/** {@inheritDoc} */
+	/** @todo javadoc incomplete. */
 	public abstract void reset();
 
 	/**

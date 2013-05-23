@@ -65,12 +65,12 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	// FeatureModel implementation:
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		return convertAttribute(asFeature(feature).getAttribute(name), name);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
@@ -93,25 +93,25 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Geometry geometry = (Geometry) asFeature(feature).getDefaultGeometry();
 		geometry.setSRID(srid);
 		return (Geometry) geometry.clone();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId(Object feature) throws LayerException {
 		SimpleFeature featureAsFeature = asFeature(feature);
 		return featureAsFeature.getID();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int getSrid() throws LayerException {
 		return srid;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object newInstance() throws LayerException {
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);
@@ -120,7 +120,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		return builder.buildFeature(null);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object newInstance(String id) throws LayerException {
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);
@@ -128,7 +128,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		return builder.buildFeature(id);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean canHandle(Object feature) {
 		return feature instanceof SimpleFeature;
 	}

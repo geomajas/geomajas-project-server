@@ -39,7 +39,7 @@ public class RuntimeConfigPanel extends SamplePanel {
 		}
 	};
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
@@ -52,19 +52,19 @@ public class RuntimeConfigPanel extends SamplePanel {
 		return layout;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDescription() {
 		return MESSAGES.adminDescription();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/plugin/geocoder/gwt/example/context/runtimeConfig.xml",
 				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/appRuntimeConfig.xml",
 				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/mapRuntimeConfig.xml" };
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}

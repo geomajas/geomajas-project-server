@@ -71,12 +71,12 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CopyrightResponse getEmptyCommandResponse() {
 		return new CopyrightResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(EmptyCommandRequest request, CopyrightResponse response) throws Exception {
 		response.setCopyrights(new ArrayList<CopyrightInfo>(copyrightMap.values()));
 	}

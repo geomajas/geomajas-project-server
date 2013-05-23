@@ -57,7 +57,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 	@Autowired
 	private DtoConverterService dtoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(CreateLayerModelRequest request, LayerModelResponse response) throws Exception {
 		if (request.getConfiguration() == null || request.getConfiguration().getClientLayerInfo() == null
 				|| request.getConfiguration().getClientLayerInfo().getUserData() == null) {
@@ -106,7 +106,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public LayerModelResponse getEmptyCommandResponse() {
 		return new LayerModelResponse();
 	}

@@ -306,12 +306,12 @@ public class LdapAuthenticationService implements AuthenticationService, UserDir
 		return namedRoles;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String convertPassword(String user, String password) {
 		return password;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public UserInfo isAuthenticated(String user, String password) {
 		String userDn = userDnTemplate.replace("{}", user);
 		SearchRequest request = createSearchRequest(userDn);

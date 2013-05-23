@@ -85,12 +85,12 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 			this.info = info;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public String getId() {
 			return "LayerFilterAuthorizationInfo." + Integer.toString(info.hashCode());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Filter getFeatureFilter(String layerId) {
 			try {
 				String filter = info.getFilters().get(layerId);

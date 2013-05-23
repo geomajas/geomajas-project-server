@@ -40,7 +40,7 @@ public class GetLayerModelCommand implements Command<GetLayerModelRequest, Layer
 	@Autowired
 	private DtoConverterService dtoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetLayerModelRequest request, LayerModelResponse response) throws Exception {
 		try {
 			response.setLayerModel(dtoService.toDto(layerModelService.getLayerModelById(request.getId()),
@@ -51,7 +51,7 @@ public class GetLayerModelCommand implements Command<GetLayerModelRequest, Layer
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public LayerModelResponse getEmptyCommandResponse() {
 		return new LayerModelResponse();
 	}

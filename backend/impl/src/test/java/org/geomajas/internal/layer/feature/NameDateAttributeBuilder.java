@@ -24,7 +24,7 @@ import org.geomajas.layer.feature.attribute.StringAttribute;
  */
 public class NameDateAttributeBuilder implements SyntheticAttributeBuilder<String> {
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute<String> getAttribute(SyntheticAttributeInfo info, InternalFeature feature) {
 		StringAttribute nameAttribute = ((StringAttribute) feature.getAttributes().get("name"));
 		return new StringAttribute(nameAttribute.getValue() + " 1984-12-25");

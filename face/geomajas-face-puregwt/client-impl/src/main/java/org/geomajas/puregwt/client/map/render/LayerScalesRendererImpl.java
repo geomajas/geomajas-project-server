@@ -95,17 +95,17 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 	// MapScalesRenderer implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addScaleLevelRenderedHandler(ScaleLevelRenderedHandler handler) {
 		return eventBus.addHandlerToSource(ScaleLevelRenderedHandler.TYPE, this, handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HtmlContainer getHtmlContainer() {
 		return htmlContainer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void ensureScale(double scale, Bbox bounds) {
 		cancel(); // TODO should we do this??
 
@@ -132,7 +132,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void bringScaleToFront(double scale) {
 		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
@@ -141,7 +141,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setScaleVisibility(double scale, boolean visible) {
 		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
@@ -157,7 +157,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void applyScaleTranslation(double scale, Coordinate translation) {
 		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
@@ -173,17 +173,17 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TiledScaleRenderer getVisibleScale() {
 		return tiledScaleRenderers.get(visibleScale);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TiledScaleRenderer getScale(double scale) {
 		return tiledScaleRenderers.get(scale);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void clear() {
 		while (tiledScaleRenderers.size() > 0) {
 			Double scale = tiledScaleRenderers.keySet().iterator().next();
@@ -195,7 +195,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		scales.clear();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Layer getLayer() {
 		return layer;
 	}

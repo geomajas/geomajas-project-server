@@ -30,7 +30,7 @@ public class DummyRasterLayer implements RasterLayer {
 	String id;
 	RasterLayerInfo layerInfo;
 
-	/** {@inheritDoc} */
+	@Override
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		return null;
@@ -45,12 +45,12 @@ public class DummyRasterLayer implements RasterLayer {
 		layerInfo = info;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RasterLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return null;
 	}
@@ -64,7 +64,7 @@ public class DummyRasterLayer implements RasterLayer {
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}

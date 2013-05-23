@@ -70,7 +70,7 @@ public class MapAddonGroup extends MapAddon {
 		super(id, width, height);
 		this.mapWidget = mapWidget;
 	}
-	/** {@inheritDoc} */
+	@Override
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds,
 			boolean recursive) {
 		mapWidget.getVectorContext().drawGroup(group, this);
@@ -116,7 +116,7 @@ public class MapAddonGroup extends MapAddon {
 		}
 		addons.add(addon);
 	}
-	/** {@inheritDoc} */
+	@Override
 	public void setMapSize(int mapWidth, int mapHeight) {
 		super.setMapSize(mapWidth, mapHeight);
 		for (MapAddon addon : addons) {

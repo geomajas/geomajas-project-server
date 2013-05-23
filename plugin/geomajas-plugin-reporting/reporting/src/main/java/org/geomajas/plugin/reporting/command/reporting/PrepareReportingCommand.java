@@ -75,12 +75,12 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public PrepareReportingResponse getEmptyCommandResponse() {
 		return new PrepareReportingResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(PrepareReportingRequest request, PrepareReportingResponse response) throws Exception {
 		String layerId = request.getLayerId();
 		if (null == layerId) {

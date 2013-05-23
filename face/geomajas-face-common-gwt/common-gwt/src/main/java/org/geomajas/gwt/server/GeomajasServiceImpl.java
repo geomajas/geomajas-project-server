@@ -76,7 +76,7 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		initDispatcher();
 	}

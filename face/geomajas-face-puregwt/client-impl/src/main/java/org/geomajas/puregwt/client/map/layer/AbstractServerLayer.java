@@ -59,17 +59,17 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	// Layer implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public T getLayerInfo() {
 		return layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
 			if (viewPort.getScale() >= layerInfo.getMinimumScale().getPixelPerUnit()

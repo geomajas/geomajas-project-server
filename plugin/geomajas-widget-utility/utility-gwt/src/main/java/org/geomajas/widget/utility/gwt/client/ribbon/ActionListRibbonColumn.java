@@ -85,7 +85,7 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	// Class specific methods:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void setButtonBaseStyle(String buttonBaseStyle) {
 		for (RibbonButton button : buttons) {
 			button.setButtonBaseStyle(buttonBaseStyle);
@@ -96,31 +96,31 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	// RibbonColumn implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Widget asWidget() {
 		return this;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setShowTitles(boolean showTitles) {
 		for (RibbonButton button : buttons) {
 			button.setShowTitles(showTitles);
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowTitles() {
 		return buttons.size() > 0 && buttons.get(0).isShowTitles();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTitleAlignment(TitleAlignment titleAlignment) {
 		for (RibbonButton button : buttons) {
 			button.setTitleAlignment(titleAlignment);
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TitleAlignment getTitleAlignment() {
 		if (buttons.size() > 0) {
 			return buttons.get(0).getTitleAlignment();
@@ -128,17 +128,17 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 		return TitleAlignment.BOTTOM;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEnabled() {
 		return !isDisabled();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setEnabled(boolean enabled) {
 		setDisabled(!enabled);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		for (RibbonButton button : buttons) {
 			button.configure(key, value);

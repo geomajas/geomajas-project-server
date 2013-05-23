@@ -203,7 +203,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	@Autowired
 	private ResourceService resourceService;
 
-	/** {@inheritDoc} */
+	@Override
 	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) throws LayerException {
 		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
 		LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
@@ -264,7 +264,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return namedStyleInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Style convert(UserStyleInfo userStyleInfo) throws LayerException {
 		IBindingFactory bindingFactory;
 		try {
@@ -302,7 +302,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Rule convert(RuleInfo ruleInfo) throws LayerException {
 		UserStyleInfo styleInfo = new UserStyleInfo();
 		FeatureTypeStyleInfo fts = new FeatureTypeStyleInfo();
@@ -312,7 +312,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return style.featureTypeStyles().get(0).rules().get(0);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public UserStyleInfo convert(NamedStyleInfo namedStyleInfo, String geometryName) throws LayerException {
 		Style style = styleBuilder.createStyle();
 

@@ -55,7 +55,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void setAttributes(Object object, FeatureInfo featureInfo, EntityMapper mapper,
 			Map<String, Attribute<?>> attributes) throws LayerException {
 		UpdateEntityOperation operation = new UpdateEntityOperation(mapper, mapper.asEntity(object), featureInfo,
@@ -63,7 +63,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		operation.execute();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Attribute<?> getAttribute(Object feature, FeatureInfo featureInfo, EntityMapper mapper, String name)
 			throws LayerException {
 		String[] path = name.split(ATTRIBUTE_SEPARATOR);
@@ -405,7 +405,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			}
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void execute() throws LayerException {
 			for (Map.Entry<String, PrimitiveAttribute<?>> entry : primitives.entrySet()) {
 				Object value = (entry.getValue() == null ? null : entry.getValue().getValue());

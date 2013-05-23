@@ -44,12 +44,12 @@ public class LayerFilteredEvent extends GwtEvent<LayerFilteredHandler> {
 		return layer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<LayerFilteredHandler> getAssociatedType() {
 		return LayerFilteredHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 
 	protected void dispatch(LayerFilteredHandler layerFilteredHandler) {
 		layerFilteredHandler.onFilterChange(this);

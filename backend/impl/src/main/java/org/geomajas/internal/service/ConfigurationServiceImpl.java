@@ -54,22 +54,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorLayer getVectorLayer(String id) {
 		return getBeanOrNull(id, VectorLayer.class);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RasterLayer getRasterLayer(String id) {
 		return getBeanOrNull(id, RasterLayer.class);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Layer<?> getLayer(String id) {
 		return getBeanOrNull(id, Layer.class);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public ClientMapInfo getMap(String mapId, String applicationId) {
 		ClientApplicationInfo application = getBeanOrNull(applicationId, ClientApplicationInfo.class);
 		if (application != null) {
@@ -82,12 +82,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
 		return geoService.getCrs2(crs);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void invalidateLayer(String layerId) throws GeomajasException {
 		Layer layer = null;
 		if (null != layerId) {
@@ -130,19 +130,19 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void invalidateAllLayers() throws GeomajasException {
 		for (Entry<String, Layer> entry : applicationContext.getBeansOfType(Layer.class).entrySet()) {
 			invalidateLayer(entry.getValue());
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public <TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, Class<TYPE> type) {
 		return getLayerExtraInfo(layerInfo, type.getName(), type);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public <TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type) {
 		Object obj = layerInfo.getExtraInfo().get(key);
 		if (null != obj && type.isAssignableFrom(obj.getClass())) {

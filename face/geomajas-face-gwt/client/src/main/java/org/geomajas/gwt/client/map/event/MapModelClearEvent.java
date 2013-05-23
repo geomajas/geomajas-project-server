@@ -44,12 +44,12 @@ public class MapModelClearEvent extends GwtEvent<MapModelClearHandler> {
 		return mapModel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<MapModelClearHandler> getAssociatedType() {
 		return MapModelClearHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(MapModelClearHandler mapModelClearHandler) {
 		mapModelClearHandler.onMapModelClear(this);
 	}

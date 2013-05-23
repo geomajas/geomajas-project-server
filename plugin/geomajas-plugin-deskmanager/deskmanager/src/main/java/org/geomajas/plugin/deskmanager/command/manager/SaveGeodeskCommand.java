@@ -55,7 +55,7 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GeodeskRe
 	@Autowired
 	private SecurityContext securityContext;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(SaveGeodeskRequest request, GeodeskResponse response) throws Exception {
 		try {
 			if (request.getLoket() == null) {
@@ -93,7 +93,7 @@ public class SaveGeodeskCommand implements Command<SaveGeodeskRequest, GeodeskRe
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeodeskResponse getEmptyCommandResponse() {
 		return new GeodeskResponse();
 	}

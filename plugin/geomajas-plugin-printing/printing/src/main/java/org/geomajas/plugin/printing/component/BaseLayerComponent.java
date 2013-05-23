@@ -21,13 +21,13 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
  */
 public interface BaseLayerComponent<T extends PrintComponentInfo> extends PrintComponent<T> {
 
-	/** {@inheritDoc} */
+	/** @todo javadoc incomplete. */
 	boolean isVisible();
 
-	/** {@inheritDoc} */
+	/** @todo javadoc incomplete. */
 	boolean isSelected();
 
-	/** {@inheritDoc} */
+	/** @todo javadoc incomplete. */
 	String getLayerId();
 
 }

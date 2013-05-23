@@ -413,7 +413,7 @@ public class FeatureAttributeWindow extends KeepInScreenWindow {
 			addClickHandler(this);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onClick(ClickEvent event) {
 			mapModel.getFeatureEditor().startEditing(new Feature[] { getFeature() }, new Feature[] { getFeature() });
 			SaveEditingAction action = new SaveEditingAction(mapModel);
@@ -439,7 +439,7 @@ public class FeatureAttributeWindow extends KeepInScreenWindow {
 			addClickHandler(this);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onClick(ClickEvent event) {
 			attributeTable.reset();
 		}
@@ -460,7 +460,7 @@ public class FeatureAttributeWindow extends KeepInScreenWindow {
 			addClickHandler(this);
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void onClick(ClickEvent event) {
 			attributeTable.reset();
 			setEditingEnabled(false);
@@ -475,7 +475,7 @@ public class FeatureAttributeWindow extends KeepInScreenWindow {
 	 */
 	private class ApplyFeatureTransactionToWindow implements FeatureTransactionHandler {
 
-		/** {@inheritDoc} */
+		@Override
 		public void onTransactionSuccess(FeatureTransactionEvent event) {
 			Feature feature = attributeTable.getFeature();
 			if (feature != null) {

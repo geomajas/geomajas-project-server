@@ -43,7 +43,7 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 
 	private String id;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -57,7 +57,7 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
 		try {
 			log.debug("UpdateFeatureInvalidateStep start");

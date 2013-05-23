@@ -127,7 +127,7 @@ public class GoogleAddon extends MapAddon {
 
 	// MapAddon implementation:
 
-	/** {@inheritDoc} */
+	@Override
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		if (googleMap != null) {
 			String sourceCrs = map.getMapModel().getCrs();
@@ -178,7 +178,7 @@ public class GoogleAddon extends MapAddon {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDraw() {
 		if (googleMap == null) {
 			// create as first child of raster group
@@ -194,7 +194,7 @@ public class GoogleAddon extends MapAddon {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onRemove() {
 		String id = map.getRasterContext().getId(this);
 

@@ -63,7 +63,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
@@ -83,12 +83,12 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(controller);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}

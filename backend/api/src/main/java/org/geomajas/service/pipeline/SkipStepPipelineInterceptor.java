@@ -26,7 +26,6 @@ import org.geomajas.global.GeomajasException;
 @Api
 public class SkipStepPipelineInterceptor<T> extends AbstractPipelineInterceptor<T> {
 
-	/** {@inheritDoc} */
 	@Override
 	public ExecutionMode beforeSteps(PipelineContext context, T response) throws GeomajasException {
 		return ExecutionMode.EXECUTE_NONE;

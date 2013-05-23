@@ -42,7 +42,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		this.service = service;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX) {
@@ -57,12 +57,12 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndexOperation getInverseOperation() {
 		return new InsertVertexOperation(service, coordinate);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndex getGeometryIndex() {
 		return index;
 	}

@@ -41,7 +41,7 @@ public class GetBlueprintsCommand implements Command<GetBlueprintsRequest, GetBl
 	@Autowired
 	private DtoConverterService converterService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetBlueprintsRequest request, GetBlueprintsResponse response) throws Exception {
 
 		List<BlueprintDto> blueprints = new ArrayList<BlueprintDto>();
@@ -54,7 +54,7 @@ public class GetBlueprintsCommand implements Command<GetBlueprintsRequest, GetBl
 		response.setBlueprints(blueprints);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GetBlueprintsResponse getEmptyCommandResponse() {
 		return new GetBlueprintsResponse();
 	}

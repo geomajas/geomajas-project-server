@@ -39,7 +39,7 @@ public class LinearRing extends LineString {
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createLinearRing(getCoordinates());
 	}

@@ -106,7 +106,7 @@ public class RuleGroupImpl implements RuleGroup {
 		this.geomType = geomType;
 	}
 
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return this.getClass().getName() + "(name=" + this.getName() + ", title=" + this.getTitle()

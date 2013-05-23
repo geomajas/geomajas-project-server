@@ -43,7 +43,7 @@ public class MapEventParserImpl implements MapEventParser {
 		this.mapPresenter = mapPresenter;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 		switch (renderSpace) {
 			case WORLD:
@@ -64,7 +64,7 @@ public class MapEventParserImpl implements MapEventParser {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Element getTarget(HumanInputEvent<?> event) {
 		EventTarget target = event.getNativeEvent().getEventTarget();
 		if (Element.is(target)) {

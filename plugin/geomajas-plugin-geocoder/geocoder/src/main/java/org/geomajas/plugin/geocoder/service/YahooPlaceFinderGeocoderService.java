@@ -87,7 +87,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -135,12 +135,12 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		this.skipAppIdCheck = skipAppIdCheck;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
-	 /** {@inheritDoc} */
+	 @Override
 	public GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale locale) {
 		if (null == appId) {
 			return null;

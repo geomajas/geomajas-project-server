@@ -44,7 +44,7 @@ public class GetLayerModelsCommand implements Command<GetLayerModelsRequest, Get
 	@Autowired
 	private DtoConverterService converterService;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetLayerModelsRequest request, GetLayerModelsResponse response) throws Exception {
 
 		List<LayerModelDto> layerModels = new ArrayList<LayerModelDto>();
@@ -57,7 +57,7 @@ public class GetLayerModelsCommand implements Command<GetLayerModelsRequest, Get
 		response.setLayerModels(layerModels);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GetLayerModelsResponse getEmptyCommandResponse() {
 		return new GetLayerModelsResponse();
 	}

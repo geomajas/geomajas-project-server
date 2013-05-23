@@ -81,7 +81,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		ClientConfigurationService.getApplicationWidgetInfo(application, beanId,
 				new WidgetConfigurationCallback<RibbonBarInfo>() {
 
-					/** {@inheritDoc} */
+					@Override
 					public void execute(RibbonBarInfo ribbonBarInfo) {
 						if (null == ribbonBarInfo) {
 							throw new IllegalStateException("Cannot find ribbon configuration bean " + beanId +
@@ -96,7 +96,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	// Ribbon implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void addGroup(RibbonGroup ribbonGroup) {
 		if (null == ribbonGroup) {
 			throw new IllegalArgumentException("Cannot add RibbonGroup with null value.");
@@ -107,7 +107,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		addMember(ribbonGroup.asWidget());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addGroup(RibbonGroup ribbonGroup, int index) {
 		if (null == ribbonGroup) {
 			throw new IllegalArgumentException("Cannot add RibbonGroup with null value.");
@@ -118,7 +118,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		addMember(ribbonGroup.asWidget(), index);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeGroup(RibbonGroup ribbonGroup) {
 		if (null == ribbonGroup) {
 			throw new IllegalArgumentException("Cannot remove RibbonGroup with null value.");
@@ -127,17 +127,17 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		removeMember((Canvas) ribbonGroup.asWidget());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeGroup(int index) {
 		removeGroup(getGroup(index));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public RibbonGroup getGroup(int index) {
 		return groups.get(index);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setShowGroupTitles(boolean showGroupTitles) {
 		this.showGroupTitles = showGroupTitles;
 		for (RibbonGroup group : groups) {
@@ -145,7 +145,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isShowGroupTitles() {
 		return showGroupTitles;
 	}

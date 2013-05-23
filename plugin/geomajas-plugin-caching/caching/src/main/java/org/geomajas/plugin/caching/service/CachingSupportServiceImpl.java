@@ -38,7 +38,7 @@ public class CachingSupportServiceImpl implements CachingSupportService {
 	@Autowired
 	private CacheKeyService cacheKeyService;
 
-	/** {@inheritDoc} */
+	@Override
 	public <CONTAINER extends CacheContainer> CONTAINER getContainer(String keyKey, String contextKey,
 			String[] keys, CacheCategory category, PipelineContext pipelineContext,
 			CachingSupportServiceContextAdder contextAdder, Class<CONTAINER> containerClass) {
@@ -78,7 +78,7 @@ public class CachingSupportServiceImpl implements CachingSupportService {
 		return cc;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void putContainer(PipelineContext pipelineContext, CachingSupportServiceContextAdder contextAdder,
 			CacheCategory category, String[] keys, String keyKey, String contextKey, CacheContainer cacheContainer,
 			Envelope envelope) {

@@ -45,12 +45,12 @@ public class FeatureDeselectedEvent extends GwtEvent<FeatureSelectionHandler> {
 		return feature;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<FeatureSelectionHandler> getAssociatedType() {
 		return FeatureSelectionHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(FeatureSelectionHandler featureSelectionHandler) {
 		featureSelectionHandler.onFeatureDeselected(this);
 	}

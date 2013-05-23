@@ -71,7 +71,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	private String id;
 	
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -85,7 +85,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -103,22 +103,22 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		this.layerInfo = layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isCreateCapable() {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isUpdateCapable() {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isDeleteCapable() {
 		return true;
 	}
@@ -161,7 +161,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return filteredList.iterator();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Envelope getBounds() throws LayerException {
 		return getBounds(Filter.INCLUDE);
 	}
@@ -182,12 +182,12 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public FeatureModel getFeatureModel() {
 		return featureModel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object create(Object feature) throws LayerException {
 		String id = featureModel.getId(feature);
 		if (id != null && !features.containsKey(id)) {
@@ -198,7 +198,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object read(String featureId) throws LayerException {
 		if (!features.containsKey(featureId)) {
 			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
@@ -207,7 +207,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		if (!features.containsKey(getFeatureModel().getId(feature))) {
 			return create(feature);
@@ -217,7 +217,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void delete(String featureId) throws LayerException {
 		features.remove(featureId);
 	}

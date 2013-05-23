@@ -34,13 +34,13 @@ public class TextServiceImpl implements TextService {
 	private static final String STYLE_BOLD = "bold";
 	private static final String STYLE_ITALIC = "italic";
 
-	/** {@inheritDoc} */
+	@Override
 	public Rectangle2D getStringBounds(String text, FontStyleInfo fontStyle) {
 		Font font = getFont(fontStyle);
 		return font.getStringBounds(text, 0, text.length(), new FontRenderContext(new AffineTransform(), true, true));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Font getFont(FontStyleInfo fontStyle) {
 		int style = Font.PLAIN;
 		String styleStr = fontStyle.getStyle();

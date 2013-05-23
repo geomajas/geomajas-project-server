@@ -769,12 +769,12 @@ public class SvgGraphicsContext implements GraphicsContext {
 		helper.moveElement(name, sourceParent, targetParent);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void bringToFront(final Object object, final String name) {
 		helper.bringToFront(object, name);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void moveToBack(Object object, String name) {
 		helper.moveToBack(object, name);
 	}

@@ -47,7 +47,7 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 		this.mapWidget = mapWidget;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelect(ClickEvent event) {
 		ParentEditController controller = new ParentEditController(mapWidget);
 		controller.setMaxBoundsDisplayed(maxBoundsDisplayed);
@@ -55,12 +55,12 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 		mapWidget.setController(controller);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("maxBoundsDisplayed".equals(key)) {
 			maxBoundsDisplayed = Boolean.parseBoolean(value);

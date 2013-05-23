@@ -21,7 +21,7 @@ public abstract class AbstractInfinispanConfiguration implements InfinispanConfi
 	private boolean cacheEnabled = true;
 	private String configurationName;
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isCacheEnabled() {
 		return cacheEnabled;
 	}
@@ -35,7 +35,7 @@ public abstract class AbstractInfinispanConfiguration implements InfinispanConfi
 		this.cacheEnabled = cacheEnabled;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getConfigurationName() {
 		return configurationName;
 	}

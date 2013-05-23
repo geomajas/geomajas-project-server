@@ -80,7 +80,7 @@ public class JsGeometryIndex implements ExportOverlay<GeometryIndex> {
 		return 0;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String toString() {
 		return "";
 	}

@@ -31,7 +31,7 @@ public class LayerAddedEvent extends BaseLayerEvent<MapCompositionHandler> {
 		super(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<MapCompositionHandler> getAssociatedType() {
 		return MapCompositionHandler.TYPE;

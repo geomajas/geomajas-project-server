@@ -82,17 +82,17 @@ public class Matrix {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String toString() {
 		return "[" + xx + ", " + xy + ", " + yx + ", " + yy + ", " + dx + ", " + dy + "]";
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public int hashCode() {
 		return 0;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;

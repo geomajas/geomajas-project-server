@@ -47,7 +47,7 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 
 	private String id;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -61,7 +61,7 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
 		try {
 			InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);

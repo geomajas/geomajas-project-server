@@ -45,7 +45,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 		this.features = new ArrayList<InternalFeature>(features);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean next() {
 		if (iterator == null) {
 			iterator = features.iterator();
@@ -58,7 +58,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object getFieldValue(JRField field) throws JRException {
 		if (null != currentFeature && null != field) {
 			return getFieldValue(field.getName());
@@ -130,7 +130,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 			this.beans = beans;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean next() {
 			if (iterator == null) {
 				iterator = beans.iterator();
@@ -143,7 +143,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 			}
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Object getFieldValue(JRField field) throws JRException {
 			if (null != currentBean && null != field) {
 				return getFieldValue(field.getName());

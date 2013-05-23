@@ -51,7 +51,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// Working with map hints:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public <T> void setMapHintValue(MapHint<T> hint, T value) {
 		if (value == null) {
 			throw new IllegalArgumentException("Null value passed.");
@@ -59,7 +59,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 		hintValues.put(hint, value);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getMapHintValue(MapHint<T> hint) {
 		return (T) hintValues.get(hint);
@@ -69,7 +69,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public ClientMapInfo getServerConfiguration() {
 		return mapInfo;
 	}
@@ -84,7 +84,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 		this.mapInfo = mapInfo;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isAnimated(Layer layer) {
 		if (!layerAnimation.containsKey(layer)) {
 			return false;
@@ -92,7 +92,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 		return layerAnimation.get(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setAnimated(Layer layer, boolean animated) {
 		if (layerAnimation.containsKey(layer)) {
 			layerAnimation.remove(layer);

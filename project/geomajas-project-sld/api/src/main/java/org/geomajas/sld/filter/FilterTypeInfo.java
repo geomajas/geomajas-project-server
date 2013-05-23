@@ -187,16 +187,14 @@ public class FilterTypeInfo implements Serializable {
 		featureIdList = list;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public java.lang.String toString() {
 		return "FilterTypeInfo(choiceSelect=" + this.choiceSelect + ", spatialOps=" + this.getSpatialOps()
 				+ ", comparisonOps=" + this.getComparisonOps() + ", logicOps=" + this.getLogicOps()
 				+ ", featureIdList=" + this.getFeatureIdList() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
 			return true;
@@ -240,8 +238,7 @@ public class FilterTypeInfo implements Serializable {
 		return other instanceof FilterTypeInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

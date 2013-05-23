@@ -233,7 +233,7 @@ public class DeskmanagerAuthorizationInfo implements Cloneable {
 		this.deleteAuthorizedLayersExclude = deleteAuthorizedLayersExclude;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object clone() {
 		DeskmanagerAuthorizationInfo clone = new DeskmanagerAuthorizationInfo();
 		if (commandsExclude != null) {

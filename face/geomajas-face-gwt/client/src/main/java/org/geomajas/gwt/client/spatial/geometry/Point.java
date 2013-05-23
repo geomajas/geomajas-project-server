@@ -50,12 +50,12 @@ public class Point extends AbstractGeometry {
 		this.coordinate = coordinate;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createPoint(coordinate);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate[] getCoordinates() {
 		if (coordinate == null) {
 			return null;
@@ -135,7 +135,7 @@ public class Point extends AbstractGeometry {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isEmpty() {
 		return coordinate == null;
 	}
@@ -150,7 +150,7 @@ public class Point extends AbstractGeometry {
 		return new Bbox(coordinate.getX(), coordinate.getY(), 0, 0);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public LayerType getLayerType() {
 		return LayerType.POINT;
 	}
@@ -189,7 +189,7 @@ public class Point extends AbstractGeometry {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String toWkt() {
 		if (isEmpty()) {
 			return "POINT EMPTY";
@@ -201,7 +201,7 @@ public class Point extends AbstractGeometry {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}

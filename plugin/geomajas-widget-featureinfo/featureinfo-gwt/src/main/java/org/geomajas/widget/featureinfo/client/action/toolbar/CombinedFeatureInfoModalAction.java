@@ -47,12 +47,12 @@ public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 
 	// ToolbarModalAction implementation:
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(controller);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}

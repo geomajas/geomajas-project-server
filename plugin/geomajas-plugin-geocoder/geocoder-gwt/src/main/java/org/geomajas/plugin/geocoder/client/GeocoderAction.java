@@ -36,7 +36,7 @@ public class GeocoderAction extends ToolbarBaseAction implements ToolbarCanvas, 
 		this.mapWidget = mapWidget;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Canvas getCanvas() {
 		if (null == geocoderWidget) {
 			geocoderWidget = new GeocoderWidget(mapWidget, name, title);
@@ -44,7 +44,7 @@ public class GeocoderAction extends ToolbarBaseAction implements ToolbarCanvas, 
 		return geocoderWidget;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("name".equals(key)) {
 			name = value;

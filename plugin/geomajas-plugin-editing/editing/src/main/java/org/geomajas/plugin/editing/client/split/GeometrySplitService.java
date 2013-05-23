@@ -77,7 +77,7 @@ public class GeometrySplitService {
 
 		service.addGeometryEditStopHandler(new GeometryEditStopHandler() {
 
-			/** {@inheritDoc} */
+			@Override
 			public void onGeometryEditStop(GeometryEditStopEvent event) {
 				if (started) {
 					stop(null);

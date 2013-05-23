@@ -107,32 +107,27 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		addChild(featureSearch);
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public boolean validate() {
 		Criterion cr = featureSearch.getSearchCriteria();
 		return (cr != null && cr.isValid());
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public Criterion getFeatureSearchCriterion() {
 		return featureSearch.getSearchCriteria();
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public VectorLayer getFeatureSearchVectorLayer() {
 		return featureSearch.getLayer();
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public void reset() {
 		featureSearch.empty();
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public void initialize(Criterion criterion) {
 		featureSearch.setSearchCriteria(criterion);

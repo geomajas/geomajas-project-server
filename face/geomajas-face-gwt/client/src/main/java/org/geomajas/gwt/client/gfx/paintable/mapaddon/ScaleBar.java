@@ -101,7 +101,7 @@ public class ScaleBar extends MapAddon {
 		this.map = map;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		map.getVectorContext().drawGroup(group, this);
 		adjustScale(map.getMapModel().getMapView().getCurrentScale());
@@ -122,11 +122,11 @@ public class ScaleBar extends MapAddon {
 				distance.getStyle());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onDraw() {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onRemove() {
 	}
 

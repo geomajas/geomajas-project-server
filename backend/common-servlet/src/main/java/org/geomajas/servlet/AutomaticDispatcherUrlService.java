@@ -43,7 +43,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 	
 	private String localDispatcherUrl;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getDispatcherUrl() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		if (null == requestAttributes || !(requestAttributes instanceof ServletRequestAttributes)) {
@@ -79,7 +79,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		return getBasePathForHostNamePort(request, serverName, request.getServerPort());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getLocalDispatcherUrl() {
 		if (localDispatcherUrl == null) {
 			RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -101,7 +101,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		this.localDispatcherUrl = localDispatcherUrl;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String localize(String externalUrl) {
 		String localBase = getLocalDispatcherUrl();
 		String dispatcherBase = getDispatcherUrl();

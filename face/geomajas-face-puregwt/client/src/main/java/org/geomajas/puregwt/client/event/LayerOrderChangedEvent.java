@@ -40,7 +40,7 @@ public class LayerOrderChangedEvent extends Event<LayerOrderChangedHandler> {
 		this.toIndex = toIndex;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<LayerOrderChangedHandler> getAssociatedType() {
 		return LayerOrderChangedHandler.TYPE;

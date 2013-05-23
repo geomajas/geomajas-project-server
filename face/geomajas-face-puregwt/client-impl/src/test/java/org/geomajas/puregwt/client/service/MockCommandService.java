@@ -72,28 +72,28 @@ public class MockCommandService implements CommandService {
 
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void login() {
 		this.userToken = TOKEN_DEFAULT;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void logout() {
 		this.userToken = TOKEN_NONE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getUserToken() {
 		return userToken;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
 		this.handler = handler;
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
 		this.tokenRequestHandler = tokenRequestHandler;
 	}

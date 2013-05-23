@@ -35,7 +35,7 @@ public class TileMapUrlBuilder implements TileUrlBuilder {
 		this.tileMap = tileMap;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String buildUrl(TileCode tileCode, String baseTmsUrl) {
 		return buildUrl(tileCode, tileMap, baseTmsUrl);
 	}

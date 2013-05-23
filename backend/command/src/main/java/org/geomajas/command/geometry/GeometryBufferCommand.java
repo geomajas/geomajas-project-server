@@ -39,12 +39,12 @@ public class GeometryBufferCommand implements Command<GeometryBufferRequest, Geo
 	@Autowired
 	private DtoConverterService converter;
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryBufferResponse getEmptyCommandResponse() {
 		return new GeometryBufferResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GeometryBufferRequest request, GeometryBufferResponse response) throws Exception {
 		List<org.geomajas.geometry.Geometry> clientGeometries = request.getGeometries();
 		if (clientGeometries == null || clientGeometries.size() == 0) {

@@ -31,12 +31,12 @@ public class DispatchStoppedEvent extends JsEvent<DispatchStoppedHandler> implem
 	public DispatchStoppedEvent() {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(DispatchStoppedHandler handler) {
 		handler.onDispatchStopped(this);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Class<DispatchStoppedHandler> getType() {
 		return DispatchStoppedHandler.class;
 	}

@@ -36,7 +36,7 @@ public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUse
 	@Autowired
 	private LayerModelService service;
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(CheckLayerModelInUseRequest request, CheckLayerModelInUseResponse response)
 			throws Exception {
 		if (request.getLayerModelId() == null || "".equals(request.getLayerModelId())) {
@@ -48,7 +48,7 @@ public class CheckLayerModelInUseCommand implements Command<CheckLayerModelInUse
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CheckLayerModelInUseResponse getEmptyCommandResponse() {
 		return new CheckLayerModelInUseResponse();
 	}

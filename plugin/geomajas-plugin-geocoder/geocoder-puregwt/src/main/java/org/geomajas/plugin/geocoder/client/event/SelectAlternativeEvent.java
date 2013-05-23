@@ -34,12 +34,12 @@ public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
 	private MapPresenter mapPresenter;
 	private List<GetLocationForStringAlternative> alternatives;
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<SelectAlternativeHandler> getAssociatedType() {
 		return SelectAlternativeHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(SelectAlternativeHandler handler) {
 		handler.onSelectAlternative(this);
 	}

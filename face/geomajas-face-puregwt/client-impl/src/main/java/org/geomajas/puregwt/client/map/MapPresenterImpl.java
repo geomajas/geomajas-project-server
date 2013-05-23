@@ -259,7 +259,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void initialize(String applicationId, String id) {
 		mapRenderer = mapRendererFactory.create(layersModel, viewPort, configuration, display.getMapHtmlContainer());
 
@@ -323,27 +323,27 @@ public final class MapPresenterImpl implements MapPresenter {
 		});
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Widget asWidget() {
 		return display.asWidget();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setMapRenderer(MapRenderer mapRenderer) {
 		this.mapRenderer = mapRenderer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public MapRenderer getMapRenderer() {
 		return mapRenderer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public MapConfiguration getConfiguration() {
 		return configuration;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setSize(int width, int height) {
 		display.setPixelSize(width, height);
 		if (viewPort != null) {
@@ -352,7 +352,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		eventBus.fireEvent(new MapResizedEvent(width, height));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorContainer addWorldContainer() {
 		VectorContainer container = display.getNewWorldContainer();
 		// set transform parameters once, after that all is handled by WorldContainerRenderer
@@ -362,7 +362,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		return container;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CanvasContainer addWorldCanvas() {
 		CanvasContainer container = display.getNewWorldCanvas();
 		// set transform parameters once, after that all is handled by WorldContainerRenderer
@@ -372,42 +372,42 @@ public final class MapPresenterImpl implements MapPresenter {
 		return container;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorContainer addScreenContainer() {
 		return display.getNewScreenContainer();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean removeVectorContainer(VectorContainer container) {
 		return display.removeVectorContainer(container);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean bringToFront(VectorContainer container) {
 		return display.bringToFront(container);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public LayersModel getLayersModel() {
 		return layersModel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public FeatureService getFeatureService() {
 		return featureService;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public MapEventBus getEventBus() {
 		return eventBus;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setMapController(MapController mapController) {
 		for (HandlerRegistration registration : handlers) {
 			registration.removeHandler();
@@ -433,12 +433,12 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public MapController getMapController() {
 		return mapController;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean addMapListener(MapController mapListener) {
 		if (mapListener != null && !listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
@@ -455,7 +455,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean removeMapListener(MapController mapListener) {
 		if (mapListener != null && listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = listeners.get(mapListener);
@@ -469,22 +469,22 @@ public final class MapPresenterImpl implements MapPresenter {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Collection<MapController> getMapListeners() {
 		return listeners.keySet();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setCursor(String cursor) {
 		DOM.setStyleAttribute(display.asWidget().getElement(), "cursor", cursor);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public MapEventParser getMapEventParser() {
 		return mapEventParser;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public AbsolutePanel getWidgetPane() {
 		return display.getWidgetContainer();
 	}

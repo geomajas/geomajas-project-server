@@ -229,16 +229,14 @@ public class GraphicInfo implements Serializable {
 			this.mark = mark;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "GraphicInfo.ChoiceInfo(choiceListSelect=" + this.choiceListSelect + ", externalGraphic="
 					+ this.getExternalGraphic() + ", mark=" + this.getMark() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -265,14 +263,17 @@ public class GraphicInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof ChoiceInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -284,16 +285,14 @@ public class GraphicInfo implements Serializable {
 		}
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "GraphicInfo(choiceList=" + this.getChoiceList() + ", opacity=" + this.getOpacity() + ", size="
 				+ this.getSize() + ", rotation=" + this.getRotation() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -325,14 +324,17 @@ public class GraphicInfo implements Serializable {
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof GraphicInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

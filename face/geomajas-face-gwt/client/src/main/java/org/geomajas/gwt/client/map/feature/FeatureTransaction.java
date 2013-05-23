@@ -103,7 +103,7 @@ public class FeatureTransaction implements Paintable {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		// Clone only the features:
 		Feature[] oldf = null;

@@ -57,12 +57,12 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 	// WorldPaintable implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object getOriginalLocation() {
 		return original;
 	}

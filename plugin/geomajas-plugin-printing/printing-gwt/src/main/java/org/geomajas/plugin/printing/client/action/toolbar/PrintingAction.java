@@ -44,7 +44,7 @@ public class PrintingAction extends ToolbarAction implements ConfigurableAction 
 		setTooltip(MESSAGES.printBtnTitle());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onClick(ClickEvent event) {
 		PrintPreferencesCanvas canvas = new PrintPreferencesCanvas(mapWidget);
 		canvas.setMargin(WidgetLayout.marginSmall);
@@ -56,7 +56,7 @@ public class PrintingAction extends ToolbarAction implements ConfigurableAction 
 		window.show();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		// nothing to configure
 	}

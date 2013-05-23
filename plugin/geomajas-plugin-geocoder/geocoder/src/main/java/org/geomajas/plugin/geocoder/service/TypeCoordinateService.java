@@ -68,7 +68,7 @@ public class TypeCoordinateService implements GeocoderService {
 		this.defaultCrs = defaultCrs;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -83,12 +83,12 @@ public class TypeCoordinateService implements GeocoderService {
 		this.name = name;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale locale) {
 		if (null == locale) {
 			locale = Locale.US;

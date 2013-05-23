@@ -28,7 +28,7 @@ public class NoCacheCacheFactory implements CacheFactory {
 
 	private final NoCacheCacheService cacheService = new NoCacheCacheService();
 
-	/** {@inheritDoc} */
+	@Override
 	public CacheService create(Layer layer, CacheCategory category) {
 		return cacheService;
 	}

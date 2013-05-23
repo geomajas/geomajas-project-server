@@ -44,12 +44,12 @@ public class MapModelChangedEvent extends GwtEvent<MapModelChangedHandler> {
 		return mapModel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Type<MapModelChangedHandler> getAssociatedType() {
 		return MapModelChangedHandler.TYPE;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	protected void dispatch(MapModelChangedHandler mapModelChangedHandler) {
 		mapModelChangedHandler.onMapModelChanged(this);
 	}

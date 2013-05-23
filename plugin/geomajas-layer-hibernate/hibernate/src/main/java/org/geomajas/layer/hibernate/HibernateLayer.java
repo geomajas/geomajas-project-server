@@ -99,7 +99,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	private boolean useLazyFeatureConversion = true;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -116,17 +116,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public FeatureModel getFeatureModel() {
 		return featureModel;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean useLazyFeatureConversion() {
 		return useLazyFeatureConversion;
 	}
@@ -181,17 +181,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isCreateCapable() {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isUpdateCapable() {
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isDeleteCapable() {
 		return true;
 	}
@@ -270,7 +270,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object create(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
@@ -279,7 +279,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return feature;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
@@ -288,14 +288,14 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return session.merge(feature);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void delete(String featureId) throws LayerException {
 		Session session = getSessionFactory().getCurrentSession();
 		session.delete(getFeature(featureId));
 		session.flush();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object read(String featureId) throws LayerException {
 		Object object = getFeature(featureId);
 		if (object == null) {
@@ -315,7 +315,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		session.update(feature);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Envelope getBounds() throws LayerException {
 		return getBounds(filterService.createTrueFilter());
 	}
@@ -337,7 +337,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return getBoundsLocal(filter);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
 		if (attributeName == null) {
 			throw new HibernateLayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, (Object) null);
@@ -435,19 +435,19 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 			hasNext = sr.first();
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean hasNext() {
 			return hasNext;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Object next() {
 			Object o = sr.get(0);
 			hasNext = sr.next();
 			return o;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public void remove() {
 			// TODO the alternative (default) version with list allows remove(),
 			// but this will only remove it from the list, not from db, so maybe we should

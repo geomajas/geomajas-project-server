@@ -171,8 +171,7 @@ public class FeatureTypeStyleInfo implements Serializable {
 		ruleList = list;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "FeatureTypeStyleInfo(name=" + this.getName() + ", title=" + this.getTitle() + ", aAbstract="
@@ -180,8 +179,7 @@ public class FeatureTypeStyleInfo implements Serializable {
 				+ this.getSemanticTypeIdentifierList() + ", ruleList=" + this.getRuleList() + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -221,14 +219,17 @@ public class FeatureTypeStyleInfo implements Serializable {
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof FeatureTypeStyleInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

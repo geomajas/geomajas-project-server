@@ -26,7 +26,6 @@ import org.geomajas.annotation.Api;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-
 @Api(allMethods = true)
 public class AbstractInfo implements Serializable {
 
@@ -52,16 +51,13 @@ public class AbstractInfo implements Serializable {
 		this.aAbstract = aAbstract;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "AbstractInfo(aAbstract=" + this.aAbstract + ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
+	@Override
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
 			return true;
@@ -70,25 +66,26 @@ public class AbstractInfo implements Serializable {
 			return false;
 		}
 		final AbstractInfo other = (AbstractInfo) o;
-		if (!other.canEqual((java.lang.Object) this)) {
+		if (!other.canEqual(this)) {
 			return false;
 		}
-		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
-				.equals((java.lang.Object) other.aAbstract)) {
+		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract.equals(other.aAbstract)) {
 			return false;
 		}
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof AbstractInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

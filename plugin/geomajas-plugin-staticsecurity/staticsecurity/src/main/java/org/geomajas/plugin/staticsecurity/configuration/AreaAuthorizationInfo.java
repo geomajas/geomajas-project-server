@@ -80,7 +80,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			this.info = info;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Geometry getVisibleArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -89,13 +89,13 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			return readWkt(layer.getVisibleArea());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isPartlyVisibleSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyVisibleSufficient();
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Geometry getUpdateAuthorizedArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -104,13 +104,13 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			return readWkt(layer.getUpdateAuthorizedArea());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyUpdateAuthorizedSufficient();
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Geometry getCreateAuthorizedArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -119,13 +119,13 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			return readWkt(layer.getCreateAuthorizedArea());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyCreateAuthorizedSufficient();
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public Geometry getDeleteAuthorizedArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -134,7 +134,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			return readWkt(layer.getDeleteAuthorizedArea());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyDeleteAuthorizedSufficient();

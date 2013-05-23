@@ -49,7 +49,7 @@ public class GeometryAreaCommand implements Command<GeometryAreaRequest, Geometr
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryAreaResponse getEmptyCommandResponse() {
 		return new GeometryAreaResponse();
 	}

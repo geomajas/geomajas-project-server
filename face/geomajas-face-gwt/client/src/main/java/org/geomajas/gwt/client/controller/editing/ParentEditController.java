@@ -91,7 +91,7 @@ public class ParentEditController extends EditController {
 	// EditController implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public Menu getContextMenu() {
 		if (menu == null) {
 			menu = new Menu();
@@ -104,12 +104,12 @@ public class ParentEditController extends EditController {
 		return menu;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public TransactionGeomIndex getGeometryIndex() {
 		return geometryIndex;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setGeometryIndex(TransactionGeomIndex geometryIndex) {
 		if (controller != null) {
 			controller.setGeometryIndex(geometryIndex);
@@ -117,7 +117,7 @@ public class ParentEditController extends EditController {
 		this.geometryIndex = geometryIndex;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void cleanup() {
 		if (controller != null) {
 			controller.cleanup();
@@ -146,7 +146,7 @@ public class ParentEditController extends EditController {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isBusy() {
 		// busy when inserting or dragging has started
 		return controller != null && controller.isBusy();

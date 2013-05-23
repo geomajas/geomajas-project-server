@@ -50,7 +50,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		this.coordinate = coordinate;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX
@@ -65,12 +65,12 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndexOperation getInverseOperation() {
 		return new DeleteVertexOperation(service);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndex getGeometryIndex() {
 		switch (service.getType(index)) {
 			case TYPE_EDGE:

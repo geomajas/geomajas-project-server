@@ -147,7 +147,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		zoomOut.getIcon().getBounds().setY(sliderArea.getVerticalMargin() + sliderAreaHeight);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		/** When the map size changes, update the usable scales and the background of the zoom slider. */
 		if (event.isMapResized()) {
@@ -175,7 +175,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		return currentScaleList;
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds,
 			boolean recursive) {
 		mapWidget.getVectorContext().drawGroup(null, this);

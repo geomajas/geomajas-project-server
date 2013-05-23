@@ -68,7 +68,7 @@ public class AlternativesPanel extends PopupPanel implements SelectAlternativeHa
 		setPopupPosition(left, top);
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public void onSelectAlternative(SelectAlternativeEvent event) {
 		verticalPanel.clear();
 		for (GetLocationForStringAlternative alternative : event.getAlternatives()) {

@@ -57,7 +57,7 @@ public class DropDownButtonAction extends ToolbarAction implements ConfigurableA
 		return dropDownPanel;
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public void configure(String key, String value) {
 		if ("panelWidth".equals(key)) {
 			panelWidth = Integer.parseInt(value);

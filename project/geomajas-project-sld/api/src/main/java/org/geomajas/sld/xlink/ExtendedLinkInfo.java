@@ -10,8 +10,8 @@
  */
 package org.geomajas.sld.xlink;
 
-import java.io.Serializable;
 import org.geomajas.annotation.Api;
+import java.io.Serializable;
 
 /**
  * Schema fragment(s) for this class:...
@@ -57,7 +57,7 @@ public class ExtendedLinkInfo implements Serializable {
 	/**
 	 * Set the 'type' attribute value.
 	 * 
-	 * @param type
+	 * @param type type
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -75,7 +75,7 @@ public class ExtendedLinkInfo implements Serializable {
 	/**
 	 * Set the 'role' attribute value.
 	 * 
-	 * @param role
+	 * @param role role
 	 */
 	public void setRole(RoleInfo role) {
 		this.role = role;
@@ -93,7 +93,7 @@ public class ExtendedLinkInfo implements Serializable {
 	/**
 	 * Set the 'title' attribute value.
 	 * 
-	 * @param title
+	 * @param title title
 	 */
 	public void setTitle(TitleInfo title) {
 		this.title = title;
@@ -130,21 +130,19 @@ public class ExtendedLinkInfo implements Serializable {
 		/**
 		 * Set the 'role' attribute value.
 		 * 
-		 * @param role
+		 * @param role role
 		 */
 		public void setRole(String role) {
 			this.role = role;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ExtendedLinkInfo.RoleInfo(role=" + this.getRole() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -164,14 +162,17 @@ public class ExtendedLinkInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof RoleInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -220,15 +221,13 @@ public class ExtendedLinkInfo implements Serializable {
 			this.title = title;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public java.lang.String toString() {
 			return "ExtendedLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public boolean equals(final java.lang.Object o) {
 			if (o == this) {
@@ -248,14 +247,17 @@ public class ExtendedLinkInfo implements Serializable {
 			return true;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.SuppressWarnings("all")
+		/**
+		 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+		 *
+		 * @param other other object
+		 * @return true when other is an instance of this type
+		 */
 		public boolean canEqual(final java.lang.Object other) {
 			return other instanceof TitleInfo;
 		}
 
-		/** {@inheritDoc} */
-		@java.lang.Override
+		@Override
 		@java.lang.SuppressWarnings("all")
 		public int hashCode() {
 			final int prime = 31;
@@ -265,16 +267,13 @@ public class ExtendedLinkInfo implements Serializable {
 		}
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
+	@Override
 	public java.lang.String toString() {
 		return "ExtendedLinkInfo(type=" + this.getType() + ", role=" + this.getRole() + ", title=" + this.getTitle()
 				+ ")";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
@@ -302,14 +301,17 @@ public class ExtendedLinkInfo implements Serializable {
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
+	 *
+	 * @param other other object
+	 * @return true when other is an instance of this type
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof ExtendedLinkInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;

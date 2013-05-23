@@ -144,32 +144,32 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		});
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Widget asWidget() {
 		return this;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public HtmlContainer getMapHtmlContainer() {
 		return layerHtmlContainer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorContainer getMapVectorContainer() {
 		return layerVectorContainer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<VectorContainer> getWorldVectorContainers() {
 		return worldContainers;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<Transformable> getWorldTransformables() {
 		return worldTransformables;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorContainer getNewScreenContainer() {
 		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
@@ -177,7 +177,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public VectorContainer getNewWorldContainer() {
 		VectorGroup container = new VectorGroup();
 		drawingArea.add(container);
@@ -186,7 +186,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CanvasContainer getNewWorldCanvas() {
 		CanvasContainer container = new CanvasContainerImpl(getWidth(), getHeight());
 		canvasPanel.add(container);
@@ -195,7 +195,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean removeVectorContainer(VectorContainer container) {
 		if (container instanceof Group) {
 			if (worldContainers.contains(container)) {
@@ -212,7 +212,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean bringToFront(VectorContainer container) {
 		if (container instanceof Group) {
 			if (worldContainers.contains(container)) {
@@ -226,12 +226,12 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public AbsolutePanel getWidgetContainer() {
 		return this;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onResize() {
 		for (Widget child : getChildren()) {
 			if (child instanceof RequiresResize) {

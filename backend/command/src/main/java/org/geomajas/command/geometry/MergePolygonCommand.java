@@ -41,12 +41,12 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 	@Autowired
 	private DtoConverterService converter;
 
-	/** {@inheritDoc} */
+	@Override
 	public MergePolygonResponse getEmptyCommandResponse() {
 		return new MergePolygonResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(MergePolygonRequest request, MergePolygonResponse response) throws Exception {
 		Polygon[] polygons = new Polygon[request.getPolygons().length];
 		for (int i = 0; i < request.getPolygons().length; i++) {

@@ -35,7 +35,7 @@ public class AbstractPipelineInterceptor<T> implements PipelineInterceptor<T> {
 
 	private String stepId;
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -49,7 +49,7 @@ public class AbstractPipelineInterceptor<T> implements PipelineInterceptor<T> {
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getFromStepId() {
 		return fromStepId;
 	}
@@ -65,7 +65,7 @@ public class AbstractPipelineInterceptor<T> implements PipelineInterceptor<T> {
 		this.fromStepId = fromStepId;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getToStepId() {
 		return toStepId;
 	}
@@ -92,12 +92,12 @@ public class AbstractPipelineInterceptor<T> implements PipelineInterceptor<T> {
 		this.stepId = stepId;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public ExecutionMode beforeSteps(PipelineContext context, T response) throws GeomajasException {
 		return ExecutionMode.EXECUTE_ALL;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void afterSteps(PipelineContext context, T response) throws GeomajasException {
 	}
 

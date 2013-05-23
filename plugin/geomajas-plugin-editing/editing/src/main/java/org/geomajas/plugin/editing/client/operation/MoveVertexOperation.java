@@ -45,7 +45,7 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 		this.newLocation = newLocation;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX) {
@@ -60,12 +60,12 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndexOperation getInverseOperation() {
 		return new MoveVertexOperation(service, oldLocation);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public GeometryIndex getGeometryIndex() {
 		return index;
 	}

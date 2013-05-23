@@ -225,27 +225,27 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	// ----------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void hideSearchButtons() {
 		searchButtonBar.hide();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void showSearchButtons() {
 		searchButtonBar.show();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getSearchWidgetId() {
 		return widgetId;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getName() {
 		return name;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void showForSearch() {
 		saveBtn.setVisible(false);
 		searchBtn.setVisible(true);
@@ -259,7 +259,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		searchBtn.focus();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void showForSave(final SaveRequestHandler handler) {
 		if (handler != null) {
 			addSaveRequestHandler(new OneOffSaveRequestHandler(handler));
@@ -272,61 +272,61 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		saveBtn.focus();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void initialize(Criterion settings) {
 		searchPanel.initialize(settings);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void reset() {
 		searchHandlers.clear(); // need to remove showForSearch() handler
 		saveHandlers.clear(); // need to remove showForSave() handler
 		searchPanel.reset();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSearchStart() {
 		searchBtn.setIcon(WidgetLayout.iconAjaxLoading);
 		searchBtn.setDisabled(true);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void onSearchEnd() {
 		searchBtn.setIcon(BTN_SEARCH_IMG);
 		searchBtn.setDisabled(false);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addSearchRequestHandler(SearchRequestHandler handler) {
 		searchHandlers.add(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeSearchRequestHandler(SearchRequestHandler handler) {
 		searchHandlers.remove(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addSaveRequestHandler(SaveRequestHandler handler) {
 		saveHandlers.add(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeSaveRequestHandler(SaveRequestHandler handler) {
 		saveHandlers.remove(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addFavouriteRequestHandler(FavouriteRequestHandler handler) {
 		favouriteHandlers.add(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeFavouriteRequestHandler(FavouriteRequestHandler handler) {
 		favouriteHandlers.remove(handler);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void startSearch() {
 		onSearch();
 	}

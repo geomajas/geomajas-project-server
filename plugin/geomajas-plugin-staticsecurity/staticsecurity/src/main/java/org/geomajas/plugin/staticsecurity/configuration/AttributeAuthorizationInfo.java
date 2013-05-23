@@ -77,14 +77,14 @@ public class AttributeAuthorizationInfo extends LayerAuthorizationInfo {
 			this.info = info;
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
 			LayerAttributeAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&
 					check(feature, attributeName, layer.getReadableIncludes(), layer.getReadableExcludes());
 		}
 
-		/** {@inheritDoc} */
+		@Override
 		public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
 			LayerAttributeAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&

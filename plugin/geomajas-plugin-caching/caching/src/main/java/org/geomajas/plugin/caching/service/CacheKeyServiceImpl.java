@@ -56,7 +56,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	private final Random random = new Random();
 
-	/** {@inheritDoc} */
+	@Override
 	public String getCacheKey(CacheContext context) {
 		try {
 			MD5 md5 = new MD5();
@@ -138,7 +138,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys) {
 		CacheContext res = new CacheContextImpl();
 		for (String key : keys) {
@@ -152,7 +152,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		return res;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String makeUnique(String duplicateKey) {
 		log.debug("Need to make key {} unique.", duplicateKey);
 		return duplicateKey + CHARACTERS[random.nextInt(CHARACTERS.length)];

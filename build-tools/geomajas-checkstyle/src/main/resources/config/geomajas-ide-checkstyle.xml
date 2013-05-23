@@ -116,6 +116,7 @@
 			<property name="authorFormat" value="\S"/>
 		</module>
 		<module name="JavadocVariable">
+			<property name="scope" value="package"/>
 			<!-- @todo it would be better to enable this, but the code is not ready for this -->
 			<property name="severity" value="info"/>
 		</module>

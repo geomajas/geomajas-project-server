@@ -62,12 +62,12 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 	@Autowired
 	private VectorLayerService layerService;
 
-	/** {@inheritDoc} */
+	@Override
 	public SearchFeatureResponse getEmptyCommandResponse() {
 		return new SearchFeatureResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(SearchFeatureRequest request, SearchFeatureResponse response) throws Exception {
 		String layerId = request.getLayerId();
 		if (null == layerId) {

@@ -43,7 +43,7 @@ public class ViewPortScaledEvent extends Event<ViewPortChangedHandler> {
 	// Event implementation:
 	// -------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<ViewPortChangedHandler> getAssociatedType() {
 		return ViewPortChangedHandler.TYPE;

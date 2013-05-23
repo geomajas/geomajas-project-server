@@ -41,7 +41,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	private final Map<String, Map<CacheCategory, IndexedCache>> caches =
 			new ConcurrentHashMap<String, Map<CacheCategory, IndexedCache>>();
 
-	/** {@inheritDoc} */
+	@Override
 	public void put(Layer layer, CacheCategory category, String key, Object object, Envelope envelope) {
 		if (log.isDebugEnabled()) {
 			log.debug("Put: {} {} {}", new String[] {getLogLayerId(layer), category.toString(), key});
@@ -49,7 +49,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		getCache(layer, category).put(key, object, envelope);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Object get(Layer layer, CacheCategory category, String key) {
 		Object o = getCache(layer, category).get(key, Object.class);
 		if (log.isDebugEnabled()) {
@@ -59,7 +59,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		return o;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public <TYPE> TYPE get(Layer layer, CacheCategory category, String key, Class<TYPE> type) {
 		TYPE o = getCache(layer, category).get(key, type); 
 		if (log.isDebugEnabled()) {
@@ -69,7 +69,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		return o;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void remove(Layer layer, CacheCategory category, String key) {
 		if (log.isDebugEnabled()) {
 			log.debug("Remove: {} {} {}", new String[] {getLogLayerId(layer), category.toString(), key});
@@ -77,7 +77,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		getCache(layer, category).remove(key);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void drop(Layer layer, CacheCategory category) {
 		if (log.isDebugEnabled()) {
 			log.debug("Drop: {} {}", getLogLayerId(layer), category.toString());
@@ -94,7 +94,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void drop(Layer layer) {
 		if (log.isDebugEnabled()) {
 			log.debug("Drop: {}", getLogLayerId(layer));
@@ -114,7 +114,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void invalidate(Layer layer, CacheCategory category, Envelope envelope) {
 		if (log.isDebugEnabled()) {
 			log.debug("Invalidate: {} {}", getLogLayerId(layer), category.toString());
@@ -131,7 +131,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void invalidate(Layer layer, Envelope envelope) {
 		if (log.isDebugEnabled()) {
 			log.debug("Invalidate: {}", getLogLayerId(layer));
@@ -146,7 +146,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void invalidate(Layer layer) {
 		if (log.isDebugEnabled()) {
 			log.debug("Invalidate: {}", getLogLayerId(layer));

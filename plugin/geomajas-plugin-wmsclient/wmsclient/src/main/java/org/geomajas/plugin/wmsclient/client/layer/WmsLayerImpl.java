@@ -62,7 +62,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		this.title = title;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<LayerStylePresenter> getStylePresenters() {
 		List<LayerStylePresenter> presenters = new ArrayList<LayerStylePresenter>();
 		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig)));
@@ -73,12 +73,12 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public WmsLayerConfiguration getConfig() {
 		return wmsConfig;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public WmsTileConfiguration getTileConfig() {
 		return tileConfig;
 	}
@@ -92,7 +92,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return viewPort.getCrs();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
@@ -101,12 +101,12 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	// OpacitySupported implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	@Override
 	public void setOpacity(double opacity) {
 		renderer.getHtmlContainer().setOpacity(opacity);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public double getOpacity() {
 		return renderer.getHtmlContainer().getOpacity();
 	}
@@ -126,7 +126,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return renderer;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public List<RasterTile> getTiles(double scale, Bbox worldBounds) {
 		List<TileCode> codes = tileService.getTileCodesForBounds(getViewPort(), tileConfig, worldBounds, scale);

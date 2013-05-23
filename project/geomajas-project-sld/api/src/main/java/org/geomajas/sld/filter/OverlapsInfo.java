@@ -32,14 +32,12 @@ public class OverlapsInfo extends BinarySpatialOpTypeInfo implements Serializabl
 
 	private static final long serialVersionUID = 100;
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public java.lang.String toString() {
 		return "OverlapsInfo()";
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public boolean equals(final Object o) {
 		if (o == this) {
 			return true;
@@ -67,8 +65,7 @@ public class OverlapsInfo extends BinarySpatialOpTypeInfo implements Serializabl
 		return other instanceof OverlapsInfo;
 	}
 
-	/** {@inheritDoc} */
-	@java.lang.Override
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

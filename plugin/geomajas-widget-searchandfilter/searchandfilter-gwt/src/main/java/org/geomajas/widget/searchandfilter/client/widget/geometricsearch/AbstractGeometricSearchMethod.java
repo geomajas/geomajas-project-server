@@ -26,7 +26,7 @@ public abstract class AbstractGeometricSearchMethod implements GeometricSearchMe
 	protected MapWidget mapWidget;
 	protected GeometryUpdateHandler handler;
 
-	/** {@inheritDoc} */
+	@Override
 	public void initialize(MapWidget mapWidget, GeometryUpdateHandler handler) {
 		if (mapWidget == null) {
 			throw new IllegalArgumentException("Please provide a mapWidget.");

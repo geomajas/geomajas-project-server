@@ -148,7 +148,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	// ----------------------------------------------------------
 	// -- MapViewChangedHandler --
 	// ----------------------------------------------------------
-	/** {@inheritDoc} */
+	@Override
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (null != activeViewConfig && !event.isSameScaleLevel()) {
 			renderViewConfig(activeViewConfig.getViewConfig());
@@ -158,13 +158,13 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	// ----------------------------------------------------------
 	// -- LayerChangedHandler --
 	// ----------------------------------------------------------
-	/** {@inheritDoc} */
+	@Override
 	public void onVisibleChange(LayerShownEvent event) {
 		if (!themeChange && getActiveViewConfig() != null && !event.isScaleChange()) {
 			activateViewConfig(null);
 		}
 	}
-	/** {@inheritDoc} */
+	@Override
 	public void onLabelChange(LayerLabeledEvent event) {
 		// ignore
 	}

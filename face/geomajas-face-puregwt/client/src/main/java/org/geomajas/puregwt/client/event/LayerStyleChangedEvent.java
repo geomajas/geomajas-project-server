@@ -31,7 +31,7 @@ public class LayerStyleChangedEvent extends BaseLayerEvent<LayerStyleChangedHand
 		super(layer);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Override
 	public Type<LayerStyleChangedHandler> getAssociatedType() {
 		return LayerStyleChangedHandler.TYPE;

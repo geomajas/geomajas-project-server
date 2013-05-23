@@ -59,12 +59,12 @@ public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, Get
 	@Autowired
 	private GeoService geoService;
 
-	/** {@inheritDoc} */
+	@Override
 	public GetRasterTilesResponse getEmptyCommandResponse() {
 		return new GetRasterTilesResponse();
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void execute(GetRasterTilesRequest request, GetRasterTilesResponse response) throws Exception {
 		log.debug("request start layer {}, crs {}", request.getLayerId(), request.getCrs());
 		String layerId = request.getLayerId();

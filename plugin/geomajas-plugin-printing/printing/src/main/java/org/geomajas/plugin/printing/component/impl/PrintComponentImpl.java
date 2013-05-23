@@ -91,7 +91,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 	public void accept(PrintComponentVisitor visitor) {
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void layout(PdfContext context) {
 		// top down layout
 		float x = getBounds().getLeft();
@@ -164,7 +164,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		setBounds(new Rectangle(0, 0, width, height));
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void render(PdfContext context) {
 		for (PrintComponent<?> child : children) {
 			context.saveOrigin();
@@ -174,7 +174,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addComponent(PrintComponent<?> child) {
 		if (!children.contains(child)) {
 			child.setParent(this);
@@ -182,7 +182,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void removeComponent(PrintComponent<?> child) {
 		if (children.contains(child)) {
 			child.setParent(null);
@@ -190,20 +190,20 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addComponent(int index, PrintComponent<?> child) {
 		child.setParent(this);
 		children.add(index, child);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addComponents(Collection<? extends PrintComponent<?>> children) {
 		for (PrintComponent<?> child : children) {
 			addComponent(child);
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void addComponents(int index, Collection<? extends PrintComponent<?>> children) {
 		// reverse add to index to keep the order
 		List<PrintComponent<?>> reverse = new ArrayList<PrintComponent<?>>(children);
@@ -213,23 +213,23 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	@Json(serialize = false)
 	public PrintComponent<?> getParent() {
 		return parent;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setParent(PrintComponent<?> parent) {
 		this.parent = parent;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public Rectangle getBounds() {
 		return bounds;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
@@ -243,7 +243,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		return new Rectangle(getBounds().getWidth(), getBounds().getHeight());
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public LayoutConstraint getConstraint() {
 		return constraint;
 	}
@@ -324,12 +324,12 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 				+ "] x [" + (int) getBounds().getBottom() + " : " + (int) getBounds().getTop() + "]";
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public List<PrintComponent<?>> getChildren() {
 		return children;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public PrintComponent<?> getChild(String childTag) {
 		for (PrintComponent<?> child : children) {
 			if (child.getTag() != null && child.getTag().equals(childTag)) {
@@ -361,7 +361,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		this.id = id;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -375,12 +375,12 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		this.tag = tag;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String getTag() {
 		return tag;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void fromDto(T info) {
 		if (info.getBounds() != null) {
 			setBounds(createRectangle(info.getBounds()));

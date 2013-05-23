@@ -91,7 +91,7 @@ public class AttributeCriterion implements Criterion {
 		this.serverLayerId = serverLayerId;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public boolean isValid() {
 		return (serverLayerId != null && attributeName != null && isValidOperator() && value != null);
 	}
@@ -101,12 +101,12 @@ public class AttributeCriterion implements Criterion {
 				OPERATORS.contains("," + operator.toUpperCase() + ",") && operator.indexOf(',') < 0;
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public void serverLayerIdVisitor(Set<String> layerIds) {
 		layerIds.add(serverLayerId);
 	}
 	
-	/** {@inheritDoc} */
+	@Override
 	public List<Criterion> getCriteria() {
 		return new ArrayList<Criterion>();
 	}
