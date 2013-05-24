@@ -133,7 +133,7 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	public void onDrag(HumanInputEvent<?> event) {
 	}
 
-	@Override
+	/** @todo javadoc unknown. */
 	public boolean isDragging() {
 		return dragging;
 	}

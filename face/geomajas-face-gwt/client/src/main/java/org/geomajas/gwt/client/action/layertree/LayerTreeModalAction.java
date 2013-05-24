@@ -58,10 +58,10 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 	 */
 	public abstract boolean isSelected(Layer<?> layer);
 
-	@Override
+	/** @todo javadoc unknown. */
 	public abstract void onDeselect(Layer<?> layer);
 
-	@Override
+	/** @todo javadoc unknown. */
 	public abstract void onSelect(Layer<?> layer);
 
 	/**
