@@ -74,6 +74,42 @@
 				<artifactId>httpmime</artifactId>
 				<version>${wmsclient-httpclient-version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-xml</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-wms</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-api</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-main</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-cql</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-referencing</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-render</artifactId>
+				<version>${wmsclient-geotools-version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -112,6 +148,7 @@
 	</profiles>
 
 	<properties>
+		<wmsclient-geotools-version>9.2</wmsclient-geotools-version>
 		<wmsclient-puregwt-face-version>1.0.0-SNAPSHOT</wmsclient-puregwt-face-version>
 		<wmsclient-printing-version>2.4.0-SNAPSHOT</wmsclient-printing-version>
 		<wmsclient-httpclient-version>4.2.1</wmsclient-httpclient-version>
