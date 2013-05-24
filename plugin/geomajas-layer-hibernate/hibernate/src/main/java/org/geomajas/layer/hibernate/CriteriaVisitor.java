@@ -38,6 +38,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
@@ -54,6 +55,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -329,6 +344,81 @@ public class CriteriaVisitor implements FilterVisitor {
 	@Override
 	public Object visitNullFilter(Object userData) {
 		throw new UnsupportedOperationException("visit(Object userData)");
+	}
+
+	@Override
+	public Object visit(PropertyIsNil filter, Object extraData) {
+		throw new UnsupportedOperationException("visit(PropertyIsNil filter, Object extraData)");
+	}
+
+	@Override
+	public Object visit(After after, Object extraData) {
+		throw new UnsupportedOperationException("visit(After after, Object extraData)");
+	}
+
+	@Override
+	public Object visit(AnyInteracts anyInteracts, Object extraData) {
+		throw new UnsupportedOperationException("visit(AnyInteracts anyInteracts, Object extraData)");
+	}
+
+	@Override
+	public Object visit(Before before, Object extraData) {
+		throw new UnsupportedOperationException("visit(Before before, Object extraData)");
+	}
+
+	@Override
+	public Object visit(Begins begins, Object extraData) {
+		throw new UnsupportedOperationException("visit(Begins begins, Object extraData)");
+	}
+
+	@Override
+	public Object visit(BegunBy begunBy, Object extraData) {
+		throw new UnsupportedOperationException("visit(BegunBy begunBy, Object extraData)");
+	}
+
+	@Override
+	public Object visit(During during, Object extraData) {
+		throw new UnsupportedOperationException("visit(During during, Object extraData)");
+	}
+
+	@Override
+	public Object visit(EndedBy endedBy, Object extraData) {
+		throw new UnsupportedOperationException("visit(EndedBy endedBy, Object extraData)");
+	}
+
+	@Override
+	public Object visit(Ends ends, Object extraData) {
+		throw new UnsupportedOperationException("visit(Ends ends, Object extraData)");
+	}
+
+	@Override
+	public Object visit(Meets meets, Object extraData) {
+		throw new UnsupportedOperationException("visit(Meets meets, Object extraData)");
+	}
+
+	@Override
+	public Object visit(MetBy metBy, Object extraData) {
+		throw new UnsupportedOperationException("visit(MetBy metBy, Object extraData)");
+	}
+
+	@Override
+	public Object visit(OverlappedBy overlappedBy, Object extraData) {
+		throw new UnsupportedOperationException("visit(OverlappedBy overlappedBy, Object extraData)");
+	}
+
+	@Override
+	public Object visit(TContains contains, Object extraData) {
+		throw new UnsupportedOperationException("visit(TContains contains, Object extraData)");
+	}
+
+	@Override
+	public Object visit(TEquals equals, Object extraData) {
+		throw new UnsupportedOperationException("visit(TEquals equals, Object extraData)");
+	}
+
+	@Override
+	public Object visit(TOverlaps contains, Object extraData) {
+		throw new UnsupportedOperationException("visit(TOverlaps contains, Object extraData)");
 	}
 
 	// -------------------------------------------------------------------------

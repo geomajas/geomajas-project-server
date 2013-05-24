@@ -554,4 +554,8 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 	public void setMatchingCase(boolean matchingCase) {
 		this.matchingCase = matchingCase;
 	}
+
+	public MatchAction getMatchAction() {
+		throw new UnsupportedOperationException("getMatchAction()");
+	}
 }

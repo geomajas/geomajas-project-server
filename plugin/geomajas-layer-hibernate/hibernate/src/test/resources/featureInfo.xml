@@ -35,7 +35,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="name">
 					<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateLayerModelTest.PARAM_GEOMETRY_ATTR" />
 				</property>
-				<property name="editable" value="false" />
+				<property name="editable" value="true" />
 			</bean>
 		</property>
 
