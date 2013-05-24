@@ -357,7 +357,7 @@
 		<sld-spring-version>3.0.5.RELEASE</sld-spring-version>
 		<sld-jibx-version>1.2.3</sld-jibx-version>
 		<sld-gwt-version>2.5.0</sld-gwt-version>
-		<sld-geotools-version>2.7.4-GBE-276</sld-geotools-version>
+		<sld-geotools-version>9.2</sld-geotools-version>
 
 		<gwtp.version>0.7</gwtp.version>
 		<gin.version>1.5.0</gin.version>
