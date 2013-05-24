@@ -43,6 +43,8 @@
 		<module>geomajas-plugin-reporting</module>
 		<module>geomajas-plugin-runtimeconfig</module>
 		<module>geomajas-plugin-staticsecurity</module>
+		<module>geomajas-plugin-vendorspecificpipeline</module>
+		<module>geomajas-plugin-wmsclient</module>
 		<module>geomajas-widget-advancedviews</module>
 		<module>geomajas-widget-featureinfo</module>
 		<module>geomajas-widget-layer</module>
