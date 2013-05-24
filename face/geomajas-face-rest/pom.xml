@@ -54,7 +54,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-geojson</artifactId>
-				<version>2.7.4</version>
+				<version>${geomajas-face-rest-geotools-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -93,7 +93,8 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-rest-backend-version>1.11.1</geomajas-face-rest-backend-version>
+		<geomajas-face-rest-geotools-version>9.2</geomajas-face-rest-geotools-version>
+		<geomajas-face-rest-backend-version>1.13.0-SNAPSHOT</geomajas-face-rest-backend-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 </project>

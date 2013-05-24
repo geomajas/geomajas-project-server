@@ -22,8 +22,6 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.GeoJsonParser;
 import org.geomajas.rest.server.GeoToolsConverterService;
 import org.geotools.data.memory.MemoryFeatureCollection;
-import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,7 +54,7 @@ public class GeoJsonView extends AbstractView {
 		response.setContentType(getContentType());
 		if (Collection.class.isAssignableFrom(ff.getClass())) {
 			Collection<InternalFeature> features = (Collection<InternalFeature>) ff;
-			FeatureCollection<SimpleFeatureType, SimpleFeature> coll = new MemoryFeatureCollection(sft);
+			MemoryFeatureCollection coll = new MemoryFeatureCollection(sft);
 			for (InternalFeature feature : features) {
 				coll.add(convertorService.toSimpleFeature(feature, sft));
 			}
