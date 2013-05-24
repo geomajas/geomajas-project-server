@@ -328,12 +328,12 @@ public final class MapPresenterImpl implements MapPresenter {
 		return display.asWidget();
 	}
 
-	@Override
+	/** @todo javadoc unknown. */
 	public void setMapRenderer(MapRenderer mapRenderer) {
 		this.mapRenderer = mapRenderer;
 	}
 
-	@Override
+	/** @todo javadoc unknown. */
 	public MapRenderer getMapRenderer() {
 		return mapRenderer;
 	}

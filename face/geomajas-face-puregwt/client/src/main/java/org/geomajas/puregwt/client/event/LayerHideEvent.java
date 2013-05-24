@@ -33,7 +33,6 @@ public class LayerHideEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 	}
 
 	@Override
-	@Override
 	public Type<LayerVisibilityHandler> getAssociatedType() {
 		return LayerVisibilityHandler.TYPE;
 	}

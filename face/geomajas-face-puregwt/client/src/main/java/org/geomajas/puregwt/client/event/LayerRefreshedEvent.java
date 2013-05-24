@@ -32,7 +32,6 @@ public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {
 	}
 
 	@Override
-	@Override
 	public Type<LayerRefreshedHandler> getAssociatedType() {
 		return LayerRefreshedHandler.TYPE;
 	}

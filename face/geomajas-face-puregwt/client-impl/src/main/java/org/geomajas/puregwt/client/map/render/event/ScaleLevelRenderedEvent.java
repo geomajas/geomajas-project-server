@@ -36,7 +36,6 @@ public class ScaleLevelRenderedEvent extends GwtEvent<ScaleLevelRenderedHandler>
 	}
 
 	@Override
-	@Override
 	public Type<ScaleLevelRenderedHandler> getAssociatedType() {
 		return ScaleLevelRenderedHandler.TYPE;
 	}

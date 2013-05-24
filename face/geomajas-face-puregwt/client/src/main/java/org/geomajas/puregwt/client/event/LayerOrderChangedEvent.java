@@ -41,7 +41,6 @@ public class LayerOrderChangedEvent extends Event<LayerOrderChangedHandler> {
 	}
 
 	@Override
-	@Override
 	public Type<LayerOrderChangedHandler> getAssociatedType() {
 		return LayerOrderChangedHandler.TYPE;
 	}

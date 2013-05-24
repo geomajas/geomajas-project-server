@@ -32,7 +32,6 @@ public class LayerAddedEvent extends BaseLayerEvent<MapCompositionHandler> {
 	}
 
 	@Override
-	@Override
 	public Type<MapCompositionHandler> getAssociatedType() {
 		return MapCompositionHandler.TYPE;
 	}

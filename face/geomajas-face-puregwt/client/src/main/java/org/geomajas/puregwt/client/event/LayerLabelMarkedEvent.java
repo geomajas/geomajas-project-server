@@ -41,7 +41,6 @@ public class LayerLabelMarkedEvent extends BaseLayerEvent<LayerLabeledHandler> {
 	}
 
 	@Override
-	@Override
 	public Type<LayerLabeledHandler> getAssociatedType() {
 		return LayerLabeledHandler.TYPE;
 	}

@@ -25,7 +25,6 @@ import com.google.web.bindery.event.shared.Event;
 public class MapInitializationEvent extends Event<MapInitializationHandler> {
 
 	@Override
-	@Override
 	public Type<MapInitializationHandler> getAssociatedType() {
 		return MapInitializationHandler.TYPE;
 	}

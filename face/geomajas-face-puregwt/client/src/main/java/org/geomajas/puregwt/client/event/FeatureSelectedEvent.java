@@ -47,7 +47,6 @@ public class FeatureSelectedEvent extends BaseLayerEvent<FeatureSelectionHandler
 	}
 
 	@Override
-	@Override
 	public Type<FeatureSelectionHandler> getAssociatedType() {
 		return FeatureSelectionHandler.TYPE;
 	}

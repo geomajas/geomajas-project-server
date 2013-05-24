@@ -44,7 +44,6 @@ public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 	// -------------------------------------------------------------------------
 
 	@Override
-	@Override
 	public Type<ViewPortChangedHandler> getAssociatedType() {
 		return ViewPortChangedHandler.TYPE;
 	}
@@ -62,6 +61,7 @@ public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 	// Protected methods:
 	// ------------------------------------------------------------------------
 
+	/** @todo javadoc unknown. */
 	protected void dispatch(ViewPortChangedHandler handler) {
 		handler.onViewPortTranslated(this);
 	}

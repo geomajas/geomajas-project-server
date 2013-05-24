@@ -38,7 +38,7 @@ public interface CanvasContainer extends Transformable, Transparent, IsWidget {
 	/**
 	 * Adds multiple shapes to the container.
 	 * 
-	 * @param shape
+	 * @param shapes
 	 */
 	void addAll(List<CanvasShape> shapes);
 

@@ -32,11 +32,11 @@ public class LayerSelectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 	}
 
 	@Override
-	@Override
 	public Type<LayerSelectionHandler> getAssociatedType() {
 		return LayerSelectionHandler.TYPE;
 	}
 
+	/** @todo javadoc unknown. */
 	protected void dispatch(LayerSelectionHandler selectLayerHandler) {
 		selectLayerHandler.onSelectLayer(this);
 	}

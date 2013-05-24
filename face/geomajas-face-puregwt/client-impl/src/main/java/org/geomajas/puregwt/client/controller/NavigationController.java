@@ -160,7 +160,6 @@ public class NavigationController extends AbstractMapController {
 	}
 
 	@Override
-	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
 		final boolean isNorth;
 		if (event.getDeltaY() == 0) {

@@ -56,10 +56,6 @@ public abstract class AbstractLayer implements Layer {
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 * 
-	 * @param viewPort
-	 *            The view port of the map.
-	 * @param eventBus
-	 *            The map centric event bus.
 	 * @param id
 	 *            The unique ID for this layer.
 	 */

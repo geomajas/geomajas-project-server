@@ -59,12 +59,12 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	// Layer implementation:
 	// ------------------------------------------------------------------------
 
-	@Override
+	/** @todo javadoc unknown. */
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
 	}
 
-	@Override
+	/** @todo javadoc unknown. */
 	public T getLayerInfo() {
 		return layerInfo;
 	}

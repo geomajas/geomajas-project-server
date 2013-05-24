@@ -32,7 +32,6 @@ public class LayerStyleChangedEvent extends BaseLayerEvent<LayerStyleChangedHand
 	}
 
 	@Override
-	@Override
 	public Type<LayerStyleChangedHandler> getAssociatedType() {
 		return LayerStyleChangedHandler.TYPE;
 	}
