@@ -19,9 +19,6 @@ import org.geomajas.annotation.Api;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.jdbc.JDBCDataStore;
-import org.geotools.data.jdbc.fidmapper.DefaultFIDMapperFactory;
-import org.geotools.data.jdbc.fidmapper.FIDMapperFactory;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +38,10 @@ public final class DataStoreFactory {
 	 * typename). Defaults to "true". Add this parameter with value "false" to the parameter map to let first generation
 	 * JDBC datastores generate non-typed fids.
 	 * @since 1.10.0
+	 * @deprecated You can no longer configure this in Geotools JdbcDatastore.
 	 */
 	@Api
+	@Deprecated
 	public static final String USE_TYPED_FIDS = "useTypedFids";
 	
 	private static final Map<Map<String, Object>, DataStore> DATASTORE_CACHE = 
@@ -74,13 +73,7 @@ public final class DataStoreFactory {
 		Object typed = parameters.get(USE_TYPED_FIDS);
 		if (typed instanceof String) {
 			Boolean t = Boolean.valueOf((String) typed);
-			if (store instanceof JDBCDataStore) {
-				JDBCDataStore jdbcStore = (JDBCDataStore) store;
-				FIDMapperFactory fidMapperFactory = jdbcStore.getFIDMapperFactory();
-				if (fidMapperFactory instanceof DefaultFIDMapperFactory) {
-					((DefaultFIDMapperFactory) fidMapperFactory).setReturningTypedFIDMapper(t);
-				}
-			} else if (!t) {
+			if (!t) {
 				if (store != null) {
 					log.warn("Non-typed FIDs are only supported by first-generation JDBC datastores, "
 							+ "using default fid format for datastore class " + store.getClass().getName());

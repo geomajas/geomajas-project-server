@@ -6,11 +6,9 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.geomajas.layer.geotools.DummyJdbcFactory.DummyJdbcDataStore;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
-import org.geotools.data.jdbc.JDBCDataStore;
-import org.geotools.data.jdbc.fidmapper.DefaultFIDMapperFactory;
-import org.geotools.data.jdbc.fidmapper.FIDMapperFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,44 +16,24 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * TODO This testclass has very little use left, might want to remove it.
+ * <li> typed/untyped is no longer supported.
+ * <li> can't extend jdbcdatastore anymore, testing for dummystore is not very useful.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/geotools/dataStoreFactory.xml" })
 public class DataStoreFactoryTest {
 
 	@Autowired
-	@Qualifier("typedDataStore")
-	DataStore typed;
-
-	@Autowired
-	@Qualifier("nonTypedDataStore")
-	DataStore nonTyped;
-
-	@Autowired
 	@Qualifier("ngDataStore")
 	DataStore ngDataStore;
 
 	@Test
-	public void testTyped() {
-		Assert.assertTrue(typed instanceof JDBCDataStore);
-		FIDMapperFactory factory = ((JDBCDataStore) typed).getFIDMapperFactory();
-		Assert.assertTrue(factory instanceof DefaultFIDMapperFactory);
-		Assert.assertTrue(((DefaultFIDMapperFactory) factory).isReturningTypedFIDMapper());
-
-	}
-
-	@Test
-	public void testNonTyped() {
-		Assert.assertTrue(nonTyped instanceof JDBCDataStore);
-		FIDMapperFactory factory = ((JDBCDataStore) nonTyped).getFIDMapperFactory();
-		Assert.assertTrue(factory instanceof DefaultFIDMapperFactory);
-		Assert.assertFalse(((DefaultFIDMapperFactory) factory).isReturningTypedFIDMapper());
-	}
-
-	@Test
 	public void testNextGen() {
 		// ignores useTypedFids, should log warning
-		Assert.assertFalse(ngDataStore instanceof JDBCDataStore);
+		Assert.assertFalse(ngDataStore instanceof DummyJdbcDataStore);
 	}
 
 	public static void main(String[] args) throws IOException {

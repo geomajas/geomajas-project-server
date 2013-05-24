@@ -36,11 +36,10 @@ import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.opengis.feature.simple.SimpleFeature;
@@ -310,7 +309,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		SimpleFeatureSource source = getFeatureSource();
 		if (source instanceof SimpleFeatureStore) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			SimpleFeatureCollection collection = FeatureCollections.newCollection();
+			DefaultFeatureCollection collection = new DefaultFeatureCollection();
 			collection.add((SimpleFeature) feature);
 			transactionSynchronization.synchTransaction(store);
 			try {
