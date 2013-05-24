@@ -145,6 +145,11 @@
 				<artifactId>commons-codec</artifactId>
 				<version>1.7</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -185,11 +190,11 @@
 	</profiles>
 
 	<properties>
-		<runtimeconfig-backend-version>1.12.0</runtimeconfig-backend-version>
-		<runtimeconfig-gwt-face-version>1.11.1</runtimeconfig-gwt-face-version>
+		<runtimeconfig-backend-version>1.13.0-SNAPSHOT</runtimeconfig-backend-version>
+		<runtimeconfig-gwt-face-version>1.14.0-SNAPSHOT</runtimeconfig-gwt-face-version>
 		<runtimeconfig-puregwt-face-version>1.0.0-M1</runtimeconfig-puregwt-face-version>
 		<runtimeconfig-gwt-version>2.5.0</runtimeconfig-gwt-version>
-		<runtimeconfig-geotools-version>1.10.0</runtimeconfig-geotools-version>
-		<runtimeconfig-wms-version>1.10.0</runtimeconfig-wms-version>
+		<runtimeconfig-geotools-version>1.11.0-SNAPSHOT</runtimeconfig-geotools-version>
+		<runtimeconfig-wms-version>1.11.0-SNAPSHOT</runtimeconfig-wms-version>
 	</properties>
 </project>

@@ -21,6 +21,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-caching</artifactId>
 		</dependency>
@@ -33,15 +37,15 @@
 			<artifactId>geomajas-layer-wms</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>

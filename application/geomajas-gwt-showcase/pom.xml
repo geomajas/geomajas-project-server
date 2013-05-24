@@ -65,21 +65,21 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.12.0</version>
+				<version>1.13.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.13.0</version>
+				<version>1.14.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.10.0</version>
+				<version>1.11.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -144,7 +144,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-google-all</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
+				<version>2.1.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -167,23 +167,38 @@
 				<artifactId>guava</artifactId>
 				<version>14.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- These versions are used by Selenium -->
+		<!-- need compile versions, not test -->
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
+			<groupId>hsqldb</groupId> 
+			<artifactId>hsqldb</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+
+		<!-- Sample test -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- end -->
-
-		<!-- Base application -->
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-example-base</artifactId>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<scope>test</scope>
 		</dependency>
-
+	
 		<!-- Examples to include -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -266,6 +281,12 @@
 			<artifactId>geomajas-layer-geotools-gwt-example-jar</artifactId>
 		</dependency>
 
+		<!-- Base application -->
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-example-base</artifactId>
+		</dependency>
+
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -302,25 +323,6 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-server</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- SmartGWT skins -->
-		<dependency>
-			<groupId>com.smartgwt</groupId>
-			<artifactId>smartgwt-skins</artifactId>
-			<version>3.1</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
