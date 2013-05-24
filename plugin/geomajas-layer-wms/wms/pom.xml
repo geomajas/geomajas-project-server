@@ -29,6 +29,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-layer-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-caching</artifactId>
 		</dependency>
 		<dependency>
@@ -36,10 +40,7 @@
 			<artifactId>geomajas-plugin-caching-infinispan</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-layer-common</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -75,6 +76,10 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-xml</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+		</dependency>
 
 		<!-- Dependencies for the Proxy controller -->
 		<dependency>
@@ -86,11 +91,9 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
-			<scope>test</scope>
+ 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
 		</dependency>
 
 		<dependency>
@@ -116,6 +119,12 @@
 		<dependency>
 			<groupId>org.easytesting</groupId>
 			<artifactId>fest-assert</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
