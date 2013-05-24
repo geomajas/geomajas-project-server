@@ -160,6 +160,6 @@
 		<sld-spring-version>3.0.5.RELEASE</sld-spring-version>
 		<sld-jibx-version>1.2.3</sld-jibx-version>
 		<sld-gwt-version>2.5.0</sld-gwt-version>
-		<sld-geotools-version>2.7.5</sld-geotools-version>
+		<sld-geotools-version>9.2</sld-geotools-version>
 	</properties>
 </project>
