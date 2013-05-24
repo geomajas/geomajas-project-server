@@ -35,7 +35,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${google-layer-backend-version}</version>
+				<version>${google-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
