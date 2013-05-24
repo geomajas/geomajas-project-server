@@ -25,16 +25,16 @@
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
-		<!-- These versions are used by Selenium -->
 		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3</artifactId>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<scope>test</scope>
 		</dependency>
-		<!-- end -->
 	
 		<!-- Geomajas dependencies -->
 		<dependency>
@@ -77,17 +77,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-server</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
