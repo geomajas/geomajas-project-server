@@ -32,7 +32,26 @@
 
 	<dependencyManagement>
 		<dependencies>
-				
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api</artifactId>
+				<version>${rasterizing-backend-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-impl</artifactId>
+				<version>${rasterizing-backend-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${rasterizing-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
@@ -48,16 +67,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${rasterizing-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
 			
-
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-caching-all</artifactId>
@@ -106,7 +116,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.8.0</version>
+				<version>1.11.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -131,6 +141,13 @@
 				<artifactId>xpp3</artifactId>
 				<version>1.1.4c</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-jdbc</artifactId>
+				<version>${rasterizing-geotools-version}</version>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -171,10 +188,11 @@
 	</profiles>
 
 	<properties>
-		<rasterizing-backend-version>1.11.1</rasterizing-backend-version>
-		<rasterizing-gwt-face-version>1.13.0</rasterizing-gwt-face-version>
+		<rasterizing-backend-version>1.13.0-SNAPSHOT</rasterizing-backend-version>
+		<rasterizing-gwt-face-version>1.14.0-SNAPSHOT</rasterizing-gwt-face-version>
 		<rasterizing-puregwt-face-version>1.0.0-M4</rasterizing-puregwt-face-version>
 		<rasterizing-caching-version>2.0.0</rasterizing-caching-version>
 		<rasterizing-gwt-version>2.5.0</rasterizing-gwt-version>
+		<rasterizing-geotools-version>9.2</rasterizing-geotools-version>
 	</properties>
 </project>

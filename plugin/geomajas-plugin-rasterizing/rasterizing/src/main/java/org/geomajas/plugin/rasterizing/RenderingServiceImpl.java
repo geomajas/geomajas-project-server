@@ -246,16 +246,13 @@ public class RenderingServiceImpl implements RenderingService {
 			MapViewport viewPort = this.mapContext.getViewport();
 			viewPort.setBounds(context.getViewport().getBounds());
 			viewPort.setScreenArea(context.getViewport().getScreenArea());
-			viewPort.setCoordinateReferenceSystem(context.getViewport().getCoordianteReferenceSystem());
+			viewPort.setCoordinateReferenceSystem(context.getViewport().getCoordinateReferenceSystem());
 		}
 
 		public void execute() {
 			StreamingRenderer renderer = new StreamingRenderer();
 			renderer.setContext(mapContext);
 			renderer.setThreadPool(threadPool);
-			if (!hints.containsKey(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY)) {
-				hints.put(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY, true);
-			}
 			// we use OGC scale for predictable conversion between pix/m scale and relative scale
 			if (!hints.containsKey(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY)) {
 				hints.put(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY, StreamingRenderer.SCALE_OGC);
