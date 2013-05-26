@@ -76,10 +76,6 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-xml</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-		</dependency>
 
 		<!-- Dependencies for the Proxy controller -->
 		<dependency>
