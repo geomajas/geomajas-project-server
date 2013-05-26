@@ -127,7 +127,6 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	@Override
-	@Override
 	public List<RasterTile> getTiles(double scale, Bbox worldBounds) {
 		List<TileCode> codes = tileService.getTileCodesForBounds(getViewPort(), tileConfig, worldBounds, scale);
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
