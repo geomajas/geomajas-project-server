@@ -34,7 +34,7 @@ public class LegendGraphicServiceTest {
 	@Autowired
 	private RasterLayer blueMarble;
 
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	@Test
 	public void testSimpleRules18() throws Exception {
