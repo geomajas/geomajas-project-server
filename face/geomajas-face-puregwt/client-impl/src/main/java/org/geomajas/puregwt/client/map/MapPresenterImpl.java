@@ -264,6 +264,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		mapRenderer = mapRendererFactory.create(layersModel, viewPort, configuration, display.getMapHtmlContainer());
 
 		eventBus.addViewPortChangedHandler(mapRenderer);
+		//eventBus.addMapResizedHandler(mapRenderer);
 		eventBus.addLayerOrderChangedHandler(mapRenderer);
 		eventBus.addMapCompositionHandler(mapRenderer);
 		eventBus.addLayerVisibilityHandler(mapRenderer);
