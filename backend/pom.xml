@@ -209,7 +209,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-cql</artifactId>
-				<version>${geotools-version}</version>
+				<version>${geotools-ecql-fix-version}</version>
 			</dependency>
  			<dependency>
 				<groupId>org.geotools</groupId>
@@ -344,6 +344,7 @@
 
 	<properties>
 		<geotools-version>9.2</geotools-version>
+		<geotools-ecql-fix-version>9.2-GEOT-4211</geotools-ecql-fix-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 
