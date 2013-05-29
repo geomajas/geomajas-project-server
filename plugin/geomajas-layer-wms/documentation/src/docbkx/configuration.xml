@@ -77,7 +77,17 @@
       <para>A complete WMS layer configuration looks as follows:</para>
 
       <xi:include href="listing/WmsLayerSample.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+                  xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+      <para>
+        <caution>
+          <para>The correct display of a WMS layer with respect to other
+          layers can only be assured if the CRS of the layer is the same as the CRS
+          of the map. If the CRS values differ, the effect may be
+          translation or distortion of the layer data when drawn on the
+          map. Change the CRS of the map if necessary.</para>
+        </caution>
+      </para>
 
       <para>The first property is the layer info object, which describes the
       metadata common to all raster layers. Visit the <ulink
@@ -101,9 +111,9 @@
         <title>WMS layer properties</title>
 
         <tgroup cols="2">
-          <colspec colnum="1" colwidth="1*" />
+          <colspec colnum="1" colwidth="1*"/>
 
-          <colspec colnum="2" colwidth="2*" />
+          <colspec colnum="2" colwidth="2*"/>
 
           <thead>
             <row>
@@ -283,9 +293,9 @@
         <title>WMS authentication properties</title>
 
         <tgroup cols="2">
-          <colspec colnum="1" colwidth="1*" />
+          <colspec colnum="1" colwidth="1*"/>
 
-          <colspec colnum="2" colwidth="2*" />
+          <colspec colnum="2" colwidth="2*"/>
 
           <thead>
             <row>
