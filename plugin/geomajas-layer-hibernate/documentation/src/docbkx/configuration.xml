@@ -14,7 +14,7 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para/>
 
   <section id="dependencies">
     <title>Dependencies</title>
@@ -89,6 +89,70 @@
         &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</programlisting>
+    </example>
+
+    <para>The Geomajas Hibernate Layer uses Hibernate 3.5.2 and Hibernate
+    Spatial 1.0 versions. If you want to work with later versions of Hibernate
+    or Hibernate Spatial, you need to adapt the aforementioned dependencies.
+    Hibernate Spatial is<ulink url="???"> version dependent </ulink>on
+    Hibernate.</para>
+
+    <example>
+      <title>Hibernate 3.6 - Hibernate spatial 1.1 dependencies</title>
+
+      <para><programlisting>&lt;dependency&gt;
+  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+  &lt;artifactId&gt;geomajas-layer-hibernate&lt;/artifactId&gt;
+  &lt;exclusions&gt;
+    &lt;!--add exclusion for hibernate-annotations in geomajas-layer-hibernate, as it will add the wrong version of annotations.--&gt;
+    &lt;exclusion&gt;
+       &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+       &lt;artifactId&gt;hibernate-annotations&lt;/artifactId&gt;
+    &lt;/exclusion&gt;
+  &lt;/exclusions&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+    &lt;version&gt;3.6.10.Final&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+     &lt;groupId&gt;org.hibernatespatial&lt;/groupId&gt;
+     &lt;artifactId&gt;hibernate-spatial&lt;/artifactId&gt;
+     &lt;version&gt;1.1.1&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+     &lt;groupId&gt;org.hibernatespatial&lt;/groupId&gt;
+     &lt;artifactId&gt;hibernate-spatial-postgis&lt;/artifactId&gt;
+     &lt;version&gt;1.1.1&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+     &lt;groupId&gt;postgresql&lt;/groupId&gt;
+     &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+     &lt;version&gt;9.1-901.jdbc4&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+     &lt;groupId&gt;org.postgis&lt;/groupId&gt;
+     &lt;artifactId&gt;postgis-jdbc&lt;/artifactId&gt;
+     &lt;version&gt;1.3.3&lt;/version&gt;
+     &lt;exclusions&gt;
+         &lt;exclusion&gt;
+             &lt;groupId&gt;org.postgis&lt;/groupId&gt;
+             &lt;artifactId&gt;postgis-stubs&lt;/artifactId&gt;
+         &lt;/exclusion&gt;
+     &lt;/exclusions&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.jolbox&lt;/groupId&gt;
+    &lt;artifactId&gt;bonecp&lt;/artifactId&gt;
+    &lt;version&gt;0.7.1-rc3&lt;/version&gt;
+&lt;/dependency&gt;</programlisting></para>
     </example>
   </section>
 
@@ -179,7 +243,7 @@
     configured:</para>
 
     <xi:include href="listing/HibernateTx.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+                xmlns:xi="http://www.w3.org/2001/XInclude"/>
   </section>
 
   <section id="confvl">
@@ -512,7 +576,7 @@ public class AreaOfInterest {
           <para>This tutorial only covered the most basic case of mapping a
           single table onto a Java class. More complex mappings (many-to-one
           and one-to-many) are also supported. See the section <xref
-          linkend="chapter-howto" /> for more information.</para>
+          linkend="chapter-howto"/> for more information.</para>
         </important>
       </section>
     </section>
