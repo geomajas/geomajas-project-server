@@ -459,7 +459,8 @@
         <para>The following table describes the properties of the
         <code>VectorLayerInfo</code> object:</para>
 
-        <para><table>
+        <para>
+          <table>
             <title>VectorLayer info</title>
 
             <tgroup cols="2">
@@ -517,7 +518,8 @@
                 </row>
               </tbody>
             </tgroup>
-          </table></para>
+          </table>
+        </para>
 
         <para>The feature metadata can be found in the
         <code>FeatureInfo</code> object. This objects contains the complete
@@ -744,7 +746,7 @@
         background color, expressed in SVG or VML. If the style is defined in
         SLD, a reasonable attempt is made to convert the TextSymbolizer of the
         SLD file to a LabelStyleInfo instance (extracting the halo color as
-        background color and using the same font style). </para>
+        background color and using the same font style).</para>
 
         <para>The label value can be specified in two ways in the
         <code>LabelStyleInfo</code> object:</para>
@@ -797,17 +799,38 @@
 
         <para>Bean layer provides an in-memory layer which is not persisted in
         any way. The features can be defined in the configuration file using
-        some specialised beans. It is particularly useful for testing.</para>
+        some specialised beans. It is particularly useful for testing. A
+        BeanLayer object (a kind of VectorLayer) must be defined. An example
+        for defining two polygons:</para>
 
-        <para>TODO.....</para>
+        <para><programlisting>&lt;bean name="beans" class="org.geomajas.layer.bean.BeanLayer"&gt;
+  &lt;property name="layerInfo" ref="beansInfo" /&gt;
+  &lt;property name="features"&gt;
+    &lt;list&gt;
+        &lt;bean class="org.geomajas.layer.bean.FeatureBean"&gt;
+        &lt;property name="id" value="1" /&gt;
+        &lt;property name="stringAttr" value="bean1" /&gt;
+        &lt;property name="geometry"
+          value="POLYGON(((0 0,1 0,1 1,0 1,0 0)))" /&gt;
+      &lt;/bean&gt;
+      &lt;bean class="org.geomajas.layer.bean.FeatureBean"&gt;
+        &lt;property name="id" value="2" /&gt;
+        &lt;property name="stringAttr" value="bean2" /&gt;
+        &lt;property name="geometry"
+          value="POLYGON(((4 0,6 0,6 3,4 3,4 0)))" /&gt;
+      &lt;/bean&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</programlisting>The following table describes the properties of
+        the <code>BeanLayer</code> object:</para>
 
         <para><table>
             <title>BeanLayer configuration</title>
 
             <tgroup cols="2">
-              <colspec colnum="1" colwidth="1*" />
+              <colspec colwidth="1*" />
 
-              <colspec colnum="2" colwidth="2*" />
+              <colspec colwidth="2*" />
 
               <thead>
                 <row>
@@ -818,6 +841,13 @@
               </thead>
 
               <tbody>
+                <row>
+                  <entry>layerInfo</entry>
+
+                  <entry>A VectorLayerInfo instance, comparable to the
+                  layerInfo of a VectorLayer, see above.</entry>
+                </row>
+
                 <row>
                   <entry>features</entry>
 
@@ -894,7 +924,8 @@
         used for rendering and retrieving tiles. These can be defined in two
         ways:</para>
 
-        <para><itemizedlist>
+        <para>
+          <itemizedlist>
             <listitem>
               <para>The MAP type will base the pixels per tile on the map
               dimensions.</para>
@@ -904,7 +935,8 @@
               <para>The CONFIGURED type you configure the size of the tiles,
               this defaults to 256x256 pixels.</para>
             </listitem>
-          </itemizedlist></para>
+          </itemizedlist>
+        </para>
 
         <para>An other important aspect of the map is the scale configuration.
         The scale configuration allows to define a maximum scale beyond which
@@ -922,7 +954,8 @@
 
         <para>Scales can be defined in 2 possible notations:</para>
 
-        <para><itemizedlist>
+        <para>
+          <itemizedlist>
             <listitem>
               <para>the 1 : x notation (see the above listing) is most
               commonly used in geographics and expresses the ratio between 1
@@ -935,7 +968,8 @@
               unit on the map (1 pixel per 10000 map units in our
               example)</para>
             </listitem>
-          </itemizedlist></para>
+          </itemizedlist>
+        </para>
 
         <para>Both scale definitions serve a different purpose. The 1 : x
         scale should give you an idea of what the true scale is at which the
@@ -989,16 +1023,155 @@
         client side. Secondly, there is a distinction between raster and
         vector layers as they each needs a lot of specific information.</para>
 
+        <para>Use this XML header:</para>
+
+        <para><programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</programlisting></para>
+
         <section id="conf-clientRaster">
           <title>Raster layer</title>
 
-          <para>TODO.....</para>
+          <para>The body contains one bean, an instance of
+          ClientRasterLayerInfo. An example:</para>
+
+          <programlisting>&lt;bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerRaster" &gt;
+  &lt;property name="serverLayerId" value="layerRaster" /&gt;
+  &lt;property name="label" value="A raster layer" /&gt;
+  &lt;property name="visible" value="true" /&gt;
+  &lt;property name="viewScaleMin" value="0" /&gt;
+  &lt;property name="viewScaleMax" value="100000" /&gt;
+&lt;/bean&gt;</programlisting>
+
+          <para>The following table describes the properties of the
+          <code>ClientRasterLayerInfo</code> object:</para>
+
+          <para><table>
+              <title>ClientRasterLayerInfo configuration</title>
+
+              <tgroup cols="2">
+                <colspec colwidth="1*" />
+
+                <colspec colwidth="2*" />
+
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>serverLayerId</entry>
+
+                    <entry>This is the name of the bean that corresponds to
+                    this layer at server side. This bean should be a
+                    RasterLayer instance, or on of its subclasses (OsmLayer,
+                    WmsLayer)</entry>
+                  </row>
+
+                  <row>
+                    <entry>visible</entry>
+
+                    <entry>Whether this layer should be visible at
+                    startup</entry>
+                  </row>
+
+                  <row>
+                    <entry>viewScaleMin</entry>
+
+                    <entry>Lowest scale (pixel/(map unit) or absolute if using
+                    '1:xxx' notation) at which the layer is visible</entry>
+                  </row>
+
+                  <row>
+                    <entry>viewScaleMax</entry>
+
+                    <entry>Highest scale (pixel/(map unit) or absolute if
+                    using '1:xxx' notation) at which the layer is
+                    visible</entry>
+                  </row>
+
+                  <row>
+                    <entry>label</entry>
+
+                    <entry>A string that will be the layer's label in a layer
+                    tree.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
         </section>
 
         <section id="conf-clientVector">
           <title>Vector layer</title>
 
-          <para>TODO.....</para>
+          <para>The body contains one bean, an instance of
+          ClientVectorLayerInfo. An example:</para>
+
+          <programlisting>&lt;bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerVector" &gt;
+  &lt;property name="serverLayerId" value="layerVector" /&gt;
+  &lt;property name="label" value="A vector layer" /&gt;
+  &lt;property name="visible" value="true" /&gt;
+  &lt;property name="viewScaleMin" value="0" /&gt;
+  &lt;property name="viewScaleMax" value="100000" /&gt;
+  &lt;property name="namedStyleInfo" ref="vectorStyleInfo" /&gt;
+&lt;/bean&gt;</programlisting>
+
+          <para>The following table describes the properties of the
+          <code>ClientVectorLayerInfo</code> object:</para>
+
+          <para><table>
+              <title>ClientVectorLayerInfo configuration</title>
+
+              <tgroup cols="2">
+                <colspec colwidth="1*" />
+
+                <colspec colwidth="2*" />
+
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>serverLayerId</entry>
+
+                    <entry>Refers to the bean name that corresponds to this
+                    layer at server side. This bean should be a RasterLayer
+                    instance, or one of its subclasses (OsmLayer,
+                    WmsLayer)</entry>
+                  </row>
+
+                  <row>
+                    <entry>label</entry>
+
+                    <entry>A string that will be the layer's label in a layer
+                    tree.</entry>
+                  </row>
+
+                  <row>
+                    <entry>namedStyleInfo</entry>
+
+                    <entry>Refers to the bean name of a NamedStyleInfo
+                    instance at server side. This bean is normally located
+                    (and also used) in the same xml file as the serverLayerId
+                    bean. This bean contains style info for the features, e.g.
+                    stroke and fill color.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
         </section>
       </section>
     </section>
