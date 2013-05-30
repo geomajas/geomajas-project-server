@@ -17,7 +17,7 @@
   <appendix id="appendix-migrating">
     <title>Migrating between Geomajas versions</title>
 
-    <section id="mig-1110">
+    <section id="mig-1130">
       <title>Migrating between Geomajas 1.12.0 and Geomajas (back-end core)
       1.13.0</title>
 
@@ -92,7 +92,7 @@
       </itemizedlist>
     </section>
 
-    <section id="mig-1110">
+    <section id="mig-1120">
       <title>Migrating between Geomajas 1.11.1 and Geomajas (back-end core)
       1.12.0</title>
 
@@ -103,7 +103,7 @@
       </itemizedlist>
     </section>
 
-    <section id="mig-1110">
+    <section id="mig-1111">
       <title>Migrating between Geomajas 1.10.0 and Geomajas (back-end core)
       1.11.1</title>
 
