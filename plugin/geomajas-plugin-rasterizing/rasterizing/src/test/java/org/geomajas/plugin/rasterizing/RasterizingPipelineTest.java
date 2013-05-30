@@ -104,7 +104,7 @@ public class RasterizingPipelineTest {
 	private static final double DELTA = 1E-6;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	@Before
 	public void login() {

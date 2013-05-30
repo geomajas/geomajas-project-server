@@ -63,7 +63,7 @@ public class ImageServiceLegendTest {
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	private static final double DELTA = 1E-6;
 	
