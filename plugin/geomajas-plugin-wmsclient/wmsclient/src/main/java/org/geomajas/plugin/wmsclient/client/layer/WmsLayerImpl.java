@@ -17,15 +17,17 @@ import java.util.List;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRenderer;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererFactory;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRenderer;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererFactory;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.AbstractLayer;
 import org.geomajas.puregwt.client.map.layer.LayerStylePresenter;
-import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
+import org.geomajas.puregwt.client.map.render.LayerRenderer;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -36,6 +38,10 @@ import com.google.inject.assistedinject.Assisted;
  * @author Pieter De Graef
  */
 public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
+
+	public static final String DEFAULT_LEGEND_FONT_FAMILY = "Arial";
+
+	public static final int DEFAULT_LEGEND_FONT_SIZE = 13;
 
 	protected final WmsLayerConfiguration wmsConfig;
 
@@ -48,9 +54,9 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	protected WmsTileService tileService;
 
 	@Inject
-	private WmsScalesRendererFactory rendererFactory;
+	private WmsLayerRendererFactory rendererFactory;
 
-	protected WmsScalesRenderer renderer;
+	protected WmsLayerRenderer renderer;
 
 	@Inject
 	protected WmsLayerImpl(@Assisted String title, @Assisted WmsLayerConfiguration wmsConfig,
@@ -119,7 +125,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	 * Get the specific renderer for this type of layer. This will return a scale-based renderer that used a
 	 * {@link org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererImpl} for each resolution.
 	 */
-	public LayerScalesRenderer getRenderer(HtmlContainer container) {
+	public LayerRenderer getRenderer(HtmlContainer container) {
 		if (renderer == null) {
 			renderer = rendererFactory.create(this, container);
 		}
@@ -142,6 +148,33 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 			}
 		}
 		return tiles;
+	}
+
+	// ------------------------------------------------------------------------
+	// LegendUrlSupported implementation:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public String getLegendImageUrl() {
+		return getLegendImageUrl(wmsConfig.getLegendWidth(), wmsConfig.getLegendHeight(), "Arial", 13);
+	}
+
+	@Override
+	public String getLegendImageUrl(int width, int height, String fontFamily, int fontSize) {
+		int widthOrig = wmsConfig.getLegendWidth();
+		int heightOrig = wmsConfig.getLegendHeight();
+		if (width > 0) {
+			getConfig().setLegendWidth(width);
+		}
+		if (height > 0) {
+			getConfig().setLegendHeight(height);
+		}
+		String url = wmsService.getLegendGraphicUrl(getConfig(), fontFamily, fontSize);
+
+		getConfig().setLegendWidth(widthOrig);
+		getConfig().setLegendHeight(heightOrig);
+
+		return url;
 	}
 
 	private Bbox getScreenBounds(double scale, Bbox worldBounds) {

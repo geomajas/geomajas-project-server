@@ -19,7 +19,7 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
  * 
  * @author Pieter De Graef
  */
-public interface WmsScalesRendererFactory {
+public interface WmsLayerRendererFactory {
 
 	/**
 	 * Create a renderer for a WMS layer.
@@ -30,5 +30,5 @@ public interface WmsScalesRendererFactory {
 	 *            The container wherein the renderer should attach its content.
 	 * @return Returns a scale based renderer for WMS layers.
 	 */
-	WmsScalesRenderer create(WmsLayer layer, HtmlContainer htmlContainer);
+	WmsLayerRenderer create(WmsLayer layer, HtmlContainer htmlContainer);
 }

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wmsclient.client.layer;
+package org.geomajas.plugin.wmsclient.client.layer.config;
 
 import java.io.Serializable;
 

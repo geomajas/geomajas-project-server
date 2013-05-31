@@ -16,7 +16,7 @@ import java.util.List;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.plugin.wmsclient.client.layer.WmsTileConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 /**

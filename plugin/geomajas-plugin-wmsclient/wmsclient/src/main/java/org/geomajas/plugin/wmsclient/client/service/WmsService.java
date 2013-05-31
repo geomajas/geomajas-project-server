@@ -11,15 +11,13 @@
 
 package org.geomajas.plugin.wmsclient.client.service;
 
-import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.wmsclient.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
-import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
-import org.geomajas.puregwt.client.map.feature.Feature;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 
 import com.google.gwt.core.client.Callback;
 
@@ -165,10 +163,10 @@ public interface WmsService {
 	 * @param location
 	 *            The location to search at. Must be in the map CRS.
 	 * @param cb
-	 *            The callback that will return a list of {@link Feature}s that have been found at the location. This
-	 *            can be an empty list.
+	 *            The callback that will return a {@link FeatureCollection} containing features that have been found at
+	 *            the location. This can be an empty collection.
 	 */
-	void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, Callback<List<Feature>, String> cb);
+	void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, Callback<FeatureCollection, String> cb);
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.
@@ -202,6 +200,20 @@ public interface WmsService {
 	 * @return Returns the URL that points to the legend image.
 	 */
 	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig);
+
+	/**
+	 * Get the URL that points to the legend graphic of a WMS layer through a WMS GetLegendGraphic request. Note that
+	 * not all WMS servers may support this.
+	 * 
+	 * @param wmsConfig
+	 *            The configuration object that points to some WMS layer.
+	 * @param fontFamily
+	 *            The font used in the legend image creation.
+	 * @param fontSize
+	 *            The font size used in the legend image creation.
+	 * @return Returns the URL that points to the legend image.
+	 */
+	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, String fontFamily, int fontSize);
 
 	// ------------------------------------------------------------------------
 	// URL transformation options (for proxy):

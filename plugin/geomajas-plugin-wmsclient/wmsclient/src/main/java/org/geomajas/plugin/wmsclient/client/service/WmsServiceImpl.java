@@ -26,7 +26,9 @@ import org.geomajas.plugin.wmsclient.client.capabilities.v1_1_1.WmsGetCapabiliti
 import org.geomajas.plugin.wmsclient.client.capabilities.v1_3_0.WmsGetCapabilitiesInfo130;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
-import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsServiceVendor;
+import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoRequest;
 import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoResponse;
 import org.geomajas.puregwt.client.map.feature.Feature;
@@ -52,6 +54,10 @@ import com.google.inject.Inject;
 public class WmsServiceImpl implements WmsService {
 
 	private static final NumberFormat NUMBERFORMAT = NumberFormat.getFormat("#0.0#");
+
+	private static final double DEFAULT_PIXEL_TOLERANCE = 0.0; // Default tolerance for the location
+
+	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of
 
 	@Inject
 	private WmsTileService tileService;
@@ -134,8 +140,10 @@ public class WmsServiceImpl implements WmsService {
 
 	@Override
 	public void getFeatureInfo(final FeaturesSupportedWmsLayer layer, Coordinate location,
-			final Callback<List<Feature>, String> callback) {
-		String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2);
+			final Callback<FeatureCollection, String> callback) {
+		final String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2, DEFAULT_PIXEL_TOLERANCE,
+				DEFAULT_MAX_FEATURES);
+
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
 		command.setCommandRequest(new GetFeatureInfoRequest(url));
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetFeatureInfoResponse>() {
@@ -145,7 +153,8 @@ public class WmsServiceImpl implements WmsService {
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
 					features.add(featureFactory.create(feature, layer));
 				}
-				callback.onSuccess(features);
+
+				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));
 			}
 		});
 	}
@@ -153,7 +162,7 @@ public class WmsServiceImpl implements WmsService {
 	@Override
 	public void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, GetFeatureInfoFormat format,
 			final Callback<Object, String> callback) {
-		String url = getFeatureInfoUrl(layer, location, format);
+		String url = getFeatureInfoUrl(layer, location, format, DEFAULT_PIXEL_TOLERANCE, DEFAULT_MAX_FEATURES);
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
 		command.setCommandRequest(new GetFeatureInfoRequest(url));
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetFeatureInfoResponse>() {
@@ -172,8 +181,7 @@ public class WmsServiceImpl implements WmsService {
 	// WMS GetLegendGraphic methods:
 	// ------------------------------------------------------------------------
 
-	@Override
-	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
+	private StringBuilder getBaseLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
 		StringBuilder url = getBaseUrlBuilder(wmsConfig);
 
 		// Parameter: service
@@ -205,6 +213,37 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: transparent
 		url.append("&transparent=true");
 
+		return url;
+	}
+
+	@Override
+	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
+		return getLegendGraphicUrl(wmsConfig, null, 0);
+	}
+
+	@Override
+	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, String fontFamily, int fontSize) {
+		StringBuilder url = getBaseLegendGraphicUrl(wmsConfig);
+
+		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())
+				&& (null != fontFamily || fontSize > 0)) {
+			url.append("&legend_options=");
+			if (null != fontFamily) {
+				url.append("fontName:");
+				url.append(fontFamily);
+				url.append(";");
+			}
+			url.append("fontAntiAliasing:true;fontColor:");
+			url.append("0x000000");
+			url.append(";");
+			if (fontSize > 0) {
+				url.append("fontSize:");
+				url.append(fontSize);
+				url.append(";");
+			}
+			url.append("bgColor:0xFFFFFF;dpi:288");
+		}
+
 		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);
 	}
 
@@ -226,8 +265,18 @@ public class WmsServiceImpl implements WmsService {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private String getFeatureInfoUrl(WmsLayer layer, Coordinate location, GetFeatureInfoFormat format) {
+	private String getFeatureInfoUrl(WmsLayer layer, Coordinate location, GetFeatureInfoFormat format,
+			double tolerance, int maxFeatures) {
 		StringBuilder url = getBaseUrlBuilder(layer.getConfig());
+
+		// Calculate the denominator for tile height and width adaptation to reflect the specified tolerance in pixels
+		int toleranceCorrection = (int) Math.round(tolerance * 2.0);
+		if (toleranceCorrection <= 0) {
+			toleranceCorrection = 1;
+		}
+		if (toleranceCorrection > 2.0) {
+			toleranceCorrection = 2; // limit because it seems somtimes not to work if > 2
+		}
 
 		TileCode tileCode = tileService.getTileCodeForLocation(layer.getViewPort(), layer.getTileConfig(), location,
 				layer.getViewPort().getScale());
@@ -237,8 +286,8 @@ public class WmsServiceImpl implements WmsService {
 		Coordinate screenLocation = layer.getViewPort().transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
 
 		// Add the base parameters needed for getMap:
-		addBaseParameters(url, layer.getConfig(), layer.getCrs(), worldBounds, layer.getTileConfig().getTileWidth(),
-				layer.getTileConfig().getTileHeight());
+		addBaseParameters(url, layer.getConfig(), layer.getCrs(), worldBounds, layer.getTileConfig().getTileWidth()
+				/ toleranceCorrection, layer.getTileConfig().getTileHeight() / toleranceCorrection);
 
 		url.append("&QUERY_LAYERS=");
 		url.append(layer.getConfig().getLayers()); // No URL.encode here!
@@ -246,17 +295,22 @@ public class WmsServiceImpl implements WmsService {
 		switch (layer.getConfig().getVersion()) {
 			case V1_3_0:
 				url.append("&I=");
-				url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
+				url.append((int) Math.round((screenLocation.getX() - screenBounds.getX())
+						/ (double) toleranceCorrection));
 				url.append("&J=");
-				url.append((int) Math.round(screenLocation.getY() - screenBounds.getY()));
+				url.append((int) Math.round((screenLocation.getY() - screenBounds.getY())
+						/ (double) toleranceCorrection));
 				break;
 			case V1_1_1:
 			default:
 				url.append("&X=");
-				url.append((int) Math.round(screenLocation.getX() - screenBounds.getX()));
+				url.append((int) Math.round((screenLocation.getX() - screenBounds.getX())
+						/ (double) toleranceCorrection));
 				url.append("&Y=");
-				url.append((int) Math.round(screenLocation.getY() - screenBounds.getY()));
+				url.append((int) Math.round((screenLocation.getY() - screenBounds.getY())
+						/ (double) toleranceCorrection));
 		}
+		url.append("&FEATURE_COUNT=" + maxFeatures);
 		url.append("&INFO_FORMAT=");
 		url.append(format.toString());
 
@@ -300,7 +354,7 @@ public class WmsServiceImpl implements WmsService {
 		// Parameter: bbox
 		url.append("&bbox=");
 		if (useInvertedAxis(config.getVersion(), crs)) {
-			// Replace 
+			// Replace
 			url.append(floatToStringWithDecimalPoint((worldBounds.getY())));
 			url.append(",");
 			url.append(floatToStringWithDecimalPoint(worldBounds.getX()));
@@ -336,7 +390,7 @@ public class WmsServiceImpl implements WmsService {
 				url.append("&crs=");
 				break;
 		}
-		url.append(crs);  // No URL.encode here, performed in finishUrl
+		url.append(crs); // No URL.encode here, performed in finishUrl
 
 		// Parameter: styles
 		url.append("&styles=");
@@ -378,8 +432,8 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
-				"WGS:84".equalsIgnoreCase(crs))) {
+		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) 
+				|| "WGS:84".equalsIgnoreCase(crs))) {
 			return true;
 		}
 		return false;

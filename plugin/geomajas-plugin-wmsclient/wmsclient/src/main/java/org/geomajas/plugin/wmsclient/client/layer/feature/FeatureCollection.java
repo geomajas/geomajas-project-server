@@ -9,35 +9,33 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wmsclient.server.command.dto;
+package org.geomajas.plugin.wmsclient.client.layer.feature;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.puregwt.client.map.feature.Feature;
 
 /**
- * Response for the GetFeatureInfo command. It returns the features found.
+ * DTO containing a list of features + the attribute descriptors for all attributes that can be in use by the features.
  * 
- * @author Pieter De Graef
  * @author An Buyle
  */
-public class GetFeatureInfoResponse extends CommandResponse {
-
-	private static final long serialVersionUID = 1L;
+public class FeatureCollection {
 
 	private List<Feature> features;
 
 	private List<AbstractReadOnlyAttributeInfo> attributeDescriptors;
 
-	private String wmsResponse;
-
-	public GetFeatureInfoResponse() {
+	public FeatureCollection() {
+		features = new ArrayList<Feature>();
+		attributeDescriptors = new ArrayList<AbstractReadOnlyAttributeInfo>();
 	}
 
-	public GetFeatureInfoResponse(List<Feature> features) {
+	public FeatureCollection(List<Feature> features, List<AbstractReadOnlyAttributeInfo> attributeDescriptors) {
 		this.features = features;
+		this.attributeDescriptors = attributeDescriptors;
 	}
 
 	public List<Feature> getFeatures() {
@@ -49,18 +47,10 @@ public class GetFeatureInfoResponse extends CommandResponse {
 	}
 
 	public List<AbstractReadOnlyAttributeInfo> getAttributeDescriptors() {
-		return this.attributeDescriptors;
+		return attributeDescriptors;
 	}
 
 	public void setAttributeDescriptors(List<AbstractReadOnlyAttributeInfo> attributeDescriptors) {
 		this.attributeDescriptors = attributeDescriptors;
-	}
-
-	public String getWmsResponse() {
-		return wmsResponse;
-	}
-
-	public void setWmsResponse(String wmsResponse) {
-		this.wmsResponse = wmsResponse;
 	}
 }

@@ -11,12 +11,12 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
-import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
+import org.geomajas.puregwt.client.map.render.LayerRenderer;
 
 /**
  * Definition for a renderer for WMS layers.
- *  
+ * 
  * @author Pieter De Graef
  */
-public interface WmsScalesRenderer extends LayerScalesRenderer {
+public interface WmsLayerRenderer extends LayerRenderer {
 }

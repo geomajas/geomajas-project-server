@@ -16,9 +16,9 @@ import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayerImpl;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerFactory;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerImpl;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRenderer;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererFactory;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererImpl;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRenderer;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererFactory;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererImpl;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRenderer;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererFactory;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererImpl;
@@ -50,11 +50,11 @@ import org.geomajas.puregwt.client.map.layer.RasterServerLayerImpl;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayerImpl;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
-import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
+import org.geomajas.puregwt.client.map.render.LayerScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.RasterLayerScaleRenderer;
-import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScaleRenderer;
 import org.geomajas.puregwt.client.map.render.TiledScaleRendererFactory;
 import org.geomajas.puregwt.client.map.render.VectorLayerScaleRenderer;
 import org.geomajas.puregwt.client.service.CommandService;
@@ -89,12 +89,12 @@ public class WmsClientTestGinModule extends AbstractModule {
 		bind(MapEventParserFactory.class).to(MockMapEventParserFactory.class);
 		bind(FeatureServiceFactory.class).to(MockFeatureServiceFactory.class);
 		bind(MapRendererFactory.class).to(MockMapRendererFactory.class);
-		bind(MapScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
+		bind(LayerScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
 
 		install(new FactoryModuleBuilder()
-				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
+				.implement(LayerScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
 						VectorLayerScaleRenderer.class)
-				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
+				.implement(LayerScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
 						RasterLayerScaleRenderer.class).build(TiledScaleRendererFactory.class));
 		install(new FactoryModuleBuilder().implement(HtmlImage.class, HtmlImageImpl.class)
 				.build(HtmlImageFactory.class));
@@ -104,8 +104,8 @@ public class WmsClientTestGinModule extends AbstractModule {
 		bind(EndPointService.class).to(EndPointServiceImpl.class).in(Singleton.class);
 
 		// Rendering package:
-		install(new FactoryModuleBuilder().implement(WmsScalesRenderer.class, WmsScalesRendererImpl.class).build(
-				WmsScalesRendererFactory.class));
+		install(new FactoryModuleBuilder().implement(WmsLayerRenderer.class, WmsLayerRendererImpl.class).build(
+				WmsLayerRendererFactory.class));
 		install(new FactoryModuleBuilder().implement(WmsTiledScaleRenderer.class, WmsTiledScaleRendererImpl.class)
 				.build(WmsTiledScaleRendererFactory.class));
 

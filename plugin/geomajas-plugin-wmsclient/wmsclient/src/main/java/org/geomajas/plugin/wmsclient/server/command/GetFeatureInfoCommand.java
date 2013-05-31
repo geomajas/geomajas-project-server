@@ -14,6 +14,7 @@ package org.geomajas.plugin.wmsclient.server.command;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -23,10 +24,19 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.geomajas.command.Command;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
+import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.geometry.conversion.jts.GeometryConverterService;
 import org.geomajas.geometry.conversion.jts.JtsConversionException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
+import org.geomajas.layer.feature.attribute.BooleanAttribute;
+import org.geomajas.layer.feature.attribute.DoubleAttribute;
+import org.geomajas.layer.feature.attribute.FloatAttribute;
+import org.geomajas.layer.feature.attribute.IntegerAttribute;
+import org.geomajas.layer.feature.attribute.LongAttribute;
+import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoRequest;
@@ -37,6 +47,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -46,6 +57,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Command that executes a WMS GetFeatureInfo request.
  * 
  * @author Pieter De Graef
+ * @author An Buyle
  */
 @Component
 public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, GetFeatureInfoResponse> {
@@ -57,14 +69,17 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		GML gml;
 
 		GetFeatureInfoFormat format = getFormatFromUrl(request.getUrl());
+		List<AbstractReadOnlyAttributeInfo> attributeDescriptors = new ArrayList<AbstractReadOnlyAttributeInfo>();
 		switch (format) {
 			case GML2:
 				gml = new GML(Version.GML2);
-				response.setFeatures(getFeaturesFromUrl(url, gml));
+				response.setFeatures(getFeaturesFromUrl(url, gml, attributeDescriptors));
+				response.setAttributeDescriptors(attributeDescriptors);
 				break;
 			case GML3:
 				gml = new GML(Version.GML3);
-				response.setFeatures(getFeaturesFromUrl(url, gml));
+				response.setFeatures(getFeaturesFromUrl(url, gml, attributeDescriptors));
+				response.setAttributeDescriptors(attributeDescriptors);
 				break;
 			default:
 				String content = readUrl(url);
@@ -76,11 +91,24 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		return new GetFeatureInfoResponse();
 	}
 
-	private List<Feature> getFeaturesFromUrl(URL url, GML gml) throws IOException, SAXException,
-			ParserConfigurationException {
+	private List<Feature> getFeaturesFromUrl(URL url, GML gml, List<AbstractReadOnlyAttributeInfo> attributeDescriptors)
+			throws IOException, SAXException, ParserConfigurationException {
+
 		List<Feature> dtoFeatures = new ArrayList<Feature>();
 		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(url.openStream());
 		FeatureIterator<SimpleFeature> it = collection.features();
+		if (it.hasNext()) {
+			try {
+				SimpleFeature feature = it.next();
+				dtoFeatures.add(toDto(feature));
+				attributeDescriptors.clear();
+
+				for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
+					attributeDescriptors.add(toAttributeInfo(desc));
+				}
+			} catch (Exception e) {
+			}
+		}
 		while (it.hasNext()) {
 			try {
 				SimpleFeature feature = it.next();
@@ -92,6 +120,29 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		return dtoFeatures;
 	}
 
+	private AbstractReadOnlyAttributeInfo toAttributeInfo(AttributeDescriptor desc) throws IOException {
+		Class<?> binding = desc.getType().getBinding();
+		if (binding == null) {
+			throw new IOException("No attribute binding found...");
+		}
+		String name = desc.getLocalName();
+		AbstractReadOnlyAttributeInfo attributeInfo;
+		if (Integer.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.INTEGER);
+		} else if (Float.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.FLOAT);
+		} else if (Double.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.DOUBLE);
+		} else if (BigDecimal.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.DOUBLE);
+		} else if (Boolean.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.BOOLEAN);
+		} else {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.STRING);
+		}
+		return attributeInfo;
+	}
+
 	@SuppressWarnings("rawtypes")
 	private Feature toDto(SimpleFeature feature) throws IllegalArgumentException {
 		if (feature == null) {
@@ -99,15 +150,16 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		}
 		Feature dto = new Feature(feature.getID());
 
-		HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
+		HashMap<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
-		for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
+		for (org.opengis.feature.type.AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
 			Object obj = feature.getAttribute(desc.getName());
-			if (null != obj) {
-				attributes.put(desc.getLocalName(), new StringAttribute(obj.toString()));
-			}
+			Attribute<?> value = null;
+			value = toPrimitive(obj, desc.getType());
+			attributeMap.put(desc.getLocalName(), value);
 		}
-		dto.setAttributes(attributes);
+
+		dto.setAttributes(attributeMap);
 		dto.setId(feature.getID());
 
 		dto.setUpdatable(false);
@@ -124,6 +176,66 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		}
 
 		return dto;
+	}
+
+	private Attribute<?> toPrimitive(Object value, AttributeType type) {
+
+		if (type.getBinding().equals(String.class)) {
+			return new StringAttribute(value == null ? null : value.toString());
+		}
+		// Number attributes
+		try {
+			if ((Integer.class).equals(type.getBinding())) {
+				return new IntegerAttribute((Integer) convertToClass(value, Integer.class));
+			}
+			if ((Short.class).equals(type.getBinding())) {
+				return new ShortAttribute((Short) convertToClass(value, Short.class));
+			} else if (Long.class.equals(type.getBinding())) {
+				return new LongAttribute((Long) convertToClass(value, Long.class));
+			} else if (Float.class.equals(type.getBinding())) {
+				return new FloatAttribute((Float) convertToClass(value, Float.class));
+			} else if (Double.class.equals(type.getBinding())) {
+				return new DoubleAttribute((Double) convertToClass(value, Double.class));
+			} else if (BigDecimal.class.equals(type.getBinding())) {
+				return new DoubleAttribute((Double) convertToClass(Double.valueOf(value.toString()), Double.class));
+			}
+		} catch (NumberFormatException e) {
+			// Fallback to String
+			return new StringAttribute(value.toString());
+		}
+
+		if (Boolean.class.equals(type.getBinding())) {
+			return new BooleanAttribute((Boolean) convertToClass(value, Boolean.class));
+		}
+
+		return new StringAttribute(value == null ? null : value.toString());
+
+	}
+
+	private Object convertToClass(Object object, Class<?> c) {
+		if (object == null) {
+			return null;
+		} else if (c.isInstance(object)) {
+			return object;
+		} else {
+			return fromString(object.toString(), c);
+		}
+	}
+
+	private Object fromString(String str, Class<?> c) {
+		if (c.equals(Integer.class)) {
+			return Integer.parseInt(str);
+		} else if (c.equals(Short.class)) {
+			return Short.parseShort(str);
+		} else if (c.equals(Long.class)) {
+			return Long.parseLong(str);
+		} else if (c.equals(Float.class)) {
+			return Float.parseFloat(str);
+		} else if (c.equals(Boolean.class)) {
+			return Boolean.valueOf(str);
+		}
+
+		return null;
 	}
 
 	private GetFeatureInfoFormat getFormatFromUrl(String url) {

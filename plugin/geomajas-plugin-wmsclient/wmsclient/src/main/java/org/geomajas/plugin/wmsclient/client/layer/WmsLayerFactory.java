@@ -11,6 +11,9 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
+
 import com.google.inject.name.Named;
 
 /**

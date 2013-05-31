@@ -13,7 +13,7 @@ package org.geomajas.plugin.wmsclient.client.service;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.wmsclient.client.WmsClientGinjector;
-import org.geomajas.plugin.wmsclient.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsUrlTransformer;
 import org.junit.Test;

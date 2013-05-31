@@ -15,14 +15,14 @@ import java.util.List;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
-import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScaleRenderer;
 
 /**
  * Renderer for a fixed scale of a WMS layer.
  * 
  * @author Pieter De Graef
  */
-public interface WmsTiledScaleRenderer extends TiledScaleRenderer {
+public interface WmsTiledScaleRenderer extends LayerScaleRenderer {
 
 	List<RasterTile> getTiles(Bbox worldBounds);
 }

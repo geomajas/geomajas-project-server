@@ -16,10 +16,13 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.layer.HasMapScalesRenderer;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.LegendUrlSupported;
 import org.geomajas.puregwt.client.map.layer.OpacitySupported;
+import org.geomajas.puregwt.client.map.render.HasLayerRenderer;
 
 /**
  * <p>
@@ -32,7 +35,7 @@ import org.geomajas.puregwt.client.map.layer.OpacitySupported;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface WmsLayer extends Layer, OpacitySupported, HasMapScalesRenderer {
+public interface WmsLayer extends Layer, OpacitySupported, HasLayerRenderer, LegendUrlSupported {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.

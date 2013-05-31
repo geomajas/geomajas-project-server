@@ -15,7 +15,7 @@ import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.map.render.LayerScalesRendererImpl;
-import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScaleRenderer;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -25,18 +25,18 @@ import com.google.inject.assistedinject.Assisted;
  * 
  * @author Pieter De Graef
  */
-public class WmsScalesRendererImpl extends LayerScalesRendererImpl implements WmsScalesRenderer {
+public class WmsLayerRendererImpl extends LayerScalesRendererImpl implements WmsLayerRenderer {
 
 	@Inject
 	private WmsTiledScaleRendererFactory scaleRendererFactory;
 
 	@Inject
-	public WmsScalesRendererImpl(@Assisted WmsLayer layer, @Assisted HtmlContainer htmlContainer) {
+	public WmsLayerRendererImpl(@Assisted WmsLayer layer, @Assisted HtmlContainer htmlContainer) {
 		super(layer.getViewPort(), layer, htmlContainer);
 	}
 
 	/** Return renderers of the type {@link WmsTiledScaleRendererImpl}. */
-	protected TiledScaleRenderer getOrCreate(double scale) {
+	protected LayerScaleRenderer getOrCreate(double scale) {
 		if (tiledScaleRenderers.containsKey(scale)) {
 			return tiledScaleRenderers.get(scale);
 		}
@@ -44,7 +44,7 @@ public class WmsScalesRendererImpl extends LayerScalesRendererImpl implements Wm
 		final HtmlContainer container = new HtmlGroup();
 		htmlContainer.insert(container, 0);
 
-		TiledScaleRenderer scalePresenter = scaleRendererFactory.create(container, (WmsLayer) layer, scale);
+		LayerScaleRenderer scalePresenter = scaleRendererFactory.create(container, (WmsLayer) layer, scale);
 		tiledScaleRenderers.put(scale, scalePresenter);
 		return scalePresenter;
 	}

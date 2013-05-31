@@ -13,10 +13,12 @@ package org.geomajas.plugin.wmsclient.client.layer;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
@@ -96,12 +98,32 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	}
 
 	@Override
-	public void getFeatureInfo(Coordinate location, Callback<List<Feature>, String> callback) {
+	public Collection<Feature> getSelectedFeatures() {
+		return selection.values();
+	}
+
+	@Override
+	public void getFeatureInfo(Coordinate location, Callback<FeatureCollection, String> callback) {
 		wmsService.getFeatureInfo(this, location, callback);
 	}
 
 	@Override
 	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback) {
 		wmsService.getFeatureInfo(this, location, format, callback);
+	}
+
+	@Override
+	public void searchFeatures(Coordinate coordinate, double tolerance,
+			final Callback<FeatureCollection, String> callback) {
+		wmsService.getFeatureInfo(this, coordinate, new Callback<FeatureCollection, String>() {
+
+			public void onFailure(String reason) {
+				callback.onFailure(reason);
+			}
+
+			public void onSuccess(FeatureCollection result) {
+				callback.onSuccess(result);
+			}
+		});
 	}
 }

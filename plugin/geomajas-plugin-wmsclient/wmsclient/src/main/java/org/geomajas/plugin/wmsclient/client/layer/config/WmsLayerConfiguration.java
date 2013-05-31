@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wmsclient.client.layer;
+package org.geomajas.plugin.wmsclient.client.layer.config;
 
 import java.io.Serializable;
 
@@ -45,9 +45,29 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private int legendHeight = 20;
 
+	private WmsServiceVendor wmsServiceVendor = WmsServiceVendor.UNSPECIFIED;
+
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the type of service that provides the WMS. This can be a specific brand, such as GeoServer.
+	 * 
+	 * @return Type of service that provides the WMS service.
+	 */
+	public WmsServiceVendor getWmsServiceVendor() {
+		return wmsServiceVendor;
+	}
+
+	/**
+	 * Set the WMS service type to used. This may trigger vendor specific options to be used.
+	 * 
+	 * @param wmsServiceVendor
+	 */
+	public void setWmsServiceVendor(WmsServiceVendor wmsServiceVendor) {
+		this.wmsServiceVendor = wmsServiceVendor;
+	}
 
 	/**
 	 * Get the GetMap image format. The default value is "image/png".

@@ -23,11 +23,11 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.map.layer.OpacitySupported;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
@@ -118,7 +118,7 @@ public class WmsTiledScaleRendererImpl implements WmsTiledScaleRenderer {
 		return nrLoadingTiles == 0;
 	}
 
-	public void onTilesRendered(HtmlContainer container, double scale) {
+	public void onScaleRendered(HtmlContainer container, double scale) {
 		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), this);
 	}
 
@@ -160,14 +160,14 @@ public class WmsTiledScaleRendererImpl implements WmsTiledScaleRenderer {
 
 		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
 		public void onFailure(String reason) {
-			onTilesRendered(container, scale);
+			onScaleRendered(container, scale);
 		}
 
 		public void onSuccess(String result) {
 			if (nrLoadingTiles > 0) { // A cancel may have reset the number of loading tiles.
 				nrLoadingTiles--;
 				if (nrLoadingTiles == 0) {
-					onTilesRendered(container, scale);
+					onScaleRendered(container, scale);
 				}
 			}
 		}

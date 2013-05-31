@@ -16,9 +16,9 @@ import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayerImpl;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerFactory;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerImpl;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRenderer;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererFactory;
-import org.geomajas.plugin.wmsclient.client.render.WmsScalesRendererImpl;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRenderer;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererFactory;
+import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererImpl;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRenderer;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererFactory;
 import org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererImpl;
@@ -41,8 +41,8 @@ public class WmsClientGinModule extends AbstractGinModule {
 
 	protected void configure() {
 		// Rendering package:
-		install(new GinFactoryModuleBuilder().implement(WmsScalesRenderer.class, WmsScalesRendererImpl.class).build(
-				WmsScalesRendererFactory.class));
+		install(new GinFactoryModuleBuilder().implement(WmsLayerRenderer.class, WmsLayerRendererImpl.class).build(
+				WmsLayerRendererFactory.class));
 		install(new GinFactoryModuleBuilder().implement(WmsTiledScaleRenderer.class, WmsTiledScaleRendererImpl.class)
 				.build(WmsTiledScaleRendererFactory.class));
 

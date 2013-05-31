@@ -17,9 +17,9 @@ import java.util.List;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
+import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.puregwt.client.controller.AbstractMapController;
-import org.geomajas.puregwt.client.map.feature.Feature;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.MouseUpEvent;
@@ -33,7 +33,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private final List<FeaturesSupportedWmsLayer> layers;
 
-	private Callback<List<Feature>, String> gmlCallback;
+	private Callback<FeatureCollection, String> gmlCallback;
 
 	private Callback<Object, String> htmlCallback;
 
@@ -113,10 +113,10 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 * Set the callback to use in case the GetFeatureInfoFormat is {@link GetFeatureInfoFormat#GML2}.
 	 * 
 	 * @param gmlCallback
-	 *            The callback to execute when the response returns. This response already contains {@link Feature}
-	 *            objects, and should not be parsed anymore.
+	 *            The callback to execute when the response returns. This response already contains a
+	 *            {@link FeatureCollection}, and should not be parsed anymore.
 	 */
-	public void setGmlCallback(Callback<List<Feature>, String> gmlCallback) {
+	public void setGmlCallback(Callback<FeatureCollection, String> gmlCallback) {
 		this.gmlCallback = gmlCallback;
 	}
 
