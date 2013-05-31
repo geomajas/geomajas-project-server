@@ -177,15 +177,9 @@ public class MapNavigationAnimation extends Animation {
 		}
 	}
 
-	/**
-	 * Called when the current animation has been canceled. Also cancels the navigation process on all
-	 * {@link MapScalesRenderer}s.
-	 */
+	/** Called when the current animation has been canceled. */
 	protected void onCancel() {
 		running = false;
-		for (LayerRenderer presenter : mapScalesRenderers) {
-			presenter.cancel();
-		}
 	}
 
 	/**
