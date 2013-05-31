@@ -13,11 +13,11 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <book id="book" lang="en">
-	<title>Geomajas GeoTools layer plug-in</title>
+	<title>Geomajas SLD Editor plug-in</title>
 
 	<bookinfo>
 		<copyright>
-			<year>2010-2012</year>
+			<year>2010-2013</year>
 
 			<holder>Geosparc nv</holder>
 		</copyright>
