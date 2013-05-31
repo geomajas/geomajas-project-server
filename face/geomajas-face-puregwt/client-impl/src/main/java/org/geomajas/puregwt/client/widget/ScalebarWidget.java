@@ -21,7 +21,6 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -75,8 +74,6 @@ public class ScalebarWidget extends AbstractMapWidget {
 	// -- for internal use, for UnitType.ENGLISH only
 	private boolean widthInUnitsIsMiles;
 
-	private Widget layout;
-
 	@UiField
 	protected DivElement scaleBarElement;
 
@@ -108,40 +105,20 @@ public class ScalebarWidget extends AbstractMapWidget {
 				redrawScale();
 			}
 		});
-	}
 
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
-
-	/** Get the widget layout. */
-	public Widget asWidget() {
-		if (layout == null) {
-			buildGui();
-		}
-		return layout;
+		initWidget(UI_BINDER.createAndBindUi(this));
+		redrawScale();
 	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private void buildGui() {
-		layout = UI_BINDER.createAndBindUi(this);
-		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		layout.getElement().getStyle().setHeight(19, Unit.PX);
-		layout.getElement().getStyle().setBottom(0, Unit.PX);
-		layout.getElement().getStyle().setLeft(0, Unit.PX);
-		redrawScale();
-	}
-
 	private void redrawScale() {
 		calculateBestFit(mapPresenter.getViewPort().getScale());
 		scaleBarElement.setInnerText(formatUnits(widthInUnits));
 		scaleBarElement.getStyle().setWidth(widthInPixels, Unit.PX);
-		layout.getElement().getStyle().setWidth(widthInPixels + 10, Unit.PX);
-		layout.getElement().getStyle().setBottom(0, Unit.PX);
-		layout.getElement().getStyle().setLeft(0, Unit.PX);
+		getElement().getStyle().setWidth(widthInPixels + 10, Unit.PX);
 	}
 
 	/**

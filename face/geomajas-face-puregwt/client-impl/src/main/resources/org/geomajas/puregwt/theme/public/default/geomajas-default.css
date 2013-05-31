@@ -9,6 +9,8 @@
 	width: 50px;
 	height: 50px;
 	position: absolute;
+	top: 5px;
+	left: 5px;
 }
 
 .gm-PanningGadget-top {
@@ -67,6 +69,8 @@
 	height: 20px;
 	position: absolute;
 	cursor: pointer;
+	top: 5px;
+	left: 60px;
 }
 
 /*===========================================================================*/
@@ -80,6 +84,8 @@
 	width: 20px;
 	height: 60px;
 	position: absolute;
+	top: 125px;
+	left: 25px;
 }
 
 .gm-SimpleZoomGadget-zoomIn {
@@ -124,6 +130,8 @@
 	top:0px;
 	left:0px;
 	position: absolute;
+	top: 60px;
+	left: 18px;
 }
 
 .gm-ZoomStepGadget-zoomIn {
@@ -177,6 +185,8 @@
 	padding: 2px 3px;
 	border: 0px;
 	background: #FFFFFF;
+	bottom: 0px;
+	left: 0px;
 }
 
 .gm-ScalebarGadget-bar {

@@ -21,16 +21,14 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Composite;
 
 /**
  * Simple base implementation of a widget that can be placed on top of the map.
  * 
  * @author Pieter De Graef
  */
-public abstract class AbstractMapWidget implements IsWidget {
+public abstract class AbstractMapWidget extends Composite {
 
 	protected final MapPresenter mapPresenter;
 
@@ -42,19 +40,13 @@ public abstract class AbstractMapWidget implements IsWidget {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	/** TODO remove this method?? */
-	public void addResizeHandler(ResizeHandler resizeHandler) {
-		asWidget().addHandler(resizeHandler, ResizeEvent.getType());
-	}
-
 	/**
 	 * Combination of different handlers with a single goal: stop all the events from propagating to the map. This is
 	 * meant to be used for clickable widgets.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	public class StopPropagationHandler implements MouseDownHandler, MouseUpHandler, ClickHandler, 
-			DoubleClickHandler {
+	public class StopPropagationHandler implements MouseDownHandler, MouseUpHandler, ClickHandler, DoubleClickHandler {
 
 		public void onDoubleClick(DoubleClickEvent event) {
 			event.stopPropagation();

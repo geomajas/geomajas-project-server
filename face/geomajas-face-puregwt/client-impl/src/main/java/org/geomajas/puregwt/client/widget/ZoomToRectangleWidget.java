@@ -29,7 +29,6 @@ import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -48,7 +47,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Map widget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
@@ -67,8 +65,6 @@ public class ZoomToRectangleWidget extends AbstractMapWidget {
 
 	private HandlerRegistration escapeHandler;
 
-	private SimplePanel layout;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -79,36 +75,23 @@ public class ZoomToRectangleWidget extends AbstractMapWidget {
 	 * @param mapPresenter
 	 *            The map presenter.
 	 */
-	public ZoomToRectangleWidget(MapPresenter mapPresenter, int top, int left) {
+	public ZoomToRectangleWidget(MapPresenter mapPresenter) {
 		super(mapPresenter);
-		asWidget().getElement().getStyle().setTop(top, Unit.PX);
-		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
-	}
+		buildGui();
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
+			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+				cleanup();
+			}
 
-	/** Get the widget layout. */
-	public Widget asWidget() {
-		if (layout == null) {
-			buildGui();
-			mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+			public void onViewPortScaled(ViewPortScaledEvent event) {
+				cleanup();
+			}
 
-				public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-					cleanup();
-				}
-
-				public void onViewPortScaled(ViewPortScaledEvent event) {
-					cleanup();
-				}
-
-				public void onViewPortChanged(ViewPortChangedEvent event) {
-					cleanup();
-				}
-			});
-		}
-		return layout;
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				cleanup();
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
@@ -128,16 +111,16 @@ public class ZoomToRectangleWidget extends AbstractMapWidget {
 	}
 
 	private void buildGui() {
-		layout = new SimplePanel();
-		layout.setStyleName("gm-ZoomToRectangleGadget");
+		initWidget(new SimplePanel());
+		setStyleName("gm-ZoomToRectangleGadget");
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
 		// Create TOP button:
-		layout.addDomHandler(new MouseUpHandler() {
+		addDomHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
 				cleanup();

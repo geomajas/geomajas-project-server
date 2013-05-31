@@ -19,8 +19,6 @@ import org.geomajas.puregwt.client.map.ViewPort;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -51,12 +49,6 @@ public class PanningWidget extends AbstractMapWidget {
 
 	private static final PanningGadgetUiBinder UI_BINDER = GWT.create(PanningGadgetUiBinder.class);
 
-	private static final int DEFAULT_LEFT = 5;
-
-	private static final int DEFAULT_TOP = 5;
-
-	private Widget layout;
-
 	@UiField
 	protected SimplePanel topElement;
 
@@ -81,18 +73,7 @@ public class PanningWidget extends AbstractMapWidget {
 	 */
 	public PanningWidget(MapPresenter mapPresenter) {
 		super(mapPresenter);
-	}
-
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
-
-	/** Get the widget layout. */
-	public Widget asWidget() {
-		if (layout == null) {
-			buildGui();
-		}
-		return layout;
+		buildGui();
 	}
 
 	// ------------------------------------------------------------------------
@@ -100,15 +81,12 @@ public class PanningWidget extends AbstractMapWidget {
 	// ------------------------------------------------------------------------
 
 	private void buildGui() {
-		layout = UI_BINDER.createAndBindUi(this);
-		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		layout.getElement().getStyle().setTop(DEFAULT_TOP, Unit.PX);
-		layout.getElement().getStyle().setLeft(DEFAULT_LEFT, Unit.PX);
+		initWidget(UI_BINDER.createAndBindUi(this));
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
 		// Create TOP button:
 		topElement.addDomHandler(new ClickHandler() {

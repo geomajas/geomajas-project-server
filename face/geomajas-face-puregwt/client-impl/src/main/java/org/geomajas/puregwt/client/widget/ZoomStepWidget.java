@@ -69,8 +69,6 @@ public class ZoomStepWidget extends AbstractMapWidget {
 
 	private ViewPort viewPort;
 
-	private Widget layout;
-
 	private boolean stretched;
 
 	@UiField
@@ -99,31 +97,20 @@ public class ZoomStepWidget extends AbstractMapWidget {
 		super(mapPresenter);
 		this.top = top;
 		this.left = left;
-	}
+		buildGui();
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
+			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			}
 
-	/** Get the widget layout. */
-	public Widget asWidget() {
-		if (layout == null) {
-			buildGui();
-			mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+			public void onViewPortScaled(ViewPortScaledEvent event) {
+				positionZoomHandle();
+			}
 
-				public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-				}
-
-				public void onViewPortScaled(ViewPortScaledEvent event) {
-					positionZoomHandle();
-				}
-
-				public void onViewPortChanged(ViewPortChangedEvent event) {
-					positionZoomHandle();
-				}
-			});
-		}
-		return layout;
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				positionZoomHandle();
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
@@ -132,10 +119,10 @@ public class ZoomStepWidget extends AbstractMapWidget {
 
 	private void buildGui() {
 		viewPort = mapPresenter.getViewPort();
-		layout = UI_BINDER.createAndBindUi(this);
-		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		layout.getElement().getStyle().setTop(top, Unit.PX);
-		layout.getElement().getStyle().setLeft(left, Unit.PX);
+		initWidget(UI_BINDER.createAndBindUi(this));
+		getElement().getStyle().setPosition(Position.ABSOLUTE);
+		getElement().getStyle().setTop(top, Unit.PX);
+		getElement().getStyle().setLeft(left, Unit.PX);
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 
 		// Calculate height:
@@ -162,7 +149,7 @@ public class ZoomStepWidget extends AbstractMapWidget {
 			y += ZOOMSTEP_HEIGHT;
 		}
 		zoomStepsPanel.setSize("24px", (y + 1) + "px");
-		layout.setSize("24px", (y + 41) + "px");
+		setSize("24px", (y + 41) + "px");
 
 		// Zoom in button:
 		zoomInElement.addDomHandler(new ClickHandler() {
@@ -204,28 +191,28 @@ public class ZoomStepWidget extends AbstractMapWidget {
 		zoomStepHandler.setMaxY(top + ZOOMBUTTON_HEIGHT + (viewPort.getZoomStrategy().getZoomStepCount() - 1)
 				* ZOOMSTEP_HEIGHT);
 		zoomHandle.addDomHandler(zoomStepHandler, MouseDownEvent.getType());
-		layout.addDomHandler(zoomStepHandler, MouseUpEvent.getType());
-		layout.addDomHandler(zoomStepHandler, MouseMoveEvent.getType());
-		layout.addDomHandler(zoomStepHandler, MouseOutEvent.getType());
+		addDomHandler(zoomStepHandler, MouseUpEvent.getType());
+		addDomHandler(zoomStepHandler, MouseMoveEvent.getType());
+		addDomHandler(zoomStepHandler, MouseOutEvent.getType());
 
 		// Apply correct positions for all widgets:
 		applyPositions();
 	}
 
 	private void stretchLayout() {
-		layout.getElement().getStyle().setTop(0, Unit.PX);
-		layout.getElement().getStyle().setLeft(0, Unit.PX);
-		layout.setSize(viewPort.getMapWidth() + "px", viewPort.getMapHeight() + "px");
+		getElement().getStyle().setTop(0, Unit.PX);
+		getElement().getStyle().setLeft(0, Unit.PX);
+		setSize(viewPort.getMapWidth() + "px", viewPort.getMapHeight() + "px");
 		stretched = true;
 		applyPositions();
 	}
 
 	private void shrinkLayout() {
 		stretched = false;
-		layout.getElement().getStyle().setTop(top, Unit.PX);
-		layout.getElement().getStyle().setLeft(left, Unit.PX);
+		getElement().getStyle().setTop(top, Unit.PX);
+		getElement().getStyle().setLeft(left, Unit.PX);
 		int y = viewPort.getZoomStrategy().getZoomStepCount() * ZOOMSTEP_HEIGHT;
-		layout.setSize("24px", (y + 1 + (ZOOMBUTTON_HEIGHT * 2)) + "px");
+		setSize("24px", (y + 1 + (ZOOMBUTTON_HEIGHT * 2)) + "px");
 		applyPositions();
 	}
 

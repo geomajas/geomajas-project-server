@@ -18,7 +18,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Geomajas logo that's automatically displayed in the bottom right corner of each map. This widget is meant to be added
@@ -29,8 +28,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 @Api(allMethods = true)
 public class Watermark extends AbstractMapWidget {
-
-	private Image image;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -44,22 +41,12 @@ public class Watermark extends AbstractMapWidget {
 	 */
 	public Watermark(MapPresenter mapPresenter) {
 		super(mapPresenter);
-	}
-
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
-
-	/** Get the widget layout. */
-	public Widget asWidget() {
-		if (image == null) {
-			image = new Image(GWT.getModuleBaseURL() + "geomajas/images/mapgadget/powered_by_geomajas.gif");
-			image.getElement().getStyle().setBackgroundColor("#FFFFFF");
-			image.getElement().getStyle().setPosition(Position.ABSOLUTE);
-			image.getElement().getStyle().setBottom(0, Unit.PX);
-			image.getElement().getStyle().setRight(0, Unit.PX);
-			image.setSize("125px", "12px");
-		}
-		return image;
+		Image image = new Image(GWT.getModuleBaseURL() + "geomajas/images/mapgadget/powered_by_geomajas.gif");
+		image.getElement().getStyle().setBackgroundColor("#FFFFFF");
+		image.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		image.getElement().getStyle().setBottom(0, Unit.PX);
+		image.getElement().getStyle().setRight(0, Unit.PX);
+		image.setSize("125px", "12px");
+		initWidget(image);
 	}
 }
