@@ -83,9 +83,25 @@
                 <listitem>
                   <para>Your CODE: check the Geotools changes page if you use
                   Geotools directly in your code: <link
-                  linkend="???">http://docs.geotools.org/latest/userguide/welcome/upgrade.html</link></para>
+                  linkend="http://docs.geotools.org/latest/userguide/welcome/upgrade.html">
+                  http://docs.geotools.org/latest/userguide/welcome/upgrade.html</link></para>
                 </listitem>
               </itemizedlist>
+            </listitem>
+
+            <listitem>
+              <para>If your unittests fail you might need to disable asserts on geotools:</para>
+
+              <para><programlisting>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;argLine&gt;-da&lt;/argLine&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt; </programlisting></para>
+
+              <para>Geotools assertions can fail when comparing CRS-objects,
+              as these are possibly wrapped by Geomajas (notably CRS.transform()).</para>
             </listitem>
           </itemizedlist>
         </listitem>
