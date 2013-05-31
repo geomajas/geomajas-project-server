@@ -187,6 +187,8 @@
 	background: #FFFFFF;
 	bottom: 0px;
 	left: 0px;
+	height: 19px;
+	position: absolute;
 }
 
 .gm-ScalebarGadget-bar {
