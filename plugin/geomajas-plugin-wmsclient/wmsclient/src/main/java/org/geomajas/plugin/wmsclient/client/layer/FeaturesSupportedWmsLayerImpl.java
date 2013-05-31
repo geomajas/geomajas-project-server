@@ -32,6 +32,7 @@ import com.google.inject.assistedinject.Assisted;
  * Default implementation of the {@link FeaturesSupportedWmsLayer}.
  * 
  * @author Pieter De Graef
+*  @author An Buyle (getSelectedFeatures())
  */
 public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements FeaturesSupportedWmsLayer {
 

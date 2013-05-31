@@ -34,6 +34,7 @@ import com.google.gwt.core.client.Callback;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author An Buyle (getSelectedFeatures())
  * @since 1.0.0
  */
 @Api(allMethods = true)
