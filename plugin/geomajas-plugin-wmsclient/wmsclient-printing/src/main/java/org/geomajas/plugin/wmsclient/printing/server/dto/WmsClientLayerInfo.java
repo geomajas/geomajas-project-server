@@ -8,8 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.wmsclient.printing.server.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -20,9 +22,9 @@ import org.geomajas.layer.tile.RasterTile;
  * {@link ClientLayerInfo} for client-side WMS layers.
  * 
  * @author Jan De Moerloose
- * 
+ * @author An Buyle
  */
-public class WmsClientLayerInfo extends ClientLayerInfo {
+public class WmsClientLayerInfo extends ClientLayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
@@ -36,6 +38,8 @@ public class WmsClientLayerInfo extends ClientLayerInfo {
 
 	private double scale;
 
+	private WmsClientSelectionInfo selectionInfo;
+
 	/**
 	 * @see #setTiles(List)
 	 * @return
@@ -47,7 +51,8 @@ public class WmsClientLayerInfo extends ClientLayerInfo {
 	/**
 	 * Set the list of tiles to print (optional, only for client layers).
 	 * 
-	 * @param tiles list of tiles
+	 * @param tiles
+	 *            list of tiles
 	 */
 	public void setTiles(List<RasterTile> tiles) {
 		this.tiles = tiles;
@@ -121,4 +126,11 @@ public class WmsClientLayerInfo extends ClientLayerInfo {
 		this.scale = scale;
 	}
 
+	public WmsClientSelectionInfo getSelectionInfo() {
+		return this.selectionInfo;
+	}
+
+	public void setSelectionInfo(WmsClientSelectionInfo selectionInfo) {
+		this.selectionInfo = selectionInfo;
+	}
 }
