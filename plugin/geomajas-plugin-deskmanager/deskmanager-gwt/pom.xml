@@ -12,7 +12,6 @@
 	<description>Geomajas deskmanager consist of dynamic configuration tools for geomajas.</description>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-deskmanager</artifactId>
@@ -58,7 +57,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<resources>

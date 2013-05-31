@@ -12,29 +12,6 @@
 	<description>Geomajas deskmanager consist of dynamic configuration tools for geomajas.</description>
 
 	<dependencies>
-		<!-- Getting the correct version for selenium -->
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- end -->
-
 		<!-- Rewrite url's for geodesks -->
 		<dependency>
 			<groupId>org.tuckey</groupId>
@@ -114,12 +91,7 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
 		</dependency>
-		<!-- Need to depend on printing plugin because we override the print service to inject our own configuration -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing</artifactId>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
@@ -127,6 +99,16 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-hibernate</artifactId>
+		</dependency>
+
+		<!-- Need to depend on printing plugin because we override the print service to inject our own configuration -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing</artifactId>
 		</dependency>
 
 		<!-- Dependencies for dynamic layers -->
@@ -253,6 +235,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+ 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
+				<configuration>
+					<argLine>-da</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>

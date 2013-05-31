@@ -47,7 +47,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
@@ -207,7 +207,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		SimpleFeatureType type = createFeatureType(layer.getId(), layer.getLayerInfo().getFeatureInfo()
 				.getGeometryType().getName(), features.get(0).getGeometry().getGeometryType(), features.get(0)
 				.getGeometry().getSRID(), attInfos);
-		SimpleFeatureCollection collection = FeatureCollections.newCollection();
+		DefaultFeatureCollection collection = new DefaultFeatureCollection();
 		SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 		for (InternalFeature feature : features) {
 			featureBuilder.add(feature.getGeometry());

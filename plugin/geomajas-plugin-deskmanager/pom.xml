@@ -74,14 +74,14 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.10.0</version>
+				<version>1.11.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.10.1</version>
+				<version>1.11.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -95,10 +95,57 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
-				<version>1.1.0</version>
+				<version>1.2.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
+				<version>${gdm-sldeditor-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-hibernate-all</artifactId>
+				<version>1.12.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
+				<version>1.10.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-google-all</artifactId>
+				<version>2.1.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Needed because of caching -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+				<version>1.9.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-printing-all</artifactId>
@@ -113,52 +160,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
-				<version>${gdm-sldeditor-version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
-				<version>1.0.0-M1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<!-- Needed because of caching -->
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
-				<version>1.9.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-hibernate-all</artifactId>
-				<version>1.10.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
-				<version>1.9.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-google-all</artifactId>
-				<version>2.0.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
+			
 			<!--######### Other dependencies ######### -->
 
 			<dependency>
@@ -179,6 +181,26 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-render</artifactId>
+				<version>${gdm-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools.jdbc</groupId>
+				<artifactId>gt-jdbc-h2</artifactId>
+				<version>${gdm-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-shapefile</artifactId>
+				<version>${gdm-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-jdbc</artifactId>
+				<version>${gdm-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools.jdbc</groupId>
+				<artifactId>gt-jdbc-postgis</artifactId>
 				<version>${gdm-geotools-version}</version>
 			</dependency>
 			<dependency>
@@ -254,10 +276,10 @@
 	</dependencyManagement>
 
 	<properties>
-		<gdm-backend-version>1.12.0</gdm-backend-version>
-		<gdm-gwt-version>1.12.0</gdm-gwt-version>
+		<gdm-backend-version>1.13.0-SNAPSHOT</gdm-backend-version>
+		<gdm-gwt-version>1.14.0-SNAPSHOT</gdm-gwt-version>
 		<gdm-sldeditor-version>1.0.0-SNAPSHOT</gdm-sldeditor-version>
-		<gdm-geotools-version>2.7.5</gdm-geotools-version>
+		<gdm-geotools-version>9.2</gdm-geotools-version>
 	</properties>
 
 </project>
