@@ -11,11 +11,12 @@
 
 package org.geomajas.puregwt.client.map.render;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedHandler;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
@@ -23,8 +24,10 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * Scale based renderer for the map. It provides the rendering through specific renderers for each required scale.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-public interface LayerScalesRenderer {
+@Api(allMethods = true)
+public interface LayerRenderer {
 
 	/**
 	 * Get the target layer for this renderer.
@@ -104,7 +107,7 @@ public interface LayerScalesRenderer {
 	 * 
 	 * @return The currently visible scale.
 	 */
-	TiledScaleRenderer getVisibleScale();
+	LayerScaleRenderer getVisibleScale();
 
 	/**
 	 * Get the renderer for a specific scale level.
@@ -113,7 +116,7 @@ public interface LayerScalesRenderer {
 	 *            The scale to get a renderer for.
 	 * @return Returns the renderer, or null.
 	 */
-	TiledScaleRenderer getScale(double scale);
+	LayerScaleRenderer getScale(double scale);
 
 	/** Clear all contents within this object. */
 	void clear();

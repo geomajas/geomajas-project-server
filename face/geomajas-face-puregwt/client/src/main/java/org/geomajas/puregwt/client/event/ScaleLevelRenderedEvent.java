@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.render.event;
+package org.geomajas.puregwt.client.event;
 
 import org.geomajas.annotation.Api;
 
@@ -29,7 +29,8 @@ public class ScaleLevelRenderedEvent extends GwtEvent<ScaleLevelRenderedHandler>
 	/**
 	 * Create an event for the specified scale.
 	 * 
-	 * @param scale the scale that was rendered
+	 * @param scale
+	 *            the scale that was rendered
 	 */
 	public ScaleLevelRenderedEvent(double scale) {
 		this.scale = scale;

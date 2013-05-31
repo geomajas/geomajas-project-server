@@ -29,6 +29,8 @@ import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.event.MapResizedEvent;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedHandler;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
@@ -37,13 +39,10 @@ import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.MapConfiguration;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.layer.HasMapScalesRenderer;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
 import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
@@ -64,7 +63,7 @@ public class MapRendererImpl implements MapRenderer {
 
 	private final HtmlContainer htmlContainer;
 
-	private final Map<Layer, LayerScalesRenderer> layerRenderers;
+	private final Map<Layer, LayerRenderer> layerRenderers;
 
 	private final MapNavigationAnimation animation;
 
@@ -87,7 +86,7 @@ public class MapRendererImpl implements MapRenderer {
 	private boolean navigationBusy;
 
 	@Inject
-	private MapScalesRendererFactory mapScalesRendererFactory;
+	private LayerScalesRendererFactory mapScalesRendererFactory;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -101,7 +100,7 @@ public class MapRendererImpl implements MapRenderer {
 		this.configuration = configuration;
 		this.htmlContainer = htmlContainer;
 
-		this.layerRenderers = new HashMap<Layer, LayerScalesRenderer>();
+		this.layerRenderers = new HashMap<Layer, LayerRenderer>();
 		this.animation = new MapNavigationAnimation(configuration, new LinearNavigationFunction()) {
 
 			protected void onComplete() {
@@ -128,9 +127,9 @@ public class MapRendererImpl implements MapRenderer {
 		layerContainer.setVisible(layer.isShowing());
 		htmlContainer.add(layerContainer);
 
-		LayerScalesRenderer layerRenderer = null;
-		if (layer instanceof HasMapScalesRenderer) {
-			layerRenderer = ((HasMapScalesRenderer) layer).getRenderer(layerContainer);
+		LayerRenderer layerRenderer = null;
+		if (layer instanceof HasLayerRenderer) {
+			layerRenderer = ((HasLayerRenderer) layer).getRenderer(layerContainer);
 		} else {
 			layerRenderer = mapScalesRendererFactory.create(viewPort, layer, layerContainer);
 		}
@@ -151,7 +150,7 @@ public class MapRendererImpl implements MapRenderer {
 	public void onLayerRemoved(LayerRemovedEvent event) {
 		Layer layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
-			LayerScalesRenderer layerRenderer = layerRenderers.get(layer);
+			LayerRenderer layerRenderer = layerRenderers.get(layer);
 			layerRenderer.cancel();
 			layerRenderer.clear();
 			layerRenderers.remove(layer);
@@ -187,7 +186,7 @@ public class MapRendererImpl implements MapRenderer {
 	public void onShow(LayerShowEvent event) {
 		Layer layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
-			LayerScalesRenderer layerRenderer = layerRenderers.get(layer);
+			LayerRenderer layerRenderer = layerRenderers.get(layer);
 			layerRenderer.ensureScale(viewPort.getScale(), viewPort.getBounds());
 			layerRenderer.getHtmlContainer().setVisible(true);
 		}
@@ -224,7 +223,7 @@ public class MapRendererImpl implements MapRenderer {
 
 	public void onLayerRefreshed(LayerRefreshedEvent event) {
 		Layer layer = event.getLayer();
-		LayerScalesRenderer renderer = layerRenderers.get(layer);
+		LayerRenderer renderer = layerRenderers.get(layer);
 		if (renderer != null) {
 			renderer.clear();
 			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
@@ -279,7 +278,7 @@ public class MapRendererImpl implements MapRenderer {
 		// Bring the current scale to the font and make it visible (for all layers):
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer layer = layersModel.getLayer(i);
-			LayerScalesRenderer presenter = layerRenderers.get(layer);
+			LayerRenderer presenter = layerRenderers.get(layer);
 			if (presenter != null) {
 				presenter.bringScaleToFront(currentScale);
 				presenter.setScaleVisibility(currentScale, true);
@@ -296,7 +295,7 @@ public class MapRendererImpl implements MapRenderer {
 			// Make the previous scale invisible:
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);
-				LayerScalesRenderer presenter = layerRenderers.get(layer);
+				LayerRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenter.setScaleVisibility(previousScale, false);
 				}
@@ -336,10 +335,10 @@ public class MapRendererImpl implements MapRenderer {
 			ensureScale(scale, bounds, delay);
 
 			// Create an ordered list of presenters for the animation.
-			List<LayerScalesRenderer> presenters = new ArrayList<LayerScalesRenderer>();
+			List<LayerRenderer> presenters = new ArrayList<LayerRenderer>();
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);
-				LayerScalesRenderer presenter = layerRenderers.get(layer);
+				LayerRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenters.add(presenter);
 				}
@@ -382,10 +381,10 @@ public class MapRendererImpl implements MapRenderer {
 
 		public void run() {
 			// Ensure the scale at the requested location:
-			List<LayerScalesRenderer> presenters = new ArrayList<LayerScalesRenderer>();
+			List<LayerRenderer> presenters = new ArrayList<LayerRenderer>();
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);
-				LayerScalesRenderer presenter = layerRenderers.get(layer);
+				LayerRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenter.ensureScale(scale, bounds);
 					if (first) {

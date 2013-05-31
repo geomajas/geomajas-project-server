@@ -16,11 +16,11 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * GIN factory for {@link LayerScalesRenderer} objects.
+ * GIN factory for {@link LayerRenderer} objects.
  * 
  * @author Jan De Moerloose
  */
-public interface MapScalesRendererFactory {
+public interface LayerScalesRendererFactory {
 
 	/**
 	 * create a {@link MapRenderer} using the specified {@link ViewPort}, {@link Layer} and {@link HtmlContainer}.
@@ -30,5 +30,5 @@ public interface MapScalesRendererFactory {
 	 * @param htmlContainer
 	 * @return a new {@link MapRenderer}
 	 */
-	LayerScalesRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer);
+	LayerRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer);
 }

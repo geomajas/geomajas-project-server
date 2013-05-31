@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map.render.event;
+package org.geomajas.puregwt.client.event;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;

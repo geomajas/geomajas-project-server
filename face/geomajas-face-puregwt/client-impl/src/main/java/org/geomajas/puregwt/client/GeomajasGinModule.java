@@ -41,10 +41,10 @@ import org.geomajas.puregwt.client.map.render.LayerScalesRendererImpl;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MapRendererImpl;
-import org.geomajas.puregwt.client.map.render.LayerScalesRenderer;
-import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
+import org.geomajas.puregwt.client.map.render.LayerRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.RasterLayerScaleRenderer;
-import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScaleRenderer;
 import org.geomajas.puregwt.client.map.render.TiledScaleRendererFactory;
 import org.geomajas.puregwt.client.map.render.VectorLayerScaleRenderer;
 import org.geomajas.puregwt.client.service.CommandService;
@@ -83,12 +83,12 @@ public class GeomajasGinModule extends AbstractGinModule {
 				MapRendererFactory.class));
 		install(new GinFactoryModuleBuilder().implement(VectorServerLayer.class, VectorServerLayerImpl.class)
 				.implement(RasterServerLayer.class, RasterServerLayerImpl.class).build(LayerFactory.class));
-		install(new GinFactoryModuleBuilder().implement(LayerScalesRenderer.class, LayerScalesRendererImpl.class).build(
-				MapScalesRendererFactory.class));
+		install(new GinFactoryModuleBuilder().implement(LayerRenderer.class, LayerScalesRendererImpl.class)
+				.build(LayerScalesRendererFactory.class));
 		install(new GinFactoryModuleBuilder()
-				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
+				.implement(LayerScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
 						VectorLayerScaleRenderer.class)
-				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
+				.implement(LayerScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
 						RasterLayerScaleRenderer.class).build(TiledScaleRendererFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HtmlImage.class, HtmlImageImpl.class).build(
 				HtmlImageFactory.class));

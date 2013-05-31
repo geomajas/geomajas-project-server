@@ -35,11 +35,11 @@ import org.geomajas.puregwt.client.map.layer.RasterServerLayerImpl;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayerImpl;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
-import org.geomajas.puregwt.client.map.render.MapScalesRendererFactory;
+import org.geomajas.puregwt.client.map.render.LayerScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapRendererFactory;
 import org.geomajas.puregwt.client.map.render.MockMapScalesRendererFactory;
 import org.geomajas.puregwt.client.map.render.RasterLayerScaleRenderer;
-import org.geomajas.puregwt.client.map.render.TiledScaleRenderer;
+import org.geomajas.puregwt.client.map.render.LayerScaleRenderer;
 import org.geomajas.puregwt.client.map.render.TiledScaleRendererFactory;
 import org.geomajas.puregwt.client.map.render.VectorLayerScaleRenderer;
 import org.geomajas.puregwt.client.service.CommandService;
@@ -74,12 +74,12 @@ public class GeomajasTestModule extends AbstractModule {
 		bind(MapEventParserFactory.class).to(MockMapEventParserFactory.class);
 		bind(FeatureServiceFactory.class).to(MockFeatureServiceFactory.class);
 		bind(MapRendererFactory.class).to(MockMapRendererFactory.class);
-		bind(MapScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
+		bind(LayerScalesRendererFactory.class).to(MockMapScalesRendererFactory.class);
 
 		install(new FactoryModuleBuilder()
-				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
+				.implement(LayerScaleRenderer.class, Names.named(TiledScaleRendererFactory.VECTOR_NAME),
 						VectorLayerScaleRenderer.class)
-				.implement(TiledScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
+				.implement(LayerScaleRenderer.class, Names.named(TiledScaleRendererFactory.RASTER_NAME),
 						RasterLayerScaleRenderer.class).build(TiledScaleRendererFactory.class));
 		install(new FactoryModuleBuilder().implement(HtmlImage.class, HtmlImageImpl.class)
 				.build(HtmlImageFactory.class));

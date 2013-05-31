@@ -310,11 +310,11 @@ public final class MapPresenterImpl implements MapPresenter {
 					List<ScaleInfo> zoomLevels = mapInfo.getScaleConfiguration().getZoomLevels();
 					if (zoomLevels != null && mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
 						// Zoom steps:
-						getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this, 5, 60));
+						getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
 						getWidgetPane().add(new ZoomStepWidget(MapPresenterImpl.this, 60, 18));
 					} else {
 						// Simple zooming:
-						getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this, 125, 20));
+						getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
 						getWidgetPane().add(new SimpleZoomWidget(MapPresenterImpl.this, 60, 20));
 					}
 				}

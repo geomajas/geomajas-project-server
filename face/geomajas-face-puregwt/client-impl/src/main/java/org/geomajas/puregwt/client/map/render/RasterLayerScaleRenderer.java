@@ -24,11 +24,11 @@ import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
@@ -48,7 +48,7 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  * @author Pieter De Graef
  */
-public class RasterLayerScaleRenderer implements TiledScaleRenderer {
+public class RasterLayerScaleRenderer implements LayerScaleRenderer {
 
 	private CommandService commandService;
 
@@ -104,7 +104,7 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void onTilesRendered(HtmlContainer container, double scale) {
+	public void onScaleRendered(HtmlContainer container, double scale) {
 		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), eventSource);
 	}
 
@@ -127,7 +127,7 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 		if (rasterLayer.isShowing()) {
 			// First we check whether or not the requested bounds is already rendered:
 			if (currentTileBounds != null && BboxService.contains(currentTileBounds, bounds)) {
-				onTilesRendered(container, scale);
+				onScaleRendered(container, scale);
 				return; // Bounds already rendered, nothing to do here.
 			}
 
@@ -218,13 +218,13 @@ public class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
 		public void onFailure(String reason) {
-			onTilesRendered(container, scale);
+			onScaleRendered(container, scale);
 		}
 
 		public void onSuccess(String result) {
 			nrLoadingTiles--;
 			if (nrLoadingTiles == 0) {
-				onTilesRendered(container, scale);
+				onScaleRendered(container, scale);
 			}
 		}
 	}

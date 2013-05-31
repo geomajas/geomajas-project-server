@@ -32,7 +32,7 @@ public class MapNavigationAnimation extends Animation {
 
 	private boolean running;
 
-	protected List<LayerScalesRenderer> mapScalesRenderers;
+	protected List<LayerRenderer> mapScalesRenderers;
 
 	private double currentScale;
 
@@ -75,7 +75,7 @@ public class MapNavigationAnimation extends Animation {
 	 * @param millis
 	 *            The time in milliseconds this animation should run.
 	 */
-	public void start(List<LayerScalesRenderer> layerPresenters, double sourceScale, double targetScale,
+	public void start(List<LayerRenderer> layerPresenters, double sourceScale, double targetScale,
 			Coordinate sourcePosition, Coordinate targetPosition, int millis) {
 		this.mapScalesRenderers = layerPresenters;
 
@@ -136,7 +136,7 @@ public class MapNavigationAnimation extends Animation {
 	 * 
 	 * @return The current list of map scale renderers.
 	 */
-	public List<LayerScalesRenderer> getMapScaleRenderers() {
+	public List<LayerRenderer> getMapScaleRenderers() {
 		return mapScalesRenderers;
 	}
 
@@ -163,8 +163,8 @@ public class MapNavigationAnimation extends Animation {
 		}
 
 		for (int i = 0; i < mapScalesRenderers.size(); i++) {
-			LayerScalesRenderer presenter = mapScalesRenderers.get(i);
-			TiledScaleRenderer scalePresenter = presenter.getVisibleScale();
+			LayerRenderer presenter = mapScalesRenderers.get(i);
+			LayerScaleRenderer scalePresenter = presenter.getVisibleScale();
 			if (scalePresenter != null) {
 				if (configuration.isAnimated(presenter.getLayer()) && Dom.isTransformationSupported()) {
 					scalePresenter.getHtmlContainer().applyScale(currentScale, 0, 0);
@@ -183,7 +183,7 @@ public class MapNavigationAnimation extends Animation {
 	 */
 	protected void onCancel() {
 		running = false;
-		for (LayerScalesRenderer presenter : mapScalesRenderers) {
+		for (LayerRenderer presenter : mapScalesRenderers) {
 			presenter.cancel();
 		}
 	}

@@ -16,13 +16,13 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Test implementation of the {@link MapScalesRendererFactory}.
+ * Test implementation of the {@link LayerScalesRendererFactory}.
  * 
  * @author Jan De Moerloose
  */
-public class MockMapScalesRendererFactory implements MapScalesRendererFactory {
+public class MockMapScalesRendererFactory implements LayerScalesRendererFactory {
 
-	public LayerScalesRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer) {
+	public LayerRenderer create(ViewPort viewPort, Layer layer, HtmlContainer htmlContainer) {
 		return new LayerScalesRendererImpl(viewPort, layer, htmlContainer);
 	}
 }

@@ -20,9 +20,9 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.service.CommandService;
 
 import com.google.gwt.core.client.Callback;
@@ -35,7 +35,7 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  * @author Pieter De Graef
  */
-public class VectorLayerScaleRenderer implements TiledScaleRenderer {
+public class VectorLayerScaleRenderer implements LayerScaleRenderer {
 
 	private final String crs;
 
@@ -86,7 +86,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void onTilesRendered(HtmlContainer container, double scale) {
+	public void onScaleRendered(HtmlContainer container, double scale) {
 		eventBus.fireEventFromSource(new ScaleLevelRenderedEvent(scale), eventSource);
 	}
 
@@ -265,7 +265,7 @@ public class VectorLayerScaleRenderer implements TiledScaleRenderer {
 		private void onLoadingDone() {
 			nrLoadingTiles--;
 			if (nrLoadingTiles == 0) {
-				onTilesRendered(htmlContainer, scale);
+				onScaleRendered(htmlContainer, scale);
 			}
 		}
 	}

@@ -19,13 +19,13 @@ import java.util.Map;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.puregwt.client.event.ScaleLevelRenderedHandler;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
-import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -43,7 +43,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * 
  * @author Pieter De Graef
  */
-public class LayerScalesRendererImpl implements LayerScalesRenderer {
+public class LayerScalesRendererImpl implements LayerRenderer {
 
 	private static final int SCALE_CACHE_SIZE = 3; // Let's keep the last 3 scales.
 
@@ -56,7 +56,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 
 	protected final HtmlContainer htmlContainer;
 
-	protected final Map<Double, TiledScaleRenderer> tiledScaleRenderers; // A renderer per scale.
+	protected final Map<Double, LayerScaleRenderer> tiledScaleRenderers; // A renderer per scale.
 
 	protected final List<Double> scales; // Keeps track of the lastly visited scales.
 
@@ -85,7 +85,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		this.viewPort = viewPort;
 		this.layer = layer;
 		this.htmlContainer = htmlContainer;
-		tiledScaleRenderers = new HashMap<Double, TiledScaleRenderer>();
+		tiledScaleRenderers = new HashMap<Double, LayerScaleRenderer>();
 		scales = new ArrayList<Double>(SCALE_CACHE_SIZE + 2);
 
 		visibleScale = viewPort.getScale();
@@ -110,7 +110,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		cancel(); // TODO should we do this??
 
 		// Get or create the presenter, then turn it invisible and fetch the tiles.
-		TiledScaleRenderer presenter = getOrCreate(scale);
+		LayerScaleRenderer presenter = getOrCreate(scale);
 		if (scale != visibleScale) {
 			presenter.getHtmlContainer().setVisible(false);
 		}
@@ -134,16 +134,16 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 
 	@Override
 	public void bringScaleToFront(double scale) {
-		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
+		LayerScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
-			TiledScaleRenderer renderer = tiledScaleRenderers.get(scale);
+			LayerScaleRenderer renderer = tiledScaleRenderers.get(scale);
 			htmlContainer.bringToFront(renderer.getHtmlContainer());
 		}
 	}
 
 	@Override
 	public void setScaleVisibility(double scale, boolean visible) {
-		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
+		LayerScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
 			if (visible) {
 				visibleScale = scale;
@@ -159,7 +159,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 
 	@Override
 	public void applyScaleTranslation(double scale, Coordinate translation) {
-		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
+		LayerScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
 			scalePresenter.getHtmlContainer().setLeft((int) Math.round(translation.getX()));
 			scalePresenter.getHtmlContainer().setTop((int) Math.round(translation.getY()));
@@ -168,18 +168,18 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 
 	/** Delegates the cancel to each scale level. */
 	public void cancel() {
-		for (TiledScaleRenderer scaleRenderer : tiledScaleRenderers.values()) {
+		for (LayerScaleRenderer scaleRenderer : tiledScaleRenderers.values()) {
 			scaleRenderer.cancel();
 		}
 	}
 
 	@Override
-	public TiledScaleRenderer getVisibleScale() {
+	public LayerScaleRenderer getVisibleScale() {
 		return tiledScaleRenderers.get(visibleScale);
 	}
 
 	@Override
-	public TiledScaleRenderer getScale(double scale) {
+	public LayerScaleRenderer getScale(double scale) {
 		return tiledScaleRenderers.get(scale);
 	}
 
@@ -187,7 +187,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 	public void clear() {
 		while (tiledScaleRenderers.size() > 0) {
 			Double scale = tiledScaleRenderers.keySet().iterator().next();
-			TiledScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
+			LayerScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
 			removedPresenter.cancel();
 			htmlContainer.remove(removedPresenter.getHtmlContainer());
 			tiledScaleRenderers.remove(scale);
@@ -204,7 +204,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	protected TiledScaleRenderer getOrCreate(double scale) {
+	protected LayerScaleRenderer getOrCreate(double scale) {
 		if (tiledScaleRenderers.containsKey(scale)) {
 			return tiledScaleRenderers.get(scale);
 		}
@@ -213,7 +213,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 		//container.getElement().setId("scale-" + scale);
 		htmlContainer.insert(container, 0);
 
-		TiledScaleRenderer scalePresenter = null;
+		LayerScaleRenderer scalePresenter = null;
 		if (layer instanceof RasterServerLayer) {
 			scalePresenter = rasterRendererFactory.create(this, viewPort.getCrs(), (RasterServerLayer) layer, container,
 					scale);
@@ -230,7 +230,7 @@ public class LayerScalesRendererImpl implements LayerScalesRenderer {
 	private boolean removeScaleLevel(Double scale) {
 		if (scale != visibleScale) {
 			// Remove the presenter:
-			TiledScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
+			LayerScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
 			if (removedPresenter == null) {
 				return false;
 			}
