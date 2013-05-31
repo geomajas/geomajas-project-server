@@ -89,7 +89,7 @@ public final class StyleUtil {
 		SymbolInfo symbol = featureStyle.getSymbol();
 		SymbolizerTypeInfo symbolizer = null;
 		StrokeInfo stroke = createStroke(featureStyle.getStrokeColor(), featureStyle.getStrokeWidth(),
-				featureStyle.getStrokeOpacity(), null);
+				featureStyle.getStrokeOpacity(), featureStyle.getDashArray());
 		FillInfo fill = createFill(featureStyle.getFillColor(), featureStyle.getFillOpacity());
 		switch (type) {
 			case GEOMETRY:
@@ -356,5 +356,4 @@ public final class StyleUtil {
 		symbolizerInfo.setFill(createFill(style.getColor(), style.getOpacity()));
 		return symbolizerInfo;
 	}
-
-}
+} 
