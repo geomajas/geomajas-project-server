@@ -51,7 +51,6 @@ public class WmsLayerFactory implements LayerFactory {
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
 		rasterLayer.getUserData().put(USERDATA_KEY_LAYER_ID, rasterInfo.getId());
 		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
-		rasterLayer.getUserData().put("selectionInfo", rasterInfo.getSelectionInfo());
 		return rasterLayer;
 	}
 
@@ -62,4 +61,5 @@ public class WmsLayerFactory implements LayerFactory {
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
 	}
+
 }
