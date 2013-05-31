@@ -13,7 +13,6 @@ package org.geomajas.service.impl;
 
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
@@ -24,28 +23,17 @@ import org.opengis.filter.Filter;
  */
 public class EcqlTest {
 
-	private static final String FILTER_SIMPLE_LARGE =                "POPULATION >= 1000000000";
-	private static final String FOR_SOME_REASON_THIS_DOES_NOT_WORK = "POPULATION >= 100000000";
-	private static final String FILTER_SIMPLE_SMALL =                "POPULATION >= 10000000";
+	private static final String FILTER_SIMPLE_LARGE =  "POPULATION >= 1000000000";
+	private static final String FILTER_SIMPLE_MEDIUM = "POPULATION >= 100000000";
+	private static final String FILTER_SIMPLE_SMALL =  "POPULATION >= 10000000";
 
 	@Test
 	public void testParseFilter() throws Exception {
 		Filter res = ECQL.toFilter(FILTER_SIMPLE_LARGE);
 		Assert.assertNotNull(res);
-		res = ECQL.toFilter(FILTER_SIMPLE_SMALL);
+		res = ECQL.toFilter(FILTER_SIMPLE_MEDIUM);
 		Assert.assertNotNull(res);
-	}
-
-	/**
-	 * Unignore this once it is fixed in Geotools: GEOT-4211.
-	 * TODO FIXME (in Geotools CQL).
-	 * 
-	 * @throws Exception
-	 */
-	@Ignore
-	@Test
-	public void testParseFilterBad() throws Exception {
-		Filter res = ECQL.toFilter(FOR_SOME_REASON_THIS_DOES_NOT_WORK);
+		res = ECQL.toFilter(FILTER_SIMPLE_SMALL);
 		Assert.assertNotNull(res);
 	}
 }
