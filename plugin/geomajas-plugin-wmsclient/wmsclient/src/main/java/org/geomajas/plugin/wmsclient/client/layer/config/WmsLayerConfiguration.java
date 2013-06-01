@@ -20,6 +20,7 @@ import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
  * General WMS configuration object. The values herein will be translated into parameters for the WMS service.
  * 
  * @author Pieter De Graef
+ * @author An Buyle (WmsServiceVendor)
  * @since 1.0.0
  */
 @Api(allMethods = true)
@@ -62,7 +63,9 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the WMS service type to used. This may trigger vendor specific options to be used.
-	 * 
+	 * E.g. If the WMS service is provided by a Geoserver, there is the possibility to configure
+	 * the legend_options when performing a GetLegendGraphic request.
+	 *
 	 * @param wmsServiceVendor
 	 */
 	public void setWmsServiceVendor(WmsServiceVendor wmsServiceVendor) {

@@ -25,6 +25,7 @@ import com.google.gwt.core.client.Callback;
  * Client service that assists in performing requests to the WMS server.
  * 
  * @author Pieter De Graef
+ * @author An Buyle (getLegendGraphicUrl)
  * @since 1.0.0
  */
 @Api(allMethods = true)

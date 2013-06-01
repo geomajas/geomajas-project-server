@@ -50,6 +50,7 @@ import com.google.inject.Inject;
  * Default implementation of the {@link WmsService}.
  * 
  * @author Pieter De Graef
+ * @author An Buyle (support for static and dynamic legend when printing)
  */
 public class WmsServiceImpl implements WmsService {
 
@@ -58,6 +59,10 @@ public class WmsServiceImpl implements WmsService {
 	private static final double DEFAULT_PIXEL_TOLERANCE = 0.0; // Default tolerance for the location
 
 	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of
+
+	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
+	private static final String LEGEND_FONT_COLOR = "0x000000";
+	private static final int LEGEND_DPI = 288;
 
 	@Inject
 	private WmsTileService tileService;
@@ -68,20 +73,10 @@ public class WmsServiceImpl implements WmsService {
 	private WmsUrlTransformer urlTransformer;
 
 	// ------------------------------------------------------------------------
-	// WMS GetCapabilities methods:
+	// WmsService implementation:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Get the capabilities information of a WMS service.
-	 * 
-	 * @param baseUrl
-	 *            The WMS base URL (without any WMS parameters).
-	 * @param version
-	 *            The preferred WMS version.
-	 * @param callback
-	 *            Callback that returns a {@link WmsGetCapabilitiesInfo} instance on success. From here, you can extract
-	 *            all the information or layers defined in the capabilities file.
-	 */
+	@Override
 	public void getCapabilities(String baseUrl, final WmsVersion version,
 			final Callback<WmsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
@@ -119,10 +114,6 @@ public class WmsServiceImpl implements WmsService {
 			callback.onFailure(e.getMessage());
 		}
 	}
-
-	// ------------------------------------------------------------------------
-	// WmsService implementation:
-	// ------------------------------------------------------------------------
 
 	@Override
 	public String getMapUrl(WmsLayerConfiguration wmsConfig, String crs, Bbox worldBounds, int imageWidth,
@@ -227,21 +218,21 @@ public class WmsServiceImpl implements WmsService {
 
 		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())
 				&& (null != fontFamily || fontSize > 0)) {
-			url.append("&legend_options=");
+			url.append(WMS_LEGEND_OPTIONS_START);
 			if (null != fontFamily) {
 				url.append("fontName:");
 				url.append(fontFamily);
 				url.append(";");
 			}
 			url.append("fontAntiAliasing:true;fontColor:");
-			url.append("0x000000");
+			url.append(LEGEND_FONT_COLOR);
 			url.append(";");
-			if (fontSize > 0) {
+			if (fontSize > 0) {		
 				url.append("fontSize:");
 				url.append(fontSize);
 				url.append(";");
 			}
-			url.append("bgColor:0xFFFFFF;dpi:288");
+			url.append("bgColor:0xFFFFFF;dpi:" + LEGEND_DPI); 
 		}
 
 		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);
@@ -275,7 +266,7 @@ public class WmsServiceImpl implements WmsService {
 			toleranceCorrection = 1;
 		}
 		if (toleranceCorrection > 2.0) {
-			toleranceCorrection = 2; // limit because it seems somtimes not to work if > 2
+			toleranceCorrection = 2; // limit because it seems sometimes not to work if > 2
 		}
 
 		TileCode tileCode = tileService.getTileCodeForLocation(layer.getViewPort(), layer.getTileConfig(), location,

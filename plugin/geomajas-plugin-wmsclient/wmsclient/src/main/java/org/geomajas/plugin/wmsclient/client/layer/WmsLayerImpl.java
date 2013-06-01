@@ -36,6 +36,7 @@ import com.google.inject.assistedinject.Assisted;
  * Default implementation of a {@link WmsLayer}.
  * 
  * @author Pieter De Graef
+ * @author An Buyle
  */
 public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
@@ -72,8 +73,28 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	public List<LayerStylePresenter> getStylePresenters() {
 		List<LayerStylePresenter> presenters = new ArrayList<LayerStylePresenter>();
 		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig)));
+		//TODO check if not better to use:
+//		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig, 
+//				DEFAULT_LEGEND_FONT_FAMILY, DEFAULT_LEGEND_FONT_SIZE)));
 		return presenters;
 	}
+	
+	
+//
+//	TODO Old AnB: 
+//	@Override
+//	public List<LayerStylePresenter> getStylePresenters() {
+//		return getStylePresenters(null, null);
+//	}
+//	
+//	@Override
+//	public List<LayerStylePresenter> getStylePresenters(String fontFamily, Integer fontSize) {
+//		List<LayerStylePresenter> presenters = new ArrayList<LayerStylePresenter>();
+//		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig, 
+//				FONT_FAMILY_LEGEND_LABELS, FONT_SIZE_LEGEND_LABELS)));
+//		return presenters;
+//	}
+	
 
 	// ------------------------------------------------------------------------
 	// Public methods:
@@ -156,7 +177,9 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Override
 	public String getLegendImageUrl() {
-		return getLegendImageUrl(wmsConfig.getLegendWidth(), wmsConfig.getLegendHeight(), "Arial", 13);
+		
+		return getLegendImageUrl(wmsConfig.getLegendWidth(), wmsConfig.getLegendHeight(), DEFAULT_LEGEND_FONT_FAMILY,
+				DEFAULT_LEGEND_FONT_SIZE);
 	}
 
 	@Override
