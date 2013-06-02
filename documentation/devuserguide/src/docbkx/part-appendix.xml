@@ -33,7 +33,7 @@
             </listitem>
 
             <listitem>
-              <para>gt-epsg-wkt (which had been deprecated for quite some
+              <para>gt-epsg-wkt (which has been deprecated for quite some
               time) has been removed in favour of gt-epsg-hsql. if you have it
               in your dependencies it is best to remove them.</para>
             </listitem>
@@ -43,7 +43,8 @@
               the standards.
               System.setProperty("org.geotools.referencing.forceXY", "true");
               see: <link
-              linkend="???">http://docs.geotools.org/latest/userguide/library/referencing/order.html</link>
+              linkend="http://docs.geotools.org/latest/userguide/library/referencing/order.html">
+              http://docs.geotools.org/latest/userguide/library/referencing/order.html</link>
               for a lengthy explanation.</para>
 
               <para>I did not notice any problems with Geomajas changing this,
