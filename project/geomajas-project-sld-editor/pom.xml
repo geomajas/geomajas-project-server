@@ -371,6 +371,6 @@
 		<jukito.version>1.1</jukito.version>
 		<mockito.version>1.8.5</mockito.version>
 		<aopalliance.version>1.0</aopalliance.version>
-		<codemirror.version>3.1.0-SNAPSHOT</codemirror.version>
+		<codemirror.version>3.1.0</codemirror.version>
 	</properties>
 </project>
