@@ -109,6 +109,12 @@ include "org.geomajas.project" "geomajas-project-api-annotation" "1.1.0-SNAPSHOT
     "incubating" "master.pdf" \
     "org.geomajas.project" "geomajas-project-api-annotation" "1.0.0"
 
+include "org.geomajas.documentation" "geomajas-project-codemirror-gwt-documentation" "3.13.0-SNAPSHOT" \
+    "Codemirror GWT wrapper project" \
+    "In-browser code editing made bearable. Based on CodeMirror version 3.1." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-codemirror-gwt" "3.1.0"
+
 include "org.geomajas.documentation" "geomajas-project-geometry-documentation" "1.1.0-SNAPSHOT" \
     "Geometry DTO project" \
     "Set of GWT compatible Geometry DTOs and services to manipulate them." \
