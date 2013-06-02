@@ -15,8 +15,8 @@
   <title>Introduction</title>
 
   <para>The Geomajas Codemirror GWT Project is a stand-alone project under 
-  the Geomajas banner. It's goal is to provide an easy way to allow you to
-  integrate the excelent Codemirror Javascript library into your own GWT 
+  the Geomajas banner. Its goal is to provide an easy way to allow you to
+  integrate the excellent Codemirror Javascript library into your own GWT 
   applications</para>
 
 </chapter>
