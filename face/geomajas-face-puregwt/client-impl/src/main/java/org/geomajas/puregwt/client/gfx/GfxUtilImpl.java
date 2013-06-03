@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
 import com.google.inject.Inject;
 
 /**
@@ -56,6 +57,14 @@ public final class GfxUtilImpl implements GfxUtil {
 		if (style.getStrokeWidth() >= 0) {
 			shape.setStrokeWidth(style.getStrokeWidth());
 		}
+		if (style.getDashArray() != null) {
+			String strokeDashArrayHTMLFormat = style.getDashArray().trim();
+			strokeDashArrayHTMLFormat = strokeDashArrayHTMLFormat.replaceAll("[ \t]+", ",");
+			if (!strokeDashArrayHTMLFormat.isEmpty()) {
+				DOM.setStyleAttribute(shape.getElement(), "strokeDasharray", strokeDashArrayHTMLFormat);
+			}
+		}
+		
 	}
 
 	public List<HandlerRegistration> applyController(Shape shape, MapController mapController) {
