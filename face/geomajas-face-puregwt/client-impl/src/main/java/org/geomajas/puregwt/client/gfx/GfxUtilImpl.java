@@ -20,6 +20,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.vaadin.gwtgraphics.client.Shape;
+import org.vaadin.gwtgraphics.client.impl.util.VMLUtil;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.TouchCancelEvent;
@@ -28,6 +29,7 @@ import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 
 /**
@@ -61,7 +63,16 @@ public final class GfxUtilImpl implements GfxUtil {
 			String strokeDashArrayHTMLFormat = style.getDashArray().trim();
 			strokeDashArrayHTMLFormat = strokeDashArrayHTMLFormat.replaceAll("[ \t]+", ",");
 			if (!strokeDashArrayHTMLFormat.isEmpty()) {
-				DOM.setStyleAttribute(shape.getElement(), "strokeDasharray", strokeDashArrayHTMLFormat);
+				   if (Window.Navigator.getUserAgent().contains("MSIE") || 
+							Window.Navigator.getUserAgent().contains("msie")) {
+					com.google.gwt.dom.client.Element stroke =
+								VMLUtil.getOrCreateChildElementWithTagName(shape.getElement(), "stroke");
+					if (null != stroke) {
+						stroke.setPropertyString("dashstyle", "dash");
+					}
+				} else {
+					DOM.setStyleAttribute(shape.getElement(), "strokeDasharray", strokeDashArrayHTMLFormat);
+				}
 			}
 		}
 		
