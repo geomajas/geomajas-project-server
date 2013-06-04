@@ -14,7 +14,7 @@
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-  <para></para>
+  <para/>
 
   <section>
     <title>Adding a map to a classic GWT layout</title>
@@ -47,5 +47,11 @@ panel.setWidget(mapPresenter);</programlisting>If the panel is resizable, a
     <programlisting>MapLayoutPanel mapLayout = new MapLayoutPanel();
 mapLayout.setPresenter(mapPresenter);
 RootLayoutPanel.get().add(layout); // fills the complete browser view</programlisting>
+  </section>
+
+  <section>
+    <title>How to catch the location of mouse events on the map?</title>
+
+    <para/>
   </section>
 </chapter>

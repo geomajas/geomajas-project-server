@@ -14,50 +14,279 @@
 <chapter id="ch-arch">
   <title>PureGWT face architecture</title>
 
-  <para>This part of the documentation describes the main architecture and API
-  of the PureGWT face for Geomajas. For actual code examples or more detail on
-  how to use them, visit the "HowTo" guide.</para>
-
   <section>
     <title>The central Map API</title>
 
-    <para>This section describes the interfaces of the most crucial object
-    definitions within the API: those that make up the central map model.
-    Central in all this, is the <code>MapPresenter</code>. This is the
-    interface that represents a map in Geomajas. This
-    <code>MapPresenter</code> in turn provides 2 very important interfaces
-    through getters: the <code>ViewPort</code> and the
-    <code>LayersModel</code>.</para>
-
-    <para>Quickly speaking, the <code>ViewPort</code> provides methods and
-    events for changes in the viewing area of the map. In other words, it
-    determines the map's navigation. The <code>LayersModel</code> on the other
-    hand is what it's name implies: a model that governs a set of
-    layers.</para>
+    <para>This section describes the the interfaces of the most central object
+    definitions within the API: those that make up the map model. We start by
+    introducing you to the Gin injection framework, which is used to create a
+    new map instance. From there on, we delve deeper into the most important
+    map concepts, such as the layer model and viewport.</para>
 
     <section>
-      <title>MapPresenter</title>
+      <title>GIN: GWT injection</title>
+
+      <para>Before we start describing the API, we need to introduce the GIN
+      injection framework. GIN is based upon Google's Guice framework, but
+      written specifically for GWT. By using GIN, Geomajas has a clean
+      separation between interfaces and implementations. It also means that
+      any default implementation that Geomajas provides can be replace by your
+      own implementations.</para>
+
+      <section>
+        <title>GeomajasGinModule and GeomajasGinjector</title>
+
+        <para>The configuration that ties implementations to their interfaces
+        is defined in the
+        <code>org.geomajas.puregwt.client.GeomajasGinModule</code>. Next to
+        this configuration, Geomajas also provides the
+        <code>org.geomajas.puregwt.client.GeomajasGinjector</code>. The
+        GeomajasGinjector is a service that provides access to singleton
+        services and a way to create Geomajas maps. The GeomajasGinjector is
+        also tied to the GeomajasGinModule. That is how it knows which
+        interface implementations to use.</para>
+
+        <para>The GeomajasGinjector is also the only way to correctly create a
+        new Geomajas map:</para>
+
+        <programlisting>public static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);</programlisting>
+
+        <para>Note that the GeomajasInjector itself is a singleton service, so
+        you only need to create it once in your application. It is therefore
+        recommended to create it in your GWT module's EntryPoint. In the code
+        example above, we have created it as a public static final.</para>
+      </section>
+
+      <section>
+        <title>Overriding the default GIN implementations</title>
+
+        <para>One of the most important aspects of an injection framework is
+        that one can provide alternative implementations to be used for the
+        known interface, effectively overriding the default behaviour.</para>
+
+        <para>To have your application use your own implementations instead of
+        the Geomajas defaults, you need to define your own GIN module. It is
+        best to just copy the GeomajasGinModule and only change the
+        implementations you need to have changed. It is critical not to leave
+        any of the required interfaces out. After you have your own GIN
+        module, you will need to extend the GeomajasGinjector and have it
+        point to your own Gin module:</para>
+
+        <programlisting>@GinModules(MyCustomGinModule.class)
+public interface MyCustomGinjector extends GeomajasGinjector {
+}</programlisting>
+
+        <para>Then in your application, make sure to use your own
+        injector:</para>
+
+        <programlisting>MyCustomGinjector injector = GWT.create(MyCustomGinjector.class);</programlisting>
+      </section>
+    </section>
+
+    <section>
+      <title>The Geomajas map: MapPresenter</title>
 
       <para>The MapPresenter represents the central map interface and as such
       it determines the map's functionalities. It provides support for many of
       the topics that are discussed in the following sections, such as
       MapControllers or an EventBus.</para>
+
+      <para>The MapPresenter has the following responsibilities:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Managing the view on the map</emphasis>: This is
+          done through the ViewPort definition.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Managing the layers</emphasis>: This is done through
+          the LayersModel definition.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Providing user interaction through
+          MapControllers</emphasis>: The map has support for one active
+          MapController for user interaction, and a set of passive map
+          controllers that are allowed to catch native events, but may not
+          interrupt default event bubbling.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Event handling</emphasis>: The MapPresenter provides
+          an EventBus through which all specific Geomajas events pass. You you
+          can react to changes on the ViewPort, or layer composition changes,
+          or, ... A full list of events is provided in a later section.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Rendering and custom drawing</emphasis>: Next to the
+          automatic rendering of the layers, the MapPresenter also provides
+          API for custom rendering. Custom rendering can occur through HTML,
+          VML, SVG and Canvas.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Before we continue deeper into the map API, let us first show you
+      how to create a new map. The only way to correctly create a map, is to
+      have the GIN injection framework do it for you. We expect you have
+      already created the necessary injector in your application (see <link
+      linkend="gin"><uri>GIN</uri></link>).</para>
+
+      <programlisting>org.geomajas.puregwt.client.map.MapPresenter map = GEOMAJASINJECTOR.getMapPresenter();</programlisting>
     </section>
 
     <section>
-      <title>ViewPort</title>
+      <title>Map initialization</title>
 
-      <para>The <code>ViewPort</code> can be seen of as the navigator behind
-      the map. It manages the map's navigation (by making it zoom or pan) and
-      sends the required events. On top of that, the <code>ViewPort</code>
-      also has a second responsibility in providing transformations between
-      "WorldSpace" and "ViewSpace" (visit the <link
-      linkend="world_vs_screen">WorldSpace vs ScreenSpace</link> section for
-      more information).</para>
+      <para>The first thing you'll want to do after you have created your map,
+      is to initialize it by loading a map configuration, and setting a size.
+      It is important to realize the Geomajas map configuration is stored in
+      XML format on the server. So when you initialize the map on the client,
+      it will fetch it's configuration from the server. This of course takes a
+      bit of time. This means that the map in only initialized when it's
+      configuration has been received from the server.</para>
+
+      <para>So, here is an example of how to initialize the map:</para>
+
+      <programlisting>map.initialize("application-id", "map-id");
+map.setSize(640, 480);</programlisting>
+
+      <para>The 2 parameters refer to an application and map definition as
+      defined in the backend Spring configuration. Next we have set the size
+      for the map.</para>
+
+      <para>At this point the map is requesting a configuration from the
+      server. It does not yet know which layers will be present, what it's
+      initial view on the map will be, what it's CRS is, etc. Often you need
+      to know when the map has been initialized because, for example, you need
+      the layer objects for some functionality. For this occasion, there is
+      the MapInitializationEvent:</para>
+
+      <programlisting>mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+
+    public void onMapInitialized(MapInitializationEvent event) {
+        // Do something interesting ...
+    }
+});</programlisting>
     </section>
 
     <section>
-      <title>LayersModel</title>
+      <title>Adding the map to the GWT layout</title>
+
+      <para>In order for the map to display correctly, it must have a size.
+      You either set a fixed size, like we showed in the previous section, or
+      you let some parent widget determine the size. In any case, the map must
+      know how large it should be in pixels.</para>
+
+      <para>To this end Geomajas provides a widget to incorporate the map into
+      the GWT 2.0 layout system, call the MapLayout:</para>
+
+      <programlisting>org.geomajas.puregwt.client.widget.MapLayoutPanel mapLayout = new MapLayoutPanel(mapPresenter);</programlisting>
+
+      <para>Now add this mapLayout widget to any GWT layout panel, to get the
+      map to fill up the available area.</para>
+    </section>
+
+    <section>
+      <title>Map configuration &amp; MapHints</title>
+
+      <para>Of course the MapPresenter has a configuration. The biggest part
+      of a map configuration comes from the backend. Usually the first task
+      for a newly created map is to fetch such a configuration from the
+      backend. But the client-side map configuration has more to it than just
+      this back-end counterpart: it can also be used to get and set MapHints
+      or adjust generic map options, such as animated zooming.</para>
+
+      <para>The MapConfiguration can be retrieved as such:</para>
+
+      <programlisting>org.geomajas.puregwt.client.map.MapConfiguration mapConfiguration = mapPresenter.getConfiguration();</programlisting>
+
+      <para>The configuration has the option to enable or disable animated
+      navigation for each layer individually:</para>
+
+      <programlisting>mapConfiguration.setAnimated(myLayer, false);</programlisting>
+
+      <para>Next this it's direct getters and setters, the the configuration
+      also has the ability to store and use MapHints. These MapHints are
+      options used within the map implementation. All MapHints are defined to
+      only accept a certain type of value through Java's generic types:</para>
+
+      <programlisting>mapConfiguration.setMapHintValue(MapHint&lt;T&gt; hint, T value);</programlisting>
+
+      <para>By default the following MapHints are defined:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>MapConfiguration.ANIMATION_ENABLED</emphasis>: This
+          setting completely enables or disabled animated navigation on the
+          map.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>MapConfiguration.ANIMATION_TIME</emphasis>: This
+          setting determines how long animated navigation should last
+          (expressed in milliseconds).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>This is an example of how one would disable animated
+      navigation:</para>
+
+      <programlisting>mapConfiguration.setMapHintValue(MapConfiguration.ANIMATION_ENABLED, false);</programlisting>
+    </section>
+
+    <section>
+      <title>Managing the view on the map</title>
+
+      <section>
+        <title>The ViewPort</title>
+
+        <para>One of the most important concepts within a map is it's position
+        and how to navigate from one place to another. Most of the time it
+        will be the user that determines navigation through a controller on
+        the map (mouse or touch). Sometimes though it might be necessary to
+        have the map navigate to some pre-defined location through
+        code.</para>
+
+        <para>The whole navigation and positioning concept is bundled within
+        the ViewPort. The ViewPort can be accessed directly from the
+        MapPresenter:</para>
+
+        <programlisting>org.geomajas.puregwt.client.map.ViewPort viewPort = mapPresenter.getViewPort();</programlisting>
+
+        <para>Through the ViewPort one can get the current map
+        position:</para>
+
+        <programlisting>org.geomajas.geometry.Coordinate position = viewPort.getPosition();
+org.geomajas.geometry.Bbox bounds = viewPort.getBounds();
+double scale = viewPort.getScale();
+String crs = viewPort.getCrs();</programlisting>
+
+        <para>Next to acquiring current location, you can also force the map
+        to navigate to a certain location:</para>
+
+        <programlisting>viewPort.applyPosition(new Coordinate(0,0));
+viewPort.applyScale(0.01);
+viewPort.applyBounds(new Bbox(0,0,100,100));</programlisting>
+      </section>
+
+      <section>
+        <title>Rendering spaces</title>
+
+        <para>The <code>ViewPort</code> can be seen as the navigator behind
+        the map. It manages the map's navigation (by making it zoom or pan)
+        and sends the required events. On top of that, the
+        <code>ViewPort</code> also has a second responsibility in providing
+        transformations between different rendering spaces.</para>
+
+        <para>Visit the <link linkend="world_vs_screen">WorldSpace vs
+        ScreenSpace</link> section for more information.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Layer composition</title>
 
       <para>Also part of the central map model, is a separate interface for
       managing all the layers of the map. As is typically the case in GIS,
@@ -66,23 +295,185 @@
       have a certain order in which they are drawn, as they lie on top of each
       other.</para>
 
-      <para>This model provides methods to add and remove layers, to change
-      layer order, to retrieve layer information etc. Most changes in the
-      layer model will trigger some event that can always be captured.</para>
+      <para>The LayersModel is directly accessible from the
+      MapPresenter:</para>
+
+      <programlisting>org.geomajas.puregwt.client.map.layer.LayersModel layersModel = mapPresenter.getLayersModel();</programlisting>
+
+      <para>This model has the following responsibilities:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Adding and removing layers</emphasis>: These methods
+          will add layers on top, or remove existing layers from the
+          map.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Retrieving layers</emphasis>: You can retrieve layer
+          objects through their unique ID, or by index. It's also possible to
+          get the total layer count.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Moving layers up and down</emphasis>: Remember that
+          the layers form an ordered list, so these methods will change the
+          layer order.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Get the currently selected layer</emphasis>: The
+          layer API provides the possibility to select one single layer. This
+          option can be used for specific use-cases revolving around a single
+          layer.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Note that almost all changes in the LayersModel will trigger
+      specific events, making it easy to follow up on changes.</para>
     </section>
 
     <section>
-      <title>Layers</title>
+      <title>Layer API</title>
 
       <para>As many different types of layers exist all with their own
       specific set of functionalities, we have decided to reflect this
       diversity in the layer interface, by splitting it up in multiple
-      'functional' interfaces. There is still a main Layer interface, which
-      must always be implemented, but layer implementation can decide for
-      themselves which of the 'functional' interfaces they support and which
-      they don't.</para>
+      'functional' interfaces. There is still a main
+      <code>org.geomajas.puregwt.client.map.layer.Layer</code> interface,
+      which must always be implemented, but layer implementations can decide
+      for themselves which of the 'functional' interfaces they support and
+      which they don't.</para>
 
-      <para></para>
+      <section>
+        <title>Client layers and server layers</title>
+
+        <para>As was just mentioned, multiple interfaces exists that make up a
+        layers functionality. That said, there are 2 different layer
+        definitions though:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.Layer</emphasis>:
+            This is the base layer definition. This definition provides only
+            the most basic layer functionality, such as a unique ID, a
+            readable title, the possibility to select it and mark it as
+            visible.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.ServerLayer</emphasis>:
+            Extension of the layer interface to indicate the layer has
+            actually been defined on the server in the Geomajas map
+            configuration.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Supporting interfaces</title>
+
+        <para>On top of the basic layer interface, the following extensions
+        are available:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.FeaturesSupported</emphasis>:
+            Extension for layers that contain features. Features are the base
+            vector-objects a layers can consist of. This interface allows
+            filters to be set (CQL), and has support for feature selection
+            management.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.LabelsSupported</emphasis>:
+            Allows labels for a layer to be turned on or off.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.OpacitySupported</emphasis>:
+            Allows one to determine a layers opacity. The opacity determines
+            the transparency on the map.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.HasLayerRenderer</emphasis>:
+            Allows layer implementations to specify their own
+            renderers.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Features</title>
+
+        <para>In the previous section we briefly mentioned the Feature
+        (<code>org.geomajas.puregwt.client.map.feature.Feature</code>)
+        concept. Features are the individual objects that make up vector
+        layers. Examples of vector layers are WFS (Web Feature Service) layers
+        or Shapefile layers. Geomajas represents such layers for example
+        through the FeaturesSupported interface.</para>
+
+        <para>A Feature itself contains the following information:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>A unique ID</emphasis>: Every feature should have
+            a unique identifier within it's layers.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>A map of attributes</emphasis>: A layer usually
+            has a fixed set of attributes configured. For each such attribute,
+            the feature may have a value in it's attribute map.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>A geometry</emphasis>: Without a geometry, the
+            feature can not be displayed on a map...</para>
+          </listitem>
+        </itemizedlist>
+
+        <section>
+          <title>Feature Selection</title>
+
+          <para>The FeaturesSupported interface allows for feature
+          selection:</para>
+
+          <programlisting>FeaturesSupported fs = (FeaturesSupported) layer;
+fs.selectFeature(feature);
+boolean selected = fs.isFeatureSelected(feature); // returns true
+fs.clearSelectedFeatures(); // Deselect all features within this layer.
+selected = fs.isFeatureSelected(feature); // returns false</programlisting>
+        </section>
+
+        <section>
+          <title>Searching features</title>
+
+          <para>Vector layers that have been defined on the backend will
+          always implement the FeaturesSupported interface. Through the
+          FeatureService, it is possible to search for features by location or
+          through CQL filters.</para>
+
+          <programlisting>FeatureService featureService = mapPresenter.getFeatureService();
+
+// Get a FeaturesSupported layer:
+Layer layer = mapPresenter.getLayersModel().getLayer("someVectorLayer");
+final FeaturesSupported fs = (FeaturesSupported) layer;
+
+// Get the map bounds as a polygon:
+Geometry mapBounds = GeometryService.toPolygon(mapPresenter.getViewPort().getBounds());
+
+// Now search:
+featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
+
+    public void execute(Map&lt;FeaturesSupported, List&lt;Feature&gt;&gt; featureMap) {
+        // Now do something with the features ....
+        List&lt;Feature&gt; features = featureMap.get(fs);
+    }
+});</programlisting>
+        </section>
+      </section>
     </section>
   </section>
 
@@ -115,104 +506,91 @@
     <code>MapResizedHandler</code> has been registered, it will receive all
     events that indicate the map has been resized.</para>
 
-    <para>Time to go over all supported events and explain their purpose. Note
-    that every event in this list is part of the PureGWT API within Geomajas.
-    All event and handler classes can be found in the following package:
-    <code>org.geomajas.puregwt.client.map.event</code>.</para>
+    <section>
+      <title>Geomajas events versus native events</title>
 
-    <para><emphasis role="bold">Map events:</emphasis></para>
+      <para>When developing GWT or Javascript applications, it is important to
+      be aware of the difference between HTML native events and custom created
+      events.</para>
 
-    <table>
-      <title>Map Events</title>
+      <itemizedlist>
+        <listitem>
+          <para>Native events: Events that are triggered by the browser. They
+          are typically triggered by input devices such as the mouse, the
+          keyboard or touch screens. These events are provided in Geomajas
+          through the <code>MapController</code>, which lets you define user
+          interaction on the map.</para>
+        </listitem>
 
-      <tgroup cols="3">
-        <thead>
-          <row>
-            <entry align="center">Event</entry>
+        <listitem>
+          <para>Custom events: These are used for Geomajas specific events,
+          such as the MapInitializationEvent we have covered earlier. You can
+          catch these events through the Geomajas
+          <code>MapEventBus</code>.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
 
-            <entry align="center">Handler</entry>
+    <section>
+      <title>EventBus</title>
 
-            <entry align="center">Description</entry>
-          </row>
-        </thead>
+      <para>Instead of randomly providing methods to register handlers (a
+      handler is the GWT version of a Listener) for specific events, Geomajas
+      follows the GWT reasoning in that it's much easier to work with a
+      central event service: The EventBus. The idea is that all events are
+      passed through this bus, so that the developer never needs to figure out
+      where to register the handlers. Also, the EventBus can be a singleton
+      service available everywhere in your code.</para>
 
-        <tbody>
-          <row>
-            <entry>MapInitializationEvent</entry>
+      <para>The Geomajas setup goes a bit further though in that it provides
+      an EventBus for every map plus an application specific EventBus. The
+      application specific event bus is optional, but can be an easy way to
+      provide your own events.</para>
 
-            <entry>MapInitializationHandler</entry>
+      <section>
+        <title>Geomajas MapEventBus</title>
 
-            <entry>Event that is fired when the map has been initialized. Only
-            after this point will layers be available.</entry>
-          </row>
+        <para>We start out be explaining the map centric event bus. For every
+        map you create, there is one such event bus. This EventBus will
+        provide all Geomajas specific events, it is not meant to add extra
+        event types to it. Note that if you create multiple maps, you will
+        also have multiple such event busses.</para>
 
-          <row>
-            <entry>MapResizedEvent</entry>
+        <para>The next piece of code shows you how to get access to it:</para>
 
-            <entry>MapResizedHandler</entry>
+        <programlisting>MapEventBus mapEventBus = mapPresenter.getEventBus();</programlisting>
 
-            <entry>Event that is fired when the map widget has changed
-            size.</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+        <para>This bus only provides Geomajas specific events. For a list, see
+        <link linkend="event_overview">event overview</link>.</para>
+      </section>
 
-    <para><emphasis role="bold">ViewPort events:</emphasis><table>
-        <title>ViewPort Events</title>
+      <section>
+        <title>GIN EventBus</title>
 
-        <tgroup cols="3">
-          <thead>
-            <row>
-              <entry align="center">Event</entry>
+        <para>Next to the map specific event bus, Geomajas also provides an
+        EventBus singleton through the GIN injection framework:</para>
 
-              <entry align="center">Handler</entry>
+        <programlisting>EventBus eventBus = GEOMAJASINJECTOR.getEventBus();</programlisting>
 
-              <entry align="center">Description</entry>
-            </row>
-          </thead>
+        <para>This is a default GWT EventBus that is not actually used by
+        Geomajas to provides map specific events, but is here as a singleton
+        for application designers to add application specific events
+        to.</para>
+      </section>
+    </section>
 
-          <tbody>
-            <row>
-              <entry>ViewPortChangedEvent</entry>
+    <section>
+      <title id="event_overview">Event overview</title>
 
-              <entry>ViewPortChangedHandler</entry>
+      <para>Time to go over all supported events and explain their purpose.
+      Note that every event in this list is part of the PureGWT API within
+      Geomajas. All event and handler classes can be found in the following
+      package: <code>org.geomajas.puregwt.client.map.event</code>.</para>
 
-              <entry>Event that is fired when the map both zooms and pans at
-              the same time.</entry>
-            </row>
+      <para><emphasis role="bold">Map events:</emphasis></para>
 
-            <row>
-              <entry>ViewPortDraggedEvent</entry>
-
-              <entry>ViewPortChangedHandler</entry>
-
-              <entry>Event that is fired when the map is being panned.</entry>
-            </row>
-
-            <row>
-              <entry>ViewPortScaledEvent</entry>
-
-              <entry>ViewPortChangedHandler</entry>
-
-              <entry>Event that is fired when the map zooms is or out keeping
-              the same center.</entry>
-            </row>
-
-            <row>
-              <entry>ViewPortTranslatedEvent</entry>
-
-              <entry>ViewPortChangedHandler</entry>
-
-              <entry>Event that is fired when the map is being
-              translated.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table></para>
-
-    <para><emphasis role="bold">Layer events:</emphasis><table>
-        <title>Layer Events</title>
+      <table>
+        <title>Map Events</title>
 
         <tgroup cols="3">
           <thead>
@@ -227,132 +605,274 @@
 
           <tbody>
             <row>
-              <entry>LayerAddedEvent</entry>
+              <entry>MapInitializationEvent</entry>
 
-              <entry>MapCompositionHandler</entry>
+              <entry>MapInitializationHandler</entry>
 
-              <entry>Event that is fired when a new layer has been added to
-              the map.</entry>
+              <entry>Event that is fired when the map has been initialized.
+              Only after this point will layers be available.</entry>
             </row>
 
             <row>
-              <entry>LayerRemovedEvent</entry>
+              <entry>MapResizedEvent</entry>
 
-              <entry>MapCompositionHandler</entry>
+              <entry>MapResizedHandler</entry>
 
-              <entry>Event that is fired when a layer has been removed from
-              the map.</entry>
-            </row>
-
-            <row>
-              <entry>LayerSelectedEvent</entry>
-
-              <entry>LayerSelectionHandler</entry>
-
-              <entry>Event that is fired when a layer is selected. Only one
-              layer can be selected at any time, so these events often go
-              together with layer deselect events.</entry>
-            </row>
-
-            <row>
-              <entry>LayerDeselectedEvent</entry>
-
-              <entry>LayerSelectionHandler</entry>
-
-              <entry>Event that is fired when a layer has been
-              deselected.</entry>
-            </row>
-
-            <row>
-              <entry>LayerHideEvent</entry>
-
-              <entry>LayerVisibilityHandler</entry>
-
-              <entry>Event that is fired when a layer becomes
-              invisible.</entry>
-            </row>
-
-            <row>
-              <entry>LayerShowEvent</entry>
-
-              <entry>LayerVisibilityHandler</entry>
-
-              <entry>Event that is fired when a layer becomes visible.</entry>
-            </row>
-
-            <row>
-              <entry>LayerLabelHideEvent</entry>
-
-              <entry>LayerLabeledHandler</entry>
-
-              <entry>Event that is fired when the labels for a layer have been
-              turned off.</entry>
-            </row>
-
-            <row>
-              <entry>LayerLabelShowEvent</entry>
-
-              <entry>LayerLabeledHandler</entry>
-
-              <entry>Event that is fired when the labels for a layer have been
-              turned on.</entry>
-            </row>
-
-            <row>
-              <entry>LayerOrderChangedEvent</entry>
-
-              <entry>LayerOrderChangedHandler</entry>
-
-              <entry>Event that is fired when the layer order has
-              changed.</entry>
-            </row>
-
-            <row>
-              <entry>LayerStyleChangedEvent</entry>
-
-              <entry>LayerStyleChangedHandler</entry>
-
-              <entry>Event that is fired when a layer has a new style.</entry>
+              <entry>Event that is fired when the map widget has changed
+              size.</entry>
             </row>
           </tbody>
         </tgroup>
-      </table></para>
+      </table>
 
-    <para><emphasis role="bold">Feature events:</emphasis><table>
-        <title>Feature Events</title>
+      <para><emphasis role="bold">ViewPort events:</emphasis><table>
+          <title>ViewPort Events</title>
 
-        <tgroup cols="3">
-          <thead>
-            <row>
-              <entry align="center">Event</entry>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry align="center">Event</entry>
 
-              <entry align="center">Handler</entry>
+                <entry align="center">Handler</entry>
 
-              <entry align="center">Description</entry>
-            </row>
-          </thead>
+                <entry align="center">Description</entry>
+              </row>
+            </thead>
 
-          <tbody>
-            <row>
-              <entry>FeatureSelectedEvent</entry>
+            <tbody>
+              <row>
+                <entry>ViewPortChangedEvent</entry>
 
-              <entry>FeatureSelectionHandler</entry>
+                <entry>ViewPortChangedHandler</entry>
 
-              <entry>Event that is fired when a feature has been
-              selected.</entry>
-            </row>
+                <entry>Event that is fired when the map both scales and
+                translates at the same time.</entry>
+              </row>
 
-            <row>
-              <entry>FeatureDeselectedEvent</entry>
+              <row>
+                <entry>ViewPortScaledEvent</entry>
 
-              <entry>FeatureSelectionHandler</entry>
+                <entry>ViewPortChangedHandler</entry>
 
-              <entry>Event that is fired when a selected feature has been
-              deselected again.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table></para>
+                <entry>Event that is fired when the map zooms in or out while
+                keeping the same center.</entry>
+              </row>
+
+              <row>
+                <entry>ViewPortTranslatedEvent</entry>
+
+                <entry>ViewPortChangedHandler</entry>
+
+                <entry>Event that is fired when the map is being translated,
+                keeping the same scale level.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><emphasis role="bold">Layer events:</emphasis><table>
+          <title>Layer Events</title>
+
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry align="center">Event</entry>
+
+                <entry align="center">Handler</entry>
+
+                <entry align="center">Description</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>LayerAddedEvent</entry>
+
+                <entry>MapCompositionHandler</entry>
+
+                <entry>Event that is fired when a new layer has been added to
+                the map.</entry>
+              </row>
+
+              <row>
+                <entry>LayerRemovedEvent</entry>
+
+                <entry>MapCompositionHandler</entry>
+
+                <entry>Event that is fired when a layer has been removed from
+                the map.</entry>
+              </row>
+
+              <row>
+                <entry>LayerSelectedEvent</entry>
+
+                <entry>LayerSelectionHandler</entry>
+
+                <entry>Event that is fired when a layer is selected. Only one
+                layer can be selected at any time, so these events often go
+                together with layer deselect events.</entry>
+              </row>
+
+              <row>
+                <entry>LayerDeselectedEvent</entry>
+
+                <entry>LayerSelectionHandler</entry>
+
+                <entry>Event that is fired when a layer has been
+                deselected.</entry>
+              </row>
+
+              <row>
+                <entry>LayerHideEvent</entry>
+
+                <entry>LayerVisibilityHandler</entry>
+
+                <entry>Event that is fired when a layer becomes
+                invisible.</entry>
+              </row>
+
+              <row>
+                <entry>LayerShowEvent</entry>
+
+                <entry>LayerVisibilityHandler</entry>
+
+                <entry>Event that is fired when a layer becomes
+                visible.</entry>
+              </row>
+
+              <row>
+                <entry>LayerLabelHideEvent</entry>
+
+                <entry>LayerLabeledHandler</entry>
+
+                <entry>Event that is fired when the labels for a layer have
+                been turned off.</entry>
+              </row>
+
+              <row>
+                <entry>LayerLabelShowEvent</entry>
+
+                <entry>LayerLabeledHandler</entry>
+
+                <entry>Event that is fired when the labels for a layer have
+                been turned on.</entry>
+              </row>
+
+              <row>
+                <entry>LayerOrderChangedEvent</entry>
+
+                <entry>LayerOrderChangedHandler</entry>
+
+                <entry>Event that is fired when the layer order has
+                changed.</entry>
+              </row>
+
+              <row>
+                <entry>LayerStyleChangedEvent</entry>
+
+                <entry>LayerStyleChangedHandler</entry>
+
+                <entry>Event that is fired when a layer has a new
+                style.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><emphasis role="bold">Feature events:</emphasis><table>
+          <title>Feature Events</title>
+
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry align="center">Event</entry>
+
+                <entry align="center">Handler</entry>
+
+                <entry align="center">Description</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>FeatureSelectedEvent</entry>
+
+                <entry>FeatureSelectionHandler</entry>
+
+                <entry>Event that is fired when a feature has been
+                selected.</entry>
+              </row>
+
+              <row>
+                <entry>FeatureDeselectedEvent</entry>
+
+                <entry>FeatureSelectionHandler</entry>
+
+                <entry>Event that is fired when a selected feature has been
+                deselected again.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para/>
+    </section>
+  </section>
+
+  <section>
+    <title>User interaction</title>
+
+    <para>This section will handle the basics of interacting with the map, by
+    listening and responding to the mouse events that are generated from the
+    map. Instead of dealing with those mouse events directly, 2 interfaces
+    have been created to shield you from having to attach the correct handlers
+    to the correct DOM elements in the HTML tree.</para>
+
+    <note>
+      <para>If you want fine tuned control and attach custom mouse event
+      handlers to custom objects on the map, have a look at the <link
+      linkend="graphics_rendering">Graphics &amp; Rendering</link>
+      section.</para>
+
+      <para>This section here handles the interface that help shield you from
+      such fine tuned but cumbersome mouse event handling.</para>
+    </note>
+
+    <para>The next 2 sections will cover the following 2 basic interfaces: the
+    MapController and the MapListener.</para>
+
+    <section>
+      <title>Controllers</title>
+
+      <para>The MapController is an interface which listens to all mouse
+      events that comes from the map (mouse up, mouse down, mouse move, ...)
+      and has the possibility to react directly onto receiving such events.
+      The MapController basically has all the freedom in the world to
+      manipulate and manage the state of the map as events are being
+      received.</para>
+
+      <para>For example, it could prevent the default mouse event behaviour or
+      even prevent event bubbling. But because the MapController has such
+      freedom only one can be active at a time.</para>
+
+      <para>An example of a MapController is the NavigationController which
+      allows the user to navigate all around the map.</para>
+    </section>
+
+    <section>
+      <title>Listeners</title>
+
+      <para>The other way of interacting with the map, is through
+      MapListeners. A MapListener resembles a MapController quite a lot,
+      except that it does not receive the real mouse events, but imitations of
+      it. It therefore can not interfere with the normal browser event flow,
+      but takes on a more passive form.</para>
+
+      <para>As a result, multiple MapListeners can be active on a map at any
+      one time. The MapListener is would therefore be the perfect tool for
+      reporting or reacting without interfering, while a MapController is all
+      about the interference.</para>
+    </section>
   </section>
 
   <section>
@@ -440,16 +960,9 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
     </section>
 
     <section>
-      <title>MapGadgets</title>
+      <title>Rendering utility: GfxUtil</title>
 
-      <para>The MapGadget is a standalone functional gadget that can be placed
-      at a fixed position on the map. Examples are the navigation buttons and
-      the scalebar. MapGadgets are notified of map navigation events, because
-      they often require updating on those events.</para>
-
-      <para>The position of a MapGadget is maintained by the face, but you
-      have to make sure that the container has a "position: absolute"
-      style.</para>
+      <para/>
     </section>
   </section>
 
@@ -524,71 +1037,13 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
     <section>
       <title>Spatial services</title>
 
-      <para></para>
-    </section>
-  </section>
-
-  <section>
-    <title>User Interaction on the Map</title>
-
-    <para>This section will handle the basics of interacting with the map, by
-    listening and responding to the mouse events that are generated from the
-    map. Instead of dealing with those mouse events directly, 2 interfaces
-    have been created to shield you from having to attach the correct handlers
-    to the correct DOM elements in the HTML tree.</para>
-
-    <note>
-      <para>If you want fine tuned control and attach custom mouse event
-      handlers to custom objects on the map, have a look at the <link
-      linkend="graphics_rendering">Graphics &amp; Rendering</link>
-      section.</para>
-
-      <para>This section here handles the interface that help shield you from
-      such fine tuned but cumbersome mouse event handling.</para>
-    </note>
-
-    <para>The next 2 sections will cover the following 2 basic interfaces: the
-    MapController and the MapListener.</para>
-
-    <section>
-      <title>MapController</title>
-
-      <para>The MapController is an interface which listens to all mouse
-      events that comes from the map (mouse up, mouse down, mouse move, ...)
-      and has the possibility to react directly onto receiving such events.
-      The MapController basically has all the freedom in the world to
-      manipulate and manage the state of the map as events are being
-      received.</para>
-
-      <para>For example, it could prevent the default mouse event behaviour or
-      even prevent event bubbling. But because the MapController has such
-      freedom only one can be active at a time.</para>
-
-      <para>An example of a MapController is the NavigationController which
-      allows the user to navigate all around the map.</para>
-
-      <para></para>
-    </section>
-
-    <section>
-      <title>MapListener</title>
-
-      <para>The other way of interacting with the map, is through
-      MapListeners. A MapListener resembles a MapController quite a lot,
-      except that it does not receive the real mouse events, but imitations of
-      it. It therefore can not interfere with the normal browser event flow,
-      but takes on a more passive form.</para>
-
-      <para>As a result, multiple MapListeners can be active on a map at any
-      one time. The MapListener is would therefore be the perfect tool for
-      reporting or reacting without interfering, while a MapController is all
-      about the interference.</para>
+      <para/>
     </section>
   </section>
 
   <section>
     <title>Client/Server communication</title>
 
-    <para></para>
+    <para/>
   </section>
 </chapter>
