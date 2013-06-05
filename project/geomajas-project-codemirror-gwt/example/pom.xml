@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas.project</groupId>
 		<artifactId>geomajas-project-codemirror-gwt-all</artifactId>
-		<version>3.1.1-SNAPSHOT</version>
+		<version>3.1.1</version>
 	</parent>
 
 	<groupId>org.geomajas.project</groupId>
