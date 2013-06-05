@@ -1,1 +1,29 @@
-// geomajas-project-codemirror-gwt module API, 3.1.0
+// geomajas-project-codemirror-gwt module API, 3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper::3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:CodeMirrorWrapper(TextAreaElement, Config, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:JavaScriptObject asJSOject():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:Object getOption(String, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:String getContent():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:boolean isClean():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:int getHistorySize():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:static CodeMirrorWrapper fromTextArea(String, Config, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:static CodeMirrorWrapper fromTextArea(TextArea, Config, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:static CodeMirrorWrapper fromTextArea(TextAreaElement, Config, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void clearHistory():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void focus():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void markClean():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void redo():3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void setContent(String, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void setOption(String, Object, ):3.1.1
+org.geomajas.codemirror.client.CodeMirrorWrapper:void undo():3.1.1
+org.geomajas.codemirror.client.Config::3.1.1
+org.geomajas.codemirror.client.Config:Config():3.1.1
+org.geomajas.codemirror.client.Config:Object getOption(String, ):3.1.1
+org.geomajas.codemirror.client.Config:String getOptionAsString(String, ):3.1.1
+org.geomajas.codemirror.client.Config:void setOption(String, Object, ):3.1.1
+org.geomajas.codemirror.client.widget.CodeMirrorPanel::3.1.1
+org.geomajas.codemirror.client.widget.CodeMirrorPanel:CodeMirrorPanel():3.1.1
+org.geomajas.codemirror.client.widget.CodeMirrorPanel:CodeMirrorPanel(Config, ):3.1.1
+org.geomajas.codemirror.client.widget.CodeMirrorPanel:CodeMirrorPanel(String, ):3.1.1
+org.geomajas.codemirror.client.widget.CodeMirrorPanel:CodeMirrorWrapper getEditor():3.1.1
+org.geomajas.codemirror.client.widget.CodeMirrorPanel:void setInitialData(String, ):3.1.1
