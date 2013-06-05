@@ -19,7 +19,7 @@
 
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-codemirror-gwt-documentation</artifactId>
-	<version>3.1.1</version>
+	<version>3.13.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Geomajas Codemirror GWT wrapper documentation</name>
@@ -28,10 +28,4 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-codemirror-gwt-all-3.1.1/geomajas-project-codemirror-gwt-documentation</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-codemirror-gwt-all-3.1.1/geomajas-project-codemirror-gwt-documentation</developerConnection>
-    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-project-codemirror-gwt-all-3.1.1/geomajas-project-codemirror-gwt-documentation</url>
-  </scm>
 </project>
