@@ -113,7 +113,7 @@ include "org.geomajas.documentation" "geomajas-project-codemirror-gwt-documentat
     "Codemirror GWT wrapper project" \
     "In-browser code editing made bearable. Based on CodeMirror version 3.1." \
     "incubating" "master.pdf" \
-    "org.geomajas.project" "geomajas-project-codemirror-gwt" "3.1.0"
+    "org.geomajas.project" "geomajas-project-codemirror-gwt" "3.1.1"
 
 include "org.geomajas.documentation" "geomajas-project-geometry-documentation" "1.1.0-SNAPSHOT" \
     "Geometry DTO project" \
