@@ -10,6 +10,7 @@
  */
 package org.geomajas.codemirror.client.widget;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.codemirror.client.CodeMirrorWrapper;
 import org.geomajas.codemirror.client.Config;
 
@@ -22,7 +23,9 @@ import com.google.gwt.user.client.ui.TextArea;
  * A code editing Panel. 
  * 
  * @author Kristof Heirwegh
+ * @since 3.1.1
  */
+@Api( allMethods = true )
 public class CodeMirrorPanel extends SimplePanel {
 	
 	private CodeMirrorWrapper editor;
@@ -44,7 +47,11 @@ public class CodeMirrorPanel extends SimplePanel {
 		this(Config.forXml());
 		setInitialData(initialData);
 	}
-	
+
+	/**
+	 * Create an new codemirrorpanel with a custom configuration.
+	 * @param config the configuration.
+	 */
 	public CodeMirrorPanel(Config config) {
 		super();
 		this.config = config;
@@ -54,10 +61,18 @@ public class CodeMirrorPanel extends SimplePanel {
 		setWidget(textArea);
 	}
 	
+	/**
+	 * Get the internal CodemirrorWrapper object.
+	 * @return editor
+	 */
 	public CodeMirrorWrapper getEditor() {
 		return editor;
 	}
 
+	/**
+	 * Set the initial data to be displayed in the codemirror editor window.
+	 * @param initialData
+	 */
 	public void setInitialData(String initialData) {
 		textArea.setValue(initialData);
 	}
