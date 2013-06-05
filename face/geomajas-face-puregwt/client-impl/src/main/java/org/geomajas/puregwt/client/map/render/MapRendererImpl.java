@@ -260,7 +260,7 @@ public class MapRendererImpl implements MapRenderer {
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 		if (viewPort.getScale() > 0 && !animation.isRunning()) {
-			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0, event.isDragging());
 		}
 	}
 
@@ -302,8 +302,12 @@ public class MapRendererImpl implements MapRenderer {
 			}
 		}
 	}
-
+	
 	private void navigateTo(Bbox bounds, double scale, int millis) {
+		navigateTo(bounds, scale, millis, false);
+	}
+	
+	private void navigateTo(Bbox bounds, double scale, int millis, boolean animationOnly) {
 		navigationBusy = true;
 		int delay = fetchDelay >= millis ? 0 : fetchDelay;
 		Boolean animationEnabled = (Boolean) configuration.getMapHintValue(MapConfiguration.ANIMATION_ENABLED);
@@ -322,7 +326,9 @@ public class MapRendererImpl implements MapRenderer {
 			currentScale = scale;
 
 			// Ensure the scale level after a certain delay:
-			ensureScale(scale, bounds, delay);
+			if (!animationOnly) {
+				ensureScale(scale, bounds, delay);
+			}
 
 			// Extend the current animation:
 			animation.extend(currentScale / previousScale, transCoord, millis);
@@ -332,7 +338,9 @@ public class MapRendererImpl implements MapRenderer {
 			currentScale = scale;
 
 			// Ensure the scale level after a certain delay:
-			ensureScale(scale, bounds, delay);
+			if (!animationOnly) {
+				ensureScale(scale, bounds, delay);
+			}
 
 			// Create an ordered list of presenters for the animation.
 			List<LayerRenderer> presenters = new ArrayList<LayerRenderer>();

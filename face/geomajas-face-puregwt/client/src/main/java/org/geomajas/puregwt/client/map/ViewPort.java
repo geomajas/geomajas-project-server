@@ -150,6 +150,14 @@ public interface ViewPort {
 	void applyPosition(Coordinate coordinate);
 
 	/**
+	 * Re-centers the map to a new position while dragging. This call should eventually be followed by
+	 * {@link #applyPosition(Coordinate)}) when the dragging stops.
+	 * 
+	 * @param coordinate the new center position
+	 */
+	void dragToPosition(Coordinate coordinate);
+
+	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
 	 * this.

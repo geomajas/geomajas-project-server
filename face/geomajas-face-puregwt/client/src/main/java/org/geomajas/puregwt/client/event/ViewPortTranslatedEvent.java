@@ -26,10 +26,23 @@ import com.google.web.bindery.event.shared.Event;
 public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 
 	private final ViewPort viewPort;
+	
+	private boolean dragging;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
+	/**
+	 * Create an event for the specified view port and dragging state.
+	 * 
+	 * @param viewPort the view port
+	 * @param dragging if true, this event is caused by a dragging action
+	 */
+	public ViewPortTranslatedEvent(ViewPort viewPort, boolean dragging) {
+		this.viewPort = viewPort;
+		this.dragging = dragging;
+	}
+
 	/**
 	 * Create an event for the specified view port.
 	 * 
@@ -55,6 +68,16 @@ public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 	 */
 	public ViewPort getViewPort() {
 		return viewPort;
+	}	
+
+	/**
+	 * Indicates whether this event is caused by a dragging action. If true, listeners can/should delay expensive
+	 * actions as there are more, similar events to be expected. The final event should be non-dragging.
+	 * 
+	 * @return
+	 */
+	public boolean isDragging() {
+		return dragging;
 	}
 
 	// ------------------------------------------------------------------------

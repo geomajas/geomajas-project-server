@@ -170,6 +170,13 @@ public final class ViewPortImpl implements ViewPort {
 		this.zoomStrategy = zoomStrategy;
 	}
 
+	public void dragToPosition(Coordinate coordinate) {
+		position = checkPosition(coordinate, scale);
+		if (eventBus != null) {
+			eventBus.fireEvent(new ViewPortTranslatedEvent(this, true));
+		}
+	}
+	
 	public void applyPosition(Coordinate coordinate) {
 		position = checkPosition(coordinate, scale);
 		if (eventBus != null) {

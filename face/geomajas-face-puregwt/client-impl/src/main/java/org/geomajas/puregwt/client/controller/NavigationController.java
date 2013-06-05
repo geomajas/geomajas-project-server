@@ -238,7 +238,11 @@ public class NavigationController extends AbstractMapController {
 
 		double x = mapPresenter.getViewPort().getPosition().getX() + beginWorld.getX() - endWorld.getX();
 		double y = mapPresenter.getViewPort().getPosition().getY() + beginWorld.getY() - endWorld.getY();
-		mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
+		if (dragging) {
+			mapPresenter.getViewPort().dragToPosition(new Coordinate(x, y));
+		} else {
+			mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
+		}
 		dragOrigin = end;
 	}
 }
