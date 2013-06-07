@@ -21,6 +21,9 @@ import org.geomajas.gwt.client.map.RenderSpace;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.GestureChangeEvent;
+import com.google.gwt.event.dom.client.GestureEndEvent;
+import com.google.gwt.event.dom.client.GestureStartEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -73,8 +76,9 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 
 	/**
 	 * Construct controller.
-	 *
-	 * @param dragging are we dragging?
+	 * 
+	 * @param dragging
+	 *            are we dragging?
 	 */
 	public AbstractController(boolean dragging) {
 		this.dragging = dragging;
@@ -82,9 +86,11 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 
 	/**
 	 * Construact controller.
-	 *
-	 * @param eventParser event parser
-	 * @param dragging are we dragging
+	 * 
+	 * @param eventParser
+	 *            event parser
+	 * @param dragging
+	 *            are we dragging
 	 */
 	public AbstractController(MapEventParser eventParser, boolean dragging) {
 		this.dragging = dragging;
@@ -207,5 +213,30 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 		onUp(event);
 		event.stopPropagation();
 		event.preventDefault();
+	}
+
+	// ------------------------------------------------------------------------
+	// Gesture Handler implementations:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * @since 1.4.0
+	 */
+	@Override
+	public void onGestureStart(GestureStartEvent event) {
+	}
+
+	/**
+	 * @since 1.4.0
+	 */
+	@Override
+	public void onGestureChange(GestureChangeEvent event) {
+	}
+
+	/**
+	 * @since 1.4.0
+	 */
+	@Override
+	public void onGestureEnd(GestureEndEvent event) {
 	}
 }
