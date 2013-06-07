@@ -99,12 +99,6 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo</artifactId>
 		</dependency>
 
 		<dependency>
