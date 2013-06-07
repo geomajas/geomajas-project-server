@@ -14,6 +14,7 @@ package org.geomajas.plugin.wmsclient.client.layer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
@@ -72,30 +73,13 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public List<LayerStylePresenter> getStylePresenters() {
 		List<LayerStylePresenter> presenters = new ArrayList<LayerStylePresenter>();
-		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig)));
-		//TODO check if not better to use:
-//		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig, 
-//				DEFAULT_LEGEND_FONT_FAMILY, DEFAULT_LEGEND_FONT_SIZE)));
+		
+		presenters.add(new WmsLayerStylePresenter(getLegendImageUrl()));
+
 		return presenters;
 	}
 	
 	
-//
-//	TODO Old AnB: 
-//	@Override
-//	public List<LayerStylePresenter> getStylePresenters() {
-//		return getStylePresenters(null, null);
-//	}
-//	
-//	@Override
-//	public List<LayerStylePresenter> getStylePresenters(String fontFamily, Integer fontSize) {
-//		List<LayerStylePresenter> presenters = new ArrayList<LayerStylePresenter>();
-//		presenters.add(new WmsLayerStylePresenter(wmsService.getLegendGraphicUrl(wmsConfig, 
-//				FONT_FAMILY_LEGEND_LABELS, FONT_SIZE_LEGEND_LABELS)));
-//		return presenters;
-//	}
-	
-
 	// ------------------------------------------------------------------------
 	// Public methods:
 	// ------------------------------------------------------------------------
@@ -174,25 +158,29 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	// ------------------------------------------------------------------------
 	// LegendUrlSupported implementation:
 	// ------------------------------------------------------------------------
-
+	@Override
+	public boolean hasSupportForDynamicLegend() {
+		return false;
+	}
+	
 	@Override
 	public String getLegendImageUrl() {
 		
-		return getLegendImageUrl(wmsConfig.getLegendWidth(), wmsConfig.getLegendHeight(), DEFAULT_LEGEND_FONT_FAMILY,
-				DEFAULT_LEGEND_FONT_SIZE);
+		return getLegendImageUrl(0, 0, null, null);
 	}
 
 	@Override
-	public String getLegendImageUrl(int width, int height, String fontFamily, int fontSize) {
+	// Note that the bounds cannot be specified here
+	public String getLegendImageUrl(int iconWidth, int iconHeight, FontStyleInfo fontStyle, String imageFormat) {
 		int widthOrig = wmsConfig.getLegendWidth();
 		int heightOrig = wmsConfig.getLegendHeight();
-		if (width > 0) {
-			getConfig().setLegendWidth(width);
+		if (iconWidth > 0) {
+			getConfig().setLegendWidth(iconWidth); //TODO: better to clone getConfig() result
 		}
-		if (height > 0) {
-			getConfig().setLegendHeight(height);
+		if (iconHeight > 0) {
+			getConfig().setLegendHeight(iconHeight);  //TODO: better to clone getConfig() result
 		}
-		String url = wmsService.getLegendGraphicUrl(getConfig(), fontFamily, fontSize);
+		String url = wmsService.getLegendGraphicUrl(getConfig(), fontStyle, imageFormat);
 
 		getConfig().setLegendWidth(widthOrig);
 		getConfig().setLegendHeight(heightOrig);
@@ -200,10 +188,20 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return url;
 	}
 
+	@Override
+	public String getLegendImageUrl(int iconWidth, int iconHeight,
+			FontStyleInfo fontStyle, String imageFormat, Bbox bounds) {
+		// bounds are ignored here, override this method to implement dynamic legend !
+		return getLegendImageUrl(iconWidth, iconHeight, fontStyle, imageFormat);
+	}
+	
 	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
 		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
 				Math.round(scale * worldBounds.getMaxX()) - Math.round(scale * worldBounds.getX()), Math.round(scale
 						* worldBounds.getMaxY())
 						- Math.round(scale * worldBounds.getY()));
 	}
+
+
+
 }

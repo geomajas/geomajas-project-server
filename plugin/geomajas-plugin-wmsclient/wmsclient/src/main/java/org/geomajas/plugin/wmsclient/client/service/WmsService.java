@@ -12,6 +12,7 @@
 package org.geomajas.plugin.wmsclient.client.service;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.wmsclient.client.capabilities.WmsGetCapabilitiesInfo;
@@ -192,29 +193,34 @@ public interface WmsService {
 	// ------------------------------------------------------------------------
 	// WMS GetLegendGraphic methods:
 	// ------------------------------------------------------------------------
-
 	/**
-	 * Get the URL that points to the legend graphic of a WMS layer through a WMS GetLegendGraphic request.
+	 * Get the URL that points to the legend graphic of a WMS layer.
+	 * (Usually through a WMS GetLegendGraphic request)
 	 * 
 	 * @param wmsConfig
 	 *            The configuration object that points to some WMS layer.
+	 * 
 	 * @return Returns the URL that points to the legend image.
 	 */
+
 	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig);
-
+	
 	/**
-	 * Get the URL that points to the legend graphic of a WMS layer through a WMS GetLegendGraphic request. Note that
-	 * not all WMS servers may support this.
+	 * Get the URL that points to the legend graphic of a WMS layer.
+	 * (usually through a WMS GetLegendGraphic request)
 	 * 
 	 * @param wmsConfig
 	 *            The configuration object that points to some WMS layer.
-	 * @param fontFamily
-	 *            The font used in the legend image creation.
-	 * @param fontSize
-	 *            The font size used in the legend image creation.
+	 ** @param fontStyle
+	 *            The font used in the legend image creation. Some WMS services may not support this and ignore
+	 *            the specified style. 
+	 * @param imageFormat 
+	 * 				The format of the legend image, e.g. "png". If null, the service can choose the format.
+	 * 
 	 * @return Returns the URL that points to the legend image.
 	 */
-	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, String fontFamily, int fontSize);
+	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, FontStyleInfo fontStyle, String imageFormat);
+
 
 	// ------------------------------------------------------------------------
 	// URL transformation options (for proxy):

@@ -12,6 +12,8 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Interface meant for layers that are able to provide a URL to their legend, such as WMS layers. The URL refers to an
@@ -25,28 +27,96 @@ import org.geomajas.annotation.Api;
 public interface LegendUrlSupported {
 
 	/**
-	 * Get the URL by which the legend image for this layer can be retrieved.
+	 * Default font family used in legend text rendering.
+	 */
+	String DEFAULT_LEGEND_FONT_FAMILY = "arial";
+	
+	/**
+	 * Default font size used for legend style labels.
+	 */
+	int DEFAULT_LEGEND_STYLE_LABEL_FONT_SIZE = 13;
+
+	/**
+	 * Default font color used in legend text rendering.
+	 */
+	String DEFAULT_LEGEND_FONT_COLOR = "0x000000";
+
+	/**
+	 * Check if the layer supports dynamic legend rendering. 
 	 * 
-	 * @return Returns the default URL to the legend image.
+	 * @return true if dynamic legend rendering is supported, else false 
+	 */
+	boolean hasSupportForDynamicLegend();
+	
+	/**
+	 * Get the URL by which the legend image for this layer can be retrieved.
+	 * The format will be PNG.
+	 * Since no filter/bounding box argument is specified, the full legend (aka static legend)
+	 * will be generated.   
+	 * 
+	 * @return Returns the default URL to the legend image or warning.
 	 */
 	String getLegendImageUrl();
 
 	/**
 	 * Get the URL by which the legend image for the concerning layer can be retrieved.
+	 * Since no filter/bounding box argument is specified, the full legend (aka static legend)
+	 * will be generated.   
 	 * 
 	 * @param width
 	 *            width in pixels of the icon for a legend symbol (if 0, the default is used)
 	 * @param height
 	 *            height in pixels of the icon for a legend symbol (if 0, the default is used)
-	 * @param fontFamily
-	 *            hint for the font family (not all implementations take this parameter into account); e.g. "Dialog" (if
-	 *            null, the default is used)
-	 * @param fontSize
-	 *            hint for font size in points (not all implementations take this parameter into account); (if 0, the
-	 *            default is used)
+	 * @param fontStyle 
+	 *            hint for the font style (not all implementations take this parameter into account); if
+	 *            null, the default is used.
+	 *            
+	 *            If true (default) the URL will generate a legend image even when there are no style rules active
+	 *            (e.g. the layer is invisible for the specified scale). Then the image will contain a warning message.
+	 *            If false, no image will be generated in that case, but a textual warning message will be generated.
+	 *             
+	 * @param imageFormat
+	 *            Hint for the image format of the legend; if null it the default of the implementing layer 
+	 *            will be used. This can for example depend on the WMS server if it is a WMS client layer.  
+	 *            The implementor can choose to support only certain formats, but PNG should always be supported.
+	 *            
+	 * @return URL for the legend image e.g. "http://www.myserver.org/geoserver/wms?service=WMS&layer=countries
+	 *         :population&request=GetLegendGraphic&format=image/png&width=20&height =20&transparent=true"
+	 */
+
+	String getLegendImageUrl(int width, int height, FontStyleInfo fontStyle, String imageFormat);
+	
+	/**
+	 * Get the URL by which the legend image for the concerning layer can be retrieved.
+	 * When a bounding box is specified and no style rules are active 
+	 * (e.g. the layer is invisible for the specified scale), no image will be generated in 
+	 * that case, but a textual warning message will be generated.
+	 * 
+	 * @param iconWidth
+	 *            width in pixels of the icon for a legend symbol (if 0, the default is used)
+	 * @param iconHeight
+	 *            height in pixels of the icon for a legend symbol (if 0, the default is used)
+	 * @param fontStyle 
+	 *            hint for the font style (not all implementations take this parameter into account); if
+	 *            null, the default is used.
+	 *            
+	 *            If true (default) the URL will generate a legend image even when there are no style rules active
+	 *            (e.g. the layer is invisible for the specified scale). Then the image will contain a warning message.
+	 *            If false, no image will be generated in that case, but a textual warning message will be generated.
+	 *             
+	 * @param imageFormat
+	 *            Hint for the image format of the legend; if null it the default of the implementing layer 
+	 *            will be used. This can for example depend on the WMS server if it is a WMS client layer.  
+	 *            The implementor can choose to support only certain formats, but PNG should always be supported.
+	 *            
+	 *
+	 * @param bounds
+	 *            Bounding box of the extend of interest on the layer, if null the full layer extend is of interest.
+	 *            In other words the full or static legend will be referenced by the URL. 
 	 * 
 	 * @return URL for the legend image e.g. "http://www.myserver.org/geoserver/wms?service=WMS&layer=countries
 	 *         :population&request=GetLegendGraphic&format=image/png&width=20&height =20&transparent=true"
 	 */
-	String getLegendImageUrl(int width, int height, String fontFamily, int fontSize);
+	String getLegendImageUrl(int iconWidth, int iconHeight, FontStyleInfo fontStyle, String imageFormat, Bbox bounds);
+	
 }

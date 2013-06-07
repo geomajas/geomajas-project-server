@@ -14,6 +14,7 @@ package org.geomajas.plugin.wmsclient.client.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
@@ -33,6 +34,7 @@ import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoRequest;
 import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoResponse;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureFactory;
+import org.geomajas.puregwt.client.map.layer.LegendUrlSupported;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
@@ -61,7 +63,7 @@ public class WmsServiceImpl implements WmsService {
 	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
-	private static final String LEGEND_FONT_COLOR = "0x000000";
+	
 	private static final int LEGEND_DPI = 288;
 
 	@Inject
@@ -207,31 +209,57 @@ public class WmsServiceImpl implements WmsService {
 		return url;
 	}
 
+	// ------------------------------------------------------------------------
+	// WMS GetLegendGraphicUrl methods:
+	// ------------------------------------------------------------------------
+	
 	@Override
 	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
-		return getLegendGraphicUrl(wmsConfig, null, 0);
+		return getLegendGraphicUrl(wmsConfig, null, null);
 	}
 
 	@Override
-	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, String fontFamily, int fontSize) {
+	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, FontStyleInfo fontStyle, String imageFormat) {
 		StringBuilder url = getBaseLegendGraphicUrl(wmsConfig);
 
-		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())
-				&& (null != fontFamily || fontSize > 0)) {
+		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())) {
 			url.append(WMS_LEGEND_OPTIONS_START);
-			if (null != fontFamily) {
-				url.append("fontName:");
-				url.append(fontFamily);
-				url.append(";");
+			
+			String fontFamily;
+			if (null == fontStyle || null == fontStyle.getFamily()) {
+				fontFamily = LegendUrlSupported.DEFAULT_LEGEND_FONT_FAMILY;
+			} else {
+				fontFamily = fontStyle.getFamily();
 			}
-			url.append("fontAntiAliasing:true;fontColor:");
-			url.append(LEGEND_FONT_COLOR);
+
+			url.append("fontName:");
+			url.append(fontFamily);
 			url.append(";");
-			if (fontSize > 0) {		
-				url.append("fontSize:");
-				url.append(fontSize);
-				url.append(";");
+
+			url.append("fontAntiAliasing:true;");
+			
+			String fontColor;
+			if (null == fontStyle || null == fontStyle.getColor()) {
+				fontColor = LegendUrlSupported.DEFAULT_LEGEND_FONT_COLOR;
+			} else {
+				fontColor = fontStyle.getColor().replace("#", "0x");
 			}
+			
+			url.append("fontColor:");
+			url.append(fontColor);
+			url.append(";");
+			
+			int fontSize;
+			if (null == fontStyle || fontStyle.getSize() <= 0) {
+				fontSize = LegendUrlSupported.DEFAULT_LEGEND_STYLE_LABEL_FONT_SIZE;
+			} else {
+				fontSize = fontStyle.getSize();
+			}
+					
+			url.append("fontSize:");
+			url.append(fontSize);
+			url.append(";");
+			
 			url.append("bgColor:0xFFFFFF;dpi:" + LEGEND_DPI); 
 		}
 
