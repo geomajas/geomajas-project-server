@@ -41,17 +41,11 @@
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt-example-jar</artifactId>
 		</dependency>
+				
 		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo-gwt-example-jar</artifactId>
-			<version>${project.version}</version>
-			<classifier>sources</classifier>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-caching</artifactId>
 		</dependency>
-		
-		<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-caching</artifactId>
-			</dependency>
 		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
