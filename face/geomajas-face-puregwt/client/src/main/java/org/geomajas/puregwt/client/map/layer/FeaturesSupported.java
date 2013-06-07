@@ -79,4 +79,12 @@ public interface FeaturesSupported extends Layer {
 	 * @return Returns the identifiers, not the actual features.
 	 */
 	Collection<String> getSelectedFeatureIds();
+	
+	/**
+	 * Return a collection of all selected features within this layer.
+	 * 
+	 * @return Returns the features.
+	 */
+	Collection<Feature> getSelectedFeatures();
+
 }
