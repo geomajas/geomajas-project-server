@@ -99,24 +99,17 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo</artifactId>
-			<version>${project.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>${project.version}</version>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<!-- @extract-end -->
 
