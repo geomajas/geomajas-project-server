@@ -629,6 +629,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			} else if (Geometry.LINE_STRING.equals(type) || Geometry.MULTI_LINE_STRING.equals(type)) {
 				gfxUtil.applyStyle(path, lineStyle);
 			} else {
+				gfxUtil.applyStyle(path, ringStyle);
 			}
 			container.add(path);
 			paths.put(f.getId(), path);
