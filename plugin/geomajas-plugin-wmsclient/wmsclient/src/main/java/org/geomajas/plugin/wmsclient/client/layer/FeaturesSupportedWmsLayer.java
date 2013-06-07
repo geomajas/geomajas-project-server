@@ -11,13 +11,10 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
-import java.util.Collection;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
-import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 import com.google.gwt.core.client.Callback;
@@ -40,12 +37,6 @@ import com.google.gwt.core.client.Callback;
 @Api(allMethods = true)
 public interface FeaturesSupportedWmsLayer extends WmsLayer, FeaturesSupported {
 
-	/**
-	 * Return a collection of all selected features within this layer.
-	 * 
-	 * @return Returns the features.
-	 */
-	Collection<Feature> getSelectedFeatures();
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.
