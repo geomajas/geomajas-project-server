@@ -28,9 +28,11 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt.client.util.Browser;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapEventParserFactory;
 import org.geomajas.puregwt.client.controller.NavigationController;
+import org.geomajas.puregwt.client.controller.TouchNavigationController;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectionHandler;
@@ -58,12 +60,13 @@ import org.geomajas.puregwt.client.service.CommandService;
 import org.geomajas.puregwt.client.widget.PanningWidget;
 import org.geomajas.puregwt.client.widget.ScalebarWidget;
 import org.geomajas.puregwt.client.widget.SimpleZoomWidget;
+import org.geomajas.puregwt.client.widget.TouchZoomWidget;
 import org.geomajas.puregwt.client.widget.Watermark;
 import org.geomajas.puregwt.client.widget.ZoomStepWidget;
 import org.geomajas.puregwt.client.widget.ZoomToRectangleWidget;
 import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.shape.Path;
-
+import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
@@ -71,6 +74,10 @@ import com.google.gwt.event.dom.client.HasMouseOutHandlers;
 import com.google.gwt.event.dom.client.HasMouseOverHandlers;
 import com.google.gwt.event.dom.client.HasMouseUpHandlers;
 import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
+import com.google.gwt.event.dom.client.HasTouchEndHandlers;
+import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
+import com.google.gwt.event.dom.client.HasTouchStartHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -94,7 +101,8 @@ public final class MapPresenterImpl implements MapPresenter {
 	 */
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
 			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget,
-			RequiresResize {
+			RequiresResize, HasTouchStartHandlers, HasTouchEndHandlers, HasTouchCancelHandlers, HasTouchMoveHandlers,
+			HasAllGestureHandlers {
 
 		/**
 		 * Returns the HTML container of the map. This is a normal HTML container that contains the images of rasterized
@@ -242,6 +250,8 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private FeatureService featureService;
 
+	private boolean isMobileBrowser;
+
 	@Inject
 	private MapPresenterImpl(final FeatureServiceFactory featureServiceFactory,
 			final MapEventParserFactory mapEventParserFactory, final MapRendererFactory mapRendererFactory,
@@ -262,6 +272,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Override
 	public void initialize(String applicationId, String id) {
 		mapRenderer = mapRendererFactory.create(layersModel, viewPort, configuration, display.getMapHtmlContainer());
+		isMobileBrowser = Browser.isMobile();
 
 		eventBus.addViewPortChangedHandler(mapRenderer);
 		eventBus.addMapResizedHandler(mapRenderer);
@@ -278,7 +289,13 @@ public final class MapPresenterImpl implements MapPresenter {
 		worldContainerRenderer = new WorldContainerRenderer();
 		eventBus.addViewPortChangedHandler(worldContainerRenderer);
 
-		fallbackController = new NavigationController();
+		if (isMobileBrowser) {
+			fallbackController = new TouchNavigationController();
+
+		} else {
+			fallbackController = new NavigationController();
+		}
+
 		setMapController(fallbackController);
 
 		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
@@ -303,22 +320,28 @@ public final class MapPresenterImpl implements MapPresenter {
 
 				// Adding the default map widgets:
 				if (getWidgetPane() != null) {
-					getWidgetPane().add(new Watermark(MapPresenterImpl.this));
-					getWidgetPane().add(new ScalebarWidget(MapPresenterImpl.this));
-					getWidgetPane().add(new PanningWidget(MapPresenterImpl.this));
 
-					List<ScaleInfo> zoomLevels = mapInfo.getScaleConfiguration().getZoomLevels();
-					if (zoomLevels != null && mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
-						// Zoom steps:
-						getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
-						getWidgetPane().add(new ZoomStepWidget(MapPresenterImpl.this, 60, 18));
+					if (isMobileBrowser) {
+						getWidgetPane().add(new TouchZoomWidget(MapPresenterImpl.this));
 					} else {
-						// Simple zooming:
-						getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
-						getWidgetPane().add(new SimpleZoomWidget(MapPresenterImpl.this, 60, 20));
+						getWidgetPane().add(new Watermark(MapPresenterImpl.this));
+						getWidgetPane().add(new ScalebarWidget(MapPresenterImpl.this));
+						getWidgetPane().add(new PanningWidget(MapPresenterImpl.this));
+
+						List<ScaleInfo> zoomLevels = mapInfo.getScaleConfiguration().getZoomLevels();
+						if (zoomLevels != null && mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
+							// Zoom steps:
+							getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
+							getWidgetPane().add(new ZoomStepWidget(MapPresenterImpl.this, 60, 18));
+						} else {
+							// Simple zooming:
+							getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
+							getWidgetPane().add(new SimpleZoomWidget(MapPresenterImpl.this, 60, 20));
+						}
 					}
+
 				}
-				// Fire initialization event:
+				// Fire initialization event
 				eventBus.fireEvent(new MapInitializationEvent());
 			}
 		});
@@ -422,13 +445,24 @@ public final class MapPresenterImpl implements MapPresenter {
 			mapController = fallbackController;
 		}
 		if (mapController != null) {
-			handlers.add(display.addMouseDownHandler(mapController));
-			handlers.add(display.addMouseMoveHandler(mapController));
-			handlers.add(display.addMouseOutHandler(mapController));
-			handlers.add(display.addMouseOverHandler(mapController));
-			handlers.add(display.addMouseUpHandler(mapController));
-			handlers.add(display.addMouseWheelHandler(mapController));
-			handlers.add(display.addDoubleClickHandler(mapController));
+			if (isMobileBrowser) {
+				handlers.add(display.addTouchStartHandler(mapController));
+				handlers.add(display.addTouchMoveHandler(mapController));
+				handlers.add(display.addTouchCancelHandler(mapController));
+				handlers.add(display.addGestureStartHandler(mapController));
+				handlers.add(display.addGestureChangeHandler(mapController));
+				handlers.add(display.addGestureEndHandler(mapController));
+
+			} else {
+				handlers.add(display.addMouseDownHandler(mapController));
+				handlers.add(display.addMouseMoveHandler(mapController));
+				handlers.add(display.addMouseOutHandler(mapController));
+				handlers.add(display.addMouseOverHandler(mapController));
+				handlers.add(display.addMouseUpHandler(mapController));
+				handlers.add(display.addMouseWheelHandler(mapController));
+				handlers.add(display.addDoubleClickHandler(mapController));
+			}
+
 			this.mapController = mapController;
 			mapController.onActivate(this);
 		}
@@ -443,12 +477,23 @@ public final class MapPresenterImpl implements MapPresenter {
 	public boolean addMapListener(MapController mapListener) {
 		if (mapListener != null && !listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
-			registrations.add(display.addMouseDownHandler(mapListener));
-			registrations.add(display.addMouseMoveHandler(mapListener));
-			registrations.add(display.addMouseOutHandler(mapListener));
-			registrations.add(display.addMouseOverHandler(mapListener));
-			registrations.add(display.addMouseUpHandler(mapListener));
-			registrations.add(display.addMouseWheelHandler(mapListener));
+
+			if (isMobileBrowser) {
+				registrations.add(display.addTouchStartHandler(mapListener));
+				registrations.add(display.addTouchMoveHandler(mapListener));
+				registrations.add(display.addTouchCancelHandler(mapListener));
+				registrations.add(display.addGestureStartHandler(mapListener));
+				registrations.add(display.addGestureChangeHandler(mapListener));
+				registrations.add(display.addGestureEndHandler(mapListener));
+			} else {
+				registrations.add(display.addMouseDownHandler(mapListener));
+				registrations.add(display.addMouseMoveHandler(mapListener));
+				registrations.add(display.addMouseOutHandler(mapListener));
+				registrations.add(display.addMouseOverHandler(mapListener));
+				registrations.add(display.addMouseUpHandler(mapListener));
+				registrations.add(display.addMouseWheelHandler(mapListener));
+			}
+
 			mapListener.onActivate(this);
 			listeners.put(mapListener, registrations);
 			return true;
@@ -584,7 +629,6 @@ public final class MapPresenterImpl implements MapPresenter {
 			} else if (Geometry.LINE_STRING.equals(type) || Geometry.MULTI_LINE_STRING.equals(type)) {
 				gfxUtil.applyStyle(path, lineStyle);
 			} else {
-				gfxUtil.applyStyle(path, ringStyle);
 			}
 			container.add(path);
 			paths.put(f.getId(), path);

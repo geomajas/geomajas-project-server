@@ -1,0 +1,672 @@
+Public resources found in...
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 3278 units from cache.
+Compiling...
+   10% complete (ETR: 27 seconds)
+   10% complete (ETR: 26 seconds)
+   20% complete (ETR: 23 seconds)
+   30% complete (ETR: 17 seconds)
+   40% complete (ETR: 13 seconds)
+   50% complete (ETR: 11 seconds)
+   60% complete (ETR: 9 seconds)
+   70% complete (ETR: 7 seconds)
+   80% complete (ETR: 5 seconds)
+   90% complete (ETR: 2 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 32,11 seconds
+Validating units:
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/feature/FeatureServiceStub.java'
+      [ERROR] Line 38: No source code is available for type org.geomajas.layer.VectorLayerService; did you forget to inherit a required module?
+      [ERROR] Line 41: No source code is available for type org.geomajas.service.GeoService; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.service.DtoConverterService; did you forget to inherit a required module?
+      [ERROR] Line 50: No source code is available for type org.opengis.referencing.crs.CoordinateReferenceSystem; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.geomajas.layer.feature.InternalFeature; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.opengis.filter.Filter; did you forget to inherit a required module?
+      [ERROR] Line 57: No source code is available for type org.geomajas.layer.LayerException; did you forget to inherit a required module?
+      [ERROR] Line 58: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+      [ERROR] Line 59: No source code is available for type org.geomajas.global.GeomajasException; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerEventTest.java'
+      [ERROR] Line 48: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 96: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerTest.java'
+      [ERROR] Line 44: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 71: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/service/MockCommandService.java'
+      [ERROR] Line 60: No source code is available for type org.junit.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/widget/MapWidgetTestImpl.java'
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchMoveHandlers.addTouchMoveHandler(TouchMoveHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureStartHandlers.addGestureStartHandler(GestureStartHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureChangeHandlers.addGestureChangeHandler(GestureChangeHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchEndHandlers.addTouchEndHandler(TouchEndHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchCancelHandlers.addTouchCancelHandler(TouchCancelHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureEndHandlers.addGestureEndHandler(GestureEndHandler)
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,05 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,05 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501551276_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,04 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501552910_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501663870_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501666063_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,02 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501760393_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,02 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501760476_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501930400.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501930400.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501930400_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501930912.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501930912.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501930912_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501956686.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501956686.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,02 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501956686_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,02 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '2' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501969406_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '2' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501969446_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding com.google.gwt.cell.client.ButtonCellBase.DefaultAppearance.Resources
+   Invoking generator com.google.gwt.resources.rebind.context.InlineClientBundleGenerator
+      Preparing method buttonCellBaseBackground
+         Adding image 'com.google.gwt.cell.client.ButtonCellBase.DefaultAppearance.Resources.buttonCellBaseBackground'
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding com.google.gwt.cell.client.ButtonCellBase.DefaultAppearance.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface com.google.gwt.cell.client.ButtonCellBase.DefaultAppearance.Template
+         Generating method body for iconContentLayout()
+         Generating method body for iconWrapper()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding com.google.gwt.resources.client.CommonResources.Bundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '2' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501973539_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '2' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501973579_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501973679.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501973679.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,02 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501973679_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,02 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501974463.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501974463.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370501974463_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370502073287.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370502073287.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370502073287_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370502073482.Template
+   Invoking generator com.google.gwt.safehtml.rebind.SafeHtmlTemplatesGenerator
+      Constructing interface org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370502073482.Template
+         Generating method body for html1()
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget_TouchZoomWidgetUiBinderImpl_designTime1370502073482_GenBundle
+   Adding '1' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Invoking generator com.google.gwt.uibinder.rebind.UiBinderGenerator
+      [ERROR] Class AbsolutePanel has no appropriate setTop() method: <g:AbsolutePanel left='0' styleName='gm-TouchZoomWidget' top='20'> (:63)
+[ERROR] Deferred binding failed for 'org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder'; expect subsequent failures
+Public resources found in...
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 3278 units from cache.
+Compiling...
+   60% complete (ETR: 3 seconds)
+   60% complete (ETR: 3 seconds)
+   60% complete (ETR: 3 seconds)
+   60% complete (ETR: 3 seconds)
+   60% complete (ETR: 3 seconds)
+   60% complete (ETR: 3 seconds)
+   60% complete (ETR: 3 seconds)
+   70% complete (ETR: 2 seconds)
+   80% complete (ETR: 1 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 10,04 seconds
+Validating units:
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/feature/FeatureServiceStub.java'
+      [ERROR] Line 38: No source code is available for type org.geomajas.layer.VectorLayerService; did you forget to inherit a required module?
+      [ERROR] Line 41: No source code is available for type org.geomajas.service.GeoService; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.service.DtoConverterService; did you forget to inherit a required module?
+      [ERROR] Line 50: No source code is available for type org.opengis.referencing.crs.CoordinateReferenceSystem; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.geomajas.layer.feature.InternalFeature; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.opengis.filter.Filter; did you forget to inherit a required module?
+      [ERROR] Line 57: No source code is available for type org.geomajas.layer.LayerException; did you forget to inherit a required module?
+      [ERROR] Line 58: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+      [ERROR] Line 59: No source code is available for type org.geomajas.global.GeomajasException; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerEventTest.java'
+      [ERROR] Line 48: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 96: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerTest.java'
+      [ERROR] Line 44: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 71: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/service/MockCommandService.java'
+      [ERROR] Line 60: No source code is available for type org.junit.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/widget/MapWidgetTestImpl.java'
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchMoveHandlers.addTouchMoveHandler(TouchMoveHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureStartHandlers.addGestureStartHandler(GestureStartHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureChangeHandlers.addGestureChangeHandler(GestureChangeHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchEndHandlers.addTouchEndHandler(TouchEndHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchCancelHandlers.addTouchCancelHandler(TouchCancelHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureEndHandlers.addGestureEndHandler(GestureEndHandler)
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,01 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Invoking generator com.google.gwt.uibinder.rebind.UiBinderGenerator
+      [ERROR] Class AbsolutePanel has no appropriate setTop() method: <g:AbsolutePanel left='0' styleName='gm-TouchZoomWidget' top='20'> (:63)
+[ERROR] Deferred binding failed for 'org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder'; expect subsequent failures
+Public resources found in...
+Translatable source found in...
+Found 3278 cached/archived units.  Used 3278 / 3278 units from cache.
+Compiling...
+   Compilation completed in 0,00 seconds
+Validating units:
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/feature/FeatureServiceStub.java'
+      [ERROR] Line 38: No source code is available for type org.geomajas.layer.VectorLayerService; did you forget to inherit a required module?
+      [ERROR] Line 41: No source code is available for type org.geomajas.service.GeoService; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.service.DtoConverterService; did you forget to inherit a required module?
+      [ERROR] Line 50: No source code is available for type org.opengis.referencing.crs.CoordinateReferenceSystem; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.geomajas.layer.feature.InternalFeature; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.opengis.filter.Filter; did you forget to inherit a required module?
+      [ERROR] Line 57: No source code is available for type org.geomajas.layer.LayerException; did you forget to inherit a required module?
+      [ERROR] Line 58: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+      [ERROR] Line 59: No source code is available for type org.geomajas.global.GeomajasException; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerEventTest.java'
+      [ERROR] Line 48: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 96: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerTest.java'
+      [ERROR] Line 44: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 71: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/service/MockCommandService.java'
+      [ERROR] Line 60: No source code is available for type org.junit.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/widget/MapWidgetTestImpl.java'
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchMoveHandlers.addTouchMoveHandler(TouchMoveHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureStartHandlers.addGestureStartHandler(GestureStartHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureChangeHandlers.addGestureChangeHandler(GestureChangeHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchEndHandlers.addTouchEndHandler(TouchEndHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchCancelHandlers.addTouchCancelHandler(TouchCancelHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureEndHandlers.addGestureEndHandler(GestureEndHandler)
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Invoking generator com.google.gwt.uibinder.rebind.UiBinderGenerator
+      [ERROR] Class AbsolutePanel has no appropriate setTop() method: <g:AbsolutePanel left='0' styleName='gm-TouchZoomWidget' top='20'> (:63)
+[ERROR] Deferred binding failed for 'org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder'; expect subsequent failures
+Public resources found in...
+Translatable source found in...
+Found 3278 cached/archived units.  Used 3278 / 3278 units from cache.
+Compiling...
+   Compilation completed in 0,00 seconds
+Validating units:
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/feature/FeatureServiceStub.java'
+      [ERROR] Line 38: No source code is available for type org.geomajas.layer.VectorLayerService; did you forget to inherit a required module?
+      [ERROR] Line 41: No source code is available for type org.geomajas.service.GeoService; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.service.DtoConverterService; did you forget to inherit a required module?
+      [ERROR] Line 50: No source code is available for type org.opengis.referencing.crs.CoordinateReferenceSystem; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.geomajas.layer.feature.InternalFeature; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.opengis.filter.Filter; did you forget to inherit a required module?
+      [ERROR] Line 57: No source code is available for type org.geomajas.layer.LayerException; did you forget to inherit a required module?
+      [ERROR] Line 58: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+      [ERROR] Line 59: No source code is available for type org.geomajas.global.GeomajasException; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerEventTest.java'
+      [ERROR] Line 48: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 96: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerTest.java'
+      [ERROR] Line 44: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 71: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/service/MockCommandService.java'
+      [ERROR] Line 60: No source code is available for type org.junit.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/widget/MapWidgetTestImpl.java'
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchMoveHandlers.addTouchMoveHandler(TouchMoveHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureStartHandlers.addGestureStartHandler(GestureStartHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureChangeHandlers.addGestureChangeHandler(GestureChangeHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchEndHandlers.addTouchEndHandler(TouchEndHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchCancelHandlers.addTouchCancelHandler(TouchCancelHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureEndHandlers.addGestureEndHandler(GestureEndHandler)
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Invoking generator com.google.gwt.uibinder.rebind.UiBinderGenerator
+      [ERROR] Class AbsolutePanel has no appropriate setTop() method: <g:AbsolutePanel left='0' styleName='gm-TouchZoomWidget' top='20'> (:63)
+[ERROR] Deferred binding failed for 'org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder'; expect subsequent failures
+Public resources found in...
+Translatable source found in...
+Found 3278 cached/archived units.  Used 3278 / 3278 units from cache.
+Compiling...
+   Compilation completed in 0,00 seconds
+Validating units:
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/feature/FeatureServiceStub.java'
+      [ERROR] Line 38: No source code is available for type org.geomajas.layer.VectorLayerService; did you forget to inherit a required module?
+      [ERROR] Line 41: No source code is available for type org.geomajas.service.GeoService; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.service.DtoConverterService; did you forget to inherit a required module?
+      [ERROR] Line 50: No source code is available for type org.opengis.referencing.crs.CoordinateReferenceSystem; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.geomajas.layer.feature.InternalFeature; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.opengis.filter.Filter; did you forget to inherit a required module?
+      [ERROR] Line 57: No source code is available for type org.geomajas.layer.LayerException; did you forget to inherit a required module?
+      [ERROR] Line 58: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+      [ERROR] Line 59: No source code is available for type org.geomajas.global.GeomajasException; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerEventTest.java'
+      [ERROR] Line 48: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 96: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerTest.java'
+      [ERROR] Line 44: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 71: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/service/MockCommandService.java'
+      [ERROR] Line 60: No source code is available for type org.junit.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/widget/MapWidgetTestImpl.java'
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchMoveHandlers.addTouchMoveHandler(TouchMoveHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureStartHandlers.addGestureStartHandler(GestureStartHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureChangeHandlers.addGestureChangeHandler(GestureChangeHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchEndHandlers.addTouchEndHandler(TouchEndHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchCancelHandlers.addTouchCancelHandler(TouchCancelHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureEndHandlers.addGestureEndHandler(GestureEndHandler)
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Invoking generator com.google.gwt.uibinder.rebind.UiBinderGenerator
+      [ERROR] Class AbsolutePanel has no appropriate setTop() method: <g:AbsolutePanel left='0' styleName='gm-TouchZoomWidget' top='20'> (:63)
+[ERROR] Deferred binding failed for 'org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder'; expect subsequent failures
+Public resources found in...
+Translatable source found in...
+Found 3278 cached/archived units.  Used 3278 / 3278 units from cache.
+Compiling...
+   Compilation completed in 0,00 seconds
+Validating units:
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/feature/FeatureServiceStub.java'
+      [ERROR] Line 38: No source code is available for type org.geomajas.layer.VectorLayerService; did you forget to inherit a required module?
+      [ERROR] Line 41: No source code is available for type org.geomajas.service.GeoService; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.service.DtoConverterService; did you forget to inherit a required module?
+      [ERROR] Line 50: No source code is available for type org.opengis.referencing.crs.CoordinateReferenceSystem; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.geomajas.layer.feature.InternalFeature; did you forget to inherit a required module?
+      [ERROR] Line 51: No source code is available for type org.opengis.filter.Filter; did you forget to inherit a required module?
+      [ERROR] Line 57: No source code is available for type org.geomajas.layer.LayerException; did you forget to inherit a required module?
+      [ERROR] Line 58: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+      [ERROR] Line 59: No source code is available for type org.geomajas.global.GeomajasException; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerEventTest.java'
+      [ERROR] Line 48: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 48: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 96: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/map/layer/VectorLayerTest.java'
+      [ERROR] Line 44: No source code is available for type com.google.inject.Injector; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type com.google.inject.Guice; did you forget to inherit a required module?
+      [ERROR] Line 44: No source code is available for type org.geomajas.puregwt.client.GeomajasTestModule; did you forget to inherit a required module?
+      [ERROR] Line 71: No source code is available for type junit.framework.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/service/MockCommandService.java'
+      [ERROR] Line 60: No source code is available for type org.junit.Assert; did you forget to inherit a required module?
+   [ERROR] Errors in 'file:/C:/workspace/trunk/face/geomajas-face-puregwt/client-impl/src/test/java/org/geomajas/puregwt/client/widget/MapWidgetTestImpl.java'
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchMoveHandlers.addTouchMoveHandler(TouchMoveHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureStartHandlers.addGestureStartHandler(GestureStartHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureChangeHandlers.addGestureChangeHandler(GestureChangeHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchEndHandlers.addTouchEndHandler(TouchEndHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasTouchCancelHandlers.addTouchCancelHandler(TouchCancelHandler)
+      [ERROR] Line 45: The type MapWidgetTestImpl must implement the inherited abstract method HasGestureEndHandlers.addGestureEndHandler(GestureEndHandler)
+Removing invalidated units
+Finding entry point classes
+Rebinding com.google.gwt.i18n.client.impl.LocaleInfoImpl
+   Invoking generator com.google.gwt.i18n.rebind.LocaleInfoGenerator
+      Processing interface com.google.gwt.i18n.client.constants.NumberConstantsImpl
+         Generating method body for notANumber()
+         Generating method body for currencyPattern()
+         Generating method body for decimalPattern()
+         Generating method body for decimalSeparator()
+         Generating method body for defCurrencyCode()
+         Generating method body for exponentialSymbol()
+         Generating method body for globalCurrencyPattern()
+         Generating method body for groupingSeparator()
+         Generating method body for infinity()
+         Generating method body for minusSign()
+         Generating method body for monetaryGroupingSeparator()
+         Generating method body for monetarySeparator()
+         Generating method body for percent()
+         Generating method body for percentPattern()
+         Generating method body for perMill()
+         Generating method body for plusSign()
+         Generating method body for scientificPattern()
+         Generating method body for simpleCurrencyPattern()
+         Generating method body for zeroDigit()
+   Adding '3' new generated units
+      Compiling...
+         Compilation completed in 0,00 seconds
+      Removing invalidated units
+Rebinding org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder
+   Invoking generator com.google.gwt.uibinder.rebind.UiBinderGenerator
+      [ERROR] Class AbsolutePanel has no appropriate setTop() method: <g:AbsolutePanel left='0' styleName='gm-TouchZoomWidget' top='20'> (:63)
+[ERROR] Deferred binding failed for 'org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomWidgetUiBinder'; expect subsequent failures

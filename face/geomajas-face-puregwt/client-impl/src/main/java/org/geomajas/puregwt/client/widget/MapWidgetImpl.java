@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.CanvasContainerImpl;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
@@ -27,8 +28,16 @@ import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.Transparent;
 
 import com.google.gwt.animation.client.Animation;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.GestureChangeEvent;
+import com.google.gwt.event.dom.client.GestureChangeHandler;
+import com.google.gwt.event.dom.client.GestureEndEvent;
+import com.google.gwt.event.dom.client.GestureEndHandler;
+import com.google.gwt.event.dom.client.GestureStartEvent;
+import com.google.gwt.event.dom.client.GestureStartHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -41,6 +50,14 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchCancelHandler;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEndHandler;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchMoveHandler;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -321,6 +338,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
 		return addDomHandler(handler, MouseOverEvent.getType());
+		
 	}
 
 	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
@@ -334,7 +352,49 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
 		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
+	
+	// ------------------------------------------------------------------------
+	// Touch event catch methods:
+	// ------------------------------------------------------------------------
+	
+	@Override
+	public HandlerRegistration addTouchStartHandler(TouchStartHandler handler) {
+		return addDomHandler(handler, TouchStartEvent.getType());
+	}
 
+	@Override
+	public HandlerRegistration addTouchEndHandler(TouchEndHandler handler) {
+		return addDomHandler(handler, TouchEndEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addTouchCancelHandler(TouchCancelHandler handler) {
+		return addDomHandler(handler, TouchCancelEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addTouchMoveHandler(TouchMoveHandler handler) {
+		return addDomHandler(handler, TouchMoveEvent.getType());
+	}
+	
+	// ------------------------------------------------------------------------
+	// Gesture event catch methods:
+	// ------------------------------------------------------------------------
+	@Override
+	public HandlerRegistration addGestureStartHandler(GestureStartHandler handler) {
+		return addDomHandler(handler, GestureStartEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addGestureChangeHandler(GestureChangeHandler handler) {
+		return addDomHandler(handler, GestureChangeEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addGestureEndHandler(GestureEndHandler handler) {
+		return addDomHandler(handler, GestureEndEvent.getType());
+	}
+	
 	public void scheduleScale(double xx, double yy, int animationMillis) {
 		for (Transformable t : getWorldTransformables()) {
 			if (t instanceof Transparent) {
