@@ -14,7 +14,6 @@ package org.geomajas.puregwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.gwt.client.util.Log;
 import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.CanvasContainerImpl;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
@@ -28,8 +27,6 @@ import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.Transparent;
 
 import com.google.gwt.animation.client.Animation;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.GestureChangeEvent;

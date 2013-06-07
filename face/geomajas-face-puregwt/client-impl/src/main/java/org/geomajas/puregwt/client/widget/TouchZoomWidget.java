@@ -38,14 +38,21 @@ public class TouchZoomWidget extends AbstractMapWidget {
 
 	private static TouchZoomWidgetUiBinder uiBinder = GWT.create(TouchZoomWidgetUiBinder.class);
 
+	/**
+	 * ...
+	 * @author Dosi Bingov
+	 *
+	 */
 	interface TouchZoomWidgetUiBinder extends UiBinder<Widget, TouchZoomWidget> {
 	}
 
-	// touched and normal css style of touch widget
+	/**
+	 * touched and normal css style of touch widget.
+	 * @author Dosi Bingov
+	 *
+	 */
 	interface TouchZoomStyle extends CssResource {
-
 		String normal();
-
 		String touched();
 	}
 
