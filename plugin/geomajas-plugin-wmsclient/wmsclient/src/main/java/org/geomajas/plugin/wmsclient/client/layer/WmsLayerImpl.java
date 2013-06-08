@@ -168,10 +168,17 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		
 		return getLegendImageUrl(0, 0, null, null);
 	}
+	
+	@Override
+	public String getLegendImageUrl(int iconWidth, int iconHeight, FontStyleInfo fontStyle, String imageFormat) {
+		
+		return getLegendImageUrl(iconWidth, iconHeight, fontStyle, imageFormat, true);
+	}
+
 
 	@Override
-	// Note that the bounds cannot be specified here
-	public String getLegendImageUrl(int iconWidth, int iconHeight, FontStyleInfo fontStyle, String imageFormat) {
+	public String getLegendImageUrl(int iconWidth, int iconHeight, FontStyleInfo fontStyle, String imageFormat,
+			boolean imageForWarning) {
 		int widthOrig = wmsConfig.getLegendWidth();
 		int heightOrig = wmsConfig.getLegendHeight();
 		if (iconWidth > 0) {
@@ -180,6 +187,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		if (iconHeight > 0) {
 			getConfig().setLegendHeight(iconHeight);  //TODO: better to clone getConfig() result
 		}
+		// Get the URL for retrieving the static legend
 		String url = wmsService.getLegendGraphicUrl(getConfig(), fontStyle, imageFormat);
 
 		getConfig().setLegendWidth(widthOrig);
@@ -190,10 +198,13 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Override
 	public String getLegendImageUrl(int iconWidth, int iconHeight,
-			FontStyleInfo fontStyle, String imageFormat, Bbox bounds) {
+			FontStyleInfo fontStyle, String imageFormat, boolean imageForWarning, Bbox bounds) {
 		// bounds are ignored here, override this method to implement dynamic legend !
-		return getLegendImageUrl(iconWidth, iconHeight, fontStyle, imageFormat);
+		// Note imageForWarning is always true here!
+		return getLegendImageUrl(iconWidth, iconHeight, fontStyle, imageFormat, imageForWarning);
 	}
+	
+	
 	
 	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
 		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
@@ -201,7 +212,6 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 						* worldBounds.getMaxY())
 						- Math.round(scale * worldBounds.getY()));
 	}
-
 
 
 }
