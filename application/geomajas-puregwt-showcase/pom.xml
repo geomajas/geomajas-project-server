@@ -243,7 +243,7 @@
 						<deployables>
 							<deployable>
 								<groupId>org.geomajas</groupId>
-								<artifactId>geomajas-puregwt-example</artifactId>
+								<artifactId>geomajas-puregwt-showcase</artifactId>
 								<type>war</type>
 								<properties>
 									<context>showcase-pure-trunk</context>
