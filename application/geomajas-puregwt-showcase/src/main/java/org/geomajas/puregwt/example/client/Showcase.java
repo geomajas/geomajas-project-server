@@ -22,6 +22,7 @@ import org.geomajas.puregwt.example.client.sample.feature.FeatureSelectionPanel;
 import org.geomajas.puregwt.example.client.sample.general.MapFillPanel;
 import org.geomajas.puregwt.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.puregwt.example.client.sample.general.ResizeMapPanel;
+import org.geomajas.puregwt.example.client.sample.general.ServerExceptionPanel;
 import org.geomajas.puregwt.example.client.sample.general.ViewPortEventPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerAddRemovePanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerOpacityPanel;
@@ -181,6 +182,28 @@ public class Showcase implements EntryPoint {
 
 			public String getDescription() {
 				return MSG_SAMPLE.generalVpEventDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new ServerExceptionPanel();
+			}
+
+			public String getTitle() {
+				return MSG_SAMPLE.generalServerExceptionTitle();
+			}
+
+			public String getShortDescription() {
+				return MSG_SAMPLE.generalServerExceptionShort();
+			}
+
+			public String getDescription() {
+				return MSG_SAMPLE.generalServerExceptionDescription();
 			}
 
 			public String getCategory() {

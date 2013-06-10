@@ -47,6 +47,12 @@ public interface SampleMessages extends Messages {
 	String generalVpEventShort();
 
 	String generalVpEventDescription();
+	
+	String generalServerExceptionTitle();
+	
+	String generalServerExceptionShort();
+	
+	String generalServerExceptionDescription();
 
 	// ------------------------------------------------------------------------
 	// Category: Layers
