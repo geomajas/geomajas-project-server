@@ -15,9 +15,12 @@ import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
+import org.geomajas.puregwt.client.map.layer.LegendConfig;
 
 /**
- * General WMS configuration object. The values herein will be translated into parameters for the WMS service.
+ * General WMS configuration object. The values herein will be translated into parameters for the WMS service. Note that
+ * this configuration object has fields that are not directly supported through WMS. Some WMS vendors have added such
+ * extra options though, so be sure to specify the {@link WmsServiceVendor} if possible.
  * 
  * @author Pieter De Graef
  * @author An Buyle (WmsServiceVendor)
@@ -42,9 +45,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private WmsVersion version = WmsVersion.V1_3_0;
 
-	private int legendWidth = 20;
-
-	private int legendHeight = 20;
+	private LegendConfig legendConfig = new LegendConfig();
 
 	private WmsServiceVendor wmsServiceVendor = WmsServiceVendor.UNSPECIFIED;
 
@@ -62,10 +63,10 @@ public class WmsLayerConfiguration implements Serializable {
 	}
 
 	/**
-	 * Set the WMS service type to used. This may trigger vendor specific options to be used.
-	 * E.g. If the WMS service is provided by a Geoserver, there is the possibility to configure
-	 * the legend_options when performing a GetLegendGraphic request.
-	 *
+	 * Set the WMS service type to used. This may trigger vendor specific options to be used. E.g. If the WMS service is
+	 * provided by a Geoserver, there is the possibility to configure the legend_options when performing a
+	 * GetLegendGraphic request.
+	 * 
 	 * @param wmsServiceVendor
 	 */
 	public void setWmsServiceVendor(WmsServiceVendor wmsServiceVendor) {
@@ -208,40 +209,23 @@ public class WmsLayerConfiguration implements Serializable {
 	}
 
 	/**
-	 * Get the image width for the style icons in a GetLegendGraphic request. Default value is '20' pixels.
+	 * Get the default legend configuration for this layer. By default WMS does not support any of the options herein,
+	 * but some WMS vendors have added extra options to allow for these.
 	 * 
-	 * @return The image width for style icons.
+	 * @return The default legend creation configuration for this layer.
 	 */
-	public int getLegendWidth() {
-		return legendWidth;
+	public LegendConfig getLegendConfig() {
+		return legendConfig;
 	}
 
 	/**
-	 * Set the image width for the style icons in a GetLegendGraphic request. Default value is '20' pixels.
+	 * Set the default legend configuration for this layer. By default WMS does not support any of the options herein,
+	 * but some WMS vendors have added extra options to allow for these.
 	 * 
-	 * @param legendWidth
-	 *            The image width for style icons.
+	 * @param legendConfig
+	 *            The default legend creation configuration for this layer.
 	 */
-	public void setLegendWidth(int legendWidth) {
-		this.legendWidth = legendWidth;
-	}
-
-	/**
-	 * Get the image height for the style icons in a GetLegendGraphic request. Default value is '20' pixels.
-	 * 
-	 * @return The image height for style icons.
-	 */
-	public int getLegendHeight() {
-		return legendHeight;
-	}
-
-	/**
-	 * Set the image width for the style icons in a GetLegendGraphic request. Default value is '20' pixels.
-	 * 
-	 * @param legendHeight
-	 *            The image height for style icons.
-	 */
-	public void setLegendHeight(int legendHeight) {
-		this.legendHeight = legendHeight;
+	public void setLegendConfig(LegendConfig legendConfig) {
+		this.legendConfig = legendConfig;
 	}
 }

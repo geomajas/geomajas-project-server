@@ -114,8 +114,8 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getLegendUrl, "layer", wmsConfig.getLayers()));
 		assertTrue(hasParameter(getLegendUrl, "request", "GetLegendGraphic"));
 		assertTrue(hasParameter(getLegendUrl, "format", wmsConfig.getFormat()));
-		assertTrue(hasParameter(getLegendUrl, "width", wmsConfig.getLegendWidth() + ""));
-		assertTrue(hasParameter(getLegendUrl, "height", wmsConfig.getLegendHeight() + ""));
+		assertTrue(hasParameter(getLegendUrl, "width", wmsConfig.getLegendConfig().getIconWidth() + ""));
+		assertTrue(hasParameter(getLegendUrl, "height", wmsConfig.getLegendConfig().getIconHeight() + ""));
 	}
 
 	@Test

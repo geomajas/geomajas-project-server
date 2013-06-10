@@ -14,7 +14,6 @@ package org.geomajas.plugin.wmsclient.client.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
@@ -34,7 +33,7 @@ import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoRequest;
 import org.geomajas.plugin.wmsclient.server.command.dto.GetFeatureInfoResponse;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureFactory;
-import org.geomajas.puregwt.client.map.layer.LegendUrlSupported;
+import org.geomajas.puregwt.client.map.layer.LegendConfig;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
@@ -63,7 +62,7 @@ public class WmsServiceImpl implements WmsService {
 	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
-	
+
 	private static final int LEGEND_DPI = 288;
 
 	@Inject
@@ -174,7 +173,8 @@ public class WmsServiceImpl implements WmsService {
 	// WMS GetLegendGraphic methods:
 	// ------------------------------------------------------------------------
 
-	private StringBuilder getBaseLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
+	@Override
+	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, LegendConfig legendConfig) {
 		StringBuilder url = getBaseUrlBuilder(wmsConfig);
 
 		// Parameter: service
@@ -193,77 +193,55 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&request=GetLegendGraphic");
 
 		// Parameter: format
-		url.append("&format=image/png");
+		url.append("&format=");
+		String format = legendConfig.getImageFormat();
+		if (format == null) {
+			url.append("image/png");
+		} else if (!format.startsWith("image/")) {
+			url.append("image/");
+			url.append(format.toLowerCase());
+		} else {
+			url.append(format.toLowerCase());
+		}
 
 		// Parameter: width
 		url.append("&width=");
-		url.append(Integer.toString(wmsConfig.getLegendWidth()));
+		url.append(legendConfig.getIconWidth());
 
 		// Parameter: height
 		url.append("&height=");
-		url.append(Integer.toString(wmsConfig.getLegendHeight()));
+		url.append(legendConfig.getIconHeight());
 
 		// Parameter: transparent
 		url.append("&transparent=true");
 
-		return url;
-	}
-
-	// ------------------------------------------------------------------------
-	// WMS GetLegendGraphicUrl methods:
-	// ------------------------------------------------------------------------
-	
-	@Override
-	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
-		return getLegendGraphicUrl(wmsConfig, null, null);
-	}
-
-	@Override
-	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, FontStyleInfo fontStyle, String imageFormat) {
-		StringBuilder url = getBaseLegendGraphicUrl(wmsConfig);
-
+		// Check for specific vendor options:
 		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())) {
 			url.append(WMS_LEGEND_OPTIONS_START);
-			
-			String fontFamily;
-			if (null == fontStyle || null == fontStyle.getFamily()) {
-				fontFamily = LegendUrlSupported.DEFAULT_LEGEND_FONT_FAMILY;
-			} else {
-				fontFamily = fontStyle.getFamily();
-			}
 
 			url.append("fontName:");
-			url.append(fontFamily);
+			url.append(legendConfig.getFontStyle().getFamily());
 			url.append(";");
 
 			url.append("fontAntiAliasing:true;");
-			
-			String fontColor;
-			if (null == fontStyle || null == fontStyle.getColor()) {
-				fontColor = LegendUrlSupported.DEFAULT_LEGEND_FONT_COLOR;
-			} else {
-				fontColor = fontStyle.getColor().replace("#", "0x");
-			}
-			
+
 			url.append("fontColor:");
-			url.append(fontColor);
+			url.append(legendConfig.getFontStyle().getColor());
 			url.append(";");
-			
-			int fontSize;
-			if (null == fontStyle || fontStyle.getSize() <= 0) {
-				fontSize = LegendUrlSupported.DEFAULT_LEGEND_STYLE_LABEL_FONT_SIZE;
-			} else {
-				fontSize = fontStyle.getSize();
-			}
-					
+
 			url.append("fontSize:");
-			url.append(fontSize);
+			url.append(legendConfig.getFontStyle().getSize());
 			url.append(";");
-			
-			url.append("bgColor:0xFFFFFF;dpi:" + LEGEND_DPI); 
+
+			url.append("bgColor:0xFFFFFF;dpi:" + LEGEND_DPI);
 		}
 
 		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);
+	}
+
+	@Override
+	public String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig) {
+		return getLegendGraphicUrl(wmsConfig, wmsConfig.getLegendConfig());
 	}
 
 	// ------------------------------------------------------------------------
@@ -451,8 +429,8 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) 
-				|| "WGS:84".equalsIgnoreCase(crs))) {
+		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
+				"WGS:84".equalsIgnoreCase(crs))) {
 			return true;
 		}
 		return false;

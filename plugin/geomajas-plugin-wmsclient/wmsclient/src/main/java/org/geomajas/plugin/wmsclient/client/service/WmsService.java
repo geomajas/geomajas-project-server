@@ -12,13 +12,13 @@
 package org.geomajas.plugin.wmsclient.client.service;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.wmsclient.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
+import org.geomajas.puregwt.client.map.layer.LegendConfig;
 
 import com.google.gwt.core.client.Callback;
 
@@ -39,7 +39,7 @@ public interface WmsService {
 	 */
 	public enum GetFeatureInfoFormat {
 		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html"), TEXT("text/plain"),
-			JSON("application/json");
+				JSON("application/json");
 
 		private String format;
 
@@ -193,9 +193,9 @@ public interface WmsService {
 	// ------------------------------------------------------------------------
 	// WMS GetLegendGraphic methods:
 	// ------------------------------------------------------------------------
+
 	/**
-	 * Get the URL that points to the legend graphic of a WMS layer.
-	 * (Usually through a WMS GetLegendGraphic request)
+	 * Get the URL that points to the legend graphic of a WMS layer. (Usually through a WMS GetLegendGraphic request)
 	 * 
 	 * @param wmsConfig
 	 *            The configuration object that points to some WMS layer.
@@ -204,23 +204,21 @@ public interface WmsService {
 	 */
 
 	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig);
-	
+
 	/**
-	 * Get the URL that points to the legend graphic of a WMS layer.
-	 * (usually through a WMS GetLegendGraphic request)
+	 * Get the URL that points to the legend graphic of a WMS layer. (usually through a WMS GetLegendGraphic request)
 	 * 
 	 * @param wmsConfig
 	 *            The configuration object that points to some WMS layer.
-	 ** @param fontStyle
-	 *            The font used in the legend image creation. Some WMS services may not support this and ignore
-	 *            the specified style. 
-	 * @param imageFormat 
-	 * 				The format of the legend image, e.g. "png". If null, the service can choose the format.
+	 ** @param legendConfig
+	 *            Specific legend configuration that overrides the default legend configuration from within the
+	 *            wmsConfig object. Note that by default WMS does not support these options, although some vendors have
+	 *            added extra options to allows for this configuration (such as GeoServer, see
+	 *            {@link org.geomajas.plugin.wmsclient.client.layer.config.WmsServiceVendor}).
 	 * 
 	 * @return Returns the URL that points to the legend image.
 	 */
-	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, FontStyleInfo fontStyle, String imageFormat);
-
+	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, LegendConfig legendConfig);
 
 	// ------------------------------------------------------------------------
 	// URL transformation options (for proxy):

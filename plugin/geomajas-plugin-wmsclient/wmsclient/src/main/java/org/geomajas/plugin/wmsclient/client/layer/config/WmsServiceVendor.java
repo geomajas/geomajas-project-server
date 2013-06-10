@@ -18,6 +18,7 @@ package org.geomajas.plugin.wmsclient.client.layer.config;
  * @author An Buyle
  */
 public enum WmsServiceVendor {
+
 	/** Wms service provided by GeoServer. */
 	GEOSERVER_WMS("geoserver"),
 
