@@ -27,21 +27,19 @@ import org.geomajas.puregwt.client.map.layer.OpacitySupported;
  * @author Jan De Moerloose
  */
 public class WmsLayerBuilder implements PrintableLayerBuilder {
-	private MapPresenter mapPresenter;
-			
+
 	@Override
 	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
 		WmsLayer wmsLayer = (WmsLayer) layer;
-		this.mapPresenter = mapPresenter ;
-		
-		// fromDto() 
+
+		// fromDto()
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
 		info.setTiles(wmsLayer.getTiles(scale, worldBounds));
 		info.setTileHeight(wmsLayer.getTileConfig().getTileHeight());
 		info.setTileWidth(wmsLayer.getTileConfig().getTileWidth());
 		// the actual scale may be different !
 		info.setScale(mapPresenter.getViewPort().getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST));
-		
+
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
 		rasterInfo.setShowing(wmsLayer.isShowing());
@@ -50,7 +48,7 @@ public class WmsLayerBuilder implements PrintableLayerBuilder {
 		} else {
 			rasterInfo.setCssStyle("1");
 		}
-		
+
 		info.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterInfo);
 		return info;
 	}
