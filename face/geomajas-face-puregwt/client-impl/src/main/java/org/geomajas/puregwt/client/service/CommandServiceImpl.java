@@ -10,40 +10,28 @@
  */
 package org.geomajas.puregwt.client.service;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.CommandExceptionCallback;
-import org.geomajas.gwt.client.command.CommunicationExceptionCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.TokenRequestHandler;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.gwt.client.util.Log;
-import org.geomajas.puregwt.client.i18n.GlobalMessages;
+import org.geomajas.puregwt.client.service.exception.ExceptionCallbackImpl;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DialogBox.Caption;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 
 /**
  * Default implementation of {@link CommandService}.
  * 
  * @author Jan De Moerloose
  * @author Emiel Ackermann
+ * @author Jan Venstermans
  */
 public class CommandServiceImpl implements CommandService {
 	
-	private GlobalMessages messages = GWT.create(GlobalMessages.class);
-
 	/** No-arguments constructor. */
 	public CommandServiceImpl() {
-		CommandExceptionCallbackImpl callback = new CommandExceptionCallbackImpl();
+		ExceptionCallbackImpl callback = new ExceptionCallbackImpl();
 		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(callback);
 		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(callback);
 	}
@@ -76,131 +64,5 @@ public class CommandServiceImpl implements CommandService {
 	@Override
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
 		GwtCommandDispatcher.getInstance().setTokenRequestHandler(tokenRequestHandler);		
-	}
-	
-	/**
-	 * Simple callback implementation that writes all exceptions to {@link Log}.
-	 * 
-	 * @author Emiel Ackermann
-	 */
-	public class CommandExceptionCallbackImpl implements
-			CommandExceptionCallback, CommunicationExceptionCallback {
-
-		@Override
-		public void onCommandException(CommandResponse response) {
-			String msg = null;
-			String stack = null;
-			boolean first = true;
-			for (ExceptionDto error : response.getExceptions()) {
-				if (first) {
-					msg = messages.commandError() + ":\n" + error.getMessage();
-					first = false;
-				}
-				stack = getDetails(error);
-			}
-			showDialog(msg, stack);
-		}
-
-		@Override
-		public void onCommunicationException(Throwable error) {
-			if (null != error) {
-				String msg = messages.commandCommunicationError() + ":\n" + error.getMessage();
-				Log.logWarn(msg, error);
-				
-				String stack = getDetails(error);
-				
-				showDialog(msg, stack);
-			}
-		}
-		
-		/**
-		 * Build details message for an exception.
-		 *
-		 * @param error error to build message for
-		 * @return string with details message
-		 */
-		private String getDetails(ExceptionDto error) {
-			if (null == error) {
-				return "";
-			}
-			StringBuilder content = new StringBuilder();
-			content.append(error.getClassName());
-			if (error.getExceptionCode() != 0) {
-				content.append(" (");
-				content.append(error.getExceptionCode());
-				content.append(")");
-			}
-			processStackTrace(error.getStackTrace(), content);
-			content.append(getDetails(error.getCause()));
-			return content.toString();
-		}
-		
-		/**
-		 * Build details message for an exception.
-		 *
-		 * @param error error to build message for
-		 * @return string with details message
-		 */
-		private String getDetails(Throwable error) {
-			if (null == error) {
-				return "";
-			}
-			StringBuilder content = new StringBuilder();
-			content.append(error.getMessage());
-			processStackTrace(error.getStackTrace(), content);
-			content.append(getDetails(error.getCause()));
-			return content.toString();
-		}
-
-		private void processStackTrace(StackTraceElement[] stackTrace, StringBuilder content) {
-			for (StackTraceElement el : stackTrace) {
-				content.append("  ");
-				content.append(el.toString());
-				content.append("\n");
-			}
-		}
-
-		private void showDialog(String msg, String stack) {
-			DialogCaption text = new DialogCaption(msg);
-			text.setStyleName("gwt-DialogBox", true);
-			text.setStyleName("Caption", true);
-			text.setHeight("25");
-			
-			ScrollPanel details = new ScrollPanel(new Label(stack));
-			details.setHeight("450");
-			
-			DialogBox warning = new DialogBox(true, true, text);
-			warning.center();
-			warning.setHeight("500");
-			warning.setWidth("700");
-			warning.add(details);
-			warning.show();
-		}
-
-		/**
-		 * Caption of an error dialog.
-		 * 
-		 * @author Emiel Ackermann
-		 */
-		public class DialogCaption extends Label implements Caption {
-
-			public DialogCaption(String msg) {
-				super(msg);
-			}
-
-			@Override
-			public String getHTML() {
-				return null;
-			}
-
-			@Override
-			public void setHTML(String html) {
-			}
-
-			@Override
-			public void setHTML(SafeHtml html) {
-			}
-			
-		}
 	}
 }

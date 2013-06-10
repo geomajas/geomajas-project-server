@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:x="urn:import:org.geomajas.puregwt.client.service.exception">
+
+	<ui:style>
+		.buttons {
+			text-align: center;
+			width: 300px;
+		}
+		
+		.stackPanel {
+			width: 300px;
+			max-height: 300px;
+			overflow: auto;
+			background: #DDD;
+			margin: 5px;
+		}
+	</ui:style>
+
+	<x:ExceptionDialogBox>
+
+		<g:HTMLPanel width="300">
+			<g:VerticalPanel>
+				<g:Label ui:field="messageLabel" styleName="puregwt-exceptionbox-messageLabel"></g:Label>
+				<g:HTMLPanel styleName="{style.buttons}">
+					<g:Button ui:field='detailsButton'>Show details</g:Button>
+				</g:HTMLPanel>
+
+				<g:HTML ui:field="stackPanel" styleName="{style.stackPanel}"></g:HTML>
+			</g:VerticalPanel>
+		</g:HTMLPanel>
+
+	</x:ExceptionDialogBox>
+
+</ui:UiBinder>  

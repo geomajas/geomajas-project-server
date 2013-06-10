@@ -202,3 +202,29 @@
 	font-weight: normal;
 	white-space: nowrap;
 }
+
+/*===========================================================================*/
+/*====                         Exception Box                             ====*/
+/*===========================================================================*/
+
+.puregwt-exceptionbox-messageLabel {
+	padding-left: 50 px;
+}
+
+/*close icon*/
+.puregwt-exceptionbox-closeIcon,
+.puregwt-exceptionbox-closeIcon:hover {
+	cursor: pointer;
+	cursor: hand;
+	margin: 5px;
+	border: 0px;
+	width: 16px;
+	height: 16px;
+	background: url(images/close.png) center center;
+	background-repeat: no-repeat;
+	float: right;
+}
+
+.puregwt-exceptionbox-closeIcon:hover {
+	background: url(images/close_hover.png) center center;
+}
