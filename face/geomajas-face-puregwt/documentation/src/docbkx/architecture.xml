@@ -12,7 +12,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="ch-arch">
-  <title>PureGWT face architecture</title>
+  <title>Architecture</title>
 
   <section>
     <title>The central Map API</title>
@@ -507,7 +507,8 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
     events that indicate the map has been resized.</para>
 
     <section>
-      <title>Geomajas events versus native events</title>
+      <title id="geomajas_vs_native_events">Geomajas events versus native
+      events</title>
 
       <para>When developing GWT or Javascript applications, it is important to
       be aware of the difference between HTML native events and custom created
@@ -545,7 +546,7 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
       <para>The Geomajas setup goes a bit further though in that it provides
       an EventBus for every map plus an application specific EventBus. The
       application specific event bus is optional, but can be an easy way to
-      provide your own events.</para>
+      add your own events.</para>
 
       <section>
         <title>Geomajas MapEventBus</title>
@@ -645,8 +646,9 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>ViewPortChangedHandler</entry>
 
-                <entry>Event that is fired when the map both scales and
-                translates at the same time.</entry>
+                <entry>Event that is fired when the view on the ViewPort has
+                been changed so that both scaling and translation have
+                occurred.</entry>
               </row>
 
               <row>
@@ -718,8 +720,8 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerSelectionHandler</entry>
 
-                <entry>Event that is fired when a layer has been
-                deselected.</entry>
+                <entry>Event that is fired when a layer has been deselected.
+                Only one layer can be selected at any one time.</entry>
               </row>
 
               <row>
@@ -727,8 +729,11 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerVisibilityHandler</entry>
 
-                <entry>Event that is fired when a layer becomes
-                invisible.</entry>
+                <entry>Event that is fired when a layer disappears from view.
+                This can be caused because some layer are only visible between
+                certain scale levels, or because the user turned a layer off.
+                This event is often triggered by a
+                <code>LayerVisibilityMarkedEvent</code>.</entry>
               </row>
 
               <row>
@@ -736,8 +741,11 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerVisibilityHandler</entry>
 
-                <entry>Event that is fired when a layer becomes
-                visible.</entry>
+                <entry>Event that is fired when a layer becomes visible. This
+                can be caused because some layer are only visible between
+                certain scale levels, or because the user turned a layer on.
+                This event is often triggered by a
+                <code>LayerVisibilityMarkedEvent</code>.</entry>
               </row>
 
               <row>
@@ -745,8 +753,8 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerLabeledHandler</entry>
 
-                <entry>Event that is fired when the labels for a layer have
-                been turned off.</entry>
+                <entry>Event that is fired when the labels of a layer have
+                become invisible.</entry>
               </row>
 
               <row>
@@ -754,8 +762,26 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerLabeledHandler</entry>
 
-                <entry>Event that is fired when the labels for a layer have
-                been turned on.</entry>
+                <entry>Event that is fired when the labels of a layer have
+                become visible.</entry>
+              </row>
+
+              <row>
+                <entry>LayerLabelMarkedEvent</entry>
+
+                <entry>LayerLabeledHandler</entry>
+
+                <entry>Event that is fired when the labels of a layer have
+                been marked as visible or invisible. Note that when labels
+                have been marked as invisible at a moment when they where
+                actually visible, than you can expect a
+                <code>LayerLabelHideEvent</code> shortly. On the other hand
+                marking labels as visible does not necessarily mean that they
+                will become visible. For labels to becomes visible, they must
+                be invisible and their layer must be visible as well. Only if
+                those requirements are met will the labels truly become
+                visible and can you expect a <code>LayerLabelShowEvent</code>
+                to follow this event.</entry>
               </row>
 
               <row>
@@ -763,8 +789,21 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerOrderChangedHandler</entry>
 
-                <entry>Event that is fired when the layer order has
-                changed.</entry>
+                <entry>Event that is fired when the order of a layer is
+                changed within the <code>LayersModel</code>. This event
+                contains indices pointing to the original index and the target
+                index for the layer. Of course, changing the index of a single
+                layer, also changes the indices of other layers.</entry>
+              </row>
+
+              <row>
+                <entry>LayerRefreshedEvent</entry>
+
+                <entry>LayerRefreshedHandler</entry>
+
+                <entry>Event that reports a layer has been refreshed. This
+                means it's rendering is completely cleared and
+                redrawn.</entry>
               </row>
 
               <row>
@@ -772,8 +811,23 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
                 <entry>LayerStyleChangedHandler</entry>
 
-                <entry>Event that is fired when a layer has a new
-                style.</entry>
+                <entry>Event that reports changes in layer style.</entry>
+              </row>
+
+              <row>
+                <entry>LayerVisibilityMarkedEvent</entry>
+
+                <entry>LayerVisibilityHandler</entry>
+
+                <entry>Called when a layer has been marked as visible or
+                invisible. When a layer has been marked as invisible, expect a
+                <code>LayerHideEvent</code> very soon. But, when a layer has
+                been marked as visible, that does not necessarily mean it will
+                become visible. There are more requirements that have to be
+                met in order for a layer to become visible: the map's scale
+                must be between the minimum and maximum allowed scales for the
+                layer. If that requirement has been met as well, expect a
+                <code>LayerShowEvent</code> shortly.</entry>
               </row>
             </tbody>
           </tgroup>
@@ -815,7 +869,33 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
           </tgroup>
         </table></para>
 
-      <para/>
+      <para><emphasis role="bold">Other events:</emphasis><table>
+          <title>Other Events</title>
+
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry align="center">Event</entry>
+
+                <entry align="center">Handler</entry>
+
+                <entry align="center">Description</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>ScaleLevelRenderedEvent</entry>
+
+                <entry>ScaleLevelRenderedHandler</entry>
+
+                <entry>Event that is fired when a scale level has been
+                rendered. This is used by scale-based layer renderers, and it
+                is up to them to determine when that is.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
     </section>
   </section>
 
@@ -823,10 +903,10 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
     <title>User interaction</title>
 
     <para>This section will handle the basics of interacting with the map, by
-    listening and responding to the mouse events that are generated from the
-    map. Instead of dealing with those mouse events directly, 2 interfaces
-    have been created to shield you from having to attach the correct handlers
-    to the correct DOM elements in the HTML tree.</para>
+    listening and responding to native browser events (mouse, touch, keyboard)
+    generated from the map. The notion of native events versus custom Geomajas
+    events was mentioned earlier in the "<link
+    linkend="geomajas_vs_native_events">Events</link>" section.</para>
 
     <note>
       <para>If you want fine tuned control and attach custom mouse event
@@ -838,40 +918,133 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
       such fine tuned but cumbersome mouse event handling.</para>
     </note>
 
-    <para>The next 2 sections will cover the following 2 basic interfaces: the
-    MapController and the MapListener.</para>
-
     <section>
-      <title>Controllers</title>
+      <title>MapController definition</title>
 
-      <para>The MapController is an interface which listens to all mouse
-      events that comes from the map (mouse up, mouse down, mouse move, ...)
-      and has the possibility to react directly onto receiving such events.
-      The MapController basically has all the freedom in the world to
-      manipulate and manage the state of the map as events are being
-      received.</para>
+      <para>The basic definition for map interaction is called the
+      MapController, which is the combination of a set of mouse and touch
+      handlers, with some added utility methods. At least the following
+      handlers must be implemented:</para>
 
-      <para>For example, it could prevent the default mouse event behaviour or
-      even prevent event bubbling. But because the MapController has such
-      freedom only one can be active at a time.</para>
+      <itemizedlist>
+        <listitem>
+          <para>MouseDownHandler</para>
+        </listitem>
 
-      <para>An example of a MapController is the NavigationController which
-      allows the user to navigate all around the map.</para>
+        <listitem>
+          <para>MouseUpHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>MouseMoveHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>MouseOutHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>MouseOverHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>MouseWheelHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>DoubleClickHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>TouchStartHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>TouchEndHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>TouchMoveHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>TouchCancelHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>GestureStartHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>GestureEndHandler</para>
+        </listitem>
+
+        <listitem>
+          <para>GestureChangeHandler</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>On top of handling mouse and touch events, the MapController
+      definition also provides methods that are executed when a MapController
+      becomes active on the map, or when it is deactivated.</para>
     </section>
 
     <section>
-      <title>Listeners</title>
+      <title>Applying your own MapController on the map</title>
 
-      <para>The other way of interacting with the map, is through
-      MapListeners. A MapListener resembles a MapController quite a lot,
-      except that it does not receive the real mouse events, but imitations of
-      it. It therefore can not interfere with the normal browser event flow,
-      but takes on a more passive form.</para>
+      <para>The MapController definition can be used in 2 different ways: as a
+      manipulative event controller, or as a passive listener. The main
+      difference is that the listener is not allowed to manipulate the events,
+      while the controller is free to do as it chooses. A controller could for
+      example stop event propagation, something a listener is not allowed to
+      do. As a result only one controller is allowed on the map, while
+      multiple listeners are allowed.</para>
 
-      <para>As a result, multiple MapListeners can be active on a map at any
-      one time. The MapListener is would therefore be the perfect tool for
-      reporting or reacting without interfering, while a MapController is all
-      about the interference.</para>
+      <para>We have used the terms 'controller' and 'listener', but in reality
+      both are defined by the same interface:
+      <code>org.geomajas.puregwt.client.controller.MapController</code>.</para>
+
+      <para>The following code sample shows how to apply both on the
+      map:</para>
+
+      <programlisting>// Applying a new MapController on the map:
+mapPresenter.setMapController(new MyCustomController());
+
+// Adding an additional listener:
+mapPresenter.addMapListener(new MyCustomController());</programlisting>
+
+      <para>A typical example of an active controller is the
+      NavigationController, which determines map navigation through mouse
+      handling.</para>
+
+      <para>A typical example of a passive listener could be a widget that
+      reads in the location of the mouse on the map, and prints out the X,Y
+      coordinates. Such a MapController implementation does not interfere with
+      the normal event flow or the main controller.</para>
+    </section>
+
+    <section>
+      <title>Working with events</title>
+
+      <para>Often, MapControllers need to interpret the events in some way to
+      determine their course of action. Let us take the above example again of
+      a MapController that wants to read the mouse position on the map in
+      order to print it out on the GUI. For this case, the MapController also
+      extends the
+      <code>org.geomajas.gwt.client.controller.MapEventParser</code>
+      interface. This interface provides methods for extracting useful
+      information from events:</para>
+
+      <programlisting>// Get the event location in map CRS:
+Coordinate worldPosition = mapController.getLocation(event, RenderSpace.WORLD);</programlisting>
+
+      <para>This method extracts the location of the event, expressed in one
+      of the rendering spaces.</para>
+
+      <programlisting>// Get the DOM elements that was the target of the event:
+Element target = mapController.getTarget(event);</programlisting>
+
+      <para>This method extracts the target DOM element of the event.</para>
     </section>
   </section>
 
@@ -880,9 +1053,7 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
     <para>This section will handle all rendering related topics, explaining
     the different render spaces (WorldSpace versus ScreenSpace), and how to
-    make full advantage of them when trying to render objects on the map.
-    Finally, the MapGadget will be introduced, which is an experimental
-    interface for defining functional gadgets at a fixed location on the
+    make full advantage of them when trying to render objects on the
     map.</para>
 
     <section>
@@ -896,14 +1067,14 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
         <listitem>
           <para><emphasis>WorldSpace</emphasis>: World space describes a
           rendering space where all objects are expressed in the coordinate
-          reference system of the map they are drawn in. As a result, all
-          objects within world space move about with the view on the
-          map.</para>
+          reference system of the map. As a result, all objects within world
+          space move about with the view on the map.</para>
 
           <para>Let's say for example that a rectangle is rendered on a map
           with CRS lon-lat. The rectangle has origin (118,34) and width and
           height both equal to 1. Than this rectangle will cover the city of
-          Los Angeles.</para>
+          Los Angeles. No matter where the user may navigate, the rectangle
+          will always remain above Los Angeles.</para>
         </listitem>
 
         <listitem>
@@ -911,52 +1082,78 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
           rendering space where all objects are expressed in pixels with the
           origin in the top left corner of the map. Objects rendered in screen
           will always occupy a fixed position on the map. They are immobile
-          and are not affected by changes in the map view.</para>
+          and are not affected by map navigation.</para>
         </listitem>
       </itemizedlist>
 
       <caution>
         <para>Beware that drawing a great many objects in WorldSpace can slow
         down an application, as their positions need to be recalculated every
-        time the map navgates.</para>
+        time the map navigates.</para>
       </caution>
     </section>
 
     <section>
-      <title>VectorObjectContainers &amp; VectorObjects</title>
+      <title>Rendering containers</title>
 
-      <para>For vector object rendering, the PureGWT face makes use of the
-      Vaadin GwtGraphics library. This library provides all the necessary
-      methods for standard SVG and VML rendering. The main interfaces to note
-      are the <code>VectorObjectContainer</code> and the
-      <code>VectorObject</code>.</para>
+      <para>Before actually rendering custom objects on the map, you must
+      choose a type of container wherein to draw. This type of container will
+      determine the the format used in HTML:</para>
 
-      <para>The VectorObjectContainer is a container object as the name
-      implies and provides methods for storing and managing VectorObjects.
-      These VectorObjects in turn are the individual objects (such as
-      Rectangle, Circle, Path, ...) that can be drawn on the map.</para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.gfx.VectorContainer</emphasis>:
+          Depending on the browser used, this container will render in either
+          SVG or VML. </para>
+        </listitem>
 
-      <para>The PureGWT face has extended the VectorObjectContainer to provide
-      a ScreenContainer and a WorldContainer. As you might have guessed, the
-      ScreenContainer allows you to render objects in ScreenSpace while the
-      WorldContainer allows you to render objects in WorldSpace.</para>
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.gfx.CanvasContainer</emphasis>:
+          This container will make use of the HTML5 canvas construct for
+          drawing.</para>
+        </listitem>
+      </itemizedlist>
 
-      <para>In order to acquire a ScreenContainer or WorldContainer, all one
-      has to do is request such a container with the MapPresenter. This can be
-      done by calling one of the following lines:</para>
+      <section>
+        <title>VectorContainers &amp; VectorObjects</title>
 
-      <programlisting>// Getting a WorldContainer:
-WorldContainer worldContainer = mapPresenter.getWorldContainer("myWorld");
+        <para>For vector object rendering, the PureGWT face makes use of the
+        Vaadin GwtGraphics library. This library provides all the necessary
+        methods for standard SVG and VML rendering. The main interfaces to
+        note are the <code>VectorContainer</code> and the
+        <code>VectorObject</code>.</para>
 
-// Getting a ScreenContainer:
-ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</programlisting>
+        <para>The VectorContainer is a container object as the name implies
+        and provides methods for storing and managing VectorObjects. These
+        VectorObjects in turn are the individual objects (such as Rectangle,
+        Circle, Path, ...) that can be drawn on the map.</para>
 
-      <para>When acquiring such a container, you have to specify a name (see
-      above 'myWorld' or 'myScreen'). If a container with such a name does not
-      yet exist a new container is created and returned.</para>
+        <para>In order to acquire a VectorContainer, all one has to do is
+        request such a container with the MapPresenter. This can be done by
+        calling one of the following methods:</para>
 
-      <remark>TODO: How about removing these containers again? Also add
-      architectural images here.</remark>
+        <programlisting>// Getting a VectorContainer for rendering in WorldSpace:
+VectorContainer worldContainer = mapPresenter.addWorldContainer();
+
+// Getting a VectorContainer for rendering in ScreenSpace:
+VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlisting>
+
+        <para>After acquiring such a container it is possible to add multiple
+        VectorObjects to it. </para>
+
+        <note>
+          <para>Be careful to make sure you use the correct coordinate system
+          when adding VectorObjects to your VectorContainer. A container that
+          was added in ScreenSpace, expects it's VectorObjects to be expressed
+          in pixel coordinates.</para>
+        </note>
+      </section>
+
+      <section>
+        <title>CanvasContainers</title>
+
+        <para>Jan???</para>
+      </section>
     </section>
 
     <section>
