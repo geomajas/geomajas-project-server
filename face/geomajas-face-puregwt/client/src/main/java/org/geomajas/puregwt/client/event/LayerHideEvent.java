@@ -14,7 +14,9 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that is fired when a layer is marked as invisible.
+ * Event that is fired when a layer disappears from view. This can be caused because some layer are only visible between
+ * certain scale levels, or because the user turned a layer off. This event is often triggered by a
+ * {@link LayerVisibilityMarkedEvent}.
  * 
  * @author Frank Wynants
  * @author Pieter De Graef
@@ -26,7 +28,8 @@ public class LayerHideEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 	/**
 	 * Create an event for the specified layer.
 	 * 
-	 * @param layer the layer that was hidden
+	 * @param layer
+	 *            the layer that was hidden
 	 */
 	public LayerHideEvent(Layer layer) {
 		super(layer);

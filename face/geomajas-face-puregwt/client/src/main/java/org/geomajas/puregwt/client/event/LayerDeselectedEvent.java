@@ -14,7 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that reports the deselection of a layer.
+ * Event that reports the deselection of a layer. Only one layer can be selected at any one time.
  *
  * @author Pieter De Graef
  * @since 1.0.0

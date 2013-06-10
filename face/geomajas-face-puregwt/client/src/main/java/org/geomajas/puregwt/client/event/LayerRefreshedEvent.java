@@ -14,7 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that reports a layer has been refreshed.
+ * Event that reports a layer has been refreshed. This means it's rendering is completely cleared and redrawn.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

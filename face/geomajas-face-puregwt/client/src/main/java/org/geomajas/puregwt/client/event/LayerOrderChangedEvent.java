@@ -16,7 +16,10 @@ import org.geomajas.annotation.Api;
 import com.google.web.bindery.event.shared.Event;
 
 /**
- * Event that is fired when the order of the layers within a map has changed.
+ * Event that is fired when the order of a layer is changed within the
+ * {@link org.geomajas.puregwt.client.map.layer.LayersModel}. This event contains indices pointing to the original index
+ * and the target index for the layer. Of course, changing the index of a single layer, also changes the indices of
+ * other layers.
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
@@ -32,8 +35,10 @@ public class LayerOrderChangedEvent extends Event<LayerOrderChangedHandler> {
 	/**
 	 * Create an event for the specified layer indices.
 	 * 
-	 * @param fromIndex the index before the move
-	 * @param toIndex the index after the move
+	 * @param fromIndex
+	 *            the index before the move
+	 * @param toIndex
+	 *            the index after the move
 	 */
 	public LayerOrderChangedEvent(int fromIndex, int toIndex) {
 		this.fromIndex = fromIndex;

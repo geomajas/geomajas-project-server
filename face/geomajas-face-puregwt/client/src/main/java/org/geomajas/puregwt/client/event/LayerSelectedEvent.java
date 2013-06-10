@@ -14,7 +14,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that reports the selection of a layer.
+ * Event that reports the selection of a layer. Only one layer can be selected at any time, so these events often go
+ * together with {@link LayerDeselectedEvent}s.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -25,7 +26,8 @@ public class LayerSelectedEvent extends BaseLayerEvent<LayerSelectionHandler> {
 	/**
 	 * Create an event for the specified layer.
 	 * 
-	 * @param layer the layer which has been selected
+	 * @param layer
+	 *            the layer which has been selected
 	 */
 	public LayerSelectedEvent(Layer layer) {
 		super(layer);

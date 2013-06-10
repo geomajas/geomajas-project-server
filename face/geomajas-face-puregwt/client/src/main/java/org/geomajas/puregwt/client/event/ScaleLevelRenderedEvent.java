@@ -16,7 +16,8 @@ import org.geomajas.annotation.Api;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that is fired when a scale level has been rendered.
+ * Event that is fired when a scale level has been rendered. This is used by scale-based layer renderers, and it is up
+ * to them to determine when that is.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

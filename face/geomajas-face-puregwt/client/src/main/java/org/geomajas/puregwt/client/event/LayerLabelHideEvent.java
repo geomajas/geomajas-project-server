@@ -14,7 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that is fired when the labels of a layer are made invisible.
+ * Event that is fired when the labels of a layer have become invisible.
  *
  * @author Frank Wynants
  * @author Pieter De Graef

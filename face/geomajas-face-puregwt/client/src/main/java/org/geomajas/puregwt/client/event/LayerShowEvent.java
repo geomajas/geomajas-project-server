@@ -14,7 +14,9 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that reports {@link Layer} visibility changes.
+ * Event that is fired when a layer becomes visible. This can be caused because some layer are only visible between
+ * certain scale levels, or because the user turned a layer on. This event is often triggered by a
+ * {@link LayerVisibilityMarkedEvent}.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -25,7 +27,8 @@ public class LayerShowEvent extends BaseLayerEvent<LayerVisibilityHandler> {
 	/**
 	 * Create an event for the specified layer.
 	 * 
-	 * @param layer the layer that was shown
+	 * @param layer
+	 *            the layer that was shown
 	 */
 	public LayerShowEvent(Layer layer) {
 		super(layer);

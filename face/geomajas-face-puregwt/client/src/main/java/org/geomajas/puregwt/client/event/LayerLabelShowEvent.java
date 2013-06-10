@@ -14,7 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * Event that is fired when the labels of a layer are made visible.
+ * Event that is fired when the labels of a layer have become visible.
  *
  * @author Pieter De Graef
  * @since 1.0.0
