@@ -17,9 +17,9 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import com.google.gwt.event.dom.client.GestureChangeEvent;
 import com.google.gwt.event.dom.client.GestureEndEvent;
 import com.google.gwt.event.dom.client.GestureStartEvent;
-import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 
@@ -39,6 +39,8 @@ public class TouchNavigationController extends AbstractMapController {
 	protected boolean zooming;
 
 	protected boolean dragging;
+
+	private double lastScale;
 
 	// middle point of a gesture spike !only for multi-touch supported browsers
 	private Coordinate midPoint;
@@ -60,23 +62,13 @@ public class TouchNavigationController extends AbstractMapController {
 
 	@Override
 	public void onTouchEnd(TouchEndEvent event) {
-		// TODO find out why not fired
 		updateView(event, true);
 	}
 
 	@Override
 	public void onTouchMove(TouchMoveEvent event) {
 		event.preventDefault();
-
-		if (event.getTouches().length() > 1) {
-			Coordinate p1 = new Coordinate(event.getTouches().get(0).getClientX(), event.getTouches().get(0)
-					.getClientY());
-			Coordinate p2 = new Coordinate(event.getTouches().get(1).getClientX(), event.getTouches().get(1)
-					.getClientY());
-			midPoint = mapPresenter.getViewPort().transform(getMidPoint(p1, p2), RenderSpace.SCREEN, RenderSpace.WORLD);
-			return; // don't pan if more than two fingers are used applicable only for multi-touch supported browsers
-		}
-
+		midPoint = mapPresenter.getViewPort().transform(getMidPoint(event), RenderSpace.SCREEN, RenderSpace.WORLD);
 		updateView(event, true); // TODO second argument should be false but onTouchEnd is not fired
 	}
 
@@ -91,22 +83,28 @@ public class TouchNavigationController extends AbstractMapController {
 	@Override
 	public void onGestureStart(GestureStartEvent event) {
 		event.preventDefault();
+		lastScale = mapPresenter.getViewPort().getScale();
+		zoomTo(event.getScale());
 	}
 
 	@Override
 	public void onGestureEnd(GestureEndEvent event) {
 		event.preventDefault();
-
-		if (midPoint != null) {
-			mapPresenter.getViewPort().applyScale(event.getScale() * mapPresenter.getViewPort().getScale(), midPoint);
-		} else {
-			mapPresenter.getViewPort().applyScale(event.getScale() * mapPresenter.getViewPort().getScale());
-		}
+		zoomTo(event.getScale());
 	}
 
 	@Override
 	public void onGestureChange(GestureChangeEvent event) {
 		event.preventDefault();
+		zoomTo(event.getScale());
+	}
+
+	private void zoomTo(double scale) {
+		if (midPoint != null) {
+			mapPresenter.getViewPort().applyScale(scale * lastScale, midPoint);
+		} else {
+			mapPresenter.getViewPort().applyScale(scale * lastScale);
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -124,27 +122,41 @@ public class TouchNavigationController extends AbstractMapController {
 	}
 
 	/**
-	 * Method used to calculate exact middle point between two end points on a line segment. (gesture spike)
+	 * Method used to calculate exact middle point between multiple touches of a touch events.
 	 * 
-	 * @param p1
-	 * @param p2
+	 * @param event
+	 *            a touch event
 	 * @return middle point
 	 */
-	private Coordinate getMidPoint(Coordinate p1, Coordinate p2) {
-		double x = (p1.getX() + p2.getX()) / 2;
-		double y = (p1.getY() + p2.getY()) / 2;
+	private Coordinate getMidPoint(TouchEvent<?> event) {
+		Coordinate[] coords = new Coordinate[event.getTouches().length()];
+		for (int i = 0; i < event.getTargetTouches().length(); i++) {
+			coords[i] = new Coordinate(event.getTouches().get(i).getClientX(), event.getTouches().get(i).getClientY());
+		}
+
+		double x = 0;
+		double y = 0;
+
+		for (Coordinate coord : coords) {
+			x += coord.getX();
+			y += coord.getY();
+		}
+
+		x /= coords.length;
+		y /= coords.length;
 
 		return new Coordinate(x, y);
 	}
 
 	/**
 	 * 
-	 * Update the view of the map when touching and dragging .
+	 * Update the view of the map when touching and dragging.
 	 * 
 	 * @param event
 	 */
-	protected void updateView(HumanInputEvent<?> event, boolean isTouchEnded) {
-		Coordinate end = getLocation(event, RenderSpace.SCREEN);
+	protected void updateView(TouchEvent<?> event, boolean isTouchEnded) {
+		Coordinate end = getMidPoint(event);
+
 		Coordinate beginWorld = mapPresenter.getViewPort().transform(touchedOrigin, RenderSpace.SCREEN,
 				RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
