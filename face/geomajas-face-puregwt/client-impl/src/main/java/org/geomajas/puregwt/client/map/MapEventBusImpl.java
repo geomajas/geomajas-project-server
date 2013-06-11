@@ -33,6 +33,7 @@ import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.event.MapResizedHandler;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortChangingHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.web.bindery.event.shared.Event;
@@ -130,6 +131,9 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(ViewPortChangedHandler.TYPE, source, handler);
 	}
 
+	public HandlerRegistration addViewPortChangingHandler(ViewPortChangingHandler handler) {
+		return eventBus.addHandlerToSource(ViewPortChangingHandler.TYPE, source, handler);
+	}
 	public <H> void fireEvent(Event<H> event) {
 		eventBus.fireEventFromSource(event, source);
 	}

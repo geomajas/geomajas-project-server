@@ -179,6 +179,29 @@ public interface ViewPort {
 	 *            double clicking on the map without it moving away.
 	 */
 	void applyScale(double scale, Coordinate rescalePoint);
+	
+	/**
+	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
+	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
+	 * this.
+	 * 
+	 * @param scale
+	 *            The preferred new scale.
+	 */
+	void dragToScale(double scale);
+
+	/**
+	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
+	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
+	 * this.
+	 * 
+	 * @param scale
+	 *            The preferred new scale.
+	 * @param rescalePoint
+	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
+	 *            double clicking on the map without it moving away.
+	 */
+	void dragToScale(double scale, Coordinate rescalePoint);
 
 	/**
 	 * <p>

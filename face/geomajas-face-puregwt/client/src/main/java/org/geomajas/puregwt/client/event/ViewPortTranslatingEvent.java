@@ -23,20 +23,20 @@ import com.google.web.bindery.event.shared.Event;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
+public class ViewPortTranslatingEvent extends Event<ViewPortChangingHandler> {
 
 	private final ViewPort viewPort;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
-
 	/**
-	 * Create an event for the specified view port.
+	 * Create an event for the specified view port and dragging state.
 	 * 
 	 * @param viewPort the view port
+	 * @param dragging if true, this event is caused by a dragging action
 	 */
-	public ViewPortTranslatedEvent(ViewPort viewPort) {
+	public ViewPortTranslatingEvent(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}
 
@@ -45,8 +45,8 @@ public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 	// -------------------------------------------------------------------------
 
 	@Override
-	public Type<ViewPortChangedHandler> getAssociatedType() {
-		return ViewPortChangedHandler.TYPE;
+	public Type<ViewPortChangingHandler> getAssociatedType() {
+		return ViewPortChangingHandler.TYPE;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 	// ------------------------------------------------------------------------
 
 	/** @todo javadoc unknown. */
-	protected void dispatch(ViewPortChangedHandler handler) {
-		handler.onViewPortTranslated(this);
+	protected void dispatch(ViewPortChangingHandler handler) {
+		handler.onViewPortTranslating(this);
 	}
 }

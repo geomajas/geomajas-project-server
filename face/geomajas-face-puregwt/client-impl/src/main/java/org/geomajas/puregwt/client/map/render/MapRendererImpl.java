@@ -32,8 +32,11 @@ import org.geomajas.puregwt.client.event.MapResizedEvent;
 import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.event.ScaleLevelRenderedHandler;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangingEvent;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortScalingEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatingEvent;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.gfx.HtmlObject;
@@ -73,7 +76,7 @@ public class MapRendererImpl implements MapRenderer {
 
 	private final FetchTimer fetchTimer;
 
-	private int fetchDelay = 100; // Delay for fetching scale levels. Results in less requests.
+	private int fetchDelay = 10000; // Delay for fetching scale levels. Results in less requests.
 
 	// Keeping track of the navigation animation:
 
@@ -260,7 +263,32 @@ public class MapRendererImpl implements MapRenderer {
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 		if (viewPort.getScale() > 0 && !animation.isRunning()) {
-			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0, event.isDragging());
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
+		}
+	}
+
+	@Override
+	public void onViewPortChanging(ViewPortChangingEvent event) {
+		if (viewPort.getScale() > 0) {
+			if (first) {
+				navigateTo(viewPort.getBounds(), viewPort.getScale(), 0, true);
+			} else {
+				navigateTo(viewPort.getBounds(), viewPort.getScale(), getAnimationTime(), true);
+			}
+		}
+	}
+
+	@Override
+	public void onViewPortScaling(ViewPortScalingEvent event) {
+		if (viewPort.getScale() > 0) {
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), getAnimationTime(), true);
+		}
+	}
+
+	@Override
+	public void onViewPortTranslating(ViewPortTranslatingEvent event) {
+		if (viewPort.getScale() > 0 && !animation.isRunning()) {
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0, true);
 		}
 	}
 

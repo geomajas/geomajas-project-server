@@ -21,8 +21,11 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangingEvent;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortScalingEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatingEvent;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 
 import com.google.inject.Inject;
@@ -173,10 +176,10 @@ public final class ViewPortImpl implements ViewPort {
 	public void dragToPosition(Coordinate coordinate) {
 		position = checkPosition(coordinate, scale);
 		if (eventBus != null) {
-			eventBus.fireEvent(new ViewPortTranslatedEvent(this, true));
+			eventBus.fireEvent(new ViewPortTranslatingEvent(this));
 		}
 	}
-	
+
 	public void applyPosition(Coordinate coordinate) {
 		position = checkPosition(coordinate, scale);
 		if (eventBus != null) {
@@ -184,11 +187,23 @@ public final class ViewPortImpl implements ViewPort {
 		}
 	}
 
+	public void dragToScale(double scale) {
+		applyScale(scale, position, true);
+	}
+
 	public void applyScale(double scale) {
-		applyScale(scale, position);
+		applyScale(scale, position, false);
+	}
+
+	public void dragToScale(double newScale, Coordinate rescalePoint) {
+		applyScale(newScale, rescalePoint, true);
 	}
 
 	public void applyScale(double newScale, Coordinate rescalePoint) {
+		applyScale(newScale, rescalePoint, false);
+	}
+
+	private void applyScale(double newScale, Coordinate rescalePoint, boolean dragging) {
 		double limitedScale = zoomStrategy.checkScale(newScale, ZoomOption.LEVEL_CLOSEST);
 		if (limitedScale != scale) {
 			// Calculate theoretical new bounds. First create a BBOX of correct size:
@@ -208,9 +223,9 @@ public final class ViewPortImpl implements ViewPort {
 			position = checkPosition(BboxService.getCenterPoint(newBbox), scale);
 			if (eventBus != null) {
 				if (dX == 0 && dY == 0) {
-					eventBus.fireEvent(new ViewPortScaledEvent(this));
+					eventBus.fireEvent(dragging ? new ViewPortScalingEvent(this) : new ViewPortScaledEvent(this));
 				} else {
-					eventBus.fireEvent(new ViewPortChangedEvent(this));
+					eventBus.fireEvent(dragging ? new ViewPortChangingEvent(this) : new ViewPortChangedEvent(this));
 				}
 			}
 		}

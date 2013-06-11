@@ -22,11 +22,12 @@ import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.event.MapResizedHandler;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortChangingHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.web.bindery.event.shared.Event;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.Event.Type;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Event bus with convenience methods for registering handlers to a specific map.
@@ -180,6 +181,14 @@ public interface MapEventBus {
 	HandlerRegistration addViewPortChangedHandler(ViewPortChangedHandler handler);
 	
 	/**
+	 * Add a viewport handler.
+	 * 
+	 * @param handler the handler
+	 * @return the handler registration
+	 */
+	HandlerRegistration addViewPortChangingHandler(ViewPortChangingHandler handler);
+	
+	/**
 	 * Add a handler of this type to the map.
 	 *
 	 * @param type type of handler
@@ -194,4 +203,5 @@ public interface MapEventBus {
 	 * @param event the event
 	 */
 	<H> void fireEvent(Event<H> event);
+	
 }

@@ -18,6 +18,7 @@ import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.event.MapResizedHandler;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortChangingHandler;
 
 /**
  * General definition of an object that is responsible for making sure the map is always rendered correctly. How exactly
@@ -26,6 +27,7 @@ import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
  * 
  * @author Pieter De Graef
  */
-public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibilityHandler,
-		LayerStyleChangedHandler, LayerRefreshedHandler, MapResizedHandler, MapCompositionHandler {
+public interface MapRenderer extends ViewPortChangedHandler, ViewPortChangingHandler, LayerOrderChangedHandler,
+		LayerVisibilityHandler, LayerStyleChangedHandler, LayerRefreshedHandler, MapResizedHandler,
+		MapCompositionHandler {
 }

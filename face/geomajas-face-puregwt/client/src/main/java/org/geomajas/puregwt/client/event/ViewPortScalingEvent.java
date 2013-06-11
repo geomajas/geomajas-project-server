@@ -17,26 +17,25 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.web.bindery.event.shared.Event;
 
 /**
- * Event that is fired when a translation on the {@link ViewPort} has occurred, while the scale has remained the same.
+ * Event that is fired when the map has rescaled while the center has remained the same.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
+public class ViewPortScalingEvent extends Event<ViewPortChangingHandler> {
 
 	private final ViewPort viewPort;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
-
 	/**
 	 * Create an event for the specified view port.
 	 * 
 	 * @param viewPort the view port
 	 */
-	public ViewPortTranslatedEvent(ViewPort viewPort) {
+	public ViewPortScalingEvent(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}
 
@@ -45,25 +44,24 @@ public class ViewPortTranslatedEvent extends Event<ViewPortChangedHandler> {
 	// -------------------------------------------------------------------------
 
 	@Override
-	public Type<ViewPortChangedHandler> getAssociatedType() {
-		return ViewPortChangedHandler.TYPE;
+	public Type<ViewPortChangingHandler> getAssociatedType() {
+		return ViewPortChangingHandler.TYPE;
 	}
 
 	/**
-	 * Get the view port that has translated.
+	 * Get the view port that has scaled.
 	 * 
 	 * @return the view port
 	 */
 	public ViewPort getViewPort() {
 		return viewPort;
-	}	
+	}
 
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------
 
-	/** @todo javadoc unknown. */
-	protected void dispatch(ViewPortChangedHandler handler) {
-		handler.onViewPortTranslated(this);
+	protected void dispatch(ViewPortChangingHandler handler) {
+		handler.onViewPortScaling(this);
 	}
 }

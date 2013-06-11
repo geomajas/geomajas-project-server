@@ -66,6 +66,7 @@ import org.geomajas.puregwt.client.widget.ZoomStepWidget;
 import org.geomajas.puregwt.client.widget.ZoomToRectangleWidget;
 import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.shape.Path;
+
 import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
@@ -275,6 +276,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		isMobileBrowser = Browser.isMobile();
 
 		eventBus.addViewPortChangedHandler(mapRenderer);
+		eventBus.addViewPortChangingHandler(mapRenderer);
 		eventBus.addMapResizedHandler(mapRenderer);
 		eventBus.addLayerOrderChangedHandler(mapRenderer);
 		eventBus.addMapCompositionHandler(mapRenderer);

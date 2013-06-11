@@ -84,26 +84,34 @@ public class TouchNavigationController extends AbstractMapController {
 	public void onGestureStart(GestureStartEvent event) {
 		event.preventDefault();
 		lastScale = mapPresenter.getViewPort().getScale();
-		zoomTo(event.getScale());
+		zoomTo(event.getScale(), false);
 	}
 
 	@Override
 	public void onGestureEnd(GestureEndEvent event) {
 		event.preventDefault();
-		zoomTo(event.getScale());
+		zoomTo(event.getScale(), true);
 	}
 
 	@Override
 	public void onGestureChange(GestureChangeEvent event) {
 		event.preventDefault();
-		zoomTo(event.getScale());
+		zoomTo(event.getScale(), false);
 	}
 
-	private void zoomTo(double scale) {
+	private void zoomTo(double scale, boolean isGestureEnded) {
 		if (midPoint != null) {
-			mapPresenter.getViewPort().applyScale(scale * lastScale, midPoint);
+			if (isGestureEnded) {
+				mapPresenter.getViewPort().applyScale(scale * lastScale, midPoint);
+			} else {
+				mapPresenter.getViewPort().dragToScale(scale * lastScale, midPoint);
+			}
 		} else {
-			mapPresenter.getViewPort().applyScale(scale * lastScale);
+			if (isGestureEnded) {
+				mapPresenter.getViewPort().applyScale(scale * lastScale);
+			} else {
+				mapPresenter.getViewPort().dragToScale(scale * lastScale);
+			}
 		}
 	}
 
@@ -124,8 +132,7 @@ public class TouchNavigationController extends AbstractMapController {
 	/**
 	 * Method used to calculate exact middle point between multiple touches of a touch events.
 	 * 
-	 * @param event
-	 *            a touch event
+	 * @param event a touch event
 	 * @return middle point
 	 */
 	private Coordinate getMidPoint(TouchEvent<?> event) {

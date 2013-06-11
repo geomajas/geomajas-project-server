@@ -38,10 +38,7 @@ public class ViewPortScaledEvent extends Event<ViewPortChangedHandler> {
 	public ViewPortScaledEvent(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}
-
-	// -------------------------------------------------------------------------
-	// Event implementation:
-	// -------------------------------------------------------------------------
+	
 
 	@Override
 	public Type<ViewPortChangedHandler> getAssociatedType() {

@@ -20,8 +20,11 @@ import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.event.MapResizedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangingEvent;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortScalingEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatingEvent;
 
 
 public class MockMapRenderer implements MapRenderer {
@@ -37,6 +40,24 @@ public class MockMapRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onViewPortChanging(ViewPortChangingEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onViewPortScaling(ViewPortScalingEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onViewPortTranslating(ViewPortTranslatingEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
