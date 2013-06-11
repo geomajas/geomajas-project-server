@@ -1,67 +1,14 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:w="urn:import:com.google.gwt.widget.client">
-	
-	<ui:style ui:field="touchZoomStyle" type="org.geomajas.puregwt.client.widget.TouchZoomWidget.TouchZoomStyle">
-		.gm-TouchZoomWidget {
-			padding:8px;
-			min-height: 40px;
-			width: 107px;
-		}
 
-    	.gm-touchZoomOut-but {
-    		/*give the corners a small curve*/
-    		-webkit-border-radius: 15px 0 0 15px;
-    		-moz-border-radius: 15px 0 0 15px;
-    		border-radius: 15px 0 0 15px;
-    	}
-    	
-    	.gm-touchZoomIn-but {
-			margin-left:3px;
-			/*give the corners a small curve*/
-    		-webkit-border-radius: 0 15px 15px 0;
-    		-moz-border-radius: 0 15px 15px 0;
-    		border-radius: 0 15px 15px 0;
-    	}
-    	
-    	
-    	/* widget touched and normal STATES*/
-    	.normal {
-			width:50px;
-			border:1px groove black; /*#7c93ba*/
-    		cursor:pointer; /*forces the cursor to change to a hand when the button is hovered*/
-    		/*give the background a gradient*/
-    		background-color:#327327; /*required for browsers that don't support gradients*/
-    		background: -webkit-gradient(linear, left top, left bottom, from(#a3c487), to(#327327)); 
-    		/*327327 a3c487  #88add7, #6b6dbb*/
-   	 		background: -webkit-linear-gradient(top, #a3c487, #327327);
-    		background: -moz-linear-gradient(top, #a3c487, #327327);
-    		background: -o-linear-gradient(top, #a3c487, #327327);
-    		background: linear-gradient(top, #a3c487, #327327);
-    		/*style to the text inside the button*/
-    		color:#fff;
-    		font-size:1.5em;
-    		letter-spacing:.1em;
-    		font-variant:small-caps;
-    		/*add a drop shadow to the button*/
-    		-webkit-box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
-    		-moz-box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
-    		box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
-    		text-align: center;
-		}
+	<ui:with field="resource"
+		type="org.geomajas.puregwt.client.resource.GeomajasWidgetResource" />
 
-    	.touched {
-    		color:#edebda;
-   		 	/*reduce the spread of the shadow to give a pushed effect*/
-    		-webkit-box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
-    		-moz-box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
-    		box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
-    	}
-
-	</ui:style>
-	
-	<g:AbsolutePanel addStyleNames="{style.gm-TouchZoomWidget}">
-		<g:Button ui:field="zoomOut" styleName="{style.gm-touchZoomOut-but}" addStyleNames="{style.normal}">-</g:Button>
-		<g:Button ui:field="zoomIn" styleName="{style.gm-touchZoomIn-but}" addStyleNames="{style.normal}">+</g:Button>	
+	<g:AbsolutePanel addStyleNames="{resource.css.touchZoomWidget}">
+		<g:Button ui:field="zoomOut" styleName="{resource.css.touchZoomOutBut}"
+			addStyleNames="{resource.css.touchZoomButNormal}">-</g:Button>
+		<g:Button ui:field="zoomIn" styleName="{resource.css.touchZoomInBut}"
+			addStyleNames="{resource.css.touchZoomButNormal}">+</g:Button>
 	</g:AbsolutePanel>
 </ui:UiBinder> 

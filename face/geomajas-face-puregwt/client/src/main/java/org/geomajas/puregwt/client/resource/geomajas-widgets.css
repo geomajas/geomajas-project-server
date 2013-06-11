@@ -1,0 +1,66 @@
+/* pure gwt widget css classes */
+
+/* ------------------------------------------------------------------------*/
+/* TouchZoomWidget --------------------------------------------------------*/
+/* ------------------------------------------------------------------------*/
+@external .touchZoomWidget;
+.touchZoomWidget {
+	padding: 8px;
+	min-height: 40px;
+	width: 107px;
+}
+
+@external .touchZoomOutBut;
+.touchZoomOutBut {
+	/*give the corners a small curve*/
+	-webkit-border-radius: 15px 0 0 15px;
+	-moz-border-radius: 15px 0 0 15px;
+	border-radius: 15px 0 0 15px;
+}
+
+@external .touchZoomInBut;
+.touchZoomInBut {
+	margin-left: 3px;
+	/*give the corners a small curve*/
+	-webkit-border-radius: 0 15px 15px 0;
+	-moz-border-radius: 0 15px 15px 0;
+	border-radius: 0 15px 15px 0;
+}
+
+/* touch zoom widget touched and normal STATES*/
+@external .touchZoomButNormal;
+.touchZoomButNormal {
+	width: 50px;
+	border: 1px groove black; /*#7c93ba*/
+	cursor: pointer;
+	/*forces the cursor to change to a hand when the button is hovered*/
+	/*give the background a gradient*/
+	background-color: #327327;
+	/*required for browsers that don't support gradients*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#a3c487),
+		to(#327327));
+	/*327327 a3c487  #88add7, #6b6dbb*/
+	background: -webkit-linear-gradient(top, #a3c487, #327327);
+	background: -moz-linear-gradient(top, #a3c487, #327327);
+	background: -o-linear-gradient(top, #a3c487, #327327);
+	background: linear-gradient(top, #a3c487, #327327);
+	/*style to the text inside the button*/
+	color: #fff;
+	font-size: 1.5em;
+	letter-spacing: .1em;
+	font-variant: small-caps;
+	/*add a drop shadow to the button*/
+	-webkit-box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+	-moz-box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+	box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+	text-align: center;
+}
+
+@external .touchZoomButTouched;
+.touchZoomButTouched {
+	color: #edebda;
+	/*reduce the spread of the shadow to give a pushed effect*/
+	-webkit-box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
+	-moz-box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
+	box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
+}

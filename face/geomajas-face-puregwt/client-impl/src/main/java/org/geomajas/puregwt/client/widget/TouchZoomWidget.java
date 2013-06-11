@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.widget;
 
 import org.geomajas.puregwt.client.map.MapPresenter;
-
+import org.geomajas.puregwt.client.resource.GeomajasWidgetResource;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -22,7 +22,6 @@ import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -39,25 +38,13 @@ public class TouchZoomWidget extends AbstractMapWidget {
 	private static TouchZoomWidgetUiBinder uiBinder = GWT.create(TouchZoomWidgetUiBinder.class);
 
 	/**
-	 * ...
+	 * Touch widget ui binder interface.
+	 * 
 	 * @author Dosi Bingov
-	 *
+	 * 
 	 */
 	interface TouchZoomWidgetUiBinder extends UiBinder<Widget, TouchZoomWidget> {
 	}
-
-	/**
-	 * touched and normal css style of touch widget.
-	 * @author Dosi Bingov
-	 *
-	 */
-	interface TouchZoomStyle extends CssResource {
-		String normal();
-		String touched();
-	}
-
-	@UiField
-	protected TouchZoomStyle style;
 
 	private int topPos = 15; // css top position
 
@@ -116,7 +103,7 @@ public class TouchZoomWidget extends AbstractMapWidget {
 
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
-				zoomIn.addStyleName(style.touched());
+				zoomIn.addStyleName(GeomajasWidgetResource.INSTANCE.css().touchZoomButTouched());
 
 				int index = TouchZoomWidget.this.mapPresenter.getViewPort().getZoomStrategy()
 						.getZoomStepIndex(TouchZoomWidget.this.mapPresenter.getViewPort().getScale());
@@ -135,7 +122,7 @@ public class TouchZoomWidget extends AbstractMapWidget {
 
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
-				zoomIn.removeStyleName(style.touched());
+				zoomIn.removeStyleName(GeomajasWidgetResource.INSTANCE.css().touchZoomButTouched());
 			}
 		});
 
@@ -143,7 +130,7 @@ public class TouchZoomWidget extends AbstractMapWidget {
 
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
-				zoomOut.addStyleName(style.touched());
+				zoomOut.addStyleName(GeomajasWidgetResource.INSTANCE.css().touchZoomButTouched());
 
 				int index = TouchZoomWidget.this.mapPresenter.getViewPort().getZoomStrategy()
 						.getZoomStepIndex(TouchZoomWidget.this.mapPresenter.getViewPort().getScale());
@@ -162,7 +149,7 @@ public class TouchZoomWidget extends AbstractMapWidget {
 
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
-				zoomOut.addStyleName(style.touched());
+				zoomOut.addStyleName(GeomajasWidgetResource.INSTANCE.css().touchZoomButTouched());
 			}
 		});
 
@@ -170,7 +157,7 @@ public class TouchZoomWidget extends AbstractMapWidget {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				zoomOut.removeStyleName(style.touched());
+				zoomOut.removeStyleName(GeomajasWidgetResource.INSTANCE.css().touchZoomButTouched());
 			}
 		});
 	}
