@@ -58,7 +58,7 @@ public interface GfxUtil {
 	 * 
 	 * @param geometry
 	 *            The geometry to transform.
-	 * @return The quivalent path object.
+	 * @return The equivalent path object.
 	 */
 	Path toPath(Geometry geometry);
 }

@@ -1157,90 +1157,115 @@ VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlis
     </section>
 
     <section>
-      <title>Rendering utility: GfxUtil</title>
+      <title>Drawing geometries on the map</title>
 
-      <para/>
-    </section>
-  </section>
+      <para>Often one needs to draw geometries on the map. Say we have a
+      Feature who's geometry we want to render in a specific style. As a
+      Feature is a part of a FeaturesSupported layer, it's geometry is
+      expressed in the map CRS. Hence we will want to render it's geometry in
+      WorldSpace. So we start by creating a VectorContainer:</para>
 
-  <section>
-    <title>Geometry manipulation</title>
+      <programlisting>// Getting a VectorContainer for rendering in WorldSpace:
+VectorContainer worldContainer = mapPresenter.addWorldContainer();</programlisting>
 
-    <para>The spatial package
-    (<code>org.geomajas.puregwt.client.spatial</code>) contains a collection
-    of math and geometry related classes and utilities to provide all the
-    client-side calculations one should need. If really complex calculations
-    need to be performed, it's best to let the server handle it anyway.</para>
+      <para>Next we want to add the geometry as a Path to the VectorContainer.
+      First we need to transform the geometry into a Path object:</para>
 
-    <para>Next to the expected Geometry definitions (Point, LineString,
-    Polygon, ...) this package also provides a few mathematical concepts such
-    as a Vector, Matrix or LineSegment.</para>
+      <programlisting>// Get the graphics utility from the GIN injector:
+GfxUtil gfxUtil = GEOMAJASINJECTOR.getGfxUtil();
 
-    <section>
-      <title>Geometry definitions</title>
+// Now transform the geometry into a Shape object:
+Path path = gfxUtil.toPath(feature.getGeometry()); // Does not work for point geometries!</programlisting>
 
-      <para>The geometry definitions on the client have been written to
-      resemble the JTS (Java Topology Suite) geometry definitions. This
-      definition in turn has been based upon the OGC Simple Feture
-      Specification. You will find the same classes with each roughly the same
-      methods. The main difference (beside the package name) is that the
-      methods for complex geometry manipulation are left out.</para>
+      <para>Before adding the path to the VectorContainer, we may want to
+      style it first:</para>
 
-      <para>Supported geometries are:</para>
+      <programlisting>path.setFillColor("#0066AA");
+path.setFillOpacity(0.4);
+path.setStrokeColor("#004499");</programlisting>
 
-      <itemizedlist>
-        <listitem>
-          <para><emphasis>Point</emphasis>: a geometry representation of a
-          single coordinate.</para>
-        </listitem>
+      <para>Now it's time to add the path to the VectorContainer:</para>
 
-        <listitem>
-          <para><emphasis>MultiPoint</emphasis>: a geometry containing
-          multiple Point geometries.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>LineString</emphasis>: a list of connected
-          coordinates. Sometimes also called a polyline.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>LinearRing</emphasis>: an extension of the
-          LineString geometry that expects the last coordinate to be equal to
-          the first coordinate. In other words, a LinearRing is a closed
-          LineString.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>MultiLineString</emphasis>: a geometry containing
-          multiple LineString geometries.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>Polygon</emphasis>: a Polygon is a two-part
-          geometry, consisting of an exterior LinearRing and a list of
-          interior LinearRings. The exterior LinearRing, also called the
-          shell, is the outer hull of the geometry, while the interior rings
-          can be seen as holes in the exterior ring's surface area.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>MultiPolygon</emphasis>: a geometry containing
-          multiple Polygon geometries.</para>
-        </listitem>
-      </itemizedlist>
-    </section>
-
-    <section>
-      <title>Spatial services</title>
-
-      <para/>
+      <programlisting>worldContainer.add(path);</programlisting>
     </section>
   </section>
 
   <section>
     <title>Client/Server communication</title>
 
-    <para/>
+    <para>Although this chapter of the documentation is about the PureGwt
+    client API, Geomajas is at it's heart a client/server based framework. The
+    client needs the server to operate correctly. The client/server
+    communication mechanism used is a command pattern based upon the GWT RPC
+    services.</para>
+
+    <para>An example of this communication is the map that fetches it's
+    configuration from the server when it initializes.</para>
+
+    <section>
+      <title>CommandService</title>
+
+      <para>The commands available are always defined on the backend, but can
+      be called from the client. Most commands are used internally by
+      Geomajas, but often, backend plugins provide additional commands for the
+      client to use. For this, a CommandService singleton is provided. This
+      service can be accessed through the Gin injection framework:</para>
+
+      <programlisting>CommandService commandService = GEOMAJASINJECTOR.getCommandService();</programlisting>
+
+      <para>Next you can use this service to execute a command:</para>
+
+      <programlisting>// Prepare a command:
+EmptyCommandRequest request = new EmptyCommandRequest();
+GwtCommand command = new GwtCommand();
+command.setCommandName("command.GetSimpleExceptionCommand");
+command.setCommandRequest(request);
+
+// Now execute the command:
+commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&gt;() {
+
+	@Override
+	public void execute(CommandResponse response) {
+		// don't do anything. An Exception will been thrown at server-side
+	}
+});</programlisting>
+
+      <para>This example is taken from the showcase, where a command is
+      created that throws an exception. Perhaps not the most useful command,
+      but it's a clear example.</para>
+
+      <para>Every command is defined by a request and a response object. We
+      create a client-side GwtCommand object that refers to the backend
+      command implementation through a string identifier, in this case
+      "command.GetSimpleExceptionCommand". Normally this string is defined as
+      a public static string in the request object.</para>
+    </section>
+
+    <section>
+      <title>Custom client/server communication</title>
+
+      <para>Although Geomajas uses a command pattern for it's own
+      client/server communication, it is not limited by it. After all,
+      Geomajas uses the GWT framework which has native support for Ajax calls
+      (Json, XML, ...). When creating your own WebServices, you are not bound
+      to extend Geomajas' commands. It is perfectly possible to write your own
+      RESTful service or a custom GWT RPC service instead.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Widgets</title>
+
+    <para>Next to the map, Geomajas provides additional widgets to be placed
+    on top of the map.</para>
+
+    <section>
+      <title>Adding widgets on top of the map</title>
+
+      <para>By default Geomajas will add a few widgets on top of the map that
+      provide navigation buttons. Of course it is possible to replace any such
+      widget with your own implementation. Actually it is perfectly possible
+      to add any widget you want on top of the map.</para>
+    </section>
   </section>
 </chapter>
