@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.configuration;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Dao proxy for stored print templates.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class HibernatePrintTemplateDao implements PrintTemplateDao {
@@ -42,5 +43,4 @@ public class HibernatePrintTemplateDao implements PrintTemplateDao {
 			throw new IOException("find all print template names failed", e);
 		}
 	}
-
 }

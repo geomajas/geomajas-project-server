@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author Jan De Moerloose
  * @since 2.0.0
  * 
- * @param <T> DTO object class
+ * @param <T>
+ *            DTO object class
  * @deprecated use AbstractPrintComponent instead
  */
 @Deprecated
@@ -67,8 +69,9 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	/**
 	 * Create a print component with given id and no constraints.
-	 *
-	 * @param id component id
+	 * 
+	 * @param id
+	 *            component id
 	 */
 	public PrintComponentImpl(String id) {
 		this(id, new LayoutConstraint());
@@ -76,9 +79,11 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	/**
 	 * Create a print component with given id and constraints.
-	 *
-	 * @param id id
-	 * @param constraint constraints
+	 * 
+	 * @param id
+	 *            id
+	 * @param constraint
+	 *            constraints
 	 */
 	public PrintComponentImpl(String id, LayoutConstraint constraint) {
 		this.id = id;
@@ -250,8 +255,9 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	/**
 	 * Set constraint on this component.
-	 *
-	 * @param constraint constraint
+	 * 
+	 * @param constraint
+	 *            constraint
 	 */
 	public void setConstraint(LayoutConstraint constraint) {
 		this.constraint = constraint;
@@ -341,8 +347,9 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	/**
 	 * Set child components.
-	 *
-	 * @param children children
+	 * 
+	 * @param children
+	 *            children
 	 */
 	public void setChildren(List<PrintComponent<?>> children) {
 		this.children = children;
@@ -354,8 +361,9 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	/**
 	 * Set component id.
-	 *
-	 * @param id id
+	 * 
+	 * @param id
+	 *            id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -368,8 +376,9 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	/**
 	 * Set tag.
-	 *
-	 * @param tag tag
+	 * 
+	 * @param tag
+	 *            tag
 	 */
 	public void setTag(String tag) {
 		this.tag = tag;

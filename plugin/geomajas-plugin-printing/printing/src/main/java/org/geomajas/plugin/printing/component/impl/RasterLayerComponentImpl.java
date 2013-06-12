@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Color;
@@ -22,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,9 +45,6 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.TranslateDescriptor;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
@@ -70,7 +69,6 @@ import com.lowagie.text.Rectangle;
 import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import com.vividsolutions.jts.geom.Envelope;
-
 
 /**
  * Sub component of a map responsible for rendering raster layer.
@@ -109,10 +107,6 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	@XStreamOmitField
 	protected double rasterScale;
 
-	/** To fetch images. */
-	@XStreamOmitField
-	private HttpClient httpClient;
-
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(RasterLayerComponentImpl.class);
 
@@ -127,7 +121,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	@Autowired
 	@XStreamOmitField
 	private GeoService geoService;
-	
+
 	@Autowired
 	@XStreamOmitField
 	private DispatcherUrlService dispatcherUrlService;
@@ -138,15 +132,13 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	public RasterLayerComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
 		getConstraint().setAlignmentY(LayoutConstraint.JUSTIFIED);
-		MultiThreadedHttpConnectionManager manager = new MultiThreadedHttpConnectionManager();
-		manager.setMaxConnectionsPerHost(10);
-		httpClient = new HttpClient(manager);
 	}
 
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor visitor
+	 * @param visitor
+	 *            visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
@@ -189,11 +181,11 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 								ImageResult result;
 								result = future.get();
 								// create a rendered image
-								RenderedImage image = JAI.create("stream", new ByteArraySeekableStream(result
-										.getImage()));
+								RenderedImage image = JAI.create("stream",
+										new ByteArraySeekableStream(result.getImage()));
 								// convert to common direct colormodel (some images have their own indexed color model)
-								// Sprint-51  If the image source is not available the java.awt.image will throw
-								// a runtime error causing the printing to fail.  If this happens handle the error
+								// Sprint-51 If the image source is not available the java.awt.image will throw
+								// a runtime error causing the printing to fail. If this happens handle the error
 								// and and allow the print process to continue.
 								// convert to common direct colormodel (some images have their own indexed color model)
 								RenderedImage colored = null;
@@ -238,8 +230,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 					}
 
 					if (images.size() > 0) {
-						ImageLayout imageLayout = new ImageLayout(0, 0, (int) pixelBounds.getWidth(), (int) pixelBounds
-								.getHeight());
+						ImageLayout imageLayout = new ImageLayout(0, 0, (int) pixelBounds.getWidth(),
+								(int) pixelBounds.getHeight());
 						imageLayout.setTileWidth(imageWidth);
 						imageLayout.setTileHeight(imageHeight);
 
@@ -332,7 +324,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Get the layer opacity.
-	 *
+	 * 
 	 * @return layer opacity
 	 */
 	public float getOpacity() {
@@ -341,8 +333,9 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Set the layer opacity.
-	 *
-	 * @param opacity layer opacity
+	 * 
+	 * @param opacity
+	 *            layer opacity
 	 */
 	public void setOpacity(float opacity) {
 		this.opacity = opacity;
@@ -371,11 +364,15 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Add image in the document.
-	 *
-	 * @param context PDF context
-	 * @param imageResult image
-	 * @throws BadElementException PDF construction problem
-	 * @throws IOException PDF construction problem
+	 * 
+	 * @param context
+	 *            PDF context
+	 * @param imageResult
+	 *            image
+	 * @throws BadElementException
+	 *             PDF construction problem
+	 * @throws IOException
+	 *             PDF construction problem
 	 */
 	protected void addImage(PdfContext context, ImageResult imageResult) throws BadElementException, IOException {
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
@@ -400,9 +397,11 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Add image with a exception message in the PDF document.
-	 *
-	 * @param context PDF context
-	 * @param e exception to put in image
+	 * 
+	 * @param context
+	 *            PDF context
+	 * @param e
+	 *            exception to put in image
 	 */
 	protected void addLoadError(PdfContext context, ImageException e) {
 		Bbox imageBounds = e.getRasterImage().getBounds();
@@ -465,10 +464,12 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 		/**
 		 * Constructor.
-		 *
-		 * @param rasterImage image for which the exception occurred
-		 * @param cause cause exception
-		 *
+		 * 
+		 * @param rasterImage
+		 *            image for which the exception occurred
+		 * @param cause
+		 *            cause exception
+		 * 
 		 * */
 		public ImageException(RasterTile rasterImage, Throwable cause) {
 			super(cause);
@@ -477,7 +478,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 		/**
 		 * Get image for which the exception occurred.
-		 *
+		 * 
 		 * @return image for which the exception occurred
 		 */
 		public RasterTile getRasterImage() {
@@ -493,7 +494,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		private ImageResult result;
 
 		private int retries;
-		
+
 		private String url;
 
 		public RasterImageDownloadCallable(int retries, RasterTile rasterImage) {
@@ -508,9 +509,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 			int triesLeft = retries;
 			while (true) {
 				try {
-					GetMethod get = new GetMethod(url);
-					httpClient.executeMethod(get);
-					InputStream inputStream = get.getResponseBodyAsStream();
+					URL imageUrl = new URL(url);
+					InputStream inputStream = imageUrl.openStream();
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
 					byte[] bytes = new byte[1024];
 					int readBytes;
@@ -539,10 +539,11 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	// directly calling the ColorConvert operation fails for unknown reasons ?!
 
 	/**
-	 * Converts an image to a RGBA direct color model using a workaround via buffered image
-	 * directly calling the ColorConvert operation fails for unknown reasons ?!
-	 *
-	 * @param img image to convert
+	 * Converts an image to a RGBA direct color model using a workaround via buffered image directly calling the
+	 * ColorConvert operation fails for unknown reasons ?!
+	 * 
+	 * @param img
+	 *            image to convert
 	 * @return converted image
 	 */
 	public PlanarImage toDirectColorModel(RenderedImage img) {
@@ -556,8 +557,9 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Lookup error message for internationalization bundle.
-	 *
-	 * @param key key to lookup
+	 * 
+	 * @param key
+	 *            key to lookup
 	 * @return internationalized value
 	 */
 	public String getNlsString(String key) {
@@ -567,5 +569,4 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 			return '!' + key + '!';
 		}
 	}
-
 }

@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.document;
 
 import java.awt.image.BufferedImage;
@@ -39,26 +40,22 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class SinglePageDocument extends AbstractDocument {
 
-	/**
-	 * The page to render.
-	 */
+	/** The page to render. */
 	protected PageComponent page;
 
-	/**
-	 * Filters to apply to layers.
-	 */
+	/** Filters to apply to layers. */
 	protected Map<String, String> filters;
 
-	/**
-	 * In-memory output stream to know content length.
-	 */
+	/** In-memory output stream to know content length. */
 	private ByteArrayOutputStream baos;
 
 	/**
 	 * Constructs a document with the specified dimensions.
 	 * 
-	 * @param page page
-	 * @param filters filters
+	 * @param page
+	 *            page
+	 * @param filters
+	 *            filters
 	 */
 	public SinglePageDocument(PageComponent page, Map<String, String> filters) {
 		this.page = page;
@@ -86,9 +83,11 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Re-calculates the layout and renders to internal memory stream. Always call this method before calling render()
 	 * to make sure that the latest document changes have been taken into account for rendering.
-	 *
-	 * @param format format
-	 * @throws PrintingException oops
+	 * 
+	 * @param format
+	 *            format
+	 * @throws PrintingException
+	 *             oops
 	 */
 	public void layout(Format format) throws PrintingException {
 		try {
@@ -101,11 +100,16 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Prepare the document before rendering.
 	 * 
-	 * @param outputStream output stream to render to, null if only for layout
-	 * @param format format
-	 * @throws DocumentException oops
-	 * @throws IOException oops
-	 * @throws PrintingException oops
+	 * @param outputStream
+	 *            output stream to render to, null if only for layout
+	 * @param format
+	 *            format
+	 * @throws DocumentException
+	 *             oops
+	 * @throws IOException
+	 *             oops
+	 * @throws PrintingException
+	 *             oops
 	 */
 	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
 			PrintingException {
@@ -147,11 +151,15 @@ public class SinglePageDocument extends AbstractDocument {
 				writer = PdfWriter.getInstance(document, baos);
 				// Render in correct colors for transparent rasters
 				writer.setRgbTransparencyBlending(true);
+
 				document.open();
 				baos.reset();
 				context = new PdfContext(writer);
 				context.initSize(page.getBounds());
 			}
+			// int compressionLevel = writer.getCompressionLevel(); // For testing
+			// writer.setCompressionLevel(0);
+
 			// Actual drawing
 			document.addTitle("Geomajas");
 			// second pass to layout
@@ -186,7 +194,7 @@ public class SinglePageDocument extends AbstractDocument {
 						ImageIO.write(img, format.getExtension(), baos);
 					} catch (PdfException e) {
 						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
-					} 
+					}
 					break;
 				default:
 					throw new IllegalStateException(
@@ -207,5 +215,4 @@ public class SinglePageDocument extends AbstractDocument {
 	public int getContentLength() {
 		return baos == null ? 0 : baos.size();
 	}
-
 }
