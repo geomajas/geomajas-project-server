@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Color;
@@ -49,40 +50,26 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(ScaleBarComponentImpl.class);
 
-	/**
-	 * The unit (meter, mile, degree).
-	 */
+	/** The unit (meter, mile, degree). */
 	private String unit = "units";
 
-	/**
-	 * The number of tics for the scale bar.
-	 */
+	/** The number of tics for the scale bar. */
 	private int ticNumber;
 
-	/**
-	 * The labels on top of the ticks.
-	 */
+	/** The labels on top of the ticks. */
 	private List<String> tickLabels = new ArrayList<String>();
 
-	/**
-	 * The calculated sizes of the ticks.
-	 */
+	/** The calculated sizes of the ticks. */
 	private List<Rectangle> tickSizes = new ArrayList<Rectangle>();
 
-	/**
-	 * The label font.
-	 */
+	/** The label font. */
 	@XStreamConverter(FontConverter.class)
 	private Font font = new Font("Dialog", Font.PLAIN, 12);
 
-	/**
-	 * Width a tic (double checkerboard style).
-	 */
+	/** Width a tic (double checkerboard style). */
 	private float ticWidth;
 
-	/**
-	 * Height of a tic (double checkerboard style).
-	 */
+	/** Height of a tic (double checkerboard style). */
 	private float ticHeight;
 
 	@Autowired
@@ -102,6 +89,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 	private static final String[] UNIT_PREFIXES = new String[] { "n", "m", "", "k", "M" };
 
 	private static final float FEET_PER_METER = 3.2808399f;
+
 	private static final float FEET_PER_MILE = 5280f;
 
 	/** Default constructor. */
@@ -115,7 +103,7 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 
 	/**
 	 * Get font.
-	 *
+	 * 
 	 * @return font
 	 */
 	public Font getFont() {
@@ -124,8 +112,9 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 
 	/**
 	 * Set font.
-	 *
-	 * @param font font
+	 * 
+	 * @param font
+	 *            font
 	 */
 	public void setFont(Font font) {
 		this.font = font;
@@ -134,7 +123,8 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor visitor
+	 * @param visitor
+	 *            visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 		visitor.visit(this);
@@ -169,8 +159,8 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 					}
 
 					// check for yards conversion
-					if (UnitType.ENGLISH == displayUnitType && (width / pxPUnit) >= 3 &&
-							(width / pxPUnit) < FEET_PER_MILE) {
+					if (UnitType.ENGLISH == displayUnitType && (width / pxPUnit) >= 3
+							&& (width / pxPUnit) < FEET_PER_MILE) {
 						pxPUnit = pxPUnit * 3f;
 						englishUnit = "yd";
 					}
@@ -217,19 +207,42 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		ticHeight = ticWidth * 0.3f;
 		int ticCount = getTicNumber();
 
-
 		// font = new Font("Dialog", Font.PLAIN, (int) (0.8 * ticHeight));
 		// set the Unit Prefixes
 
+		String units;
+		if (!isEnglishUnits && !isEnglishMiles) {
+			units = ((ticLog >= -2 && ticLog <= 2) ? UNIT_PREFIXES[ticLog + 2] : "*10^" + (ticLog * 3)) + unit;
+		} else {
+			units = englishUnit;
+		}
+
+		// First pass to check if all fractions can be ignored
+		boolean ignoreAllFractions = true;
+		for (int i = 0; i <= ticCount; i++) {
+			double valueLabel;
+			if (!isEnglishUnits && !isEnglishMiles) {
+				valueLabel = i * ticWidthInUnits / Math.pow(10, 3 * ticLog);
+
+			} else {
+				valueLabel = i * ticWidthInUnits;
+			}
+			double rounded = Math.round(valueLabel);
+			if (Math.abs(valueLabel - (double) rounded) > 0.001) {
+				ignoreAllFractions = false;
+				break; // Abort
+			}
+		}
+
 		for (int i = 0; i <= ticCount; i++) {
 			String label;
-			String units;
+
 			if (!isEnglishUnits && !isEnglishMiles) {
-				label = Double.toString(i * ticWidthInUnits / Math.pow(10, 3 * ticLog));
-				units = ((ticLog >= -2 && ticLog <= 2) ? UNIT_PREFIXES[ticLog + 2] : "*10^" + (ticLog * 3)) + unit;
+				label = scaleLabelOnPrint(i * ticWidthInUnits / Math.pow(10, 3 * ticLog), ignoreAllFractions);
+
 			} else {
-				label = Double.toString(i * ticWidthInUnits);
-				units = englishUnit;
+				label = scaleLabelOnPrint(i * ticWidthInUnits, ignoreAllFractions);
+
 			}
 
 			if (i == ticCount) {
@@ -248,6 +261,17 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		float height = ticHeight;
 		height += first.getHeight();
 		setBounds(new Rectangle(0, 0, width, height));
+	}
+
+	private String scaleLabelOnPrint(double value, boolean ignoreAllFractions) {
+
+		String valueAsString;
+		if (ignoreAllFractions) {
+			valueAsString = Long.toString(Math.round(value));
+		} else {
+			valueAsString = Double.toString(value);
+		}
+		return valueAsString;
 	}
 
 	@Override
@@ -330,6 +354,4 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		setUnit(scaleBarInfo.getUnit());
 		setFont(converterService.toInternal(scaleBarInfo.getFont()));
 	}
-
-
 }
