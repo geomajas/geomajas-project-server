@@ -36,33 +36,26 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Inclusion of legend in printed document.
- *
+ * 
  * @author Jan De Moerloose
  */
 @Component()
 @Scope(value = "prototype")
 public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentInfo> implements LegendComponent {
 
-	/**
-	 * Application id
-	 */
+	/** Application id. */
 	private String applicationId;
-	
-	/**
-	 * Map id
-	 */
+
+	/** Map id. */
 	private String mapId;
 
-	/**
-	 * The font for the text
-	 */
+	/** The font for the text. */
 	@XStreamConverter(FontConverter.class)
-	private Font font = new Font("Dialog", Font.PLAIN, 10);
+	private Font font = new Font(LegendComponentInfo.DEFAULT_LEGEND_FONT_FAMILY, Font.PLAIN,
+			LegendComponentInfo.DEFAULT_LEGEND_FONTSIZE); // Default font
 
-	/**
-	 * Heading text
-	 */
-	private String title = "Legend";
+	/** Heading text. */
+	private String title = LegendComponentInfo.DEFAULT_LEGEND_TITLE;
 
 	@Autowired
 	@XStreamOmitField
@@ -74,13 +67,13 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 
 	public LegendComponentImpl(String title) {
 		this.title = title;
-		setConstraint(new LayoutConstraint(LayoutConstraint.RIGHT, LayoutConstraint.BOTTOM,
-				LayoutConstraint.FLOW_Y, 0, 0, 20, 20));
+		setConstraint(new LayoutConstraint(LayoutConstraint.RIGHT, LayoutConstraint.BOTTOM, LayoutConstraint.FLOW_Y, 0,
+				0, 20, 20)); /* marginX: 20 ; marginY: 20 */
 		LabelComponentImpl titleLabel = new LabelComponentImpl();
 		titleLabel.getConstraint().setAlignmentX(LayoutConstraint.CENTER);
 		titleLabel.getConstraint().setMarginY(5);
 		titleLabel.setTextOnly(true);
-		titleLabel.setText(getTitle());
+		titleLabel.setText(getTitle()); // Usually "Legend" (if English)
 		titleLabel.setTag(PrintTemplate.TITLE);
 		titleLabel.setFont(font);
 		addComponent(titleLabel);
@@ -88,15 +81,16 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 
 	/**
 	 * Call back visitor.
-	 *
+	 * 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 		visitor.visit(this);
 	}
-	
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.LegendComponent#getFont()
 	 */
 	public Font getFont() {
@@ -107,7 +101,9 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 		this.font = font;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.LegendComponent#getTitle()
 	 */
 	public String getTitle() {
@@ -132,11 +128,17 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 		context.strokeRectangle(getSize());
 	}
 
+	@SuppressWarnings("deprecation")
 	protected MapComponent getMap() {
+		PrintComponent<?> parent = getParent();
+		assert (null != parent && parent instanceof MapComponent) : 
+				"The parent of the LegendComponent must be a mapComponent.";
 		return (MapComponent) getParent();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.LegendComponent#getMapId()
 	 */
 	public String getMapId() {
@@ -146,16 +148,14 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
-	
+
 	public String getApplicationId() {
 		return applicationId;
 	}
 
-	
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
-
 
 	// /**
 	// * A legend manages its own children at rendering time, so they shouldn't
@@ -199,7 +199,7 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 				getFont());
 		addComponent(item);
 	}
-	
+
 	public void fromDto(LegendComponentInfo legendInfo) {
 		super.fromDto(legendInfo);
 		setApplicationId(legendInfo.getApplicationId());
@@ -207,6 +207,4 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 		setFont(converterService.toInternal(legendInfo.getFont()));
 		setTitle(legendInfo.getTitle());
 	}
-
-
 }

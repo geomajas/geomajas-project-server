@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.dto;
 
 import org.geomajas.configuration.FontStyleInfo;
@@ -19,12 +20,34 @@ import org.geomajas.annotation.Api;
  * @author Jan De Moerloose
  * @see org.geomajas.plugin.printing.component.LegendComponent
  * @since 2.0.0
- *
  */
 @Api(allMethods = true)
 public class LegendComponentInfo extends PrintComponentInfo {
 
 	private static final long serialVersionUID = 200L;
+
+	/**
+	 * Default font family for text in the legend component. Can be overridden by specifying the font via setFont()
+	 * 
+	 * @since 2.4.0
+	 */
+	public static final String DEFAULT_LEGEND_FONT_FAMILY = "Dialog";
+
+	/**
+	 * Default title for the legend component.
+	 * 
+	 * @since 2.4.0
+	 */
+	public static final String DEFAULT_LEGEND_TITLE = "Legend"; // Default is english
+
+	/**
+	 * Default font family for text in the legend component. Can be overridden by specifying the font via setFont()
+	 * 
+	 * @since 2.4.0
+	 */
+	public static final int DEFAULT_LEGEND_FONTSIZE = 10;
+
+	private static final String LEGEND_FONT_STYLE_AS_STRING = "Plain";
 
 	private String applicationId;
 
@@ -32,7 +55,10 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	private FontStyleInfo font;
 
-	private String title = "Legend";
+	/**
+	 * Title or Heading text of the legend
+	 */
+	private String title = DEFAULT_LEGEND_TITLE;
 
 	/**
 	 * Default constructor.
@@ -44,14 +70,14 @@ public class LegendComponentInfo extends PrintComponentInfo {
 		getLayoutConstraint().setMarginX(20);
 		getLayoutConstraint().setMarginY(20);
 		font = new FontStyleInfo();
-		font.setFamily("Dialog");
-		font.setStyle("Plain");
+		font.setFamily(DEFAULT_LEGEND_FONT_FAMILY);
+		font.setStyle(LEGEND_FONT_STYLE_AS_STRING);
 		font.setSize(12);
 	}
 
 	/**
 	 * Get application id.
-	 *
+	 * 
 	 * @return application id
 	 */
 	public String getApplicationId() {
@@ -60,8 +86,9 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Set application id.
-	 *
-	 * @param applicationId application id
+	 * 
+	 * @param applicationId
+	 *            application id
 	 */
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
@@ -69,7 +96,7 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Get map id.
-	 *
+	 * 
 	 * @return map id
 	 */
 	public String getMapId() {
@@ -78,8 +105,9 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Set map id.
-	 *
-	 * @param mapId map id
+	 * 
+	 * @param mapId
+	 *            map id
 	 */
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
@@ -87,7 +115,7 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Get font style.
-	 *
+	 * 
 	 * @return font style
 	 */
 	public FontStyleInfo getFont() {
@@ -96,8 +124,9 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Set font style.
-	 *
-	 * @param font font style
+	 * 
+	 * @param font
+	 *            font style
 	 */
 	public void setFont(FontStyleInfo font) {
 		this.font = font;
@@ -105,7 +134,7 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Get title.
-	 *
+	 * 
 	 * @return title
 	 */
 	public String getTitle() {
@@ -114,11 +143,11 @@ public class LegendComponentInfo extends PrintComponentInfo {
 
 	/**
 	 * Set title.
-	 *
-	 * @param title title
+	 * 
+	 * @param title
+	 *            title
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 }

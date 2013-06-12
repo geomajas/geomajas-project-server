@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Font;
@@ -17,6 +18,7 @@ import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
+import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +26,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Legend item component for printed document.
- *
+ * 
  * @author Jan De Moerloose
  */
 @Component()
@@ -32,13 +34,13 @@ import org.springframework.stereotype.Component;
 public class LegendItemComponentImpl extends AbstractPrintComponent<LegendItemComponentInfo> {
 
 	public LegendItemComponentImpl() {
-		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM,
-				LayoutConstraint.FLOW_X, 0, 0, 5, 5));
+		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM, LayoutConstraint.FLOW_X, 0,
+				0, 5, 5));
 	}
 
 	public LegendItemComponentImpl(FeatureStyleInfo def, String label, LayerType layerType, Font font) {
-		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM,
-				LayoutConstraint.FLOW_X, 0, 0, 5, 5));
+		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM, LayoutConstraint.FLOW_X, 0,
+				0, 5, 5));
 		LegendIconComponentImpl icon = new LegendIconComponentImpl();
 		icon.setLabel(label);
 		icon.setStyleInfo(def);
@@ -49,19 +51,28 @@ public class LegendItemComponentImpl extends AbstractPrintComponent<LegendItemCo
 
 	/**
 	 * Call back visitor.
-	 *
+	 * 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
-	
+
 	@Override
 	public void calculateSize(PdfContext context) {
 		super.calculateSize(context);
 	}
 
 	protected LegendComponent getLegend() {
-		return (LegendComponent) getParent();
+		@SuppressWarnings("deprecation")
+		PrintComponent<?> ancestor = getParent();
+
+		while (null != ancestor && !(ancestor instanceof LegendComponent)) {
+			ancestor = ancestor.getParent();
+		}
+		if (null != ancestor && ancestor instanceof LegendComponent) {
+			return (LegendComponent) ancestor;
+		} else {
+			return null;
+		}
 	}
-	
 }

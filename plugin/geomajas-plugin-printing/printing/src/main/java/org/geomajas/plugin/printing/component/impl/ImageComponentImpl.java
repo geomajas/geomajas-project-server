@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import org.geomajas.plugin.printing.component.LayoutConstraint;
@@ -29,14 +30,10 @@ import com.lowagie.text.Rectangle;
 @Scope(value = "prototype")
 public class ImageComponentImpl extends AbstractPrintComponent<ImageComponentInfo> {
 
-	/**
-	 * The (relative) path of the image
-	 */
+	/** The (relative) path of the image. */
 	private String imagePath;
 
-	/**
-	 * The image
-	 */
+	/** The image. */
 	private Image image;
 
 	public ImageComponentImpl() {
@@ -60,13 +57,16 @@ public class ImageComponentImpl extends AbstractPrintComponent<ImageComponentInf
 		this.imagePath = imagePath;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void render(PdfContext context) {
 		context.drawImage(image, getSize(), null);
 	}
 
 	@Override
 	public void calculateSize(PdfContext context) {
+		@SuppressWarnings("deprecation")
 		float width = getConstraint().getWidth();
+		@SuppressWarnings("deprecation")
 		float height = getConstraint().getHeight();
 		image = context.getImage(getImagePath());
 		if (width == 0 && height == 0) {
@@ -87,5 +87,4 @@ public class ImageComponentImpl extends AbstractPrintComponent<ImageComponentInf
 
 	public void accept(PrintComponentVisitor visitor) {
 	}
-
 }

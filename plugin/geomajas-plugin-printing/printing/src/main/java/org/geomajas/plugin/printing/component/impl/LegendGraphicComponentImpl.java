@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.image.RenderedImage;
@@ -17,6 +18,7 @@ import javax.imageio.ImageIO;
 
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
+import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo;
 import org.geomajas.service.LegendGraphicService;
@@ -62,22 +64,37 @@ public class LegendGraphicComponentImpl extends AbstractPrintComponent<LegendGra
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor visitor
+	 * @param visitor
+	 *            visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void calculateSize(PdfContext context) {
-		Rectangle textSize = context.getTextSize(label, getLegend().getFont());
-		float margin = 0.25f * getLegend().getFont().getSize();
+		LegendComponent legendComponent = getLegend();
+		assert (null != legendComponent) : "LegendGraphicComponent must be an instance of LegendComponent";
+		assert (null != legendComponent.getFont()) : "LegendGraphicComponent must be an instance of LegendComponent";
+
+		Rectangle textSize = context.getTextSize(label, legendComponent.getFont());
+		float margin = 0.25f * legendComponent.getFont().getSize();
 		getConstraint().setMarginX(margin);
 		getConstraint().setMarginY(margin);
 		setBounds(new Rectangle(textSize.getHeight(), textSize.getHeight()));
 	}
 
 	protected LegendComponent getLegend() {
-		return (LegendComponent) getParent().getParent();
+		@SuppressWarnings("deprecation")
+		PrintComponent<?> ancestor = getParent();
+
+		while (null != ancestor && !(ancestor instanceof LegendComponent)) {
+			ancestor = ancestor.getParent();
+		}
+		if (null != ancestor && ancestor instanceof LegendComponent) {
+			return (LegendComponent) ancestor;
+		}
+		return null;
 	}
 
 	@Override
@@ -180,5 +197,4 @@ public class LegendGraphicComponentImpl extends AbstractPrintComponent<LegendGra
 			return (int) h;
 		}
 	}
-
 }

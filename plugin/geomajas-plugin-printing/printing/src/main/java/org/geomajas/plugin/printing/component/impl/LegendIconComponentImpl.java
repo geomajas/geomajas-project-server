@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Color;
@@ -18,6 +19,7 @@ import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
+import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
 import org.slf4j.Logger;
@@ -30,7 +32,7 @@ import com.lowagie.text.Rectangle;
 
 /**
  * Legend icon inclusion in printed document.
- *
+ * 
  * @author Jan De Moerloose
  */
 @Component()
@@ -75,28 +77,50 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 
 	/**
 	 * Call back visitor.
-	 *
-	 * @param visitor visitor
+	 * 
+	 * @param visitor
+	 *            visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void calculateSize(PdfContext context) {
-		Rectangle textSize = context.getTextSize(label, getLegend().getFont());
-		float margin = 0.25f * getLegend().getFont().getSize();
-		getConstraint().setMarginX(margin);
-		getConstraint().setMarginY(margin);
+		LegendComponent legendComponent = getLegend();
+		assert (null != legendComponent) : "LegendGraphicComponent must be a descendant of a LegendComponent";
+
+		Rectangle textSize = context.getTextSize(label, legendComponent.getFont());
+		float margin = 0.25f * legendComponent.getFont().getSize();
+		if (getConstraint().getMarginX() <= 0.0) {
+			getConstraint().setMarginX(margin);
+		}
+		if (getConstraint().getMarginY() <= 0.0) {
+			getConstraint().setMarginY(margin);
+		}
 		setBounds(new Rectangle(textSize.getHeight(), textSize.getHeight()));
 	}
 
 	protected LegendComponent getLegend() {
-		return (LegendComponent) getParent().getParent();
+
+		@SuppressWarnings("deprecation")
+		PrintComponent<?> ancestor = getParent();
+
+		while (null != ancestor && !(ancestor instanceof LegendComponent)) {
+			ancestor = ancestor.getParent();
+		}
+		if (null != ancestor && ancestor instanceof LegendComponent) {
+			return (LegendComponent) ancestor;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public void render(PdfContext context) {
+		@SuppressWarnings("deprecation")
 		float w = getSize().getWidth();
+		@SuppressWarnings("deprecation")
 		float h = getSize().getHeight();
 		Rectangle iconRect = new Rectangle(0, 0, w, h);
 		Color fillColor = Color.white;
@@ -104,8 +128,7 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 		float[] dashArray = null;
 		if (styleInfo != null) {
 			fillColor = context.getColor(styleInfo.getFillColor(), styleInfo.getFillOpacity(), Color.white);
-			strokeColor = context.getColor(styleInfo.getStrokeColor(), styleInfo.getStrokeOpacity(),
-					Color.black);
+			strokeColor = context.getColor(styleInfo.getStrokeColor(), styleInfo.getStrokeOpacity(), Color.black);
 			dashArray = context.getDashArray(styleInfo.getDashArray());
 		}
 		float baseWidth = iconRect.getWidth() / 10;
@@ -139,8 +162,8 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 
 	private void drawLine(PdfContext context, Rectangle iconRect, Color strokeColor, float[] dashArray) {
 		float baseWidth = iconRect.getWidth() / 10;
-		context.drawRelativePath(new float[] {0f, 0.75f, 0.25f, 1f},
-				new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
+		context.drawRelativePath(new float[] { 0f, 0.75f, 0.25f, 1f }, new float[] { 0f, 0.25f, 0.75f, 1f }, iconRect,
+				strokeColor, baseWidth * 2, dashArray);
 	}
 
 	private void drawPoint(PdfContext context, Rectangle iconRect, Color fillColor, Color strokeColor) {
@@ -162,6 +185,7 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void fromDto(LegendIconComponentInfo iconInfo) {
 		super.fromDto(iconInfo);
@@ -169,5 +193,4 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 		setLayerType(iconInfo.getLayerType());
 		setStyleInfo(iconInfo.getStyleInfo());
 	}
-
 }
