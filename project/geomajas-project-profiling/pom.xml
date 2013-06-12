@@ -60,6 +60,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>2.2.9</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-profiling</artifactId>
 				<version>${project.version}</version>

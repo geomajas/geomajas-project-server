@@ -13,6 +13,7 @@ package org.geomajas.project.profiling.jdbc;
 
 import org.geomajas.annotation.Api;
 
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -72,7 +73,12 @@ public class ProfilingDriver implements Driver {
 		if (acceptsURL(s)) {
 			long start = System.currentTimeMillis();
 			try {
-				return new ProfilingConnection(DriverManager.getConnection(s.substring(PREFIX.length()), properties));
+				Connection connection = DriverManager.getConnection(s.substring(PREFIX.length()), properties);
+				if (null != connection) {
+					return (Connection) Proxy.newProxyInstance(connection.getClass().getClassLoader(),
+							new Class[] { Connection.class },
+							new ConnectionInvocationHandler(connection));
+				}
 			} finally {
 				register("Driver.connect", System.currentTimeMillis() - start);
 			}
@@ -105,7 +111,12 @@ public class ProfilingDriver implements Driver {
 		return true;
 	}
 
-	@Override
+	/**
+	 * Get parent logger, included for Java7.
+	 *
+	 * @return parent logger
+	 * @throws SQLFeatureNotSupportedException feature not supported
+	 */
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		throw new SQLFeatureNotSupportedException();
 	}
