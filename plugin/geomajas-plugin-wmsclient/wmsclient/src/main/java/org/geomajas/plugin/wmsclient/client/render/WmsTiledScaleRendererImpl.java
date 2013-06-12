@@ -21,13 +21,12 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
-import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
+import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
-import org.geomajas.puregwt.client.map.layer.OpacitySupported;
 
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
@@ -128,9 +127,6 @@ public class WmsTiledScaleRendererImpl implements WmsTiledScaleRenderer {
 
 	protected void renderTile(RasterTile tile, Callback<String, String> callback) {
 		HtmlImage image = htmlImageFactory.create(tile.getUrl(), tile.getBounds(), callback);
-		if (layer instanceof OpacitySupported) {
-			image.setOpacity(((OpacitySupported) layer).getOpacity());
-		}
 		container.add(image);
 	}
 
