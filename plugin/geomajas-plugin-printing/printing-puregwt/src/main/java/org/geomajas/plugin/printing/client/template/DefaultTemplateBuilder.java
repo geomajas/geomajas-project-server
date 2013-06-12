@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.client.template;
 
 import java.util.ArrayList;
@@ -64,7 +65,6 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 	protected boolean withArrow;
 
-	// protected MapModel mapModel;
 	protected MapPresenter mapPresenter;
 
 	protected String applicationId;
@@ -81,7 +81,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		template.setId(1L);
 		template.setName("default");
 		return template;
-	}	
+	}
 
 	@Override
 	protected PageComponentInfo buildPage() {
@@ -93,31 +93,37 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 	@Override
 	protected MapComponentInfo buildMap() {
-		MapComponentInfo map = super.buildMap();
-		map.getLayoutConstraint().setMarginX(marginX);
-		map.getLayoutConstraint().setMarginY(marginY);
-
 		ViewPort viewPort = mapPresenter.getViewPort();
 		double printWidth = getPageWidth() - 2 * marginX;
 		double printHeight = getPageHeight() - 2 * marginY;
 
 		Bbox fittingBox = createFittingBox(viewPort.getBounds(), printWidth / printHeight);
+
+		MapComponentInfo map = super.buildMap(fittingBox);
+		map.getLayoutConstraint().setMarginX(marginX);
+		map.getLayoutConstraint().setMarginY(marginY);
+
 		map.setLocation(new org.geomajas.geometry.Coordinate(fittingBox.getX(), fittingBox.getY()));
 		map.setPpUnit((float) (printWidth / fittingBox.getWidth()));
 
 		map.setTag("map");
 		// GWT:map.setMapId(mapModel.getMapInfo().getId());
+		// Old puregwt: map.setMapId(mapPresenter.getConfiguration().getId());
 		map.setMapId(mapPresenter.getConfiguration().getServerConfiguration().getId());
 
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
 
 		// use rasterized layers for pure GWT
-		double rasterScale = map.getPpUnit() * map.getRasterResolution() / 72;
+		double rasterScale = map.getPpUnit() * map.getRasterResolution() / 72.0;
+		// map.getPpUnit() = aantal pixels per map unit bij 72 dpi
+
 		mapBuilder.build(mapPresenter, fittingBox, rasterScale);
+
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
 		rasterizedLayersComponentInfo.setMapInfo(mapPresenter.getConfiguration().getServerConfiguration());
+
 		layers.add(rasterizedLayersComponentInfo);
 		map.getChildren().addAll(0, layers);
 		return map;
@@ -149,6 +155,8 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		style.setSize((int) PrintingLayout.templateDefaultFontSize);
 		legend.setFont(style);
 		legend.setMapId(mapPresenter.getConfiguration().getServerConfiguration().getId());
+		// Old puregwt: legend.setMapId(mapPresenter.getConfiguration().getId());
+
 		legend.setTag("legend");
 		// GWT:for (Layer layer : mapModel.getLayers())
 		LayersModel layersModel = this.mapPresenter.getLayersModel();
@@ -189,6 +197,11 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 			}
 		}
 		return legend;
+	}
+
+	@Override
+	protected LegendComponentInfo buildLegend(Bbox bounds) {
+		return buildLegend(); // fall-back
 	}
 
 	private LabelComponentInfo getLegendLabel(LegendComponentInfo legend, String text) {
@@ -311,11 +324,11 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	 * width/height ratio. and the same centerpoint.
 	 * 
 	 * @param bbox
-	 * @param target width/height ratio
+	 * @param target
+	 *            width/height ratio
 	 * @return bbox
 	 */
 	public Bbox createFittingBox(Bbox bbox, double newRatio) {
-
 		double oldRatio = bbox.getWidth() / bbox.getHeight();
 		double newWidth = bbox.getWidth();
 		double newHeight = bbox.getHeight();
@@ -330,7 +343,5 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		result.setX(bbox.getX() + (bbox.getWidth() - newWidth) / 2.0);
 		result.setY(bbox.getY() + (bbox.getHeight() - newHeight) / 2.0);
 		return result;
-
 	}
-
 }

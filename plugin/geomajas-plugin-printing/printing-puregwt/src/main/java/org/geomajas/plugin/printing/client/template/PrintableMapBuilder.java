@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.client.template;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * Builds a printable version of a live map.
  * 
  * @author Jan De Moerloose
- * 
+ * @author An Buyle (support for extra layer with e.g. selected geometries)
  */
 public class PrintableMapBuilder {
 
@@ -53,9 +54,18 @@ public class PrintableMapBuilder {
 		FontStyleInfo font = new FontStyleInfo();
 		font.applyDefaults();
 		legendRasterizingInfo.setFont(font);
-		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getServerConfiguration();
+
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
+
+		// Support for selection of layer object : create container for info on selected features;
+		// store the selections layer per layer
+		List<ClientLayerInfo> selectedLayers = new ArrayList<ClientLayerInfo>();
+		mapRasterizingInfo.setExtraLayers(selectedLayers);
+
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getServerConfiguration();
 		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		// Note: mapRasterizingInfo at this time is pretty empty (rastering info for
+		// layers not yet filled in)
 		return mapRasterizingInfo;
 	}
 

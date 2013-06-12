@@ -31,7 +31,6 @@ import org.geomajas.sld.RuleInfo;
  * {@link PrintableLayerBuilder} for {@link VectorServerLayer} instances.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 
@@ -59,14 +58,20 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 				case LINESTRING:
 				case MULTILINESTRING:
 					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getLineSelectStyle();
+					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getLineSelectStyle();
+
 					break;
 				case MULTIPOINT:
 				case POINT:
 					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getPointSelectStyle();
+					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getPointSelectStyle();
+
 					break;
 				case MULTIPOLYGON:
 				case POLYGON:
 					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getPolygonSelectStyle();
+					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getPolygonSelectStyle();
+
 					break;
 				default:
 					throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());

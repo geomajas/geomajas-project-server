@@ -8,9 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.printing.client.template;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.printing.client.util.PrintingLayout;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
@@ -27,7 +29,7 @@ import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
  * @author Jan De Moerloose
  */
 public abstract class AbstractTemplateBuilder {
-	
+
 	protected PrintTemplateInfo buildTemplate() {
 		PrintTemplateInfo template = new PrintTemplateInfo();
 		template.setPage(buildPage());
@@ -43,12 +45,22 @@ public abstract class AbstractTemplateBuilder {
 	}
 
 	protected MapComponentInfo buildMap() {
+		return buildMap(null);
+	}
+
+	protected MapComponentInfo buildMap(Bbox bounds) {
 		MapComponentInfo map = new MapComponentInfo();
 		if (PrintingLayout.templateIncludeScaleBar) {
 			map.addChild(buildScaleBar());
 		}
 		if (PrintingLayout.templateIncludeLegend) {
-			map.addChild(buildLegend());
+			LegendComponentInfo legend;
+			if (null == bounds) {
+				legend = buildLegend();
+			} else {
+				legend = buildLegend(bounds);
+			}
+			map.addChild(legend);
 		}
 		if (PrintingLayout.templateIncludeNorthArrow) {
 			map.addChild(buildArrow());
@@ -61,6 +73,10 @@ public abstract class AbstractTemplateBuilder {
 	}
 
 	protected LegendComponentInfo buildLegend() {
+		return new LegendComponentInfo();
+	}
+
+	protected LegendComponentInfo buildLegend(Bbox bounds) {
 		return new LegendComponentInfo();
 	}
 
