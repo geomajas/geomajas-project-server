@@ -44,8 +44,12 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapResizedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortChangingEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangingHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortScalingEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatingEvent;
 import org.geomajas.puregwt.client.gfx.CanvasContainer;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
@@ -290,6 +294,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		worldContainerRenderer = new WorldContainerRenderer();
 		eventBus.addViewPortChangedHandler(worldContainerRenderer);
+		eventBus.addViewPortChangingHandler(worldContainerRenderer);
 
 		if (isMobileBrowser) {
 			fallbackController = new TouchNavigationController();
@@ -551,7 +556,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class WorldContainerRenderer implements ViewPortChangedHandler {
+	private class WorldContainerRenderer implements ViewPortChangedHandler, ViewPortChangingHandler {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -568,11 +573,26 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			translate();
+		}
+
+		public void onViewPortChanging(ViewPortChangingEvent event) {
+		}
+
+		public void onViewPortScaling(ViewPortScalingEvent event) {
+		}
+
+		public void onViewPortTranslating(ViewPortTranslatingEvent event) {
+			translate();
+		}
+
+		private void translate() {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (Transformable transformable : display.getWorldTransformables()) {
 				transformable.setTranslation(matrix.getDx(), matrix.getDy());
 			}
 		}
+		
 	}
 
 	/**
