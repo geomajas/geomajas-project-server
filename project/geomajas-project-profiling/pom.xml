@@ -9,25 +9,38 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-al-parent</artifactId>
 		<version>1.1.0</version>
 	</parent>
-	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-profiling-all</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
 	<name>Geomajas profiling project parent</name>
 	<description>Geomajas profiling project grouping module</description>
 
+	<modules>
+		<module>profiling</module>
+		<module>documentation</module>
+	</modules>
+
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-profiling</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-profiling</developerConnection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-profiling
+		</developerConnection>
 		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/geomajas-project-profiling</url>
 	</scm>
+
+	<properties>
+		<profiling-spring-version>3.0.5.RELEASE</profiling-spring-version>
+	</properties>
 
 	<dependencyManagement>
 		<dependencies>
@@ -56,7 +69,8 @@
 			<dependency>
 				<groupId>com.googlecode.disruptor</groupId>
 				<artifactId>disruptor</artifactId>
-				<version>2.7.1</version> <!-- 2.8.0 not yet available on central -->
+				<version>2.7.1</version>
+				<!-- 2.8.0 not yet available on central -->
 			</dependency>
 
 			<dependency>
@@ -72,11 +86,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
-	<modules>
-		<module>profiling</module>
-		<module>documentation</module>
-	</modules>
 
 	<profiles>
 		<profile>
@@ -105,8 +114,4 @@
 			</activation>
 		</profile>
 	</profiles>
-
-	<properties>
-		<profiling-spring-version>3.0.5.RELEASE</profiling-spring-version>
-	</properties>	
 </project>
