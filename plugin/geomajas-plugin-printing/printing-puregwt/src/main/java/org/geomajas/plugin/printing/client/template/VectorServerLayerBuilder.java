@@ -10,7 +10,10 @@
  */
 package org.geomajas.plugin.printing.client.template;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -19,6 +22,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.util.StyleUtil;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.sld.RuleInfo;
@@ -40,9 +44,15 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 		vectorRasterizingInfo.setShowing(layer.isShowing());
 		ClientVectorLayerInfo layerInfo = (ClientVectorLayerInfo) vectorLayer.getLayerInfo();
 		vectorRasterizingInfo.setStyle(layerInfo.getNamedStyleInfo());
-		if (!vectorLayer.getSelectedFeatureIds().isEmpty()) {
-			Collection<String> selectedFeatures = vectorLayer.getSelectedFeatureIds();
-			vectorRasterizingInfo.setSelectedFeatureIds(selectedFeatures.toArray(new String[selectedFeatures.size()]));
+		if (!vectorLayer.getSelectedFeatures().isEmpty()) {
+			Collection<Feature> selectedFeatures = vectorLayer.getSelectedFeatures();
+			Iterator<Feature> iterator = selectedFeatures.iterator();
+			List<String> featureIds = new ArrayList<String>(selectedFeatures.size());
+			while (iterator.hasNext()) {
+				Feature feature = iterator.next();
+				featureIds.add(feature.getId());
+			}
+			vectorRasterizingInfo.setSelectedFeatureIds(featureIds.toArray(new String[selectedFeatures.size()]));
 			FeatureStyleInfo selectStyle;
 			switch (layerInfo.getLayerType()) {
 				case GEOMETRY:
@@ -73,5 +83,4 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 	public boolean supports(Layer layer) {
 		return layer instanceof VectorServerLayer;
 	}
-
 }

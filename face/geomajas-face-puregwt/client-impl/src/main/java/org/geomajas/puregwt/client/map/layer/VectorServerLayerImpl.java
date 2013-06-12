@@ -128,11 +128,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	}
 
 	@Override
-	public Collection<String> getSelectedFeatureIds() {
-		return selection.keySet();
-	}
-	
-	@Override
 	public Collection<Feature> getSelectedFeatures() {
 		return selection.values();
 	}

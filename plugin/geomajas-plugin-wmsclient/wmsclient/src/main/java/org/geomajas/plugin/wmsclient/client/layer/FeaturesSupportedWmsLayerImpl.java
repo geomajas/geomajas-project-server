@@ -32,7 +32,7 @@ import com.google.inject.assistedinject.Assisted;
  * Default implementation of the {@link FeaturesSupportedWmsLayer}.
  * 
  * @author Pieter De Graef
-*  @author An Buyle (getSelectedFeatures())
+ * @author An Buyle (getSelectedFeatures())
  */
 public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements FeaturesSupportedWmsLayer {
 
@@ -91,11 +91,6 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 			eventBus.fireEvent(new FeatureDeselectedEvent(this, feature));
 		}
 		selection.clear();
-	}
-
-	@Override
-	public Collection<String> getSelectedFeatureIds() {
-		return selection.keySet();
 	}
 
 	@Override

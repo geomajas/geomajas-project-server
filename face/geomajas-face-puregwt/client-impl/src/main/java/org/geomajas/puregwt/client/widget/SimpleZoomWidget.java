@@ -48,8 +48,6 @@ public class SimpleZoomWidget extends AbstractMapWidget {
 
 	private static final SimpleZoomGadgetUiBinder UI_BINDER = GWT.create(SimpleZoomGadgetUiBinder.class);
 
-	private Widget layout;
-
 	@UiField
 	protected SimplePanel zoomInElement;
 
@@ -73,20 +71,10 @@ public class SimpleZoomWidget extends AbstractMapWidget {
 	 */
 	public SimpleZoomWidget(MapPresenter mapPresenter, int top, int left) {
 		super(mapPresenter);
-		asWidget().getElement().getStyle().setTop(top, Unit.PX);
-		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
-	}
-
-	// ------------------------------------------------------------------------
-	// MapGadget implementation:
-	// ------------------------------------------------------------------------
-
-	/** Get the widget layout. */
-	public Widget asWidget() {
-		if (layout == null) {
-			buildGui();
-		}
-		return layout;
+		buildGui();
+		getElement().getStyle().setTop(top, Unit.PX);
+		getElement().getStyle().setLeft(left, Unit.PX);
+		getElement().getStyle().setPosition(Position.ABSOLUTE);
 	}
 
 	// ------------------------------------------------------------------------
@@ -94,13 +82,12 @@ public class SimpleZoomWidget extends AbstractMapWidget {
 	// ------------------------------------------------------------------------
 
 	private void buildGui() {
-		layout = UI_BINDER.createAndBindUi(this);
-		layout.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		initWidget(UI_BINDER.createAndBindUi(this));
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
-		layout.addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, ClickEvent.getType());
+		addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
 		final ViewPort viewPort = mapPresenter.getViewPort();
 
