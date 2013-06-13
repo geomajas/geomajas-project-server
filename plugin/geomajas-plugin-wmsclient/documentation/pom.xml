@@ -23,7 +23,7 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-wmsclient-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M2</version>
 
 	<name>geomajas-plugin-wmsclient documentation</name>
 	<description>geomajas-plugin-wmsclient documentation</description>
@@ -31,4 +31,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wmsclient-all-1.0.0-M2/geomajas-plugin-wmsclient-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wmsclient-all-1.0.0-M2/geomajas-plugin-wmsclient-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-wmsclient-all-1.0.0-M2/geomajas-plugin-wmsclient-documentation</url>
+  </scm>
 </project>
