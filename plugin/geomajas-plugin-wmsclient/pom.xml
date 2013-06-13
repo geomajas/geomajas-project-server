@@ -149,8 +149,8 @@
 
 	<properties>
 		<wmsclient-geotools-version>9.2</wmsclient-geotools-version>
-		<wmsclient-puregwt-face-version>1.0.0-SNAPSHOT</wmsclient-puregwt-face-version>
-		<wmsclient-printing-version>2.4.0-SNAPSHOT</wmsclient-printing-version>
+		<wmsclient-puregwt-face-version>1.0.0-M5</wmsclient-puregwt-face-version>
+		<wmsclient-printing-version>2.4.0-M2</wmsclient-printing-version>
 		<wmsclient-httpclient-version>4.2.1</wmsclient-httpclient-version>
 	</properties>
 </project>
