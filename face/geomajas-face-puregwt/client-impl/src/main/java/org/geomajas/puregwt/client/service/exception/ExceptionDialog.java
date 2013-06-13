@@ -10,6 +10,8 @@
  */
 package org.geomajas.puregwt.client.service.exception;
 
+import org.geomajas.puregwt.client.i18n.GlobalMessages;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -44,6 +46,8 @@ public class ExceptionDialog {
 
 	private ExceptionDialogBox exceptionDialog;
 
+	private static GlobalMessages messages = GWT.create(GlobalMessages.class);
+
 	@UiField
 	protected Label messageLabel;
 
@@ -55,7 +59,7 @@ public class ExceptionDialog {
 
 	public ExceptionDialog(String message, String stack) {
 		exceptionDialog = UIBINDER.createAndBindUi(this);
-		exceptionDialog.setText("An error occured on the server.");
+		exceptionDialog.setText(messages.exceptionDialogCaptionText());
 		stackPanel.setVisible(false);
 		this.message = message;
 		this.stack = stack;
@@ -87,7 +91,8 @@ public class ExceptionDialog {
 
 	private void toggleStackPanel() {
 		stackPanel.setVisible(!stackPanel.isVisible());
-		detailsButton.setText(stackPanel.isVisible() ? "Close details" : "Show details");
+		detailsButton.setText(stackPanel.isVisible() ? messages.exceptionDialogCloseDetails() : messages
+				.exceptionDialogShowDetails());
 	}
 
 }

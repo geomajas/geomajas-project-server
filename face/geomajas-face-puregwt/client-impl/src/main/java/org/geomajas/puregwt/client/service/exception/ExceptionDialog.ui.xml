@@ -2,31 +2,21 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:x="urn:import:org.geomajas.puregwt.client.service.exception">
 
-	<ui:style>
-		.buttons {
-			text-align: center;
-			width: 300px;
-		}
-		
-		.stackPanel {
-			width: 300px;
-			max-height: 300px;
-			overflow: auto;
-			background: #DDD;
-			margin: 5px;
-		}
-	</ui:style>
+	<ui:with field="resource"
+		type="org.geomajas.puregwt.client.resource.GeomajasWidgetResource" />
+
+	<ui:with field="msg"
+		type="org.geomajas.puregwt.client.i18n.GlobalMessages" />
 
 	<x:ExceptionDialogBox>
 
 		<g:HTMLPanel width="300">
 			<g:VerticalPanel>
-				<g:Label ui:field="messageLabel" styleName="puregwt-exceptionbox-messageLabel"></g:Label>
-				<g:HTMLPanel styleName="{style.buttons}">
-					<g:Button ui:field='detailsButton'>Show details</g:Button>
+				<g:Label ui:field="messageLabel" styleName="{resource.css.exceptionDialogMessageLabel}"></g:Label>
+				<g:HTMLPanel styleName="{resource.css.exceptionDialogButtonPanel}">
+					<g:Button ui:field="detailsButton"><ui:text from="{msg.exceptionDialogShowDetails}"/></g:Button>
 				</g:HTMLPanel>
-
-				<g:HTML ui:field="stackPanel" styleName="{style.stackPanel}"></g:HTML>
+				<g:HTML ui:field="stackPanel" styleName="{resource.css.exceptionDialogStackTracePanel}"></g:HTML>
 			</g:VerticalPanel>
 		</g:HTMLPanel>
 

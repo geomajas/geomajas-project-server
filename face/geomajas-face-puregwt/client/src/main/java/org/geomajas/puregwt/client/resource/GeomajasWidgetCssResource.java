@@ -11,32 +11,46 @@
 
 package org.geomajas.puregwt.client.resource;
 
+import org.geomajas.annotation.Api;
+
 import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
  * 
  * @author Dosi Bingov
- * 
+ * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface GeomajasWidgetCssResource extends CssResource {
 
 	// ------------------------------------------------------------------------
 	// TouchZoomWidget :
 	// ------------------------------------------------------------------------
 
-	@ClassName("touchZoomWidget")
 	String touchZoomWidget();
 
-	@ClassName("touchZoomOutBut")
 	String touchZoomOutBut();
 
-	@ClassName("touchZoomInBut")
 	String touchZoomInBut();
 
-	@ClassName("touchZoomButNormal")
 	String touchZoomButNormal();
 
-	@ClassName("touchZoomButTouched")
 	String touchZoomButTouched();
+	
+	// ------------------------------------------------------------------------
+	// ExceptionDialog :
+	// ------------------------------------------------------------------------
+
+	String exceptionDialogButtonPanel();
+	
+	String exceptionDialogStackTracePanel();
+	
+	String exceptionDialogMessageLabel();
+	
+	String exceptionDialogCloseIcon();
+	
+	String exceptionDialogTitle();
+	
 }

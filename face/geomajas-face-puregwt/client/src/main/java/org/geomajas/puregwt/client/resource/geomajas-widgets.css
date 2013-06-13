@@ -64,3 +64,52 @@
 	-moz-box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
 	box-shadow: rgba(0, 0, 0, .25) 0 1px 0px;
 }
+
+/* ------------------------------------------------------------------------*/
+/* ExceptionDialog --------------------------------------------------------*/
+/* ------------------------------------------------------------------------*/
+
+@external .exceptionDialogButtonPanel;
+.exceptionDialogButtonPanel {
+	text-align: center;
+	width: 300px;
+	padding: 5px;
+}
+
+@external .exceptionDialogStackTracePanel;
+.exceptionDialogStackTracePanel {
+	width: 300px;
+	max-height: 300px;
+	overflow: auto;
+	background: #DDD;
+	margin: 5px;
+	padding: 5px;
+}
+
+@external .exceptionDialogMessageLabel;
+.exceptionDialogMessageLabel {
+	padding-left: 50 px;
+}
+
+/*close icon*/
+@external .exceptionDialogCloseIcon;
+@external .exceptionDialogCloseIcon:hover;
+@sprite .exceptionDialogCloseIcon {
+	gwt-image: "exceptionDialogCloseIcon";
+	cursor: pointer;
+	cursor: hand;
+	margin: 5px;
+	border: 0px;
+	float: right;
+}
+
+@sprite .exceptionDialogCloseIcon:hover {
+	gwt-image: "exceptionDialogCloseIconHover";
+}
+
+@external .exceptionDialogTitle;
+.exceptionDialogTitle {
+	float: left;
+	font-size: 14px;
+}
+

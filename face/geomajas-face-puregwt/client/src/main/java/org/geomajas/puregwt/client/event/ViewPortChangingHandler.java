@@ -19,7 +19,7 @@ import com.google.web.bindery.event.shared.Event.Type;
 
 /**
  * Interface for event handlers that catch intermediate changes in the <code>ViewPort</code>. These changes are caused
- * by actions like dragging or zoom-pinching and are of intermediate nature (they will be followed by their counterparts
+ * by actions like dragging or zoom-pinching and are of intermediate nature. They will be followed by their peer events
  * in {@link ViewPortChangedHandler} when the dragging or zoom-pinching action comes to an end).
  * 
  * @author Jan De Moerloose

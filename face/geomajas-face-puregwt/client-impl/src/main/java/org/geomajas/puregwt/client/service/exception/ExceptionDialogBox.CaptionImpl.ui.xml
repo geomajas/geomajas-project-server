@@ -1,11 +1,17 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
+	<ui:with field="resource"
+		type="org.geomajas.puregwt.client.resource.GeomajasWidgetResource" />
+
+	<ui:with field="msg"
+		type="org.geomajas.puregwt.client.i18n.GlobalMessages" />
+
 	<g:HorizontalPanel width="100%">
 		<g:HTMLPanel>
-			<div ui:field="titleElement" style="float: left; font-size: 14px;" />
+			<div ui:field="titleElement" class="{resource.css.exceptionDialogTitle}" />
 		</g:HTMLPanel>
-		<g:Button ui:field="closeIcon" title="Close this sample and go back to the overview page."
-		  		styleName="puregwt-exceptionbox-closeIcon"/>		
+		<g:Button ui:field="closeIcon" title="{msg.exceptionDialogCloseTitle}"
+		  		styleName="{resource.css.exceptionDialogCloseIcon}" />		
 	</g:HorizontalPanel>
 
 </ui:UiBinder> 

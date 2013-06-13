@@ -133,6 +133,8 @@
 						<directory>src/main/java</directory>
 						<includes>
 							<include>**/*.java</include>
+							<include>**/*.css</include>
+							<include>**/*.png</include>
 						</includes>
 					</resource>
 				</resources>

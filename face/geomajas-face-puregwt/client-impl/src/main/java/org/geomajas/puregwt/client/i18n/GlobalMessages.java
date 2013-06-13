@@ -32,5 +32,14 @@ public interface GlobalMessages extends Messages {
 
 	/** @return not waiting for an activity to finish */
 	String activityNotBusyText();
+	
+	// Exception dialog messages
+	String exceptionDialogShowDetails();
+	
+	String exceptionDialogCloseDetails();
+	
+	String exceptionDialogCaptionText();
+	
+	String exceptionDialogCloseTitle();
 
 }
