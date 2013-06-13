@@ -18,7 +18,7 @@
 	</parent>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-face-puregwt-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M5</version>
 	<packaging>jar</packaging>
 	<name>Geomajas PureGWT face documentation</name>
 	<description>Geomajas PureGWT face documentation</description>
@@ -26,4 +26,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M5/geomajas-face-puregwt-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M5/geomajas-face-puregwt-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-puregwt-1.0.0-M5/geomajas-face-puregwt-documentation</url>
+  </scm>
 </project>
