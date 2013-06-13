@@ -29,28 +29,68 @@ public interface GeomajasWidgetCssResource extends CssResource {
 	// TouchZoomWidget :
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String touchZoomWidget();
 
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String touchZoomOutBut();
 
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String touchZoomInBut();
 
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String touchZoomButNormal();
 
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String touchZoomButTouched();
 	
 	// ------------------------------------------------------------------------
 	// ExceptionDialog :
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String exceptionDialogButtonPanel();
 	
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String exceptionDialogStackTracePanel();
 	
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String exceptionDialogMessageLabel();
 	
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String exceptionDialogCloseIcon();
 	
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
 	String exceptionDialogTitle();
 	
 }

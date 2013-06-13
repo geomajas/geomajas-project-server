@@ -12,7 +12,6 @@ package org.geomajas.puregwt.client.resource;
 
 import org.geomajas.annotation.Api;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
@@ -28,8 +27,10 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 @Api(allMethods = true)
 public interface GeomajasWidgetResource extends ClientBundle {
 
-	GeomajasWidgetResource INSTANCE = GWT.create(GeomajasWidgetResource.class);
-
+	/**
+	 * Get the css resource.
+	 * @return the css resource
+	 */
 	@Source("geomajas-widgets.css")
 	GeomajasWidgetCssResource css();
 
@@ -37,10 +38,18 @@ public interface GeomajasWidgetResource extends ClientBundle {
 	// ExceptionDialog images:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Image sprite.
+	 * @return
+	 */
 	@Source("images/close.png")
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource exceptionDialogCloseIcon();
 
+	/**
+	 * Image sprite.
+	 * @return
+	 */
 	@Source("images/close_hover.png")
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource exceptionDialogCloseIconHover();
