@@ -28,6 +28,9 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 @Api(allMethods = true)
 public interface GeomajasWidgetResource extends ClientBundle {
 
+	/**
+	 * Instance for use outside UIBinder.
+	 */
 	GeomajasWidgetResource INSTANCE = GWT.create(GeomajasWidgetResource.class);
 
 	/**
