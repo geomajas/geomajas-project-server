@@ -40,7 +40,7 @@ public interface LegendGraphicService {
 	/**
 	 * Get the graphical symbols based on the specified legend metadata.
 	 * 
-	 * @param legendsMetadata a list of legend metadata
+	 * @param legendMetadata a list of legend metadata
 	 * @return a rendered image that contains all legend symbols stacked vertically
 	 * @throws GeomajasException thrown when invalid metadata are passed
 	 * @since 1.13.0
