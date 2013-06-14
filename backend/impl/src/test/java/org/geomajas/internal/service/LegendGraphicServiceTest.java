@@ -1,5 +1,10 @@
 package org.geomajas.internal.service;
 
+import java.io.File;
+import java.util.Arrays;
+
+import javax.imageio.ImageIO;
+
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.service.LegendGraphicService;
 import org.geomajas.service.legend.LegendGraphicMetadata;
@@ -20,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.sun.media.jai.util.ImageUtil;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/internal/service/legend/rasterLayerContext.xml" })
@@ -34,7 +41,7 @@ public class LegendGraphicServiceTest {
 	@Autowired
 	private RasterLayer blueMarble;
 
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	@Test
 	public void testSimpleRules18() throws Exception {
@@ -50,6 +57,9 @@ public class LegendGraphicServiceTest {
 		imageAssert.assertEquals("polygon3-18x18.png", service.getLegendGraphic(po3), 0.01, writeImages);
 		LegendGraphicMetadata po4 = new SimpleRulesData("polygon:4", 18, 18);
 		imageAssert.assertEquals("polygon4-18x18.png", service.getLegendGraphic(po4), 0.01, writeImages);
+		
+		imageAssert.assertEquals("combined-18x18.png", 
+				service.getLegendGrapics(Arrays.asList(p, l, po, po2, po3, po4)), 0.01, writeImages);
 	}
 
 	@Test
@@ -66,6 +76,9 @@ public class LegendGraphicServiceTest {
 		imageAssert.assertEquals("polygon3-19x19.png", service.getLegendGraphic(po3), 0.01, writeImages);
 		LegendGraphicMetadata po4 = new SimpleRulesData("polygon:4", 19, 19);
 		imageAssert.assertEquals("polygon4-19x19.png", service.getLegendGraphic(po4), 0.01, writeImages);
+
+		imageAssert.assertEquals("combined-19x19.png", 
+				service.getLegendGrapics(Arrays.asList(p, l, po, po2, po3, po4)), 0.01, writeImages);
 	}
 
 	@Test

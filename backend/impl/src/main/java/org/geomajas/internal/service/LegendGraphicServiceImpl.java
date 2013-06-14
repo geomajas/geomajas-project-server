@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -159,6 +160,10 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 	 * @throws GeomajasException cannot render image
 	 */
 	public RenderedImage getLegendGraphic(LegendGraphicMetadata legendMetadata) throws GeomajasException {
+		return getLegendGraphicInternal(legendMetadata);
+	}
+	
+	private BufferedImage getLegendGraphicInternal(LegendGraphicMetadata legendMetadata) throws GeomajasException {
 		Style style = null;
 		VectorLayer vectorLayer = null;
 		Layer<?> layer = configurationService.getLayer(legendMetadata.getLayerId());
@@ -239,6 +244,28 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 		} else {
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, legendMetadata.getLayerId());
 		}
+	}
+	
+	@Override
+	public RenderedImage getLegendGrapics(List<LegendGraphicMetadata> legendMetadata) throws GeomajasException {
+		int width = 0;
+		int height = 0;
+		for (LegendGraphicMetadata lmd : legendMetadata) {
+			width = Math.max(width, lmd.getWidth());
+			height += lmd.getHeight();
+		}
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = image.createGraphics();
+		
+		int y = 0;
+		for (LegendGraphicMetadata lmd : legendMetadata) {
+			graphics.drawImage(getLegendGraphicInternal(lmd), null, 0, y);
+			y += lmd.getHeight();
+		}
+		graphics.dispose();
+		
+		return image;
+		
 	}
 
 	private SimpleFeature createSampleFeature(VectorLayer vectorLayer) {
