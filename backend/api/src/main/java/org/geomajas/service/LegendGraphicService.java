@@ -11,6 +11,7 @@
 package org.geomajas.service;
 
 import java.awt.image.RenderedImage;
+import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
@@ -21,6 +22,7 @@ import org.geomajas.service.legend.LegendGraphicMetadata;
  * GetLegendGraphicRequest parameters.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
  * @since 1.10.0
  */
 @Api(allMethods = true)
@@ -34,4 +36,14 @@ public interface LegendGraphicService {
 	 * @throws GeomajasException thrown when invalid metadata are passed
 	 */
 	RenderedImage getLegendGraphic(LegendGraphicMetadata legendMetadata) throws GeomajasException;
+	
+	/**
+	 * Get the graphical symbols based on the specified legend metadata.
+	 * 
+	 * @param legendsMetadata a list of legend metadata
+	 * @return a rendered image that contains all legend symbols stacked vertically
+	 * @throws GeomajasException thrown when invalid metadata are passed
+	 * @since 1.13.0
+	 */
+	RenderedImage getLegendGrapics(List<LegendGraphicMetadata> legendMetadata) throws GeomajasException;
 }
