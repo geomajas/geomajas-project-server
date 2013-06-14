@@ -119,7 +119,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		super();
 
 		// Attach an HtmlContainer inside the clipping area (used for rendering layers):
-		layerHtmlContainer = new HtmlGroup();
+		layerHtmlContainer = new HtmlGroup(100, 100); 
 		add(layerHtmlContainer, 0, 0);
 
 		// Add a panel to hold the canvases (this should come before vectors or it catches all events !)
