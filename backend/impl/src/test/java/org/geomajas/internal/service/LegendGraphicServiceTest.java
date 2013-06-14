@@ -1,9 +1,6 @@
 package org.geomajas.internal.service;
 
-import java.io.File;
 import java.util.Arrays;
-
-import javax.imageio.ImageIO;
 
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.service.LegendGraphicService;
@@ -25,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sun.media.jai.util.ImageUtil;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/internal/service/legend/rasterLayerContext.xml" })
@@ -41,7 +36,7 @@ public class LegendGraphicServiceTest {
 	@Autowired
 	private RasterLayer blueMarble;
 
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	@Test
 	public void testSimpleRules18() throws Exception {

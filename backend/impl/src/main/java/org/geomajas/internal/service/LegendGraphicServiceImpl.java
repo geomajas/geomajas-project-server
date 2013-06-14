@@ -68,6 +68,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * Default implementation of {@link LegendGraphicService}.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
  */
 @Component
 public class LegendGraphicServiceImpl implements LegendGraphicService {
