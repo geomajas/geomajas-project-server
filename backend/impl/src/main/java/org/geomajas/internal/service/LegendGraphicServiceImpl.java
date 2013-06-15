@@ -261,7 +261,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 		int y = 0;
 		for (LegendGraphicMetadata lmd : legendMetadata) {
 			graphics.drawImage(getLegendGraphicInternal(lmd), null, 0, y);
-			y += lmd.getHeight();
+			y += lmd.getHeight() > 0 ? lmd.getHeight() : defaultHeight;
 		}
 		graphics.dispose();
 		
