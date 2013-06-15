@@ -248,12 +248,12 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 	}
 	
 	@Override
-	public RenderedImage getLegendGrapics(List<LegendGraphicMetadata> legendMetadata) throws GeomajasException {
+	public RenderedImage getLegendGraphics(List<LegendGraphicMetadata> legendMetadata) throws GeomajasException {
 		int width = 0;
 		int height = 0;
 		for (LegendGraphicMetadata lmd : legendMetadata) {
-			width = Math.max(width, lmd.getWidth());
-			height += lmd.getHeight();
+			width = Math.max(width, lmd.getWidth() > 0 ? lmd.getWidth() : defaultWidth);
+			height += lmd.getHeight() > 0 ? lmd.getHeight() : defaultHeight;
 		}
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = image.createGraphics();

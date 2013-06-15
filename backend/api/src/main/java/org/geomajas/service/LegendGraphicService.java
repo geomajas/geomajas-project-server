@@ -45,5 +45,5 @@ public interface LegendGraphicService {
 	 * @throws GeomajasException thrown when invalid metadata are passed
 	 * @since 1.13.0
 	 */
-	RenderedImage getLegendGrapics(List<LegendGraphicMetadata> legendMetadata) throws GeomajasException;
+	RenderedImage getLegendGraphics(List<LegendGraphicMetadata> legendMetadata) throws GeomajasException;
 }

@@ -54,7 +54,7 @@ public class LegendGraphicServiceTest {
 		imageAssert.assertEquals("polygon4-18x18.png", service.getLegendGraphic(po4), 0.01, writeImages);
 		
 		imageAssert.assertEquals("combined-18x18.png", 
-				service.getLegendGrapics(Arrays.asList(p, l, po, po2, po3, po4)), 0.01, writeImages);
+				service.getLegendGraphics(Arrays.asList(p, l, po, po2, po3, po4)), 0.01, writeImages);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class LegendGraphicServiceTest {
 		imageAssert.assertEquals("polygon4-19x19.png", service.getLegendGraphic(po4), 0.01, writeImages);
 
 		imageAssert.assertEquals("combined-19x19.png", 
-				service.getLegendGrapics(Arrays.asList(p, l, po, po2, po3, po4)), 0.01, writeImages);
+				service.getLegendGraphics(Arrays.asList(p, l, po, po2, po3, po4)), 0.01, writeImages);
 	}
 
 	@Test
