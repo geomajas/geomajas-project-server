@@ -19,9 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.LegendGraphicService;
+import org.geomajas.service.StyleService;
 import org.geomajas.service.legend.DefaultLegendGraphicMetadata;
 import org.geomajas.service.legend.LegendGraphicMetadata;
 import org.geomajas.sld.FeatureTypeStyleInfo;
@@ -52,7 +51,7 @@ public class LegendGraphicController {
 	protected LegendGraphicService legendService;
 
 	@Autowired
-	private ConfigurationService configurationService;
+	private StyleService styleService;
 
 	/**
 	 * Gets a legend graphic with the specified metadata parameters. All parameters are passed as request parameters.
@@ -119,9 +118,8 @@ public class LegendGraphicController {
 		mav.setViewName(LEGENDGRAPHIC_VIEW_NAME);
 
 		if (styleName != null) {
-			VectorLayer layer = configurationService.getVectorLayer(layerId);
-			if (layer != null) {
-				NamedStyleInfo namedStyle = layer.getLayerInfo().getNamedStyleInfo(styleName);
+			NamedStyleInfo namedStyle = styleService.retrieveStyle(layerId, styleName);
+			if (namedStyle != null) {
 				UserStyleInfo userStyle = namedStyle.getUserStyle();
 				List<LegendGraphicMetadata> allLegendMetaData = new ArrayList<LegendGraphicMetadata>(userStyle
 						.getFeatureTypeStyleList().size());
@@ -185,9 +183,8 @@ public class LegendGraphicController {
 			legendMetadata.setScale(scale);
 		}
 		if (styleName != null) {
-			VectorLayer layer = configurationService.getVectorLayer(layerId);
-			if (layer != null) {
-				NamedStyleInfo namedStyle = layer.getLayerInfo().getNamedStyleInfo(styleName);
+			NamedStyleInfo namedStyle = styleService.retrieveStyle(layerId, styleName);
+			if (namedStyle != null) {
 				UserStyleInfo userStyle = namedStyle.getUserStyle();
 				if (ruleIndex != null) {
 					FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
