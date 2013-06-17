@@ -21,4 +21,24 @@ import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 public interface PageComponent extends PrintComponent<PageComponentInfo> {
 
 	void setSize(String pageSize, boolean b);
+	
+	/**
+	 * Get the locale.
+	 * 
+	 * @param locale
+	 *            which should be used for error messages in the print
+	 * @since 2.4.0
+	 */
+
+	String getLocale();
+
+	/**
+	 * Set the locale.
+	 * 
+	 * @return locale
+	 *            which should be used for error messages in the print
+	 * @since 2.4.0
+	 */
+	void setLocale(String locale);
+	
 }

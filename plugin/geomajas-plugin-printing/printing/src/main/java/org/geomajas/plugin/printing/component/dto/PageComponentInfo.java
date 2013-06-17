@@ -26,5 +26,32 @@ import org.geomajas.annotation.Api;
 public class PageComponentInfo extends PrintComponentInfo implements Serializable {
 
 	private static final long serialVersionUID = 200L;
+	private String locale = "en";
+	
+
+	/**
+	 * Get the locale.
+	 * 
+	 * @return locale
+	 *			which should be used for error messages in the print
+	 * @since 2.4.0
+	 */
+	@Api
+	public String getLocale() {
+		return locale;
+	}
+	
+	/**
+	 * Set the locale.
+	 * 
+	 * @param locale
+	 *			which should be used for error messages in the print
+	 * @since 2.4.0
+	 */
+	@Api
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
 
 }

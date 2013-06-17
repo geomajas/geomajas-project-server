@@ -29,6 +29,8 @@ import com.lowagie.text.Rectangle;
 @Scope(value = "prototype")
 public class PageComponentImpl extends AbstractPrintComponent<PageComponentInfo> implements PageComponent {
 
+	private String locale = "en";
+	
 	public PageComponentImpl() {
 		this("A4", true);
 	}
@@ -47,6 +49,34 @@ public class PageComponentImpl extends AbstractPrintComponent<PageComponentInfo>
 		setBounds(rect);
 		getConstraint().setWidth(rect.getWidth());
 		getConstraint().setHeight(rect.getHeight());
+	}
+	
+	/**
+	 * Get the locale.
+	 * 
+	 * @param locale
+	 *            which should be used for error messages in the print
+	 */
+	@Override
+	public String getLocale() {
+		return locale;
+	}
+
+	/**
+	 * Set the locale.
+	 * 
+	 * @return locale
+	 *            which should be used for error messages in the print
+	 */
+	@Override
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	
+	@Override
+	public void fromDto(PageComponentInfo pageInfo) {
+		super.fromDto(pageInfo);
+		setLocale(pageInfo.getLocale());
 	}
 
 	/**

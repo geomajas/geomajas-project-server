@@ -11,17 +11,25 @@
 
 package org.geomajas.plugin.printing.component.impl;
 
+import java.awt.Font;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.LegendViaUrlComponent;
+import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
+import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
+import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LegendViaUrlComponentInfo;
+import org.geomajas.plugin.printing.parser.FontConverter;
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +41,7 @@ import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Utilities;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
@@ -43,10 +52,16 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @Component()
 @Scope(value = "prototype")
 public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaUrlComponentInfo> implements
-		LegendViaUrlComponent {
+LegendViaUrlComponent {
 
+	private static final String BUNDLE_NAME = "org/geomajas/plugin/printing/PrintingMessages"; //$NON-NLS-1$
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(LegendViaUrlComponentImpl.class);
+	
+	// do not make this static, different requests might need different bundles
+	@XStreamOmitField
+	private ResourceBundle resourceBundle;
+
 
 	private static final int DPI_FOR_IMAGE = 288;
 
@@ -55,6 +70,19 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 	private static final float MARGIN_LEFT_IMAGE_RELATIVE_TO_FONTSIZE = 0.25f;
 
 	private static final float MARGIN_TOP_IMAGE_RELATIVE_TO_FONTSIZE = 0.25f;
+	
+	/**
+	 * The font for error text
+	 */
+	@XStreamConverter(FontConverter.class)
+	private Font font = new Font(LegendComponentInfo.DEFAULT_LEGEND_FONT_FAMILY, Font.PLAIN, 
+			9); // Default font
+
+	/**
+	 * Color of the text.
+	 */
+	private String fontColor = "0x000000";
+
 
 	@Autowired
 	private DispatcherUrlService dispatcherUrlService;
@@ -69,7 +97,10 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 
 	private String legendImageServiceUrlAsString;
 
+	private String warning;
+
 	/** Constructor. */
+
 	public LegendViaUrlComponentImpl() {
 	}
 
@@ -77,13 +108,31 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 	 * Call back visitor.
 	 * 
 	 * @param visitor
-	 *            visitor
+	 *			visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
 
 	@Override
 	public void calculateSize(PdfContext context) {
+		
+		if (null == getLegendImageServiceUrl()) {
+			log.error("getLegendImageServiceUrl() returns unexpectedly with NULL");
+			setBounds(new Rectangle(0, 0));
+			return; // Abort
+		}
+		
+		String locale = getLocale();
+		try {
+			if (null != locale && !locale.isEmpty()) {
+				resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(locale));
+			} else {
+				resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
+			}
+		} catch (MissingResourceException e) {
+			resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en'"));
+		}
+		
 		if (getConstraint().getMarginX() <= 0.0f) {
 			getConstraint().setMarginX(MARGIN_LEFT_IMAGE_RELATIVE_TO_FONTSIZE * getLegend().getFont().getSize());
 		}
@@ -95,21 +144,33 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 		float height = getConstraint().getHeight();
 
 		// Retrieve legend image from URL if not yet retrieved
-		if (null == image && visible) {
+		if (null == image && visible && null == warning) {
 			try {
 				image = Image.getInstance(new URL(getLegendImageServiceUrl()));
 				image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
 			} catch (BadElementException e) {
+				log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
 				e.printStackTrace();
 			} catch (MalformedURLException e) {
+				log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
 				e.printStackTrace();
 			} catch (IOException e) {
+				// This exception is OK if no legend image is generated because out of scale range
+				// for a dynamic layer, then a text message which indicates an invisible legend is referred
+				// to by the URL 
 				visible = !hasInVisibleResponse();
+				if (visible) {
+					log.warn("Unexpected IOException for Image.getInstance() for URL "
+								+ getLegendImageServiceUrl(), e);
+				}
 			}
 		}
 		if (!visible) {
 			setBounds(new Rectangle(0, 0));
+		} else if (null == image) {
+			generateWarningMessage(context);
 		} else {
+
 			if (width <= 0 && height <= 0) {
 				// when / 2.0f: The image is generated with a scale of 1:0.5
 				width = image.getWidth(); // 2.0f;
@@ -124,11 +185,37 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+
 	protected LegendComponent getLegend() {
-		return (LegendComponent) (getParent().getParent());
+		@SuppressWarnings("deprecation")
+		PrintComponent<?> ancestor = getParent();
+		
+		while (null != ancestor && !(ancestor instanceof LegendComponent)) {
+			ancestor = ancestor.getParent();
+		} 
+		if (null != ancestor && ancestor instanceof LegendComponent) {
+			return (LegendComponent) ancestor;
+		} else {
+			return null;
+		}
+		
 	}
 
+	protected String getLocale() {
+		PrintComponent<?> ancestor = getParent();
+		
+		while (null != ancestor && !(ancestor instanceof PageComponent)) {
+			ancestor = ancestor.getParent();
+		} 
+		if (null != ancestor && ancestor instanceof PageComponent) {
+			return ((PageComponent) ancestor).getLocale();
+		} else {
+			return null;
+		}
+		
+	}
+
+	
 	@Override
 	public boolean isVisible() {
 		return this.visible;
@@ -137,16 +224,20 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 	@SuppressWarnings("deprecation")
 	@Override
 	public void render(PdfContext context) {
-		if (null == image && visible) {
+		if (null == image && visible && null == warning) {
 			calculateSize(context);
 		}
 		if (visible) {
-			context.drawImage(image, getSize(), null);
+			if (null != warning) {
+				context.drawText(warning, getFont(), getSize(), context.getColor(getFontColor(), 1f));	
+			} else {
+				context.drawImage(image, getSize(), null);
+			}
 		}
 	}
 
 	public String getClientLayerId() {
-		return layerId; // purely informative
+		return layerId;  // purely informative
 	}
 
 	public void setClientLayerId(String layerId) {
@@ -167,14 +258,16 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 		URL absoluteUrl = null;
 
 		if (!legendImageServiceUrlAsString.startsWith("http:") && !legendImageServiceUrlAsString.startsWith("https:")) {
+
 			try {
 				String baseUrlAsString = dispatcherUrlService.getLocalDispatcherUrl();
-				log.info("BaseURL: {}", baseUrlAsString);
+				log.debug("BaseURL: {}", baseUrlAsString);
 				URL baseUrl = new URL(baseUrlAsString);
 				absoluteUrl = new URL(baseUrl, "../" + legendImageServiceUrlAsString);
-				log.info("AbsoluteUrl: {}", absoluteUrl);
+				log.debug("AbsoluteUrl: {}", absoluteUrl);
 			} catch (MalformedURLException e) {
 				// Should never happen...
+				log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
 				e.printStackTrace();
 			}
 		} else {
@@ -182,17 +275,35 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 				absoluteUrl = new URL(legendImageServiceUrlAsString);
 			} catch (MalformedURLException e) {
 				// Should never happen...
-				e.printStackTrace();
+				log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
 			}
 		}
 		this.legendImageServiceUrlAsString = absoluteUrl.toExternalForm();
 	}
 
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+	
+	public String getFontColor() {
+		return fontColor;
+	}
+
+	public void setFontColor(String fontColor) {
+		this.fontColor = fontColor;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void fromDto(LegendViaUrlComponentInfo info) {
 		super.fromDto(info);
 		visible = true;
+		warning = null;
+		
 		setLegendImageServiceUrl(info.getLegendImageServiceUrl());
 		setClientLayerId(info.getClientLayerId());
 	}
@@ -205,25 +316,30 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 			url = Utilities.toURL(getLegendImageServiceUrl());
 		} catch (MalformedURLException e1) {
 			// Should never happen!
+			log.error("Exception in  Utilities.toURL() for URL " + getLegendImageServiceUrl(), e1);
 			e1.printStackTrace();
 		}
 		if (null == url) {
-			return false; // ABORT
+			log.error("Error in  Utilities.toURL() for URL " + getLegendImageServiceUrl());
+			return false; // Unexpected error, ABORT
 		}
 
 		HttpURLConnection connection = null;
 		try {
 			connection = (HttpURLConnection) url.openConnection();
 		} catch (IOException e2) {
+			log.error("Exception in url.openConnection() for URL " + getLegendImageServiceUrl(), e2);
 			e2.printStackTrace();
 		}
 		if (null == connection) {
-			return false; // ABORT
+			log.error("Error in  url.openConnection() for URL " + getLegendImageServiceUrl());
+			return false;  // Unexpected error, ABORT
 		}
 
 		try {
 			connection.connect();
 		} catch (IOException e1) {
+			log.error("Exception in connection.connect for URL " + getLegendImageServiceUrl(), e1);
 			e1.printStackTrace();
 			return false; // ABORT
 		}
@@ -273,4 +389,16 @@ public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaU
 			}
 		}
 	}
+	
+	@SuppressWarnings("deprecation")
+	private void generateWarningMessage(PdfContext context) {
+		warning = resourceBundle.getString("ErrorRetrievingLegend");
+		
+		Rectangle textSize = context.getTextSize(warning, getFont());
+		float margin = 0.5f * getFont().getSize();
+		
+		setBounds(new Rectangle(textSize.getWidth() + 2.0f * margin, textSize.getHeight() + 2 * margin));
+	}
+
+
 }
