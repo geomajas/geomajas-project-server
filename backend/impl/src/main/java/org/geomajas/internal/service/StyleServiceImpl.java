@@ -10,19 +10,14 @@
  */
 package org.geomajas.internal.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.service.CacheService;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,21 +28,18 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class StyleServiceImpl implements StyleService {
-
-	private static final long CACHE_TIME = 21600 * 1000;
-	private static final long CLEANUP_TIME = 3600 * 1000;
-
-	private Map<String, CachedNamedStyleInfo> styleInfos = new HashMap<String, CachedNamedStyleInfo>();
-
+	private static final String CACHE_KEY = StyleServiceImpl.class.toString();
+	
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private CacheService cacheService;
+	
 	@Override
 	public String registerStyle(String layerId, NamedStyleInfo style) {
 		String uuid = UUID.randomUUID().toString();
-		CachedNamedStyleInfo cachedNamedStyleInfo = new CachedNamedStyleInfo(style, System.currentTimeMillis()
-				+ CACHE_TIME);
-		styleInfos.put(uuid, cachedNamedStyleInfo);
+		cacheService.put(CACHE_KEY, uuid, style);
 		return uuid;
 	}
 
@@ -59,50 +51,12 @@ public class StyleServiceImpl implements StyleService {
 			if (namedStyle != null) {
 				return namedStyle;
 			} else {
-				if (styleInfos.containsKey(styleName)) {
-					return styleInfos.get(styleName).getNamedStyleInfo();
+				NamedStyleInfo nsi = cacheService.get(CACHE_KEY, styleName, NamedStyleInfo.class);
+				if (null != nsi) {
+					return nsi;
 				}
 			}
 		}
 		return null;
 	}
-
-	@Scheduled(fixedRate = CLEANUP_TIME)
-	public void cleanUpStyles() {
-		List<String> toRemove = new ArrayList<String>();
-		for (Entry<String, CachedNamedStyleInfo> styleInfo : styleInfos.entrySet()) {
-			if (styleInfo.getValue().getExpireTime() < System.currentTimeMillis()) {
-				styleInfos.remove(styleInfo);
-			}
-		}
-		styleInfos.keySet().removeAll(toRemove);
-	}
-
-	/**
-	 * Helper class to store Named Style Info.
-	 * 
-	 * @author Oliver May
-	 *
-	 */
-	private class CachedNamedStyleInfo {
-
-		private NamedStyleInfo namedStyleInfo;
-
-		private long expireTime;
-
-		public CachedNamedStyleInfo(NamedStyleInfo namedStyleInfo, long expireTime) {
-			this.namedStyleInfo = namedStyleInfo;
-			this.expireTime = expireTime;
-		}
-		
-		public NamedStyleInfo getNamedStyleInfo() {
-			return namedStyleInfo;
-		}
-		
-		public long getExpireTime() {
-			return expireTime;
-		}
-
-	}
-
 }
