@@ -46,10 +46,7 @@ public abstract class AbstractHtmlObject implements HtmlObject {
 	 *            The tag-name of the HTML that should be created (DIV, IMG, ...).
 	 */
 	public AbstractHtmlObject(Widget widget) {
-		this.widget = widget;
-		DOM.setStyleAttribute(widget.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(widget.getElement(), "width", "100%");
-		DOM.setStyleAttribute(widget.getElement(), "height", "100%");
+		this(widget, 100, 100);
 	}
 
 	/**
