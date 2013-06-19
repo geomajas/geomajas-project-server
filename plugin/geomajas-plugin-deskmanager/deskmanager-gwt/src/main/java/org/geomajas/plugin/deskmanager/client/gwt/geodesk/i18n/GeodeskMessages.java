@@ -35,6 +35,7 @@ public interface GeodeskMessages extends Messages {
 	String userFriendlyCommunicationErrorMessage();
 
 	String noGeodeskIdGivenError();
+	String noSuchGeodeskExists();
 
 	String refreshLayersActionReload();
 	String refreshLayersActionReloadTooltip();
