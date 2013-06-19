@@ -8,7 +8,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<context:component-scan base-package="org.geomajas.plugin.deskmanager" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
@@ -100,9 +99,4 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="loket.url" class="java.lang.String">
 		<constructor-arg value="${loket.url}" />
 	</bean>
-	
-	<task:annotation-driven scheduler="myScheduler" />
-
-	<task:scheduler id="myScheduler" pool-size="1" />
-
 </beans>
