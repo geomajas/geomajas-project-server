@@ -1,13 +1,9 @@
-<!--
-  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
-  ~
-  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
-  ~
-  ~ The program is available in open source according to the GNU Affero
-  ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
-  ~ details, see LICENSE.txt in the project root.
-  -->
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the GNU Affero ~ General 
+	Public License. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
@@ -15,6 +11,7 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<bean class="org.geomajas.global.PluginInfo">
@@ -38,15 +35,18 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geomajas" />
 					<property name="copyright" value="Copyright © 2008-2013 Geosparc nv" />
-					<property name="licenseName" value="GNU Affero General Public License, Version 3" />
+					<property name="licenseName"
+						value="GNU Affero General Public License, Version 3" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html" />
-					<property name="sourceUrl" value="http://ci.geomajas.org/svn/repos/Geomajas/list/" />
+					<property name="sourceUrl"
+						value="http://ci.geomajas.org/svn/repos/Geomajas/list/" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geomajas al" />
 					<property name="copyright" value="Copyright © 2008-2013 Geosparc nv" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JTS" />
@@ -58,34 +58,38 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="key" value="javax.validation" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="slf4j" />
-					<property name="copyright" value="Copyright © 2004-2008 QOS.ch  All rights reserved. " />
+					<property name="copyright"
+						value="Copyright © 2004-2008 QOS.ch  All rights reserved. " />
 					<property name="licenseName" value="MIT" />
 					<property name="licenseUrl" value="http://www.slf4j.org/license.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="GeoTools" />
 					<property name="copyright"
-							  value="Copyright © 2002-2006, GeoTools Project Management Committee (PMC)" />
-					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+						value="Copyright © 2002-2006, GeoTools Project Management Committee (PMC)" />
+					<property name="licenseName"
+						value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="GeoTools-DateUtils" />
 					<property name="copyright"
-							  value="Copyright © 2002-2004, Dennis M. Sosnoski." />
+						value="Copyright © 2002-2004, Dennis M. Sosnoski." />
 					<property name="licenseName" value="" />
 					<property name="licenseUrl"
-							  value="http://docs.geotools.org/latest/userguide/library/main/index.html" />
+						value="http://docs.geotools.org/latest/userguide/library/main/index.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Spring Framework" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="aopalliance" />
@@ -97,25 +101,29 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="key" value="cglib" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="javax.annotation" />
 					<property name="copyright" value="" />
-					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseName"
+						value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Hibernate validator" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JAXB RI" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="CDDL 1.0 or GPL 2 (dual license)" />
-					<property name="licenseUrl" value="https://glassfish.dev.java.net/public/CDDL+GPL.html" />
+					<property name="licenseUrl"
+						value="https://glassfish.dev.java.net/public/CDDL+GPL.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JDOM" />
@@ -125,7 +133,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JSR-275" />
-					<property name="copyright" value="Copyright © 2006 - JScience (http://jscience.org/)" />
+					<property name="copyright"
+						value="Copyright © 2006 - JScience (http://jscience.org/)" />
 					<property name="licenseName" value="BSD" />
 					<property name="licenseUrl" value="http://jscience.org/doc/license.txt" />
 				</bean>
@@ -133,18 +142,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="key" value="Apache commons" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="java3d vecmath" />
 					<property name="copyright" value="" />
 					<property name="licenseName"
-							  value="GNU General Public License, version 2, with the Classpath Exception" />
-					<property name="licenseUrl" value="http://openjdk.java.net/legal/gplv2+ce.html" />
+						value="GNU General Public License, version 2, with the Classpath Exception" />
+					<property name="licenseUrl"
+						value="http://openjdk.java.net/legal/gplv2+ce.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JAI" />
-					<property name="copyright" value="Copyright © 2006 Sun Microsystems, Inc. All  Rights Reserved" />
+					<property name="copyright"
+						value="Copyright © 2006 Sun Microsystems, Inc. All  Rights Reserved" />
 					<property name="licenseName" value="Java Distribution License (JDL)" />
 					<property name="licenseUrl" value="https://jai.dev.java.net/#Licenses" />
 				</bean>
@@ -152,78 +164,94 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="key" value="javax.servlet" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="CDDL 1.0 or GPL 2 (dual license)" />
-					<property name="licenseUrl" value="https://glassfish.dev.java.net/public/CDDL+GPL.html" />
+					<property name="licenseUrl"
+						value="https://glassfish.dev.java.net/public/CDDL+GPL.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="xerces" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="xalan" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="jboss-serialization"/>
-					<property name="licenseName" value="GNU Lesser General Public License"/>
-					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html"/>
+					<property name="key" value="jboss-serialization" />
+					<property name="licenseName" value="GNU Lesser General Public License" />
+					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="FindBugs" />
 					<property name="copyright" value="" />
-					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseName"
+						value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="stax-api" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geronimo-specs" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="ImageIO-EXT" />
 					<property name="copyright" value="" />
-					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseName"
+						value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Trove" />
 					<property name="copyright" value="" />
-					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseName"
+						value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JiBX" />
-					<property name="copyright" value="Copyright (c) 2003-2010, Dennis M. Sosnoski." />
+					<property name="copyright"
+						value="Copyright (c) 2003-2010, Dennis M. Sosnoski." />
 					<property name="licenseName" value="BSD" />
-					<property name="licenseUrl" value="http://jibx.sourceforge.net/jibx-license.html" />
+					<property name="licenseUrl"
+						value="http://jibx.sourceforge.net/jibx-license.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="XPP3" />
-					<property name="copyright" value="Copyright (c) 2002 Extreme! Lab, Indiana University. All rights reserved." />
-					<property name="licenseName" value="Indiana University Extreme! Lab Software License" />
-					<property name="licenseUrl" value="http://www.extreme.indiana.edu/xgws/xsoap/PullParser/LICENSE.txt" />
+					<property name="copyright"
+						value="Copyright (c) 2002 Extreme! Lab, Indiana University. All rights reserved." />
+					<property name="licenseName"
+						value="Indiana University Extreme! Lab Software License" />
+					<property name="licenseUrl"
+						value="http://www.extreme.indiana.edu/xgws/xsoap/PullParser/LICENSE.txt" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Joda-Time" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+					<property name="licenseUrl"
+						value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="dom4j" />
-					<property name="copyright" value="Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved." />
+					<property name="copyright"
+						value="Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved." />
 					<property name="licenseName" value="BSD style" />
-					<property name="licenseUrl" value="http://dom4j.sourceforge.net/dom4j-1.6.1/license.html" />
+					<property name="licenseUrl"
+						value="http://dom4j.sourceforge.net/dom4j-1.6.1/license.html" />
 				</bean>
 			</list>
 		</property>
@@ -240,35 +268,35 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.internal.configuration.GeotoolsInitializer"/>
+	<bean class="org.geomajas.internal.configuration.GeotoolsInitializer" />
 
 	<!-- @extract-start CrsInfo, Custom CRS addition -->
 	<bean class="org.geomajas.global.CrsInfo">
 		<property name="key" value="EPSG:900913" />
 		<property name="crsWkt">
 			<value>
-PROJCS["Google Mercator",
-	GEOGCS["WGS 84",
-	DATUM["World Geodetic System 1984",
-		SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
-		AUTHORITY["EPSG","6326"]],
-	PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
-	UNIT["degree", 0.017453292519943295],
-	AXIS["Geodetic latitude", NORTH],
-	AXIS["Geodetic longitude", EAST],
-	AUTHORITY["EPSG","4326"]],
-	PROJECTION["Mercator (1SP)", AUTHORITY["EPSG","9804"]],
-	PARAMETER["semi_major", 6378137.0],
-	PARAMETER["semi_minor", 6378137.0],
-	PARAMETER["latitude_of_origin", 0.0],
-	PARAMETER["central_meridian", 0.0],
-	PARAMETER["scale_factor", 1.0],
-	PARAMETER["false_easting", 0.0],
-	PARAMETER["false_northing", 0.0],
-	UNIT["m", 1.0],
-	AXIS["Easting", EAST],
-	AXIS["Northing", NORTH],
-	AUTHORITY["EPSG","900913"]]
+				PROJCS["Google Mercator",
+				GEOGCS["WGS 84",
+				DATUM["World Geodetic System 1984",
+				SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
+				AUTHORITY["EPSG","6326"]],
+				PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
+				UNIT["degree", 0.017453292519943295],
+				AXIS["Geodetic latitude", NORTH],
+				AXIS["Geodetic longitude", EAST],
+				AUTHORITY["EPSG","4326"]],
+				PROJECTION["Mercator (1SP)", AUTHORITY["EPSG","9804"]],
+				PARAMETER["semi_major", 6378137.0],
+				PARAMETER["semi_minor", 6378137.0],
+				PARAMETER["latitude_of_origin", 0.0],
+				PARAMETER["central_meridian", 0.0],
+				PARAMETER["scale_factor", 1.0],
+				PARAMETER["false_easting", 0.0],
+				PARAMETER["false_northing", 0.0],
+				UNIT["m", 1.0],
+				AXIS["Easting", EAST],
+				AXIS["Northing", NORTH],
+				AUTHORITY["EPSG","900913"]]
 			</value>
 		</property>
 	</bean>
@@ -293,55 +321,55 @@ PROJCS["Google Mercator",
 		<property name="key" value="EPSG:3857" />
 		<property name="crsWkt">
 			<value>
-PROJCS["WGS 84 / Pseudo-Mercator",
-   GEOGCS["WGS 84",
-     DATUM["World Geodetic System 1984",
-       SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
-       AUTHORITY["EPSG","6326"]],
-     PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
-     UNIT["degree", 0.017453292519943295],
-     AXIS["Geodetic latitude", NORTH],
-     AXIS["Geodetic longitude", EAST],
-     AUTHORITY["EPSG","4326"]],
-   PROJECTION["Popular Visualisation Pseudo Mercator", AUTHORITY["EPSG","1024"]],
-   PARAMETER["Latitude of natural origin", 0.0],
-   PARAMETER["Longitude of natural origin", 0.0],
-   PARAMETER["False easting", 0.0],
-   PARAMETER["False northing", 0.0],
-   UNIT["metre", 1.0],
-   AXIS["Easting", EAST],
-   AXIS["Northing", NORTH],
-   AUTHORITY["EPSG","3857"]]
+				PROJCS["WGS 84 / Pseudo-Mercator",
+				GEOGCS["WGS 84",
+				DATUM["World Geodetic System 1984",
+				SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
+				AUTHORITY["EPSG","6326"]],
+				PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
+				UNIT["degree", 0.017453292519943295],
+				AXIS["Geodetic latitude", NORTH],
+				AXIS["Geodetic longitude", EAST],
+				AUTHORITY["EPSG","4326"]],
+				PROJECTION["Popular Visualisation Pseudo Mercator", AUTHORITY["EPSG","1024"]],
+				PARAMETER["Latitude of natural origin", 0.0],
+				PARAMETER["Longitude of natural origin", 0.0],
+				PARAMETER["False easting", 0.0],
+				PARAMETER["False northing", 0.0],
+				UNIT["metre", 1.0],
+				AXIS["Easting", EAST],
+				AXIS["Northing", NORTH],
+				AUTHORITY["EPSG","3857"]]
 			</value>
 		</property>
 	</bean>
 
- 	<bean class="org.geomajas.global.CrsInfo">
+	<bean class="org.geomajas.global.CrsInfo">
 		<property name="key" value="EPSG:31300" />
 		<property name="crsWkt">
 			<value>
-PROJCS["Belge 1972 / Belge Lambert 72", 
-  GEOGCS["Belge 1972", 
-    DATUM["Reseau_National_Belge_1972", 
-      SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]], 
-      TOWGS84[-106.868628,52.297783,-103.723893,0.336570,-0.456955,1.842183,-1.2747], 
-      AUTHORITY["EPSG","6313"]], 
-    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], 
-    UNIT["degree", 0.017453292519943295], 
-    AXIS["Longitude", EAST], 
-    AXIS["Latitude", NORTH], 
-    AUTHORITY["EPSG","4313"]], 
-  PROJECTION["Lambert_Conformal_Conic_2SP_Belgium"], 
-  PARAMETER["central_meridian", 4.356939722222222], 
-  PARAMETER["latitude_of_origin", 90.0], 
-  PARAMETER["standard_parallel_1", 49.833333333333336], 
-  PARAMETER["false_easting", 150000.01256], 
-  PARAMETER["false_northing", 5400088.4378], 
-  PARAMETER["standard_parallel_2", 51.166666666666664], 
-  UNIT["m", 1.0], 
-  AXIS["x", EAST], 
-  AXIS["y", NORTH], 
-  AUTHORITY["EPSG","31300"]]
+				PROJCS["Belge 1972 / Belge Lambert 72",
+				GEOGCS["Belge 1972",
+				DATUM["Reseau_National_Belge_1972",
+				SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]],
+				TOWGS84[-106.868628,52.297783,-103.723893,0.336570,-0.456955,1.842183,-1.2747],
+				AUTHORITY["EPSG","6313"]],
+				PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
+				UNIT["degree", 0.017453292519943295],
+				AXIS["Longitude", EAST],
+				AXIS["Latitude", NORTH],
+				AUTHORITY["EPSG","4313"]],
+				PROJECTION["Lambert_Conformal_Conic_2SP_Belgium"],
+				PARAMETER["central_meridian", 4.356939722222222],
+				PARAMETER["latitude_of_origin", 90.0],
+				PARAMETER["standard_parallel_1", 49.833333333333336],
+				PARAMETER["false_easting", 150000.01256],
+				PARAMETER["false_northing", 5400088.4378],
+				PARAMETER["standard_parallel_2", 51.166666666666664],
+				UNIT["m", 1.0],
+				AXIS["x", EAST],
+				AXIS["y", NORTH],
+				AUTHORITY["EPSG","31300"]]
 			</value>
 		</property>
 	</bean>
@@ -350,29 +378,29 @@ PROJCS["Belge 1972 / Belge Lambert 72",
 		<property name="key" value="EPSG:31370" />
 		<property name="crsWkt">
 			<value>
-PROJCS["Belge 1972 / Belgian Lambert 72", 
-  GEOGCS["Belge 1972", 
-    DATUM["Reseau_National_Belge_1972", 
-      SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]], 
-      TOWGS84[-106.868628,52.297783,-103.723893,0.336570,-0.456955,1.842183,-1.2747], 
-      AUTHORITY["EPSG","6313"]], 
-    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], 
-    UNIT["degree", 0.017453292519943295], 
-    AXIS["Longitude", EAST], 
-    AXIS["Latitude", NORTH], 
-    AUTHORITY["EPSG","4313"]], 
-  PROJECTION["Lambert_Conformal_Conic_2SP"], 
-  PARAMETER["central_meridian", 4.367486666666666], 
-  PARAMETER["latitude_of_origin", 90.0], 
-  PARAMETER["standard_parallel_1", 51.166667233333335], 
-  PARAMETER["false_easting", 150000.013], 
-  PARAMETER["false_northing", 5400088.438], 
-  PARAMETER["scale_factor", 1.0], 
-  PARAMETER["standard_parallel_2", 49.83333389999999], 
-  UNIT["m", 1.0], 
-  AXIS["x", EAST], 
-  AXIS["y", NORTH], 
-  AUTHORITY["EPSG","31370"]]
+				PROJCS["Belge 1972 / Belgian Lambert 72",
+				GEOGCS["Belge 1972",
+				DATUM["Reseau_National_Belge_1972",
+				SPHEROID["International 1924", 6378388.0, 297.0, AUTHORITY["EPSG","7022"]],
+				TOWGS84[-106.868628,52.297783,-103.723893,0.336570,-0.456955,1.842183,-1.2747],
+				AUTHORITY["EPSG","6313"]],
+				PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
+				UNIT["degree", 0.017453292519943295],
+				AXIS["Longitude", EAST],
+				AXIS["Latitude", NORTH],
+				AUTHORITY["EPSG","4313"]],
+				PROJECTION["Lambert_Conformal_Conic_2SP"],
+				PARAMETER["central_meridian", 4.367486666666666],
+				PARAMETER["latitude_of_origin", 90.0],
+				PARAMETER["standard_parallel_1", 51.166667233333335],
+				PARAMETER["false_easting", 150000.013],
+				PARAMETER["false_northing", 5400088.438],
+				PARAMETER["scale_factor", 1.0],
+				PARAMETER["standard_parallel_2", 49.83333389999999],
+				UNIT["m", 1.0],
+				AXIS["x", EAST],
+				AXIS["y", NORTH],
+				AUTHORITY["EPSG","31370"]]
 			</value>
 		</property>
 	</bean>
@@ -390,7 +418,8 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 		</property>
 	</bean>
 
-	<!-- default security configuration - should be overwritten to make something accessible -->
+	<!-- default security configuration - should be overwritten to make something 
+		accessible -->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false" />
 		<property name="securityServices">
@@ -418,12 +447,13 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 		</property>
 	</bean>
 
-	<bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
+	<bean
+		class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
 		<property name="afterInitialization" value="true" />
 	</bean>
 
 	<context:component-scan base-package="org.geomajas"
-			name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
+		name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
 		<property name="propertyEditorRegistrars">
@@ -436,7 +466,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 	<!-- define default pipelines for RasterLayerService -->
 
 	<bean name="PIPELINE_GET_RASTER_TILES" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -456,7 +489,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 	<!-- define default pipelines for VectorLayerService -->
 
 	<bean name="PIPELINE_SAVE_OR_UPDATE" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -473,7 +509,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateEachStep">
 					<property name="id" value="SaveOrUpdateEachStep" />
-					<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+					<property name="pipelineName">
+						<util:constant
+							static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE" />
+					</property>
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="postSaveOrUpdate" />
@@ -483,7 +522,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 	</bean>
 
 	<bean name="PIPELINE_SAVE_OR_UPDATE_ONE" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -507,7 +549,8 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preTransformGeometry" />
 				</bean>
-				<bean class="org.geomajas.internal.layer.vector.FeatureTransformGeometryStep">
+				<bean
+					class="org.geomajas.internal.layer.vector.FeatureTransformGeometryStep">
 					<property name="id" value="FeatureTransformGeometryStep" />
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -543,7 +586,8 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preBackTransformGeometry" />
 				</bean>
-				<bean class="org.geomajas.internal.layer.vector.FeatureBackTransformGeometryStep">
+				<bean
+					class="org.geomajas.internal.layer.vector.FeatureBackTransformGeometryStep">
 					<property name="id" value="FeatureBackTransformGeometryStep" />
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -563,7 +607,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 	</bean>
 
 	<bean name="PIPELINE_GET_FEATURES" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -598,7 +645,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 	</bean>
 
 	<bean name="PIPELINE_GET_BOUNDS" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -625,7 +675,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 
 
 	<bean name="PIPELINE_GET_ATTRIBUTES" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -642,7 +695,10 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 	</bean>
 
 	<bean name="PIPELINE_GET_VECTOR_TILE" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
+		<property name="pipelineName">
+			<util:constant
+				static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE" />
+		</property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -693,8 +749,11 @@ PROJCS["Belge 1972 / Belgian Lambert 72",
 			</list>
 		</property>
 	</bean>
-	
-	<!--  scan the classpath for plugin contexts -->
+
+	<!-- Activates @Scheduled and @Async annotations for scheduling -->
+	<task:annotation-driven />
+
+	<!-- scan the classpath for plugin contexts -->
 	<import resource="classpath*:META-INF/geomajasContext.xml" />
 </beans>
 
