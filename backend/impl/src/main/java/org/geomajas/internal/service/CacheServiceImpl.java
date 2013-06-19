@@ -30,8 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CacheServiceImpl implements CacheService {
 
-//	private static final long CLEANUP_INTERVAL = 3600 * 1000;
-	private static final long CLEANUP_INTERVAL = 30 * 1000;
+	private static final long CLEANUP_INTERVAL = 3600 * 1000;
 
 	private Map<String, Map<Object, CachedObject>> caches = new ConcurrentHashMap<String, Map<Object, CachedObject>>();
 
