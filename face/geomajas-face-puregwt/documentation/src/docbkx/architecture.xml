@@ -1104,7 +1104,7 @@ Element target = mapController.getTarget(event);</programlisting>
         <listitem>
           <para><emphasis>org.geomajas.puregwt.client.gfx.VectorContainer</emphasis>:
           Depending on the browser used, this container will render in either
-          SVG or VML. </para>
+          SVG or VML.</para>
         </listitem>
 
         <listitem>
@@ -1139,20 +1139,86 @@ VectorContainer worldContainer = mapPresenter.addWorldContainer();
 VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlisting>
 
         <para>After acquiring such a container it is possible to add multiple
-        VectorObjects to it. </para>
+        VectorObjects to it.</para>
 
         <note>
           <para>Be careful to make sure you use the correct coordinate system
           when adding VectorObjects to your VectorContainer. A container that
           was added in ScreenSpace, expects it's VectorObjects to be expressed
-          in pixel coordinates.</para>
+          in pixel coordinates (integer values). A container that was added in
+          WorldSpace expexts it's VectorObjects to be expressed in world
+          coordinates or user coordinates (the more general term used in
+          GwtGraphics).</para>
         </note>
       </section>
 
       <section>
         <title>CanvasContainers</title>
 
-        <para>Jan???</para>
+        <para>There is some experimental support for HTML5 canvas rendering.
+        To create a new the canvas container, call the following
+        method:</para>
+
+        <programlisting>CanvasContainer canvasContainer = mapPresenter.addWorldCanvas();</programlisting>
+
+        <para>The canvas rendering API is entirely different from the SVG/VML
+        rendering APIs. Canvas is not DOM-based, but provides a generic 2D
+        context and pen for stroking and filling primitives like paths, arcs
+        and rectangles, drawing text and images, etc... This will sound
+        familiar to those of you that have used the java Graphics2D. Canvas
+        provides full control of the pixel-by-pixel appearance of the image
+        that you are drawing. The down-side of canvas is that the
+        responsibility of redrawing the image whenever the state changes (and
+        this means any state change, including simple panning or zooming) is
+        left to the application. Canvas also lacks the concept of objects or
+        event targeting, it is just a dumb image. This can of course be
+        mitigated by keeping track of rendered objects yourself (after all,
+        this is what most drawing software using Graphics2D does), but this is
+        much more complicated than with a DOM-based model. </para>
+
+        <para>Our simple container implementation keeps track of a list of
+        CanvasShape objects and will automatically repaint them whenever the
+        map is translated or scaled. The container will react immediately when
+        shapes are added or removed, although the repaint method can be called
+        explicitly as well (e.g. when an object is updated) :<programlisting>public interface CanvasContainer extends Transformable, Transparent, IsWidget {
+  void addShape(CanvasShape shape);
+  void addAll(List&lt;CanvasShape&gt; shapes);
+  void removeShape(CanvasShape shape);
+  void clear();
+  void repaint();
+  void setPixelSize(int width, int height);
+}</programlisting></para>
+
+        <para>The shape objects themselves have to implement a paint() method
+        to draw themselves on the canvas (in world coordinates). An example
+        such a drawing method for a simple rectangle (CanvasRect) is shown
+        here:</para>
+
+        <programlisting>  @Override
+  public void paint(Canvas canvas, Matrix matrix) {
+    canvas.getContext2d().save();
+    canvas.getContext2d().setFillStyle(fillStyle);
+    canvas.getContext2d().fillRect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
+    canvas.getContext2d().setStrokeStyle(strokeStyle);
+    canvas.getContext2d().setLineWidth(strokeWidthPixels / matrix.getXx());
+    canvas.getContext2d().strokeRect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
+    canvas.getContext2d().restore();
+  }</programlisting>
+
+        <para>Notice that the previous context state is saved at the start and
+        restored at the end. This ensures that we don't propagate context
+        changes between successive shapes. The body of the code is simply
+        drawing a rectangle in the required fill and stroke style. We have to
+        divide the original line width in pixels by the scale factor (assuming
+        uniform scaling) because it will be multiplied afterwards by the
+        container as part of the world-to-screen transformation. If
+        necessary</para>
+
+        <para>The container implementation uses a simple form of double
+        buffering to make it fast and can render hunderds of thousands of
+        rectangles at once with an acceptable performance. There is presently
+        no support for handling events on a per-shape basis, though, so this
+        is mostly useful for background rendering.</para>
       </section>
     </section>
 
