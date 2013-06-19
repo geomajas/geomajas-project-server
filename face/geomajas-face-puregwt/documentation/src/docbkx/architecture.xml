@@ -1165,9 +1165,9 @@ VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlis
         rendering APIs. Canvas is not DOM-based, but provides a generic 2D
         context and pen for stroking and filling primitives like paths, arcs
         and rectangles, drawing text and images, etc... This will sound
-        familiar to those of you that have used the java Graphics2D. Canvas
-        provides full control of the pixel-by-pixel appearance of the image
-        that you are drawing. The down-side of canvas is that the
+        familiar to those of you that have used the java Graphics2D API.
+        Canvas provides full control of the pixel-by-pixel appearance of the
+        image that you are drawing. The down-side of canvas is that the
         responsibility of redrawing the image whenever the state changes (and
         this means any state change, including simple panning or zooming) is
         left to the application. Canvas also lacks the concept of objects or
@@ -1190,7 +1190,7 @@ VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlis
 }</programlisting></para>
 
         <para>The shape objects themselves have to implement a paint() method
-        to draw themselves on the canvas (in world coordinates). An example
+        to draw themselves on the canvas (in world coordinates). An example of
         such a drawing method for a simple rectangle (CanvasRect) is shown
         here:</para>
 
@@ -1211,8 +1211,7 @@ VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlis
         drawing a rectangle in the required fill and stroke style. We have to
         divide the original line width in pixels by the scale factor (assuming
         uniform scaling) because it will be multiplied afterwards by the
-        container as part of the world-to-screen transformation. If
-        necessary</para>
+        container as part of the world-to-screen transformation.</para>
 
         <para>The container implementation uses a simple form of double
         buffering to make it fast and can render hunderds of thousands of
