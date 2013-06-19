@@ -16,7 +16,8 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports changes in layer style.
+ * Event that reports changes in layer style. Use {@link Layer.updateStyle()} to throw this event from a layer instead
+ * of calling it directly, as style changes might not be registered at the server.
  * 
  * @author Pieter De Graef
  * @since 1.8.0
@@ -28,8 +29,9 @@ public class LayerStyleChangeEvent extends GwtEvent<LayerStyleChangedHandler> {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param layer layer for which the style changed
+	 * 
+	 * @param layer
+	 *            layer for which the style changed
 	 */
 	public LayerStyleChangeEvent(Layer<?> layer) {
 		this.layer = layer;
@@ -37,7 +39,7 @@ public class LayerStyleChangeEvent extends GwtEvent<LayerStyleChangedHandler> {
 
 	/**
 	 * Get layer for which the style was changed.
-	 *
+	 * 
 	 * @return layer for which the style changed
 	 */
 	public Layer<?> getLayer() {

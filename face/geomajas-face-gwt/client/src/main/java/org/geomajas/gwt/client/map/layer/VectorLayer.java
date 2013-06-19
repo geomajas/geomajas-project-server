@@ -18,8 +18,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.annotation.Api;
+import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
+import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
@@ -34,6 +39,7 @@ import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
 import org.geomajas.gwt.client.map.event.HasLayerFilteredHandlers;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
 import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
+import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -63,7 +69,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	private Composite selectionGroup = new Composite("selection");
 
 	private Composite labelGroup = new Composite("labels");
-	
+
 	/** selected features id -> feature map */
 	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
 
@@ -76,7 +82,8 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	 * 
 	 * @param mapModel
 	 *            The model of layers and features behind a map. This layer will be a part of this model.
-	 * @param layerInfo client layer descriptor
+	 * @param layerInfo
+	 *            client layer descriptor
 	 */
 	public VectorLayer(MapModel mapModel, ClientVectorLayerInfo layerInfo) {
 		super(mapModel, layerInfo);
@@ -192,16 +199,16 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	/**
 	 * Returns a set of selected features in this layer by their ID's.
-	 *
+	 * 
 	 * @return set of selected feature IDs
 	 */
 	public Set<String> getSelectedFeatures() {
 		return selectedFeatures.keySet();
 	}
-	
+
 	/**
 	 * Returns the collection of selected features (the objects) in this layer.
-	 *
+	 * 
 	 * @return selected features
 	 */
 	public Collection<Feature> getSelectedFeatureValues() {
@@ -241,5 +248,22 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public PaintableGroup getLabelGroup() {
 		return labelGroup;
 	}
-	
+
+	@Override
+	public void updateStyle() {
+		GwtCommand commandRequest = new GwtCommand(RegisterNamedStyleInfoRequest.COMMAND);
+		RegisterNamedStyleInfoRequest request = new RegisterNamedStyleInfoRequest();
+		request.setLayerId(getServerLayerId());
+		request.setNamedStyleInfo(getLayerInfo().getNamedStyleInfo());
+		commandRequest.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<RegisterNamedStyleInfoResponse>() {
+					@Override
+					public void execute(RegisterNamedStyleInfoResponse response) {
+						getLayerInfo().getNamedStyleInfo().setName(response.getStyleName());
+						handlerManager.fireEvent(new LayerStyleChangeEvent(VectorLayer.this));
+					}
+				});
+	}
+
 }

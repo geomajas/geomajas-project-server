@@ -72,6 +72,11 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	void updateShowing();
 
 	/**
+	 * Forces this layer to update its style and notifies all {@link LayerStyleChangedHandler}s.
+	 */
+	void updateStyle();
+	
+	/**
 	 * Is this layer currently selected or not?
 	 * 
 	 * @return true if selected, false otherwise

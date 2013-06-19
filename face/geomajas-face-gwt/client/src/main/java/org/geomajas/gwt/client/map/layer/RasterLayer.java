@@ -88,4 +88,9 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 		}
 		handlerManager.fireEvent(new LayerStyleChangeEvent(this));
 	}
+
+	@Override
+	public void updateStyle() {
+		handlerManager.fireEvent(new LayerStyleChangeEvent(this));
+	}
 }
