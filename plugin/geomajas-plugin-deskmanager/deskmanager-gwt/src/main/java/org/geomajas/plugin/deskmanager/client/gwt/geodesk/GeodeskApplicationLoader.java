@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
@@ -37,7 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api (allMethods = true)
+@Api(allMethods = true)
 public class GeodeskApplicationLoader {
 
 	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
@@ -53,30 +54,33 @@ public class GeodeskApplicationLoader {
 	}
 
 	/**
-	 * Load a geodesk application. If needed this will first ask for the correct user role and then load the 
+	 * Load a geodesk application. If needed this will first ask for the correct user role and then load the
 	 * application.
 	 * 
-	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is
-	 * loaded from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
+	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is loaded
+	 * from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
 	 * 
-	 * @param callback called when everything is drawn and ready to add to the application
+	 * @param callback
+	 *            called when everything is drawn and ready to add to the application
 	 */
 	public void loadApplication(final LoadingCallback callback) {
 		loadApplication(callback, null);
 	}
-	
+
 	/**
-	 * Load a geodesk application. If needed this will first ask for the correct user role and then load the 
+	 * Load a geodesk application. If needed this will first ask for the correct user role and then load the
 	 * application.
 	 * 
-	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is
-	 * loaded from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
+	 * The presentation is added to the layout using a {@link UserApplication}, the key for this application is loaded
+	 * from the configuration. User application must be registered to the {@link UserApplicationRegistry}.
 	 * 
-	 * You can add a user application handler that is called once the user application is loaded and added to the 
+	 * You can add a user application handler that is called once the user application is loaded and added to the
 	 * layout.
 	 * 
-	 * @param callback called when everything is drawn and ready to add to the layout
-	 * @param handler the user application handler
+	 * @param callback
+	 *            called when everything is drawn and ready to add to the layout
+	 * @param handler
+	 *            the user application handler
 	 */
 	public void loadApplication(final LoadingCallback callback, final UserApplicationHandler handler) {
 		// First Install a loading screen
@@ -101,21 +105,38 @@ public class GeodeskApplicationLoader {
 				// Load geodesk from registry
 				geodesk = UserApplicationRegistry.getInstance().get(response.getUserApplicationKey());
 
-				geodesk.setApplicationId(response.getGeodeskIdentifier());
-				geodesk.setClientApplicationInfo(response.getClientApplicationInfo());
+				if (geodesk != null) {
 
-				// Register the geodesk to the loading screen (changes banner, and name), and set the page title
-				loadScreen.registerGeodesk(geodesk);
-				if (null != Document.get()) {
-					Document.get().setTitle(geodesk.getName());
-				}
+					geodesk.setApplicationId(response.getGeodeskIdentifier());
+					geodesk.setClientApplicationInfo(response.getClientApplicationInfo());
 
-				// Load the geodesk
-				// Build main layout
-				callback.loaded(geodesk.loadGeodesk());
-				
-				if (handler != null) {
-					handler.onUserApplicationLoad(new UserApplicationEvent(geodesk));
+					// Register the geodesk to the loading screen (changes banner, and name), and set the page title
+					loadScreen.registerGeodesk(geodesk);
+					if (null != Document.get()) {
+						Document.get().setTitle(geodesk.getName());
+					}
+
+					// Load the geodesk
+					// Build main layout
+					callback.loaded(geodesk.loadGeodesk());
+
+					if (handler != null) {
+						handler.onUserApplicationLoad(new UserApplicationEvent(geodesk));
+					}
+					
+					// Run when map is initialized
+					geodesk.getMainMapWidget().getMapModel().runWhenInitialized(new Runnable() {
+						@Override
+						public void run() {
+							//Update style of all layers, as they may be overridden using the deskmanager.
+							for (VectorLayer layer : geodesk.getMainMapWidget().getMapModel().getVectorLayers()) {
+								layer.updateStyle();
+							}
+						}
+					});
+					
+				} else {
+					Window.alert(MESSAGES.noSuchGeodeskExists());
 				}
 			}
 		});
@@ -123,14 +144,15 @@ public class GeodeskApplicationLoader {
 		// Get application info for the geodesk
 		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
 	}
-	
+
 	/**
 	 * Callback that is called when the geodesk is loaded.
 	 * 
 	 * @author Oliver May
-	 *
+	 * 
 	 */
 	public interface LoadingCallback {
+
 		void loaded(Widget w);
 	}
 
