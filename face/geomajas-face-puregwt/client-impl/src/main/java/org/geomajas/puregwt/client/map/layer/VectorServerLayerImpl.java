@@ -17,14 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
+import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerLabelHideEvent;
 import org.geomajas.puregwt.client.event.LayerLabelShowEvent;
+import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.feature.Feature;
@@ -149,5 +155,22 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	@Override
 	public boolean isLabeled() {
 		return labeled;
+	}
+	
+	@Override
+	public void updateStyle() {
+		GwtCommand commandRequest = new GwtCommand(RegisterNamedStyleInfoRequest.COMMAND);
+		RegisterNamedStyleInfoRequest request = new RegisterNamedStyleInfoRequest();
+		request.setLayerId(getServerLayerId());
+		request.setNamedStyleInfo(getLayerInfo().getNamedStyleInfo());
+		commandRequest.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(commandRequest,
+				new AbstractCommandCallback<RegisterNamedStyleInfoResponse>() {
+					@Override
+					public void execute(RegisterNamedStyleInfoResponse response) {
+						getLayerInfo().getNamedStyleInfo().setName(response.getStyleName());
+						eventBus.fireEvent(new LayerStyleChangedEvent(VectorServerLayerImpl.this));
+					}
+				});
 	}
 }

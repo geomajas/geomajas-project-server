@@ -84,6 +84,11 @@ public interface Layer {
 
 	/** Refresh this layer on the map. This method will completely erase the current contents and redraw. */
 	void refresh();
+	
+	/**
+	 * Update the style of the layer. This will notify all stylechange listeners.
+	 */
+	void updateStyle();
 
 	/**
 	 * Get the full list of style presenters for this layer. Each style presenters represents a supported style for this

@@ -63,10 +63,15 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	 */
 	public void setOpacity(double opacity) {
 		getLayerInfo().setStyle(Double.toString(opacity));
-		eventBus.fireEvent(new LayerStyleChangedEvent(this));
+		updateStyle();
 	}
 
 	public double getOpacity() {
 		return Double.parseDouble(getLayerInfo().getStyle());
 	}
+	
+	@Override
+	public void updateStyle() {
+		eventBus.fireEvent(new LayerStyleChangedEvent(this));
+	}	
 }
