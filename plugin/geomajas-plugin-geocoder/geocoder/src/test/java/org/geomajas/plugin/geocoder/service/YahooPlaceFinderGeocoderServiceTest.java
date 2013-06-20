@@ -14,6 +14,7 @@ package org.geomajas.plugin.geocoder.service;
 import junit.framework.Assert;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
 import org.geomajas.service.GeoService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -41,19 +42,22 @@ public class YahooPlaceFinderGeocoderServiceTest {
 	@Autowired
 	private GeoService geoService;
 
+	private List<String> list;
+	private GetLocationResult[] result;
 
+	@Before 
+	public void methodBefore(){
+		list = new ArrayList<String>();
+	}
+	
 	@Test
 	public void testGetCrs() throws Exception {
 		CoordinateReferenceSystem crs = geocoder.getCrs();
 		Assert.assertEquals(4326, geoService.getSridFromCrs(crs));
 	}
-
+	
 	@Test
-	public void testGeocoder() {
-		List<String> list = new ArrayList<String>();
-		GetLocationResult[] result;
-
-		list.clear();
+	public void testGeocoder1() {
 		list.add("booischot");
 		result = geocoder.getLocation(list, 50, null);
 		Assert.assertNotNull(result);
@@ -68,8 +72,10 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
 		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
 		Assert.assertEquals(51.05677, result[0].getEnvelope().getMaxY(), .00001);
-
-		list.clear();
+	}
+	
+	@Test
+	public void testGeocoder2() {
 		list.add("booischot");
 		result = geocoder.getLocation(list, 50, new Locale("nl_BE"));
 		Assert.assertNotNull(result);
@@ -84,8 +90,10 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
 		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
 		Assert.assertEquals(51.05677, result[0].getEnvelope().getMaxY(), .00001);
-
-		list.clear();
+	}
+	
+	@Test
+	public void testGeocoder3() {
 		list.add("london");
 		result = geocoder.getLocation(list, 50, null);
 		Assert.assertNotNull(result);
@@ -96,8 +104,10 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(2, result[0].getCanonicalStrings().size());
 		Assert.assertEquals("United Kingdom", result[0].getCanonicalStrings().get(0));
 		Assert.assertEquals("London", result[0].getCanonicalStrings().get(1));
-
-		list.clear();
+	}
+	
+	@Test
+	public void testGeocoder4() {
 		list.add("london");
 		list.add("CA");
 		result = geocoder.getLocation(list, 50, null);
@@ -105,8 +115,10 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(1,result.length);
 		Assert.assertEquals("United States", result[0].getCanonicalStrings().get(0));
 		Assert.assertEquals("London, CA 93618", result[0].getCanonicalStrings().get(1));
-
-		list.clear();
+	}
+	
+	@Test
+	public void testGeocoder5() {
 		list.add("thequickbrownfoxjumpsoverthelazydogloremipsumdolorsitamet");
 		result = geocoder.getLocation(list, 50, null);
 		Assert.assertTrue(null == result || 0 == result.length);
@@ -114,9 +126,6 @@ public class YahooPlaceFinderGeocoderServiceTest {
 	
 	@Test
 	public void testTranslatedLocale() {
-		List<String> list = new ArrayList<String>();
-		GetLocationResult[] result;
-		list.clear();
 		list.add("booischot");
 		// french locale reports "Aucune erreur" vs "No error" for nl_be
 		result = geocoder.getLocation(list, 50, new Locale("fr"));
@@ -136,8 +145,6 @@ public class YahooPlaceFinderGeocoderServiceTest {
 	
 	@Test
 	public void testException() {
-		List<String> list = new ArrayList<String>();
-		GetLocationResult[] result;
 		// empty list
 		//OM: empty list will no longer throw an exception, instead empty list is returned
 		result = geocoder.getLocation(list, 50, null);
