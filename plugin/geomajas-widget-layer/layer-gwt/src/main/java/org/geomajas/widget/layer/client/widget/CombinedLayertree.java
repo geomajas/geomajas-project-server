@@ -214,7 +214,7 @@ public class CombinedLayertree extends LayerTreeBase {
 		private final UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
 
 		private int ruleIndex;
-		
+
 		// rasterlayer
 		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, RasterLayer layer, String rasterIconUrl) {
 			super(parent.tree, parent.layer);
@@ -379,7 +379,8 @@ public class CombinedLayertree extends LayerTreeBase {
 							if (action instanceof LayerTreeAction) {
 								button = new LayerTreeButton(CombinedLayertree.this, (LayerTreeAction) action);
 							} else if (action instanceof LayerTreeModalAction) {
-								button = new LayerTreeModalButton(CombinedLayertree.this, (LayerTreeModalAction) action);
+								button = 
+									new LayerTreeModalButton(CombinedLayertree.this, (LayerTreeModalAction) action);
 							}
 							if (button != null) {
 								rollOverTools.addMember(button);
@@ -600,7 +601,8 @@ public class CombinedLayertree extends LayerTreeBase {
 						GWT.log("Legend: onLayerFilterChange() - " + event.getLayer().getLabel());
 						// find the node & update the icon
 						for (TreeNode node : tree.getAllNodes()) {
-							if (node.getName().equals(event.getLayer().getLabel()) && node instanceof LayerTreeTreeNode) {
+							if (node.getName().equals(event.getLayer().getLabel()) 
+									&& node instanceof LayerTreeTreeNode) {
 								((LayerTreeTreeNode) node).updateIcon();
 							}
 						}
