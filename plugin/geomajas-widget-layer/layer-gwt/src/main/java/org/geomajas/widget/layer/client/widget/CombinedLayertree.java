@@ -12,6 +12,7 @@
 package org.geomajas.widget.layer.client.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
@@ -84,6 +85,9 @@ public class CombinedLayertree extends LayerTreeBase {
 	private final List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
 	protected LayerTreeTreeNode rollOverLayerTreeNode;
+
+	private HashMap<VectorLayer, List<LayerTreeLegendItemNode>> legendIcons = 
+		new HashMap<VectorLayer, List<LayerTreeLegendItemNode>>();
 
 	public CombinedLayertree(final MapWidget mapWidget) {
 		super(mapWidget);
@@ -170,6 +174,8 @@ public class CombinedLayertree extends LayerTreeBase {
 		public void init() {
 			if (layer instanceof VectorLayer) {
 				VectorLayer vl = (VectorLayer) layer;
+				ArrayList<LayerTreeLegendItemNode> nodeList = new ArrayList<LayerTreeLegendItemNode>();
+				legendIcons.put(vl, nodeList);
 				ClientVectorLayerInfo layerInfo = vl.getLayerInfo();
 
 				// For vector layer; loop over the style definitions:
@@ -185,6 +191,7 @@ public class CombinedLayertree extends LayerTreeBase {
 					}
 
 					LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, vl, i, title);
+					nodeList.add(tn);
 					tree.add(tn, this);
 				}
 
@@ -206,6 +213,8 @@ public class CombinedLayertree extends LayerTreeBase {
 
 		private final UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
 
+		private int ruleIndex;
+		
 		// rasterlayer
 		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, RasterLayer layer, String rasterIconUrl) {
 			super(parent.tree, parent.layer);
@@ -226,6 +235,10 @@ public class CombinedLayertree extends LayerTreeBase {
 			super(parent.tree, parent.layer);
 			this.parent = parent;
 			setTitle(title);
+			updateStyle(layer);
+		}
+
+		public void updateStyle(VectorLayer layer) {
 			String name = layer.getLayerInfo().getNamedStyleInfo().getName();
 			setName(name + "_" + ruleIndex);
 			url.addPath(LEGEND_ICONS_PATH);
@@ -366,8 +379,7 @@ public class CombinedLayertree extends LayerTreeBase {
 							if (action instanceof LayerTreeAction) {
 								button = new LayerTreeButton(CombinedLayertree.this, (LayerTreeAction) action);
 							} else if (action instanceof LayerTreeModalAction) {
-								button = new LayerTreeModalButton(CombinedLayertree.this, 
-										(LayerTreeModalAction) action);
+								button = new LayerTreeModalButton(CombinedLayertree.this, (LayerTreeModalAction) action);
 							}
 							if (button != null) {
 								rollOverTools.addMember(button);
@@ -571,7 +583,12 @@ public class CombinedLayertree extends LayerTreeBase {
 
 				public void onLayerStyleChange(LayerStyleChangeEvent event) {
 					GWT.log("Legend: onLayerStyleChange()");
-					// TODO update layerstyles
+					Layer<?> layer = event.getLayer();
+					if (layer instanceof VectorLayer) {
+						for (LayerTreeLegendItemNode node : legendIcons.get(layer)) {
+							node.updateStyle((VectorLayer) layer);
+						}
+					}
 				}
 			}));
 
@@ -583,8 +600,7 @@ public class CombinedLayertree extends LayerTreeBase {
 						GWT.log("Legend: onLayerFilterChange() - " + event.getLayer().getLabel());
 						// find the node & update the icon
 						for (TreeNode node : tree.getAllNodes()) {
-							if (node.getName().equals(event.getLayer().getLabel()) 
-									&& node instanceof LayerTreeTreeNode) {
+							if (node.getName().equals(event.getLayer().getLabel()) && node instanceof LayerTreeTreeNode) {
 								((LayerTreeTreeNode) node).updateIcon();
 							}
 						}
