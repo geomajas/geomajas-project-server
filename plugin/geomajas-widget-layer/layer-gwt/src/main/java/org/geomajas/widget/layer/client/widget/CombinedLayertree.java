@@ -211,8 +211,6 @@ public class CombinedLayertree extends LayerTreeBase {
 
 		private LayerTreeLegendNode parent;
 
-		private final UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
-
 		private int ruleIndex;
 
 		// rasterlayer
@@ -224,6 +222,7 @@ public class CombinedLayertree extends LayerTreeBase {
 			if (rasterIconUrl != null) {
 				setIcon(rasterIconUrl);
 			} else {
+				UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
 				url.addPath(LEGEND_ICONS_PATH);
 				url.addPath(layer.getServerLayerId() + LEGEND_ICONS_TYPE);
 				setIcon(url.toString());
@@ -241,6 +240,7 @@ public class CombinedLayertree extends LayerTreeBase {
 		public void updateStyle(VectorLayer layer) {
 			String name = layer.getLayerInfo().getNamedStyleInfo().getName();
 			setName(name + "_" + ruleIndex);
+			UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
 			url.addPath(LEGEND_ICONS_PATH);
 			url.addPath(layer.getServerLayerId());
 			url.addPath(name);
