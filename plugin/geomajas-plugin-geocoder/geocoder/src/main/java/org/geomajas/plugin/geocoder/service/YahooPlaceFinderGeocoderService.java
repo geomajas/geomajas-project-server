@@ -46,6 +46,8 @@ import java.util.Map;
  * >http://developer.yahoo.com/geo/placefinder/</a>
  * 
  * @author Joachim Van der Auwera
+ * @author Jan Venstermans
+ * @since 1.4.0
  */
 @Api
 public class YahooPlaceFinderGeocoderService implements GeocoderService {
