@@ -14,6 +14,7 @@ package org.geomajas.geometry.service;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,10 @@ public class GeometryServiceMultiPointTest {
 	private Geometry gwt;
 
 	private com.vividsolutions.jts.geom.MultiPoint jts;
+
+	private Matrix matrix = new Matrix(1, 2, 3, 5, 3, 6);
+
+	private Matrix inverse = new Matrix(-5, 2, 3, -1, 3, -3);
 
 	// -------------------------------------------------------------------------
 	// Constructor, initializes the 2 point geometries:
@@ -130,4 +135,12 @@ public class GeometryServiceMultiPointTest {
 	public void getLength() {
 		Assert.assertEquals(jts.getLength(), GeometryService.getLength(gwt), DELTA);
 	}
+	
+	@Test
+	public void transformTest() throws WktException {
+		Geometry transformed = GeometryService.transform(gwt, matrix);
+		Geometry back = GeometryService.transform(transformed, inverse);
+		Assert.assertEquals(WktService.toWkt(gwt), WktService.toWkt(back));
+	}
+
 }

@@ -18,6 +18,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
 
 /**
  * Service definition for operations on {@link Geometry} objects. It's methods are loosely based upon the feature
@@ -389,6 +390,19 @@ public final class GeometryService {
 		}
 		return minDistance;
 	}
+	
+	/**
+	 * Perform a matrix transformation of a geometry. The geometry passed will be left untouched.
+	 * 
+	 * @param geometry the geometry to transform
+	 * @param matrix the matrix to use
+	 * @return a transformed copy of the geometry
+	 */
+	public static Geometry transform(Geometry geometry, Matrix matrix) {
+		Geometry copy = GeometryService.clone(geometry);
+		transformInplace(copy, matrix);
+		return copy;
+	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
@@ -693,4 +707,20 @@ public final class GeometryService {
 		}
 		return false;
 	}
+	
+	private static void transformInplace(Geometry geometry, Matrix matrix) {
+		if (geometry.getGeometries() != null) {
+			for (Geometry g : geometry.getGeometries()) {
+				transformInplace(g, matrix);
+			}
+		} else if (geometry.getCoordinates() != null) {
+			for (Coordinate c : geometry.getCoordinates()) {
+				double x = c.getX() * matrix.getXx() + c.getY() * matrix.getXy() + matrix.getDx();
+				double y = c.getX() * matrix.getYx() + c.getY() * matrix.getYy() + matrix.getDy();
+				c.setX(x);
+				c.setY(y);
+			}
+		}
+	}
+
 }
