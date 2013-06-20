@@ -103,6 +103,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 * 
 	 * @param name
 	 *            name
+	 * @since 1.4.0
 	 */
 	@Api
 	public void setName(String name) {
@@ -114,6 +115,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 * 
 	 * @param appId
 	 *            Yahoo! appId
+	 * @since 1.4.0
 	 */
 	@Api
 	public void setAppId(String appId) {
@@ -126,6 +128,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 * 
 	 * @param appIdProperty
 	 *            property which contains the appId
+	 * @since 1.4.0
 	 */
 	@Api
 	public void setAppIdProperty(String appIdProperty) {
@@ -140,6 +143,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 * 
 	 * @param skipAppIdCheck
 	 *            true to disable throwing the error when no appId is specified
+	 * @since 1.4.0
 	 */
 	@Api
 	public void setSkipAppIdCheck(boolean skipAppIdCheck) {
