@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-plugin-editing-all</artifactId>
-		<version>1.0.0-M3</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-plugin-editing-puregwt</artifactId>
