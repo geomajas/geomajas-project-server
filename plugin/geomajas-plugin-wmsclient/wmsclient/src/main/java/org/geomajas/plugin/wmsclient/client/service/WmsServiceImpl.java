@@ -59,7 +59,8 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final double DEFAULT_PIXEL_TOLERANCE = 0.0; // Default tolerance for the location
 
-	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of
+	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by
+														// getFeatureInfo()
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
 
@@ -218,21 +219,23 @@ public class WmsServiceImpl implements WmsService {
 		// Check for specific vendor options:
 		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())) {
 			url.append(WMS_LEGEND_OPTIONS_START);
-
-			url.append("fontName:");
-			url.append(legendConfig.getFontStyle().getFamily());
-			url.append(";");
-
+			if (null != legendConfig.getFontStyle().getFamily()) {
+				url.append("fontName:");
+				url.append(legendConfig.getFontStyle().getFamily());
+				url.append(";");
+			}
 			url.append("fontAntiAliasing:true;");
 
-			url.append("fontColor:");
-			url.append(legendConfig.getFontStyle().getColor());
-			url.append(";");
-
-			url.append("fontSize:");
-			url.append(legendConfig.getFontStyle().getSize());
-			url.append(";");
-
+			if (null != legendConfig.getFontStyle().getColor()) {
+				url.append("fontColor:");
+				url.append(legendConfig.getFontStyle().getColor().replace("#", "0x"));
+				url.append(";");
+			}
+			if (legendConfig.getFontStyle().getSize() > 0) {
+				url.append("fontSize:");
+				url.append(legendConfig.getFontStyle().getSize());
+				url.append(";");
+			}
 			url.append("bgColor:0xFFFFFF;dpi:" + LEGEND_DPI);
 		}
 
