@@ -117,7 +117,7 @@ public class TmsLayer implements RasterLayer {
 
 		// Make sure there is a correct RasterLayerInfo object:
 		if (layerInfo == null) {
-			tileMap = configurationService.getCapabilities(baseTmsUrl);
+			tileMap = configurationService.getCapabilities(this);
 			version = tileMap.getVersion();
 			extension = tileMap.getTileFormat().getExtension();
 			layerInfo = configurationService.asLayerInfo(tileMap);

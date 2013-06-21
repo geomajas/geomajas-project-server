@@ -13,6 +13,7 @@ package org.geomajas.layer.tms.tile;
 
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tms.TmsConfigurationService;
+import org.geomajas.layer.tms.TmsLayer;
 import org.geomajas.layer.tms.TmsLayerException;
 import org.geomajas.layer.tms.xml.TileMap;
 import org.junit.Assert;
@@ -39,8 +40,10 @@ public class TileMapUrlBuilderTest {
 
 	@Test
 	public void testBuildUrl1() throws TmsLayerException {
+		TmsLayer tmsLayer = new TmsLayer();
+		tmsLayer.setBaseTmsUrl("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 		TileMap tileMap = configurationService
-				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
+				.getCapabilities(tmsLayer);
 		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap);
 		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL);
 		Assert.assertEquals("http://www.geomajas.org/tms/some_layer/href2/2/3.extension", url);
@@ -48,8 +51,10 @@ public class TileMapUrlBuilderTest {
 
 	@Test
 	public void testBuildUrl2() throws TmsLayerException {
+		TmsLayer tmsLayer = new TmsLayer();
+		tmsLayer.setBaseTmsUrl("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
 		TileMap tileMap = configurationService
-				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
+				.getCapabilities(tmsLayer);
 		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap);
 		String url = builder.buildUrl(new TileCode(1, 2, 3), BASE_TMS_URL);
 		Assert.assertEquals("http://tms.osgeo.org/1.0.0/landsat2000/512/2/3.png", url);
@@ -64,8 +69,10 @@ public class TileMapUrlBuilderTest {
 			// As expected...
 		}
 
+		TmsLayer tmsLayer = new TmsLayer();
+		tmsLayer.setBaseTmsUrl("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
 		TileMap tileMap = configurationService
-				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
+				.getCapabilities(tmsLayer);
 
 		TileMapUrlBuilder builder = new TileMapUrlBuilder(tileMap);
 		try {

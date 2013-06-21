@@ -40,8 +40,10 @@ public class TmsConfigurationTest {
 
 	@Test
 	public void testParseConfiguration() throws TmsLayerException {
+		TmsLayer tmsLayer = new TmsLayer();
+		tmsLayer.setBaseTmsUrl("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 		TileMap tileMap = configurationService
-				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
+				.getCapabilities(tmsLayer);
 
 		// Test basic parameters:
 		Assert.assertNotNull(tileMap);
@@ -86,8 +88,10 @@ public class TmsConfigurationTest {
 
 	@Test
 	public void testAsLayerInfo() throws TmsLayerException {
+		TmsLayer tmsLayer = new TmsLayer();
+		tmsLayer.setBaseTmsUrl("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
 		TileMap tileMap = configurationService
-				.getCapabilities("classpath:/org/geomajas/layer/tms/tileMapCapa1.xml");
+				.getCapabilities(tmsLayer);
 		RasterLayerInfo layerInfo = configurationService.asLayerInfo(tileMap);
 
 		// Check general parameters:

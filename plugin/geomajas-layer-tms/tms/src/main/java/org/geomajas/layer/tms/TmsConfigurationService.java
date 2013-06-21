@@ -14,7 +14,6 @@ package org.geomajas.layer.tms;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +25,11 @@ import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.LayerType;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.tms.xml.BoundingBox;
 import org.geomajas.layer.tms.xml.TileMap;
 import org.geomajas.layer.tms.xml.TileSet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,25 +44,26 @@ public class TmsConfigurationService {
 
 	private static final String CLASSPATH = "classpath:";
 
+	@Autowired
+	private LayerHttpService httpService;
+
 	/**
 	 * Get the configuration for a TMS layer by retrieving and parsing it's XML description file. The parsing is done
 	 * using JaxB.
-	 * 
-	 * @param layerCapabilitiesUrl
-	 *            The TMS base URL where to find the description.
+	 * @param layer the tms layer to get capabilities for. 
 	 * @return Returns the description as a Java configuration object.
 	 * @throws TmsLayerException
 	 *             In case something went wrong trying to find or parse the XML description file.
 	 */
-	public TileMap getCapabilities(String layerCapabilitiesUrl) throws TmsLayerException {
+	public TileMap getCapabilities(TmsLayer layer) throws TmsLayerException {
 		try {
 			// Create a JaxB unmarshaller:
 			JAXBContext context = JAXBContext.newInstance(TileMap.class);
 			Unmarshaller um = context.createUnmarshaller();
 
 			// Find out where to retrieve the capabilities and unmarshall:
-			if (layerCapabilitiesUrl.startsWith(CLASSPATH)) {
-				String location = layerCapabilitiesUrl.substring(CLASSPATH.length());
+			if (layer.getBaseTmsUrl().startsWith(CLASSPATH)) {
+				String location = layer.getBaseTmsUrl().substring(CLASSPATH.length());
 				if (location.length() > 0 && location.charAt(0) == '/') {
 					// classpath resources should not start with a slash, but they often do
 					location = location.substring(1);
@@ -82,16 +84,18 @@ public class TmsConfigurationService {
 						}
 					}
 				}
-				throw new TmsLayerException(TmsLayerException.COULD_NOT_FIND_FILE, layerCapabilitiesUrl);
+				throw new TmsLayerException(TmsLayerException.COULD_NOT_FIND_FILE, layer.getBaseTmsUrl());
 			}
 
 			// Normal case, find the URL and unmarshal:
-			URL url = new URL(layerCapabilitiesUrl);
-			return (TileMap) um.unmarshal(url);
+			return (TileMap) um.unmarshal(httpService.getStream(layer.getBaseTmsUrl(), layer.getAuthentication(), 
+					layer.getId()));
 		} catch (JAXBException e) {
-			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layerCapabilitiesUrl);
+			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layer.getBaseTmsUrl());
 		} catch (MalformedURLException e) {
-			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_FIND_FILE, layerCapabilitiesUrl);
+			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_FIND_FILE, layer.getBaseTmsUrl());
+		} catch (IOException e) {
+			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layer.getBaseTmsUrl());
 		}
 	}
 
