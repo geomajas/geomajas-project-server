@@ -479,6 +479,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.internal.layer.raster.GetTilesGetStep">
 					<property name="id" value="GetTilesGetStep" />
 				</bean>
+				<bean class="org.geomajas.internal.layer.raster.SortTilesStep">
+					<property name="id" value="SortTilesStep" />
+				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="postGet" />
 				</bean>
