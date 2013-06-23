@@ -21,6 +21,8 @@ import org.junit.Test;
 
 
 /**
+ * Test the tilecode comparator.
+ * 
  * @author Oliver May
  *
  */
@@ -77,6 +79,114 @@ public class TileCodeComparatorTest {
 				}, list.toArray(new TileCode[0]));
 	}
 	
+	@Test
+	public void testTileCodeComparator3on3() {
+		List<TileCode> list = createTileCodes(0, 0, 3, 3); 
+		TileCodeComparator tcc = new TileCodeComparator(1, 1);
+		
+		Collections.sort(list, tcc);
+		
+		Assert.assertArrayEquals(new TileCode[] {
+				new TileCode(0, 1, 1), 
+				
+				new TileCode(0, 0, 2),  // maybe not 1,2 but 0,2
+				new TileCode(0, 1, 2), 
+				new TileCode(0, 2, 2), 
+				new TileCode(0, 2, 1), 
+				new TileCode(0, 2, 0), 
+				new TileCode(0, 1, 0), 
+				new TileCode(0, 0, 0), 
+				new TileCode(0, 0, 1), 
+
+				}, list.toArray(new TileCode[0]));
+	}
+	
+	@Test
+	public void testShuffeledTileCodeComparator7on5() {
+		List<TileCode> list = createShuffeledTileCodes(0, 0, 7, 5); 
+		TileCodeComparator tcc = new TileCodeComparator(3, 2);
+		
+		Collections.sort(list, tcc);
+		
+		Assert.assertArrayEquals(new TileCode[] {
+				new TileCode(0, 3, 2), 
+				
+				new TileCode(0, 2, 3),  // maybe not 2,3 but 3,3
+				new TileCode(0, 3, 3), 
+				new TileCode(0, 4, 3), 
+				new TileCode(0, 4, 2), 
+				new TileCode(0, 4, 1), 
+				new TileCode(0, 3, 1), 
+				new TileCode(0, 2, 1), 
+				new TileCode(0, 2, 2), 
+
+				new TileCode(0, 1, 4), // maybe not 1,4 but 2,4
+				new TileCode(0, 2, 4), 
+				new TileCode(0, 3, 4), 
+				new TileCode(0, 4, 4), 
+				new TileCode(0, 5, 4), 
+				new TileCode(0, 5, 3), 
+				new TileCode(0, 5, 2), 
+				new TileCode(0, 5, 1), 
+				new TileCode(0, 5, 0), 
+				new TileCode(0, 4, 0), 
+				new TileCode(0, 3, 0), 
+				new TileCode(0, 2, 0), 
+				new TileCode(0, 1, 0), 
+				new TileCode(0, 1, 1), 
+				new TileCode(0, 1, 2), 
+				new TileCode(0, 1, 3), 
+
+				new TileCode(0, 6, 4), 
+				new TileCode(0, 6, 3), 
+				new TileCode(0, 6, 2), 
+				new TileCode(0, 6, 1), 
+				new TileCode(0, 6, 0), 
+				new TileCode(0, 0, 0), 
+				new TileCode(0, 0, 1), 
+				new TileCode(0, 0, 2), 
+				new TileCode(0, 0, 3), 
+				new TileCode(0, 0, 4) 
+				}, list.toArray(new TileCode[0]));
+	}
+	
+	@Test
+	public void testShuffeledTileCodeComparator3on3() {
+		List<TileCode> list = createShuffeledTileCodes(0, 0, 3, 3); 
+		TileCodeComparator tcc = new TileCodeComparator(1, 1);
+		
+		Collections.sort(list, tcc);
+		
+		Assert.assertArrayEquals(new TileCode[] {
+				new TileCode(0, 1, 1), 
+				
+				new TileCode(0, 0, 2),  // maybe not 1,2 but 0,2
+				new TileCode(0, 1, 2), 
+				new TileCode(0, 2, 2), 
+				new TileCode(0, 2, 1), 
+				new TileCode(0, 2, 0), 
+				new TileCode(0, 1, 0), 
+				new TileCode(0, 0, 0), 
+				new TileCode(0, 0, 1), 
+
+				}, list.toArray(new TileCode[0]));
+	}
+	
+	@Test
+	public void testTileCodeComparatorSymmetry() {
+		List<TileCode> list = createTileCodes(0, 0, 3, 3); 
+		TileCodeComparator comp = new TileCodeComparator(1, 1);
+		for (TileCode code1 : list) {
+			for (TileCode code2 : list) {
+				int left = comp.compare(code1, code2);
+				int right = - comp.compare(code2, code1);
+				if (left != right) {
+					System.out.println(code1 + " " + code2);
+				}
+				Assert.assertEquals(left, right);
+			}
+		}
+	}
 	
 	/**
 	 * Create a shuffeled tile codes collection with the given dimensions.

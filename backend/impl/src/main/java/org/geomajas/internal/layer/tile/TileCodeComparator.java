@@ -41,7 +41,9 @@ public class TileCodeComparator implements Comparator<TileCode> {
 
 	@Override
 	public int compare(TileCode o1, TileCode o2) {
-		// Smaller is closer to 0 point
+		// -1: o1 is closer to center
+		//  0: same distance to center
+		//  1: o2 is closer to center
 		int x1 = o1.getX() - offsetX;
 		int x2 = o2.getX() - offsetX;
 		int y1 = o1.getY() - offsetY;
@@ -70,7 +72,7 @@ public class TileCodeComparator implements Comparator<TileCode> {
 					return -1;
 				}
 			} else if (y1 == -1 * o1d) { // Case: o1 on bottom row
-				if (y2 == o1d || x1 == o1d) {
+				if (y2 == o1d || x2 == o1d) {
 					return 1;
 				} else if (y1 == y2) {
 					return (x1 > x2) ? -1 : 1;
