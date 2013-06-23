@@ -69,7 +69,7 @@ public class TileCodeComparator implements Comparator<TileCode> {
 				} else {
 					return -1;
 				}
-			} else if (y1 == -o1d) { // Case: o1 on bottom row
+			} else if (y1 == -1 * o1d) { // Case: o1 on bottom row
 				if (y2 == o1d || x1 == o1d) {
 					return 1;
 				} else if (y1 == y2) {
@@ -77,8 +77,8 @@ public class TileCodeComparator implements Comparator<TileCode> {
 				} else {
 					return -1;
 				}
-			} else if (x1 == -o1d) { // Case: o1 on left column
-				if (y2 == o1d || x2 == o1d || y2 == -o1d) {
+			} else if (x1 == -1 * o1d) { // Case: o1 on left column
+				if (y2 == o1d || x2 == o1d || y2 == -1 * o1d) {
 					return 1;
 				} else {
 					return (y1 < y2) ? -1 : 1;
