@@ -36,7 +36,7 @@ public class TileCodeComparatorTest {
 		
 		Collections.sort(list, tcc);
 		
-		Assert.assertTrue(Arrays.equals(new TileCode[] {
+		Assert.assertArrayEquals(new TileCode[] {
 				new TileCode(0, 3, 2), 
 				
 				new TileCode(0, 2, 3),  // maybe not 2,3 but 3,3
@@ -75,7 +75,7 @@ public class TileCodeComparatorTest {
 				new TileCode(0, 0, 2), 
 				new TileCode(0, 0, 3), 
 				new TileCode(0, 0, 4) 
-				}, list.toArray(new TileCode[0])));
+				}, list.toArray(new TileCode[0]));
 	}
 	
 	
