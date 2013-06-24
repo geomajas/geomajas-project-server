@@ -86,11 +86,6 @@ public interface Layer {
 	void refresh();
 	
 	/**
-	 * Update the style of the layer. This will notify all stylechange listeners.
-	 */
-	void updateStyle();
-
-	/**
 	 * Get the full list of style presenters for this layer. Each style presenters represents a supported style for this
 	 * layer.
 	 * 

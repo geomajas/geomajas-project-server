@@ -19,5 +19,5 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
  * 
  */
 public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, LabelsSupported,
-		FeaturesSupported {
+		FeaturesSupported, StyleSupported {
 }

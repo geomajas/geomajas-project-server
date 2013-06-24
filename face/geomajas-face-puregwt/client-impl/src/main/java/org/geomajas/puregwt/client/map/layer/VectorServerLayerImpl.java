@@ -158,7 +158,8 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	}
 	
 	@Override
-	public void updateStyle() {
+	public void updateStyle(NamedStyleInfo nsi) {
+		getLayerInfo().setNamedStyleInfo(nsi);
 		GwtCommand commandRequest = new GwtCommand(RegisterNamedStyleInfoRequest.COMMAND);
 		RegisterNamedStyleInfoRequest request = new RegisterNamedStyleInfoRequest();
 		request.setLayerId(getServerLayerId());
