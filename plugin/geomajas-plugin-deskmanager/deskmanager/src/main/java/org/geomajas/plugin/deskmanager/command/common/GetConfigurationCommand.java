@@ -37,7 +37,7 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 
 	@Autowired
 	private GeodeskConfigurationService configurationService;
-
+	
 	public GetConfigurationResponse getEmptyCommandResponse() {
 		return new GetConfigurationResponse();
 	}

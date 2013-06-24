@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.configuration.LayerInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -38,6 +39,7 @@ import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.runtimeconfig.service.Rewirable;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.StyleService;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +75,9 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 	@Autowired
 	private GetMapConfigurationCommand mapConfigurationCommand;
+
+	@Autowired
+	private StyleService styleService;
 
 	@Autowired
 	private SessionFactory session;
@@ -209,11 +214,12 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			try {
 				serverCli = (ClientLayerInfo) SerializationUtils.clone((ClientLayerInfo) applicationContext
 						.getBean(geodeskLayer.getLayerModel().getClientLayerId()));
+				boolean vectorLayer = serverCli instanceof ClientVectorLayerInfo;
 				serverLayer = (Layer<?>) applicationContext.getBean(serverCli.getServerLayerId());
 
 				// Override layerInfo from server layer
 				serverCli.setLayerInfo((LayerInfo) SerializationUtils.clone((LayerInfo) serverLayer.getLayerInfo()));
-				if (serverCli instanceof ClientVectorLayerInfo) {
+				if (vectorLayer) {
 					ClientVectorLayerInfo cvli = (ClientVectorLayerInfo) serverCli;
 					cvli.setFeatureInfo(((VectorLayerInfo) cvli.getLayerInfo()).getFeatureInfo());
 				}
@@ -222,7 +228,14 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 				// Override with clientLayerInfo if it is set
 				if (geodeskLayer.getClientLayerInfo() != null) {
 					targetCli = geodeskLayer.getClientLayerInfo();
-
+					
+					// Register the style if a vectorlayer.
+					if (vectorLayer) {
+						for (NamedStyleInfo nsi : ((VectorLayerInfo)targetCli.getLayerInfo()).getNamedStyleInfos()) {
+							log.warn("Registering style for layer: " + targetCli.getLabel());
+							nsi.setName(styleService.registerStyle(targetCli.getServerLayerId(), nsi));
+						}
+					}
 					// Set layerInfo and max extent from server configuration.
 					targetCli.setLayerInfo(serverLayer.getLayerInfo());
 					targetCli.setMaxExtent(serverCli.getMaxExtent());

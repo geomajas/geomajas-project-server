@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
@@ -123,17 +122,6 @@ public class GeodeskApplicationLoader {
 					if (handler != null) {
 						handler.onUserApplicationLoad(new UserApplicationEvent(geodesk));
 					}
-					
-					// Run when map is initialized
-					geodesk.getMainMapWidget().getMapModel().runWhenInitialized(new Runnable() {
-						@Override
-						public void run() {
-							//Update style of all layers, as they may be overridden using the deskmanager.
-							for (VectorLayer layer : geodesk.getMainMapWidget().getMapModel().getVectorLayers()) {
-								layer.updateStyle();
-							}
-						}
-					});
 					
 				} else {
 					Window.alert(MESSAGES.noSuchGeodeskExists());
