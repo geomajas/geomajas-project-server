@@ -47,7 +47,7 @@ public class CacheServiceTest {
 	public void testCleanup() {
 		String s1 = "Test string";
 		cacheService.put(CACHE_KEY, "myKey", s1, -1L);
-		((CacheServiceImpl) cacheService).cleanUp();
+		((DefaultCacheServiceImpl) cacheService).cleanUp();
 		String s2 = cacheService.get(CACHE_KEY, "myKey", String.class);
 		Assert.assertNull(s2);
 	}

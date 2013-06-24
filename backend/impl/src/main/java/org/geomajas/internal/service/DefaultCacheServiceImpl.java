@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
-public class CacheServiceImpl implements CacheService {
+public class DefaultCacheServiceImpl implements CacheService {
 
 	private static final long CLEANUP_INTERVAL = 3600 * 1000;
 
@@ -67,7 +67,7 @@ public class CacheServiceImpl implements CacheService {
 		if (caches.containsKey(cacheId)) {
 			return caches.get(cacheId);
 		} else {
-			Map<Object, CachedObject> newCache = new ConcurrentHashMap<Object, CacheServiceImpl.CachedObject>();
+			Map<Object, CachedObject> newCache = new ConcurrentHashMap<Object, DefaultCacheServiceImpl.CachedObject>();
 			caches.put(cacheId, newCache);
 			return newCache;
 		}
