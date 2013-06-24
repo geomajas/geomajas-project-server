@@ -214,12 +214,12 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 			try {
 				serverCli = (ClientLayerInfo) SerializationUtils.clone((ClientLayerInfo) applicationContext
 						.getBean(geodeskLayer.getLayerModel().getClientLayerId()));
-				boolean vectorLayer = serverCli instanceof ClientVectorLayerInfo;
+				boolean isVectorLayer = serverCli instanceof ClientVectorLayerInfo;
 				serverLayer = (Layer<?>) applicationContext.getBean(serverCli.getServerLayerId());
 
 				// Override layerInfo from server layer
 				serverCli.setLayerInfo((LayerInfo) SerializationUtils.clone((LayerInfo) serverLayer.getLayerInfo()));
-				if (vectorLayer) {
+				if (isVectorLayer) {
 					ClientVectorLayerInfo cvli = (ClientVectorLayerInfo) serverCli;
 					cvli.setFeatureInfo(((VectorLayerInfo) cvli.getLayerInfo()).getFeatureInfo());
 				}
@@ -229,16 +229,17 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 				if (geodeskLayer.getClientLayerInfo() != null) {
 					targetCli = geodeskLayer.getClientLayerInfo();
 					
-					// Register the style if a vectorlayer.
-					if (vectorLayer) {
-						for (NamedStyleInfo nsi : ((VectorLayerInfo) targetCli.getLayerInfo()).getNamedStyleInfos()) {
-							log.warn("Registering style for layer: " + targetCli.getLabel());
-							nsi.setName(styleService.registerStyle(targetCli.getServerLayerId(), nsi));
-						}
-					}
 					// Set layerInfo and max extent from server configuration.
 					targetCli.setLayerInfo(serverLayer.getLayerInfo());
 					targetCli.setMaxExtent(serverCli.getMaxExtent());
+
+					// Register the style if a vectorlayer.
+					if (isVectorLayer) {
+						for (NamedStyleInfo nsi : ((VectorLayerInfo) targetCli.getLayerInfo()).getNamedStyleInfos()) {
+							log.debug("Registering style for layer: " + targetCli.getLabel());
+							nsi.setName(styleService.registerStyle(targetCli.getServerLayerId(), nsi));
+						}
+					}
 				}
 
 				// Finally set the widget configuration as a see trough.
