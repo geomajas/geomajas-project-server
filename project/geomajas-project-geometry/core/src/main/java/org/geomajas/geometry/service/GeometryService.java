@@ -397,6 +397,7 @@ public final class GeometryService {
 	 * @param geometry the geometry to transform
 	 * @param matrix the matrix to use
 	 * @return a transformed copy of the geometry
+	 * @since 1.2.0
 	 */
 	public static Geometry transform(Geometry geometry, Matrix matrix) {
 		Geometry copy = GeometryService.clone(geometry);
