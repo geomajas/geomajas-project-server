@@ -17,8 +17,8 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * Factory definition that creates {@link VectorObject}s from geometry indices. Depending on the kind of index (vertex, edge,
- * geometry), different types of shape will be created.
+ * Factory definition that creates {@link VectorObject}s from geometry indices. Depending on the kind of index (vertex,
+ * edge, geometry), different types of shape will be created.
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose

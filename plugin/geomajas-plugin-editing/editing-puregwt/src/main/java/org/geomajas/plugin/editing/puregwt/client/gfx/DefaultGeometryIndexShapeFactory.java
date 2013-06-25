@@ -63,7 +63,8 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	// ------------------------------------------------------------------------
 
 	@Override
-	public VectorObject create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException {
+	public VectorObject create(GeometryEditService editService, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
 		if (index == null) {
 			return createGeometry(editService, index);
 		}
