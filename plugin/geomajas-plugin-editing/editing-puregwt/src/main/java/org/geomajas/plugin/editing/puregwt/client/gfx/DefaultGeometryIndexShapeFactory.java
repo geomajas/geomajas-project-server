@@ -13,13 +13,17 @@ package org.geomajas.plugin.editing.puregwt.client.gfx;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
+import org.geomajas.puregwt.client.gfx.GeometryPath;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Shape;
+import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
@@ -30,6 +34,7 @@ import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
  * geometry and a rectangle for a vertex.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFactory {
 
@@ -58,7 +63,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	// ------------------------------------------------------------------------
 
 	@Override
-	public Shape create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException {
+	public VectorObject create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException {
 		if (index == null) {
 			return createGeometry(editService, index);
 		}
@@ -73,15 +78,15 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	}
 
 	@Override
-	public void update(Shape shape, GeometryEditService editService, GeometryIndex index)
+	public void update(VectorObject shape, GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (index != null) {
 			switch (editService.getIndexService().getType(index)) {
 				case TYPE_VERTEX:
-					updateVertex(shape, editService, index);
+					updateVertex((Shape) shape, editService, index);
 					break;
 				case TYPE_EDGE:
-					updateEdge(shape, editService, index);
+					updateEdge((Shape) shape, editService, index);
 					break;
 				default:
 					updateGeometry(shape, editService, index);
@@ -118,7 +123,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		return edge;
 	}
 
-	private Shape createGeometry(GeometryEditService editService, GeometryIndex index)
+	private VectorObject createGeometry(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		Geometry geometry = editService.getGeometry();
 		if (index != null) {
@@ -128,11 +133,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
 			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
 		}
-		try {
-			return gfxUtil.toPath(g);
-		} catch (NullPointerException npe) {
-			return null;
-		}
+		return gfxUtil.toShape(g);
 	}
 
 	// ------------------------------------------------------------------------
@@ -168,26 +169,35 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		}
 	}
 
-	private void updateGeometry(Shape shape, GeometryEditService editService, GeometryIndex index)
+	private void updateGeometry(VectorObject object, GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
-		if (shape instanceof Path) {
-			Path path = (Path) shape;
-			Geometry geometry = editService.getGeometry();
-			if (index != null) {
-				geometry = editService.getIndexService().getGeometry(geometry, index);
+		Geometry geometry = editService.getGeometry();
+		if (index != null) {
+			geometry = editService.getIndexService().getGeometry(geometry, index);
+		}
+		Geometry g = geometry;
+		if (!targetSpace.equals(RenderSpace.WORLD)) {
+			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
+		}
+		if (object instanceof GeometryPath) {
+			GeometryPath path = (GeometryPath) object;
+			path.setGeometry(g);
+		} else if (object instanceof Shape) {
+			// point case, update the position
+			Shape point = (Shape) object;
+			Coordinate c = GeometryService.getCentroid(g);
+			point.setUserX(c.getX());
+			point.setUserY(c.getY());
+		} else if (object instanceof Group) {
+			// group, replace the children (multipoint case)
+			Group group = (Group) object;
+			group.clear();
+			Group newGroup = (Group) gfxUtil.toShape(g);
+			for (int i = 0; i < newGroup.getVectorObjectCount(); i++) {
+				VectorObject child = group.getVectorObject(i);
+				newGroup.remove(child);
+				group.add(child);
 			}
-			Geometry g = geometry;
-			if (!targetSpace.equals(RenderSpace.WORLD)) {
-				g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
-			}
-
-			// TODO find a better way. Now, the internal state of the path will be flawed.
-			Path second = gfxUtil.toPath(g);
-			for (int i = 0; i < path.getStepCount(); i++) {
-				path.setStep(i, second.getStep(i));
-			}
-			String pathString = second.getElement().getAttribute("path");
-			path.getElement().setAttribute("path", pathString);
 		}
 	}
 }

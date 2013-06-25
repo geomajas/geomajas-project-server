@@ -14,13 +14,14 @@ package org.geomajas.plugin.editing.puregwt.client.gfx;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
-import org.vaadin.gwtgraphics.client.Shape;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * Factory definition that creates {@link Shape}s from geometry indices. Depending on the kind of index (vertex, edge,
+ * Factory definition that creates {@link VectorObject}s from geometry indices. Depending on the kind of index (vertex, edge,
  * geometry), different types of shape will be created.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public interface GeometryIndexShapeFactory {
 
@@ -36,7 +37,7 @@ public interface GeometryIndexShapeFactory {
 	 *             Thrown in case the index can't be found within the geometry being edited, or if the editing service
 	 *             hasn't started.
 	 */
-	Shape create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException;
+	VectorObject create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException;
 
 	/**
 	 * Update the location of the given shape.
@@ -51,6 +52,6 @@ public interface GeometryIndexShapeFactory {
 	 *             Thrown in case the index can't be found within the geometry being edited, or if the editing service
 	 *             hasn't started.
 	 */
-	void update(Shape shape, GeometryEditService editService, GeometryIndex index)
+	void update(VectorObject shape, GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException;
 }

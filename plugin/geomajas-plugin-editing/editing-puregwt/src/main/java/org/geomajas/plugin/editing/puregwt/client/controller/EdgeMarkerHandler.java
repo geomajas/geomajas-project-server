@@ -148,22 +148,26 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 			// Top:
 			Path top = new Path(tl.getX(), tl.getY());
 			top.lineTo(tr.getX(), tr.getY());
-			gfxUtil.applyStyle(top, style);
+			gfxUtil.applyStroke(top, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+					style.getDashArray());
 			container.add(top);
 
 			Path right = new Path(tr.getX(), tr.getY());
 			right.lineTo(br.getX(), br.getY());
-			gfxUtil.applyStyle(right, style);
+			gfxUtil.applyStroke(right, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+					style.getDashArray());
 			container.add(right);
 
 			Path bottom = new Path(br.getX(), br.getY());
 			bottom.lineTo(bl.getX(), bl.getY());
-			gfxUtil.applyStyle(bottom, style);
+			gfxUtil.applyStroke(bottom, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+					style.getDashArray());
 			container.add(bottom);
 
 			Path left = new Path(bl.getX(), bl.getY());
 			left.lineTo(tl.getX(), tl.getY());
-			gfxUtil.applyStyle(left, style);
+			gfxUtil.applyStroke(left, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+					style.getDashArray());
 			container.add(left);
 		}
 	}

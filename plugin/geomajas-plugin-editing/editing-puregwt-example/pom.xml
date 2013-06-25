@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>gwt-graphics</artifactId>
-			<version>1.0.0.TX5</version>
+			<version>1.0.0.TX7</version>
 		</dependency>
 	
 		<dependency>

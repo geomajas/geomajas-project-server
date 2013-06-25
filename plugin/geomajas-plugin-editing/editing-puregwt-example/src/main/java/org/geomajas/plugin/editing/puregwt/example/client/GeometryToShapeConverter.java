@@ -13,7 +13,6 @@ package org.geomajas.plugin.editing.puregwt.example.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -21,7 +20,7 @@ import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.shape.Circle;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -73,24 +72,8 @@ public class GeometryToShapeConverter {
 	public void processGeometry(Geometry geometry) {
 		if (null != geometry) {
 			getGeometries().add(geometry);
-			Shape shape;
-			if (Geometry.POINT.equals(geometry.getGeometryType())) {
-				Coordinate[] coordinates = geometry.getCoordinates();
-				shape = new Circle(coordinates[0].getX(), coordinates[0].getY(), 5);
-			} else {
-				shape = gfxUtil.toPath(geometry);
-			}
-			if (null != shape) {
-				shape.setStrokeWidth(3);
-				shape.setFillOpacity(0);
-				shape.addClickHandler(new SelectShapeHandler(geometry, shape));
-				shape.addMouseOverHandler(new SelectShapeHandler(geometry, shape));
-				shape.addMouseOutHandler(new SelectShapeHandler(geometry, shape));
-				if (shape instanceof Circle) {
-					shape.setFixedSize(true);
-				}
-				getShapeContainer().add(shape);
-			}
+			VectorObject object = gfxUtil.toShape(geometry);
+			getShapeContainer().add(object);
 		}
 	}
 

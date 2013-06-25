@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.editing.puregwt.example.client;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
@@ -47,12 +48,12 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class Showcase implements EntryPoint, MapResizedHandler {
 
-
 	private static final ShowCaseGinjector INJECTOR = GWT.create(ShowCaseGinjector.class);
 
 	private MapPresenter mapPresenter;
 
 	private CancelButton cancelButton;
+
 	private UndoButton undoButton;
 
 	private RedoButton redoButton;
@@ -60,7 +61,7 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 	private GeometryEditService editService;
 
 	private GeometryToShapeConverter geometryToShapeConverter;
-	
+
 	public void onModuleLoad() {
 		mapPresenter = INJECTOR.getMapPresenter();
 		GeometryEditor editor = INJECTOR.getGeometryEditorFactory().create(mapPresenter);
@@ -83,6 +84,7 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 		buttonPanel.add(getBtnFreePoint());
 		buttonPanel.add(getBtnFreeLine());
 		buttonPanel.add(getBtnFreePolygon());
+		buttonPanel.add(getBtnHugePolygon());
 		buttonPanel.add(new Label());
 		cancelButton = new CancelButton();
 		buttonPanel.add(cancelButton);
@@ -109,12 +111,11 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 
 			public void onClick(ClickEvent event) {
 				geometryToShapeConverter.processCurrentGeometry();
-				
+
 				Geometry point = new Geometry(Geometry.POINT, 0, -1);
 				editService.start(point);
-				
-				GeometryIndex index = editService.getIndexService()
-						.create(GeometryIndexType.TYPE_VERTEX, 0);
+
+				GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
 				editService.setEditingState(GeometryEditState.INSERTING);
 				editService.setInsertIndex(index);
 			}
@@ -128,12 +129,11 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 
 			public void onClick(ClickEvent event) {
 				geometryToShapeConverter.processCurrentGeometry();
-				
+
 				Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 				editService.start(line);
-				
-				GeometryIndex index = editService.getIndexService()
-						.create(GeometryIndexType.TYPE_VERTEX, 0);
+
+				GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
 				editService.setEditingState(GeometryEditState.INSERTING);
 				editService.setInsertIndex(index);
 			}
@@ -149,11 +149,10 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 				geometryToShapeConverter.processCurrentGeometry();
 				Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
 				editService.start(polygon);
-				
+
 				try {
 					GeometryIndex index = editService.addEmptyChild();
-					index = editService.getIndexService()
-							.addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
+					index = editService.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
 					editService.setEditingState(GeometryEditState.INSERTING);
 					editService.setInsertIndex(index);
 				} catch (GeometryOperationFailedException e) {
@@ -164,8 +163,30 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 		return btn;
 	}
 
+	private Widget getBtnHugePolygon() {
+		Button btn = new Button("1000 points polygon");
+		btn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				geometryToShapeConverter.processCurrentGeometry();
+				Coordinate[] coords = new Coordinate[1001];
+				for (int i = 0; i < 1000; i++) {
+					double angle = 2 * Math.PI * i / 1000.0;
+					coords[i] = new Coordinate(Math.cos(angle) * 1000000, Math.sin(angle) * 1000000);
+				}
+				coords[1000] = (Coordinate) coords[0].clone();
+				Geometry ring = new Geometry(Geometry.LINEAR_RING, 0, 5);
+				ring.setCoordinates(coords);
+				Geometry polygon = new Geometry(Geometry.POLYGON, 0, 5);
+				polygon.setGeometries(new Geometry[] { ring });
+				editService.start(polygon);
+			}
+		});
+		return btn;
+	}
+
 	public void onMapResized(MapResizedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
