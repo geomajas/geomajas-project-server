@@ -125,4 +125,12 @@ public interface SampleMessages extends Messages {
 	String renderingWorldSpaceFixedShort();
 
 	String renderingWorldSpaceFixedDescription();
+	
+	String renderingMissingCanvas();
+
+	String renderingCanvasTitle();
+
+	String renderingCanvasShort();
+
+	String renderingCanvasDescription();
 }

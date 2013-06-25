@@ -19,8 +19,8 @@ import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.example.client.Showcase;
 import org.geomajas.puregwt.example.client.sample.SamplePanel;
+import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Circle;
-import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
@@ -112,12 +112,12 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 				new Coordinate(190, 230), new Coordinate(140, 230), new Coordinate(140, 180) });
 		geometry.setGeometries(new Geometry[] { shell, hole });
 
-		Path path = Showcase.GEOMAJASINJECTOR.getGfxUtil().toPath(geometry);
-		path.setFillColor("#0066AA");
-		path.setFillOpacity(0.4);
-		path.setStrokeColor("#004499");
+		Shape shape = (Shape) Showcase.GEOMAJASINJECTOR.getGfxUtil().toShape(geometry);
+		shape.setFillColor("#0066AA");
+		shape.setFillOpacity(0.4);
+		shape.setStrokeColor("#004499");
 
-		container.add(path);
+		container.add(shape);
 	}
 
 	@UiHandler("deleteBtn")

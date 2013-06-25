@@ -11,12 +11,20 @@
 
 package org.geomajas.puregwt.example.client.sample.rendering;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
+import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.geometry.service.WktException;
+import org.geomajas.geometry.service.WktService;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
+import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.example.client.Showcase;
 import org.geomajas.puregwt.example.client.sample.SamplePanel;
+import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
@@ -85,6 +93,75 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		rectangle.setFillColor("#CC9900");
 		rectangle.setFillOpacity(0.4);
 		container.add(rectangle);
+	}
+
+	@UiHandler("geometryBtn")
+	public void onGeometryBtnClicked(ClickEvent event) {
+		try {
+			Geometry polygon = WktService
+					.toGeometry("POLYGON ((0 0, 0 0.7, 0.7 0.7, 0 0),(0.1 0.2, 0.1 0.4, 0.3 0.4, 0.1 0.2))");
+			Geometry line = WktService.toGeometry("LINESTRING (-2 0, -2 0.7, -1.3 0, -1.3 0.7)");
+			Geometry point = WktService.toGeometry("POINT (-3.5 0.5)");
+			Geometry multiPolygon = new Geometry(Geometry.MULTI_POLYGON, 0, 5);
+			Matrix m1 = new Matrix(1, 0, 0, 1, -0.5, -2);
+			Matrix m2 = new Matrix(1, 0, 0, 1, 0.5, -2);
+			Matrix m3 = new Matrix(1, 0, 0, 1, 0, -1);
+			multiPolygon.setGeometries(new Geometry[] { 
+					transform(polygon, m1),
+					transform(polygon, m2),
+					transform(polygon, m3),					
+			});
+			Geometry multiLinestring = new Geometry(Geometry.MULTI_LINE_STRING, 0, 5);
+			multiLinestring.setGeometries(new Geometry[] { 
+					transform(line, m1),
+					transform(line, m2),
+					transform(line, m3),					
+			});
+			Geometry multiPoint = new Geometry(Geometry.MULTI_POINT, 0, 5);
+			multiPoint.setGeometries(new Geometry[] { 
+					transform(point, m1),
+					transform(point, m2),
+					transform(point, m3),					
+			});
+			container.add(scaleAndStyle(polygon));
+			container.add(scaleAndStyle(line));
+			container.add(scaleAndStyle(point));
+			container.add(scaleAndStyle(multiPolygon));
+			container.add(scaleAndStyle(multiLinestring));
+			container.add(scaleAndStyle(multiPoint));
+		} catch (WktException e) {
+			// not possible
+		}
+	}
+
+	private VectorObject scaleAndStyle(Geometry geom) {
+		Matrix scale = new Matrix(1000000, 0, 0, 1000000, 0, 0);
+		GfxUtil util = Showcase.GEOMAJASINJECTOR.getGfxUtil();
+		VectorObject shape = util.toShape(transform(geom, scale));
+		util.applyStroke(shape, "#CC9900", 0.8, 1, "2 5");
+		util.applyFill(shape, "#CC9900", geom.getGeometryType().endsWith("String") ? 0f : 0.5f);
+		return shape;
+	}
+
+	public Geometry transform(Geometry geometry, Matrix matrix) {
+		Geometry copy = GeometryService.clone(geometry);
+		transformInplace(copy, matrix);
+		return copy;
+	}
+
+	private void transformInplace(Geometry geometry, Matrix matrix) {
+		if (geometry.getGeometries() != null) {
+			for (Geometry g : geometry.getGeometries()) {
+				transformInplace(g, matrix);
+			}
+		} else if (geometry.getCoordinates() != null) {
+			for (Coordinate c : geometry.getCoordinates()) {
+				double x = c.getX() * matrix.getXx() + c.getY() * matrix.getXy() + matrix.getDx();
+				double y = c.getX() * matrix.getYx() + c.getY() * matrix.getYy() + matrix.getDy();
+				c.setX(x);
+				c.setY(y);
+			}
+		}
 	}
 
 	@UiHandler("deleteBtn")

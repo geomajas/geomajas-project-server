@@ -8,10 +8,10 @@
 			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
 				<h2>Drawing options:</h2>
 				<g:VerticalPanel spacing="10">
-					<g:Button ui:field="circleBtn" width="180px">Draw circle</g:Button>
-					<g:Button ui:field="rectangleBtn" width="180px">Draw rectangle</g:Button>
-					<g:Button ui:field="geometryBtn" width="180px">Draw geometries</g:Button>
-					<g:Button ui:field="deleteBtn" width="180px">Delete all</g:Button>
+					<g:Button ui:field="polyBtn" width="180px">Polygons</g:Button>
+					<g:Button ui:field="rectBtn" width="180px">Rectangles</g:Button>
+					<g:ListBox ui:field="countBox" width="180px"/>
+					<g:Label ui:field="label" width="180px"/>
 				</g:VerticalPanel>
 			</g:HTMLPanel>
 		</g:west>

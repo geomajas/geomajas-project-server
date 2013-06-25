@@ -29,6 +29,7 @@ import org.geomajas.puregwt.example.client.sample.layer.LayerOpacityPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerOrderPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerRefreshPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerVisibilityPanel;
+import org.geomajas.puregwt.example.client.sample.rendering.CanvasRenderingPanel;
 import org.geomajas.puregwt.example.client.sample.rendering.DrawingInteractionPanel;
 import org.geomajas.puregwt.example.client.sample.rendering.FixedSizeWorldSpaceRenderingPanel;
 import org.geomajas.puregwt.example.client.sample.rendering.ScreenSpaceRenderingPanel;
@@ -436,6 +437,28 @@ public class Showcase implements EntryPoint {
 
 			public String getDescription() {
 				return MSG_SAMPLE.renderingWorldSpaceFixedDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_RENDERING;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new CanvasRenderingPanel();
+			}
+
+			public String getTitle() {
+				return MSG_SAMPLE.renderingCanvasTitle();
+			}
+
+			public String getShortDescription() {
+				return MSG_SAMPLE.renderingCanvasShort();
+			}
+
+			public String getDescription() {
+				return MSG_SAMPLE.renderingCanvasDescription();
 			}
 
 			public String getCategory() {
