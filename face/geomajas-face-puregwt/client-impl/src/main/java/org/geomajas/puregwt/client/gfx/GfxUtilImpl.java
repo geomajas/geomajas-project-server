@@ -14,22 +14,21 @@ package org.geomajas.puregwt.client.gfx;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.puregwt.client.controller.MapController;
+import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.impl.util.VMLUtil;
-import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.Strokeable;
+import org.vaadin.gwtgraphics.client.VectorObject;
+import org.vaadin.gwtgraphics.client.shape.Circle;
 
 import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 
 /**
@@ -43,42 +42,26 @@ public final class GfxUtilImpl implements GfxUtil {
 	private GfxUtilImpl() {
 	}
 
-	public void applyStyle(Shape shape, FeatureStyleInfo style) {
-		if (style.getFillColor() != null) {
-			shape.setFillColor(style.getFillColor());
+	@Override
+	public void applyStroke(VectorObject object, String strokeColor, double strokeOpacity, int strokeWidth,
+			String dashArray) {
+		if (object instanceof Strokeable) {
+			strokeObject((Strokeable) object, strokeColor, strokeOpacity, strokeWidth, dashArray);
+		} else if (object instanceof Group) {
+			strokeGroup((Group) object, strokeColor, strokeOpacity, strokeWidth, dashArray);
 		}
-		if (style.getFillOpacity() >= 0) {
-			shape.setFillOpacity(style.getFillOpacity());
-		}
-		if (style.getStrokeColor() != null) {
-			shape.setStrokeColor(style.getStrokeColor());
-		}
-		if (style.getStrokeOpacity() >= 0) {
-			shape.setStrokeOpacity(style.getStrokeOpacity());
-		}
-		if (style.getStrokeWidth() >= 0) {
-			shape.setStrokeWidth(style.getStrokeWidth());
-		}
-		if (style.getDashArray() != null) {
-			String strokeDashArrayHTMLFormat = style.getDashArray().trim();
-			strokeDashArrayHTMLFormat = strokeDashArrayHTMLFormat.replaceAll("[ \t]+", ",");
-			if (!strokeDashArrayHTMLFormat.isEmpty()) {
-				   if (Window.Navigator.getUserAgent().contains("MSIE") || 
-							Window.Navigator.getUserAgent().contains("msie")) {
-					com.google.gwt.dom.client.Element stroke =
-								VMLUtil.getOrCreateChildElementWithTagName(shape.getElement(), "stroke");
-					if (null != stroke) {
-						stroke.setPropertyString("dashstyle", "dash");
-					}
-				} else {
-					DOM.setStyleAttribute(shape.getElement(), "strokeDasharray", strokeDashArrayHTMLFormat);
-				}
-			}
-		}
-		
 	}
 
-	public List<HandlerRegistration> applyController(Shape shape, MapController mapController) {
+	@Override
+	public void applyFill(VectorObject object, String fillColor, double fillOpacity) {
+		if (object instanceof Shape) {
+			fillObject((Shape) object, fillColor, fillOpacity);
+		} else if (object instanceof Group) {
+			fillGroup((Group) object, fillColor, fillOpacity);
+		}
+	}
+
+	public List<HandlerRegistration> applyController(VectorObject shape, MapController mapController) {
 		List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 		registrations.add(shape.addMouseDownHandler(mapController));
 		registrations.add(shape.addMouseUpHandler(mapController));
@@ -94,25 +77,17 @@ public final class GfxUtilImpl implements GfxUtil {
 		return registrations;
 	}
 
-	public Path toPath(Geometry geometry) {
+	public VectorObject toShape(Geometry geometry) {
 		if (geometry != null) {
 			if (GeometryService.getNumPoints(geometry) == 0) {
 				return null;
 			}
 			if (Geometry.POINT.equals(geometry.getGeometryType())) {
-				return toPathPoint(geometry);
-			} else if (Geometry.LINE_STRING.equals(geometry.getGeometryType())) {
-				return toPathLineString(geometry);
-			} else if (Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {
-				return toPathLinearRing(geometry);
-			} else if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
-				return toPathPolygon(geometry);
+				return toShapePoint(geometry);
 			} else if (Geometry.MULTI_POINT.equals(geometry.getGeometryType())) {
-				return toPathMultiPoint(geometry);
-			} else if (Geometry.MULTI_LINE_STRING.equals(geometry.getGeometryType())) {
-				return toPathMultiLineString(geometry);
-			} else if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
-				return toPathMultiPolygon(geometry);
+				return toShapeMultiPoint(geometry);
+			} else {
+				return new GeometryPath(geometry);
 			}
 		}
 		return null;
@@ -122,113 +97,58 @@ public final class GfxUtilImpl implements GfxUtil {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private Path toPathPoint(Geometry point) {
+	private Circle toShapePoint(Geometry point) {
 		if (point.getCoordinates() != null && point.getCoordinates().length == 1) {
 			Coordinate first = point.getCoordinates()[0];
-			return new Path(first.getX(), first.getY());
+			Circle circle = new Circle(first.getX(), first.getY(), 5);
+			circle.setFixedSize(true);
+			return circle;
 		}
 		return null;
 	}
 
-	private Path toPathLineString(Geometry lineString) {
-		if (lineString.getCoordinates() != null && lineString.getCoordinates().length > 0) {
-			Coordinate first = lineString.getCoordinates()[0];
-			Path path = new Path(first.getX(), first.getY());
-			for (int i = 1; i < lineString.getCoordinates().length; i++) {
-				Coordinate coordinate = lineString.getCoordinates()[i];
-				path.lineTo(coordinate.getX(), coordinate.getY());
-			}
-			return path;
-		}
-		return null;
-	}
-
-	private Path toPathLinearRing(Geometry linearRing) {
-		if (linearRing.getCoordinates() != null && linearRing.getCoordinates().length > 0) {
-			Coordinate first = linearRing.getCoordinates()[0];
-			Path path = new Path(first.getX(), first.getY());
-			for (int i = 1; i < linearRing.getCoordinates().length - 1; i++) {
-				Coordinate coordinate = linearRing.getCoordinates()[i];
-				path.lineTo(coordinate.getX(), coordinate.getY());
-			}
-			path.close();
-			path.getElement().getStyle().setProperty("fillRule", "evenOdd");
-			return path;
-		}
-		return null;
-	}
-
-	private Path toPathPolygon(Geometry polygon) {
-		if (polygon.getGeometries() != null && polygon.getGeometries().length > 0) {
-			Path path = toPathLinearRing(polygon.getGeometries()[0]);
-			path.getElement().getStyle().setProperty("fillRule", "evenOdd");
-			for (int i = 1; i < polygon.getGeometries().length; i++) {
-				Geometry ring = polygon.getGeometries()[i];
-				path.moveTo(ring.getCoordinates()[0].getX(), ring.getCoordinates()[0].getY());
-				for (int j = 1; j < ring.getCoordinates().length - 1; j++) {
-					Coordinate coordinate = ring.getCoordinates()[j];
-					path.lineTo(coordinate.getX(), coordinate.getY());
-				}
-				path.close();
-			}
-
-			// IE even-odd problem. This fix only works if no more changes are made to the Path object:
-			// TODO fix this in the GwtGraphics library
-			String pathStr = path.getElement().getAttribute("path");
-			if (pathStr.indexOf("x e") > 0) {
-				pathStr = pathStr.replaceAll("x e", "x") + " e";
-				path.getElement().setAttribute("path", pathStr);
-			}
-			return path;
-		}
-		return null;
-	}
-
-	private Path toPathMultiPoint(Geometry multiPoint) {
+	private Group toShapeMultiPoint(Geometry multiPoint) {
+		Group group = new Group();
 		if (multiPoint.getGeometries() != null && multiPoint.getGeometries().length > 0) {
-			Path path = toPathPoint(multiPoint.getGeometries()[0]);
-			for (int i = 1; i < multiPoint.getGeometries().length; i++) {
+			for (int i = 0; i < multiPoint.getGeometries().length; i++) {
 				Geometry point = multiPoint.getGeometries()[i];
-				path.moveTo(point.getCoordinates()[0].getX(), point.getCoordinates()[0].getY());
+				Shape shape = toShapePoint(point);
+				group.add(shape);
 			}
-			return path;
+			return group;
 		}
 		return null;
 	}
 
-	private Path toPathMultiLineString(Geometry multiLineString) {
-		if (multiLineString.getGeometries() != null && multiLineString.getGeometries().length > 0) {
-			Path path = toPathLineString(multiLineString.getGeometries()[0]);
-			for (int i = 1; i < multiLineString.getGeometries().length; i++) {
-				Geometry lineString = multiLineString.getGeometries()[i];
-				path.moveTo(lineString.getCoordinates()[0].getX(), lineString.getCoordinates()[0].getY());
-				for (int j = 1; j < lineString.getCoordinates().length; j++) {
-					Coordinate coordinate = lineString.getCoordinates()[j];
-					path.lineTo(coordinate.getX(), coordinate.getY());
-				}
+	private void strokeGroup(Group group, String strokeColor, double strokeOpacity, int strokeWidth, String dashArray) {
+		for (int i = 0; i < group.getVectorObjectCount(); i++) {
+			VectorObject child = group.getVectorObject(i);
+			if (child instanceof Strokeable) {
+				strokeObject((Strokeable) group.getVectorObject(i), strokeColor, strokeOpacity, strokeWidth, dashArray);
 			}
-			return path;
 		}
-		return null;
 	}
 
-	private Path toPathMultiPolygon(Geometry multiPolygon) {
-		if (multiPolygon.getGeometries() != null && multiPolygon.getGeometries().length > 0) {
-			Path path = toPathPolygon(multiPolygon.getGeometries()[0]);
-			for (int i = 1; i < multiPolygon.getGeometries().length; i++) {
-				Geometry polygon = multiPolygon.getGeometries()[i];
-				for (int j = 0; j < polygon.getGeometries().length; j++) {
-					Geometry ring = polygon.getGeometries()[0];
-					path.moveTo(ring.getCoordinates()[0].getX(), ring.getCoordinates()[0].getY());
-					for (int k = 1; k < ring.getCoordinates().length; k++) {
-						Coordinate coordinate = ring.getCoordinates()[k];
-						path.lineTo(coordinate.getX(), coordinate.getY());
-					}
-					path.close();
-				}
-			}
-			return path;
-		}
-		return null;
+	private void strokeObject(Strokeable strokeable, String strokeColor, double strokeOpacity, int strokeWidth,
+			String dashArray) {
+		strokeable.setStrokeColor(strokeColor);
+		strokeable.setStrokeOpacity(strokeOpacity);
+		strokeable.setStrokeWidth(strokeWidth);
+		strokeable.setDashArray(dashArray);
 	}
+	
+	private void fillGroup(Group group, String fillColor, double fillOpacity) {
+		for (int i = 0; i < group.getVectorObjectCount(); i++) {
+			VectorObject child = group.getVectorObject(i);
+			if (child instanceof Shape) {
+				fillObject((Shape) group.getVectorObject(i), fillColor, fillOpacity);
+			}
+		}
+	}
+
+	private void fillObject(Shape shape, String fillColor, double fillOpacity) {
+		shape.setFillColor(fillColor);
+		shape.setFillOpacity(fillOpacity);
+	}
+
 }

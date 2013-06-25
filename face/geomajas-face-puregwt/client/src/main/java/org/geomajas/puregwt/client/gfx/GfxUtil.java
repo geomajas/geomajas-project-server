@@ -14,11 +14,9 @@ package org.geomajas.puregwt.client.gfx;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.puregwt.client.controller.MapController;
-import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -32,33 +30,41 @@ import com.google.gwt.event.shared.HandlerRegistration;
 public interface GfxUtil {
 
 	/**
-	 * Apply the main elements of the given style onto the shape.
+	 * Apply the stroke style to the given object. Currently supports {@link org.vaadin.gwtgraphics.client.Strokeable}
+	 * and {@link org.vaadin.gwtgraphics.client.Group} containing {@link org.vaadin.gwtgraphics.client.Strokeable}.
 	 * 
-	 * @param shape
-	 *            The shape in need of styling.
-	 * @param style
-	 *            The style to apply. Only the following elements are applied: fill color, fill opacity, stroke color,
-	 *            stroke opacity and stroke width.
+	 * @param object
+	 * @param strokeColor
+	 * @param strokeOpacity
+	 * @param strokeWidth
+	 * @param dashArray
 	 */
-	void applyStyle(Shape shape, FeatureStyleInfo style);
+	void applyStroke(VectorObject object, String strokeColor, double strokeOpacity, int strokeWidth, String dashArray);
 
 	/**
-	 * Apply the given controller onto the given shape.
+	 * Apply the fill style to the given object. Currently supports {@link org.vaadin.gwtgraphics.client.Shape} and
+	 *        {@link org.vaadin.gwtgraphics.client.Group} containing {@link org.vaadin.gwtgraphics.client.Shape}.
 	 * 
-	 * @param shape
-	 *            The shape in need of a controller.
-	 * @param mapController
-	 *            The controller to apply onto the shape.
+	 * @param object
+	 * @param fillColor
+	 * @param fillOpacity
+	 */
+	void applyFill(VectorObject object, String fillColor, double fillOpacity);
+
+	/**
+	 * Apply the given controller onto the given object.
+	 * 
+	 * @param shape The object in need of a controller.
+	 * @param mapController The controller to apply onto the object.
 	 * @return The list of registrations that allows for removing the controller again.
 	 */
-	List<HandlerRegistration> applyController(Shape shape, MapController mapController);
+	List<HandlerRegistration> applyController(VectorObject object, MapController mapController);
 
 	/**
-	 * Transform the given geometry into a path object that can be drawn on the map.
+	 * Transform the given geometry into an object that can be drawn on the map.
 	 * 
-	 * @param geometry
-	 *            The geometry to transform.
+	 * @param geometry The geometry to transform.
 	 * @return The equivalent path object.
 	 */
-	Path toPath(Geometry geometry);
+	VectorObject toShape(Geometry geometry);
 }

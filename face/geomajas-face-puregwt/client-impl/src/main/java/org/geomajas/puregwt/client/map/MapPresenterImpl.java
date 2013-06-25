@@ -69,7 +69,7 @@ import org.geomajas.puregwt.client.widget.Watermark;
 import org.geomajas.puregwt.client.widget.ZoomStepWidget;
 import org.geomajas.puregwt.client.widget.ZoomToRectangleWidget;
 import org.vaadin.gwtgraphics.client.Transformable;
-import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -604,7 +604,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		private final VectorContainer container;
 
-		private final Map<String, Path> paths;
+		private final Map<String, VectorObject> shapes;
 
 		private FeatureStyleInfo pointStyle;
 
@@ -614,7 +614,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public FeatureSelectionRenderer() {
 			container = addWorldContainer();
-			paths = new HashMap<String, Path>();
+			shapes = new HashMap<String, VectorObject>();
 		}
 
 		public void initialize(ClientMapInfo mapInfo) {
@@ -644,24 +644,29 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		private void render(Feature f) {
-			Path path = gfxUtil.toPath(f.getGeometry());
+			VectorObject shape = gfxUtil.toShape(f.getGeometry());
 			String type = f.getGeometry().getGeometryType();
 			if (Geometry.POINT.equals(type) || Geometry.MULTI_POINT.equals(type)) {
-				gfxUtil.applyStyle(path, pointStyle);
+				gfxUtil.applyStroke(shape, pointStyle.getStrokeColor(), pointStyle.getStrokeOpacity(),
+						pointStyle.getStrokeWidth(), pointStyle.getDashArray());
+				gfxUtil.applyFill(shape, pointStyle.getFillColor(), pointStyle.getFillOpacity());
 			} else if (Geometry.LINE_STRING.equals(type) || Geometry.MULTI_LINE_STRING.equals(type)) {
-				gfxUtil.applyStyle(path, lineStyle);
+				gfxUtil.applyStroke(shape, lineStyle.getStrokeColor(), lineStyle.getStrokeOpacity(),
+						lineStyle.getStrokeWidth(), lineStyle.getDashArray());
 			} else {
-				gfxUtil.applyStyle(path, ringStyle);
+				gfxUtil.applyStroke(shape, ringStyle.getStrokeColor(), ringStyle.getStrokeOpacity(),
+						ringStyle.getStrokeWidth(), ringStyle.getDashArray());
+				gfxUtil.applyFill(shape, ringStyle.getFillColor(), ringStyle.getFillOpacity());
 			}
-			container.add(path);
-			paths.put(f.getId(), path);
+			container.add(shape);
+			shapes.put(f.getId(), shape);
 		}
 
 		private void remove(Feature feature) {
-			Path path = paths.get(feature.getId());
-			if (path != null) {
-				container.remove(path);
-				paths.remove(feature.getId());
+			VectorObject shape = shapes.get(feature.getId());
+			if (shape != null) {
+				container.remove(shape);
+				shapes.remove(feature.getId());
 			}
 		}
 	}
