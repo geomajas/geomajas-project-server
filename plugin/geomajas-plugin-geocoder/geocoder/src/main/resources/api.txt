@@ -110,7 +110,7 @@ org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService:void setGeocoder
 org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService:void setName(String, ):1.0.0
 org.geomajas.plugin.geocoder.service.TypeCoordinateService::1.2.0
 org.geomajas.plugin.geocoder.service.TypeCoordinateService:void setName(String, ):1.2.0
-org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setAppId(String, ):1.4.0
-org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setAppIdProperty(String, ):1.4.0
-org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setName(String, ):1.4.0
-org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setSkipAppIdCheck(boolean, ):1.4.0
+org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setAppId(String, ):1.0.0
+org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setAppIdProperty(String, ):1.0.0
+org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setName(String, ):1.0.0
+org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService:void setSkipAppIdCheck(boolean, ):1.0.0
