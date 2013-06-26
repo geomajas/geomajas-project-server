@@ -40,6 +40,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 
+	/**
+	 * Shift property for passing left coordinate shift to children.
+	 */
+	public static final String TOP_SHIFT = "topShift";
+
+	/**
+	 * Shift property for passing top coordinate shift to children.
+	 */
+	public static final String LEFT_SHIFT = "leftShift";
+
+	/**
+	 * When this value is exceeded, top and left values are shifted in this group and - inversely- its children to stay
+	 * within this limit. This of course assumes that a large positive group value is compensated by a large negative
+	 * child value, as is the case for images rendered in world space.
+	 */
+	private static final int MAX_COORD = 1000000;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -94,6 +111,7 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 */
 	public void add(HtmlObject child) {
 		asDivPanel().add(child);
+		updateChildPositions();
 	}
 
 	/**
@@ -107,6 +125,7 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 */
 	public void insert(HtmlObject child, int beforeIndex) {
 		asDivPanel().insertBefore(child, beforeIndex);
+		updateChildPositions();
 	}
 
 	/**
@@ -173,7 +192,31 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		Dom.setTransformOrigin(asWidget().getElement(), x + "px " + y + "px");
 	}
 
-	public void setHeight(String height) {
+	@Override
+	public void setLeft(int left) {
+		int r = left % MAX_COORD;
+		if (r != left) {
+			super.setLeft(r);
+			asWidget().getElement().setPropertyInt(LEFT_SHIFT, left - r);
+			updateChildPositions();
+		} else {
+			super.setLeft(left);
+		}
+	}
+
+	@Override
+	public void setTop(int top) {
+		int r = top % MAX_COORD;
+		if (r != top) {
+			super.setTop(r);
+			asWidget().getElement().setPropertyInt(TOP_SHIFT, top - r);
+			updateChildPositions();
+		} else {
+			super.setTop(top);
+		}
+	}
+
+	public void setHeight(String height) {		
 		asWidget().setHeight(height);
 	}
 
@@ -193,8 +236,16 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		return (DivPanel) asWidget();
 	}
 
+	private void updateChildPositions() {
+		for (int i = 0; i < getChildCount(); i++) {
+			// reset to update
+			getChild(i).setLeft(getChild(i).getLeft());
+			getChild(i).setTop(getChild(i).getTop());
+		}
+	}
+
 	/**
-	 * What is the purpose of this widget? Why not use a FlowPanel???
+	 * We need a special panel to keep track of the {@link IsWidget} children.
 	 * 
 	 * @author Jan De Moerloose
 	 */
@@ -286,4 +337,5 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		}
 
 	}
+	
 }

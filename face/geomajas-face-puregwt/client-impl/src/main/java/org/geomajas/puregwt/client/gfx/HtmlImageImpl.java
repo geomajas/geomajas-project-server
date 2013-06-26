@@ -207,6 +207,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 		}
 
 		public void onError(ErrorEvent event) {
+			System.out.println("ErrorEvent");
 			nrAttempts--;
 			if (nrAttempts > 0) {
 				asImage().addLoadHandler(this);

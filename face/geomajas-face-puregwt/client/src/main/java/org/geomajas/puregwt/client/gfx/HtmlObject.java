@@ -87,7 +87,7 @@ public interface HtmlObject extends IsWidget {
 	 *            The CSS style value "left".
 	 */
 	void setLeft(int left);
-
+	
 	/**
 	 * Get the number of pixels this object is shifted to the bottom relative to the parent widget.
 	 * 
@@ -102,7 +102,7 @@ public interface HtmlObject extends IsWidget {
 	 *            The CSS style value "top".
 	 */
 	void setTop(int top);
-
+	
 	/**
 	 * Get the current opacity on this object.
 	 * 

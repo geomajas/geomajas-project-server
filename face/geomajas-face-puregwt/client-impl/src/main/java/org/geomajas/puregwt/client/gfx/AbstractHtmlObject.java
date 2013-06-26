@@ -35,6 +35,10 @@ public abstract class AbstractHtmlObject implements HtmlObject {
 
 	private double opacity = 1;
 
+	private int left;
+
+	private int top;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -62,8 +66,8 @@ public abstract class AbstractHtmlObject implements HtmlObject {
 	public AbstractHtmlObject(Widget widget, int width, int height) {
 		this.widget = widget;
 		DOM.setStyleAttribute(widget.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(widget.getElement(), "width", width + "px");
-		DOM.setStyleAttribute(widget.getElement(), "height", height + "px");
+		setWidth(width);
+		setHeight(height);
 	}
 
 	/**
@@ -83,10 +87,10 @@ public abstract class AbstractHtmlObject implements HtmlObject {
 	public AbstractHtmlObject(Widget widget, int width, int height, int top, int left) {
 		this.widget = widget;
 		DOM.setStyleAttribute(widget.getElement(), "position", "absolute");
-		DOM.setStyleAttribute(widget.getElement(), "width", width + "px");
-		DOM.setStyleAttribute(widget.getElement(), "height", height + "px");
-		DomService.setTop(widget.getElement(), top);
-		DomService.setLeft(widget.getElement(), left);
+		setWidth(width);
+		setHeight(height);
+		setTop(top);
+		setLeft(left);
 	}
 
 	// ------------------------------------------------------------------------
@@ -114,19 +118,29 @@ public abstract class AbstractHtmlObject implements HtmlObject {
 	}
 
 	public int getLeft() {
-		return sizeToInt(DOM.getStyleAttribute(widget.getElement(), "left"));
+		return left;
 	}
 
 	public void setLeft(int left) {
-		DomService.setLeft(widget.getElement(), left);
+		this.left = left;
+		int leftShift = 0;
+		if (widget.getParent() != null) {
+			leftShift = widget.getParent().getElement().getPropertyInt(HtmlGroup.LEFT_SHIFT);
+		}
+		DomService.setLeft(widget.getElement(), left + leftShift);
 	}
 
 	public int getTop() {
-		return sizeToInt(DOM.getStyleAttribute(widget.getElement(), "top"));
+		return top;
 	}
 
 	public void setTop(int top) {
-		DomService.setTop(widget.getElement(), top);
+		this.top = top;
+		int topShift = 0;
+		if (widget.getParent() != null) {
+			topShift = widget.getParent().getElement().getPropertyInt(HtmlGroup.TOP_SHIFT);
+		}
+		DomService.setTop(widget.getElement(), top + topShift);
 	}
 
 	public double getOpacity() {
