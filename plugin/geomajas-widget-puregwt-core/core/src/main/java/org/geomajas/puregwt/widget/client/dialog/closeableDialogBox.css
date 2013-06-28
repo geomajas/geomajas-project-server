@@ -1,0 +1,26 @@
+/* ------------------------------------------------------------------------*/
+/* closeableDialog --------------------------------------------------------*/
+/* ------------------------------------------------------------------------*/
+
+/*close icon*/
+@external .closeableDialogCloseIcon;
+@external .closeableDialogCloseIcon:hover;
+@sprite .closeableDialogCloseIcon {
+	gwt-image: "closeableDialogCloseIcon";
+	cursor: pointer;
+	cursor: hand;
+	margin: 5px;
+	border: 0px;
+	float: right;
+}
+
+@sprite .closeableDialogCloseIcon:hover {
+	gwt-image: "closeableDialogCloseIconHover";
+}
+
+@external .closeableDialogTitle;
+.closeableDialogTitle {
+	float: left;
+	font-size: 14px;
+}
+
