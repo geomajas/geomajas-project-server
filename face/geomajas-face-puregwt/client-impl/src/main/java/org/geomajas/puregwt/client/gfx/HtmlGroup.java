@@ -198,10 +198,11 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		if (r != left) {
 			super.setLeft(r);
 			asWidget().getElement().setPropertyInt(LEFT_SHIFT, left - r);
-			updateChildPositions();
 		} else {
 			super.setLeft(left);
+			asWidget().getElement().setPropertyInt(LEFT_SHIFT, 0);
 		}
+		updateChildPositions();
 	}
 
 	@Override
@@ -210,10 +211,11 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		if (r != top) {
 			super.setTop(r);
 			asWidget().getElement().setPropertyInt(TOP_SHIFT, top - r);
-			updateChildPositions();
 		} else {
 			super.setTop(top);
+			asWidget().getElement().setPropertyInt(TOP_SHIFT, 0);
 		}
+		updateChildPositions();
 	}
 
 	public void setHeight(String height) {		
