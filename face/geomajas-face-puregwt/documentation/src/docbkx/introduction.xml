@@ -15,40 +15,22 @@
   <title>Introduction</title>
 
   <para>The PureGWT face is an AJAX client for the Geomajas Server, based upon
-  the Google Web Toolkit. The goal of this client is to provide a clean
-  mapping API for the web.</para>
+  the Google Web Toolkit (GWT). The goal of this client is to provide a lean
+  and mean mapping API for the web. This library does not focus on providing
+  GIS oriented widgets, but instead focuses on a central map concept.</para>
 
-  <sect1>
-    <title>Thin client</title>
+  <para>The usage of the Google Web Toolkit as a base, let's the user develop
+  his Ajax application in Java, using his favourite Java IDE (Eclipse,
+  IntelliJ, Netbeans, ...) and all the Java tools he is used to having around.
+  Basically GWT is an efficient Java to Javascript compiler that only compiles
+  and obfuscates that part of the libraries that you're actually using in your
+  application. This means that classes that are not used will not be a part of
+  the final build. These and many other tricks are used to optimise the
+  Javascript that comes out at the end, making the footprint for Geomajas
+  applications as small as can be. As a result of all this optimization, the
+  memory consumption within the browser is also kept at a minimum, while
+  performance is kept at maximum.</para>
 
-    <para>Since the Geomajas Server is perfectly capable of safeguarding your
-    domain model or executing complex tasks, this client can focus more on the
-    map presentation than business logic. This already makes the PureGWT face
-    a real thin client. Take also the use of the Google Web Toolkit (GWT) into
-    account and this client becomes even thinner.</para>
-
-    <para>The Google Web Toolkit is a Java to JavaScript compiler, that
-    compiles only the code that you're actually using. So instead of having to
-    download entire JavaScript libraries of which you're only using a small
-    portion, a GWT application contains only code that is actually used.
-    Secondly, GWT provides a lot of tools for further optimizing the way your
-    applications are constructed. It provides automatic obfuscation, resource
-    bundling (combining resources so that less requests are needed to loads
-    them all), etc.</para>
-
-    <para>As a result of all this optimization, the memory consumption within
-    the browser is also kept at a minimum, while performance is kept at
-    maximum.</para>
-  </sect1>
-
-  <sect1>
-    <title>Mobile vs desktop</title>
-
-    <para>Although aimed towards mobile devices, the PureGWT face is perfectly
-    suitable for both desktop and mobile environments. As mentioned above, the
-    initial footprint is as small as possible (easily a factor 10 smaller than
-    other frameworks). On top of this, the PureGWT face is also designed to
-    keep client-server bandwidth to a minimum, by providing caching
-    mechanisms, lazy loading, etc.</para>
-  </sect1>
+  <para>An added bonus of these optimizations is that this API is also
+  perfectly suited in mobile environments.</para>
 </chapter>

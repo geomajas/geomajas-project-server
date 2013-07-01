@@ -36,14 +36,11 @@
 
 	<xi:include href="introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	
-	<xi:include href="architecture.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 	<xi:include href="configuration.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="widgets.xml"
+	
+	<xi:include href="architecture.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 	<xi:include href="howto.xml"

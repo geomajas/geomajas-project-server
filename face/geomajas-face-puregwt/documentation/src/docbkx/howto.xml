@@ -14,8 +14,6 @@
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-  <para/>
-
   <section>
     <title>Adding a map to a classic GWT layout</title>
 
@@ -52,6 +50,23 @@ RootLayoutPanel.get().add(layout); // fills the complete browser view</programli
   <section>
     <title>How to catch the location of mouse events on the map?</title>
 
-    <para/>
+    <para>An often asked for use-case is to display the location (in World
+    space) of the mouse when it hovers over the map. This is done be adding a
+    listeners to the map that reacts to the onMouseMove events:</para>
+
+    <programlisting>final Label label = new Label();
+mapPresenter.addMapListener(new AbstractMapController() {
+
+    public void onMouseMove(MouseMoveEvent event) {
+        Coordinate location = getLocation(event, RenderSpace.WORLD);
+        label.setText("Location: " + location.toString());
+    };
+});</programlisting>
+
+    <para>Note that we started from an <code>AbstractMapController</code> to
+    create a new <code>MapController</code> implementation. This is by far the
+    easiest way to create new controllers. From there we used the
+    <code>getLocation</code> method to actually acquire the correct location
+    in World space (map CRS).</para>
   </section>
 </chapter>

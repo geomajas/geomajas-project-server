@@ -22,18 +22,55 @@
   <sect1>
     <title>Dependencies</title>
 
-    <para></para>
+    <para>First things first. Before you can boot up a web application using
+    Geomajas, you need to include the correct jar files. Using maven these
+    would be:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-puregwt-client-impl&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-puregwt-client-impl&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+    &lt;classifier&gt;sources&lt;/classifier&gt;
+&lt;/dependency&gt;</programlisting>
+  </sect1>
+
+  <sect1>
+    <title>GWT Modules</title>
+
+    <para>After the libraries have been added to your application, it's time
+    to configure the correct GWT module. When writing applications in GWT, you
+    need to precisely mark which packages or classes make up your client, so
+    the compiler knows where to look. You may have noticed in the previous
+    section that we also added the sources jar as a dependency. This is also
+    necessary for the GWT compiler to compile the original Java classes to
+    Javascript.</para>
+
+    <para>How to set up a GWT application and declare an EntryPoint is beyond
+    the scope of this document. You'll have to visit the GWT documentation
+    site for more information. What you do need to know is the definition of
+    the Geomajas PureGWT module definition.</para>
+
+    <para>In your .gwt.xml file, add the following line to include the PureGWT
+    face:</para>
+
+    <programlisting>&lt;!-- Geomajas Client --&gt;
+&lt;inherits name="org.geomajas.puregwt.GeomajasClientImpl" /&gt;
+
+&lt;!-- Default CSS theme --&gt;
+&lt;inherits name="org.geomajas.puregwt.theme.GeomajasDefaultTheme" /&gt;</programlisting>
   </sect1>
 
   <sect1>
     <title>web.xml</title>
 
-    <para></para>
-  </sect1>
-
-  <sect1>
-    <title>Build steps</title>
-
-    <para></para>
+    <para>This client expects the Geomajas server-side libraries to be present
+    in the backend, along with a correctly configured map. Details on how to
+    set up the Geomajas backend can be found in the backend documentation
+    files.</para>
   </sect1>
 </chapter>

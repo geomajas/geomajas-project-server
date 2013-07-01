@@ -1174,7 +1174,7 @@ VectorContainer screenContainer = mapPresenter.addScreenContainer();</programlis
         event targeting, it is just a dumb image. This can of course be
         mitigated by keeping track of rendered objects yourself (after all,
         this is what most drawing software using Graphics2D does), but this is
-        much more complicated than with a DOM-based model. </para>
+        much more complicated than with a DOM-based model.</para>
 
         <para>Our simple container implementation keeps track of a list of
         CanvasShape objects and will automatically repaint them whenever the
@@ -1289,10 +1289,10 @@ command.setCommandRequest(request);
 // Now execute the command:
 commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&gt;() {
 
-	@Override
-	public void execute(CommandResponse response) {
-		// don't do anything. An Exception will been thrown at server-side
-	}
+    @Override
+    public void execute(CommandResponse response) {
+        // don't do anything. An Exception will been thrown at server-side
+    }
 });</programlisting>
 
       <para>This example is taken from the showcase, where a command is
@@ -1331,6 +1331,15 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
       provide navigation buttons. Of course it is possible to replace any such
       widget with your own implementation. Actually it is perfectly possible
       to add any widget you want on top of the map.</para>
+
+      <para>The map has a specific panel wherein such widgets can be
+      added:</para>
+
+      <programlisting>AbsolutePanel panel = mapPresenter.getWidgetPane();</programlisting>
+
+      <para>An AbsolutePanel is a GWT layout panel wherein all widgets are
+      positioned absolutely (actually using the CSS position:absolute
+      construct).</para>
     </section>
   </section>
 </chapter>
