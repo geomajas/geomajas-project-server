@@ -1240,18 +1240,17 @@ VectorContainer worldContainer = mapPresenter.addWorldContainer();</programlisti
 GfxUtil gfxUtil = GEOMAJASINJECTOR.getGfxUtil();
 
 // Now transform the geometry into a Shape object:
-Path path = gfxUtil.toPath(feature.getGeometry()); // Does not work for point geometries!</programlisting>
+VectorObject vectorObject = gfxUtil.toShape(feature.getGeometry());</programlisting>
 
       <para>Before adding the path to the VectorContainer, we may want to
       style it first:</para>
 
-      <programlisting>path.setFillColor("#0066AA");
-path.setFillOpacity(0.4);
-path.setStrokeColor("#004499");</programlisting>
+      <programlisting>gfxUtil.applyFill(vectorObject, "#0066AA", 0.5);
+gfxUtil.applyStroke(vectorObject, "#004499", 0.9, 2, null);</programlisting>
 
       <para>Now it's time to add the path to the VectorContainer:</para>
 
-      <programlisting>worldContainer.add(path);</programlisting>
+      <programlisting>worldContainer.add(vectorObject);</programlisting>
     </section>
   </section>
 
