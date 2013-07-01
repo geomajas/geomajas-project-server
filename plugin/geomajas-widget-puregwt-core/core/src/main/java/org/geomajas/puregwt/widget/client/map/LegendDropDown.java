@@ -108,7 +108,7 @@ public class LegendDropDown extends Composite implements HasOpenHandlers<LegendD
 	public boolean addLayer(Layer layer) {
 		int index = getLayerIndex(layer);
 		if (index < 0) {
-			contentPanel.add(new LayerLegendPanel(mapPresenter.getEventBus(), layer));
+			contentPanel.add(new LayerLegendPanel(mapPresenter, layer));
 			return true;
 		}
 		return false;
