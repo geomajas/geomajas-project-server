@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -35,6 +34,8 @@ import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.service.EndPointService;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -75,13 +76,17 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
 
 		NamedStyleInfo styleInfo = layerInfo.getNamedStyleInfo();
-		for (int i = 0; i < styleInfo.getFeatureStyles().size(); i++) {
-			FeatureStyleInfo sfi = styleInfo.getFeatureStyles().get(i);
-			UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
-			url.addPath(getServerLayerId());
-			url.addPath(styleInfo.getName());
-			url.addPath(i + LEGEND_ICON_EXTENSION);
-			stylePresenters.add(new ServerLayerStylePresenter(i, url.toString(), sfi.getName()));
+		int i = 0;
+		for (FeatureTypeStyleInfo sfi : layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList()) {
+			for (RuleInfo rInfo : sfi.getRuleList()) {
+				UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
+				url.addPath(getServerLayerId());
+				url.addPath(styleInfo.getName());
+				url.addPath(i + LEGEND_ICON_EXTENSION);
+
+				stylePresenters.add(new ServerLayerStylePresenter(i++, url.toString(), rInfo.getName(), rInfo));
+			}
+
 		}
 		return stylePresenters;
 	}
@@ -156,7 +161,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	public boolean isLabeled() {
 		return labeled;
 	}
-	
+
 	@Override
 	public void updateStyle(NamedStyleInfo nsi) {
 		getLayerInfo().setNamedStyleInfo(nsi);
@@ -167,6 +172,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest,
 				new AbstractCommandCallback<RegisterNamedStyleInfoResponse>() {
+
 					@Override
 					public void execute(RegisterNamedStyleInfoResponse response) {
 						getLayerInfo().getNamedStyleInfo().setName(response.getStyleName());

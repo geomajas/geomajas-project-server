@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
+import org.geomajas.sld.RuleInfo;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -49,10 +51,17 @@ public class ServerLayerStylePresenter implements LayerStylePresenter {
 	@UiField
 	protected Label label;
 
+	private RuleInfo rule;
+
 	public ServerLayerStylePresenter(int index, String url, String title) {
 		this.index = index;
 		this.title = title;
 		this.url = url;
+	}
+
+	public ServerLayerStylePresenter(int index, String url, String title, RuleInfo rule) {
+		this(index, url, title);
+		this.rule = rule;
 	}
 
 	public Widget asWidget() {
@@ -74,5 +83,10 @@ public class ServerLayerStylePresenter implements LayerStylePresenter {
 
 	public String getUrl() {
 		return url;
+	}
+
+	@Override
+	public RuleInfo getRule() {
+		return rule;
 	}
 }

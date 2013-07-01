@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.sld.RuleInfo;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -30,4 +31,13 @@ public interface LayerStylePresenter extends IsWidget {
 	 * @return The style index within a layer.
 	 */
 	int getIndex();
+	
+	/**
+	 * Get the sld rule for this style if it preents a styleable layer.
+	 * 
+	 * @return the rule
+	 */
+	RuleInfo getRule();
+	
+
 }
