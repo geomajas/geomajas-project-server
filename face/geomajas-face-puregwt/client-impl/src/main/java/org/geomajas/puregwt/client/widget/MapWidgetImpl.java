@@ -74,7 +74,7 @@ import com.google.inject.Inject;
  * <ol>
  * <li>Raster layers & rasterized vector layers.</li>
  * <li>Vector layers (SVG/VML)</li>
- * <li>All screen and world containers</li>
+ * <li>All vectorcontainers</li>
  * <li>All map gadgets</li>
  * </ol>
  * </p>
