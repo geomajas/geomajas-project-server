@@ -11,7 +11,12 @@
 
 <module>
 	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
+
+	<!-- @extract-start PrintingGwtModule, Inherit the GWT module for the printing plug-in. -->
+
 	<inherits name="org.geomajas.plugin.printing.Printing"/>
+
+	<!-- @extract-end -->
 
     <entry-point class="org.geomajas.plugin.printing.gwt.example.client.PrintingExample"/>
 </module>
