@@ -235,10 +235,9 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 
 					// Register the style if a vectorlayer.
 					if (isVectorLayer) {
-						for (NamedStyleInfo nsi : ((VectorLayerInfo) targetCli.getLayerInfo()).getNamedStyleInfos()) {
-							log.debug("Registering style for layer: " + targetCli.getLabel());
-							nsi.setName(styleService.registerStyle(targetCli.getServerLayerId(), nsi));
-						}
+						NamedStyleInfo nsi = ((ClientVectorLayerInfo) targetCli).getNamedStyleInfo();
+						log.debug("Registering style for layer: " + targetCli.getLabel());
+						nsi.setName(styleService.registerStyle(targetCli.getServerLayerId(), nsi));
 					}
 				}
 
