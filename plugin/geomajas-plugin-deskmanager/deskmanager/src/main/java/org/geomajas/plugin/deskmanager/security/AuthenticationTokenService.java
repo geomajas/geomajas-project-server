@@ -10,19 +10,14 @@
  */
 package org.geomajas.plugin.deskmanager.security;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.geomajas.plugin.deskmanager.security.role.DeskmanagerAuthentication;
 import org.geomajas.security.Authentication;
+import org.geomajas.service.CacheService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,19 +27,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AuthenticationTokenService {
+	
+	@Autowired
+	private CacheService cacheService;
 
 	private final Logger log = LoggerFactory.getLogger(AuthenticationTokenService.class);
 
-	private Map<String, DeskmanagerAuthentication> tokens = 
-			new ConcurrentHashMap<String, DeskmanagerAuthentication>();
-
 	public Authentication getAuthentication(String token) {
 		log.debug("Getting authentication for token {}", token);
-		return tokens.get(token);
+		return cacheService.get(AuthenticationTokenService.class.toString(), token, Authentication.class);
 	}
 
 	public void logout(String token) {
-		tokens.remove(token);
+		cacheService.remove(AuthenticationTokenService.class.toString(), token);
 	}
 
 	public String login(DeskmanagerAuthentication authentication) {
@@ -57,24 +52,8 @@ public class AuthenticationTokenService {
 		if (null == token) {
 			return login(authentication);
 		}
-		tokens.put(token, authentication);
+		cacheService.put(AuthenticationTokenService.class.toString(), token, authentication);
 		return token;
-	}
-
-	@SuppressWarnings("unused")
-	@Scheduled(fixedDelay = 3600000)
-	private void cleanUp() {
-		List<String> toBeRemoved = new ArrayList<String>();
-		for (Entry<String, DeskmanagerAuthentication> token : tokens.entrySet()) {
-			log.debug("Checking validity of authentication token {} {}", token.getKey(), token.getValue());
-			if (token.getValue().getInvalidAfter().before(new Date())) {
-				log.info("Authentication token {} expired, removing. {}", token.getKey(), token.getValue());
-				toBeRemoved.add(token.getKey());
-			}
-		}
-		for (String key : toBeRemoved) {
-			logout(key);
-		}
 	}
 
 	public String getToken() {
