@@ -757,8 +757,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<task:scheduler id="geomajasImplScheduler" pool-size="10"/>
 	
 	<task:scheduled-tasks scheduler="geomajasImplScheduler">
-		<task:scheduled ref="service.CacheService" method="cleanUp" fixed-delay="1000"/>
-<!-- 		<task:scheduled ref="service.CacheService" method="cleanUp" fixed-delay="3600000"/> -->
+		<task:scheduled ref="service.CacheService" method="cleanUp" fixed-delay="3600000"/>
 	</task:scheduled-tasks>
 
 	<!-- scan the classpath for plugin contexts -->
