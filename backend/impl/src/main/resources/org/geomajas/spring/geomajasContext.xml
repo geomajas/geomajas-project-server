@@ -754,8 +754,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<!-- Activates @Scheduled and @Async annotations for scheduling -->
-	<task:annotation-driven />
+	<task:scheduler id="geomajasImplScheduler" pool-size="10"/>
+	
+	<task:scheduled-tasks scheduler="geomajasImplScheduler">
+		<task:scheduled ref="service.CacheService" method="cleanUp" fixed-delay="1000"/>
+<!-- 		<task:scheduled ref="service.CacheService" method="cleanUp" fixed-delay="3600000"/> -->
+	</task:scheduled-tasks>
 
 	<!-- scan the classpath for plugin contexts -->
 	<import resource="classpath*:META-INF/geomajasContext.xml" />
