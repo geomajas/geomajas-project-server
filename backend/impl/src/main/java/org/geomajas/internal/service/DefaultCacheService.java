@@ -17,7 +17,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.geomajas.service.CacheService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,8 +28,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DefaultCacheService implements CacheService {
-
-	private static final long CLEANUP_INTERVAL = 3600 * 1000;
 
 	private Map<String, Map<Object, CachedObject>> caches = new ConcurrentHashMap<String, Map<Object, CachedObject>>();
 
@@ -50,7 +47,7 @@ public class DefaultCacheService implements CacheService {
 		return co != null ? co.getObject() : null;
 	}
 
-	@Scheduled(fixedRate = CLEANUP_INTERVAL)
+	@Override
 	public void cleanUp() {
 		List<Object> toRemove = new ArrayList<Object>();
 		for (Map<Object, CachedObject> cache : caches.values()) {

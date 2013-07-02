@@ -82,4 +82,9 @@ public interface CacheService {
 	 */
 	void clear(String cache);
 	
+	/**
+	 * Cleanup the cache. This method will be called by the spring scheduler at a fixed rate to clean up the cache.
+	 */
+	void cleanUp();
+	
 }
