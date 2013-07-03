@@ -8,7 +8,6 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.plugin.printing.document;
 
 import java.awt.image.BufferedImage;
@@ -16,9 +15,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
 
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.MapComponent;
@@ -33,6 +41,9 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 
+//import com.sun.pdfview.PDFFile;
+//import com.sun.pdfview.PDFPage;
+
 /**
  * Single page document for printing.
  * 
@@ -40,31 +51,41 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class SinglePageDocument extends AbstractDocument {
 
-	/** The page to render. */
+	private static final double DPI_FOR_PNG_OUTPUT = 72 * 2;
+
+	private static final double ONE_INCH_IN_CM =  2.54;
+
+	/**
+	 * The page to render.
+	 */
 	protected PageComponent page;
 
-	/** Filters to apply to layers. */
+	/**
+	 * Filters to apply to layers.
+	 */
 	protected Map<String, String> filters;
 
-	/** In-memory output stream to know content length. */
+	/**
+	 * In-memory output stream to know content length.
+	 */
 	private ByteArrayOutputStream baos;
+
+	//private boolean debug = true;
 
 	/**
 	 * Constructs a document with the specified dimensions.
 	 * 
-	 * @param page
-	 *            page
-	 * @param filters
-	 *            filters
+	 * @param page page
+	 * @param filters filters
 	 */
 	public SinglePageDocument(PageComponent page, Map<String, String> filters) {
 		this.page = page;
 		this.filters = (filters == null ? new HashMap<String, String>() : filters);
 
 		// set filters
-		for (PrintComponent comp : getPage().getChildren()) {
+		for (PrintComponent<?> comp : getPage().getChildren()) {
 			if (comp instanceof MapComponent) {
-				((MapComponent) comp).setFilter(filters);
+				((MapComponent<?>) comp).setFilter(filters);
 			}
 		}
 	}
@@ -83,11 +104,9 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Re-calculates the layout and renders to internal memory stream. Always call this method before calling render()
 	 * to make sure that the latest document changes have been taken into account for rendering.
-	 * 
-	 * @param format
-	 *            format
-	 * @throws PrintingException
-	 *             oops
+	 *
+	 * @param format format
+	 * @throws PrintingException oops
 	 */
 	public void layout(Format format) throws PrintingException {
 		try {
@@ -100,23 +119,18 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Prepare the document before rendering.
 	 * 
-	 * @param outputStream
-	 *            output stream to render to, null if only for layout
-	 * @param format
-	 *            format
-	 * @throws DocumentException
-	 *             oops
-	 * @throws IOException
-	 *             oops
-	 * @throws PrintingException
-	 *             oops
+	 * @param outputStream output stream to render to, null if only for layout
+	 * @param format format
+	 * @throws DocumentException oops
+	 * @throws IOException oops
+	 * @throws PrintingException oops
 	 */
 	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
 			PrintingException {
 		// first render or re-render for different layout
 		if (outputStream == null || baos == null || null != format) {
 			if (baos == null) {
-				baos = new ByteArrayOutputStream(10 * 1024);
+				baos = new ByteArrayOutputStream(); // let it grow as much as needed
 			}
 			baos.reset();
 			boolean resize = false;
@@ -151,21 +165,22 @@ public class SinglePageDocument extends AbstractDocument {
 				writer = PdfWriter.getInstance(document, baos);
 				// Render in correct colors for transparent rasters
 				writer.setRgbTransparencyBlending(true);
-
+				
 				document.open();
 				baos.reset();
 				context = new PdfContext(writer);
 				context.initSize(page.getBounds());
 			}
-			// int compressionLevel = writer.getCompressionLevel(); // For testing
-			// writer.setCompressionLevel(0);
+			//int compressionLevel = writer.getCompressionLevel(); // For testing
+			//writer.setCompressionLevel(0); 
 
 			// Actual drawing
 			document.addTitle("Geomajas");
 			// second pass to layout
 			page.layout(context);
-			// finally render
+			// finally render (uses baos)
 			page.render(context);
+			
 			document.add(context.getImage());
 			// Now close the document
 			document.close();
@@ -175,6 +190,9 @@ public class SinglePageDocument extends AbstractDocument {
 					break;
 				case PNG:
 				case JPG:
+
+					BufferedImage bufferedImage = null;
+					// Use JPedal lib for converting the PDF to PNG or JPG
 					/** instance of PdfDecoder to convert PDF into image */
 					PdfDecoder decodePdf = new PdfDecoder(true);
 
@@ -186,14 +204,77 @@ public class SinglePageDocument extends AbstractDocument {
 					try {
 						decodePdf.openPdfArray(baos.toByteArray());
 						/** get page 1 as an image */
-						BufferedImage img = decodePdf.getPageAsImage(1);
+						bufferedImage = decodePdf.getPageAsImage(1);
 
 						/** close the pdf file */
 						decodePdf.closePdfFile();
-						baos.reset();
-						ImageIO.write(img, format.getExtension(), baos);
+						
+						
 					} catch (PdfException e) {
 						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+					}
+//					// Alt:  Use PDF Renderer library of Sun (SwingLabs)
+//						ByteBuffer buf;
+//						try {
+//							buf = ByteBuffer.wrap(baos.toByteArray());
+//						} catch (Exception e) {
+//							throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+//						}						
+//						// use the PDF Renderer library on the buf which contains the in memory PDF document
+//						PDFFile pdffile = new PDFFile(buf);
+//						PDFPage page = pdffile.getPage(1, true);
+//	
+//						//get the width and height for the doc at the default zoom
+//						java.awt.Rectangle rect =
+//							new java.awt.Rectangle(0, 0, (int) page.getBBox().getWidth(),
+//											(int) page.getBBox().getHeight());
+//	
+//						//generate the image
+//						Image img = page.getImage((int) Math.round(rect.getWidth()),
+//											(int) Math.round(rect.getHeight()), 
+//								rect, // clip rect
+//								null, // null for the ImageObserver
+//								true, // fill background with white
+//								true) ; // block until drawing is done
+//						bufferedImage = toBufferedImage(img, BufferedImage.TYPE_INT_ARGB);
+//					
+					
+					baos.reset();
+					
+					// Update the DPI to  DPI_FOR_PNG_OUTPUT of bufferedImage, output written to baos
+					
+					final String formatName = format.getExtension();
+					boolean convertedDPI = false;
+					
+					for (Iterator<ImageWriter> iw = 
+									ImageIO.getImageWritersByFormatName(formatName); iw.hasNext();) {
+					   ImageWriter writer1 = iw.next();
+					   ImageWriteParam writeParam = writer1.getDefaultWriteParam();
+					   ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.
+									   			createFromBufferedImageType(BufferedImage.TYPE_INT_ARGB);
+					   IIOMetadata metadata = writer1.getDefaultImageMetadata(typeSpecifier, writeParam);
+					   if (metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) {
+						  continue;
+					   }
+
+					   setDPI(metadata);
+					   // Convert bufferedImage to baos
+					   final ImageOutputStream stream = ImageIO.createImageOutputStream(baos/*output*/);
+					   try {
+						  writer1.setOutput(stream);
+						  writer1.write(metadata, new IIOImage(bufferedImage/*input*/, null/* No thumbnails*/,
+										  metadata), writeParam);
+						  convertedDPI = true;
+					   } finally {
+						  stream.flush();
+						  stream.close();
+					   }
+					   break;
+					}
+					if (!convertedDPI) {
+						baos.reset();
+						//ImageIO.setUseCache(false);
+						ImageIO.write(bufferedImage, format.getExtension(), baos);
 					}
 					break;
 				default:
@@ -201,7 +282,11 @@ public class SinglePageDocument extends AbstractDocument {
 							"Oops, software error, need to support extra format at end of render" + format);
 			}
 			if (outputStream != null) {
-				baos.writeTo(outputStream);
+				try {
+					baos.writeTo(outputStream);
+				} catch (IOException e) {
+					throw e;
+				}
 			}
 		} else {
 			baos.writeTo(outputStream);
@@ -215,4 +300,76 @@ public class SinglePageDocument extends AbstractDocument {
 	public int getContentLength() {
 		return baos == null ? 0 : baos.size();
 	}
+	
+	 private void setDPI(IIOMetadata metadata) throws IIOInvalidTreeException {
+
+			// for PNG, it's dots per millimeter
+			double dotsPerMilli = DPI_FOR_PNG_OUTPUT / (10.0 * ONE_INCH_IN_CM);
+
+			IIOMetadataNode horiz = new IIOMetadataNode("HorizontalPixelSize");
+			horiz.setAttribute("value", Double.toString(dotsPerMilli));
+
+			IIOMetadataNode vert = new IIOMetadataNode("VerticalPixelSize");
+			vert.setAttribute("value", Double.toString(dotsPerMilli));
+
+			IIOMetadataNode dim = new IIOMetadataNode("Dimension");
+			dim.appendChild(horiz);
+			dim.appendChild(vert);
+
+			IIOMetadataNode root = new IIOMetadataNode("javax_imageio_1.0");
+			root.appendChild(dim);
+
+			metadata.mergeTree("javax_imageio_1.0", root);
+	 }
+
+//	private BufferedImage toBufferedImage(final Image image, final int type) {
+//		if (image instanceof BufferedImage) {
+//			return (BufferedImage) image;
+//		}
+//		if (image instanceof VolatileImage) {
+//			return ((VolatileImage) image).getSnapshot();
+//		}
+//		loadImage(image);
+//		final BufferedImage buffImg = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+//		final Graphics2D g2 = buffImg.createGraphics();
+//		g2.drawImage(image, null, null);
+//		g2.dispose();
+//		return buffImg;
+//	}
+
+//	private void loadImage(final Image image) {
+//		/**
+//		 * Helper class for loading an image into memory.
+//		 * 
+//		 * @author An Buyle
+//		 *
+//		 */
+//		class StatusObserver implements ImageObserver {
+//			private boolean imageLoaded; // default false
+//
+//			public boolean imageUpdate(final Image img, final int infoflags, final int x, final int y, final int width,
+//							final int height) {
+//				if (infoflags == ALLBITS) {
+//					synchronized (this) {
+//						imageLoaded = true;
+//						notify();
+//					}
+//					return true;
+//				}
+//				return false;
+//			}
+//		}
+//		final StatusObserver imageStatus = new StatusObserver();
+//		synchronized (imageStatus) {
+//			if (image.getWidth(imageStatus) == -1 || image.getHeight(imageStatus) == -1) {
+//				while (!imageStatus.imageLoaded) {
+//					try {
+//						imageStatus.wait();
+//					} catch (InterruptedException ex) {
+//					}
+//				}
+//			}
+//		}
+//	}
+
 }
