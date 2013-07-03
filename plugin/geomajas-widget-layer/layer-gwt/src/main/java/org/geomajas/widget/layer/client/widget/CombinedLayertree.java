@@ -232,6 +232,7 @@ public class CombinedLayertree extends LayerTreeBase {
 		// vectorlayer
 		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, VectorLayer layer, int ruleIndex, String title) {
 			super(parent.tree, parent.layer);
+			this.ruleIndex = ruleIndex;
 			this.parent = parent;
 			setTitle(title);
 			updateStyle(layer);
