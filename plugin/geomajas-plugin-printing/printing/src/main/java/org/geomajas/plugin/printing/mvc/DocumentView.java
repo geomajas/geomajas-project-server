@@ -22,9 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
 /**
- * View to produce PDF documents.
+ * View to produce printed documents (PDF, PNG, ...).
  *
  * @author Jan De Moerloose
+ * @author An Buyle
  */
 @Component(PrintingController.DOCUMENT_VIEW_NAME)
 public class DocumentView extends AbstractView {
@@ -39,7 +40,7 @@ public class DocumentView extends AbstractView {
 				
 		// Write content type and also length (determined via byte array).
 		response.setContentType(format.getMimetype());
-		response.setContentLength(doc.getContentLength());
+		
 		
 		// check download method
 		if (download.equals(PrintingController.DOWNLOAD_METHOD_SAVE)) {
@@ -53,6 +54,7 @@ public class DocumentView extends AbstractView {
 		// Write the docmuent
 		ServletOutputStream out = response.getOutputStream();
 		doc.render(out, format);
+		response.setContentLength(doc.getContentLength());
 		out.flush();
 	}
 
