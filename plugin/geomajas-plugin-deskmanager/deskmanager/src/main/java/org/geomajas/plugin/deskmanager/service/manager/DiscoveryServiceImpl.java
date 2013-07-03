@@ -43,15 +43,15 @@ import org.geomajas.geometry.Crs;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
+import org.geomajas.layer.common.proxy.LayerAuthentication;
 import org.geomajas.layer.geotools.GeoToolsLayer;
-import org.geomajas.layer.wms.WmsAuthentication;
 import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.deskmanager.DeskmanagerException;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
+import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicRasterLayerConfiguration;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.manager.dto.DynamicVectorLayerConfiguration;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.runtimeconfig.service.BeanFactory;
@@ -392,10 +392,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		parameters.add(new Parameter("TRANSPARENT", "true"));
 		params.put("parameters", parameters);
 		if (rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME) != null) {
-			WmsAuthentication auth = new WmsAuthentication();
+			LayerAuthentication auth = new LayerAuthentication();
 			auth.setUser(rlc.getParameterValue(WmsLayerBeanFactory.WMS_USERNAME));
 			auth.setPassword(rlc.getParameterValue(WmsLayerBeanFactory.WMS_PASSWORD));
-			params.put("authentication", auth);
+			params.put("layerAuthentication", auth);
 		}
 	}
 
