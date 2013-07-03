@@ -10,14 +10,22 @@
  */
 package org.geomajas.puregwt.client.map.layer;
 
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 
 /**
  * Default layer for {@link ClientVectorLayerInfo}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, LabelsSupported,
-		FeaturesSupported, StyleSupported {
+		FeaturesSupported {
+
+	/**
+	 * Update the style for a layer. The layer will notify it's listeners.
+	 * 
+	 * @param styleInfo
+	 *            the styleinfo
+	 */
+	void updateStyle(NamedStyleInfo styleInfo);
 }
