@@ -177,12 +177,15 @@ public class GeodeskServiceImpl implements GeodeskService {
 	 */
 	public boolean isGeodeskUseAllowed(String id, Role role, Territory territory) {
 		Query q;
+		Geodesk desk = getGeodeskByPublicIdInternal(id);
+		if (desk == null) {
+			return false;
+		}
 		switch (role) {
 			case ADMINISTRATOR:
 				return true;
 			case DESK_MANAGER:
 				// Allow desk usage for the deskmanager
-				Geodesk desk = getGeodeskByPublicIdInternal(id);
 				return desk.getOwner().equals(territory);
 			case CONSULTING_USER:
 			case EDITING_USER:
