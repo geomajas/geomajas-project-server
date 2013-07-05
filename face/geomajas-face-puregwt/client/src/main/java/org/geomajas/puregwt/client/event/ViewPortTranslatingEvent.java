@@ -17,9 +17,11 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.web.bindery.event.shared.Event;
 
 /**
- * Event that is fired when a translation on the {@link ViewPort} has occurred, while the scale has remained the same.
+ * Intermediate event that is fired when the ViewPort is translating during the dragging phase. This event is only
+ * interesting for handlers that want to perform extra logic during the dragging phase that is not processing-intensive.
+ * Use {@link ViewPortChangedHandler} to react to non-intermediate map changes.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  * @since 1.0.0
  */
 @Api(allMethods = true)
@@ -62,7 +64,6 @@ public class ViewPortTranslatingEvent extends Event<ViewPortChangingHandler> {
 	// Protected methods:
 	// ------------------------------------------------------------------------
 
-	/** @todo javadoc unknown. */
 	protected void dispatch(ViewPortChangingHandler handler) {
 		handler.onViewPortTranslating(this);
 	}

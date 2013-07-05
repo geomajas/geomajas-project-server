@@ -17,10 +17,13 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.web.bindery.event.shared.Event;
 
 /**
- * Event that is fired when the view on the {@link ViewPort} has been changed so that both scaling and translation have
- * occurred or the view has resized.
+ * Intermediate event that is fired when the ViewPort is both scaling and translating during the animation/pinching
+ * phase. This event is only interesting for handlers that want to perform extra logic during the animation/pinching
+ * phase that is not processing-intensive and does not use any map content at the intermediate scale levels (such
+ * content will not be available as intermediate scale levels are obtained by resizing the original scale). Use
+ * {@link ViewPortChangedHandler} to react to non-intermediate map changes.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  * @since 1.0.0
  */
 @Api(allMethods = true)

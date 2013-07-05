@@ -35,21 +35,21 @@ public interface ViewPortChangingHandler extends EventHandler {
 	Type<ViewPortChangingHandler> TYPE = new Type<ViewPortChangingHandler>();
 
 	/**
-	 * Catches events where the <code>ViewPort</code> has both scaled and translated.
+	 * Catches events where the <code>ViewPort</code> is both scaling and translating.
 	 * 
 	 * @param event The actual {@link org.geomajas.puregwt.client.event.ViewPortChangingEvent}.
 	 */
 	void onViewPortChanging(ViewPortChangingEvent event);
 
 	/**
-	 * Catches events where the <code>ViewPort</code> scaled only.
+	 * Catches events where the <code>ViewPort</code> is scaling only.
 	 * 
 	 * @param event The actual {@link org.geomajas.puregwt.client.event.ViewPortScalingEvent}.
 	 */
 	void onViewPortScaling(ViewPortScalingEvent event);
 
 	/**
-	 * Catches events where the <code>ViewPort</code> has translated only.
+	 * Catches events where the <code>ViewPort</code> is translating only.
 	 * 
 	 * @param event The actual {@link org.geomajas.puregwt.client.event.ViewPortTranslatingEvent}.
 	 */

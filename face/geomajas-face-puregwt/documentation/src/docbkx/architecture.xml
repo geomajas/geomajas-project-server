@@ -668,6 +668,35 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
                 <entry>Event that is fired when the map is being translated,
                 keeping the same scale level.</entry>
               </row>
+
+              <row>
+                <entry>ViewPortChangingEvent</entry>
+
+                <entry>ViewPortChangingHandler</entry>
+
+                <entry>Intermediate event that is fired during the
+                animation/pinching phase when both scaling and translating
+                have occurred</entry>
+              </row>
+
+              <row>
+                <entry>ViewPortScalingEvent</entry>
+
+                <entry>ViewPortChangingHandler</entry>
+
+                <entry>Intermediate event that is fired during the
+                animation/pinching phase when the map zooms in or out while
+                keeping the same center.</entry>
+              </row>
+
+              <row>
+                <entry>ViewPortTranslatingEvent</entry>
+
+                <entry>ViewPortChangingHandler</entry>
+
+                <entry>Intermediate event that is fired when the map is being
+                dragged</entry>
+              </row>
             </tbody>
           </tgroup>
         </table></para>

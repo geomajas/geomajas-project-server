@@ -33,11 +33,11 @@ public interface GfxUtil {
 	 * Apply the stroke style to the given object. Currently supports {@link org.vaadin.gwtgraphics.client.Strokeable}
 	 * and {@link org.vaadin.gwtgraphics.client.Group} containing {@link org.vaadin.gwtgraphics.client.Strokeable}.
 	 * 
-	 * @param object
-	 * @param strokeColor
-	 * @param strokeOpacity
-	 * @param strokeWidth
-	 * @param dashArray
+	 * @param object object to stroke
+	 * @param strokeColor the stroke color, use CSS2 color notation (#FFFFFF)
+	 * @param strokeOpacity the stroke opacity, between 0.0 for fully transparent and 1.0 for fully opaque
+	 * @param strokeWidth the stroke width in pixels
+	 * @param dashArray whitespace separated list of dashes and gap lengths. If null, the property is omitted/removed.
 	 */
 	void applyStroke(VectorObject object, String strokeColor, double strokeOpacity, int strokeWidth, String dashArray);
 
@@ -45,9 +45,9 @@ public interface GfxUtil {
 	 * Apply the fill style to the given object. Currently supports {@link org.vaadin.gwtgraphics.client.Shape} and
 	 *        {@link org.vaadin.gwtgraphics.client.Group} containing {@link org.vaadin.gwtgraphics.client.Shape}.
 	 * 
-	 * @param object
-	 * @param fillColor
-	 * @param fillOpacity
+	 * @param object object to fill
+	 * @param fillColor the fill color, use CSS2 color notation (#FFFFFF)
+	 * @param fillOpacity the fill opacity, between 0.0 for fully transparent and 1.0 for fully opaque
 	 */
 	void applyFill(VectorObject object, String fillColor, double fillOpacity);
 

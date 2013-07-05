@@ -17,7 +17,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
  * Map configuration definition. Contains a server configuration object and a series of map hints to apply specific
- * parameters.
+ * parameters. One should define a {@link MapHint} constant for each configuration parameter.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -30,14 +30,14 @@ public interface MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Parameter that determines whether or not animation is used during navigation. This setting overrides the
+	 * {@link MapHint} that determines whether or not animation is used during navigation. This setting overrides the
 	 * individual layer animation settings in the {@link MapConfiguration}. It's value should be of type
 	 * <code>Boolean</code>.
 	 */
 	MapHint<Boolean> ANIMATION_ENABLED = new MapHint<Boolean>("animation_enabled");
 
 	/**
-	 * Parameter used to determine how long the animations should take during navigation (zooming). The value should be
+	 * {@link MapHint} used to determine how long the animations should take during navigation (zooming). The value should be
 	 * expressed in milliseconds. It's value should be of type <code>Long</code>.
 	 * 
 	 * @since 1.0.0
