@@ -37,8 +37,8 @@ public interface MapConfiguration {
 	MapHint<Boolean> ANIMATION_ENABLED = new MapHint<Boolean>("animation_enabled");
 
 	/**
-	 * {@link MapHint} used to determine how long the animations should take during navigation (zooming). The value should be
-	 * expressed in milliseconds. It's value should be of type <code>Long</code>.
+	 * {@link MapHint} used to determine how long the animations should take during navigation (zooming). The value
+	 * should be expressed in milliseconds. It's value should be of type <code>Long</code>.
 	 * 
 	 * @since 1.0.0
 	 */
