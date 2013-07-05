@@ -281,8 +281,7 @@ public class BlueprintDetail extends HLayout implements SelectionChangedHandler,
 
 				@Override
 				public boolean onCancelClick(ClickEvent event) {
-					editor.setWidgetConfiguration(blueprintWidgetInfos.get(editorFactory.getKey()));
-					editor.setDisabled(true);
+					onBlueprintChange(new BlueprintEvent(blueprint));
 					return true;
 				}
 

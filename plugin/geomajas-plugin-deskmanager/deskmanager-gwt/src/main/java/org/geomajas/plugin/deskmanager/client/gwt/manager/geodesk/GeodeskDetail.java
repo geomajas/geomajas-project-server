@@ -283,6 +283,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 			if (editor instanceof BaseGeodeskWidgetEditor) {
 				((BaseGeodeskWidgetEditor) editor).setBaseGeodesk(geodesk);
 			}
+			//Clone?
 			editor.setWidgetConfiguration(widgetInfos.get(editorFactory.getKey()));
 			editor.setDisabled(true);
 
@@ -315,8 +316,7 @@ public class GeodeskDetail extends VLayout implements SelectionChangedHandler, E
 
 				@Override
 				public boolean onCancelClick(ClickEvent event) {
-					editor.setWidgetConfiguration(geodeskWidgetInfos.get(editorFactory.getKey()));
-					editor.setDisabled(true);
+					onGeodeskChange(new GeodeskEvent(geodesk));
 					return true;
 				}
 
