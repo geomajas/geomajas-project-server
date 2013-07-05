@@ -117,12 +117,10 @@ public class ApplicationStartupServiceImpl implements ApplicationStartupService 
 		lm.setMaxScale(cli.getMaximumScale());
 		lm.setDefaultVisible(cli.isVisible());
 		lm.setReadOnly(true);
-
+		lm.setLayerType(sli.getLayerType());
 		if (null != layer && LayerType.RASTER.equals(sli.getLayerType())) {
-			lm.setLayerType("Raster");
 			lm.setDynamicLayerConfiguration(new DynamicRasterLayerConfiguration());
 		} else if (null != layer) {
-			lm.setLayerType(sli.getLayerType().getGeometryType());
 			lm.setDynamicLayerConfiguration(new DynamicVectorLayerConfiguration());
 		}
 		return lm;

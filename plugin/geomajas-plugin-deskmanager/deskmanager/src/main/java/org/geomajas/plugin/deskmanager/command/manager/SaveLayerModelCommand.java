@@ -86,8 +86,8 @@ public class SaveLayerModelCommand implements Command<SaveLayerModelRequest, Lay
 							target.setMaxScale(cli.getMaximumScale());
 							target.setMinScale(cli.getMinimumScale());
 							target.setPublic(ud.isPublic());
-							target.setLayerType(source.getDynamicLayerConfiguration().getServerLayerInfo()
-									.getLayerType().getGeometryType());
+							target.setLayerType(source.getDynamicLayerConfiguration().getServerLayerInfo().
+									getLayerType());
 							target.setDynamicLayerConfiguration(source.getDynamicLayerConfiguration());
 							reloadLayers = true;
 						}

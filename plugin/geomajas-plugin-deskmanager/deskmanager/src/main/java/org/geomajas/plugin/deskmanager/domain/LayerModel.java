@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.hibernate.annotations.GenericGenerator;
@@ -49,6 +50,8 @@ import org.hibernate.annotations.Type;
 public class LayerModel implements Serializable, Comparable<LayerModel> {
 
 	private static final long serialVersionUID = 1L;
+
+	private static final String LAYER_TYPE_RASTER = "Raster";
 
 	@Id
 	@GeneratedValue(generator = "system-uuid")
@@ -323,11 +326,26 @@ public class LayerModel implements Serializable, Comparable<LayerModel> {
 	}
 
 	/**
-	 * Get the type of layer.
+	 * Set the type of layer.
 	 * @param layerType
 	 */
 	public void setLayerType(String layerType) {
 		this.layerType = layerType;
+	}
+
+	/**
+	 * Set the type of layer as internal LayerType.
+	 * @param layerType
+	 */
+	public void setLayerType(LayerType layerType) {
+		switch (layerType) {
+			case RASTER:
+				setLayerType(LAYER_TYPE_RASTER);
+				break;
+			default:
+				setLayerType(layerType.getGeometryType());
+				break;
+		}
 	}
 
 	/**

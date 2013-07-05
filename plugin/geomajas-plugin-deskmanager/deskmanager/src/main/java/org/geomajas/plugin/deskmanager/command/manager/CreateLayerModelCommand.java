@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.command.manager;
 
 import org.geomajas.command.Command;
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CreateLayerModelRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.configuration.client.DeskmanagerClientLayerInfo;
@@ -80,15 +79,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 		lm.setDefaultVisible(cvli.isVisible());
 		lm.setMaxScale(cvli.getMaximumScale());
 		lm.setMinScale(cvli.getMinimumScale());
-		LayerType layerType = request.getConfiguration().getServerLayerInfo().getLayerType();
-		switch (layerType) {
-			case RASTER:
-				lm.setLayerType("Raster");
-				break;
-			default:
-				lm.setLayerType(request.getConfiguration().getServerLayerInfo().getLayerType().getGeometryType());
-				break;
-		}
+		lm.setLayerType(request.getConfiguration().getServerLayerInfo().getLayerType());
 
 		Territory g = ((DeskmanagerSecurityContext) securityContext).getTerritory();
 		if (g.getId() > 0) { // 0 = superuser
