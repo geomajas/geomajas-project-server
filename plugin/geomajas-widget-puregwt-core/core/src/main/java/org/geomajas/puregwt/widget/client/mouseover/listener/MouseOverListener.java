@@ -35,6 +35,7 @@ import org.geomajas.puregwt.client.map.layer.ServerLayer;
 import org.geomajas.puregwt.widget.client.mouseover.component.ToolTipBox;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.user.client.Timer;
@@ -104,6 +105,11 @@ public class MouseOverListener extends AbstractController implements MapControll
 	public void onActivate(MapPresenter presenter) {
 		mapPresenter = presenter;
 		eventParser = mapPresenter.getMapEventParser();
+	}
+
+	@Override
+	public void onMouseDown(MouseDownEvent event) {
+		destroyToolTip();
 	}
 
 	@Override
@@ -236,27 +242,30 @@ public class MouseOverListener extends AbstractController implements MapControll
 
 					List<Feature> features = featureMap.get(key);
 					if (features.size() > 0) {
-						tooltip.setContentTitle(layer.getTitle());
 
-						List<String> tooltipContent = new ArrayList();
+						if (tooltip != null) {
+							tooltip.setContentTitle(layer.getTitle());
 
-						for (Feature f : features) {
-							GWT.log("Feature label =" + f.getLabel());
-							GWT.log("Feature id =" + f.getId());
+							List<String> tooltipContent = new ArrayList();
 
-							tooltipContent.add(f.getLabel());
+							for (Feature f : features) {
+								GWT.log("Feature label =" + f.getLabel());
+								GWT.log("Feature id =" + f.getId());
 
-							// add all attributes of the feature
-							if (showAllAtributes) {
-								for (Entry<String, Attribute> entry : f.getAttributes().entrySet()) {
-									GWT.log("feature entry = " + entry.getKey() + "/" + entry.getValue());
-									tooltipContent.add(entry.getValue().toString());
+								tooltipContent.add(f.getLabel());
+
+								// add all attributes of the feature
+								if (showAllAtributes) {
+									for (Entry<String, Attribute> entry : f.getAttributes().entrySet()) {
+										GWT.log("feature entry = " + entry.getKey() + "/" + entry.getValue());
+										tooltipContent.add(entry.getValue().toString());
+									}
 								}
 							}
-						}
 
-						// set actual content and show the tooltip
-						tooltip.addContentAndShow(tooltipContent, xPos, yPos, true);
+							// set actual content and show the tooltip
+							tooltip.addContentAndShow(tooltipContent, xPos, yPos, true);
+						}
 					}
 				}
 			}
