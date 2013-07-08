@@ -48,6 +48,7 @@ import com.lowagie.text.pdf.PdfWriter;
  * Single page document for printing.
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
  */
 public class SinglePageDocument extends AbstractDocument {
 
@@ -161,6 +162,7 @@ public class SinglePageDocument extends AbstractDocument {
 				int height = (int) Math.ceil(page.getBounds().getHeight());
 				page.getConstraint().setWidth(width);
 				page.getConstraint().setHeight(height);
+
 				document = new Document(new Rectangle(width, height), 0, 0, 0, 0);
 				writer = PdfWriter.getInstance(document, baos);
 				// Render in correct colors for transparent rasters
@@ -184,6 +186,7 @@ public class SinglePageDocument extends AbstractDocument {
 			document.add(context.getImage());
 			// Now close the document
 			document.close();
+			
 			// convert to non-pdf format
 			switch (format) {
 				case PDF:
@@ -213,31 +216,6 @@ public class SinglePageDocument extends AbstractDocument {
 					} catch (PdfException e) {
 						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
 					}
-//					// Alt:  Use PDF Renderer library of Sun (SwingLabs)
-//						ByteBuffer buf;
-//						try {
-//							buf = ByteBuffer.wrap(baos.toByteArray());
-//						} catch (Exception e) {
-//							throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
-//						}						
-//						// use the PDF Renderer library on the buf which contains the in memory PDF document
-//						PDFFile pdffile = new PDFFile(buf);
-//						PDFPage page = pdffile.getPage(1, true);
-//	
-//						//get the width and height for the doc at the default zoom
-//						java.awt.Rectangle rect =
-//							new java.awt.Rectangle(0, 0, (int) page.getBBox().getWidth(),
-//											(int) page.getBBox().getHeight());
-//	
-//						//generate the image
-//						Image img = page.getImage((int) Math.round(rect.getWidth()),
-//											(int) Math.round(rect.getHeight()), 
-//								rect, // clip rect
-//								null, // null for the ImageObserver
-//								true, // fill background with white
-//								true) ; // block until drawing is done
-//						bufferedImage = toBufferedImage(img, BufferedImage.TYPE_INT_ARGB);
-//					
 					
 					baos.reset();
 					
@@ -321,55 +299,5 @@ public class SinglePageDocument extends AbstractDocument {
 
 			metadata.mergeTree("javax_imageio_1.0", root);
 	 }
-
-//	private BufferedImage toBufferedImage(final Image image, final int type) {
-//		if (image instanceof BufferedImage) {
-//			return (BufferedImage) image;
-//		}
-//		if (image instanceof VolatileImage) {
-//			return ((VolatileImage) image).getSnapshot();
-//		}
-//		loadImage(image);
-//		final BufferedImage buffImg = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
-//		final Graphics2D g2 = buffImg.createGraphics();
-//		g2.drawImage(image, null, null);
-//		g2.dispose();
-//		return buffImg;
-//	}
-
-//	private void loadImage(final Image image) {
-//		/**
-//		 * Helper class for loading an image into memory.
-//		 * 
-//		 * @author An Buyle
-//		 *
-//		 */
-//		class StatusObserver implements ImageObserver {
-//			private boolean imageLoaded; // default false
-//
-//			public boolean imageUpdate(final Image img, final int infoflags, final int x, final int y, final int width,
-//							final int height) {
-//				if (infoflags == ALLBITS) {
-//					synchronized (this) {
-//						imageLoaded = true;
-//						notify();
-//					}
-//					return true;
-//				}
-//				return false;
-//			}
-//		}
-//		final StatusObserver imageStatus = new StatusObserver();
-//		synchronized (imageStatus) {
-//			if (image.getWidth(imageStatus) == -1 || image.getHeight(imageStatus) == -1) {
-//				while (!imageStatus.imageLoaded) {
-//					try {
-//						imageStatus.wait();
-//					} catch (InterruptedException ex) {
-//					}
-//				}
-//			}
-//		}
-//	}
 
 }
