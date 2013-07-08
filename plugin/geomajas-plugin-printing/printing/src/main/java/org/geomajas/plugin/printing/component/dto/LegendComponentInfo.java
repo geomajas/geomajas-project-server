@@ -41,7 +41,14 @@ public class LegendComponentInfo extends PrintComponentInfo {
 	public static final String DEFAULT_LEGEND_TITLE = "Legend"; // Default is english
 
 	/**
-	 * Default font family for text in the legend component. Can be overridden by specifying the font via setFont()
+	 * Tag used for LegendComponentInfo PrintComponentInfo. See {@link #PrintComponentInfo.setTag(String)} method.
+	 * 
+	 * @since 2.4.0
+	 */
+	public static final String LEGEND_TAG = "legend";
+
+	/**
+	 * Default font size for text in the legend component. Can be overridden by specifying the font via setFont()
 	 * 
 	 * @since 2.4.0
 	 */
@@ -69,6 +76,7 @@ public class LegendComponentInfo extends PrintComponentInfo {
 		getLayoutConstraint().setFlowDirection(LayoutConstraintInfo.FLOW_Y);
 		getLayoutConstraint().setMarginX(20);
 		getLayoutConstraint().setMarginY(20);
+		setTag(LEGEND_TAG);
 		font = new FontStyleInfo();
 		font.setFamily(DEFAULT_LEGEND_FONT_FAMILY);
 		font.setStyle(LEGEND_FONT_STYLE_AS_STRING);
