@@ -110,19 +110,16 @@
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
 				<version>${gwt-face-gwt-version}</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
 				<version>${gwt-face-gwt-version}</version>
-				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
 				<version>${gwt-face-gwt-version}</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
