@@ -4,5 +4,4 @@
 	All rights reserved
  -->
 <module rename-to="printingpuregwttheme">
-	<stylesheet src="css/printing.css" />
 </module>
