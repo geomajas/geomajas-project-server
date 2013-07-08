@@ -15,6 +15,12 @@ import org.geomajas.annotation.Api;
 
 /**
  * Service to register objects in a cache store. Objects are stored in different caches identified by a cache id.
+ * The main purpose of this cache is to provide in-memory cache for java objects that need storage for a short time,
+ * for example to save data between a Command and an Spring MVC service. There is no guarantee that cached objects 
+ * are persisted during a server restart.
+ * 
+ * The default time to live for cached objects is {@value #DEFAULT_TTL} milliseconds.
+ * 
  * 
  * @author Oliver May
  * @since 1.13.0
@@ -28,7 +34,7 @@ public interface CacheService {
 	long DEFAULT_TTL = 86400 * 1000;
 	
 	/**
-	 * Put an object in the cache, the default lifetime is 24 hours.
+	 * Put an object in the cache, the default lifetime is {@value #DEFAULT_TTL} milliseconds.
 	 * 
 	 * @param cache the cache id
 	 * @param key the key
@@ -43,7 +49,7 @@ public interface CacheService {
 	 * @param cache the cache id
 	 * @param key the key
 	 * @param value the object
-	 * @param timeToLive the minimum amount of time the item should stay in the cache
+	 * @param timeToLive the minimum amount of time the item should stay in the cache om milliseconds
 	 */
 	void put(String cache, Object key, Object value, long timeToLive);
 	
