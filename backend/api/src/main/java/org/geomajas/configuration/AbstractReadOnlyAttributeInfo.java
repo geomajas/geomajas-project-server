@@ -11,6 +11,8 @@
 
 package org.geomajas.configuration;
 
+import javax.validation.constraints.NotNull;
+
 import org.geomajas.annotation.Api;
 
 /**
@@ -25,98 +27,81 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 
 	private static final long serialVersionUID = 1100L;
 
+	@NotNull
+	private String label;
+
+	private boolean identifying;
+
+	private boolean hidden;
+	
 	/** No-arguments constructor needed for GWT. */
 	public AbstractReadOnlyAttributeInfo() {
 		super();
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
-	 */
-	@Override
-	public boolean isEditable() { // NOSONAR override needed for @Api
-		return super.isEditable();
-	}
 
 	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
+	 * Get label for attribute.
+	 *
+	 * @return label
+	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
-	@Override
-	public void setEditable(boolean editable) { // NOSONAR override needed for @Api
-		super.setEditable(editable);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
-	 */
-	@Override
 	public String getLabel() {
-		return super.getLabel();
+		return label;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
+	 * Set label for attribute.
+	 *
+	 * @param label label
+	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
-	@Override
 	public void setLabel(String label) {
-		super.setLabel(label);
+		this.label = label;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
+	 * Is this an identifying attribute? Is it part of the feature id?
+	 *
+	 * @return true when attribute is part of the feature id
+	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
-	@Override
 	public boolean isIdentifying() {
-		return super.isIdentifying();
+		return identifying;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
+	 * Set whether the attribute is part of the feature id.
+	 *
+	 * @param identifying true when attribute is part of the feature id
+	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
-	@Override
 	public void setIdentifying(boolean identifying) {
-		super.setIdentifying(identifying);
+		this.identifying = identifying;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
+	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
+	 * widgets on the client.
+	 * <p/>
+	 * The default value for this setting is 'false'.
+	 *
+	 * @return true when hidden.
+	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
-	@Override
 	public boolean isHidden() {
-		return super.isHidden();
+		return hidden;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
+	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
+	 * widgets on the client.
+	 * <p/>
+	 * The default value for this setting is 'false'.
+	 *
+	 * @param hidden new hidden status.
+	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
-	@Override
 	public void setHidden(boolean hidden) {
-		super.setHidden(hidden);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
-	 */
-	@Override
-	public String getFormInputType() {
-		return super.getFormInputType();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @since 1.13.0 don't expose deprecated methods from AttributeInfo directly.
-	 */
-	@Override
-	public void setFormInputType(String formInputType) {
-		super.setFormInputType(formInputType);
+		this.hidden = hidden;
 	}
 }
