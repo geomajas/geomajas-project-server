@@ -185,7 +185,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 						if (queryType == SearchByLocationRequest.QUERY_INTERSECTS && ratio >= 0 && ratio < 1) {
 							for (InternalFeature feature : temp) {
 								double minimalOverlap = feature.getGeometry().getArea() * ratio;
-								Geometry overlap = location.intersection(feature.getGeometry());
+								Geometry overlap = geometry.intersection(feature.getGeometry());
 								double effectiveOverlap = overlap.getArea();
 								if (minimalOverlap <= effectiveOverlap) {
 									log.trace("found " + feature);
