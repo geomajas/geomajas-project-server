@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-backend</artifactId>
-	<version>1.13.1</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas back-end</name>
 	<description>
@@ -33,9 +33,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-backend-1.13.1</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-backend-1.13.1</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-backend-1.13.1</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/backend</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/backend</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/backend</url>
 	</scm>
 
 	<modules>
