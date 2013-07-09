@@ -11,6 +11,18 @@
 
 package org.geomajas.plugin.deskmanager.client.gwt.geodesk.impl;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Timer;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Cursor;
+import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.widgets.AnimationCallback;
+import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.Progressbar;
+import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
@@ -27,19 +39,6 @@ import org.geomajas.plugin.deskmanager.client.gwt.geodesk.event.UserApplicationH
 import org.geomajas.plugin.deskmanager.client.gwt.geodesk.i18n.GeodeskMessages;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Timer;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.Cursor;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.widgets.AnimationCallback;
-import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Progressbar;
-import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.VLayout;
-
 /**
  * <p>
  * A widget that covers the entire browser window, displaying application loading progress, and that fades out after the
@@ -55,199 +54,200 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * Use: add this loading screen to the main page by simply calling it's <code>draw</code> method. Do this AFTER you have
  * drawn your application layout, so the loading screen is placed on top of it.
  * </p>
- * 
+ *
  * @author Oliver May
  * @author Pieter De Graef
  */
 public class LoadingScreen extends VLayout implements GeodeskInitializationHandler {
 
-	private int logoHeight = 226;
+    private int logoHeight = 226;
 
-	private Label label;
+    private Label label;
 
-	private Progressbar progressBar;
+    private Progressbar progressBar;
 
-	private int progressPercentage;
+    private int progressPercentage;
 
-	private boolean fadingDone;
+    private boolean fadingDone;
 
-	private HandlerRegistration onLoadLoketRegistration;
+    private HandlerRegistration onLoadLoketRegistration;
 
-	private HandlerRegistration onLoadRegistration;
+    private HandlerRegistration onLoadRegistration;
 
-	// private Label titleLabel;
+    // private Label titleLabel;
 
-	private Img logoImg;
+    private Img logoImg;
 
-	private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
+    private static final GeodeskMessages MESSAGES = GWT.create(GeodeskMessages.class);
 
-	// -------------------------------------------------------------------------
-	// Constructor:
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Constructor:
+    // -------------------------------------------------------------------------
 
-	/**
-	 * Create a loading screen.
-	 * 
-	 */
-	public LoadingScreen() {
-		this(MESSAGES.loadingScreenMessage());
-	}
+    /**
+     * Create a loading screen.
+     */
+    public LoadingScreen() {
+        this(MESSAGES.loadingScreenMessage());
+    }
 
-	/**
-	 * Create a loading screen with a title to be displayed.
-	 * 
-	 * @param applicationTitle
-	 *            The application's title. This will be displayed right under the logo image.
-	 */
-	public LoadingScreen(String applicationTitle) {
-		super();
+    /**
+     * Create a loading screen with a title to be displayed.
+     *
+     * @param applicationTitle The application's title. This will be displayed right under the logo image.
+     */
+    public LoadingScreen(String applicationTitle) {
+        super();
 
-		setCursor(Cursor.WAIT);
+        setCursor(Cursor.WAIT);
 
-		VLayout banner = new VLayout();
-		banner.setLayoutAlign(Alignment.CENTER);
-		banner.setLayoutAlign(VerticalAlignment.CENTER);
+        VLayout banner = new VLayout();
+        banner.setLayoutAlign(Alignment.CENTER);
+        banner.setLayoutAlign(VerticalAlignment.CENTER);
+        banner.setStyleName("loadingScreenLabel");
 
-		logoImg = new Img(GdmLayout.loadingLogo);
-		// logoImg.setWidth(logoWidth);
-		logoImg.setHeight(logoHeight);
-		logoImg.setLayoutAlign(Alignment.CENTER);
-		logoImg.setLayoutAlign(VerticalAlignment.CENTER);
-		// logoImg.setBorder("1px solid black");
-		banner.addMember(logoImg);
+        logoImg = new Img(GdmLayout.loadingLogo);
+        // logoImg.setWidth(logoWidth);
+        logoImg.setHeight(logoHeight);
+        logoImg.setLayoutAlign(Alignment.CENTER);
+        logoImg.setLayoutAlign(VerticalAlignment.CENTER);
+        // logoImg.setBorder("1px solid black");
+        banner.addMember(logoImg);
 
-		VLayout progressLayout = new VLayout();
-		progressLayout.setBackgroundColor("#000000");
-		progressLayout.setOpacity(30);
-		progressLayout.setHeight(80);
-		progressLayout.setPadding(15);
+        VLayout progressLayout = new VLayout();
+        progressLayout.setBackgroundColor("#000000");
+        progressLayout.setOpacity(30);
+        progressLayout.setHeight(80);
+        progressLayout.setPadding(15);
 
-		label = new Label(I18nProvider.getGlobal().loadScreenDownLoadText());
-		label.setLayoutAlign(Alignment.CENTER);
-		label.setWidth100();
-		label.setHeight(15);
-		label.setStyleName("loadingScreenLabel");
-		label.setOpacity(100);
-		progressLayout.addMember(label);
+        label = new Label(I18nProvider.getGlobal().loadScreenDownLoadText());
+        label.setLayoutAlign(Alignment.CENTER);
+        label.setWidth100();
+        label.setHeight(15);
+        label.setStyleName("loadingScreenLabel");
+        label.setOpacity(100);
+        progressLayout.addMember(label);
 
-		progressBar = new Progressbar();
-		progressBar.setHeight(30);
-		progressBar.setWidth100();
-		progressBar.setVertical(false);
-		progressBar.setLayoutAlign(Alignment.CENTER);
-		progressBar.setLayoutAlign(VerticalAlignment.CENTER);
-		progressBar.setOpacity(100);
-		progressLayout.addMember(progressBar);
-		banner.addMember(progressLayout);
+        progressBar = new Progressbar();
+        progressBar.setHeight(30);
+        progressBar.setWidth100();
+        progressBar.setVertical(false);
+        progressBar.setLayoutAlign(Alignment.CENTER);
+        progressBar.setLayoutAlign(VerticalAlignment.CENTER);
+        progressBar.setOpacity(100);
+        progressLayout.addMember(progressBar);
+        banner.addMember(progressLayout);
 
-		HLayout inner = new HLayout();
-		inner.setBackgroundColor("#FFFFFF");
-		// inner.setShowEdges(true);
-		inner.setShowShadow(true);
-		inner.setShadowDepth(10);
-		inner.setLayoutAlign(Alignment.CENTER);
-		inner.setLayoutAlign(VerticalAlignment.CENTER);
-		inner.setWidth(500);
-		inner.setHeight(300);
-		// inner.setBackgroundImage(logo_background);
-		inner.setEdgeOpacity(70);
-		inner.setAlign(Alignment.CENTER);
-		inner.addMember(banner);
+        HLayout inner = new HLayout();
+        inner.setBackgroundColor("#FFFFFF");
+        // inner.setShowEdges(true);
+        // inner.setShowShadow(true);
+        // inner.setShadowDepth(10);
+        // inner.setBackgroundImage(logo_background);
+        // inner.setEdgeOpacity(70);
+        inner.setStyleName("loadingScreen");
+        inner.setLayoutAlign(Alignment.CENTER);
+        inner.setLayoutAlign(VerticalAlignment.CENTER);
+        inner.setWidth(500);
+        inner.setHeight(300);
 
-		setBackgroundColor("#FFFFFF");
-		setHeight100();
-		setWidth100();
-		// setOpacity(50);
-		setAlign(VerticalAlignment.CENTER);
-		setAlign(Alignment.CENTER);
-		addMember(inner);
-	}
+        inner.setAlign(Alignment.CENTER);
+        inner.addMember(banner);
 
-	public void registerGeodesk(final UserApplication geoDesk) {
-		if (geoDesk != null) {
-			onLoadLoketRegistration = geoDesk.addUserApplicationLoadedHandler(new UserApplicationHandler() {
+        setBackgroundColor("#FFFFFF");
+        setHeight100();
+        setWidth100();
+        // setOpacity(50);
+        setAlign(VerticalAlignment.CENTER);
+        setAlign(Alignment.CENTER);
+        addMember(inner);
+    }
 
-				public void onUserApplicationLoad(UserApplicationEvent event) {
-					if (geoDesk.getBannerUrl() != null) {
-						logoImg.setSrc(Geomajas.getDispatcherUrl() + geoDesk.getBannerUrl());
-					}
-					onLoadLoketRegistration.removeHandler();
-					registerMap(event.getUserApplication().getMainMapWidget());
-				}
-			});
-		}
-	}
+    public void registerGeodesk(final UserApplication geoDesk) {
+        if (geoDesk != null) {
+            onLoadLoketRegistration = geoDesk.addUserApplicationLoadedHandler(new UserApplicationHandler() {
 
-	private void registerMap(final MapWidget mapWidget) {
-		if (mapWidget != null) {
-			onLoadRegistration = mapWidget.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
+                public void onUserApplicationLoad(UserApplicationEvent event) {
+                    if (geoDesk.getBannerUrl() != null) {
+                        logoImg.setSrc(Geomajas.getDispatcherUrl() + geoDesk.getBannerUrl());
+                    }
+                    onLoadLoketRegistration.removeHandler();
+                    registerMap(event.getUserApplication().getMainMapWidget());
+                }
+            });
+        }
+    }
 
-				public void onMapModelChanged(MapModelChangedEvent event) {
-					onLoadRegistration.removeHandler();
-					label.setContents(I18nProvider.getGlobal().loadScreenLoadText());
-					if (GwtCommandDispatcher.getInstance().isBusy()) {
-						GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(new DispatchStoppedHandler() {
+    private void registerMap(final MapWidget mapWidget) {
+        if (mapWidget != null) {
+            onLoadRegistration = mapWidget.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
 
-							public void onDispatchStopped(DispatchStoppedEvent event) {
-								fadeOut();
-							}
-						});
-					} else {
-						fadeOut();
-					}
-				}
-			});
-		}
-	}
+                public void onMapModelChanged(MapModelChangedEvent event) {
+                    onLoadRegistration.removeHandler();
+                    label.setContents(I18nProvider.getGlobal().loadScreenLoadText());
+                    if (GwtCommandDispatcher.getInstance().isBusy()) {
+                        GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(new DispatchStoppedHandler() {
 
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
+                            public void onDispatchStopped(DispatchStoppedEvent event) {
+                                fadeOut();
+                            }
+                        });
+                    } else {
+                        fadeOut();
+                    }
+                }
+            });
+        }
+    }
 
-	protected void onDraw() {
-		super.onDraw();
-		Timer timer = new Timer() {
+    // -------------------------------------------------------------------------
+    // Private methods:
+    // -------------------------------------------------------------------------
 
-			public void run() {
-				progressPercentage += 10;
-				progressBar.setPercentDone(progressPercentage);
-				if (progressPercentage < 100) {
-					schedule(50);
-				}
-			}
-		};
-		timer.schedule(50);
-	}
+    protected void onDraw() {
+        super.onDraw();
+        Timer timer = new Timer() {
 
-	public void fadeOut() {
-		if (!fadingDone) {
+            public void run() {
+                progressPercentage += 10;
+                progressBar.setPercentDone(progressPercentage);
+                if (progressPercentage < 100) {
+                    schedule(50);
+                }
+            }
+        };
+        timer.schedule(50);
+    }
 
-			Timer fadeOutDelay = new Timer() {
+    public void fadeOut() {
+        if (!fadingDone) {
 
-				@Override
-				public void run() {
-					// progressBar.setPercentDone(100);
-					label.setContents(I18nProvider.getGlobal().loadScreenReadyText());
-					setCursor(Cursor.DEFAULT);
+            Timer fadeOutDelay = new Timer() {
 
-					// FIXME: in globale config
-					setAnimateTime(1000);
+                @Override
+                public void run() {
+                    // progressBar.setPercentDone(100);
+                    label.setContents(I18nProvider.getGlobal().loadScreenReadyText());
+                    setCursor(Cursor.DEFAULT);
 
-					animateFade(0, new AnimationCallback() {
+                    // FIXME: in globale config
+                    setAnimateTime(1000);
 
-						public void execute(boolean earlyFinish) {
-							LoadingScreen.this.destroy();
-						}
-					});
-					fadingDone = true;
-				}
-			};
-			// delay another second omdat' schoon moet zijn :)
-			fadeOutDelay.schedule(1000);
-		}
-	}
+                    animateFade(0, new AnimationCallback() {
 
-	public void initialized(InitializeGeodeskResponse response) {
-		//TODO
-	}
+                        public void execute(boolean earlyFinish) {
+                            LoadingScreen.this.destroy();
+                        }
+                    });
+                    fadingDone = true;
+                }
+            };
+            // delay another second omdat' schoon moet zijn :)
+            fadeOutDelay.schedule(1000);
+        }
+    }
+
+    public void initialized(InitializeGeodeskResponse response) {
+        //TODO
+    }
 }

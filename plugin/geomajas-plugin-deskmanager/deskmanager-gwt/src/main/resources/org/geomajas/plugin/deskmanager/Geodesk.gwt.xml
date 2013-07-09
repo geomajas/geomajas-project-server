@@ -5,6 +5,8 @@
 	<!--
 	<inherits name="org.geomajas.widget.utility.gwt.GwtUtilityWidgets" />
 	-->
+    <!-- main style sheet for desk manager -->
+    <stylesheet src="sc/deskmanager-gwt-style.css" />
 	 
 	<source path="client/gwt/common" />
 	<source path="client/gwt/geodesk" />
