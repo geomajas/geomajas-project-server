@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-google-documentation</artifactId>
-	<version>2.1.0-SNAPSHOT</version>
+	<version>2.1.0</version>
 	<packaging>jar</packaging>
 	<name>Geomajas Google layer documentation</name>
 	<description>Geomajas Google layer documentation</description>
@@ -26,4 +26,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-2.1.0/geomajas-layer-google-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-2.1.0/geomajas-layer-google-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-google-all-2.1.0/geomajas-layer-google-documentation</url>
+  </scm>
 </project>
