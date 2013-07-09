@@ -64,6 +64,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/** Margin around text. */
 	private float margin;
 
+
 	/** Max. width of rendered text (in point units) Default is 0.0, meaning there's no limit imposed by the client. */
 	private float maxWidthText;
 
@@ -176,18 +177,46 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 		this.lineWidth = lineWidth;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Get the maximum width of the rendered text (in point units).
+	 * Default is 0.0, meaning there's no limit imposed by the client. 
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getMaxWidthText()
+	 * @return The maximum width of the rendered text (in point units)
 	 */
 	public float getMaxWidthText() {
 		return this.maxWidthText;
 
 	}
 
+	/**
+	 * Set the maximum width of the rendered text (in point units).
+	 * A value of 0.0, means there's no limit imposed by the client. 
+	 * 
+	 * @param maxWidthText
+	 * 			The maximum width of the rendered text (in point units).
+
+	 */
 	public void setMaxWidthText(float maxWidthText) {
 		this.maxWidthText = maxWidthText;
+	}
+	
+	/**
+	 * Get the margin around the text.
+	 * 
+	 * @return The margin around the text
+	 */
+	public float getMargin() {
+		return margin;
+	}
+
+	/**
+	 * Set the margin around the text.
+	 * 
+	 * @param margin
+	 * 			The margin around the text.
+	 */
+	public void setMargin(float margin) {
+		this.margin = margin;
 	}
 
 	public void render(PdfContext context) {
@@ -209,9 +238,23 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 			limitTextWidth(context, getMaxWidthText());
 		}
 		Rectangle textSize = context.getTextSize(getText(), getFont());
-		margin = 0.5f * getFont().getSize(); // TODO: make margin configurable
-
-		setBounds(new Rectangle(textSize.getWidth() + 2.0f * margin, textSize.getHeight() + 2 * margin));
+		
+		float margin = getMargin(); // Get the specified value
+		if (margin <= 0.0f) {
+			margin = 0.5f * getFont().getSize(); 
+		}
+		float width = textSize.getWidth() + 2.0f * margin;
+		float height = textSize.getHeight() + 2.0f * margin;
+		
+		if (null != getConstraint()) {
+			if (getConstraint().getWidth() > 0.0f) {
+				width = getConstraint().getWidth();
+			}
+			if (getConstraint().getHeight() > 0.0f) {
+				height = getConstraint().getHeight();
+			}
+		}
+		setBounds(new Rectangle(width, height));
 	}
 
 	public void fromDto(LabelComponentInfo labelInfo) {
@@ -225,6 +268,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 		setText(labelInfo.getText());
 		// support for max-width of rendered text (in point units?)
 		setMaxWidthText(labelInfo.getMaxWidthText());
+		setMargin(labelInfo.getMargin());
 	}
 
 	private void limitTextWidth(PdfContext context, float maxWidth) {
