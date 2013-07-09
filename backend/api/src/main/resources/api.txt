@@ -1,4 +1,4 @@
-// geomajas-api module API for 1.12.0
+// geomajas-api module API for 1.13.1
 org.geomajas.command.Command::1.6.0
 org.geomajas.command.Command:RESPONSE getEmptyCommandResponse():1.6.0
 org.geomajas.command.Command:void execute(REQUEST, RESPONSE, ):1.6.0
@@ -42,6 +42,12 @@ org.geomajas.configuration.AbstractEditableAttributeInfo:void setEditable(boolea
 org.geomajas.configuration.AbstractEditableAttributeInfo:void setValidator(ValidatorInfo, ):1.10.0
 org.geomajas.configuration.AbstractReadOnlyAttributeInfo::1.10.0
 org.geomajas.configuration.AbstractReadOnlyAttributeInfo:AbstractReadOnlyAttributeInfo():1.10.0
+org.geomajas.configuration.AbstractReadOnlyAttributeInfo:String getLabel():1.13.0
+org.geomajas.configuration.AbstractReadOnlyAttributeInfo:boolean isHidden():1.13.0
+org.geomajas.configuration.AbstractReadOnlyAttributeInfo:boolean isIdentifying():1.13.0
+org.geomajas.configuration.AbstractReadOnlyAttributeInfo:void setHidden(boolean, ):1.13.0
+org.geomajas.configuration.AbstractReadOnlyAttributeInfo:void setIdentifying(boolean, ):1.13.0
+org.geomajas.configuration.AbstractReadOnlyAttributeInfo:void setLabel(String, ):1.13.0
 org.geomajas.configuration.AssociationAttributeInfo::1.6.0
 org.geomajas.configuration.AssociationAttributeInfo:AssociationAttributeInfo():1.6.0
 org.geomajas.configuration.AssociationAttributeInfo:AssociationType getType():1.6.0
@@ -1322,6 +1328,7 @@ org.geomajas.service.LayerInvalidationService::1.8.0
 org.geomajas.service.LayerInvalidationService:void invalidateLayer(Layer, ):1.8.0
 org.geomajas.service.LegendGraphicService::1.10.0
 org.geomajas.service.LegendGraphicService:RenderedImage getLegendGraphic(LegendGraphicMetadata, ):1.10.0
+org.geomajas.service.LegendGraphicService:RenderedImage getLegendGraphics(List<LegendGraphicMetadata>, ):1.13.0
 org.geomajas.service.ResourceService::1.10.0
 org.geomajas.service.ResourceService:List<String> getRootPaths():1.10.0
 org.geomajas.service.ResourceService:Resource find(String, ):1.10.0
@@ -1331,6 +1338,7 @@ org.geomajas.service.StyleConverterService:NamedStyleInfo convert(UserStyleInfo,
 org.geomajas.service.StyleConverterService:Rule convert(RuleInfo, ):1.10.0
 org.geomajas.service.StyleConverterService:Style convert(UserStyleInfo, ):1.10.0
 org.geomajas.service.StyleConverterService:UserStyleInfo convert(NamedStyleInfo, String, ):1.10.0
+org.geomajas.service.StyleService::1.13.0
 org.geomajas.service.TestRecorder::1.8.0
 org.geomajas.service.TestRecorder:String matches(Object, String, ):1.8.0
 org.geomajas.service.TestRecorder:void clear():1.8.0

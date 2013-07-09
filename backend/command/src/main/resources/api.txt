@@ -1,4 +1,4 @@
-// geomajas-command module API, 1.12.0
+// geomajas-command module API, 1.13.1
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
 org.geomajas.command.dto.BufferInfo::1.11.0
 org.geomajas.command.dto.BufferInfo:BufferInfo():1.11.0
@@ -149,6 +149,11 @@ org.geomajas.command.dto.PersistTransactionResponse::1.6.0
 org.geomajas.command.dto.PersistTransactionResponse:FeatureTransaction getFeatureTransaction():1.6.0
 org.geomajas.command.dto.PersistTransactionResponse:PersistTransactionResponse():1.6.0
 org.geomajas.command.dto.PersistTransactionResponse:void setFeatureTransaction(FeatureTransaction, ):1.6.0
+org.geomajas.command.dto.RegisterNamedStyleInfoRequest::1.13.0
+org.geomajas.command.dto.RegisterNamedStyleInfoResponse::1.13.0
+org.geomajas.command.dto.RegisterNamedStyleInfoResponse:RegisterNamedStyleInfoResponse():1.13.0
+org.geomajas.command.dto.RegisterNamedStyleInfoResponse:String getStyleName():1.13.0
+org.geomajas.command.dto.RegisterNamedStyleInfoResponse:void setStyleName(String, ):1.13.0
 org.geomajas.command.dto.SearchByLocationRequest::1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:Geometry getLocation():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:SearchByLocationRequest():1.6.0
@@ -249,3 +254,4 @@ org.geomajas.command.geometry.GeometrySplitCommand::1.11.0
 org.geomajas.command.geometry.TransformGeometryCommand::1.9.0.
 org.geomajas.command.render.GetRasterTilesCommand::1.6.0
 org.geomajas.command.render.GetVectorTileCommand::1.6.0
+org.geomajas.command.render.RegisterNamedStyleInfoCommand::1.13.0
