@@ -11,8 +11,6 @@
 
 package org.geomajas.configuration;
 
-import javax.validation.constraints.NotNull;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -23,17 +21,11 @@ import org.geomajas.annotation.Api;
  * @since 1.10.0 split out of AttributeInfo which is now deprecated
  */
 @Api(allMethods = true)
+@SuppressWarnings("deprecation")
 public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 
 	private static final long serialVersionUID = 1100L;
 
-	@NotNull
-	private String label;
-
-	private boolean identifying;
-
-	private boolean hidden;
-	
 	/** No-arguments constructor needed for GWT. */
 	public AbstractReadOnlyAttributeInfo() {
 		super();
@@ -46,7 +38,7 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
 	public String getLabel() {
-		return label;
+		return super.getLabel();
 	}
 
 	/**
@@ -56,7 +48,7 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
 	public void setLabel(String label) {
-		this.label = label;
+		super.setLabel(label);
 	}
 
 	/**
@@ -66,7 +58,7 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
 	public boolean isIdentifying() {
-		return identifying;
+		return super.isIdentifying();
 	}
 
 	/**
@@ -76,7 +68,7 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
 	public void setIdentifying(boolean identifying) {
-		this.identifying = identifying;
+		super.setIdentifying(identifying);
 	}
 
 	/**
@@ -89,7 +81,7 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
 	public boolean isHidden() {
-		return hidden;
+		return super.isHidden();
 	}
 
 	/**
@@ -102,6 +94,6 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 	 * @since 1.13.0 split out of deprecated AttributeInfo.
 	 */
 	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
+		super.setHidden(hidden);
 	}
 }
