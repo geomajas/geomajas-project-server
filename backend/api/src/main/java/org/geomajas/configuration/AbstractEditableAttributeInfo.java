@@ -39,7 +39,6 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	 *
 	 * @return validator
 	 */
-	@SuppressWarnings("deprecation")
 	public ValidatorInfo getValidator() {
 		return validator;
 	}
@@ -49,7 +48,6 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	 *
 	 * @param validator validator
 	 */
-	@SuppressWarnings("deprecation")
 	public void setValidator(ValidatorInfo validator) {
 		this.validator = validator;
 	}
@@ -62,7 +60,6 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	 *
 	 * @return does the layer have to capability of writing this attribute?
 	 */
-	@SuppressWarnings("deprecation")
 	public boolean isEditable() {
 		return editable;
 	}
@@ -75,7 +72,6 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	 *
 	 * @param editable "editable" capability for attribute
 	 */
-	@SuppressWarnings("deprecation")
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
