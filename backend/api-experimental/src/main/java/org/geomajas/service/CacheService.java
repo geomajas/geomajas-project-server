@@ -10,7 +10,7 @@
  */
 package org.geomajas.service;
 
-import org.geomajas.annotation.Api;
+import org.geomajas.annotation.FutureApi;
 
 
 /**
@@ -21,11 +21,10 @@ import org.geomajas.annotation.Api;
  * 
  * The default time to live for cached objects is {@value #DEFAULT_TTL} milliseconds.
  * 
- * 
  * @author Oliver May
  * @since 1.13.0
  */
-@Api
+@FutureApi
 public interface CacheService {
 
 	/**
