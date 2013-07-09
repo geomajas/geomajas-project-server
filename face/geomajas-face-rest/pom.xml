@@ -94,7 +94,7 @@
 
 	<properties>
 		<geomajas-face-rest-geotools-version>9.2</geomajas-face-rest-geotools-version>
-		<geomajas-face-rest-backend-version>1.13.0-SNAPSHOT</geomajas-face-rest-backend-version>
+		<geomajas-face-rest-backend-version>1.13.1</geomajas-face-rest-backend-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 </project>

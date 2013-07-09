@@ -29,7 +29,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.13.0-SNAPSHOT</version>
+				<version>1.13.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

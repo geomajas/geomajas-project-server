@@ -101,7 +101,7 @@
 	</profiles>
 
 	<properties>
-		<openstreetmap-layer-backend-version>1.13.0-SNAPSHOT</openstreetmap-layer-backend-version>
+		<openstreetmap-layer-backend-version>1.13.1</openstreetmap-layer-backend-version>
 	</properties>
 
 </project>

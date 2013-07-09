@@ -282,7 +282,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<gdm-backend-version>1.13.0-SNAPSHOT</gdm-backend-version>
+		<gdm-backend-version>1.13.1</gdm-backend-version>
 		<gdm-gwt-version>1.14.0-SNAPSHOT</gdm-gwt-version>
 		<gdm-sldeditor-version>1.0.0-SNAPSHOT</gdm-sldeditor-version>
 		<gdm-geotools-version>9.2</gdm-geotools-version>

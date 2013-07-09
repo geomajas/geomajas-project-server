@@ -176,7 +176,7 @@
 	</profiles>
 
 	<properties>
-		<wms-layer-backend-version>1.13.0-SNAPSHOT</wms-layer-backend-version>
+		<wms-layer-backend-version>1.13.1</wms-layer-backend-version>
 		<wms-layer-caching-version>2.0.0</wms-layer-caching-version>
 		<wms-layer-common-version>1.0.0-SNAPSHOT</wms-layer-common-version>
 		<wms-gwt-face-version>1.14.0-SNAPSHOT</wms-gwt-face-version>
