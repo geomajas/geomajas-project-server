@@ -154,8 +154,8 @@
 
 	<properties>
 		<google-layer-backend-version>1.13.1</google-layer-backend-version>
-		<google-gwt-face-version>1.14.0-SNAPSHOT</google-gwt-face-version>
-		<google-layer-osm-version>1.10.0-SNAPSHOT</google-layer-osm-version>
+		<google-gwt-face-version>1.13.0</google-gwt-face-version>
+		<google-layer-osm-version>1.10.0</google-layer-osm-version>
 		<google-gwt-version>2.5.0</google-gwt-version>
 	</properties>
 	
