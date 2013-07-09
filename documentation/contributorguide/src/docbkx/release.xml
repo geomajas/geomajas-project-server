@@ -177,7 +177,7 @@
 
       <itemizedlist>
         <listitem>
-          <para>Make sure that there are now references to snapshot
+          <para>Make sure that there are no references to snapshot
           repositories in the pom.xml files. These must be commented
           out.</para>
         </listitem>
@@ -209,6 +209,11 @@
       </itemizedlist>
 
       <para>Commit any changes you have had to make.</para>
+      
+      <para>Create a next version in JIRA, and release the current version. Make sure there exists
+      a version for issues that are accepted but not planned to be included in the next release. 
+      For example when you want to release version 1.14.0, there should also be a version 1.15.0 
+      and "1.16.0 or later".</para>
     </section>
 
     <section>
