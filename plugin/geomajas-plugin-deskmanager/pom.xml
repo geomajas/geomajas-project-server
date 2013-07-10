@@ -95,7 +95,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
-				<version>1.2.0-SNAPSHOT</version>
+				<version>1.2.0-M1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -108,7 +108,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0-M2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -116,7 +116,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-hibernate-all</artifactId>
-				<version>1.12.0-SNAPSHOT</version>
+				<version>1.11.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -124,7 +124,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>1.10.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -283,8 +283,8 @@
 
 	<properties>
 		<gdm-backend-version>1.13.1</gdm-backend-version>
-		<gdm-gwt-version>1.14.0-SNAPSHOT</gdm-gwt-version>
-		<gdm-sldeditor-version>1.0.0-SNAPSHOT</gdm-sldeditor-version>
+		<gdm-gwt-version>1.14.0</gdm-gwt-version>
+		<gdm-sldeditor-version>1.0.0-M1</gdm-sldeditor-version>
 		<gdm-geotools-version>9.2</gdm-geotools-version>
 	</properties>
 
