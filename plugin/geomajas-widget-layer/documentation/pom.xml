@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-layer-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M5</version>
 	<packaging>jar</packaging>
 	<name>geomajas-widget-layer documentation</name>
 	<description>geomajas-widget-layer documentation</description>
@@ -27,4 +27,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-layer-all-1.0.0-M5/geomajas-widget-layer-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-layer-all-1.0.0-M5/geomajas-widget-layer-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-layer-all-1.0.0-M5/geomajas-widget-layer-documentation</url>
+  </scm>
 </project>
