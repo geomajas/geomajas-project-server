@@ -191,10 +191,10 @@
 
 	<properties>
 		<runtimeconfig-backend-version>1.13.1</runtimeconfig-backend-version>
-		<runtimeconfig-gwt-face-version>1.14.0-SNAPSHOT</runtimeconfig-gwt-face-version>
+		<runtimeconfig-gwt-face-version>1.14.0</runtimeconfig-gwt-face-version>
 		<runtimeconfig-puregwt-face-version>1.0.0-M1</runtimeconfig-puregwt-face-version>
 		<runtimeconfig-gwt-version>2.5.0</runtimeconfig-gwt-version>
-		<runtimeconfig-geotools-version>1.11.0-SNAPSHOT</runtimeconfig-geotools-version>
-		<runtimeconfig-wms-version>1.11.0-SNAPSHOT</runtimeconfig-wms-version>
+		<runtimeconfig-geotools-version>1.11.0</runtimeconfig-geotools-version>
+		<runtimeconfig-wms-version>1.11.0</runtimeconfig-wms-version>
 	</properties>
 </project>
