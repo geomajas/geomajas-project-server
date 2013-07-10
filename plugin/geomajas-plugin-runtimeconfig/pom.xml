@@ -19,15 +19,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
-	<version>1.0.0-M2</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>runtime configuration plug-in parent</name>
 	<description>runtime configuration plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-runtimeconfig-all-1.0.0-M2</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-runtimeconfig-all-1.0.0-M2</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-runtimeconfig-all-1.0.0-M2</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-runtimeconfig</url>
 	</scm>
 
 	<developers>
