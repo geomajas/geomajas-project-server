@@ -21,8 +21,8 @@
 	<artifactId>geomajas-plugin-runtimeconfig-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>admin plug-in parent</name>
-	<description>admin plug-in grouping module</description>
+	<name>runtime configuration plug-in parent</name>
+	<description>runtime configuration plug-in grouping module</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-runtimeconfig</connection>
