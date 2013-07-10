@@ -5,8 +5,7 @@
 	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
 	in the project root. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-al-parent</artifactId>
@@ -15,7 +14,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M1</version>
 	<packaging>pom</packaging>
 	<name>Geomajas SLD editor project</name>
 	<description>
@@ -27,9 +26,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-sld-editor</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-sld-editor</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/geomajas-project-sld-editor</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-sld-editor-all-1.0.0-M1</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-sld-editor-all-1.0.0-M1</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-project-sld-editor-all-1.0.0-M1</url>
 	</scm>
 
 	<modules>
