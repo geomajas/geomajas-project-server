@@ -43,7 +43,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
-				<version>1.11.0-SNAPSHOT</version>
+				<version>1.10.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
