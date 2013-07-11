@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-puregwt-client-impl</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas PureGWT face, client side, impl</name>
-	<description>Geomajas PureGWT face, client side</description>
+	<name>Geomajas PureGWT face: Client implementation</name>
+	<description>Geomajas PureGWT face: Client implementation</description>
 
 	<dependencies>
 		<!-- Geomajas dependencies -->
