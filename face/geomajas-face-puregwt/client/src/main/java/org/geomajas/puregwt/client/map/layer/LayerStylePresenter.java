@@ -17,7 +17,8 @@ import org.geomajas.sld.RuleInfo;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Presenter for a layer style.
+ * Presenter for a layer style. Note that it's a widget! This presenter should always be able to present the style for a
+ * layer. Just add it to the GUI.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -31,13 +32,11 @@ public interface LayerStylePresenter extends IsWidget {
 	 * @return The style index within a layer.
 	 */
 	int getIndex();
-	
+
 	/**
-	 * Get the sld rule for this style if it preents a styleable layer.
+	 * Get the SLD rule for this style if it presents a style-able layer.
 	 * 
 	 * @return the rule
 	 */
 	RuleInfo getRule();
-	
-
 }

@@ -143,7 +143,7 @@ public class LegendConfig {
 
 	/**
 	 * Get the bounding box for the legend. It may be that a legend image is built reflecting styles within a certain
-	 * area.
+	 * area. Note that this setting is not often supported.
 	 * 
 	 * @return The bounding box used for legend creation.
 	 */
@@ -153,7 +153,7 @@ public class LegendConfig {
 
 	/**
 	 * Set the bounding box for the legend. It may be that a legend image is built reflecting styles within a certain
-	 * area.
+	 * area. Note that this setting is not often supported.
 	 * 
 	 * @param bounds
 	 *            The bounds to use for legend creation.
