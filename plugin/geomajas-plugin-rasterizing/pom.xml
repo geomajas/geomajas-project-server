@@ -61,14 +61,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${rasterizing-puregwt-face-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-caching-all</artifactId>
 				<version>${rasterizing-caching-version}</version>
@@ -189,8 +181,7 @@
 
 	<properties>
 		<rasterizing-backend-version>1.13.1</rasterizing-backend-version>
-		<rasterizing-gwt-face-version>1.14.0-SNAPSHOT</rasterizing-gwt-face-version>
-		<rasterizing-puregwt-face-version>1.0.0-M4</rasterizing-puregwt-face-version>
+		<rasterizing-gwt-face-version>1.14.0</rasterizing-gwt-face-version>
 		<rasterizing-caching-version>2.0.0</rasterizing-caching-version>
 		<rasterizing-gwt-version>2.5.0</rasterizing-gwt-version>
 		<rasterizing-geotools-version>9.2</rasterizing-geotools-version>
