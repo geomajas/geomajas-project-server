@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.smartgwt.client.widgets.Slider;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.util.WidgetLayout;
@@ -48,7 +50,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
  * Configuration window for individual layers.
- * 
+ *
  * @author Oliver May
  * @author Kristof Heirwegh
  */
@@ -57,9 +59,11 @@ public class LayerConfigurationWindow extends Window {
 	private static final ManagerMessages MESSAGES = GWT.create(ManagerMessages.class);
 
 	private static final int TABSET_WIDTH = 600;
+
 	private static final int TABSET_HEIGHT = 300;
 
 	private static final int FORMITEM_WIDTH = 300;
+
 	public static final String FLD_NAME = "Name";
 
 	private LayerDto layer;
@@ -83,16 +87,16 @@ public class LayerConfigurationWindow extends Window {
 	private TabSet widgetTabset;
 
 	private List<WidgetEditorHandler> widgetEditors = new ArrayList<WidgetEditorHandler>();
-	
+
 	private ExpertSldEditorHelper styleHelper;
-	
+
+	private Slider opacitySlider;
 
 	/**
 	 * Construct a layer configuration window.
-	 * 
-	 * @param layer
-	 * @param callback
-	 *            returns true if saved, false if canceled.
+	 *
+	 * @param layerDto
+	 * @param callback returns true if saved, false if canceled.
 	 */
 	public LayerConfigurationWindow(LayerDto layerDto, BooleanCallback callback) {
 		this.layer = layerDto;
@@ -118,10 +122,12 @@ public class LayerConfigurationWindow extends Window {
 
 		ClientLayerInfo config = layerDto.getClientLayerInfo() == null ? layer.getReferencedLayerInfo() : layer
 				.getClientLayerInfo();
-		
+
 		if (config instanceof ClientVectorLayerInfo) {
-			tabset.addTab(createStijlTab());
+			tabset.addTab(createVectorLayerStyleTab());
 			styleHelper = new ExpertSldEditorHelper((ClientVectorLayerInfo) config);
+		} else if (config instanceof ClientRasterLayerInfo) {
+			tabset.addTab(createRasterStyleTab((ClientRasterLayerInfo) config));
 		}
 
 		widgetTabset = new TabSet();
@@ -181,6 +187,30 @@ public class LayerConfigurationWindow extends Window {
 
 	}
 
+	private Tab createRasterStyleTab(final ClientRasterLayerInfo config) {
+		Tab tab = new Tab(MESSAGES.layerConfigurationLayerStyle());
+		VLayout vl = new VLayout(10);
+		vl.setMargin(10);
+
+		opacitySlider = new Slider();
+		opacitySlider.setMinValue(0);
+		opacitySlider.setMaxValue(1);
+		if (config.getStyle() != null && !"".equals(config.getStyle())) {
+			try {
+				opacitySlider.setValue(Float.parseFloat(config.getStyle()));
+			} catch (NumberFormatException e) {
+				opacitySlider.setValue(1f);
+			}
+		}
+
+		vl.addMember(opacitySlider);
+
+
+
+		tab.setPane(vl);
+		return tab;
+	}
+
 	private Tab createSettingsTab() {
 		Tab tab = new Tab(MESSAGES.layerConfigurationLayerProperties());
 		form = new DynamicForm();
@@ -231,7 +261,7 @@ public class LayerConfigurationWindow extends Window {
 		return tab;
 	}
 
-	private Tab createStijlTab() {
+	private Tab createVectorLayerStyleTab() {
 		Tab tab = new Tab(MESSAGES.layerConfigurationLayerStyle());
 		VLayout vl = new VLayout(10);
 		vl.setMargin(10);
@@ -290,7 +320,9 @@ public class LayerConfigurationWindow extends Window {
 			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
 			cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
 
-			if (styleHelper != null) { // only if vectorlayer
+			if (cli instanceof ClientRasterLayerInfo && opacitySlider != null) {
+				((ClientRasterLayerInfo) cli).setStyle(new Double(opacitySlider.getValue()).toString());
+			} else if (cli instanceof ClientVectorLayerInfo && styleHelper != null) {
 				styleHelper.apply((ClientVectorLayerInfo) cli);
 			}
 
@@ -328,9 +360,7 @@ public class LayerConfigurationWindow extends Window {
 		}
 	}
 
-	/**
-	 * Clear all custom widget tabs from the last blueprint.
-	 */
+	/** Clear all custom widget tabs from the last blueprint. */
 	private void clearWidgetTabs() {
 		for (Tab tab : widgetTabset.getTabs()) {
 			widgetTabset.removeTab(tab);
@@ -340,9 +370,8 @@ public class LayerConfigurationWindow extends Window {
 
 	/**
 	 * Load all widget editors that are available on this blueprints user application, and add them to the tabset.
-	 * 
-	 * @param bgd
-	 *            the basegeodesk.
+	 *
+	 * @param bgd the basegeodesk.
 	 */
 	private void loadWidgetTabs(LayerDto bgd) {
 		for (String key : WidgetEditorFactoryRegistry.getLayerRegistry().getWidgetEditors().keySet()) {
@@ -351,15 +380,12 @@ public class LayerConfigurationWindow extends Window {
 	}
 
 	/**
-	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be
-	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
-	 * 
-	 * @param editorFactory
-	 *            the editor factory
-	 * @param widgetInfos
-	 *            all the widget infos
-	 * @param layerDto
-	 *            the layer model
+	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be edited
+	 * by the editor) and a base geodesk that could provide extra context to the editor.
+	 *
+	 * @param editorFactory the editor factory
+	 * @param widgetInfos all the widget infos
+	 * @param layerDto the layer model
 	 */
 	private void addWidgetTab(final WidgetEditorFactory editorFactory, final Map<String, ClientWidgetInfo> widgetInfos,
 			final LayerDto layerDto) {
@@ -392,18 +418,16 @@ public class LayerConfigurationWindow extends Window {
 
 	/**
 	 * Interface for handling widget editors.
-	 * 
+	 *
 	 * @author Oliver May
-	 * 
 	 */
 	private interface WidgetEditorHandler {
+
 		/**
 		 * Set the correct information in the layer dto.
-		 * 
-		 * @param layer
-		 *            the layer dto
+		 *
+		 * @param layer the layer dto
 		 */
 		void save(LayerDto layer);
 	}
-
 }
