@@ -380,8 +380,8 @@ public class LayerConfigurationWindow extends Window {
 	}
 
 	/**
-	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be edited
-	 * by the editor) and a base geodesk that could provide extra context to the editor.
+	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be 
+	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
 	 *
 	 * @param editorFactory the editor factory
 	 * @param widgetInfos all the widget infos
