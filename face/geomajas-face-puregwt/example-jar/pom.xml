@@ -8,15 +8,14 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-face-puregwt</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0-M6</version>
 	</parent>
 
 	<artifactId>geomajas-puregwt-example-jar</artifactId>
@@ -26,9 +25,9 @@
 	<description>Geomajas PureGWT face: Library containing showcase samples</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-puregwt</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M6/geomajas-face-puregwt</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M6/geomajas-face-puregwt</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-puregwt-1.0.0-M6/geomajas-face-puregwt</url>
 	</scm>
 
 	<developers>
