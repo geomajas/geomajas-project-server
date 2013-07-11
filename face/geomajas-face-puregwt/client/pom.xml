@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-puregwt-client</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas PureGWT face, client side</name>
-	<description>Geomajas PureGWT face, client side</description>
+	<name>Geomajas PureGWT face: Client API</name>
+	<description>Geomajas PureGWT face: Client API</description>
 
 	<dependencies>
 		<!-- Overwrite the xerces version that comes with JTS to make sure it is compatible with GWT UiBinder. -->
