@@ -1,0 +1,142 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+@def selectionBorderWidth 0px;
+.dataGridWidget {
+}
+
+.dataGridFirstColumn {
+	
+}
+
+.dataGridLastColumn {
+	
+}
+
+.dataGridFooter {
+	border-top: 2px solid #6f7277;
+	padding: 3px 15px;
+	text-align: left;
+	color: #4b4a4a;
+	text-shadow: #ddf 1px 1px 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+@sprite .dataGridHeader {
+	gwt-image: 'header';
+	padding: 3px 15px;
+	text-align: left;
+	color: #FFFFFF;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 14px;
+}
+
+.dataGridCell {
+	padding: 10px 15px;
+	overflow: hidden;
+/* 	border-bottom: 1px solid #D0D0D0;
+ */}
+
+.dataGridFirstColumnFooter {
+	
+}
+
+.dataGridFirstColumnHeader {
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	border-top-left-radius: 4px;
+}
+
+.dataGridLastColumnFooter {
+	
+}
+
+.dataGridLastColumnHeader {
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-right-radius: 4px;
+}
+
+.dataGridSortableHeader {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.dataGridSortableHeader:hover {
+	color: #C0C0C0;
+}
+
+.dataGridSortedHeaderAscending {
+	
+}
+
+.dataGridSortedHeaderDescending {
+	
+}
+
+.dataGridEvenRow {
+	/*background: #ffffff;*/
+}
+
+.dataGridEvenRowCell {
+	
+}
+
+.dataGridOddRow {
+	background: #F0F0F0; /* for non-css3 browsers */
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, left top, right top, from(#E0E0E0), to(#FAFAFA) );
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(left, #E0E0E0, #FAFAFA);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(left, #E0E0E0, #FAFAFA);
+	/* IE 10 */
+	background: -ms-linear-gradient(left, #E0E0E0, #FAFAFA);
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(left, #E0E0E0, #FAFAFA);
+}
+
+.dataGridOddRowCell {
+}
+
+.dataGridHoveredRow {
+	border-top: #999999;
+	border-bottom: #999999;
+	background: #C0C0C0;
+	background: -webkit-gradient(linear, left top, left bottom, from(#D0D0D0), to(#B0B0B0)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #D0D0D0,  #B0B0B0); /* for firefox 3.6+ */
+	cursor: pointer;
+}
+
+.dataGridSelectedRow {	
+}
+
+.dataGridHoveredRowCell {
+}
+
+.dataGridKeyboardSelectedRow {
+}
+
+.dataGridKeyboardSelectedRowCell {
+	
+}
+
+.dataGridSelectedRowCell {
+	
+}
+
+/**
+ * The keyboard selected cell is visible over selection.
+ */
+.dataGridKeyboardSelectedCell {
+	
+}
