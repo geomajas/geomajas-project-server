@@ -36,10 +36,6 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<scope>provided</scope>
