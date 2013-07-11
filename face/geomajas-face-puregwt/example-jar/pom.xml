@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-face-puregwt</artifactId>
-		<version>1.0.0-M6</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-puregwt-example-jar</artifactId>
@@ -25,9 +25,9 @@
 	<description>Geomajas PureGWT face: Library containing showcase samples</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M6/geomajas-face-puregwt</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-puregwt-1.0.0-M6/geomajas-face-puregwt</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-puregwt-1.0.0-M6/geomajas-face-puregwt</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-puregwt</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-puregwt</url>
 	</scm>
 
 	<developers>
