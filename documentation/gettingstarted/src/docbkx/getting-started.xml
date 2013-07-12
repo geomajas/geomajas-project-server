@@ -51,6 +51,10 @@
           <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
         </example>
 
+        <para>The above catalog will give you the latest stable release, which
+        is what you normally want. If you need the latest snapshot version,
+        use the following catalog:<programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/latest/archetype-catalog.xml</programlisting></para>
+
         <para>Maven will now prompt the user for input.</para>
 
         <note>
