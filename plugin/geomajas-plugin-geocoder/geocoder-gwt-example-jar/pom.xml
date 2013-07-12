@@ -26,16 +26,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.8.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${geocoder-backend-version}</version>
+				<version>1.13.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
