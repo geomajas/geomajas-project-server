@@ -222,7 +222,7 @@ public interface ManagerMessages extends Messages {
 	String layerConfigurationLayerVisibleByDefault();
 	String layerConfigurationLayerVisibleByDefaultTooltip();
 	String layerConfigurationMinimumScale();
-    String layerConfigurationOpacity();
+	String layerConfigurationOpacity();
 	String layerConfigurationMinimumScaleTooltip();
 	String layerConfigurationMaximumScale();
 	String layerConfigurationMaximumScaleTooltip();
