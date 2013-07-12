@@ -8,14 +8,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-deskmanager-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M6</version>
 	<packaging>pom</packaging>
 	<name>Geomajas Deskmanager plugin grouping module</name>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-deskmanager</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-deskmanager</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-deskmanager</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-deskmanager-all-1.0.0-M6</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-deskmanager-all-1.0.0-M6</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-deskmanager-all-1.0.0-M6</url>
 	</scm>
 
 	<developers>
