@@ -192,14 +192,16 @@ public class LayerConfigurationWindow extends Window {
 		VLayout vl = new VLayout(10);
 		vl.setMargin(10);
 
-		opacitySlider = new Slider();
+		opacitySlider = new Slider(MESSAGES.layerConfigurationOpacity());
 		opacitySlider.setMinValue(0);
-		opacitySlider.setMaxValue(1);
+		opacitySlider.setMaxValue(100);
+        opacitySlider.setVertical(false);
+
 		if (config.getStyle() != null && !"".equals(config.getStyle())) {
 			try {
-				opacitySlider.setValue(Float.parseFloat(config.getStyle()));
+				opacitySlider.setValue(Float.parseFloat(config.getStyle())*100);
 			} catch (NumberFormatException e) {
-				opacitySlider.setValue(1f);
+				opacitySlider.setValue(100);
 			}
 		}
 
@@ -313,15 +315,16 @@ public class LayerConfigurationWindow extends Window {
 			if (layer.getClientLayerInfo() == null) {
 				layer.setClientLayerInfo(layer.getReferencedLayerInfo()); // clone??
 			}
-			ClientLayerInfo cli = layer.getClientLayerInfo();
-			cli.setLayerInfo(null);
-			cli.setVisible(defaultVisible.getValueAsBoolean());
-			cli.setLabel(label.getValueAsString());
-			cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
-			cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
+            ClientLayerInfo cli = layer.getClientLayerInfo();
+            cli.setLayerInfo(null);
+            cli.setVisible(defaultVisible.getValueAsBoolean());
+            cli.setLabel(label.getValueAsString());
+            cli.setMinimumScale(SensibleScaleConverter.stringToScale(minScale.getValueAsString()));
+            cli.setMaximumScale(SensibleScaleConverter.stringToScale(maxScale.getValueAsString()));
 
-			if (cli instanceof ClientRasterLayerInfo && opacitySlider != null) {
-				((ClientRasterLayerInfo) cli).setStyle(new Double(opacitySlider.getValue()).toString());
+            if (cli instanceof ClientRasterLayerInfo && opacitySlider != null) {
+                float opacityValue = opacitySlider.getValue() / 100;
+				((ClientRasterLayerInfo) cli).setStyle(String.valueOf(opacityValue));
 			} else if (cli instanceof ClientVectorLayerInfo && styleHelper != null) {
 				styleHelper.apply((ClientVectorLayerInfo) cli);
 			}
@@ -338,13 +341,15 @@ public class LayerConfigurationWindow extends Window {
 		}
 	}
 
-	@Override
-	public void destroy() {
-		styleHelper.destroy();
-		super.destroy();
-	}
+    @Override
+    public void destroy() {
+        if (styleHelper != null) {
+            styleHelper.destroy();
+        }
+        super.destroy();
+    }
 
-	private void restored() {
+    private void restored() {
 		if (layer.getClientLayerInfo() != null || !layer.getWidgetInfo().isEmpty()) {
 			SC.ask(MESSAGES.layerConfigConfirmRestoreTitle(), MESSAGES.layerConfigConfirmRestoreText(),
 					new BooleanCallback() {
@@ -380,7 +385,7 @@ public class LayerConfigurationWindow extends Window {
 	}
 
 	/**
-	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be 
+	 * Add a widget editor tab to the tabset for a given editor factory, set of widget info's (where one of will be
 	 * edited by the editor) and a base geodesk that could provide extra context to the editor.
 	 *
 	 * @param editorFactory the editor factory
