@@ -51,11 +51,16 @@ public final class GdmLayout {
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
 	/**
-	 * The url parameter of a desk.
+	 * The url prefix of a desk.
 	 * 
 	 * Attention! Update from rule in urlrewrite.xml when changing. Must end with a /!
 	 */
 	public static String geodeskPrefix = "desk/";
+
+	/**
+	 * The url prefix of the manager application.
+	 */
+	public static String managerPrefix = "manager/";
 
 	/**
 	 * Z index for the role select.

@@ -39,6 +39,7 @@ public class DeskmanagerGeomajasServiceImpl extends GeomajasServiceImpl {
 		}
 
 		moduleBaseURL = moduleBaseURL.replaceFirst(GdmLayout.geodeskPrefix + "[^/]*", "");
+		moduleBaseURL = moduleBaseURL.replaceFirst(GdmLayout.managerPrefix + "[^/]*", "");
 		return super.doGetSerializationPolicy(request, moduleBaseURL, strongName);
 	}
 

@@ -10,10 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.service.common;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -50,8 +47,8 @@ public class BlueprintServiceImpl implements BlueprintService {
 	@Autowired
 	private LayerModelService layerModelService;
 
-	@Autowired
-	private List<UserApplicationInfo> userApplications;
+	@Autowired(required = false)
+	private List<UserApplicationInfo> userApplications = new ArrayList<UserApplicationInfo>();
 
 	public Blueprint getBlueprintById(String uuid) throws GeomajasSecurityException {
 		Blueprint bp = getBlueprintByIdInternal(uuid);
