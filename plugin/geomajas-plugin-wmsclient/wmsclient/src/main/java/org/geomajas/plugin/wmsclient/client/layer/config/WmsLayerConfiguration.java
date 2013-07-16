@@ -12,6 +12,8 @@
 package org.geomajas.plugin.wmsclient.client.layer.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
@@ -23,7 +25,7 @@ import org.geomajas.puregwt.client.map.layer.LegendConfig;
  * extra options though, so be sure to specify the {@link WmsServiceVendor} if possible.
  * 
  * @author Pieter De Graef
- * @author An Buyle (WmsServiceVendor)
+ * @author An Buyle
  * @since 1.0.0
  */
 @Api(allMethods = true)
@@ -37,7 +39,9 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private String layers = "";
 
-	private String styles = "";
+	private List<String> styleList = new ArrayList<String>();
+	
+	private int styleIndex; // index of active styles in styleList (only 1 at a time)
 
 	private String filter; // CQL in case the WMS server supports it.
 
@@ -48,6 +52,13 @@ public class WmsLayerConfiguration implements Serializable {
 	private LegendConfig legendConfig = new LegendConfig();
 
 	private WmsServiceVendor wmsServiceVendor = WmsServiceVendor.UNSPECIFIED;
+
+	/**
+	 * Constructor.
+	 */
+	public WmsLayerConfiguration() {
+		styleList.add(""); // use the default styles
+	}
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:
@@ -86,7 +97,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the GetMap image format. The default value is "image/png".
 	 * 
 	 * @param format
-	 *            The GetMap image format.
+	 *			The GetMap image format.
 	 */
 	public void setFormat(String format) {
 		this.format = format;
@@ -105,30 +116,81 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the layers parameter used in the GetMap requests.
 	 * 
 	 * @param layers
-	 *            The GetMap layers parameter.
+	 *			The GetMap layers parameter.
 	 */
 	public void setLayers(String layers) {
 		this.layers = layers;
 	}
 
+	
 	/**
-	 * Get the styles parameter used in the GetMap requests.
+	 * Get the list of supported styles parameters for use in the GetMap requests.
+	 * 
+	 * @return The list of supported styles parameters for use in the GetMap requests.
+	 */
+	public List<String> getStyleList() {
+		return styleList;
+	}
+	
+
+
+	/**
+	 * Set the list of supported styles parameters for use in the GetMap requests.
+	 * 
+	 * @param styles
+	 *			The list of supported styles parameters for use in the GetMap requests.
+	 */
+	public void setStyleList(List<String> styleList) {
+		styleIndex = 0; // Set the first style in the list as the default
+		this.styleList.clear();
+		this.styleList.addAll(styleList);
+	}
+	
+	
+	/** Get the active styles parameter for use e.g. in the GetMap requests.
+	 * 
+	 * @return The active styles parameter
+	 */
+	public String getActiveStyles() {
+		
+		return getStyles(getStyleIndex());
+	}
+
+	/** Set the active styles parameter. Does nothing if the specified styles 
+	 * string is not in the list of styles parameters.
+	 * 
+	 * @param styles The styles parameter to become active
+	 */
+	public void setActiveStyles(String styles) {
+		
+		int index = this.styleList.indexOf(styles);
+		if (index >= 0) {
+			this.styleIndex = index;
+		}
+	}
+	
+	/**
+	 * Get the styles parameter used e.g. in the GetMap requests.
 	 * 
 	 * @return The GetMap styles parameter.
 	 */
-	public String getStyles() {
-		return styles;
+	private String getStyles(int index) {
+		if (index >= styleList.size()) {
+			return null;
+		}
+		return styleList.get(index);
+	}
+	
+	/**
+	 * Get the index of the active style in the style list.
+	 *  
+	 * @return The index of the active style
+	 */
+	private int getStyleIndex() {
+		return this.styleIndex;
 	}
 
-	/**
-	 * Set the styles parameter used in the GetMap requests.
-	 * 
-	 * @param styles
-	 *            The GetMap styles parameter.
-	 */
-	public void setStyles(String styles) {
-		this.styles = styles;
-	}
+
 
 	/**
 	 * Get the filter parameter used in GetMap requests. Note this parameter is not a default WMS parameter, and not all
@@ -145,7 +207,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * WMS servers may support this.
 	 * 
 	 * @param filter
-	 *            The GetMap filter parameter.
+	 *			The GetMap filter parameter.
 	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
@@ -164,7 +226,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the transparent parameter used in the GetMap requests. Default value is 'true'.
 	 * 
 	 * @param transparent
-	 *            The GetMap transparent parameter.
+	 *			The GetMap transparent parameter.
 	 */
 	public void setTransparent(boolean transparent) {
 		this.transparent = transparent;
@@ -183,7 +245,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the WMS version. Default value is '1.3.0'.
 	 * 
 	 * @param version
-	 *            The WMS version.
+	 *			The WMS version.
 	 */
 	public void setVersion(WmsVersion version) {
 		this.version = version;
@@ -202,7 +264,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the base URL to the WMS service. This URL should not contain any WMS parameters.
 	 * 
 	 * @param baseUrl
-	 *            The base URL to the WMS service.
+	 *			The base URL to the WMS service.
 	 */
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
@@ -223,9 +285,11 @@ public class WmsLayerConfiguration implements Serializable {
 	 * but some WMS vendors have added extra options to allow for these.
 	 * 
 	 * @param legendConfig
-	 *            The default legend creation configuration for this layer.
+	 *			The default legend creation configuration for this layer.
 	 */
 	public void setLegendConfig(LegendConfig legendConfig) {
 		this.legendConfig = legendConfig;
 	}
+	
+	
 }

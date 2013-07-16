@@ -192,6 +192,12 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: request type
 		url.append("&request=GetLegendGraphic");
+		
+
+		// Parameter: styles
+		url.append("&STYLE=");
+		url.append(wmsConfig.getActiveStyles());
+
 
 		// Parameter: format
 		url.append("&format=");
@@ -394,7 +400,7 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: styles
 		url.append("&styles=");
-		url.append(config.getStyles());
+		url.append(config.getActiveStyles());
 
 		// Parameter: transparent
 		if (config.isTransparent()) {
@@ -438,4 +444,5 @@ public class WmsServiceImpl implements WmsService {
 		}
 		return false;
 	}
+
 }
