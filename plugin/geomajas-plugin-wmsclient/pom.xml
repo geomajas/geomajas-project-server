@@ -22,15 +22,15 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-wmsclient-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M3</version>
 
 	<name>geomajas-plugin-wmsclient plug-in parent</name>
 	<description>geomajas-plugin-wmsclient plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-wmsclient</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-wmsclient</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-wmsclient</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wmsclient-all-1.0.0-M3</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wmsclient-all-1.0.0-M3</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-wmsclient-all-1.0.0-M3</url>
 	</scm>
 
 	<dependencyManagement>
