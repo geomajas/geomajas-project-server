@@ -39,9 +39,9 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private String layers = "";
 
-	private List<String> styleList = new ArrayList<String>();
-	
-	private int styleIndex; // index of active styles in styleList (only 1 at a time)
+	private List<String> supportedStyles = new ArrayList<String>();
+
+	private List<String> activeStyles = new ArrayList<String>();
 
 	private String filter; // CQL in case the WMS server supports it.
 
@@ -57,7 +57,8 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Constructor.
 	 */
 	public WmsLayerConfiguration() {
-		styleList.add(""); // use the default styles
+		supportedStyles.add(""); // use the default styles
+		activeStyles.add(""); // use the default styles
 	}
 
 	// ------------------------------------------------------------------------
@@ -97,7 +98,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the GetMap image format. The default value is "image/png".
 	 * 
 	 * @param format
-	 *			The GetMap image format.
+	 *            The GetMap image format.
 	 */
 	public void setFormat(String format) {
 		this.format = format;
@@ -116,81 +117,131 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the layers parameter used in the GetMap requests.
 	 * 
 	 * @param layers
-	 *			The GetMap layers parameter.
+	 *            The GetMap layers parameter.
 	 */
 	public void setLayers(String layers) {
 		this.layers = layers;
 	}
 
-	
 	/**
 	 * Get the list of supported styles parameters for use in the GetMap requests.
 	 * 
 	 * @return The list of supported styles parameters for use in the GetMap requests.
 	 */
-	public List<String> getStyleList() {
-		return styleList;
+	public List<String> getSupportedStyles() {
+		return supportedStyles;
 	}
-	
-
 
 	/**
-	 * Set the list of supported styles parameters for use in the GetMap requests.
+	 * Set the list of supported styles parameters for use in the GetMap requests. This will reset the currently active
+	 * styles, by taking the first style from the list.
 	 * 
 	 * @param styles
-	 *			The list of supported styles parameters for use in the GetMap requests.
+	 *            The list of supported styles parameters for use in the GetMap requests. If this list is empty, the
+	 *            default styles will be applied.
 	 */
-	public void setStyleList(List<String> styleList) {
-		styleIndex = 0; // Set the first style in the list as the default
-		this.styleList.clear();
-		this.styleList.addAll(styleList);
+	public void setSupportedStyles(List<String> styles) {
+		activeStyles.clear();
+		supportedStyles.clear();
+		if (styles == null || styles.size() == 0) {
+			activeStyles.add("");
+			supportedStyles.add("");
+		} else {
+			activeStyles.add(styles.get(0));
+			supportedStyles.addAll(styles);
+		}
 	}
-	
-	
-	/** Get the active styles parameter for use e.g. in the GetMap requests.
+
+	/** Clear the list of active styles. Make sure to add a style again. */
+	public void clearActiveStyles() {
+		activeStyles.clear();
+	}
+
+	/**
+	 * <p>
+	 * Add styles to be used in GetMap requests. Note that multiple styles can be added, as the WMS specification
+	 * supports a comma separated list of styles.
+	 * </p>
+	 * <p>
+	 * Since the supportedStyles field stores the full list of styles supported by the WMS layer, it is recommended to
+	 * choose from between those styles. It doesn't make sense to activate styles that are not supported by the WMS
+	 * server.
+	 * </p>
+	 * 
+	 * @param styles
+	 *            The list of styles to use.
+	 */
+	public void addActiveStyles(String... styles) {
+		for (String style : styles) {
+			activeStyles.add(style);
+		}
+	}
+
+	/**
+	 * Remove styles from being used again.
+	 * 
+	 * @param styles
+	 *            The list of styles to remove.
+	 */
+	public void removeActiveStyles(String... styles) {
+		for (String style : styles) {
+			activeStyles.remove(style);
+		}
+	}
+
+	/**
+	 * Get the active styles parameter for use e.g. in the GetMap requests.
 	 * 
 	 * @return The active styles parameter
 	 */
-	public String getActiveStyles() {
-		
-		return getStyles(getStyleIndex());
-	}
-
-	/** Set the active styles parameter. Does nothing if the specified styles 
-	 * string is not in the list of styles parameters.
-	 * 
-	 * @param styles The styles parameter to become active
-	 */
-	public void setActiveStyles(String styles) {
-		
-		int index = this.styleList.indexOf(styles);
-		if (index >= 0) {
-			this.styleIndex = index;
+	public String getCurrentStyle() {
+		if (activeStyles.size() == 0) {
+			return "";
 		}
-	}
-	
-	/**
-	 * Get the styles parameter used e.g. in the GetMap requests.
-	 * 
-	 * @return The GetMap styles parameter.
-	 */
-	private String getStyles(int index) {
-		if (index >= styleList.size()) {
-			return null;
+		StringBuilder builder = new StringBuilder();
+		for (String style : activeStyles) {
+			if (builder.length() > 0) {
+				builder.append(",");
+			}
+			builder.append(style);
 		}
-		return styleList.get(index);
+		return builder.toString();
 	}
-	
+
 	/**
-	 * Get the index of the active style in the style list.
-	 *  
-	 * @return The index of the active style
+	 * Set the active styles parameter. Does nothing if the specified styles string is not in the list of styles
+	 * parameters.
+	 * 
+	 * @param styles
+	 *            The styles parameter to become active
 	 */
-	private int getStyleIndex() {
-		return this.styleIndex;
-	}
+	// public void setActiveStyles(String styles) {
+	// int index = this.styleList.indexOf(styles);
+	// if (index >= 0) {
+	// this.styleIndex = index;
+	// }
+	// }
 
-
+	// /**
+	// * Get the styles parameter used e.g. in the GetMap requests.
+	// *
+	// * @return The GetMap styles parameter.
+	// */
+	// private String getStyles(int index) {
+	// if (index >= styleList.size()) {
+	// return null;
+	// }
+	// return styleList.get(index);
+	// }
+	//
+	// /**
+	// * Get the index of the active style in the style list.
+	// *
+	// * @return The index of the active style
+	// */
+	// private int getStyleIndex() {
+	// return this.styleIndex;
+	// }
 
 	/**
 	 * Get the filter parameter used in GetMap requests. Note this parameter is not a default WMS parameter, and not all
@@ -207,7 +258,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * WMS servers may support this.
 	 * 
 	 * @param filter
-	 *			The GetMap filter parameter.
+	 *            The GetMap filter parameter.
 	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
@@ -226,7 +277,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the transparent parameter used in the GetMap requests. Default value is 'true'.
 	 * 
 	 * @param transparent
-	 *			The GetMap transparent parameter.
+	 *            The GetMap transparent parameter.
 	 */
 	public void setTransparent(boolean transparent) {
 		this.transparent = transparent;
@@ -245,7 +296,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the WMS version. Default value is '1.3.0'.
 	 * 
 	 * @param version
-	 *			The WMS version.
+	 *            The WMS version.
 	 */
 	public void setVersion(WmsVersion version) {
 		this.version = version;
@@ -264,7 +315,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the base URL to the WMS service. This URL should not contain any WMS parameters.
 	 * 
 	 * @param baseUrl
-	 *			The base URL to the WMS service.
+	 *            The base URL to the WMS service.
 	 */
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
@@ -285,11 +336,9 @@ public class WmsLayerConfiguration implements Serializable {
 	 * but some WMS vendors have added extra options to allow for these.
 	 * 
 	 * @param legendConfig
-	 *			The default legend creation configuration for this layer.
+	 *            The default legend creation configuration for this layer.
 	 */
 	public void setLegendConfig(LegendConfig legendConfig) {
 		this.legendConfig = legendConfig;
 	}
-	
-	
 }

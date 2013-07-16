@@ -82,7 +82,7 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
 		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
 		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS2));
-		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getActiveStyles()));
+		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getCurrentStyle()));
 		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
 		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
 	}
@@ -102,12 +102,10 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
 		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
 		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS));
-		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getActiveStyles()));
+		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getCurrentStyle()));
 		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
 		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
 	}
-
-	
 
 	@Test
 	public void testGetLegendUrl() {
@@ -171,7 +169,7 @@ public class WmsServiceTest extends GWTTestCase {
 		wmsConfig.setLayers(VALUE_LAYER);
 		List<String> styleList = new ArrayList<String>();
 		styleList.add(VALUE_STYLE);
-		wmsConfig.setStyleList(styleList);
+		wmsConfig.setSupportedStyles(styleList);
 	}
 
 	private boolean hasParameter(String url, String parameter, String value) {

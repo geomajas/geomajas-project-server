@@ -48,7 +48,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	protected final WmsLayerConfiguration wmsConfig;
 
 	protected final WmsTileConfiguration tileConfig;
-	
+
 	@Inject
 	protected WmsService wmsService;
 
@@ -115,8 +115,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	public void setOpacity(double opacity) {
 		renderer.getHtmlContainer().setOpacity(opacity);
 	}
-	
-	
+
 	@Override
 	public double getOpacity() {
 		return renderer.getHtmlContainer().getOpacity();
@@ -164,12 +163,10 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return wmsService.getLegendGraphicUrl(wmsConfig);
 	}
 
-
 	@Override
 	public String getLegendImageUrl(LegendConfig legendConfig) {
 		return wmsService.getLegendGraphicUrl(wmsConfig, legendConfig);
 	}
-	
 
 	// ------------------------------------------------------------------------
 	// Private methods:
@@ -181,6 +178,4 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 						* worldBounds.getMaxY())
 						- Math.round(scale * worldBounds.getY()));
 	}
-
-
 }

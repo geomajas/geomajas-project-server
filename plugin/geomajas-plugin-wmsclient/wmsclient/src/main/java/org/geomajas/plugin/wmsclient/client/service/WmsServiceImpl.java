@@ -196,7 +196,7 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: styles
 		url.append("&STYLE=");
-		url.append(wmsConfig.getActiveStyles());
+		url.append(wmsConfig.getCurrentStyle());
 
 
 		// Parameter: format
@@ -400,7 +400,7 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: styles
 		url.append("&styles=");
-		url.append(config.getActiveStyles());
+		url.append(config.getCurrentStyle());
 
 		// Parameter: transparent
 		if (config.isTransparent()) {
