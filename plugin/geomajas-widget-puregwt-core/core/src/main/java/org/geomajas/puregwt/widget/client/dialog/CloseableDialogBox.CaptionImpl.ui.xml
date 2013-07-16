@@ -5,10 +5,13 @@
 		type="org.geomajas.puregwt.widget.client.dialog.CloseableDialogBoxResource" />
 
 	<g:HorizontalPanel width="100%">
-		<g:HTMLPanel>
-			<div ui:field="titleElement" class="{resource.css.closeableDialogTitle}" />
-		</g:HTMLPanel>
-		<g:Button ui:field="closeIcon" styleName="{resource.css.closeableDialogCloseIcon}" />
+		<g:cell verticalAlignment="">
+			<g:HTMLPanel ui:field="titleElement" class="{resource.css.closeableDialogTitle}" />
+		</g:cell>
+
+		<g:cell>
+			<g:Button ui:field="closeIcon" styleName="{resource.css.closeableDialogCloseIcon}" />
+		</g:cell>
 	</g:HorizontalPanel>
 
 </ui:UiBinder> 

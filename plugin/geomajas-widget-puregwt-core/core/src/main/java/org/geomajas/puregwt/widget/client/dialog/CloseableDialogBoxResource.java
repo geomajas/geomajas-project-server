@@ -55,6 +55,30 @@ public interface CloseableDialogBoxResource extends ClientBundle {
 	@Source("images/close_hover.png")
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource closeableDialogCloseIconHover();
-	
-	
+
+
+	/**
+	 * Image sprite.
+	 * @return
+	 *
+	 */
+	@Source("images/hborder.png")
+	@ImageOptions(repeatStyle = RepeatStyle.Horizontal)
+	ImageResource closeableDialogHborder();
+
+	/**
+	 * Image sprite.
+	 * @return
+	 */
+	@Source("images/vborder.png")
+	@ImageOptions(repeatStyle = RepeatStyle.Vertical)
+	ImageResource closeableDialogVborder();
+
+	/**
+	 * Image sprite.
+	 * @return
+	 */
+	@Source("images/corner.png")
+	@ImageOptions(repeatStyle = RepeatStyle.None)
+	ImageResource closeableDialogCorner();
 }

@@ -19,10 +19,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Dialogbox with a close-button in the upper-right corner.
@@ -37,6 +34,7 @@ public class CloseableDialogBox extends DialogBox {
 	public CloseableDialogBox() {
 		super(new CaptionImpl());
 		CloseableDialogBoxResource.INSTANCE.css().ensureInjected();
+		setStyleName(CloseableDialogBoxResource.INSTANCE.css().closeableDialogBox());
 		((CaptionImpl) getCaption()).setParent(this);
 		setAutoHideOnHistoryEventsEnabled(true);
 		this.setWidth("100%");
@@ -92,7 +90,7 @@ public class CloseableDialogBox extends DialogBox {
 
 		public CaptionImpl() {
 			super();
-			setStyleName("Caption");
+			setStyleName(CloseableDialogBoxResource.INSTANCE.css().captionBar());
 			add(UIBINDER.createAndBindUi(this));
 		}
 

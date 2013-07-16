@@ -36,5 +36,17 @@ public interface CloseableDialogBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String closeableDialogTitle();
+
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
+	String closeableDialogBox();
+
+	/**
+	 * Get a CSS style class.
+	 * @return
+	 */
+	String captionBar();
 	
 }
