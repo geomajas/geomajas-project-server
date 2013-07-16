@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.service.common;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
