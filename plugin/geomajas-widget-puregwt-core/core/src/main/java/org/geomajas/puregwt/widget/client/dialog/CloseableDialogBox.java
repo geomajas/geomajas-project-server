@@ -12,14 +12,17 @@
 package org.geomajas.puregwt.widget.client.dialog;
 
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Dialogbox with a close-button in the upper-right corner.
@@ -82,7 +85,7 @@ public class CloseableDialogBox extends DialogBox {
 		private static final MyUiBinder UIBINDER = GWT.create(MyUiBinder.class);
 
 		@UiField
-		protected DivElement titleElement;
+		protected SimplePanel titleElement;
 
 		private ClickHandler onCloseHandler;
 
@@ -108,27 +111,27 @@ public class CloseableDialogBox extends DialogBox {
 
 		@Override
 		public String getHTML() {
-			return titleElement.getInnerHTML();
+			return titleElement.getElement().getInnerHTML();
 		}
 
 		@Override
 		public void setHTML(String html) {
-			titleElement.setInnerHTML(html);
+			titleElement.getElement().setInnerHTML(html);
 		}
 
 		@Override
 		public String getText() {
-			return titleElement.getInnerText();
+			return titleElement.getElement().getInnerText();
 		}
 
 		@Override
 		public void setText(String text) {
-			titleElement.setInnerText(text);
+			titleElement.getElement().setInnerText(text);
 		}
 
 		@Override
 		public void setHTML(SafeHtml html) {
-			titleElement.setInnerHTML(html.asString());
+			titleElement.getElement().setInnerHTML(html.asString());
 		}
 
 		@UiHandler("closeIcon")

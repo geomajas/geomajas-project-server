@@ -1,11 +1,12 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 			 xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<ui:with field='resource' type='org.geomajas.puregwt.example.base.client.resource.ShowcaseResource' />
+	<ui:with field='messages' type='org.geomajas.puregwt.widget.example.client.i18n.SampleMessages' />
 
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
 		<g:west size="300">
 			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-				<g:Button ui:field="button">Show closeableDialogBox</g:Button>
+				<g:Button ui:field="button" text="{messages.closeableDialogButShow}" />
 			</g:HTMLPanel>
 		</g:west>
 	</g:DockLayoutPanel>

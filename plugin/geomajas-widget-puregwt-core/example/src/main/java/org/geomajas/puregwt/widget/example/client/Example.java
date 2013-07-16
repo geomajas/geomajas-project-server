@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 /**
  * Entry point and main class for core widget example application.
- * 
  * @author Pieter De Graef
  */
 public class Example implements EntryPoint {

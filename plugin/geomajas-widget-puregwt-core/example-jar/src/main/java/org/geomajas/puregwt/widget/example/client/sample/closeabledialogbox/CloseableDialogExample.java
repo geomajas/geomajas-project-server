@@ -16,9 +16,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.widget.client.dialog.CloseableDialogBox;
+import org.geomajas.puregwt.widget.example.client.ExampleJar;
+import org.geomajas.puregwt.widget.example.client.resource.ExampleWidgetResource;
 
 /**
  * Closeable dialog widget showcase panel.
@@ -47,11 +50,17 @@ public class CloseableDialogExample implements SamplePanel {
 	public CloseableDialogExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
 		closeableDialogBox = new CloseableDialogBox();
+		Image dialogContent = new Image(ExampleWidgetResource.INSTANCE.geomajasLogo().getSafeUri());
+		closeableDialogBox.add(dialogContent);
+		closeableDialogBox.setModal(true);
+		closeableDialogBox.setAutoHideEnabled(true);
+		closeableDialogBox.setAnimationEnabled(true);
+
 		button.addMouseDownHandler(new MouseDownHandler() {
 
 			@Override
 			public void onMouseDown(MouseDownEvent mouseDownEvent) {
-				closeableDialogBox.setText("My closeable dialog");
+				closeableDialogBox.setText(ExampleJar.getMessages().closeableDialogTitle());
 				closeableDialogBox.show();
 			}
 		});

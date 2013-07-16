@@ -13,7 +13,7 @@ package org.geomajas.puregwt.widget.client.featureselectbox.view;
 import java.util.List;
 
 import org.geomajas.puregwt.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.Handler;
-import org.geomajas.puregwt.widget.client.featureselectbox.resources.FeatureSelectBoxResource;
+import org.geomajas.puregwt.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
