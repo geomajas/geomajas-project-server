@@ -23,8 +23,8 @@
 	<artifactId>geomajas-widget-puregwt-core-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>geomajas-puregwt-widget-core plug-in parent</name>
-	<description>geomajas-puregwt-widget-core plug-in grouping module</description>
+	<name>Geomajas Plugin PureGWT Core Widget: Parent</name>
+	<description>Geomajas Plugin PureGWT Core Widget: Parent</description>
 
 	<!-- SCM information -->
 	<scm>
@@ -36,6 +36,8 @@
 	<modules>
 		<module>core</module>
 		<module>documentation</module>
+		<module>example-jar</module>
+		<module>example</module>
 	</modules>
 
 	<dependencyManagement>
@@ -63,6 +65,30 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-widget-puregwt-core</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-puregwt-core-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-puregwt-core-example-jar</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-puregwt-core-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-puregwt-core-example</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
@@ -98,7 +124,7 @@
 	</profiles>
 
 	<properties>
-		<widget-puregwt-core-backend-version>1.11.0</widget-puregwt-core-backend-version>
+		<widget-puregwt-core-backend-version>1.13.1</widget-puregwt-core-backend-version>
 		<widget-puregwt-core-puregwt-face-version>1.0.0-SNAPSHOT</widget-puregwt-core-puregwt-face-version>
 	</properties>
 
