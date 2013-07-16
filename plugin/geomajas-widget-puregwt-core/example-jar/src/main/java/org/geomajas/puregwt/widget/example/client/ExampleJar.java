@@ -11,14 +11,12 @@
 
 package org.geomajas.puregwt.widget.example.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import org.geomajas.puregwt.widget.example.client.resource.ExampleWidgetResource;
 import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
 
 /**

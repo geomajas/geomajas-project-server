@@ -11,7 +11,8 @@
 package org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Button;
@@ -37,10 +38,10 @@ public class CloseableDialogExample implements SamplePanel {
 	@UiField
 	protected Button button;
 
-	private static CloseableDialogUiBinder UIBINDER = GWT.create(CloseableDialogUiBinder.class);
+	private static final CloseableDialogUiBinder UIBINDER = GWT.create(CloseableDialogUiBinder.class);
 
 	/**
-	 * UI binder interface
+	 * UI binder interface.
 	 */
 	interface CloseableDialogUiBinder extends
 			UiBinder<DockLayoutPanel, CloseableDialogExample> {

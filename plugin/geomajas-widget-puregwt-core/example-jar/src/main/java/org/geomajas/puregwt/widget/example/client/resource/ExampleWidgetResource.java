@@ -13,16 +13,13 @@ package org.geomajas.puregwt.widget.example.client.resource;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
-import org.geomajas.annotation.Api;
 
 /**
  * Client resource bundle interface for pure GWT widgets example project.
- * 
+ *
  * @author Dosi Bingov
- * 
  * @since 1.0.0
  */
-@Api(allMethods = true)
 public interface ExampleWidgetResource extends ClientBundle {
 
 	/**
@@ -32,11 +29,17 @@ public interface ExampleWidgetResource extends ClientBundle {
 
 	/**
 	 * Get the css resource.
+	 *
 	 * @return the css resource
 	 */
 	@Source("example-widget-core.css")
 	ExampleWidgetCssResource css();
 
+	/**
+	 * Get the css resource.
+	 *
+	 * @return Image resource og geomajas logo.
+	 */
 	@Source("image/logo-geomajas.png")
 	ImageResource geomajasLogo();
 }
