@@ -30,7 +30,6 @@
 	</scm>
 	
 	<modules>
-		<module>geomajas-gwt-example</module>
 		<module>geomajas-gwt-showcase</module>
 		<module>geomajas-puregwt-showcase</module>
 	</modules>
