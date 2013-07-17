@@ -11,9 +11,6 @@
 
 package org.geomajas.plugin.wmsclient.client.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.wmsclient.client.WmsClientGinjector;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
@@ -82,7 +79,7 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
 		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
 		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS2));
-		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getCurrentStyle()));
+		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
 		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
 		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
 	}
@@ -102,7 +99,7 @@ public class WmsServiceTest extends GWTTestCase {
 		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
 		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
 		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS));
-		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getCurrentStyle()));
+		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
 		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
 		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
 	}
@@ -167,9 +164,7 @@ public class WmsServiceTest extends GWTTestCase {
 		wmsConfig = new WmsLayerConfiguration();
 		wmsConfig.setBaseUrl(VALUE_URL);
 		wmsConfig.setLayers(VALUE_LAYER);
-		List<String> styleList = new ArrayList<String>();
-		styleList.add(VALUE_STYLE);
-		wmsConfig.setSupportedStyles(styleList);
+		wmsConfig.setStyles(VALUE_STYLE);
 	}
 
 	private boolean hasParameter(String url, String parameter, String value) {

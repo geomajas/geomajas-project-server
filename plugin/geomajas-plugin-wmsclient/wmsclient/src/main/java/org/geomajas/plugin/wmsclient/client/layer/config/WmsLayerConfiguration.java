@@ -12,8 +12,6 @@
 package org.geomajas.plugin.wmsclient.client.layer.config;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
@@ -39,9 +37,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private String layers = "";
 
-	private List<String> supportedStyles = new ArrayList<String>();
-
-	private List<String> activeStyles = new ArrayList<String>();
+	private String styles = "";
 
 	private String filter; // CQL in case the WMS server supports it.
 
@@ -52,14 +48,6 @@ public class WmsLayerConfiguration implements Serializable {
 	private LegendConfig legendConfig = new LegendConfig();
 
 	private WmsServiceVendor wmsServiceVendor = WmsServiceVendor.UNSPECIFIED;
-
-	/**
-	 * Constructor.
-	 */
-	public WmsLayerConfiguration() {
-		supportedStyles.add(""); // use the default styles
-		activeStyles.add(""); // use the default styles
-	}
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:
@@ -124,124 +112,23 @@ public class WmsLayerConfiguration implements Serializable {
 	}
 
 	/**
-	 * Get the list of supported styles parameters for use in the GetMap requests.
+	 * Get the styles parameter to be used in the GetMap requests.
 	 * 
-	 * @return The list of supported styles parameters for use in the GetMap requests.
+	 * @return The styles parameter to be used in the GetMap requests.
 	 */
-	public List<String> getSupportedStyles() {
-		return supportedStyles;
+	public String getStyles() {
+		return styles;
 	}
 
 	/**
-	 * Set the list of supported styles parameters for use in the GetMap requests. This will reset the currently active
-	 * styles, by taking the first style from the list.
+	 * Set the styles parameter to be used in the GetMap requests.
 	 * 
 	 * @param styles
-	 *            The list of supported styles parameters for use in the GetMap requests. If this list is empty, the
-	 *            default styles will be applied.
+	 *            The styles parameter to be used in the GetMap requests.
 	 */
-	public void setSupportedStyles(List<String> styles) {
-		activeStyles.clear();
-		supportedStyles.clear();
-		if (styles == null || styles.size() == 0) {
-			activeStyles.add("");
-			supportedStyles.add("");
-		} else {
-			activeStyles.add(styles.get(0));
-			supportedStyles.addAll(styles);
-		}
+	public void setStyles(String styles) {
+		this.styles = styles;
 	}
-
-	/** Clear the list of active styles. Make sure to add a style again. */
-	public void clearActiveStyles() {
-		activeStyles.clear();
-	}
-
-	/**
-	 * <p>
-	 * Add styles to be used in GetMap requests. Note that multiple styles can be added, as the WMS specification
-	 * supports a comma separated list of styles.
-	 * </p>
-	 * <p>
-	 * Since the supportedStyles field stores the full list of styles supported by the WMS layer, it is recommended to
-	 * choose from between those styles. It doesn't make sense to activate styles that are not supported by the WMS
-	 * server.
-	 * </p>
-	 * 
-	 * @param styles
-	 *            The list of styles to use.
-	 */
-	public void addActiveStyles(String... styles) {
-		for (String style : styles) {
-			activeStyles.add(style);
-		}
-	}
-
-	/**
-	 * Remove styles from being used again.
-	 * 
-	 * @param styles
-	 *            The list of styles to remove.
-	 */
-	public void removeActiveStyles(String... styles) {
-		for (String style : styles) {
-			activeStyles.remove(style);
-		}
-	}
-
-	/**
-	 * Get the active styles parameter for use e.g. in the GetMap requests.
-	 * 
-	 * @return The active styles parameter
-	 */
-	public String getCurrentStyle() {
-		if (activeStyles.size() == 0) {
-			return "";
-		}
-		StringBuilder builder = new StringBuilder();
-		for (String style : activeStyles) {
-			if (builder.length() > 0) {
-				builder.append(",");
-			}
-			builder.append(style);
-		}
-		return builder.toString();
-	}
-
-	/**
-	 * Set the active styles parameter. Does nothing if the specified styles string is not in the list of styles
-	 * parameters.
-	 * 
-	 * @param styles
-	 *            The styles parameter to become active
-	 */
-	// public void setActiveStyles(String styles) {
-	// int index = this.styleList.indexOf(styles);
-	// if (index >= 0) {
-	// this.styleIndex = index;
-	// }
-	// }
-
-	// /**
-	// * Get the styles parameter used e.g. in the GetMap requests.
-	// *
-	// * @return The GetMap styles parameter.
-	// */
-	// private String getStyles(int index) {
-	// if (index >= styleList.size()) {
-	// return null;
-	// }
-	// return styleList.get(index);
-	// }
-	//
-	// /**
-	// * Get the index of the active style in the style list.
-	// *
-	// * @return The index of the active style
-	// */
-	// private int getStyleIndex() {
-	// return this.styleIndex;
-	// }
 
 	/**
 	 * Get the filter parameter used in GetMap requests. Note this parameter is not a default WMS parameter, and not all
