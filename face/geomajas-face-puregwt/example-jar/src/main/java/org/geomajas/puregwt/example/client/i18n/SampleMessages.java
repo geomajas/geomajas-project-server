@@ -54,6 +54,20 @@ public interface SampleMessages extends Messages {
 	
 	String generalServerExceptionDescription();
 
+	String generalListnerTitle();
+
+	String generalListnerShort();
+
+	String generalListnerDescription();
+
+	String listenerCoordinates();
+
+	String listenerScreenPosition();
+
+	String listenerWorldPosition();
+
+	String listenerEvent();
+
 	// ------------------------------------------------------------------------
 	// Category: Layers
 	// ------------------------------------------------------------------------

@@ -26,6 +26,7 @@ import org.geomajas.puregwt.example.client.sample.layer.LayerOpacityPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerOrderPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerRefreshPanel;
 import org.geomajas.puregwt.example.client.sample.layer.LayerVisibilityPanel;
+import org.geomajas.puregwt.example.client.sample.listener.ListenerPanel;
 import org.geomajas.puregwt.example.client.sample.rendering.CanvasRenderingPanel;
 import org.geomajas.puregwt.example.client.sample.rendering.DrawingInteractionPanel;
 import org.geomajas.puregwt.example.client.sample.rendering.FixedSizeWorldSpaceRenderingPanel;
@@ -58,6 +59,7 @@ public class ExampleJar implements EntryPoint {
 		registerLayerSamples();
 		registerFeatureSamples();
 		registerRenderingSamples();
+		registerListnerSample();
 	}
 
 	public static SampleMessages getMessages() {
@@ -428,6 +430,33 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_RENDERING;
+			}
+		});
+	}
+
+
+	private void registerListnerSample() {
+		SamplePanelRegistry.registerCategory(CATEGORY_GENERAL, 105);
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new ListenerPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalListnerTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalListnerShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalListnerDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
 			}
 		});
 	}
