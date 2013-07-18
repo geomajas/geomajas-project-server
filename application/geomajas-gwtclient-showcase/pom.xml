@@ -27,7 +27,6 @@
 
 	<packaging>war</packaging>
 
-
 	<name>Geomajas GWT client Showcase</name>
 	<description>Showcase of Geomajas GWT client project and plugins projects</description>
 	<url>http://www.geomajas.org/</url>
@@ -42,6 +41,60 @@
 			</roles>
 		</developer>
 	</developers>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>1.14.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-puregwt</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-puregwt-core</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geotools-all</artifactId>
+				<version>1.10.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
+				<version>1.2.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-puregwt-core-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dep</artifactId>
+				<version>1.12.28</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
@@ -61,7 +114,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client-impl</artifactId>
+			<artifactId>geomajas-puregwt-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -72,12 +125,21 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
+			<version>${gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt-version}</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<!-- External GWT libraries -->
+		<dependency>
+			<groupId>com.google.code.gwt-dnd</groupId>
+			<artifactId>gwt-dnd</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
