@@ -32,6 +32,7 @@
 	<modules>
 		<module>geomajas-gwt-showcase</module>
 		<module>geomajas-puregwt-showcase</module>
+		<module>geomajas-gwtclient-showcase</module>
 	</modules>
 
 </project>
