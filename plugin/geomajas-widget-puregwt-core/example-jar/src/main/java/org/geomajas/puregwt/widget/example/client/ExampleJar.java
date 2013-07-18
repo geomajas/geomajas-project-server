@@ -18,6 +18,7 @@ import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
 import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
+import org.geomajas.puregwt.widget.example.client.sample.featureselected.FeatureSelectedExample;
 
 /**
  * Entry point and main class for the widget core example application.
@@ -96,6 +97,30 @@ public class ExampleJar implements EntryPoint {
 
 			public SamplePanel create() {
 				return new CloseableDialogExample();
+			}
+
+			public String getTitle() {
+				return MESSAGES.closeableDialogTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.closeableDialogDescrShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.closeableDialogDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+		});
+
+		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 100);
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new FeatureSelectedExample();
 			}
 
 			public String getTitle() {
