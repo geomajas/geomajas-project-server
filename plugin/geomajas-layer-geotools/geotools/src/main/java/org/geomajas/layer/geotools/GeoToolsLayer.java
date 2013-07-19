@@ -300,6 +300,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				featureModelUsable = false;
 				log.warn("The layer could not be correctly initialized: " + getId(), ioe);
 			}
+		} catch (LayerException le) {
+			featureModelUsable = false;
+			log.warn("The layer could not be correctly initialized: " + getId(), le);
 		}
 	}
 
