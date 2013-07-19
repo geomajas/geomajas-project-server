@@ -59,7 +59,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 
 	private static final int MIN_PIXEL_DISTANCE = 10;
 
-	private static final int PIXELTOLERANCE = 32;
+	private int pixelBuffer;
 
 	private static final int TIMER_DELAY = 500; // 0.5s
 
@@ -76,7 +76,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	// -------------------------------------------------------------------------
 
 	public MouseOverListener() {
-		super(false);
+		this(32);
 	}
 
 	/**
@@ -85,8 +85,17 @@ public class MouseOverListener extends AbstractController implements MapControll
 	 *            if true all attributes of a feature will be shown in the dialog pop up
 	 */
 	public MouseOverListener(boolean showAllAtributes) {
-		super(false);
+		this(32);
 		this.showAllAtributes = showAllAtributes;
+	}
+
+	/**
+	 *
+	 * @param pixelBuffer minimum distance between features to be included in the call out box.
+	 */
+	public MouseOverListener(int pixelBuffer) {
+		super(false);
+		this.pixelBuffer = pixelBuffer;
 	}
 
 	// -------------------------------------------------------------------------
@@ -252,14 +261,14 @@ public class MouseOverListener extends AbstractController implements MapControll
 								GWT.log("Feature label =" + f.getLabel());
 								GWT.log("Feature id =" + f.getId());
 
-								tooltipContent.add(f.getLabel());
-
 								// add all attributes of the feature
 								if (showAllAtributes) {
 									for (Entry<String, Attribute> entry : f.getAttributes().entrySet()) {
 										GWT.log("feature entry = " + entry.getKey() + "/" + entry.getValue());
-										tooltipContent.add(entry.getValue().toString());
+										tooltipContent.add(entry.getKey() + ": " + entry.getValue().toString());
 									}
+								} else {
+									tooltipContent.add(f.getLabel());
 								}
 							}
 
@@ -275,7 +284,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	private double calculateBufferFromPixelTolerance() {
 		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
 				RenderSpace.WORLD);
-		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(PIXELTOLERANCE, 0), RenderSpace.SCREEN,
+		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN,
 				RenderSpace.WORLD);
 		return MathService.distance(c1, c2);
 	}

@@ -18,6 +18,7 @@ import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
 import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
+import org.geomajas.puregwt.widget.example.client.sample.featuremouseover.FeatureMouseOverExample;
 import org.geomajas.puregwt.widget.example.client.sample.featureselected.FeatureSelectedExample;
 
 /**
@@ -116,7 +117,7 @@ public class ExampleJar implements EntryPoint {
 			}
 		});
 
-		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 100);
+		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 101);
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
@@ -133,6 +134,31 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.featureSelectedDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+		});
+
+
+		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 102);
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new FeatureMouseOverExample();
+			}
+
+			public String getTitle() {
+				return MESSAGES.featureMouseOverTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.featureMouseOverDescrShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.featureMouseOverDescription();
 			}
 
 			public String getCategory() {

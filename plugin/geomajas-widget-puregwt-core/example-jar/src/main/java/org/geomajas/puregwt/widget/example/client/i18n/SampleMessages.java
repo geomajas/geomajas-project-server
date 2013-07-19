@@ -37,4 +37,10 @@ public interface SampleMessages extends Messages {
 	String featureSelectedDescrShort();
 
 	String featureSelectedDescription();
+
+	String featureMouseOverTitle();
+
+	String featureMouseOverDescrShort();
+
+	String featureMouseOverDescription();
 }

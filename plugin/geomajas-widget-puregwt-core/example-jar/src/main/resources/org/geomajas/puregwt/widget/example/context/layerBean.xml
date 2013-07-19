@@ -36,12 +36,30 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="attributes">
 			<list>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Name" />
+					<property name="label" value="Label" />
 					<property name="name" value="stringAttr" />
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
 					<property name="type" value="STRING" />
 				</bean>
+
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Id" />
+					<property name="name" value="id" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+				</bean>
+
+
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Geometry" />
+					<property name="name" value="geometry" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+
 			</list>
 		</property>
 	</bean>
