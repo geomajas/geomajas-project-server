@@ -59,7 +59,7 @@ public class ExampleJar implements EntryPoint {
 		registerLayerSamples();
 		registerFeatureSamples();
 		registerRenderingSamples();
-		registerListnerSample();
+		registerListenerSample();
 	}
 
 	public static SampleMessages getMessages() {
@@ -435,7 +435,7 @@ public class ExampleJar implements EntryPoint {
 	}
 
 
-	private void registerListnerSample() {
+	private void registerListenerSample() {
 		SamplePanelRegistry.registerCategory(CATEGORY_GENERAL, 105);
 		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
 
