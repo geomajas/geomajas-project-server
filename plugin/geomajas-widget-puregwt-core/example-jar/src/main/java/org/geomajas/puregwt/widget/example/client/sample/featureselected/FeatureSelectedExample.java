@@ -11,22 +11,21 @@
 package org.geomajas.puregwt.widget.example.client.sample.featureselected;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedEvent;
+import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedHandler;
+import org.geomajas.puregwt.widget.client.featureselectbox.presenter.impl.FeatureClickedListener;
 
 /**
  * Class description.
@@ -42,9 +41,13 @@ public class FeatureSelectedExample implements SamplePanel {
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
 
+	@UiField
+	protected VerticalPanel layerEventLayout;
+
 	@Override
 	public Widget asWidget() {
-		return  rootElement;
+		// return root layout element
+		return rootElement;
 	}
 
 	/**
@@ -62,56 +65,36 @@ public class FeatureSelectedExample implements SamplePanel {
 	public FeatureSelectedExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
 
+		// Create the MapPresenter
 		mapPresenter = ExampleBase.getInjector().getMapPresenter();
 
-		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
-		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		//mapPresenter.getEventBus().addLayerVisibilityHandler(new MyLayerVisibilityHandler());
+
+		// add FeatureClickedHandler where we handle FeatureClickedEvent
+		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);
 
-		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-widget-app", "mapLayerVisibility");
+		// Initialize the map
+		mapPresenter.initialize("puregwt-widget-app", "mapGhent");
+
+		// add featured clicked listener.
+		mapPresenter.addMapListener(new FeatureClickedListener(7));
 	}
 
 	/**
-	 * TODO: dont really need this
-	 * Map initialization handler that adds a CheckBox to the layout for every layer. With these CheckBoxes, the user
-	 * can toggle the layer's visibility.
-	 *
-	 * @author Pieter De Graef
+	 * Handler that handles FeatureClickedEvent.
 	 */
-	private class MyMapInitializationHandler implements MapInitializationHandler {
+	private class MyFeatureClickedHandler implements FeatureClickedHandler {
 
-		public void onMapInitialized(MapInitializationEvent event) {
-			// When the map initializes: add a CheckBox for every layer, so the use can toggle visibility:
-			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
-				CheckBox layerCheck = new CheckBox(layer.getTitle());
-				layerCheck.setValue(layer.isMarkedAsVisible());
-
-				// When CheckBox value changes, change the layer's visibility as well:
-				layerCheck.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-
-					public void onValueChange(ValueChangeEvent<Boolean> event) {
-						if (event.getValue() != null) {
-							layer.setMarkedAsVisible(event.getValue());
-						}
-					}
-				});
-
-				// layerCheckBoxLayout.add(layerCheck);
-			}
-
-			// Now zoom in a lot, because the countries layer is not visible at high altitudes:
-			double scale = mapPresenter.getViewPort().getScale();
-			mapPresenter.getViewPort().applyPosition(new Coordinate(0, 7000000));
-			mapPresenter.getViewPort().applyScale(scale * 64);
+		@Override
+		public void onFeatureClicked(FeatureClickedEvent event) {
+			Feature feature = event.getFeature();
+			layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
+			layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
 		}
 	}
 }

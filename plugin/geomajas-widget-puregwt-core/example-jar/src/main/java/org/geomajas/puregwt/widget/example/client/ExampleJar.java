@@ -124,15 +124,15 @@ public class ExampleJar implements EntryPoint {
 			}
 
 			public String getTitle() {
-				return MESSAGES.closeableDialogTitle();
+				return MESSAGES.featureSelectedTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.closeableDialogDescrShort();
+				return MESSAGES.featureSelectedDescrShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.closeableDialogDescription();
+				return MESSAGES.featureSelectedDescription();
 			}
 
 			public String getCategory() {

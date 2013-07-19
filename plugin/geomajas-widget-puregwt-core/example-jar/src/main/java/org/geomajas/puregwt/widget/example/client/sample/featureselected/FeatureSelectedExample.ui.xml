@@ -4,6 +4,15 @@
 	<ui:with field='messages' type='org.geomajas.puregwt.widget.example.client.i18n.SampleMessages' />
 
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
+		<g:west size="350">
+			<g:ScrollPanel>
+				<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
+					<h2>FeatureClickedEvent:</h2>
+					<g:VerticalPanel ui:field="layerEventLayout" width="97%"/>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
+		</g:west>
+
 		<g:center>
 			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
 				<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />

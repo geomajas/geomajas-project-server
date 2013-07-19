@@ -16,7 +16,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapLayerVisibility" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapGhent" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#E0E0E0" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -42,11 +42,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="panButtonsEnabled" value="true" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-20026376.393709917" />
-				<property name="y" value="-20026376.393709917" />
-				<property name="width" value="40052752.787419834" />
-				<property name="height" value="40052752.787419834" />
+				<property name="x" value="414000.3401850014" />
+				<property name="y" value="6630000.973030038" />
+				<property name="width" value="6000" />
+				<property name="height" value="5500" />
 			</bean>
+
+	<!--		413982.13835721713, 6631491.065600751)
+			414192.3401850014, 6631299.973030038
+			(450089.07959342666, 6595417.565564409)
+			  -7078.06881920732    68946.199513230-->
+
 		</property>
 		<property name="scaleConfiguration">
 			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
@@ -70,10 +76,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						<value>0.10466131637343458</value>
 						<value>0.20932263274686916</value>
 						<value>0.4186452654937383</value>
-						<value>0.8372905309874766</value>
+				<!--		<value>0.8372905309874766</value>
 						<value>1.6745810619749533</value>
 						<value>3.3491621239499065</value>
-						<value>6.698324247899813</value>
+						<value>6.698324247899813</value>-->
 					</list>
 				</property>
 			</bean>
@@ -86,12 +92,22 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="visible" value="true" />
 					<property name="style" value="1" />
 				</bean>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmCycleLayer">
-					<property name="serverLayerId" value="osmCycle" />
+
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="pointsLayer">
+					<property name="serverLayerId" value="layerBean" />
+					<property name="label" value="Points on the map"/>
+					<property name="visible" value="true" />
+					<property name="namedStyleInfo" ref="SLDStyleInfo"/>
+				<!--	<property name="namedStyleInfo" ref="beansStyleInfo"/>-->
+				</bean>
+
+
+				<!--<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmCycleLayer">
+					<property name="serverLayerId" value="osmCycle" />   ref
 					<property name="label" value="OpenCycleMap" />
 					<property name="visible" value="false" />
 					<property name="style" value="1" />
-				</bean>
+				</bean>-->
 			</list>
 		</property>
 	</bean>

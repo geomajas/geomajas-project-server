@@ -49,7 +49,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 
 	private static final int MIN_PIXEL_DISTANCE = 120; // TODO: min height of the context menu
 
-	private static final int PIXELTOLERANCE = 32;
+	private int pixelBuffer;
 
 	private View featureSelectBoxView;
 
@@ -60,12 +60,21 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	// -------------------------------------------------------------------------
 
 	public FeatureClickedListener() {
+		// minimum distance between features to show FeatureSelectBox.
+		this(32);
+	}
+
+	/**
+	 *
+	 * @param pixelBuffer minimum distance between features to show context menu with features labels.
+	 */
+	public FeatureClickedListener(int pixelBuffer) {
 		super(false);
 		clickedFeatures = new HashMap<String, org.geomajas.puregwt.client.map.feature.Feature>();
 		featureSelectBoxView = new FeatureSelectBox();
 		featureSelectBoxView.setHandler(this);
 		setView(featureSelectBoxView);
-
+		this.pixelBuffer = pixelBuffer;
 	}
 
 	// -------------------------------------------------------------------------
@@ -169,7 +178,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	private double calculateBufferFromPixelTolerance() {
 		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
 				RenderSpace.WORLD);
-		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(PIXELTOLERANCE, 0), RenderSpace.SCREEN,
+		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN,
 				RenderSpace.WORLD);
 		return c1.distance(c2);
 	}

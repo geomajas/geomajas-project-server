@@ -20,9 +20,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<property name="maps">
 			<list>
-				<ref bean="mapLayerVisibility" />
+				<ref bean="mapGhent" />
 			</list>
 		</property>
 	</bean>
-
 </beans>

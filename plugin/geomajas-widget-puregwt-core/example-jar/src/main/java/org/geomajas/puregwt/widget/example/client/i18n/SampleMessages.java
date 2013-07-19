@@ -31,4 +31,10 @@ public interface SampleMessages extends Messages {
 	String closeableDialogDescription();
 
 	String closeableDialogButShow();
+
+	String featureSelectedTitle();
+
+	String featureSelectedDescrShort();
+
+	String featureSelectedDescription();
 }
