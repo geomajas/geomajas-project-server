@@ -25,7 +25,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface ServerLayer<T extends ClientLayerInfo> extends Layer {
+public interface ServerLayer<T extends ClientLayerInfo> extends Layer, HasLegendWidget {
 
 	/**
 	 * Return this layer's server ID. Multiple client side layer (connected with a map) can point to a single data

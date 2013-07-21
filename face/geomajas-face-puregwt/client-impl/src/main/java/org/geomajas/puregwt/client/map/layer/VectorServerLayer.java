@@ -10,16 +10,18 @@
  */
 package org.geomajas.puregwt.client.map.layer;
 
+import java.util.List;
+
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.sld.RuleInfo;
 
 /**
  * Default layer for {@link ClientVectorLayerInfo}.
  * 
  * @author Jan De Moerloose
  */
-public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, LabelsSupported,
-		FeaturesSupported {
+public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, LabelsSupported, FeaturesSupported {
 
 	/**
 	 * Update the style for a layer. The layer will notify it's listeners.
@@ -28,4 +30,11 @@ public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, L
 	 *            the styleinfo
 	 */
 	void updateStyle(NamedStyleInfo styleInfo);
+
+	/**
+	 * Get the SLD rules for this layer.
+	 * 
+	 * @return the rules
+	 */
+	List<RuleInfo> getRules();
 }

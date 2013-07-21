@@ -10,9 +10,6 @@
  */
 package org.geomajas.puregwt.client.map.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
@@ -20,13 +17,12 @@ import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.service.EndPointService;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
- * <p>
- * The client side representation of a raster layer.
- * </p>
+ * The client side representation of a raster layer defined on the backend.
  * 
  * @author Pieter De Graef
  */
@@ -34,10 +30,7 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 
 	private EndPointService endPointService;
 
-	/**
-	 * The only constructor! Set the MapModel and the layer info.
-	 * 
-	 */
+	/** The only constructor. */
 	@Inject
 	public RasterServerLayerImpl(@Assisted ClientRasterLayerInfo layerInfo, @Assisted final ViewPort viewPort,
 			@Assisted final MapEventBus eventBus, final EndPointService endPointService) {
@@ -46,12 +39,10 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	}
 
 	@Override
-	public List<LayerStylePresenter> getStylePresenters() {
-		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
+	public IsWidget buildLegendWidget() {
 		UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
 		url.addPath(getServerLayerId() + LEGEND_ICON_EXTENSION);
-		stylePresenters.add(new ServerLayerStylePresenter(0, url.toString(), getTitle()));
-		return stylePresenters;
+		return new ServerLayerStyleWidget(url.toString(), getTitle(), null);
 	}
 
 	/**

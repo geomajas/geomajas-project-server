@@ -30,6 +30,11 @@ import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerLabelHideEvent;
 import org.geomajas.puregwt.client.event.LayerLabelShowEvent;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
+import org.geomajas.puregwt.client.event.LayerStyleChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.MapEventBus;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.feature.Feature;
@@ -37,6 +42,9 @@ import org.geomajas.puregwt.client.service.EndPointService;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -65,30 +73,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		super(layerInfo, viewPort, eventBus);
 		this.endPointService = endPointService;
 		selection = new HashMap<String, Feature>();
-	}
-
-	// ------------------------------------------------------------------------
-	// Layer implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public List<LayerStylePresenter> getStylePresenters() {
-		List<LayerStylePresenter> stylePresenters = new ArrayList<LayerStylePresenter>();
-
-		NamedStyleInfo styleInfo = layerInfo.getNamedStyleInfo();
-		int i = 0;
-		for (FeatureTypeStyleInfo sfi : layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList()) {
-			for (RuleInfo rInfo : sfi.getRuleList()) {
-				UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
-				url.addPath(getServerLayerId());
-				url.addPath(styleInfo.getName());
-				url.addPath(i + LEGEND_ICON_EXTENSION);
-
-				stylePresenters.add(new ServerLayerStylePresenter(i++, url.toString(), rInfo.getName(), rInfo));
-			}
-
-		}
-		return stylePresenters;
 	}
 
 	// ------------------------------------------------------------------------
@@ -162,6 +146,10 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		return labeled;
 	}
 
+	// ------------------------------------------------------------------------
+	// VectorServerLayer implementation:
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void updateStyle(NamedStyleInfo nsi) {
 		getLayerInfo().setNamedStyleInfo(nsi);
@@ -179,5 +167,119 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 						eventBus.fireEvent(new LayerStyleChangedEvent(VectorServerLayerImpl.this));
 					}
 				});
+	}
+
+	@Override
+	public List<RuleInfo> getRules() {
+		List<RuleInfo> rules = new ArrayList<RuleInfo>();
+		for (FeatureTypeStyleInfo sfi : layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList()) {
+			rules.addAll(sfi.getRuleList());
+		}
+		return rules;
+	}
+
+	// ------------------------------------------------------------------------
+	// HasLegendWidget implementation:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public IsWidget buildLegendWidget() {
+		return new VectorServerLayerLegendWidget(this, endPointService, eventBus, viewPort);
+	}
+
+	// ------------------------------------------------------------------------
+	// Private widget class that represents the Legend for this layer:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Legend widget for this layer implementation.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class VectorServerLayerLegendWidget implements IsWidget {
+
+		private final List<ServerLayerStyleWidget> ruleWidgets = new ArrayList<ServerLayerStyleWidget>();
+
+		private VerticalPanel layout;
+
+		protected VectorServerLayerLegendWidget(VectorServerLayer layer, EndPointService endPointService,
+				MapEventBus eventBus, ViewPort viewPort) {
+
+			// Zooming in or out may cause some styles to become visible/invisible:
+			eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
+
+				public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+				}
+
+				public void onViewPortScaled(ViewPortScaledEvent event) {
+					updateVisibility();
+				}
+
+				public void onViewPortChanged(ViewPortChangedEvent event) {
+					updateVisibility();
+				}
+			});
+
+			// Update the legend widget when the style on this layer changes:
+			eventBus.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
+
+				@Override
+				public void onLayerStyleChanged(LayerStyleChangedEvent event) {
+					layout.clear();
+					buildLegend(layout);
+				}
+			}, VectorServerLayerImpl.this);
+		}
+
+		@Override
+		public Widget asWidget() {
+			if (layout == null) {
+				layout = new VerticalPanel();
+				buildLegend(layout);
+			}
+			return layout;
+		}
+
+		private void buildLegend(VerticalPanel layout) {
+			NamedStyleInfo styleInfo = getLayerInfo().getNamedStyleInfo();
+			int i = 0;
+			for (FeatureTypeStyleInfo sfi : styleInfo.getUserStyle().getFeatureTypeStyleList()) {
+				for (RuleInfo rInfo : sfi.getRuleList()) {
+					UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
+					url.addPath(getServerLayerId());
+					url.addPath(styleInfo.getName());
+					url.addPath(i + ".png");
+					ServerLayerStyleWidget widget = new ServerLayerStyleWidget(url.toString(), rInfo.getName(), rInfo);
+					ruleWidgets.add(widget);
+					layout.add(widget);
+					i++;
+				}
+			}
+		}
+
+		private void updateVisibility() {
+			for (ServerLayerStyleWidget ruleWidget : ruleWidgets) {
+				ruleWidget.asWidget().setVisible(isVisible(ruleWidget.getRule(), viewPort));
+			}
+		}
+
+		/** TODO This method might be interesting as a static method in some SLD utility class. */
+		private boolean isVisible(RuleInfo rule, ViewPort viewPort) {
+			if (rule == null) {
+				return true;
+			}
+			double minScale = Double.MAX_VALUE;
+			double maxScale = Double.MIN_VALUE;
+
+			if (rule.getMinScaleDenominator() != null && rule.getMinScaleDenominator().getMinScaleDenominator() != 0) {
+				minScale = viewPort.toScale(rule.getMinScaleDenominator().getMinScaleDenominator());
+			}
+
+			if (rule.getMaxScaleDenominator() != null && rule.getMaxScaleDenominator().getMaxScaleDenominator() != 0) {
+				maxScale = viewPort.toScale(rule.getMaxScaleDenominator().getMaxScaleDenominator());
+			}
+
+			return (maxScale <= viewPort.getScale() && viewPort.getScale() < minScale);
+		}
 	}
 }

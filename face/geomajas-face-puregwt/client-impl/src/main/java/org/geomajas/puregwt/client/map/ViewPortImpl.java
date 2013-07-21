@@ -36,6 +36,8 @@ import com.google.inject.Inject;
  * @author Pieter De Graef
  */
 public final class ViewPortImpl implements ViewPort {
+	
+	private ClientMapInfo mapInfo;
 
 	/** The map's width in pixels. */
 	private int mapWidth;
@@ -73,7 +75,9 @@ public final class ViewPortImpl implements ViewPort {
 	// Configuration stuff:
 	// -------------------------------------------------------------------------
 
+	@Override
 	public void initialize(ClientMapInfo mapInfo, MapEventBus eventBus) {
+		this.mapInfo = mapInfo;
 		this.eventBus = eventBus;
 		crs = mapInfo.getCrs();
 
@@ -105,10 +109,12 @@ public final class ViewPortImpl implements ViewPort {
 		initialized = true;
 	}
 
+	@Override
 	public Bbox getMaximumBounds() {
 		return maxBounds;
 	}
 
+	@Override
 	public void setMapSize(int width, int height) {
 		if (this.mapWidth != width || this.mapHeight != height) {
 			position = transform(new Coordinate(width / 2, height / 2), RenderSpace.SCREEN, RenderSpace.WORLD);
@@ -123,14 +129,17 @@ public final class ViewPortImpl implements ViewPort {
 		}
 	}
 
+	@Override
 	public String getCrs() {
 		return crs;
 	}
 
+	@Override
 	public int getMapWidth() {
 		return mapWidth;
 	}
 
+	@Override
 	public int getMapHeight() {
 		return mapHeight;
 	}
@@ -139,10 +148,12 @@ public final class ViewPortImpl implements ViewPort {
 	// Methods that retrieve what is visible on the map:
 	// -------------------------------------------------------------------------
 
+	@Override
 	public Coordinate getPosition() {
 		return new Coordinate(position);
 	}
 
+	@Override
 	public double getScale() {
 		return scale;
 	}
@@ -165,14 +176,17 @@ public final class ViewPortImpl implements ViewPort {
 	// Methods that manipulate what is visible on the map:
 	// -------------------------------------------------------------------------
 
+	@Override
 	public ZoomStrategy getZoomStrategy() {
 		return zoomStrategy;
 	}
 
+	@Override
 	public void setZoomStrategy(ZoomStrategy zoomStrategy) {
 		this.zoomStrategy = zoomStrategy;
 	}
 
+	@Override
 	public void dragToPosition(Coordinate coordinate) {
 		position = checkPosition(coordinate, scale);
 		if (eventBus != null) {
@@ -180,6 +194,7 @@ public final class ViewPortImpl implements ViewPort {
 		}
 	}
 
+	@Override
 	public void applyPosition(Coordinate coordinate) {
 		position = checkPosition(coordinate, scale);
 		if (eventBus != null) {
@@ -187,18 +202,22 @@ public final class ViewPortImpl implements ViewPort {
 		}
 	}
 
+	@Override
 	public void dragToScale(double scale) {
 		applyScale(scale, position, true);
 	}
 
+	@Override
 	public void applyScale(double scale) {
 		applyScale(scale, position, false);
 	}
 
+	@Override
 	public void dragToScale(double newScale, Coordinate rescalePoint) {
 		applyScale(newScale, rescalePoint, true);
 	}
 
+	@Override
 	public void applyScale(double newScale, Coordinate rescalePoint) {
 		applyScale(newScale, rescalePoint, false);
 	}
@@ -231,10 +250,12 @@ public final class ViewPortImpl implements ViewPort {
 		}
 	}
 
+	@Override
 	public void applyBounds(Bbox bounds) {
 		applyBounds(bounds, ZoomOption.LEVEL_FIT);
 	}
 
+	@Override
 	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
 		double newScale = getScaleForBounds(bounds, zoomOption);
 		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), newScale);
@@ -258,6 +279,7 @@ public final class ViewPortImpl implements ViewPort {
 	// ViewPort transformation methods:
 	// ------------------------------------------------------------------------
 
+	@Override
 	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -278,6 +300,7 @@ public final class ViewPortImpl implements ViewPort {
 		return coordinate;
 	}
 
+	@Override
 	public Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -298,6 +321,7 @@ public final class ViewPortImpl implements ViewPort {
 		return geometry;
 	}
 
+	@Override
 	public Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -318,6 +342,7 @@ public final class ViewPortImpl implements ViewPort {
 		return bbox;
 	}
 
+	@Override
 	public Matrix getTransformationMatrix(RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -343,6 +368,7 @@ public final class ViewPortImpl implements ViewPort {
 		return null;
 	}
 
+	@Override
 	public Matrix getTranslationMatrix(RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -368,8 +394,14 @@ public final class ViewPortImpl implements ViewPort {
 		return null;
 	}
 
+	@Override
 	public boolean isInitialized() {
 		return initialized;
+	}
+
+	@Override
+	public double toScale(double scaleDenominator) {
+		return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
 	}
 
 	// -------------------------------------------------------------------------
@@ -528,5 +560,4 @@ public final class ViewPortImpl implements ViewPort {
 		}
 		return null;
 	}
-
 }

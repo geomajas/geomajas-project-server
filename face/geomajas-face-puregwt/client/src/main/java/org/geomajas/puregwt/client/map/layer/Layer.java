@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -84,12 +82,4 @@ public interface Layer {
 
 	/** Refresh this layer on the map. This method will completely erase the current contents and redraw. */
 	void refresh();
-	
-	/**
-	 * Get the full list of style presenters for this layer. Each style presenters represents a supported style for this
-	 * layer.
-	 * 
-	 * @return The full (and ordered) list of style presenters for this layer.
-	 */
-	List<LayerStylePresenter> getStylePresenters();
 }

@@ -17,27 +17,33 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Style presenter for serverside layers.
+ * <p>
+ * Widget that displays a single style for a {@link ServerLayer}. For a {@link VectorServerLayer} that widget will
+ * represent a single SLD rule, for a {@link RasterServerLayer} this widget is used as the entire legend widget.
+ * </p>
+ * <p>
+ * As this widget is used only by both the {@link VectorServerLayer} and the {@link RasterServerLayer}, the constructor
+ * has protected visibility.
+ * </p>
  * 
  * @author Pieter De Graef
  */
-public class ServerLayerStylePresenter implements LayerStylePresenter {
+public class ServerLayerStyleWidget implements IsWidget {
 
 	/**
 	 * UI binder for this widget.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface ContentWidgetViewUiBinder extends UiBinder<Widget, ServerLayerStylePresenter> {
+	interface ContentWidgetViewUiBinder extends UiBinder<Widget, ServerLayerStyleWidget> {
 	}
 
 	private static final ContentWidgetViewUiBinder UI_BINDER = GWT.create(ContentWidgetViewUiBinder.class);
-
-	private final int index;
 
 	private final String title;
 
@@ -53,14 +59,9 @@ public class ServerLayerStylePresenter implements LayerStylePresenter {
 
 	private RuleInfo rule;
 
-	public ServerLayerStylePresenter(int index, String url, String title) {
-		this.index = index;
+	protected ServerLayerStyleWidget(String url, String title, RuleInfo rule) {
 		this.title = title;
 		this.url = url;
-	}
-
-	public ServerLayerStylePresenter(int index, String url, String title, RuleInfo rule) {
-		this(index, url, title);
 		this.rule = rule;
 	}
 
@@ -73,10 +74,6 @@ public class ServerLayerStylePresenter implements LayerStylePresenter {
 		return widget;
 	}
 
-	public int getIndex() {
-		return index;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -85,7 +82,6 @@ public class ServerLayerStylePresenter implements LayerStylePresenter {
 		return url;
 	}
 
-	@Override
 	public RuleInfo getRule() {
 		return rule;
 	}

@@ -49,9 +49,11 @@ public interface ViewPort {
 	 * function properly. This initialization should therefore be a part of the whole {@link MapPresenter}
 	 * initialization procedure.
 	 * 
-	 * @param mapInfo The map information meta-data from which to initialize the <code>ViewPort</code>.
-	 * @param eventBus The {@link MapPresenter}s event bus. Events regarding ViewPort changes (zoom, pan, ...) are fired
-	 *        upon this bus.
+	 * @param mapInfo
+	 *            The map information meta-data from which to initialize the <code>ViewPort</code>.
+	 * @param eventBus
+	 *            The {@link MapPresenter}s event bus. Events regarding ViewPort changes (zoom, pan, ...) are fired upon
+	 *            this bus.
 	 */
 	void initialize(ClientMapInfo mapInfo, MapEventBus eventBus);
 
@@ -67,8 +69,10 @@ public interface ViewPort {
 	 * Set the map's width and height in pixels. <code>ViewPort</code> implementations should pass these values to the
 	 * {@link ZoomStrategy} they employ.
 	 * 
-	 * @param mapWidth The current map width in pixels.
-	 * @param mapHeight The current map height in pixels.
+	 * @param mapWidth
+	 *            The current map width in pixels.
+	 * @param mapHeight
+	 *            The current map height in pixels.
 	 */
 	void setMapSize(int mapWidth, int mapHeight);
 
@@ -131,14 +135,16 @@ public interface ViewPort {
 	/**
 	 * Set a new zoom strategy to use for determining allowed scale levels.
 	 * 
-	 * @param zoomStrategy The new zoom strategy to use.
+	 * @param zoomStrategy
+	 *            The new zoom strategy to use.
 	 */
 	void setZoomStrategy(ZoomStrategy zoomStrategy);
 
 	/**
 	 * Re-centers the map to a new position.
 	 * 
-	 * @param coordinate the new center position
+	 * @param coordinate
+	 *            the new center position
 	 */
 	void applyPosition(Coordinate coordinate);
 
@@ -146,7 +152,8 @@ public interface ViewPort {
 	 * Re-centers the map to a new position while dragging. This call should eventually be followed by
 	 * {@link #applyPosition(Coordinate)}) when the dragging stops.
 	 * 
-	 * @param coordinate the new center position
+	 * @param coordinate
+	 *            the new center position
 	 */
 	void dragToPosition(Coordinate coordinate);
 
@@ -155,7 +162,8 @@ public interface ViewPort {
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
 	 * this.
 	 * 
-	 * @param scale The preferred new scale.
+	 * @param scale
+	 *            The preferred new scale.
 	 */
 	void applyScale(double scale);
 
@@ -164,9 +172,11 @@ public interface ViewPort {
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
 	 * this.
 	 * 
-	 * @param scale The preferred new scale.
-	 * @param rescalePoint After zooming, this point will still be on the same position in the view as before. Makes for
-	 *        easy double clicking on the map without it moving away.
+	 * @param scale
+	 *            The preferred new scale.
+	 * @param rescalePoint
+	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
+	 *            double clicking on the map without it moving away.
 	 */
 	void applyScale(double scale, Coordinate rescalePoint);
 
@@ -176,7 +186,8 @@ public interface ViewPort {
 	 * be followed by a call to {@link #applyScale(double)} at the end of the animation to perform the actual rendering
 	 * of the scale.
 	 * 
-	 * @param scale The preferred new scale.
+	 * @param scale
+	 *            The preferred new scale.
 	 */
 	void dragToScale(double scale);
 
@@ -186,9 +197,11 @@ public interface ViewPort {
 	 * be followed by a call to {@link #applyScale(double, Coordinate)} at the end of the animation to perform the
 	 * actual rendering of the scale.
 	 * 
-	 * @param scale The preferred new scale.
-	 * @param rescalePoint After zooming, this point will still be on the same position in the view as before. Makes for
-	 *        easy double clicking on the map without it moving away.
+	 * @param scale
+	 *            The preferred new scale.
+	 * @param rescalePoint
+	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
+	 *            double clicking on the map without it moving away.
 	 */
 	void dragToScale(double scale, Coordinate rescalePoint);
 
@@ -203,7 +216,8 @@ public interface ViewPort {
 	 * it will snap to them.
 	 * </p>
 	 * 
-	 * @param bounds A bounding box in world coordinates that determines the view from now on.
+	 * @param bounds
+	 *            A bounding box in world coordinates that determines the view from now on.
 	 */
 	void applyBounds(Bbox bounds);
 
@@ -217,19 +231,12 @@ public interface ViewPort {
 	 * it will snap to them.
 	 * </p>
 	 * 
-	 * @param bounds A bounding box in world coordinates that determines the view from now on.
-	 * @param zoomOption The way in which to zoom.
+	 * @param bounds
+	 *            A bounding box in world coordinates that determines the view from now on.
+	 * @param zoomOption
+	 *            The way in which to zoom.
 	 */
 	void applyBounds(Bbox bounds, ZoomOption zoomOption);
-
-	/**
-	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
-	 * Other than the events, it behaves the same as a translate.
-	 * 
-	 * @param x Translation factor along the X-axis in world space.
-	 * @param y Translation factor along the Y-axis in world space.
-	 */
-	// void drag(double x, double y);
 
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:
@@ -238,10 +245,13 @@ public interface ViewPort {
 	/**
 	 * Transform the given coordinate from a certain rendering space to another.
 	 * 
-	 * @param coordinate The coordinate to transform. The X and Y ordinates are expected to be expressed in the 'from'
-	 *        rendering space.
-	 * @param from The rendering space that expresses the X and Y ordinates of the given coordinate.
-	 * @param to The rendering space where to the coordinate should be transformed.
+	 * @param coordinate
+	 *            The coordinate to transform. The X and Y ordinates are expected to be expressed in the 'from'
+	 *            rendering space.
+	 * @param from
+	 *            The rendering space that expresses the X and Y ordinates of the given coordinate.
+	 * @param to
+	 *            The rendering space where to the coordinate should be transformed.
 	 * @return The transformed coordinate.
 	 */
 	Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to);
@@ -249,10 +259,12 @@ public interface ViewPort {
 	/**
 	 * Transform the given geometry from a certain rendering space to another.
 	 * 
-	 * @param geometry The geometry to transform. The coordinates are expected to be expressed in the 'from' rendering
-	 *        space.
-	 * @param from The rendering space that expresses the coordinates of the given geometry.
-	 * @param to The rendering space where to the geometry should be transformed.
+	 * @param geometry
+	 *            The geometry to transform. The coordinates are expected to be expressed in the 'from' rendering space.
+	 * @param from
+	 *            The rendering space that expresses the coordinates of the given geometry.
+	 * @param to
+	 *            The rendering space where to the geometry should be transformed.
 	 * @return The transformed geometry.
 	 */
 	Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to);
@@ -260,10 +272,13 @@ public interface ViewPort {
 	/**
 	 * Transform the given bounding box from a certain rendering space to another.
 	 * 
-	 * @param bbox The bounding box to transform. The coordinates are expected to be expressed in the 'from' rendering
-	 *        space.
-	 * @param from The rendering space that expresses the values (x, y, width, height) of the given bounding box.
-	 * @param to The rendering space where to the bounding box should be transformed.
+	 * @param bbox
+	 *            The bounding box to transform. The coordinates are expected to be expressed in the 'from' rendering
+	 *            space.
+	 * @param from
+	 *            The rendering space that expresses the values (x, y, width, height) of the given bounding box.
+	 * @param to
+	 *            The rendering space where to the bounding box should be transformed.
 	 * @return The transformed bounding box.
 	 */
 	Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to);
@@ -272,8 +287,10 @@ public interface ViewPort {
 	 * Get the transformation matrix to transform spatial objects from one render space to another. This matrix should
 	 * contain both scale and translation factors.
 	 * 
-	 * @param from The rendering space that describes the origin of the objects to transform.
-	 * @param to The rendering space that describes where to objects should be transformed.
+	 * @param from
+	 *            The rendering space that describes the origin of the objects to transform.
+	 * @param to
+	 *            The rendering space that describes where to objects should be transformed.
 	 * @return The matrix that describes the requested transformation.
 	 */
 	Matrix getTransformationMatrix(RenderSpace from, RenderSpace to);
@@ -282,8 +299,10 @@ public interface ViewPort {
 	 * Get the translation matrix to transform spatial objects from one render space to another. This matrix should
 	 * contain only translation factors, no scaling factors.
 	 * 
-	 * @param from The rendering space that describes the origin of the objects to transform.
-	 * @param to The rendering space that describes where to objects should be transformed.
+	 * @param from
+	 *            The rendering space that describes the origin of the objects to transform.
+	 * @param to
+	 *            The rendering space that describes where to objects should be transformed.
 	 * @return The matrix that describes the requested transformation.
 	 */
 	Matrix getTranslationMatrix(RenderSpace from, RenderSpace to);
@@ -295,4 +314,13 @@ public interface ViewPort {
 	 * @return true if ready to be used.
 	 */
 	boolean isInitialized();
+
+	/**
+	 * Transform a scale denominator (i.e. the number 5000 in scale 1:5000) into a usable scale for this view port.
+	 * 
+	 * @param scaleDenominator
+	 *            The scale denominator.
+	 * @return Returns a scale value for this view port.
+	 */
+	double toScale(double scaleDenominator);
 }
