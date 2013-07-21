@@ -21,8 +21,8 @@
 	</parent>
 
 	<artifactId>geomajas-widget-puregwt-core</artifactId>
-	<name>geomajas-widget-puregwt-core</name>
-	<description>geomajas-widget-puregwt-core</description>
+	<name>Geomajas Plugin PureGWT Core Widget: Library</name>
+	<description>Geomajas Plugin PureGWT Core Widget: Library</description>
 
 	<dependencies>
 		<dependency>

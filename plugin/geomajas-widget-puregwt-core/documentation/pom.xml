@@ -24,8 +24,8 @@
 	<artifactId>geomajas-puregwt-widget-documentation</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>geomajas-puregwt-widget documentation</name>
-	<description>geomajas-puregwt-widget documentation</description>
+	<name>Geomajas Plugin PureGWT Core Widget: Documentation</name>
+	<description>Geomajas Plugin PureGWT Core Widget: Documentation</description>
 	
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

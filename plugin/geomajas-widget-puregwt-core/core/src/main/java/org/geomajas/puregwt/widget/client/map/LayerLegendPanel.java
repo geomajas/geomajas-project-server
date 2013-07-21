@@ -11,18 +11,14 @@
 
 package org.geomajas.puregwt.widget.client.map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
-import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
-import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
-import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.MapEventBus;
+import org.geomajas.puregwt.client.map.layer.HasLegendWidget;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.LayerStylePresenter;
-import org.geomajas.sld.RuleInfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,14 +28,25 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A view that displays the title and styles for a single layer.
+ * <p>
+ * A widget that displays the legend for a single layer. It provides the possibility to toggle that layer's visibility
+ * through a CheckBox.
+ * </p>
+ * <p>
+ * If the layer should become invisible because the map has zoomed in or out beyond the allowed scale range (for that
+ * layer), the CheckBox in this widget will automatically become disabled. It is no use to start marking a layer visible
+ * when it won't appear anyway.
+ * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public class LayerLegendPanel extends Composite {
 
 	/**
@@ -63,75 +70,61 @@ public class LayerLegendPanel extends Composite {
 	@UiField
 	protected FlexTable legendTable;
 
-	private MapPresenter mapPresenter;
+	/**
+	 * Create a new legend panel for a single layer. This panel
+	 * 
+	 * @param eventBus
+	 *            Map event bus. Must be the bus from the same map that holds the layer.
+	 * @param layer
+	 *            The layer to display in this legend widget.
+	 */
+	public LayerLegendPanel(MapEventBus eventBus, final Layer layer) {
+		WidgetMapResources.INSTANCE.css().ensureInjected();
 
-	public LayerLegendPanel(MapPresenter mapPresenter, final Layer layer) {
 		this.layer = layer;
 		initWidget(UI_BINDER.createAndBindUi(this));
-		this.mapPresenter = mapPresenter;
 
 		// Apply the layer onto the GUI:
 		title.setText(layer.getTitle());
 		visibilityToggle.setValue(layer.isMarkedAsVisible());
 
 		// React to layer visibility events:
-		mapPresenter.getEventBus().addLayerVisibilityHandler(new LayerVisibilityHandler() {
+		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
 
 			public void onShow(LayerShowEvent event) {
-				if (event.getLayer() == LayerLegendPanel.this.layer) {
-					visibilityToggle.setEnabled(true);
-				}
+				visibilityToggle.setEnabled(true);
 			}
 
 			public void onHide(LayerHideEvent event) {
-				if (event.getLayer() == LayerLegendPanel.this.layer) {
+				// If a layer hides while it is marked as visible, it means it has gone beyond it's allowed scale range.
+				// If so, disable the CheckBox. It's no use to try to mark the layer as visible anyway:
+				if (layer.isMarkedAsVisible()) {
 					visibilityToggle.setEnabled(false);
 				}
 			}
 
 			public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
-				if (event.getLayer() == LayerLegendPanel.this.layer) {
-					visibilityToggle.setValue(LayerLegendPanel.this.layer.isMarkedAsVisible());
-				}
+				visibilityToggle.setValue(layer.isMarkedAsVisible());
 			}
-		});
-
-		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			@Override
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			}
-
-			@Override
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				applyLegendStyle(layer, event.getViewPort().getScale());
-			}
-
-			@Override
-			public void onViewPortChanged(ViewPortChangedEvent event) {
-				applyLegendStyle(layer, event.getViewPort().getScale());
-			}
-		});
+		}, this.layer);
 
 		visibilityToggle.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				if (visibilityToggle.isEnabled()) {
-					LayerLegendPanel.this.layer.setMarkedAsVisible(!LayerLegendPanel.this.layer.isMarkedAsVisible());
+					LayerLegendPanel.this.layer.setMarkedAsVisible(!layer.isMarkedAsVisible());
 					visibilityToggle.setEnabled(true); // Works because JavaScript is single threaded...
 				}
 			}
 		});
-	}
 
-	private void applyLegendStyle(Layer layer, double scale) {
-		// Apply the legend:
-		legendTable.removeAllRows();
-
-		for (LayerStylePresenter stylePresenter : layer.getStylePresenters()) {
-			if (isVisible(stylePresenter, scale)) {
-				addStyle(stylePresenter);
-			}
+		// Add the legend:
+		if (layer instanceof HasLegendWidget) {
+			HasLegendWidget hlw = (HasLegendWidget) layer;
+			IsWidget legendWidget = hlw.buildLegendWidget();
+			final int row = legendTable.insertRow(legendTable.getRowCount());
+			legendTable.addCell(row);
+			legendTable.setWidget(row, 0, legendWidget);
 		}
 	}
 
@@ -142,34 +135,5 @@ public class LayerLegendPanel extends Composite {
 	 */
 	public Layer getLayer() {
 		return layer;
-	}
-
-	private void addStyle(final LayerStylePresenter stylePresenter) {
-		// Add a new row in the table:
-		final int row = legendTable.insertRow(legendTable.getRowCount());
-		legendTable.addCell(row);
-		legendTable.setWidget(row, 0, stylePresenter);
-	}
-	
-	private boolean isVisible(LayerStylePresenter layerStyle, double scale) {
-		if (layerStyle == null || layerStyle.getRule() == null) {
-			return true;
-		}
-		double minScale = Double.MAX_VALUE;
-		double maxScale = Double.MIN_VALUE;
-		
-		RuleInfo rInfo = layerStyle.getRule();
-		double unitLength = mapPresenter.getConfiguration().getServerConfiguration().getUnitLength();
-		double pixelLength = mapPresenter.getConfiguration().getServerConfiguration().getPixelLength();
-		
-		if (rInfo.getMinScaleDenominator() != null && rInfo.getMinScaleDenominator().getMinScaleDenominator() != 0) {
-			minScale = unitLength / (pixelLength * rInfo.getMinScaleDenominator().getMinScaleDenominator());
-		}
-		
-		if (rInfo.getMaxScaleDenominator() != null && rInfo.getMaxScaleDenominator().getMaxScaleDenominator() != 0) {
-			maxScale = unitLength / (pixelLength *  rInfo.getMaxScaleDenominator().getMaxScaleDenominator());
-		}
-		
-		return (maxScale <= scale && scale < minScale);
 	}
 }

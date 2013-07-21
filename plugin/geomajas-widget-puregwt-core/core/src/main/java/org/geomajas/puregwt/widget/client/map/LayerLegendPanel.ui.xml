@@ -11,10 +11,12 @@
   -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<g:HorizontalPanel styleName="gm-LayerLegendPanel">
+	<ui:with field="resource" type="org.geomajas.puregwt.widget.client.map.WidgetMapResources" />
+
+	<g:HorizontalPanel styleName="{resource.css.layerLegendPanel}">
 		<g:CheckBox ui:field="visibilityToggle" styleName="gwt-CheckBox" />
 		<g:VerticalPanel>
-			<g:Label styleName="gm-LayerLegendPanel-title" ui:field="title" />
+			<g:Label styleName="{resource.css.layerLegendPanelTitle}" ui:field="title" />
 			<g:FlexTable ui:field="legendTable" />
 		</g:VerticalPanel>
 	</g:HorizontalPanel>

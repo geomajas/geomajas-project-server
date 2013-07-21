@@ -43,4 +43,40 @@ public interface SampleMessages extends Messages {
 	String featureMouseOverDescrShort();
 
 	String featureMouseOverDescription();
+
+	// ------------------------------------------------------------------------
+	// Messages for the MapLegendPanel samples:
+	// ------------------------------------------------------------------------
+
+	String mapLegendPanelWidget();
+
+	String mapLegendAddRemovedAddLayers();
+
+	String mapLegendAddRemovedRemoveLayers();
+
+	String mapLegendAddRemoveTitle();
+
+	String mapLegendAddRemoveDescrShort();
+
+	String mapLegendAddRemoveDescription();
+
+	String mapLegendOrderAvailableLayers();
+
+	String mapLegendOrderTitle();
+
+	String mapLegendOrderDescrShort();
+
+	String mapLegendOrderDescription();
+
+	// ------------------------------------------------------------------------
+	// Messages for the MapLegendDropDown samples:
+	// ------------------------------------------------------------------------
+
+	String mapLegendDropDownWidget();
+
+	String mapLegendDropDownTitle();
+
+	String mapLegendDropDownDescrShort();
+
+	String mapLegendDropDownDescription();
 }

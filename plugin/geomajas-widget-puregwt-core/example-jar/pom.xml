@@ -66,21 +66,11 @@
 			<classifier>sources</classifier>
 		</dependency>
 
-		<!-- Geomajas Layer plugins: -->
+		<!-- External GWT libraries -->
 		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>1.10.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-openstreetmap</artifactId>
-			<version>1.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-wms</artifactId>
-			<version>1.8.0</version>
+			<groupId>com.google.code.gwt-dnd</groupId>
+			<artifactId>gwt-dnd</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 

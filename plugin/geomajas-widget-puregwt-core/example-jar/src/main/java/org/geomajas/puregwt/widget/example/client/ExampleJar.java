@@ -11,15 +11,19 @@
 
 package org.geomajas.puregwt.widget.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
+import org.geomajas.puregwt.widget.example.client.sample.LegendAddRemoveSample;
+import org.geomajas.puregwt.widget.example.client.sample.LegendOrderSample;
+import org.geomajas.puregwt.widget.example.client.sample.MapLegendDropDownSample;
 import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
 import org.geomajas.puregwt.widget.example.client.sample.featuremouseover.FeatureMouseOverExample;
 import org.geomajas.puregwt.widget.example.client.sample.featureselected.FeatureSelectedExample;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the widget core example application.
@@ -44,48 +48,25 @@ public class ExampleJar implements EntryPoint {
 
 	private void registerSamples() {
 		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 90);
+
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return  null; // LayerLegendPanelSample();
+				return new LegendAddRemoveSample();
 			}
 
 			@Override
 			public String getTitle() {
-				return "Legend";
+				return MESSAGES.mapLegendAddRemoveTitle();
 			}
 
 			@Override
 			public String getDescription() {
-				return "Showcase that show the layer legend view.";
+				return MESSAGES.mapLegendAddRemoveDescription();
 			}
 
 			public String getShortDescription() {
-				return "Showcase that show the layer legend view.";
-			}
-
-			public String getCategory() {
-				return CATEGORY_WIDGET;
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return null;  // new LegendDropDownWidgetSample();
-			}
-
-			@Override
-			public String getTitle() {
-				return "LegendDropDownWidget";
-			}
-
-			@Override
-			public String getDescription() {
-				return "Showcase that show the layer legend view.";
-			}
-
-			public String getShortDescription() {
-				return "Showcase that show the layer legend view.";
+				return MESSAGES.mapLegendAddRemoveDescrShort();
 			}
 
 			public String getCategory() {
@@ -93,7 +74,56 @@ public class ExampleJar implements EntryPoint {
 			}
 		});
 
-		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 100);
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new LegendOrderSample();
+			}
+
+			@Override
+			public String getTitle() {
+				return MESSAGES.mapLegendOrderTitle();
+			}
+
+			@Override
+			public String getDescription() {
+				return MESSAGES.mapLegendOrderDescription();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.mapLegendOrderDescrShort();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+		});
+
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new MapLegendDropDownSample();
+			}
+
+			@Override
+			public String getTitle() {
+				return MESSAGES.mapLegendDropDownTitle();
+			}
+
+			@Override
+			public String getDescription() {
+				return MESSAGES.mapLegendDropDownDescription();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.mapLegendDropDownDescrShort();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+		});
+
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
@@ -117,7 +147,6 @@ public class ExampleJar implements EntryPoint {
 			}
 		});
 
-		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 101);
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
@@ -141,8 +170,6 @@ public class ExampleJar implements EntryPoint {
 			}
 		});
 
-
-		SamplePanelRegistry.registerCategory(CATEGORY_WIDGET, 102);
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
