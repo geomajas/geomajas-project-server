@@ -244,7 +244,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 						}
 						labelStyleInfo.setBackgroundStyle(background);
 					} else {
-						throw new IllegalStateException("Unknown symbolizer type " + symbolizerTypeInfo);
+						log.warn("Symbolizer type " + symbolizerTypeInfo
+								+ "cannot be converted to feature style info, reverting to default style");
 					}
 				}
 				if (featureStyleInfo.getStrokeColor() == null && featureStyleInfo.getFillColor() != null) {
