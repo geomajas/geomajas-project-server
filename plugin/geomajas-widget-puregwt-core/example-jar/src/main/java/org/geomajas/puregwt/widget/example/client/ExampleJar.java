@@ -11,19 +11,19 @@
 
 package org.geomajas.puregwt.widget.example.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
+import org.geomajas.puregwt.widget.example.client.resource.ExampleWidgetResource;
 import org.geomajas.puregwt.widget.example.client.sample.LegendAddRemoveSample;
 import org.geomajas.puregwt.widget.example.client.sample.LegendOrderSample;
 import org.geomajas.puregwt.widget.example.client.sample.MapLegendDropDownSample;
 import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
 import org.geomajas.puregwt.widget.example.client.sample.featuremouseover.FeatureMouseOverExample;
 import org.geomajas.puregwt.widget.example.client.sample.featureselected.FeatureSelectedExample;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the widget core example application.
@@ -37,7 +37,7 @@ public class ExampleJar implements EntryPoint {
 	public static final String CATEGORY_WIDGET = "Widgets";
 
 	public void onModuleLoad() {
-		// ExampleWidgetResource.INSTANCE.css().ensureInjected();
+		ExampleWidgetResource.INSTANCE.css().ensureInjected();
 		// Register all samples:
 		registerSamples();
 	}

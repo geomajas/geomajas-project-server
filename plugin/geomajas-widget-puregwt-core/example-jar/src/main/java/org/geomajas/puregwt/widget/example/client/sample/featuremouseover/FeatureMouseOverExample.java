@@ -13,11 +13,11 @@ package org.geomajas.puregwt.widget.example.client.sample.featuremouseover;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.widget.client.mouseover.listener.MouseOverListener;
@@ -60,18 +60,20 @@ public class FeatureMouseOverExample implements SamplePanel {
 		// Create the MapPresenter
 		mapPresenter = ExampleBase.getInjector().getMapPresenter();
 
-		mapPresenter.setSize(480, 400);
+		// Define the layout:
+		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
+		final MapLayoutPanel layout = new MapLayoutPanel();
+		resizeLayoutPanel.setWidget(layout);
+		resizeLayoutPanel.setSize("100%", "100%");
+		layout.setPresenter(mapPresenter);
 
-		// Define the whole layout:
-		DecoratorPanel mapDecorator = new DecoratorPanel();
-		mapDecorator.add(mapPresenter.asWidget());
-		mapPanel.add(mapDecorator);
+		mapPanel.add(resizeLayoutPanel);
 
 		// Initialize the map
 		mapPresenter.initialize("puregwt-widget-app", "mapGhent");
 
 		// add feature mouse over listener.
-		MouseOverListener listener =  new MouseOverListener(7);
+		MouseOverListener listener = new MouseOverListener(7);
 		mapPresenter.addMapListener(listener);
 	}
 }

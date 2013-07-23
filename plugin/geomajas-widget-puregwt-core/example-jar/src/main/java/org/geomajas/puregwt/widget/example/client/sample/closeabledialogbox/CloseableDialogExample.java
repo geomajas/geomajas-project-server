@@ -62,7 +62,7 @@ public class CloseableDialogExample implements SamplePanel {
 			@Override
 			public void onMouseDown(MouseDownEvent mouseDownEvent) {
 				closeableDialogBox.setText(ExampleJar.getMessages().closeableDialogTitle());
-				closeableDialogBox.show();
+				closeableDialogBox.center();
 			}
 		});
 

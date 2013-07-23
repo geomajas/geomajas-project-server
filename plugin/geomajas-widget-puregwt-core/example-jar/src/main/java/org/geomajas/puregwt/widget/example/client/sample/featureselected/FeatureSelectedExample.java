@@ -13,7 +13,6 @@ package org.geomajas.puregwt.widget.example.client.sample.featureselected;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
@@ -21,6 +20,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.Feature;
+import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedEvent;
@@ -68,15 +68,17 @@ public class FeatureSelectedExample implements SamplePanel {
 		// Create the MapPresenter
 		mapPresenter = ExampleBase.getInjector().getMapPresenter();
 
-		mapPresenter.setSize(480, 480);
-
 		// add FeatureClickedHandler where we handle FeatureClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
 
-		// Define the whole layout:
-		DecoratorPanel mapDecorator = new DecoratorPanel();
-		mapDecorator.add(mapPresenter.asWidget());
-		mapPanel.add(mapDecorator);
+		// Define the layout:
+		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
+		final MapLayoutPanel layout = new MapLayoutPanel();
+		resizeLayoutPanel.setWidget(layout);
+		resizeLayoutPanel.setSize("100%", "100%");
+		layout.setPresenter(mapPresenter);
+
+		mapPanel.add(resizeLayoutPanel);
 
 		// Initialize the map
 		mapPresenter.initialize("puregwt-widget-app", "mapGhent");
