@@ -101,11 +101,15 @@
 			usage="optional" />
 		<collection item-type="org.geomajas.sld.SemanticTypeIdentifierInfo" get-method="getSemanticTypeIdentifierList"
 			set-method="setSemanticTypeIdentifierList" usage="optional" create-type="java.util.ArrayList" />
+   		<structure type="org.geomajas.sld.TransformationInfo" get-method="getTransformation" set-method="setTransformation" usage="optional"/>
 		<collection item-type="org.geomajas.sld.RuleInfo" get-method="getRuleList" set-method="setRuleList"
 			create-type="java.util.ArrayList" />
 	</mapping>
 	<mapping class="org.geomajas.sld.SemanticTypeIdentifierInfo" name="SemanticTypeIdentifier">
 		<value style="text" get-method="getSemanticTypeIdentifier" set-method="setSemanticTypeIdentifier" />
+	</mapping>
+	<mapping class="org.geomajas.sld.TransformationInfo" name="Transformation">
+	  <structure type="org.geomajas.sld.expression.FunctionTypeInfo" get-method="getFunction" set-method="setFunction"/>
 	</mapping>
 	<mapping class="org.geomajas.sld.RuleInfo" name="Rule">
 		<value name="Name" field="name" usage="optional" />

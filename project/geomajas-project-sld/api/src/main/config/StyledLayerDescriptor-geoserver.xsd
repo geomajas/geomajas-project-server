@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema targetNamespace="http://www.opengis.net/sld"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink"
-	xmlns:ogc="http://www.opengis.net/ogc" xmlns:sld="http://www.opengis.net/sld"
-	elementFormDefault="qualified" version="1.0.0 2010-02-01">
-
-	<xsd:import namespace="http://www.w3.org/1999/xlink"
-		schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd" />
-	<xsd:import namespace="http://www.opengis.net/ogc"
-		schemaLocation="http://schemas.opengis.net/filter/1.0.0/filter.xsd" />
+            xmlns:sld="http://www.opengis.net/sld"
+            xmlns:ogc="http://www.opengis.net/ogc"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+  <xsd:import namespace="http://www.w3.org/1999/xlink"
+              schemaLocation="xlinks.xsd"/>
+  <xsd:import namespace="http://www.opengis.net/ogc"
+              schemaLocation="filter.xsd"/>
 
 <!-- *********************************************************************** -->
   <xsd:annotation>
@@ -237,12 +238,27 @@
         <xsd:element ref="sld:FeatureTypeName" minOccurs="0"/>
         <xsd:element ref="sld:SemanticTypeIdentifier" minOccurs="0"
                     maxOccurs="unbounded"/>
+        <xsd:element ref="sld:Transformation" minOccurs="0"/>
         <xsd:element ref="sld:Rule" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="SemanticTypeIdentifier" type="xsd:string"/>
 
+  <xsd:element name="Transformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        A Transformation specifies a Rendering Transformation 
+        to be applied to the input data before styling.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="ogc:Function"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
   <xsd:element name="Rule">
     <xsd:annotation>
       <xsd:documentation>
@@ -333,7 +349,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="ogc:PropertyName"/>
+        <xsd:element ref="ogc:expression"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>

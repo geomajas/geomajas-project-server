@@ -46,14 +46,7 @@
 				<plugin>
 					<groupId>org.jibx</groupId>
 					<artifactId>maven-jibx-plugin</artifactId>
-					<version>1.2.3</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.eclipse.jdt</groupId>
-							<artifactId>core</artifactId>
-							<version>3.1.0</version>
-						</dependency>
-					</dependencies>
+					<version>1.2.5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -120,6 +113,11 @@
 				<version>${sld-jibx-version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.jibx</groupId>
+				<artifactId>jibx-tools</artifactId>
+				<version>${sld-jibx-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>xstream</groupId>
 				<artifactId>xstream</artifactId>
 				<version>1.2.2</version>
@@ -158,7 +156,7 @@
 
 	<properties>
 		<sld-spring-version>3.0.5.RELEASE</sld-spring-version>
-		<sld-jibx-version>1.2.3</sld-jibx-version>
+		<sld-jibx-version>1.2.5</sld-jibx-version>
 		<sld-gwt-version>2.5.0</sld-gwt-version>
 		<sld-geotools-version>9.2</sld-geotools-version>
 	</properties>

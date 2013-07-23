@@ -17,8 +17,9 @@ import org.geomajas.annotation.Api;
 
 /**
  * 
- A FeatureTypeStyle contains styling information specific to one feature type. This is the SLD level that separates
- * the 'layer' handling from the 'feature' handling.
+ A FeatureTypeStyle contains styling information specific to one feature type.
+ * This is the SLD level that separates the 'layer' handling from the 'feature'
+ * handling.
  * 
  * 
  * Schema fragment(s) for this class:...
@@ -36,6 +37,7 @@ import org.geomajas.annotation.Api;
  *       &lt;xs:element ref="ns:Abstract" minOccurs="0"/>
  *       &lt;xs:element ref="ns:FeatureTypeName" minOccurs="0"/>
  *       &lt;xs:element ref="ns:SemanticTypeIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+ *       &lt;xs:element ref="ns:Transformation" minOccurs="0"/>
  *       &lt;xs:element ref="ns:Rule" maxOccurs="unbounded"/>
  *     &lt;/xs:sequence>
  *   &lt;/xs:complexType>
@@ -60,6 +62,8 @@ public class FeatureTypeStyleInfo implements Serializable {
 	private FeatureTypeNameInfo featureTypeName;
 
 	private List<SemanticTypeIdentifierInfo> semanticTypeIdentifierList = new ArrayList<SemanticTypeIdentifierInfo>();
+
+	private TransformationInfo transformation;
 
 	private List<RuleInfo> ruleList = new ArrayList<RuleInfo>();
 
@@ -149,8 +153,29 @@ public class FeatureTypeStyleInfo implements Serializable {
 	 * 
 	 * @param list
 	 */
-	public void setSemanticTypeIdentifierList(List<SemanticTypeIdentifierInfo> list) {
+	public void setSemanticTypeIdentifierList(
+			List<SemanticTypeIdentifierInfo> list) {
 		semanticTypeIdentifierList = list;
+	}
+
+	/**
+	 * Get the 'Transformation' element value.
+	 * 
+	 * @return value
+	 * @since 1.2.0
+	 */
+	public TransformationInfo getTransformation() {
+		return transformation;
+	}
+
+	/**
+	 * Set the 'Transformation' element value.
+	 * 
+	 * @param transformation
+	 * @since 1.2.0
+	 */
+	public void setTransformation(TransformationInfo transformation) {
+		this.transformation = transformation;
 	}
 
 	/**
@@ -174,9 +199,13 @@ public class FeatureTypeStyleInfo implements Serializable {
 	@Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
-		return "FeatureTypeStyleInfo(name=" + this.getName() + ", title=" + this.getTitle() + ", aAbstract="
-				+ this.aAbstract + ", featureTypeName=" + this.getFeatureTypeName() + ", semanticTypeIdentifierList="
-				+ this.getSemanticTypeIdentifierList() + ", ruleList=" + this.getRuleList() + ")";
+		return "FeatureTypeStyleInfo(name=" + this.getName() + ", title="
+				+ this.getTitle() + ", aAbstract=" + this.aAbstract
+				+ ", featureTypeName=" + this.getFeatureTypeName()
+				+ ", semanticTypeIdentifierList="
+				+ this.getSemanticTypeIdentifierList() + ", transformation="
+				+ this.getTransformation() + ", ruleList=" + this.getRuleList()
+				+ ")";
 	}
 
 	@Override
@@ -192,37 +221,48 @@ public class FeatureTypeStyleInfo implements Serializable {
 		if (!other.canEqual((java.lang.Object) this)) {
 			return false;
 		}
-		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
-				(java.lang.Object) other.getName())) {
+		if (this.getName() == null ? other.getName() != null : !this.getName()
+				.equals((java.lang.Object) other.getName())) {
 			return false;
 		}
-		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
-				(java.lang.Object) other.getTitle())) {
+		if (this.getTitle() == null ? other.getTitle() != null : !this
+				.getTitle().equals((java.lang.Object) other.getTitle())) {
 			return false;
 		}
 		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
 				.equals((java.lang.Object) other.aAbstract)) {
 			return false;
 		}
-		if (this.getFeatureTypeName() == null ? other.getFeatureTypeName() != null : !this.getFeatureTypeName().equals(
-				(java.lang.Object) other.getFeatureTypeName())) {
+		if (this.getFeatureTypeName() == null ? other.getFeatureTypeName() != null
+				: !this.getFeatureTypeName().equals(
+						(java.lang.Object) other.getFeatureTypeName())) {
 			return false;
 		}
-		if (this.getSemanticTypeIdentifierList() == null ? other.getSemanticTypeIdentifierList() != null : !this
-				.getSemanticTypeIdentifierList().equals((java.lang.Object) other.getSemanticTypeIdentifierList())) {
+		if (this.getSemanticTypeIdentifierList() == null ? other
+				.getSemanticTypeIdentifierList() != null : !this
+				.getSemanticTypeIdentifierList().equals(
+						(java.lang.Object) other
+								.getSemanticTypeIdentifierList())) {
 			return false;
 		}
-		if (this.getRuleList() == null ? other.getRuleList() != null : !this.getRuleList().equals(
-				(java.lang.Object) other.getRuleList())) {
+		if (this.getTransformation() == null ? other.getTransformation() != null
+				: !this.getTransformation().equals(
+						(java.lang.Object) other.getTransformation())) {
+			return false;
+		}
+		if (this.getRuleList() == null ? other.getRuleList() != null : !this
+				.getRuleList().equals((java.lang.Object) other.getRuleList())) {
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Is there a chance that the object are equal? Verifies that the other object has a comparable type.
-	 *
-	 * @param other other object
+	 * Is there a chance that the object are equal? Verifies that the other
+	 * object has a comparable type.
+	 * 
+	 * @param other
+	 *            other object
 	 * @return true when other is an instance of this type
 	 */
 	public boolean canEqual(final java.lang.Object other) {
@@ -234,13 +274,28 @@ public class FeatureTypeStyleInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
-		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
-		result = result * prime + (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
-		result = result * prime + (this.getFeatureTypeName() == null ? 0 : this.getFeatureTypeName().hashCode());
 		result = result * prime
-				+ (this.getSemanticTypeIdentifierList() == null ? 0 : this.getSemanticTypeIdentifierList().hashCode());
-		result = result * prime + (this.getRuleList() == null ? 0 : this.getRuleList().hashCode());
+				+ (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime
+				+ (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime
+				+ (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
+		result = result
+				* prime
+				+ (this.getFeatureTypeName() == null ? 0 : this
+						.getFeatureTypeName().hashCode());
+		result = result
+				* prime
+				+ (this.getSemanticTypeIdentifierList() == null ? 0 : this
+						.getSemanticTypeIdentifierList().hashCode());
+		result = result
+				* prime
+				+ (this.getTransformation() == null ? 0 : this
+						.getTransformation().hashCode());
+		result = result
+				* prime
+				+ (this.getRuleList() == null ? 0 : this.getRuleList()
+						.hashCode());
 		return result;
 	}
 }
