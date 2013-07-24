@@ -67,6 +67,7 @@
 							<include>**/*.java</include>
 							<include>**/*.css</include>
 							<include>**/*.png</include>
+							<include>**/*.ui.xml</include>
 						</includes>
 					</resource>
 				</resources>
