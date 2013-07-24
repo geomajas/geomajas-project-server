@@ -67,8 +67,10 @@ public class AddLayersStep extends AbstractRasterizingStep {
 		
 		// set the geotools environmental variables (can be referred to in SLD)
 		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.BBOX, mapContext.getViewport().getBounds());
-		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.SCREEN_WIDTH, (int) mapContext.getViewport().getScreenArea().getWidth());
-		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.SCREEN_HEIGHT, (int) mapContext.getViewport().getScreenArea().getHeight());
+		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.SCREEN_WIDTH, (int) mapContext.getViewport()
+				.getScreenArea().getWidth());
+		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.SCREEN_HEIGHT, (int) mapContext.getViewport()
+				.getScreenArea().getHeight());
 		
 		// add the configured layers
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {

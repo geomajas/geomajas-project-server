@@ -103,20 +103,20 @@ public class VectorLayerFactory implements LayerFactory {
 		VectorLayer layer = configurationService.getVectorLayer(vectorInfo.getServerLayerId());
 		// need to clone the extra info object before changing it !
 		VectorLayerRasterizingInfo rasterizingInfo = cloneInfo(extraInfo);
-		
+
 		// get the style dto
 		UserStyleInfo userStyleInfo = rasterizingInfo.getStyle().getUserStyle();
-		
+
 		// create the style (original filters)
 		Style style = styleConverterService.convert(userStyleInfo);
-				
-		// remove either label or geometries 
+
+		// remove either label or geometries
 		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
 		visitor.setIncludeGeometry(rasterizingInfo.isPaintGeometries());
 		visitor.setIncludeText(rasterizingInfo.isPaintLabels());
 		visitor.visit(style);
 		style = (Style) visitor.getCopy();
-		
+
 		// add the selection rule
 		RuleInfo selectionrule = extraInfo.getSelectionRule();
 		if (selectionrule != null) {
@@ -133,7 +133,7 @@ public class VectorLayerFactory implements LayerFactory {
 		MetaBufferEstimator estimator = new MyMetaBufferEstimator();
 		estimator.visit(style);
 		int bufferInPixels = estimator.getBuffer();
-		
+
 		// expand area to include buffer
 		Rectangle tileInpix = mapContext.getViewport().getScreenArea();
 		double tileWidth = tileInpix.getWidth();
@@ -145,15 +145,15 @@ public class VectorLayerFactory implements LayerFactory {
 			tileHeight = 1.0;
 		}
 		ReferencedEnvelope metaArea = new ReferencedEnvelope(areaOfInterest);
-		metaArea.expandBy(bufferInPixels / tileWidth * areaOfInterest.getWidth(),
-				bufferInPixels / tileHeight * areaOfInterest.getHeight());
-		
+		metaArea.expandBy(bufferInPixels / tileWidth * areaOfInterest.getWidth(), bufferInPixels / tileHeight
+				* areaOfInterest.getHeight());
+
 		// fetch features in meta area
 		Crs layerCrs = vectorLayerService.getCrs(layer);
 		Envelope layerBounds = geoService.transform(metaArea, (Crs) areaOfInterest.getCoordinateReferenceSystem(),
 				layerCrs);
-		Filter filter = filterService.createBboxFilter(layerCrs, layerBounds,
-				layer.getLayerInfo().getFeatureInfo().getGeometryType().getName());
+		Filter filter = filterService.createBboxFilter(layerCrs, layerBounds, layer.getLayerInfo().getFeatureInfo()
+				.getGeometryType().getName());
 		if (extraInfo.getFilter() != null) {
 			filter = filterService.createAndFilter(filter, filterService.parseFilter(extraInfo.getFilter()));
 		}
@@ -164,19 +164,19 @@ public class VectorLayerFactory implements LayerFactory {
 		// must convert to geotools features because StreamingRenderer does not work on objects
 		InternalFeatureCollection gtFeatures = new InternalFeatureCollection(layer,
 				mapContext.getCoordinateReferenceSystem(), features, metaArea);
-				
+
 		// create the layer
 		FeatureLayer featureLayer = new FeatureLayer(new CollectionFeatureSource(gtFeatures), style);
 		featureLayer.setTitle(vectorInfo.getLabel());
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		featureLayer.getUserData().put(USERDATA_KEY_LAYER_ID, layer.getId());
-		
+
 		// filter out the rules that are never used
 		int fIndex = 0;
 		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
 			FeatureTypeStyleInfo ftsInfo = userStyleInfo.getFeatureTypeStyleList().get(fIndex);
 			// only if no transformations
-			if(ftsInfo.getTransformation() == null) {
+			if (ftsInfo.getTransformation() == null) {
 				ListIterator<RuleInfo> it1 = ftsInfo.getRuleList().listIterator();
 				for (ListIterator<Rule> it = fts.rules().listIterator(); it.hasNext();) {
 					Rule rule = it.next();
@@ -190,7 +190,7 @@ public class VectorLayerFactory implements LayerFactory {
 			}
 			fIndex++;
 		}
-		
+
 		featureLayer.getUserData().put(USERDATA_KEY_STYLE_RULES,
 				userStyleInfo.getFeatureTypeStyleList().get(0).getRuleList());
 		return featureLayer;
@@ -206,14 +206,14 @@ public class VectorLayerFactory implements LayerFactory {
 			throw new GeomajasException(e, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}
-	
+
 	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		Map<String, Object> userData = new HashMap<String, Object>();
 		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) clientLayerInfo
-		.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
+				.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
-	}	
+	}
 
 	/**
 	 * Extension of {@link MetaBufferEstimator} that takes processes into account.
@@ -225,7 +225,7 @@ public class VectorLayerFactory implements LayerFactory {
 
 		public static final String BUFFER_SIZE = "radiusPixels";
 
-		private int preRenderBuffer = 0;
+		private int preRenderBuffer;
 
 		public void visit(FeatureTypeStyle fts) {
 			Rule[] rules = fts.getRules();
