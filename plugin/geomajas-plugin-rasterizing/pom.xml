@@ -139,7 +139,16 @@
 				<artifactId>gt-jdbc</artifactId>
 				<version>${rasterizing-geotools-version}</version>
 			</dependency>
-			
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-process</artifactId>
+				<version>${rasterizing-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-process-feature</artifactId>
+				<version>${rasterizing-geotools-version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -180,7 +189,7 @@
 	</profiles>
 
 	<properties>
-		<rasterizing-backend-version>1.13.1</rasterizing-backend-version>
+		<rasterizing-backend-version>1.14.0-SNAPSHOT</rasterizing-backend-version>
 		<rasterizing-gwt-face-version>1.14.0</rasterizing-gwt-face-version>
 		<rasterizing-caching-version>2.0.0</rasterizing-caching-version>
 		<rasterizing-gwt-version>2.5.0</rasterizing-gwt-version>

@@ -13,6 +13,10 @@ package org.geomajas.plugin.rasterizing.sld;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.process.function.ProcessFunction;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointSymbolizer;
@@ -22,20 +26,50 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
+import org.opengis.style.RasterSymbolizer;
 
 /**
- * Implementation of {@link org.geotools.styling.StyleVisitor} that duplicates an SLD style while filtering out text
- * and/or geometry symbolizers.
+ * Implementation of {@link org.geotools.styling.StyleVisitor} that duplicates
+ * an SLD style while filtering out text and/or geometry symbolizers.
  * 
  * @author Jan De Moerloose
  * 
  */
 public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
-	
+
 	private boolean includeText;
-	
+
 	private boolean includeGeometry;
+
+	/**
+	 * Overridden to add transform.
+	 */
+	@Override
+	public void visit(FeatureTypeStyle fts) {
+
+		FeatureTypeStyle copy = new FeatureTypeStyleImpl(
+				(FeatureTypeStyleImpl) fts);
+		Rule[] rules = fts.getRules();
+		int length = rules.length;
+		Rule[] rulesCopy = new Rule[length];
+		for (int i = 0; i < length; i++) {
+			if (rules[i] != null) {
+				rules[i].accept(this);
+				rulesCopy[i] = (Rule) pages.pop();
+			}
+		}
+		copy.setRules(rulesCopy);
+		if (fts.getTransformation() != null) {
+			copy.setTransformation(copy(fts.getTransformation()));
+		}
+		if (STRICT && !copy.equals(fts)) {
+			throw new IllegalStateException(
+					"Was unable to duplicate provided FeatureTypeStyle:" + fts);
+		}
+		pages.push(copy);
+	}
 
 	/**
 	 * Overridden to skip some symbolizers.
@@ -77,23 +111,39 @@ public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 		copy.setMinScaleDenominator(rule.getMinScaleDenominator());
 
 		if (STRICT && !copy.equals(rule)) {
-			throw new IllegalStateException("Was unable to duplicate provided Rule:" + rule);
+			throw new IllegalStateException(
+					"Was unable to duplicate provided Rule:" + rule);
 		}
 		pages.push(copy);
 	}
-	
+
+	@Override
+	protected Expression copy(Expression expression) {
+		if (expression instanceof ProcessFunction) {
+			ProcessFunction f = (ProcessFunction) expression;
+			return (ProcessFunction) CommonFactoryFinder.getFilterFactory2()
+					.function(
+							f.getProcessName(),
+							f.getParameters().toArray(
+									new Expression[f.getParameters().size()]));
+
+		} else {
+			return super.copy(expression);
+		}
+	}
+
 	public boolean isIncludeText() {
 		return includeText;
 	}
-	
+
 	public void setIncludeText(boolean includeText) {
 		this.includeText = includeText;
 	}
-	
+
 	public boolean isIncludeGeometry() {
 		return includeGeometry;
 	}
-	
+
 	public void setIncludeGeometry(boolean includeGeometry) {
 		this.includeGeometry = includeGeometry;
 	}
@@ -115,10 +165,12 @@ public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 			if (!isIncludeGeometry()) {
 				return true;
 			}
+		} else if (symbolizer instanceof RasterSymbolizer) {
+			if (!isIncludeGeometry()) {
+				return true;
+			}
 		}
 		return false;
 	}
-	
-	
 
 }

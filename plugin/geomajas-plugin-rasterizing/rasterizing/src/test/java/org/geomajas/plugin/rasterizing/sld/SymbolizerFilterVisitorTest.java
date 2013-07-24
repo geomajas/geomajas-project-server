@@ -16,6 +16,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
+import org.opengis.style.RasterSymbolizer;
 
 public class SymbolizerFilterVisitorTest {
 
@@ -73,6 +74,25 @@ public class SymbolizerFilterVisitorTest {
 		Iterator<Symbolizer> it = rule.symbolizers().iterator();
 		Assert.assertTrue(it.next() instanceof PointSymbolizer);
 		Assert.assertTrue(it.next() instanceof TextSymbolizer);
+		Assert.assertFalse(it.hasNext());
+	}
+	
+	@Test
+	public void testTransformation() throws IOException{
+		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
+		visitor.setIncludeGeometry(true);
+		visitor.setIncludeText(true);
+		SLDParser parser = new SLDParser(styleFactory);
+		parser.setInput(getClass().getResource("heatmap.sld"));
+		Style[] styles = parser.readXML();
+		Assert.assertEquals(1, styles.length);
+		visitor.visit(styles[0]);
+		Style copy = (Style) visitor.getCopy();
+		FeatureTypeStyle featureTypeStyle = copy.featureTypeStyles().iterator().next();
+		Assert.assertNotNull(featureTypeStyle.getTransformation());		
+		Rule rule = featureTypeStyle.rules().iterator().next();
+		Iterator<Symbolizer> it = rule.symbolizers().iterator();
+		Assert.assertTrue(it.next() instanceof RasterSymbolizer);
 		Assert.assertFalse(it.hasNext());
 	}
 }

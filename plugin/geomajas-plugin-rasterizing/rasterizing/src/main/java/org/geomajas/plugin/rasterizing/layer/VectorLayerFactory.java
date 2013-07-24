@@ -47,6 +47,8 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.jboss.serial.io.JBossObjectOutputStream;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +130,7 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 
 		// estimate the buffer
-		MetaBufferEstimator estimator = new MetaBufferEstimator();
+		MetaBufferEstimator estimator = new MyMetaBufferEstimator();
 		estimator.visit(style);
 		int bufferInPixels = estimator.getBuffer();
 		
@@ -172,15 +174,18 @@ public class VectorLayerFactory implements LayerFactory {
 		// filter out the rules that are never used
 		int fIndex = 0;
 		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-			FeatureTypeStyleInfo ftsInfo = userStyleInfo.getFeatureTypeStyleList().get(fIndex); 
-			ListIterator<RuleInfo> it1 = ftsInfo.getRuleList().listIterator();
-			for (ListIterator<Rule> it = fts.rules().listIterator(); it.hasNext();) {
-				Rule rule = it.next();
-				it1.next();
-				Filter f = (rule.getFilter() != null ? rule.getFilter() : Filter.INCLUDE);
-				if (gtFeatures.subCollection(f).isEmpty()) {
-					it.remove();
-					it1.remove();
+			FeatureTypeStyleInfo ftsInfo = userStyleInfo.getFeatureTypeStyleList().get(fIndex);
+			// only if no transformations
+			if(ftsInfo.getTransformation() == null) {
+				ListIterator<RuleInfo> it1 = ftsInfo.getRuleList().listIterator();
+				for (ListIterator<Rule> it = fts.rules().listIterator(); it.hasNext();) {
+					Rule rule = it.next();
+					it1.next();
+					Filter f = (rule.getFilter() != null ? rule.getFilter() : Filter.INCLUDE);
+					if (gtFeatures.subCollection(f).isEmpty()) {
+						it.remove();
+						it1.remove();
+					}
 				}
 			}
 			fIndex++;
@@ -210,4 +215,49 @@ public class VectorLayerFactory implements LayerFactory {
 		return userData;
 	}	
 
+	/**
+	 * Extension of {@link MetaBufferEstimator} that takes processes into account.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	protected class MyMetaBufferEstimator extends MetaBufferEstimator {
+
+		public static final String BUFFER_SIZE = "radiusPixels";
+
+		private int preRenderBuffer = 0;
+
+		public void visit(FeatureTypeStyle fts) {
+			Rule[] rules = fts.getRules();
+
+			for (int i = 0; i < rules.length; i++) {
+				Rule rule = rules[i];
+				rule.accept(this);
+			}
+			if (fts.getTransformation() != null) {
+				visit(fts.getTransformation());
+			}
+		}
+
+		private void visit(Expression expression) {
+			if (expression instanceof Function) {
+				Function f = (Function) expression;
+				for (Expression param : f.getParameters()) {
+					Object keyValue = param.evaluate(null);
+					if (keyValue instanceof Map) {
+						Object bf = ((Map) keyValue).get(BUFFER_SIZE);
+						if (bf != null) {
+							preRenderBuffer = Integer.parseInt(bf.toString());
+						}
+					}
+				}
+			}
+		}
+
+		@Override
+		public int getBuffer() {
+			return Math.max(preRenderBuffer, super.getBuffer());
+		}
+
+	}
 }
