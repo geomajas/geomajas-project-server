@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.example.client.sample.layer;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.event.LayerRefreshedEvent;
 import org.geomajas.puregwt.client.event.LayerRefreshedHandler;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
@@ -98,9 +97,7 @@ public class LayerRefreshPanel implements SamplePanel {
 			}
 
 			// Now zoom in a lot, because the countries layer is not visible at high altitudes:
-			double scale = mapPresenter.getViewPort().getScale();
-			mapPresenter.getViewPort().applyPosition(new Coordinate(0, 7000000));
-			mapPresenter.getViewPort().applyScale(scale * 64);
+			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_ITALY);
 		}
 	}
 

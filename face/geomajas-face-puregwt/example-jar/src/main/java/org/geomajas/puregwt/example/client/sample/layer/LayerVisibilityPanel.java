@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.example.client.sample.layer;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
@@ -110,9 +109,7 @@ public class LayerVisibilityPanel implements SamplePanel {
 			}
 
 			// Now zoom in a lot, because the countries layer is not visible at high altitudes:
-			double scale = mapPresenter.getViewPort().getScale();
-			mapPresenter.getViewPort().applyPosition(new Coordinate(0, 7000000));
-			mapPresenter.getViewPort().applyScale(scale * 64);
+			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_ITALY);
 		}
 	}
 

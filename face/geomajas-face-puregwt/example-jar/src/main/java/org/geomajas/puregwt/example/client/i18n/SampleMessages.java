@@ -47,11 +47,11 @@ public interface SampleMessages extends Messages {
 	String generalVpEventShort();
 
 	String generalVpEventDescription();
-	
+
 	String generalServerExceptionTitle();
-	
+
 	String generalServerExceptionShort();
-	
+
 	String generalServerExceptionDescription();
 
 	String generalListnerTitle();
@@ -60,13 +60,11 @@ public interface SampleMessages extends Messages {
 
 	String generalListnerDescription();
 
-	String listenerCoordinates();
+	String generalListnerScreenPosition();
 
-	String listenerScreenPosition();
+	String generalListnerWorldPosition();
 
-	String listenerWorldPosition();
-
-	String listenerEvent();
+	String generalListnerSubtitle();
 
 	String generalControlsTitle();
 
@@ -145,7 +143,7 @@ public interface SampleMessages extends Messages {
 	String renderingWorldSpaceFixedShort();
 
 	String renderingWorldSpaceFixedDescription();
-	
+
 	String renderingMissingCanvas();
 
 	String renderingCanvasTitle();

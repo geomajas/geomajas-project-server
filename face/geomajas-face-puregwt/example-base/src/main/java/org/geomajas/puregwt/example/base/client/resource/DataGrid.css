@@ -43,8 +43,7 @@
 .dataGridCell {
 	padding: 10px 15px;
 	overflow: hidden;
-/* 	border-bottom: 1px solid #D0D0D0;
- */}
+}
 
 .dataGridFirstColumnFooter {
 	
@@ -84,7 +83,6 @@
 }
 
 .dataGridEvenRow {
-	/*background: #ffffff;*/
 }
 
 .dataGridEvenRowCell {
@@ -93,16 +91,6 @@
 
 .dataGridOddRow {
 	background: #F0F0F0; /* for non-css3 browsers */
-	/* Safari 4-5, Chrome 1-9 */
-	background: -webkit-gradient(linear, left top, right top, from(#E0E0E0), to(#FAFAFA) );
-	/* Safari 5.1, Chrome 10+ */
-	background: -webkit-linear-gradient(left, #E0E0E0, #FAFAFA);
-	/* Firefox 3.6+ */
-	background: -moz-linear-gradient(left, #E0E0E0, #FAFAFA);
-	/* IE 10 */
-	background: -ms-linear-gradient(left, #E0E0E0, #FAFAFA);
-	/* Opera 11.10+ */
-	background: -o-linear-gradient(left, #E0E0E0, #FAFAFA);
 }
 
 .dataGridOddRowCell {

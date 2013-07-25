@@ -104,10 +104,7 @@ public class FeatureSelectionPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			double scale = mapPresenter.getViewPort().getScale() * 4;
-			mapPresenter.getViewPort().applyScale(scale);
-
-			mapPresenter.getLayersModel().getLayer(1).setMarkedAsVisible(true);
+			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_AFRICA);
 			mapPresenter.setMapController(featureSelectionController);
 		}
 	}

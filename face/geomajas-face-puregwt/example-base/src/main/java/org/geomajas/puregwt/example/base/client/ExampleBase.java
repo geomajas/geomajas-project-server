@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.example.base.client;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.example.base.client.page.sample.SamplePage;
 import org.geomajas.puregwt.example.base.client.resource.ShowcaseResource;
@@ -33,6 +34,10 @@ public class ExampleBase implements EntryPoint {
 	private static final ShowcaseResource RESOURCE = GWT.create(ShowcaseResource.class);
 
 	private static final ShowcaseLayout LAYOUT = new ShowcaseLayout();
+	
+	public static final Bbox BBOX_ITALY = new Bbox(868324, 4500612, 1174072, 1174072);
+	
+	public static final Bbox BBOX_AFRICA = new Bbox(-2915614, -4324501, 9392582, 9392582);
 
 	public void onModuleLoad() {
 		// Prepare styling:
