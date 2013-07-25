@@ -401,6 +401,12 @@ viewPort.applyBounds(new Bbox(0,0,100,100));</programlisting>
             Allows layer implementations to specify their own
             renderers.</para>
           </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.puregwt.client.map.layer.HasLegendWidget</emphasis>:
+            Indicates this layer provides a widget that can be used as a
+            legend throughout your application.</para>
+          </listitem>
         </itemizedlist>
       </section>
 
@@ -1311,7 +1317,7 @@ gfxUtil.applyStroke(vectorObject, "#004499", 0.9, 2, null);</programlisting>
       <programlisting>// Prepare a command:
 EmptyCommandRequest request = new EmptyCommandRequest();
 GwtCommand command = new GwtCommand();
-command.setCommandName("command.GetSimpleExceptionCommand");
+command.setCommandName("command.GetSimpleExceptionCommand"); // Maybe not the best example...
 command.setCommandRequest(request);
 
 // Now execute the command:
@@ -1368,6 +1374,170 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
       <para>An AbsolutePanel is a GWT layout panel wherein all widgets are
       positioned absolutely (actually using the CSS position:absolute
       construct).</para>
+    </section>
+
+    <section>
+      <title>The default map control widgets</title>
+
+      <para>By default Geomajas will add a few control widgets to the map.
+      These provide general navigation functionalities to the user. If you are
+      not satisfied, you can always replace the defaults with others.</para>
+
+      <para>At map initialization, the following map control widgets are
+      automatically added:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.widget.control.scalebar.Scalebar</emphasis>:
+          The scalebar shown in the bottom left of the map.</para>
+
+          <screenshot>
+            <screeninfo>Scalebar</screeninfo>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center"
+                           fileref="images/controls/Scalebar.png" />
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.widget.control.zoom.ZoomControl</emphasis>:
+          The default zoom control widget, showing a zoom in and a zoom out
+          button.</para>
+
+          <screenshot>
+            <screeninfo>ZoomControl</screeninfo>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center"
+                           fileref="images/controls/ZoomControl.png" />
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.widget.control.zoomtorect.ZoomToRectangleControl</emphasis>:
+          Button that allows the user to zoom in to a rectangle. The user
+          needs to drag the rectangle after clicking this button.</para>
+
+          <screenshot>
+            <screeninfo>ZoomToRectangleControl</screeninfo>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center"
+                           fileref="images/controls/ZoomToRectangleControl.png" />
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </listitem>
+      </itemizedlist>
+
+      <para>Next to these defaults, Geomajas also provides a few other (more
+      advanced) map control widgets that are not added to the map by
+      default:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.widget.control.pan.PanControl</emphasis>:
+          A widget that provides 4 buttons to pan the map in 4 directions
+          (north, east, south, west).</para>
+
+          <screenshot>
+            <screeninfo>PanControl</screeninfo>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center"
+                           fileref="images/controls/PanControl.png" />
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>org.geomajas.puregwt.client.widget.control.zoom.ZoomStepControl</emphasis>:
+          A widget that provides a zoom step for every resolution available in
+          the map configuration. This way a user can zoom directly to a
+          certain zoom level should he choose to.</para>
+
+          <screenshot>
+            <screeninfo>ZoomStepControl</screeninfo>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center"
+                           fileref="images/controls/ZoomStepControl.png" />
+              </imageobject>
+            </mediaobject>
+          </screenshot>
+        </listitem>
+      </itemizedlist>
+
+      <section>
+        <title>Removing one of the default map controls</title>
+
+        <para>Let's say you don't want to the
+        <code>ZoomToRectangleControl</code> on your map. In this case we
+        simply removed it once the map has been initialized:</para>
+
+        <programlisting>mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+
+    public void onMapInitialized(MapInitializationEvent event) {
+        // Search for the ZoomToRectangleControl widget and remove it:
+        for (int i = 0; i &lt; mapPresenter.getWidgetPane().getWidgetCount(); i++) {
+            Widget widget = mapPresenter.getWidgetPane().getWidget(i);
+            if (widget instanceof ZoomToRectangleControl) {
+                mapPresenter.getWidgetPane().remove(i);
+            }
+        }
+    }
+});</programlisting>
+      </section>
+
+      <section>
+        <title>Using more advanced map controls:</title>
+
+        <para>In this section we will demonstrate how to replace the default
+        ZoomControl by the more advanced PanControl and
+        ZoomStepControl:</para>
+
+        <programlisting>mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+
+    public void onMapInitialized(MapInitializationEvent event) {
+        // Search for the ZoomToRectangleControl widget and remove it:
+        for (int i = 0; i &lt; mapPresenter.getWidgetPane().getWidgetCount(); i++) {
+            Widget widget = mapPresenter.getWidgetPane().getWidget(i);
+            if (widget instanceof ZoomToRectangleControl) {
+                mapPresenter.getWidgetPane().remove(i);
+            }
+        }
+
+        // Now add the alternative controls:
+        mapPresenter.getWidgetPane().add(new PanControl(mapPresenter), 5, 5);
+        mapPresenter.getWidgetPane().add(new ZoomStepControl(mapPresenter), 17, 60);
+    }
+});</programlisting>
+
+        <para>This piece of code would result in a map that looks like
+        this:</para>
+
+        <screenshot>
+          <screeninfo>Alternative controls</screeninfo>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center"
+                         fileref="images/controls/alternativecontrols.png" />
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </section>
     </section>
   </section>
 </chapter>

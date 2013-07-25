@@ -59,10 +59,7 @@
     face:</para>
 
     <programlisting>&lt;!-- Geomajas Client --&gt;
-&lt;inherits name="org.geomajas.puregwt.GeomajasClientImpl" /&gt;
-
-&lt;!-- Default CSS theme --&gt;
-&lt;inherits name="org.geomajas.puregwt.theme.GeomajasDefaultTheme" /&gt;</programlisting>
+&lt;inherits name="org.geomajas.puregwt.GeomajasClientImpl" /&gt;</programlisting>
   </sect1>
 
   <sect1>
