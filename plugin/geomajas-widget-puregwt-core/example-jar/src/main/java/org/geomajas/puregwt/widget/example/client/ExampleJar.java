@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.widget.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
@@ -24,6 +22,10 @@ import org.geomajas.puregwt.widget.example.client.sample.MapLegendDropDownSample
 import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
 import org.geomajas.puregwt.widget.example.client.sample.featuremouseover.FeatureMouseOverExample;
 import org.geomajas.puregwt.widget.example.client.sample.featureselected.FeatureSelectedExample;
+import org.geomajas.puregwt.widget.example.client.sample.messagebox.MessageBoxExample;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the widget core example application.
@@ -140,6 +142,29 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.closeableDialogDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+		});
+
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new MessageBoxExample();
+			}
+
+			public String getTitle() {
+				return MESSAGES.messageBoxTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.messageBoxDescrShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.messageBoxDescription();
 			}
 
 			public String getCategory() {

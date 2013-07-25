@@ -43,9 +43,7 @@ public class CloseableDialogExample implements SamplePanel {
 	/**
 	 * UI binder interface.
 	 */
-	interface CloseableDialogUiBinder extends
-			UiBinder<DockLayoutPanel, CloseableDialogExample> {
-
+	interface CloseableDialogUiBinder extends UiBinder<DockLayoutPanel, CloseableDialogExample> {
 	}
 
 	public CloseableDialogExample() {

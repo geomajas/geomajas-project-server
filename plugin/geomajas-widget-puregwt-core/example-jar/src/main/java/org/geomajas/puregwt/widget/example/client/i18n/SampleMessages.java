@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.widget.example.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * Specific messages for the many samples.
@@ -25,23 +26,31 @@ public interface SampleMessages extends Messages {
 	// ------------------------------------------------------------------------
 
 	String closeableDialogTitle();
-
 	String closeableDialogDescrShort();
-
 	String closeableDialogDescription();
-
 	String closeableDialogButShow();
 
+	String messageBoxTitle();
+	String messageBoxDescrShort();
+	String messageBoxDescription();
+	String messageBoxInfoMessageBtn();
+	String messageBoxWarnMessageBtn();
+	String messageBoxErrorMessageBtn();
+	String messageBoxHelpMessageBtn();
+	String messageBoxYesNoBtn();
+	String messageBoxYesNoCancelBtn();
+	String messageBoxMessage();
+	String messageBoxResponseYes();
+	String messageBoxResponseNo();
+	String messageBoxResponseCancel();
+	SafeHtml messageBoxMessageLong();
+	
 	String featureSelectedTitle();
-
 	String featureSelectedDescrShort();
-
 	String featureSelectedDescription();
 
 	String featureMouseOverTitle();
-
 	String featureMouseOverDescrShort();
-
 	String featureMouseOverDescription();
 
 	// ------------------------------------------------------------------------
