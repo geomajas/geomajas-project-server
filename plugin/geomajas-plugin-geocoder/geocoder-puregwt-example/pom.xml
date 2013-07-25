@@ -131,7 +131,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<module>org.geomajas.plugin.geocoder.puregwt.example.GeoCoderExample</module>
+					<module>org.geomajas.plugin.geocoder.puregwt.example.GeocoderExample</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
