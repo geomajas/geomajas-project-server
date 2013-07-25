@@ -68,6 +68,12 @@ public interface SampleMessages extends Messages {
 
 	String listenerEvent();
 
+	String generalControlsTitle();
+
+	String generalControlsShort();
+
+	String generalControlsDescription();
+
 	// ------------------------------------------------------------------------
 	// Category: Layers
 	// ------------------------------------------------------------------------

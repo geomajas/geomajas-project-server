@@ -16,6 +16,7 @@ import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.puregwt.example.client.i18n.SampleMessages;
 import org.geomajas.puregwt.example.client.sample.feature.FeatureSelectionPanel;
+import org.geomajas.puregwt.example.client.sample.general.AlternativeControlsPanel;
 import org.geomajas.puregwt.example.client.sample.general.MapFillPanel;
 import org.geomajas.puregwt.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.puregwt.example.client.sample.general.ResizeMapPanel;
@@ -150,6 +151,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.generalVpEventDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new AlternativeControlsPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalControlsTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalControlsShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalControlsDescription();
 			}
 
 			public String getCategory() {
@@ -433,7 +456,6 @@ public class ExampleJar implements EntryPoint {
 			}
 		});
 	}
-
 
 	private void registerListenerSample() {
 		SamplePanelRegistry.registerCategory(CATEGORY_GENERAL, 105);

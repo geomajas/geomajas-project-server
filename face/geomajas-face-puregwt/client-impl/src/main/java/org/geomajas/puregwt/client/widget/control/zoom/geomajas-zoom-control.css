@@ -7,8 +7,6 @@
 	margin: 0px;
 	padding: 0px;
 	border: 0px;
-	top:0px;
-	left:0px;
 	position: absolute;
 	width: 45px;
 	height: 22px;
@@ -50,9 +48,4 @@
 .gm-ZoomControl-zoomOut:hover, .gm-ZoomControl-zoomOut-touch {
 	color: #337428;
 	background-color: #FFFFFF;
-}
-@if user.agent ie6 ie7 ie8 {
-	.gm-ZoomControl-zoomOut {
-		 line-height: 22px;
-	}
 }
