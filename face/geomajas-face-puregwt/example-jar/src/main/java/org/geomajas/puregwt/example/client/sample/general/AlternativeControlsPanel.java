@@ -17,13 +17,10 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 import org.geomajas.puregwt.client.widget.control.pan.PanControl;
 import org.geomajas.puregwt.client.widget.control.zoom.ZoomControl;
-import org.geomajas.puregwt.client.widget.control.zoom.ZoomControlCssResource;
-import org.geomajas.puregwt.client.widget.control.zoom.ZoomControlResource;
 import org.geomajas.puregwt.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
