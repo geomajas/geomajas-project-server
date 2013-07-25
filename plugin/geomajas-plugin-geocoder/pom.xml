@@ -45,11 +45,12 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${geocoder-backend-version}</version>
+				<artifactId>geomajas-face-puregwt</artifactId>
+				<version>${geocoder-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
@@ -57,12 +58,24 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+		
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${geocoder-puregwt-face-version}</version>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${geocoder-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geocoder-puregwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geocoder-puregwt-example-jar</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
@@ -86,12 +99,13 @@
 				<artifactId>geomajas-plugin-geocoder-gwt-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder-puregwt</artifactId>
+				<artifactId>geomajas-plugin-geocoder-puregwt-example-jar</artifactId>
 				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
-
 			<dependency>
 				<groupId>org.geonames</groupId>
 				<artifactId>geonames-ws</artifactId>
@@ -134,10 +148,12 @@
 	<modules>
 		<module>geocoder</module>
 		<module>geocoder-gwt</module>
-		<module>geocoder-puregwt</module>
 		<module>geocoder-gwt-example-jar</module>
 		<module>geocoder-gwt-example</module>
-  	</modules>
+		<module>geocoder-puregwt</module>
+		<module>geocoder-puregwt-example-jar</module>
+		<module>geocoder-puregwt-example</module>
+	</modules>
 
 	<profiles>
 		<profile>
@@ -168,7 +184,7 @@
 	</profiles>
 
 	<properties>
-		<geocoder-backend-version>1.11.1</geocoder-backend-version>
+		<geocoder-backend-version>1.13.1</geocoder-backend-version>
 		<geocoder-gwt-face-version>1.12.0</geocoder-gwt-face-version>
 		<geocoder-puregwt-face-version>1.0.0-SNAPSHOT</geocoder-puregwt-face-version>
 		<geocoder-gwt-version>2.5.0</geocoder-gwt-version>

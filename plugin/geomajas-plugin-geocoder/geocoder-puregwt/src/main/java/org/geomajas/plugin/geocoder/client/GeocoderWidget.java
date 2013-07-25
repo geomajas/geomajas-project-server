@@ -55,12 +55,15 @@ public class GeocoderWidget extends FlowPanel {
 
 	private GeocoderTextBox box;
 
-	public GeocoderWidget(MapPresenter mapPresenter, int top, int left) {
+	public GeocoderWidget(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
+		buildGui();
+	}
+
+	public GeocoderWidget(MapPresenter mapPresenter, int top, int left) {
+		this(mapPresenter);
 		asWidget().getElement().getStyle().setTop(top, Unit.PX);
 		asWidget().getElement().getStyle().setLeft(left, Unit.PX);
-
-		buildGui();
 	}
 
 	private void buildGui() {

@@ -24,6 +24,7 @@
 	<description>geocoder (PureGWT face)</description>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-geocoder</artifactId>
@@ -139,6 +140,7 @@
 						<directory>src/main/java</directory>
 						<includes>
 							<include>**/*.java</include>
+							<include>**/*.ui.xml</include>
 						</includes>
 					</resource>
 				</resources>
