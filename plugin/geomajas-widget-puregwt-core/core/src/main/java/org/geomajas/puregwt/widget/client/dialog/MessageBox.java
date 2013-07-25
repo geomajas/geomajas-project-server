@@ -23,8 +23,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,7 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Kristof Heirwegh
  */
-public class MessageBox extends Composite {
+public class MessageBox implements IsWidget {
 
 	// can't directly inherit from CloseableDialogbox because it has ui:fields in its binder (which we don't need/want).
 
@@ -124,10 +124,10 @@ public class MessageBox extends Composite {
 	 * @param onFinished
 	 */
 	public MessageBox(String title, SafeHtml messageText, final Callback<Boolean, Void> onFinished) {
-		initWidget(UIBINDER.createAndBindUi(this));
-		dialog = new CloseableDialogBox();
-		dialog.setWidget(this);
 		MessageBoxResource.INSTANCE.css().ensureInjected();
+		Widget inner = UIBINDER.createAndBindUi(this);
+		dialog = new CloseableDialogBox();
+		dialog.setWidget(inner);
 		dialog.setAnimationEnabled(true);
 		dialog.setGlassEnabled(true);
 		dialog.setModal(true);
@@ -192,6 +192,11 @@ public class MessageBox extends Composite {
 
 	public void show() {
 		dialog.show();
+	}
+
+	@Override
+	public Widget asWidget() {
+		return dialog;
 	}
 
 	// ---------------------------------------------------
