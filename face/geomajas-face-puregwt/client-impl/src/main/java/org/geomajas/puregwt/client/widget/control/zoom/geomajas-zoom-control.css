@@ -1,0 +1,58 @@
+/*===========================================================================*/
+/*====                       ZoomControl Widget                          ====*/
+/*===========================================================================*/
+
+@external gm-ZoomControl;
+.gm-ZoomControl {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	top:0px;
+	left:0px;
+	position: absolute;
+	width: 45px;
+	height: 22px;
+	-moz-box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+  	-webkit-box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+	box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+@if user.agent ie6 ie7 ie8 {
+	.gm-ZoomControl {
+		 border: 1px solid #666666;
+	}
+}
+
+@external gm-ZoomControl-zoomIn, gm-ZoomControl-zoomOut;
+.gm-ZoomControl-zoomIn, .gm-ZoomControl-zoomOut {
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	cursor: pointer;
+	background-color: #F6F6F6;
+	font-weight: bold;
+	text-align: center;
+	font-size: 18px;
+	line-height: 22px;
+	color: #282a2c;
+	border-right: 1px solid #666666;
+	font-family: "Courier New", Courier, monospace;
+}
+.gm-ZoomControl-zoomOut {
+	border: 0px;
+	left: 23px;
+}
+
+@external gm-ZoomControl-zoomIn-touch, gm-ZoomControl-zoomOut-touch;
+.gm-ZoomControl-zoomIn:hover, .gm-ZoomControl-zoomIn-touch,
+.gm-ZoomControl-zoomOut:hover, .gm-ZoomControl-zoomOut-touch {
+	color: #337428;
+	background-color: #FFFFFF;
+}
+@if user.agent ie6 ie7 ie8 {
+	.gm-ZoomControl-zoomOut {
+		 line-height: 22px;
+	}
+}

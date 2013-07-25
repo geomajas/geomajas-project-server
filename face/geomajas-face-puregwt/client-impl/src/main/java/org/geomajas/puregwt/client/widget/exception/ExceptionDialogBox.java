@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.service.exception;
+package org.geomajas.puregwt.client.widget.exception;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.DivElement;
@@ -24,15 +24,16 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Dialogbox with a close-button in the upper-right corner.
+ * Dialogbox with a close-button in the upper-right corner. It is not recommended to use this in your applications, it
+ * is meant only for internal Geomajas affairs.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class ExceptionDialogBox extends DialogBox {
 
 	public ExceptionDialogBox() {
-		 super(new CaptionImpl());
-		 ((CaptionImpl) getCaption()).setParent(this);
+		super(new CaptionImpl());
+		((CaptionImpl) getCaption()).setParent(this);
 		setAutoHideOnHistoryEventsEnabled(true);
 		this.setWidth("100%");
 	}
@@ -60,14 +61,14 @@ public class ExceptionDialogBox extends DialogBox {
 	/**
 	 * Overriding the default caption to include a close button.
 	 * 
-	 * @author Pieter De Graef
+	 * @author Jan De Moerloose
 	 */
 	protected static class CaptionImpl extends FocusPanel implements Caption {
 
 		/**
 		 * UI binder interface for the ShowcaseDialogBox caption.
 		 * 
-		 * @author Pieter De Graef
+		 * @author Jan De Moerloose
 		 */
 		interface MyUiBinder extends UiBinder<Widget, CaptionImpl> {
 		}

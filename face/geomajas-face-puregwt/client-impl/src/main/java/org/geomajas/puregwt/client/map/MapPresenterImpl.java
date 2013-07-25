@@ -21,7 +21,6 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -61,13 +60,10 @@ import org.geomajas.puregwt.client.map.layer.LayersModel;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererFactory;
 import org.geomajas.puregwt.client.service.CommandService;
-import org.geomajas.puregwt.client.widget.PanningWidget;
-import org.geomajas.puregwt.client.widget.ScalebarWidget;
-import org.geomajas.puregwt.client.widget.SimpleZoomWidget;
-import org.geomajas.puregwt.client.widget.TouchZoomWidget;
-import org.geomajas.puregwt.client.widget.Watermark;
-import org.geomajas.puregwt.client.widget.ZoomStepWidget;
-import org.geomajas.puregwt.client.widget.ZoomToRectangleWidget;
+import org.geomajas.puregwt.client.widget.control.Watermark;
+import org.geomajas.puregwt.client.widget.control.scalebar.Scalebar;
+import org.geomajas.puregwt.client.widget.control.zoom.ZoomControl;
+import org.geomajas.puregwt.client.widget.control.zoomtorect.ZoomToRectangleControl;
 import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -325,28 +321,14 @@ public final class MapPresenterImpl implements MapPresenter {
 				// Initialize the FeatureSelectionRenderer:
 				selectionRenderer.initialize(mapInfo);
 
-				// Adding the default map widgets:
+				// Adding the default map control widgets:
 				if (getWidgetPane() != null) {
-
-					if (isMobileBrowser) {
-						getWidgetPane().add(new TouchZoomWidget(MapPresenterImpl.this));
-					} else {
-						getWidgetPane().add(new Watermark(MapPresenterImpl.this));
-						getWidgetPane().add(new ScalebarWidget(MapPresenterImpl.this));
-						getWidgetPane().add(new PanningWidget(MapPresenterImpl.this));
-
-						List<ScaleInfo> zoomLevels = mapInfo.getScaleConfiguration().getZoomLevels();
-						if (zoomLevels != null && mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
-							// Zoom steps:
-							getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
-							getWidgetPane().add(new ZoomStepWidget(MapPresenterImpl.this, 60, 18));
-						} else {
-							// Simple zooming:
-							getWidgetPane().add(new ZoomToRectangleWidget(MapPresenterImpl.this));
-							getWidgetPane().add(new SimpleZoomWidget(MapPresenterImpl.this, 60, 20));
-						}
+					getWidgetPane().add(new Watermark(MapPresenterImpl.this));
+					getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
+					getWidgetPane().add(new ZoomControl(MapPresenterImpl.this), 5, 5);
+					if (!isMobileBrowser) {
+						getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this), 60, 5);
 					}
-
 				}
 				// Fire initialization event
 				eventBus.fireEvent(new MapInitializationEvent());
@@ -592,7 +574,7 @@ public final class MapPresenterImpl implements MapPresenter {
 				transformable.setTranslation(matrix.getDx(), matrix.getDy());
 			}
 		}
-		
+
 	}
 
 	/**

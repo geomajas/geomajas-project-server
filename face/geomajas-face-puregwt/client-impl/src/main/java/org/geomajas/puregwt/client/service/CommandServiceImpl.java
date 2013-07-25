@@ -16,7 +16,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.TokenRequestHandler;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.puregwt.client.service.exception.ExceptionCallbackImpl;
+import org.geomajas.puregwt.client.widget.exception.ExceptionCallbackImpl;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 

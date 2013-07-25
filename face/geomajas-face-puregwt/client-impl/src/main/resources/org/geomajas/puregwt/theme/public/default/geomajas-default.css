@@ -150,6 +150,7 @@
 	height: 20px;
 	position: absolute;
 	cursor: pointer;
+	top: 20px;
 }
 
 .gm-ZoomStepGadget-stepsPanel {

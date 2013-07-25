@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.resource.GeomajasWidgetResource;
-
 import com.google.gwt.core.client.EntryPoint;
 
 /**
@@ -23,7 +21,5 @@ import com.google.gwt.core.client.EntryPoint;
 public class GeomajasClient implements EntryPoint {
 
 	public void onModuleLoad() {
-		// Ensure that the contents of the geomajas-widgets.css CSS file are loaded
-		GeomajasWidgetResource.INSTANCE.css().ensureInjected();
 	}
 }

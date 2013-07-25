@@ -1,0 +1,71 @@
+/*===========================================================================*/
+/*====                       ZoomControl Widget                          ====*/
+/*===========================================================================*/
+
+@external gm-ZoomControl;
+.gm-ZoomControl {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	top:0px;
+	left:0px;
+	position: absolute;
+	width: 22px;
+	height: 45px;
+	-moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.75);
+  	-webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.75);
+	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.75);
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+@if user.agent ie6 ie7 ie8 {
+	.gm-ZoomControl {
+		 border: 1px solid #666666;
+	}
+}
+
+@external gm-ZoomControl-zoomIn;
+.gm-ZoomControl-zoomIn {
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	cursor: pointer;
+	background-color: #F6F6F6;
+	font-weight: bold;
+	text-align: center;
+	font-size: 18px;
+	line-height: 20px;
+	color: #282a2c;
+	border-bottom: 1px solid #666666;
+}
+.gm-ZoomControl-zoomIn:hover {
+	color: #337428;
+	background-color: #FFFFFF;
+}
+
+@external gm-ZoomControl-zoomOut;
+.gm-ZoomControl-zoomOut {
+	border: 0px;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	cursor: pointer;
+	top: 23px;
+	background-color: #F6F6F6;
+	font-weight: bold;
+	text-align: center;
+	font-size: 18px;
+	line-height: 15px;
+	color: #282a2c;
+	font-family: Verdana
+}
+.gm-ZoomControl-zoomOut:hover {
+	color: #337428;
+	background-color: #FFFFFF;
+}
+@if user.agent ie6 ie7 ie8 {
+	.gm-ZoomControl-zoomOut {
+		 line-height: 22px;
+	}
+}

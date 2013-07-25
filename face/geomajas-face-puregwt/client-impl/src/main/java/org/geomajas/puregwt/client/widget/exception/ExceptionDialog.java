@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.client.service.exception;
+package org.geomajas.puregwt.client.widget.exception;
 
 import org.geomajas.puregwt.client.i18n.GlobalMessages;
 
@@ -24,11 +24,18 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 /**
- * Dialog for showing Exceptions.
+ * Dialog for showing Exceptions. It is not recommended to use this in your applications, it is meant only for internal
+ * Geomajas affairs.
  * 
- * @author Jan De Moerloose / Jan Venstermans
+ * @author Jan De Moerloose
+ * @author Jan Venstermans
  */
 public class ExceptionDialog {
+	
+	static {
+		ExceptionDialogResource resource = GWT.create(ExceptionDialogResource.class);
+		resource.css().ensureInjected();
+	};
 
 	/**
 	 * {@link UiBinder} for this class.
@@ -82,6 +89,7 @@ public class ExceptionDialog {
 				exceptionDialog.center();
 			}
 		});
+		exceptionDialog.center();
 	}
 
 	@UiHandler("detailsButton")
@@ -94,5 +102,4 @@ public class ExceptionDialog {
 		detailsButton.setText(stackPanel.isVisible() ? messages.exceptionDialogCloseDetails() : messages
 				.exceptionDialogShowDetails());
 	}
-
 }

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.client.service.exception;
+package org.geomajas.puregwt.client.widget.exception;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionDto;

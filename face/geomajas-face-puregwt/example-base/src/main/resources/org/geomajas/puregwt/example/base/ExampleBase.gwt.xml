@@ -18,7 +18,6 @@
 
 	<!-- Geomajas Client -->
     <inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
-    <inherits name="org.geomajas.puregwt.theme.GeomajasDefaultTheme" />
 
     <entry-point class="org.geomajas.puregwt.example.base.client.ExampleBase"/>
 

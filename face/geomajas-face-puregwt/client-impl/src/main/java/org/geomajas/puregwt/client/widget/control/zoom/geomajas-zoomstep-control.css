@@ -1,0 +1,103 @@
+/*===========================================================================*/
+/*====                     ZoomStepControl Widget                        ====*/
+/*===========================================================================*/
+
+@external gm-ZoomStepControl;
+.gm-ZoomStepControl {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	top:0px;
+	left:0px;
+	position: absolute;
+	width: 22px;
+	height: 45px;
+	-moz-box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+  	-webkit-box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+	box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+@if user.agent ie6 ie7 ie8 {
+	.gm-ZoomStepControl {
+		 border: 1px solid #666666;
+	}
+}
+
+@external gm-ZoomStepControl-zoomIn;
+.gm-ZoomStepControl-zoomIn {
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	cursor: pointer;
+	background-color: #F6F6F6;
+	font-weight: bold;
+	text-align: center;
+	font-size: 18px;
+	line-height: 20px;
+	color: #282a2c;
+	border-bottom: 1px solid #666666;
+}
+.gm-ZoomStepControl-zoomIn:hover {
+	color: #337428;
+	background-color: #FFFFFF;
+}
+
+@external gm-ZoomStepControl-zoomOut;
+.gm-ZoomStepControl-zoomOut {
+	border: 0px;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	cursor: pointer;
+	top: 23px;
+	background-color: #F6F6F6;
+	font-weight: bold;
+	text-align: center;
+	font-size: 18px;
+	line-height: 15px;
+	color: #282a2c;
+	font-family: Verdana
+}
+.gm-ZoomStepControl-zoomOut:hover {
+	color: #337428;
+	background-color: #FFFFFF;
+}
+@if user.agent ie6 ie7 ie8 {
+	.gm-ZoomStepControl-zoomOut {
+		 line-height: 22px;
+	}
+}
+
+
+@external gm-ZoomStepControl-steps;
+.gm-ZoomStepControl-steps {
+	border: 0px;
+	top: 20px;
+	left: 0px;
+	width: 20px;
+}
+
+@external gm-ZoomStepControl-step;
+@sprite .gm-ZoomStepControl-step {
+	gwt-image: "zoomStepControlStep";
+	border: 0px;
+	width: 20px;
+	height: 11px;
+	position: absolute;
+	cursor: pointer;
+}
+
+@external gm-ZoomStepControl-handle;
+@sprite .gm-ZoomStepControl-handle {
+	gwt-image: "zoomStepControlHandle";
+	border: 0px;
+	width: 24px;
+	height: 9px;
+	position: absolute;
+	cursor: pointer;
+}
+@sprite .gm-ZoomStepControl-handle:hover {
+	gwt-image: "zoomStepControlHandleHover";
+}
