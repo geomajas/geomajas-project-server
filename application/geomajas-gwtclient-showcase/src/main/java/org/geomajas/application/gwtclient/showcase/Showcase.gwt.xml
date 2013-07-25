@@ -12,8 +12,9 @@
   -->
 
 <module rename-to="example">
-	<inherits name='org.geomajas.puregwt.widget.example.ExampleJar' />
 	<inherits name='org.geomajas.puregwt.example.ExampleJar' />
+	<inherits name="org.geomajas.plugin.geocoder.puregwt.example.GeoCoderExampleJar"/>
+	<inherits name='org.geomajas.puregwt.widget.example.ExampleJar' />
     <entry-point class="org.geomajas.application.gwtclient.showcase.client.Showcase" />
 	<source path='client' />
 </module>
