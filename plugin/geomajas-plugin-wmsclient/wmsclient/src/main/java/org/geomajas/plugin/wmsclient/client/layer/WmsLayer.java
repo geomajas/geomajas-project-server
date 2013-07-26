@@ -19,6 +19,7 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.map.layer.HasLegendWidget;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.LegendUrlSupported;
 import org.geomajas.puregwt.client.map.layer.OpacitySupported;
@@ -35,7 +36,7 @@ import org.geomajas.puregwt.client.map.render.HasLayerRenderer;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface WmsLayer extends Layer, OpacitySupported, HasLayerRenderer, LegendUrlSupported {
+public interface WmsLayer extends Layer, OpacitySupported, HasLayerRenderer, LegendUrlSupported, HasLegendWidget {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.

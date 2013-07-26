@@ -26,10 +26,11 @@ import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.AbstractLayer;
-import org.geomajas.puregwt.client.map.layer.LayerStylePresenter;
 import org.geomajas.puregwt.client.map.layer.LegendConfig;
 import org.geomajas.puregwt.client.map.render.LayerRenderer;
 
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -68,15 +69,6 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
 		this.title = title;
-	}
-
-	@Override
-	public List<LayerStylePresenter> getStylePresenters() {
-		List<LayerStylePresenter> presenters = new ArrayList<LayerStylePresenter>();
-
-		presenters.add(new WmsLayerStylePresenter(getLegendImageUrl(wmsConfig.getLegendConfig())));
-
-		return presenters;
 	}
 
 	// ------------------------------------------------------------------------
@@ -166,6 +158,15 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public String getLegendImageUrl(LegendConfig legendConfig) {
 		return wmsService.getLegendGraphicUrl(wmsConfig, legendConfig);
+	}
+
+	// ------------------------------------------------------------------------
+	// HasLegendWidget implementation:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public IsWidget buildLegendWidget() {
+		return new Image(getLegendImageUrl(wmsConfig.getLegendConfig()));
 	}
 
 	// ------------------------------------------------------------------------
