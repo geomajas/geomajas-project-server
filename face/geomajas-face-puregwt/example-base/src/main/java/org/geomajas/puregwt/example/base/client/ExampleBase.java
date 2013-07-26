@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.example.base.client;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.example.base.client.page.sample.SamplePage;
 import org.geomajas.puregwt.example.base.client.resource.ShowcaseResource;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
@@ -20,6 +19,7 @@ import org.geomajas.puregwt.example.base.client.widget.ShowcaseDialogBox;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -29,14 +29,15 @@ import com.google.gwt.user.client.Window;
  */
 public class ExampleBase implements EntryPoint {
 
-	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
+	// private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
+	private static Ginjector GINJECTOR;
 
 	private static final ShowcaseResource RESOURCE = GWT.create(ShowcaseResource.class);
 
 	private static final ShowcaseLayout LAYOUT = new ShowcaseLayout();
-	
+
 	public static final Bbox BBOX_ITALY = new Bbox(868324, 4500612, 1174072, 1174072);
-	
+
 	public static final Bbox BBOX_AFRICA = new Bbox(-2915614, -4324501, 9392582, 9392582);
 
 	public void onModuleLoad() {
@@ -48,8 +49,12 @@ public class ExampleBase implements EntryPoint {
 		return LAYOUT;
 	}
 
-	public static GeomajasGinjector getInjector() {
-		return GEOMAJASINJECTOR;
+	public static Ginjector getInjector() {
+		return GINJECTOR;
+	}
+
+	public static void setInjector(Ginjector injector) {
+		GINJECTOR = injector;
 	}
 
 	public static ShowcaseResource getShowcaseResource() {

@@ -22,8 +22,8 @@ import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.example.client.ExampleJar;
 import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -65,7 +65,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -126,7 +126,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 
 	private VectorObject scaleAndStyle(Geometry geom) {
 		Matrix scale = new Matrix(1000000, 0, 0, 1000000, 0, 0);
-		GfxUtil util = ExampleBase.getInjector().getGfxUtil();
+		GfxUtil util = ExampleJar.getInjector().getGfxUtil();
 		VectorObject shape = util.toShape(transform(geom, scale));
 		util.applyStroke(shape, "#CC9900", 0.8, 1, "2 5");
 		util.applyFill(shape, "#CC9900", geom.getGeometryType().endsWith("String") ? 0f : 0.5f);

@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.example.client;
 
+import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
@@ -65,6 +67,10 @@ public class ExampleJar implements EntryPoint {
 
 	public static SampleMessages getMessages() {
 		return MESSAGES;
+	}
+	
+	public static GeomajasGinjector getInjector() {
+		return (GeomajasGinjector) ExampleBase.getInjector();
 	}
 
 	private void registerGeneralSamples() {

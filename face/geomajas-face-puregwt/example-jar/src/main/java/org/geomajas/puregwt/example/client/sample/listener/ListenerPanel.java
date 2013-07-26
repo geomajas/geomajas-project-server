@@ -15,8 +15,8 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.controller.AbstractMapController;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.example.client.ExampleJar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -68,7 +68,7 @@ public class ListenerPanel implements SamplePanel {
 		layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.initialize("puregwt-app", "mapLayerVisibility");
 

@@ -17,8 +17,8 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.example.client.ExampleJar;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -61,7 +61,7 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -112,7 +112,7 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 				new Coordinate(190, 230), new Coordinate(140, 230), new Coordinate(140, 180) });
 		geometry.setGeometries(new Geometry[] { shell, hole });
 
-		Shape shape = (Shape) ExampleBase.getInjector().getGfxUtil().toShape(geometry);
+		Shape shape = (Shape) ExampleJar.getInjector().getGfxUtil().toShape(geometry);
 		shape.setFillColor("#0066AA");
 		shape.setFillOpacity(0.4);
 		shape.setStrokeColor("#004499");

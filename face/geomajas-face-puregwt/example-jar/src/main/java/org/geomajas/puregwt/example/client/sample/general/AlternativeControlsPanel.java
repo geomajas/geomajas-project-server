@@ -18,8 +18,8 @@ import org.geomajas.puregwt.client.widget.MapLayoutPanel;
 import org.geomajas.puregwt.client.widget.control.pan.PanControl;
 import org.geomajas.puregwt.client.widget.control.zoom.ZoomControl;
 import org.geomajas.puregwt.client.widget.control.zoom.ZoomStepControl;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.example.client.ExampleJar;
 
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,7 +41,7 @@ public class AlternativeControlsPanel implements SamplePanel {
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:

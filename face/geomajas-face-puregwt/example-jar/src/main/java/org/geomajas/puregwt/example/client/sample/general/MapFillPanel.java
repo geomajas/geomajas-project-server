@@ -15,8 +15,8 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.example.client.ExampleJar;
 
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Pieter De Graef
  */
 public class MapFillPanel implements SamplePanel {
-	
+
 	private MapPresenter mapPresenter;
 
 	public Widget asWidget() {
@@ -38,7 +38,7 @@ public class MapFillPanel implements SamplePanel {
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		layout.setPresenter(mapPresenter);
 

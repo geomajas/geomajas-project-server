@@ -24,7 +24,6 @@ import org.geomajas.puregwt.client.gfx.CanvasPath;
 import org.geomajas.puregwt.client.gfx.CanvasRect;
 import org.geomajas.puregwt.client.gfx.CanvasShape;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.example.client.ExampleJar;
 
@@ -84,7 +83,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
