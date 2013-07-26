@@ -14,10 +14,11 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>The PureGWT face is an AJAX client for the Geomajas Server, based upon
-  the Google Web Toolkit (GWT). The goal of this client is to provide a lean
-  and mean mapping API for the web. This library does not focus on providing
-  GIS oriented widgets, but instead focuses on a central map concept.</para>
+  <para>The Geomajas GWT client is an AJAX client for the Geomajas Server,
+  based upon the Google Web Toolkit (GWT). The goal of this client is to
+  provide a lean and mean mapping API for the web. This library does not focus
+  on providing GIS oriented widgets, but instead focuses on a central map
+  concept.</para>
 
   <para>The usage of the Google Web Toolkit as a base, let's the user develop
   his Ajax application in Java, using his favourite Java IDE (Eclipse,

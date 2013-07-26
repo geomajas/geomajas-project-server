@@ -38,8 +38,8 @@
 
         <para>The configuration that ties implementations to their interfaces
         is defined in the
-        <code>org.geomajas.gwt.client.GeomajasGinModule</code>. Next to
-        this configuration, Geomajas also provides the
+        <code>org.geomajas.gwt.client.GeomajasGinModule</code>. Next to this
+        configuration, Geomajas also provides the
         <code>org.geomajas.gwt.client.GeomajasGinjector</code>. The
         GeomajasGinjector is a service that provides access to singleton
         services and a way to create Geomajas maps. The GeomajasGinjector is
@@ -340,10 +340,10 @@ viewPort.applyBounds(new Bbox(0,0,100,100));</programlisting>
       specific set of functionalities, we have decided to reflect this
       diversity in the layer interface, by splitting it up in multiple
       'functional' interfaces. There is still a main
-      <code>org.geomajas.gwt.client.map.layer.Layer</code> interface,
-      which must always be implemented, but layer implementations can decide
-      for themselves which of the 'functional' interfaces they support and
-      which they don't.</para>
+      <code>org.geomajas.gwt.client.map.layer.Layer</code> interface, which
+      must always be implemented, but layer implementations can decide for
+      themselves which of the 'functional' interfaces they support and which
+      they don't.</para>
 
       <section>
         <title>Client layers and server layers</title>
@@ -414,11 +414,11 @@ viewPort.applyBounds(new Bbox(0,0,100,100));</programlisting>
         <title>Features</title>
 
         <para>In the previous section we briefly mentioned the Feature
-        (<code>org.geomajas.gwt.client.map.feature.Feature</code>)
-        concept. Features are the individual objects that make up vector
-        layers. Examples of vector layers are WFS (Web Feature Service) layers
-        or Shapefile layers. Geomajas represents such layers for example
-        through the FeaturesSupported interface.</para>
+        (<code>org.geomajas.gwt.client.map.feature.Feature</code>) concept.
+        Features are the individual objects that make up vector layers.
+        Examples of vector layers are WFS (Web Feature Service) layers or
+        Shapefile layers. Geomajas represents such layers for example through
+        the FeaturesSupported interface.</para>
 
         <para>A Feature itself contains the following information:</para>
 
@@ -491,7 +491,7 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
     handlers. Note that the term <code>Handler</code> is used, not listener,
     as we try to follow the GWT naming conventions. As of GWT 2.x, the use of
     a central <code>EventBus</code> has been promoted to work together with an
-    MVP approach. The PureGWT face has incorporated this train of thought, and
+    MVP approach. The GWT client has incorporated this train of thought, and
     provides a map-centric <code>EventBus</code>. In other words, every
     <code>MapPresenter</code> governs it's own <code>EventBus</code>.</para>
 
@@ -590,7 +590,7 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
       <title id="event_overview">Event overview</title>
 
       <para>Time to go over all supported events and explain their purpose.
-      Note that every event in this list is part of the PureGWT API within
+      Note that every event in this list is part of the GWT client API within
       Geomajas. All event and handler classes can be found in the following
       package: <code>org.geomajas.gwt.client.map.event</code>.</para>
 
@@ -1152,7 +1152,7 @@ Element target = mapController.getTarget(event);</programlisting>
       <section>
         <title>VectorContainers &amp; VectorObjects</title>
 
-        <para>For vector object rendering, the PureGWT face makes use of the
+        <para>For vector object rendering, the GWT client makes use of the
         Vaadin GwtGraphics library. This library provides all the necessary
         methods for standard SVG and VML rendering. The main interfaces to
         note are the <code>VectorContainer</code> and the
@@ -1292,10 +1292,10 @@ gfxUtil.applyStroke(vectorObject, "#004499", 0.9, 2, null);</programlisting>
   <section>
     <title>Client/Server communication</title>
 
-    <para>Although this chapter of the documentation is about the PureGwt
-    client API, Geomajas is at it's heart a client/server based framework. The
-    client needs the server to operate correctly. The client/server
-    communication mechanism used is a command pattern based upon the GWT RPC
+    <para>Although this chapter of the documentation is about the Gwt client
+    API, Geomajas is at it's heart a client/server based framework. The client
+    needs the server to operate correctly. The client/server communication
+    mechanism used is a command pattern based upon the GWT RPC
     services.</para>
 
     <para>An example of this communication is the map that fetches it's
