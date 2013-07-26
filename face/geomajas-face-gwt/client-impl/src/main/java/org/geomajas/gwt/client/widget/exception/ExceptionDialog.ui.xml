@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:x="urn:import:org.geomajas.gwt.client.widget.exception">
+
+	<ui:with field="resource" type="org.geomajas.gwt.client.widget.exception.ExceptionDialogResource" />
+
+	<ui:with field="msg" type="org.geomajas.gwt.client.i18n.GlobalMessages" />
+
+	<x:ExceptionDialogBox>
+		<g:HTMLPanel width="700px">
+			<g:VerticalPanel>
+				<g:Label ui:field="messageLabel" styleName="{resource.css.exceptionDialogMessageLabel}"></g:Label>
+				<g:HTMLPanel styleName="{resource.css.exceptionDialogButtonPanel}">
+					<g:Button ui:field="detailsButton">
+						<ui:text from="{msg.exceptionDialogShowDetails}" />
+					</g:Button>
+				</g:HTMLPanel>
+				<g:HTML ui:field="stackPanel" styleName="{resource.css.exceptionDialogStackTracePanel}"></g:HTML>
+			</g:VerticalPanel>
+		</g:HTMLPanel>
+	</x:ExceptionDialogBox>
+
+</ui:UiBinder>  

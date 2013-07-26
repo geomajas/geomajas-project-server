@@ -1,0 +1,84 @@
+/*===========================================================================*/
+/*====                        PanControl Widget                          ====*/
+/*===========================================================================*/
+@external gm-PanControl;
+.gm-PanControl {
+	background: #F6F6F6;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	width: 46px;
+	height: 46px;
+	position: absolute;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+	-moz-box-shadow:  0 1px 6px rgba(40, 42, 44, 0.8);
+  	-webkit-box-shadow:  0 1px 6px rgba(40, 42, 44, 0.8);
+	box-shadow:  0 1px 6px rgba(40, 42, 44, 0.8);
+}
+@if user.agent ie6 ie7 ie8 {
+	@sprite .gm-PanControl {
+		gwt-image: "panControlBackground";
+	}
+}
+
+@external gm-PanControl-top;
+@sprite .gm-PanControl-top {
+	gwt-image: "panControlTop";
+	border: 0px;
+	top: 0px;
+	left: 14px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+@sprite .gm-PanControl-top:hover {
+	gwt-image: "panControlTopHover";
+}
+
+@external gm-PanControl-right;
+@sprite .gm-PanControl-right {
+	gwt-image: "panControlRight";
+	border: 0px;
+	top: 14px;
+	left: 28px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+@sprite .gm-PanControl-right:hover {
+	gwt-image: "panControlRightHover";
+}
+
+@external gm-PanControl-bottom;
+@sprite .gm-PanControl-bottom {
+	gwt-image: "panControlBottom";
+	border: 0px;
+	top: 28px;
+	left: 14px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+@sprite .gm-PanControl-bottom:hover {
+	gwt-image: "panningBottomHover";
+}
+
+@external gm-PanControl-left;
+@sprite .gm-PanControl-left {
+	gwt-image: "panControlLeft";
+	border: 0px;
+	top: 14px;
+	left: 0px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+@sprite .gm-PanControl-left:hover {
+	gwt-image: "panControlLeftHover";
+}

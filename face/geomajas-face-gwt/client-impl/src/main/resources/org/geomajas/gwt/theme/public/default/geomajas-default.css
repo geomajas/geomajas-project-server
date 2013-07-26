@@ -1,0 +1,206 @@
+/*===========================================================================*/
+/*====                         Panning Gadget                            ====*/
+/*===========================================================================*/
+.gm-PanningGadget {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background: url(images/panbg.png) 0 0 no-repeat;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+.gm-PanningGadget-top {
+	border: 0px;
+	background: url(images/pan_up.gif) 0 0 no-repeat;
+	top: 0px;
+	left: 16px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-PanningGadget-right {
+	border: 0px;
+	background: url(images/pan_right.gif) 0 0 no-repeat;
+	top: 16px;
+	left: 32px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-PanningGadget-bottom {
+	border: 0px;
+	background: url(images/pan_down.gif) 0 0 no-repeat;
+	top: 32px;
+	left: 16px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-PanningGadget-left {
+	border: 0px;
+	background: url(images/pan_left.gif) 0 0 no-repeat;
+	top: 16px;
+	left: 0px;
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	cursor: pointer;
+}
+
+/*===========================================================================*/
+/*====                     ZoomToRectangle Gadget                        ====*/
+/*===========================================================================*/
+.gm-ZoomToRectangleGadget {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background: url(images/zoom_rectangle.png) 0 0 no-repeat;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+	top: 5px;
+	left: 60px;
+}
+
+/*===========================================================================*/
+/*====                        SimpleZoom Gadget                          ====*/
+/*===========================================================================*/
+.gm-SimpleZoomGadget {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background: url(images/zoombg.png) 0 0 no-repeat;
+	width: 20px;
+	height: 60px;
+	position: absolute;
+	top: 125px;
+	left: 25px;
+}
+
+.gm-SimpleZoomGadget-zoomIn {
+	border: 0px;
+	background: url(images/zoomPlus.png) 0 0 no-repeat;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-SimpleZoomGadget-zoomOut {
+	border: 0px;
+	background: url(images/zoomMinus.png) 0 0 no-repeat;
+	top: 40px;
+	left: 0px;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-SimpleZoomGadget-extent {
+	border: 0px;
+	background: url(images/maxextent.png) 0 0 no-repeat;
+	top: 20px;
+	left: 0px;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+}
+
+
+/*===========================================================================*/
+/*====                         ZoomStep Gadget                           ====*/
+/*===========================================================================*/
+.gm-ZoomStepGadget {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	top:0px;
+	left:0px;
+	position: absolute;
+	top: 60px;
+	left: 18px;
+}
+
+.gm-ZoomStepGadget-zoomIn {
+	border: 0px;
+	background: url(images/zoomstep/zoom-in.png) 0 0 no-repeat;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-ZoomStepGadget-zoomOut {
+	border: 0px;
+	background: url(images/zoomstep/zoom-out.png) 0 0 no-repeat;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+	top: 20px;
+}
+
+.gm-ZoomStepGadget-stepsPanel {
+	border: 0px;
+	top: 20px;
+	left: 0px;
+	width: 20px;
+}
+
+.gm-ZoomStepGadget-step {
+	border: 0px;
+	background: url(images/zoomstep/zoom-step.png) 0 0 no-repeat;
+	width: 20px;
+	height: 11px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gm-ZoomStepGadget-handle {
+	border: 0px;
+	background: url(images/zoomstep/zoom-step-handle.png) 0 0 no-repeat;
+	width: 24px;
+	height: 9px;
+	position: absolute;
+	cursor: pointer;
+}
+
+/*===========================================================================*/
+/*====                         Scalebar Gadget                           ====*/
+/*===========================================================================*/
+.gm-ScalebarGadget {
+	margin: 0px;
+	padding: 2px 3px;
+	border: 0px;
+	background: #FFFFFF;
+	bottom: 0px;
+	left: 0px;
+	height: 19px;
+	position: absolute;
+}
+
+.gm-ScalebarGadget-bar {
+	padding: 0px 4px 2px 4px;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	position: absolute;
+	font-family: Verdana, Arial;
+	font-size: 11px;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
