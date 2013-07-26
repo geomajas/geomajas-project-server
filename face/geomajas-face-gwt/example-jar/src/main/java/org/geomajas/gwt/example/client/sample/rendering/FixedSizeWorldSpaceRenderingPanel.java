@@ -17,7 +17,6 @@ import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt.example.client.ExampleJar;
-import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Ellipse;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -99,12 +98,6 @@ public class FixedSizeWorldSpaceRenderingPanel implements SamplePanel {
 		rectangle.setFillOpacity(1);
 		rectangle.setStrokeOpacity(0);
 		container.add(rectangle);
-	}
-
-	@UiHandler("imageBtn")
-	public void onImageBtnClicked(ClickEvent event) {
-		Image image = new Image(6000000, -3000000, 24, 24, GWT.getModuleBaseURL() + "image/layer/city1.png");
-		container.add(image);
 	}
 
 	@UiHandler("textBtn")

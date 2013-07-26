@@ -11,7 +11,6 @@
 					<g:Button ui:field="circleBtn" width="180px">Draw circle</g:Button>
 					<g:Button ui:field="ellipseBtn" width="180px">Draw ellipse</g:Button>
 					<g:Button ui:field="rectangleBtn" width="180px">Draw rectangle</g:Button>
-					<g:Button ui:field="imageBtn" width="180px">Draw image</g:Button>
 					<g:Button ui:field="textBtn" width="180px">Draw text</g:Button>
 					<g:Button ui:field="deleteBtn" width="180px">Delete all</g:Button>
 				</g:VerticalPanel>
