@@ -43,7 +43,7 @@ public class MapFillPanel implements SamplePanel {
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapOsm");
+		mapPresenter.initialize("gwt-app", "mapOsm");
 		return resizeLayoutPanel;
 	}
 

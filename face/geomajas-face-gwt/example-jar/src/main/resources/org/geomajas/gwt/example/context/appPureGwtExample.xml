@@ -20,7 +20,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<context:component-scan base-package="org.geomajas.gwt.example.server" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 	<!-- @extract-end -->
 
-	<bean name="puregwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean name="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
 				<ref bean="mapOsm" />

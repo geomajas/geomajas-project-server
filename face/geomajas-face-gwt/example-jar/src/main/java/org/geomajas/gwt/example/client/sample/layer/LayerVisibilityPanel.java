@@ -78,7 +78,7 @@ public class LayerVisibilityPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapLayerVisibility");
+		mapPresenter.initialize("gwt-app", "mapLayerVisibility");
 		return layout;
 	}
 

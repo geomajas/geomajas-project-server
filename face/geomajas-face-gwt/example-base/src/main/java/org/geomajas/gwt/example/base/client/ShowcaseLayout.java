@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Top layout for the Geomajas PureGWT showcase.
+ * Top layout for the Geomajas GWT client showcase.
  * 
  * @author Pieter De Graef
  */

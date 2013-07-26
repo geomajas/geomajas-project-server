@@ -19,7 +19,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 /**
- * Entry point and main class for PureGWT example application.
+ * Entry point and main class for the GWT client example application.
  * 
  * @author Pieter De Graef
  */

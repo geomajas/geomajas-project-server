@@ -40,7 +40,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
 /**
- * Entry point and main class for PureGWT example application.
+ * Entry point and main class for the GWT client example application.
  * 
  * @author Pieter De Graef
  */
@@ -68,7 +68,7 @@ public class ExampleJar implements EntryPoint {
 	public static SampleMessages getMessages() {
 		return MESSAGES;
 	}
-	
+
 	public static GeomajasGinjector getInjector() {
 		return (GeomajasGinjector) ExampleBase.getInjector();
 	}

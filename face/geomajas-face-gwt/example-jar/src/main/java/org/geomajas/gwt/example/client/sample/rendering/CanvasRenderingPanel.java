@@ -93,7 +93,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapOsm");
+		mapPresenter.initialize("gwt-app", "mapOsm");
 		label.setVisible(false);
 		for (int option : options) {
 			countBox.addItem(option + "");

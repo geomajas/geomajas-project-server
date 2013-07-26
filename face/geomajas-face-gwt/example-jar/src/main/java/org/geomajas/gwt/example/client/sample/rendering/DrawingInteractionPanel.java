@@ -60,7 +60,7 @@ public class DrawingInteractionPanel implements SamplePanel {
 		mapDecorator.add(mapPresenter.asWidget());
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapOsm");
+		mapPresenter.initialize("gwt-app", "mapOsm");
 		return mapDecorator;
 	}
 

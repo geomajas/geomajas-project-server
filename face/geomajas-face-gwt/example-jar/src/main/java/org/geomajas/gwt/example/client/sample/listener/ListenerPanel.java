@@ -70,7 +70,7 @@ public class ListenerPanel implements SamplePanel {
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
-		mapPresenter.initialize("puregwt-app", "mapLayerVisibility");
+		mapPresenter.initialize("gwt-app", "mapLayerVisibility");
 
 		// Add a passive listener that print out mouse coordinates:
 		mapPresenter.addMapListener(new MapMouseMoveListener());

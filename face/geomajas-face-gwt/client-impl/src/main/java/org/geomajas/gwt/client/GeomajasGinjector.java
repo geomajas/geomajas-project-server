@@ -23,7 +23,7 @@ import com.google.gwt.inject.client.Ginjector;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
- * Ginjector specific for the Geomajas PureGWT client.
+ * Ginjector specific for the Geomajas GWT client.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

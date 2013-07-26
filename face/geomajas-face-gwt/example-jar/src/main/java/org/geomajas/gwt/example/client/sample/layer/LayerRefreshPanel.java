@@ -77,7 +77,7 @@ public class LayerRefreshPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapCountries");
+		mapPresenter.initialize("gwt-app", "mapCountries");
 		return layout;
 	}
 

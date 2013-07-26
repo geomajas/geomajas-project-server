@@ -85,7 +85,7 @@ public class NavigationOptionPanel implements SamplePanel {
 		mapPresenter = ExampleJar.getInjector().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		mapPresenter.initialize("puregwt-app", "mapCountries");
+		mapPresenter.initialize("gwt-app", "mapCountries");
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);

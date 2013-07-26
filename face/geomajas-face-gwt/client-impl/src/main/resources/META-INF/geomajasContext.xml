@@ -23,20 +23,20 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="PureGWT face impl" />
+				<property name="name" value="GWT face impl" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${puregwt-face-backend-version}"/>
+		<property name="backendVersion" value="${gwt-face-backend-version}"/>
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="PureGWT face" />
+					<property name="name" value="GWT face" />
 					<property name="version" value="${project.version}" />
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="common-gwt" />
-					<property name="version" value="${puregwt-face-common-gwt-version}"/>
+					<property name="version" value="${gwt-face-common-gwt-version}"/>
 				</bean>
 			</list>
 		</property>

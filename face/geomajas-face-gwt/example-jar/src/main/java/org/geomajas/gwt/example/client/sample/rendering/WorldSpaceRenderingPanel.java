@@ -75,7 +75,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapOsm");
+		mapPresenter.initialize("gwt-app", "mapOsm");
 		return layout;
 	}
 

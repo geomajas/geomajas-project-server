@@ -45,7 +45,7 @@ public class AlternativeControlsPanel implements SamplePanel {
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapOsm");
+		mapPresenter.initialize("gwt-app", "mapOsm");
 
 		// Install alternative controls on the map - when the map has been initialized:
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());

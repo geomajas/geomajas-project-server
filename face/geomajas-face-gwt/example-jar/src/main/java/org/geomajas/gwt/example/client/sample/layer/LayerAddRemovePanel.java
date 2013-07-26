@@ -75,7 +75,7 @@ public class LayerAddRemovePanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapLegend");
+		mapPresenter.initialize("gwt-app", "mapLegend");
 		return layout;
 	}
 
