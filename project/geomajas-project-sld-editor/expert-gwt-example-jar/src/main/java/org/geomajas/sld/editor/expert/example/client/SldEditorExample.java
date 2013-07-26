@@ -13,8 +13,8 @@ package org.geomajas.sld.editor.expert.example.client;
 
 import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
-import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent;
-import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.editor.expert.client.SldEditorWindow;
 import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent;
 import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent.SldCancelledHandler;
@@ -64,7 +64,7 @@ public class SldEditorExample implements EntryPoint {
 			}
 		});
 
-		// -- defaults to modal, which would block te rest of the sample case.
+		// -- defaults to modal, which would block the rest of the sample case.
 		SldEditorWindow window = (SldEditorWindow) ginjector.getSldEditorExpertPresenter().get().getView().asWidget();
 		window.setIsModal(false);
 		

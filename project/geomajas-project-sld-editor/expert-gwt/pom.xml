@@ -15,13 +15,13 @@
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-expert-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas SLD GWT client library (expert)</name>
+	<name>Geomajas Expert SLD GWT client library</name>
 	<description>Geomajas expert SLD editor (GWT)</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-editor-common-gwt</artifactId>
+			<artifactId>geomajas-project-sld-editor-expert-common</artifactId>
 		</dependency>
 
 		<dependency>

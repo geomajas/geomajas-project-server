@@ -193,6 +193,28 @@
 				</configuration>
 			</plugin>
 
+			<!-- Application specific cleanup (from running in eclipse)-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>remove-build-files</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+ 								<delete dir="src/main/gwt-unitCache" />
+								<delete dir="src/main/webapp/SldEditorExample" />
+  								<delete dir="src/main/webapp/WEB-INF/deploy" />
+ 							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

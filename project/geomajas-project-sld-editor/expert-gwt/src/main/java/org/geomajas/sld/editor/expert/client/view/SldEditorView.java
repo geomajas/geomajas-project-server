@@ -10,10 +10,10 @@
  */
 package org.geomajas.sld.editor.expert.client.view;
 
-import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent;
-import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent.SldCloseHandler;
-import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent;
-import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCloseEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldCloseEvent.SldCloseHandler;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.editor.expert.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.editor.expert.client.SldEditorWindow;
 import org.geomajas.sld.editor.expert.client.model.SldModel;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;

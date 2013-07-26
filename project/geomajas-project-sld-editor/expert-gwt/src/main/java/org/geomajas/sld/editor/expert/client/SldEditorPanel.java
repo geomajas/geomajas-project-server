@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.geomajas.codemirror.client.widget.CodeMirrorPanel;
-import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.expert.client.domain.SldInfo;
 import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
@@ -42,8 +41,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  */
 public class SldEditorPanel extends VLayout {
 	
-	private static final SldEditorMessages MSG = GWT.create(SldEditorMessages.class);
-	private static final SldEditorExpertMessages EXP_MSG = GWT.create(SldEditorExpertMessages.class);
+	private static final SldEditorExpertMessages MSG = GWT.create(SldEditorExpertMessages.class);
 	
 	private CodeMirrorPanel codeArea;
 	private ToolStrip buttonBar;
@@ -141,8 +139,8 @@ public class SldEditorPanel extends VLayout {
 
 		ToolStripButton validateBtn = new ToolStripButton();
 		validateBtn.setIcon("[ISOMORPHIC]/" + "icons/silk/tick.png");
-		validateBtn.setTitle(EXP_MSG.validateButtonTitle());
-		validateBtn.setTooltip(EXP_MSG.validateButtonTooltip());
+		validateBtn.setTitle(MSG.validateButtonTitle());
+		validateBtn.setTooltip(MSG.validateButtonTooltip());
 		validateBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				SldValidateEvent.fire(view);
@@ -150,8 +148,8 @@ public class SldEditorPanel extends VLayout {
 		});
 		
 		templateSelect = new SelectItem();
-		templateSelect.setTitle(EXP_MSG.templateSelectTitle());
-		templateSelect.setTooltip(EXP_MSG.templateSelectTooltip());
+		templateSelect.setTitle(MSG.templateSelectTitle());
+		templateSelect.setTooltip(MSG.templateSelectTooltip());
 		templateSelect.setWidth(250);
 		templateSelect.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {

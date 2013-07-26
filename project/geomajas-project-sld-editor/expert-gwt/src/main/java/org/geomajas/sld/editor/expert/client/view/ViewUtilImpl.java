@@ -10,8 +10,6 @@
  */
 package org.geomajas.sld.editor.expert.client.view;
 
-import org.geomajas.sld.editor.common.client.view.BaseViewUtil;
-
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 

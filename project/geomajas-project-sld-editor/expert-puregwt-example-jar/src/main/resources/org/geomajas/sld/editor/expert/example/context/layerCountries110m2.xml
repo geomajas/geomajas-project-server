@@ -1,0 +1,110 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+		>
+
+	<bean name="layerCountries110m2" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerCountries110m2Info" />
+        <property name="url" value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_admin_0_countries.shp"/>
+	</bean>
+
+	<bean name="layerCountries110m2Info" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTIPOLYGON"/>
+		<property name="crs" value="EPSG:4326"/>
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+                <property name="x" value="-180"/>
+                <property name="y" value="-60"/>
+                <property name="width" value="160"/>
+                <property name="height" value="150"/>
+			</bean>
+		</property>
+		<property name="featureInfo" ref="layerCountries110mFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="layerCountries110m2StyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountries110m2StyleInfo">
+		<property name="featureStyles">
+            <list>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Large Countries"/>
+                    <property name="formula" value="(PEOPLE > 100000000)"/>
+                    <property name="fillColor" value="#669900"/>
+                    <property name="fillOpacity" value=".5"/>
+                    <property name="strokeColor" value="#003300"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Medium Sized Countries"/>
+                    <property name="formula" value="(PEOPLE > 50000000)"/>
+                    <property name="fillColor" value="#66AA33"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#003300"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Small to medium Sized Countries"/>
+                    <property name="formula" value="(PEOPLE > 10000000)"/>
+                    <property name="fillColor" value="#66BB66"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#003300"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Small Countries"/>
+                    <property name="fillColor" value="#66CC99"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#003300"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+            </list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+               <property name="labelAttributeName" value="NAME"/>
+                <property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#000000" />
+						<property name="opacity" value="1" />
+						<property name="family" value="Arial" />
+						<property name="size" value="14" />
+					</bean>
+                </property>
+                <property name="backgroundStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#FFFFFF"/>
+                        <property name="fillOpacity" value=".7"/>
+                        <property name="strokeColor" value="#009900"/>
+                        <property name="strokeOpacity" value="1"/>
+                        <property name="strokeWidth" value="1"/>
+                    </bean>
+                </property>
+			</bean>
+		</property>
+	</bean>
+
+</beans>

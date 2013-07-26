@@ -1,0 +1,54 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:org.geomajas.codemirror.client.widget"
+	xmlns:w="urn:import:org.geomajas.sld.editor.expert.client.view"
+	>
+
+ 	<ui:with field='message' type='org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages' />
+	
+	<ui:style>
+		.toolbar {
+			width: 100%;
+			padding: 5px;
+			border-bottom: 1px solid #eee;
+		}
+		.button, .listbox, .label {
+			float: left;
+			margin-right: 10px;
+		}
+		.buttonRight {
+			float: right;
+			margin: 0 10px;
+		}
+		.listbox {
+			margin-top: 5px;
+			width: 200px;
+		}
+		.label {
+			font-weight: normal;
+		}
+	</ui:style>
+
+	<g:DockLayoutPanel unit="PX" width="100%" height="100%" >
+		<g:north size="45">
+			<g:FlowPanel addStyleNames="{style.toolbar}">
+				<g:Label ui:field="templateLabel" addStyleNames="{style.label}"><ui:text from="{message.templateSelectTitle}" /> : </g:Label>
+				<w:ListBox ui:field="templateListBox" addStyleNames="{style.listbox}"/>
+				<g:Button ui:field="validateBtn" addStyleNames="{style.button}">
+					<ui:text from="{message.validateButtonTitle}" />
+				</g:Button>
+				<g:Button ui:field="saveBtn" addStyleNames="{style.button}">
+					<ui:text from="{message.saveButtonTitle}" />
+				</g:Button>
+				<g:Button ui:field="cancelBtn" addStyleNames="{style.buttonRight}">
+					<ui:text from="{message.cancelButtonTitle}" />
+				</g:Button>
+			</g:FlowPanel>
+		</g:north>
+		<g:center>
+			<c:CodeMirrorPanel ui:field="codeArea" />
+		</g:center>
+	</g:DockLayoutPanel>
+
+</ui:UiBinder> 
