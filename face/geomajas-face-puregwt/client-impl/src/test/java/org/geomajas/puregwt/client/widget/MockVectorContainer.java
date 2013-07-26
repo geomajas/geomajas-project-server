@@ -97,6 +97,11 @@ public class MockVectorContainer implements VectorContainer {
 	}
 
 	@Override
+	public int indexOf(VectorObject vo) {
+		return 0;
+	}
+
+	@Override
 	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		return null;
 	}

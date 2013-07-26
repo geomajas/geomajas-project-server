@@ -206,6 +206,6 @@
 		<puregwt-face-rasterizing-version>1.2.0</puregwt-face-rasterizing-version>
 		<puregwt-face-common-gwt-version>1.4.0</puregwt-face-common-gwt-version>
 		<puregwt-face-gwt-version>2.5.0</puregwt-face-gwt-version>
-		<puregwt-face-gwt-graphics-version>1.0.0.TX8</puregwt-face-gwt-graphics-version>
+		<puregwt-face-gwt-graphics-version>1.0.0.TX10</puregwt-face-gwt-graphics-version>
 	</properties>
 </project>
