@@ -1,0 +1,86 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- WMS map sample -->
+	<bean name="mapEmpty" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="strokeColor" value="#FF00FF" />
+				<property name="strokeOpacity" value=".75" />
+				<property name="fillOpacity" value="0" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#E000E0" />
+				<property name="fillOpacity" value=".75" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#E000E0" />
+				<property name="fillOpacity" value=".75" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180" />
+				<property name="y" value="-90" />
+				<property name="width" value="360" />
+				<property name="height" value="180" />
+			</bean>
+		</property>
+		<property name="maxBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180" />
+				<property name="y" value="-90" />
+				<property name="width" value="360" />
+				<property name="height" value="180" />
+			</bean>
+		</property>
+
+		<!-- Scale configuration -->
+  		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="zoomLevels">
+					<list>
+						<value>4</value>
+						<value>8</value>
+						<value>16</value>
+						<value>32</value>
+						<value>64</value>
+						<value>128</value>
+						<value>256</value>
+						<value>512</value>
+						<value>1024</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+
+		<property name="layers">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+</beans>
