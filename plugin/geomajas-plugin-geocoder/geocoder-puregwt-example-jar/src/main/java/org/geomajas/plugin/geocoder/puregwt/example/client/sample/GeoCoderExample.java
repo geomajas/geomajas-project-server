@@ -75,8 +75,8 @@ public class GeoCoderExample implements SamplePanel {
 
 		// create geocoder widget
 		GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);
-		geocoder.getElement().getStyle().setTop(15, Style.Unit.PX);
-		geocoder.getElement().getStyle().setRight(25, Style.Unit.PX);
+		geocoder.getElement().getStyle().setTop(7, Style.Unit.PX);
+		geocoder.getElement().getStyle().setLeft(100, Style.Unit.PX);
 
 		// add geocoder widget to the map
 		mapPresenter.getWidgetPane().add(geocoder);
