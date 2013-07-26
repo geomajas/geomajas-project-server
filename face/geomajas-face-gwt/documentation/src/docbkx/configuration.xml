@@ -30,12 +30,6 @@
     &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-gwt-client-impl&lt;/artifactId&gt;
     &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-gwt-client-impl&lt;/artifactId&gt;
-    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
-    &lt;classifier&gt;sources&lt;/classifier&gt;
 &lt;/dependency&gt;</programlisting>
   </sect1>
 
