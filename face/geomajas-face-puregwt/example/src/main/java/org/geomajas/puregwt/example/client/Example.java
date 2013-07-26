@@ -11,9 +11,11 @@
 
 package org.geomajas.puregwt.example.client;
 
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.example.base.client.ExampleBase;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 /**
@@ -24,6 +26,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 public class Example implements EntryPoint {
 
 	public void onModuleLoad() {
+		ExampleBase.setInjector((GeomajasGinjector) GWT.create(GeomajasGinjector.class));
 		RootLayoutPanel.get().add(ExampleBase.getLayout());
 	}
 }
