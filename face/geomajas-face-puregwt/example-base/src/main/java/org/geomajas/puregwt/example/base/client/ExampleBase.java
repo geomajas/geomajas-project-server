@@ -30,7 +30,7 @@ import com.google.gwt.user.client.Window;
 public class ExampleBase implements EntryPoint {
 
 	// private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
-	private static Ginjector GINJECTOR;
+	private static Ginjector ginjector;
 
 	private static final ShowcaseResource RESOURCE = GWT.create(ShowcaseResource.class);
 
@@ -50,11 +50,11 @@ public class ExampleBase implements EntryPoint {
 	}
 
 	public static Ginjector getInjector() {
-		return GINJECTOR;
+		return ginjector;
 	}
 
 	public static void setInjector(Ginjector injector) {
-		GINJECTOR = injector;
+		ginjector = injector;
 	}
 
 	public static ShowcaseResource getShowcaseResource() {
