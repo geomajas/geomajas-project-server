@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import org.geomajas.plugin.geocoder.client.GeocoderWidget;
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -36,6 +37,8 @@ public class GeoCoderExample implements SamplePanel {
 	protected DockLayoutPanel rootElement;
 
 	private MapPresenter mapPresenter;
+
+	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -62,7 +65,7 @@ public class GeoCoderExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
 
 		// Initialize the map
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
