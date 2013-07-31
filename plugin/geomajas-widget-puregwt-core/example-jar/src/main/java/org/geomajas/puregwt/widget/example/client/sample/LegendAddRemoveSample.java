@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.widget.example.client.sample;
 
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
@@ -47,6 +48,7 @@ public class LegendAddRemoveSample implements SamplePanel {
 	 */
 	interface MyUiBinder extends UiBinder<Widget, LegendAddRemoveSample> {
 	}
+	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
@@ -69,7 +71,7 @@ public class LegendAddRemoveSample implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
 		legendPanel.add(new MapLegendPanel(mapPresenter));

@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
@@ -37,6 +38,8 @@ public class FeatureSelectedExample implements SamplePanel {
 	protected DockLayoutPanel rootElement;
 
 	private MapPresenter mapPresenter;
+
+	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -66,7 +69,7 @@ public class FeatureSelectedExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
 
 		// add FeatureClickedHandler where we handle FeatureClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
