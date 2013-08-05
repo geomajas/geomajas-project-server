@@ -28,6 +28,7 @@
 		<module>project</module>
 		<module>backend</module>
 		<module>face</module>
+		<module>client</module>
 		<module>plugin</module>
 		<module>application</module>
 		<module>test</module>
