@@ -1,0 +1,1664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="ch-arch">
+  <title>GWT face architecture</title>
+
+  <section id="comm">
+    <title>Client-server communication</title>
+
+    <para>Client-server communication in Geomajas is executed through a series
+    of commands instantiated on the client and executed by the server. In the
+    GWT face, all such commands are executed by
+    <code>org.geomajas.gwt.client.command.GwtCommandDispatcher</code>. This
+    class has one single method for instantiating such commands and handling
+    the result: the <code>execute</code> method.</para>
+
+    <para>The command object, required by the execute method
+    (<code>GwtCommand</code>), is in fact a wrapper around a
+    <code>CommandRequest</code> object (see <link
+    linkend="architecture-command">architecture</link>), wherein the name of
+    the requested command is found. Each command expects a certain
+    implementation of the <code>CommandRequest</code> and
+    <code>CommandResponse</code> objects. Note that these request and response
+    objects must also be known server-side, and thus will not be packaged
+    within the GWT client packages. As additional parameters for the execute
+    method, <code>CommandCallback</code> objects can be passed. These can
+    contain methods to call after successful or unsuccessful completion of the
+    command. It is recommended to extend AbstractCommandCallback for your
+    implementation.</para>
+
+    <para>The GwtCommandDispatcher is also the central access point for
+    security in the GWT face. You should register a TokenRequestHandler to
+    handle the login procedure if needed. You can read data about the current
+    user when logged in.</para>
+
+    <note>
+      <para>Note that insufficient authorizations can be difficult to debug.
+      When no commands can be executed on the server, the logging on the
+      server also fails. When logging in is done using a command, execution of
+      that command needs to be allowed. Failure the configure the system to
+      have minimal authorizations will likely cause your map to be invisible
+      without any feedback.</para>
+    </note>
+  </section>
+
+  <section id="mapsmodel">
+    <title>The map's model</title>
+
+    <para>As with any GIS framework or application, the most crucial of all
+    entities is the Map. A map is represented by the
+    <code>org.geomajas.gwt.client.widget.<code>MapWidget</code></code>, but is
+    set up using the standard model-view-controller paradigm. The widget is
+    the actual view of a map, with <code>Painter</code> objects building the
+    display. The user interaction is handled using controllers, represented by
+    the <code>GraphicsController</code> interface. The third aspect, the
+    model, is represented by the
+    <code>org.geomajas.gwt.client.map.<code>MapModel</code></code>.</para>
+
+    <section id="MapModel">
+      <title>MapModel</title>
+
+      <para>The definition of the model behind a map
+      (<code>org.geomajas.gwt.client.map.<code>MapModel</code></code>). This
+      object stores all map metadata and layers, and has an extensive arsenal
+      of methods to operate on the layers and the features.</para>
+
+      <para>Another aspect of the <code>MapModel</code> is the list of events
+      that it fires. Handlers for the following events can be added to the
+      <code>MapModel</code>:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>MapModelEvent</emphasis>: this event is fired when
+          the <code>MapModel</code> has been properly initialized. When a
+          <code>MapWidget</code> is added to the HTML page, it automatically
+          triggers an initialization method. This will ask the server to
+          supply it with the correct metadata, so that the
+          <code>MapModel</code> can actually build it's layers, etc. Once this
+          initialization process is done, a <code>MapModelEvent</code> will be
+          fired. Add a
+          <code>org.geomajas.gwt.client.map.event.MapModelHandler</code> to
+          use this.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>FeatureSelectedEvent</emphasis>: this event is fired
+          every time a feature within one of this model's vector layers is
+          selected. Add a
+          <code>org.geomajas.gwt.client.map.event.FeatureSelectionHandler</code>
+          to use this.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>FeatureDeselectedEvent</emphasis>: this event is
+          fired every time a feature within one of this model's vector layers
+          is deselected. Add a
+          <code>org.geomajas.gwt.client.map.event.FeatureSelectionHandler</code>
+          to use this.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>LayerSelectedEvent</emphasis>: this event is fired
+          every time a layer within this model is selected. Add a
+          <code>org.geomajas.gwt.client.map.event.LayerSelectionHandler</code>
+          to use this.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>LayerDeselectedEvent</emphasis>: this event is fired
+          every time a layer within this model is deselected. Add a
+          <code>org.geomajas.gwt.client.map.event.LayerSelectionHandler</code>
+          to use this.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="MapView">
+      <title>MapView</title>
+
+      <para>Part of a map is this
+      <code>org.geomajas.gwt.client.map.MapView</code> object, which
+      determines and influences what area is currently visible. Internally the
+      <code>MapView</code> has a <code>Camera</code> object that you can think
+      of a a satellite that floats above the map. This <code>Camera</code>
+      floats at a certain height, on a certain position, and this will
+      determine what part of the map is shown.</para>
+
+      <para>The map contains several coordinate spaces.</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>world space : coordinates use the crs of the map.</para>
+          </listitem>
+
+          <listitem>
+            <para>screen space : pixel coordinates.</para>
+          </listitem>
+
+          <listitem>
+            <para>pan space : objects have already been scaled to the map's
+            current scale, but the translation transformation still needs to
+            occur. This is space is used for rendering the layers and should
+            normally not be used for other purposes.</para>
+          </listitem>
+        </itemizedlist>The <code>MapView</code> provides conversions of
+      coordinates between these spaces. Inside the MapView is a transformer
+      (<code>org.geomajas.gwt.client.spatial.WorldViewTransformer</code>) that
+      is able to transform coordinates, geometries and bounding boxes from
+      screen space to world space and back.</para>
+    </section>
+
+    <section id="WorkFlow">
+      <title>Workflow</title>
+
+      <para>A work flow in the GWT face determines how editing should be
+      handled. It can consist of several steps, called activities. When a work
+      flow finishes, changes will typically be persisted. The package is:
+      <code>org.geomajas.gwt.client.map.workflow</code></para>
+
+      <figure>
+        <title>Workflow API</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="images/gwtface_workflow.png"
+                       width="" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para><emphasis role="bold">Activity:</emphasis></para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>execute</emphasis>: this method is called by the
+          encompassing processor to execute the activity.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>getErrorHandler</emphasis>: get the error handler
+          that is specifically tuned for the activity.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para><emphasis role="bold">WorkflowErrorHandler:</emphasis></para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>handleError</emphasis>: Executed when an activity
+          throws an exception during execution. The
+          <code>WorkflowProcessor</code> must make sure this method is
+          executed.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para><emphasis role="bold">WorkflowContext:</emphasis></para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>stopProcess</emphasis>: informs the
+          <code>WorkflowProcessor</code> to stop the processing of activities.
+          It is the <code>WorkflowProcessors</code> responsibility to ask for
+          this, and execute no more activities when "<code>true</code>" is
+          returned.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>setSeedData</emphasis>: provide some seed
+          information to the context. This is usually provided at the time of
+          work flow kickoff.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para><emphasis role="bold">WorkflowProcessor:</emphasis></para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>supports</emphasis>: ensure that each activity
+          configured in this process is supported. This method should be
+          called by implemented subclasses for each activity that is part of
+          the process.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>doActivities</emphasis>: this method kicks off the
+          processing of work flow activities.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>setActivities</emphasis>: set a list of activities
+          to be executed in the process. This would also be a good time to
+          check if activities are supported.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>setDefaultErrorHandler</emphasis>: set a default
+          error handler, which is invoked when the activity throws an uncaught
+          exception.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="selfeat">
+      <title>Selection of features</title>
+
+      <para>A feature in a vector layer has the possibility to be selected.
+      Selection usually changes the colour of the feature on the map or in a
+      table to make it stand out. The actual selecting handled by the
+      <code>MapModel</code>. In the map model, the selected features are
+      stored. After all, it is possible that by moving away from a certain
+      area, the selected features are no longer in sight, and perhaps no
+      longer in the client layer-cache. Still their contents may be needed for
+      specific tasks.</para>
+
+      <para>The <code>MapModel</code> fires events when changes in selection
+      occur. It will fire either <code>FeatureSelectedEvent</code> or
+      <code>FeatureDeselectedEvent</code>. The <code>MapModel</code>
+      implements the <code>HasFeatureSelectionHandler</code> interface so
+      other components can register with the <code>MapModel</code> as
+      <code>FeatureSelectionHandler</code>. For example the
+      <code>MapWidget</code> will register itself as a handler to know when a
+      feature is selected or deselected and redraw it accordingly.</para>
+
+      <figure>
+        <title>Selection events and handlers</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="images/gwtface_selection.png"
+                       width="" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>When writing code that needs to react upon the selection of
+      features, implement the <code>FeatureSelectionHandler</code> interface,
+      and register yourself with the <code>MapModel</code>.</para>
+
+      <para><note>
+          <para>Individual vector layers can also fire selection events.
+          Actually the <code>MapModel</code> propagates the events from the
+          individual vector layers, so that the user need only install his
+          handlers in one place.</para>
+        </note></para>
+    </section>
+  </section>
+
+  <section id="spatial">
+    <title>The spatial package</title>
+
+    <para>The spatial package (<code>org.geomajas.gwt.client.spatial</code>)
+    contains a collection of math and geometry related classes and utilities
+    to provide all the client-side calculations one should need. If really
+    complex calculations need to be performed, it's best to let the server
+    (probably using JTS) handle it anyway. The root of the package contains
+    the general mathematical definitions of a Vector, Matrix, LineSegment, and
+    so on. It also provides a general math library and the
+    <code>org.geomajas.gwt.client.spatial.WorldViewTransformer</code>.</para>
+
+    <para>The <code>WorldViewTransformer</code> in particular can be a very
+    valuable tool. It allows you to transform coordinates, bounding boxes and
+    geometries between the 3 pre-defined spaces (world, view, pan).</para>
+
+    <section id="geom">
+      <title>Geometry definitions</title>
+
+      <para>All <code>Geometry</code> definitions in the GWT face are based on
+      geometries from JTS, the Java Topology Suite, and the OGC simple feature
+      specification. The classes can be found in the
+      <code>org.geomajas.gwt.client.spatial.geometry</code> package. Supported
+      geometries are:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>Point</code>: a geometry representation of a single
+          coordinate.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>MultiPoint</code>: a geometry containing multiple
+          <code>Point</code> geometries.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>LineString</code>: a list of connected coordinates.
+          Sometimes also called a polyline.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>LinearRing</code>: an extension of the
+          <code>LineString</code> geometry that expects the last coordinate to
+          be equal to the first coordinate. In other words, a
+          <code>LinearRing</code> is a closed <code>LineString</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>MultiLineString</code>: a geometry containing multiple
+          <code>LineString</code> geometries.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Polygon</code>: a <code>Polygon</code> is a two-part
+          geometry, consisting of an exterior <code>LinearRing</code> and a
+          list of interior <code>LinearRings</code>. The exterior
+          <code>LinearRing</code>, also called the shell, is the outer hull of
+          the geometry, while the interior rings can be seen as holes in the
+          exterior ring's surface area.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>MultiPolygon</code>: a geometry containing multiple
+          <code>Polygon</code> geometries.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="editgeom">
+      <title>Editing geometries</title>
+
+      <para>The <code>Geometry</code> implementations themselves do not have
+      any setters methods. Instead the editing of geometries is done through a
+      series of operations, all implementing the <code>
+      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+      </code> interface. This interface consists of only one method, accepting
+      a geometry, and returning the result as a new geometry.</para>
+
+      <para>Geometries have no public constructors, so the creation of new
+      geometries is done using a factory,
+      <code>org.geomajas.gwt.client.spatial.geometry.GeometryFactory</code>. A
+      <code>GeometryFactory</code> can be created using a spatial reference id
+      and a certain precision, but it can also be retrieved from any geometry
+      instance (where srid and precision are automatically correct).</para>
+
+      <para><code>GeometryOperation</code> interface:</para>
+
+      <xi:include href="listing/GeometryOperation.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section id="snapping">
+      <title>Snapping</title>
+
+      <para>Snapping in Geomajas, is handled by a single manager class called
+      the <code>org.geomajas.gwt.client.spatial.snapping.Snapper</code>. It is
+      the main handler for snapping to coordinates. It supports different
+      modes of operation and different algorithms for the actual snapping. The
+      different algorithms to use are defined in the vector layer
+      configuration files, while the modes are defined by the different
+      implementations of the <code>SnappingMode</code> class. Let us first
+      start with the different modes:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>ALL_GEOMETRIES_EQUAL</emphasis>: this snapping mode
+          considers all geometries equal when it comes to determining where to
+          snap to. Depending on the snapping algorithm used, it will consider
+          all nearby geometries.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>PRIORITY_TO_INTERSECTING_GEOMETRIES</emphasis>: this
+          snapping mode tries to snap to intersecting geometries before trying
+          the general approach. When searching a snapping coordinate for a
+          given point, this mode will first search for intersecting geometries
+          and try to get a snap to that. If no snapping point can be found, it
+          will consider all nearby geometries (like
+          ALL_GEOMETRIES_EQUAL).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The snapping rules themselves are defined in the server-side
+      configuration. Each vector layer can have many snapping rules. For each
+      rule, 3 fields must be filled:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>layer</emphasis>: the target layer to snap
+          to.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>distance</emphasis>: the distance over which to
+          snap. This distance must be expressed in the map's coordinate
+          system.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>type</emphasis>: the snapping algorithm to use. At
+          the moment 2 types of snapping algorithms are supported: to the
+          nearest point (type=1), and to the nearest edge (type=2). For
+          nearest point snapping can only occur to any coordinate which is a
+          end-point for a geometry, for nearest edge that can be any
+          coordinate on the edge of the geometry. Needless to say, the nearest
+          edge requires more calculating power than the nearest point.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para><emphasis role="bold">Snapping on the map</emphasis></para>
+
+      <para>When a <code>GraphicsController</code> for the map needs to use
+      snapping (i.e. editing controllers), they should extend the
+      <code>org.geomajas.gwt.client.controller.AbstractSnappingController</code>
+      class. This class extends the <code>GraphicsController</code> class (the
+      base class for all Geomajas map controllers), and overwrites the
+      <code>getScreenPosition</code> and <code>getWorldPosition</code> methods
+      to assure the points are snapped. The
+      <code>AbstractSnappingController</code> also supports the on-the-fly
+      activation and deactivation of snapping.</para>
+    </section>
+  </section>
+
+  <section id="graphrend">
+    <title id="graphics">Graphics &amp; rendering</title>
+
+    <para>In the GWT face, the main <code>render</code> method can be found in
+    <code>MapWidget</code>. The render method requires three parameters, a
+    paintable object, a target group to paint in and a status. The paintable
+    object is the actual object that needs to be painted. The target group
+    (<code>org.geomajas.gwt.client.widget.MapWidget.RenderGroup</code>)
+    specifies where in the DOM to draw. The usual choices here are the SCREEN
+    or the WORLD groups. The rendering status
+    (<code>org.geomajas.gwt.client.widget.MapWidget.RenderStatus</code>)
+    determines what drawing action to take.</para>
+
+    <para><emphasis role="bold">RenderStatus</emphasis></para>
+
+    <para>The render status can be one of the following:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>ALL</emphasis>: completely render or re-render the
+        paintable object. If the paintable object contains other paintable
+        object, go through them recursively (a map will paint layers, who in
+        turn will paint tiles,...)</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>UPDATE</emphasis>: update the paintable object in
+        question, but do not update recursively.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>DELETE</emphasis>: delete the paintable object from
+        the map.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>While rendering, the map uses a visitor to visit the paintable
+    objects recursively and search for painters for each object or sub-object.
+    The "ALL" status will paint recursively while the "UPDATE" status will not
+    go deeper then the given paintable object. Of course, if a given paintable
+    object has no recursive paintable objects, then the difference between
+    "ALL" and "UPDATE" is irrelevant.</para>
+
+    <para><emphasis role="bold">RenderGroup</emphasis></para>
+
+    <para>The render group that needs to be specified when calling the map's
+    render method, represents the logical place on the map to draw the
+    paintable object. There are four choices, each having a huge
+    impact.</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>WORLD</emphasis>: drawing should be done in world
+        coordinates. World coordinates means that the map coordinate system
+        should be used. The advantage of rendering objects in the world group,
+        is that when the user moves the map around, the objects will move with
+        it.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>SCREEN</emphasis>: drawing should be done in screen
+        coordinates. Screen coordinates are expressed in pixels, starting from
+        the top left corner of the map. When rendering objects in the screen
+        group they will always appear at a fixed position, even when the user
+        moves the map about.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>RASTER</emphasis>: drawing should be done in pan
+        coordinates. All raster layers are drawn in this group. In essence
+        this means that the coordinates are expected to have been scaled for
+        the current scale before drawing, and that only the translation still
+        needs to occur. For advanced use only.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>VECTOR</emphasis>: drawing should be done in pan
+        coordinates. All vector layers, their selection and their labels are
+        drawn in this group. In essence this means that the coordinates are
+        expected to have been scaled for the current scale before drawing, and
+        that only the translation still needs to occur. For advanced use
+        only.</para>
+      </listitem>
+    </itemizedlist>
+
+    <section id="gfx">
+      <title>GFX interfaces</title>
+
+      <para>As will be explained in more detail in the "rendering manual",
+      there are 2 ways of drawing on the map: directly using some rendering
+      context, or indirectly using <code>Paintable</code> objects,
+      <code>Painter</code>s and the <code>MapWidget</code>'s
+      <code>render</code> method (as explained above). When using the direct
+      approach, one has to call the methods of one of the different rendering
+      contexts. A <code>MapWidget</code> contains a <code>MapContext</code>
+      implementation, which in turn contains 3 different contexts:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>MenuContext</emphasis>: used for keeping details
+          about right mouse clicks. Not used for rendering.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ImageContext</emphasis>: used for rendering images
+          in HTML. All raster layers use this context.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GraphicsContext</emphasis>: the main vector graphics
+          renderer. Can also render images, but uses SVG or VML to do so. When
+          rendering shapes, circles, rectangle, etc. you will always be using
+          this context.</para>
+        </listitem>
+      </itemizedlist>
+
+      <figure>
+        <title>Main context interfaces from the GFX package</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="images/gwtface_gfx_context.png"
+                       width="" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>The <code>GraphicsContext</code> is the main vector drawing
+      context. It has two implementations: one for SVG and one for VML.</para>
+
+      <figure id="graphicscontext">
+        <title>GraphicsContext interface</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="images/gwtface_graphicscontext.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Every object that appears on a Geomajas map, has to implement the
+      <code>Paintable</code> interface. This interface marks types of objects
+      that can be painted. For each type/class of paintable object, an
+      accompanying <code>Painter</code> must be defined as well. The painter
+      will ultimately decide exactly how a paintable object should be
+      rendered. The painter will render objects using it's <code>paint</code>
+      method, or delete objects from the map using it's
+      <code>deleteShape</code> method.</para>
+
+      <figure>
+        <title>General graphics interfaces</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="images/gwtface_gfx.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>GraphicsContext</emphasis>: this is the basic
+          drawing interface. Different implementations will draw in different
+          technologies (i.e. <code>SvgGraphicsContext</code> and
+          <code>VmlGraphicsContext</code>). The whole idea of this
+          <code>GraphicsContext</code> and the painters, was inspired by the
+          Java AWT library. This context will draw basic shapes, according to
+          their id. Since we are using web technologies, all implementations
+          (be they SVG or VML) will use DOM elements to create their
+          drawings.</para>
+
+          <para>There are two different kinds of DOM elements we like to
+          distinguish: group elements and non-group elements.</para>
+
+          <para><emphasis>Group elements</emphasis> are container elements
+          that have no particular representation of themselves but are used to
+          group other elements and create hierarchical dependency. In SVG,
+          they are represented by <code>&lt;g&gt;</code> tags, in VML these
+          are <code>&lt;group&gt;</code> tags. <emphasis>Group elements or
+          groups </emphasis>can be drawn by passing an arbitrary Java object
+          to the <code>drawGroup()</code>method. This object can be used for
+          later reference to the group. To position the group in the
+          hierarchy, a parent group object can be passed as a second parameter
+          to the <code>drawGroup()</code> method.</para>
+
+          <para><emphasis>Non-group elements</emphasis> (all other elements
+          like circle, rectangle, symbol, etc.) can be drawn by passing a
+          group element - the parent - and a name to the element-specific
+          drawing method (<code>drawCircle()</code>,
+          <code>drawRectangle()</code>, etc.). These elements will be attached
+          to their parent group in the DOM. Each non-group element in the
+          <code>GraphicsContext</code> DOM tree will therefore have a name and
+          a parent group object. This combination of name and parent can later
+          be used to update or delete the object.</para>
+
+          <para>In essence, the drawing methods will result in changes in the
+          visuals of the map, and the painters that will call these
+          methods.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Paintable</emphasis>: the basic definition of an
+          object that can be painted onto the map. For each
+          <code>Paintable</code> class, an accompanying <code>Painter</code>
+          class must be defined. The <code>Paintable</code> interface has only
+          two methods. The <code>getId</code> method returns the
+          <code>Paintable</code> objects id, which is it's key in the DOM tree
+          within the parent group. While the accept method will be traversed
+          by the <code>PainterVisitor</code>, and is used to have the object
+          passed to the correct <code>Painter</code>, which will draw the
+          object.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WorldPaintable</emphasis>: extension of the
+          <code>Paintable</code> interface for objects that support being
+          rendered in world space. This means that it should be possible to
+          transform the object's geometry/location/coordinate/bbox.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Painter</emphasis>: A <code>Painter</code> knows how
+          to paint a specific kind of <code>Paintable</code> object. Exactly
+          what class of <code>Paintable</code> objects it can draw, must be
+          made clear by it's <code>getPaintableClassName</code> method.
+          Furthermore, the <code>Painter</code> has two methods to paint or
+          remove <code>Paintable</code> objects on or from the given
+          <code>GraphicsContext</code>. Basically, the <code>Painter</code>
+          translates the fields and parameters of the <code>Paintable</code>
+          object into calls to the <code>GraphicsContext</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>PainterVisitor</emphasis>: Geomajas uses a visitor
+          algorithm for it's client side rendering process. The
+          <code>MapWidget</code> uses a <code>PainterVisitor</code> to
+          recursively traverse the tree of <code>Paintable</code> objects,
+          calling the <code>accept</code> method on each node.</para>
+
+          <para>Of course this recursive system of searching for the correct
+          <code>Painter</code>, can only work when the
+          <code>PainterVisitor</code> has all the necessary painters
+          registered. When registering a <code>Painter</code> with the
+          <code>MapWidget</code>, it will actually pass it along to this
+          <code>PainterVisitor</code> instance.</para>
+
+          <para>An example of the recursive painting, can be found in the
+          <code>MapModel</code>, which calls the <code>accept</code> methods
+          of it's layers, which call the <code>accept</code> methods of the
+          visible tiles, which contain features.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="rendering">
+      <title>Rendering manual</title>
+
+      <para>There are two ways to render objects onto the map. One uses
+      <code>Paintable</code> objects and <code>Painter</code>s, the other is
+      by using the <code>GraphicsContext</code> directly. There are still some
+      general notions that one must know before attempting to draw on the map.
+      Since HTML, SVG and VML are all markup languages which use a DOM tree as
+      basic model, rendering basically is the adding and removing of nodes
+      within this tree. As parent nodes have styling information or other
+      attributes that reflect their child nodes, it is very important to add
+      nodes to the correct parent when drawing.</para>
+
+      <para>The <link linkend="graphicscontext">GraphicsContext</link>
+      reflects this, by requiring a parent object as first parameters in all
+      drawing methods. Associated with every node is an object that represents
+      it. Given this object, the <code>GraphicsContext</code> can find the
+      correct node. When using the <code>GraphicsContext</code> directly, it
+      is important to be aware of the necessity of using the correct parent
+      group when drawing.</para>
+
+      <section id="rendindi">
+        <title>The simple approach - indirect drawing</title>
+
+        <section id="drawscreenspace">
+          <title>Drawing in screen space</title>
+
+          <para>This approach uses <code>MapWidget</code>'s render method,
+          which requires three parameters: a <code>Paintable</code> object, a
+          target <code>RenderGroup</code>, and a <code>RenderStatus</code>. If
+          you are unfamiliar with these, visit the <link
+          linkend="graphics">beginning of this chapter</link> for a detailed
+          description.</para>
+
+          <para>Let us start with an example, where we draw a rectangle in
+          screen space (=pixel coordinates). The code would look something
+          like this:</para>
+
+          <programlisting>Rectangle rectangle = new Rectangle("myRectangle");
+rectangle.setBounds(new Bbox(10, 10, 200, 200));
+rectangle.setStyle(new ShapeStyle("#FF0000", .8f, "#0000FF", .6f, 2));
+
+map.render(rectangle, RenderGroup.SCREEN, RenderStatus.ALL);</programlisting>
+
+          <para>This code snippet would draw a rectangle (which implements
+          <code>Paintable</code>), called "myRectangle" in screen space (10
+          pixels from the top, 10 pixels from the left, and with a width and
+          height of both 200), using the defined style (red interior with a
+          blue border). To delete the rectangle again, you would have to do
+          something like this:</para>
+
+          <programlisting>map.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);</programlisting>
+        </section>
+
+        <section id="renddrawworldspace">
+          <title>Drawing in world space</title>
+
+          <para>Remember that there was also an extension of the
+          <code><code>Paintable</code></code> interface, designed for
+          rendering objects in world space. Rendering in world space means
+          that objects are drawn in the coordinate system of the map. This
+          also means that when the user moves about on the map, the object
+          will move with it (keeping the same location in map coordinates).
+          Only objects that implement the <code>WorldPaintable</code>
+          interface can be drawn in world space.</para>
+
+          <para>Let us, for the next example, assume that the map has been
+          defined using EPSG:4326 (lonlat) as coordinate system, and we would
+          apply the following code snippet:</para>
+
+          <programlisting>Rectangle rectangle = new Rectangle("myRectangle");
+rectangle.setBounds(new Bbox(-60, -60, 120, 120));
+rectangle.setStyle(new ShapeStyle("#FF0000", .8f, "#0000FF", .6f, 2));
+
+// Register the rectangle to the map, so that it gets redrawn
+// automatically when the user navigates on the map.
+map.registerWorldPaintable(rectangle);</programlisting>
+
+          <para>Starting from -60, -60 and using a width and height of 120, we
+          would have a rectangle that encompasses a huge part of the world.
+          Note that drawing objects in world space requires you to register
+          them with the map. This is necessary to have the map automatically
+          update the object's position when the user navigates. When
+          registering the <code>WorldPaintable</code> rectangle, it is
+          automatically drawn on the map.</para>
+        </section>
+      </section>
+
+      <section id="useGraphicsContext">
+        <title>The advanced approach - using the GraphicsContext
+        directly</title>
+
+        <para>When more flexibility is required from the rendering system, the
+        map's render method might sometimes not be enough. If for example we
+        want to render more than one object within a specific parent group.
+        The following code snippet shows how to render a specific parent in
+        screen space and then render a circle within this parent group:</para>
+
+        <programlisting>// Create a parent group within screen space:
+Composite parent = new Composite("myParent");
+map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent);
+
+// Draw a circle at (20, 20) with radius 10 pixels within parent group:
+Coordinate pos = new Coordinate(20, 20);
+ShapeStyle style = new ShapeStyle("#FF0000", .8f, "#0000FF", .6f, 2);
+map.getVectorContext().drawCircle(parent, "myCircle", pos, 10, style);</programlisting>
+
+        <para>Since no special parameters are added to the "myParent" node,
+        the circle is drawn as if it were in the screen group itself. But
+        thanks to the extra parent group, we now have the ability for apply
+        specific styling or transformations on that parent group, and thus
+        altering all children within it. Let us for example move the circle
+        100 pixels to the right:</para>
+
+        <programlisting>// Translate the parent group 100 pixels to the right:
+Matrix m = new Matrix(1, 0, 0, 1, 100, 0);
+map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</programlisting>
+
+        <warning>
+          <para>Do not try to render objects in world space by directly
+          accessing the <code>GraphicsContext</code>. Behind the screens of
+          the <code>MapWidget</code>, the world space objects are actually
+          transformed and rendered in <emphasis>vector</emphasis> space. This
+          is done to avoid scaling in the DOM tree (as this is not possible
+          cross browsers).</para>
+        </warning>
+      </section>
+    </section>
+  </section>
+
+  <section id="userInteraction">
+    <title id="interaction">User interaction</title>
+
+    <para>This section covers the many interfaces regarding buttons, menu
+    items and such that make up the user interface. The specific Geomajas
+    widgets (i.e. <code>LayerTree</code>) require a specific way of doing
+    things. We will cover the interfaces for the <code>Toolbar</code>,
+    <code>LayerTree</code>, map controllers and context menus.</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>Toolbar</emphasis>: the tool bar has two types of
+        default actions one can add to it (there is always the
+        <code>addChild</code> method, which can add any widget, but we are now
+        talking about Geomajas specific possibilities): the
+        <code>ToolbarAction</code> and the <code>ToolbarModalAction</code>.
+        The <code>ToolbarAction</code> is used for actions that need immediate
+        response upon clicking, while the <code>ToolbarModalAction</code> is
+        used for enabling or disabling a certain state.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>LayerTree</emphasis>: the <code>LayerTree</code> has
+        the possibility to add buttons to it's tool bar that usually act upon
+        the selected layer within the <code>LayerTree</code>. Again two types
+        of actions can be added: the <code>LayerTreeAction</code> and the
+        <code>LayerTreeModalAction</code>. The same difference as with the
+        tool bar applies: the <code>LayerTreeAction</code> is a base abstract
+        class for actions that execute immediately upon clicking, while the
+        <code>LayerTreeModalAction</code> is used for enabling or disabling a
+        certain state (for example: toggle the layer's visibility).</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Menu</emphasis>: each item in a context menu should
+        extend the <code>MenuAction</code> base class. This is your basic
+        starting point for easily creating new menu items or context menu
+        items.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Controllers on the map</emphasis>: for controllers
+        listening to mouse events on a map, there is the
+        <code>GraphicsController</code> interface, or an abstraction under the
+        name of <code>AbstractGraphicsController</code>.</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>For buttons in the <code>Toolbar</code> or <code>LayerTree</code>
+      it is possible to add them to the
+      <code>org.geomajas.gwt.client.action.toolbar.ToolbarRegistry</code> or
+      <code>org.geomajas.gwt.client.action.layertree.LayerTreeRegistry</code>
+      upon application startup (before <code>MapWidget</code>
+      initialisation!). This allows you to add new buttons which can be
+      included in the map configuration.</para>
+    </note>
+
+    <section id="tbToolbarAction">
+      <title>Toolbar: ToolbarAction</title>
+
+      <para>The <code>ToolbarAction</code> is your basic abstract class for
+      building tool bar buttons that are executed immediately when clicked.
+      The class implements the <code>ClickHandler</code> interface and
+      requires your to specify an icon and a tool tip on creation.</para>
+
+      <para><code>ToolbarAction</code> classes need to be registered in the
+      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
+      get an instance of the widget to put in the tool bar. The tools which
+      are part of the GWT face are statically defined in the class. Other
+      tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
+
+      <para>When a <code>ToolbarAction</code> is configurable (XML
+      configuration), it should implement the <code>ConfigurableAction</code>
+      interface. This contains a "<code>configure()</code>" method which will
+      be called for each of the parameters which are defined in the tool
+      configuration.</para>
+
+      <xi:include href="listing/ToolbarAction.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section id="tbToolbarModalAction">
+      <title>Toolbar: ToolbarModalAction</title>
+
+      <para>The <code>ToolbarModalAction</code> is the basic template for
+      creating selectable tool bar buttons. Usually they enable and disable a
+      certain state on the map when selected or deselected. Many of the
+      implementations that come with Geomajas set a new controller on the map
+      when they are selected.</para>
+
+      <para>Note that only one of these <code>ToolbarModalActions</code> can
+      be selected at any given time. In that sense they act as radio
+      buttons.</para>
+
+      <para><code>ToolbarModalAction</code> classes need to be registered in
+      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
+      to get an instance of the widget to put in the tool bar. The tools which
+      are always part of the GWT face are statically defined in the class.
+      Other tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
+
+      <para>When a <code>ToolbarAction</code> is configurable, it should
+      implement the <code>ConfigurableAction</code> interface. This contains a
+      <code>configure()</code> method which will be called for each of the
+      parameters which are defined in the tool configuration.</para>
+
+      <xi:include href="listing/ToolbarModalAction.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section id="ltLayerTreeAction">
+      <title>LayerTree: LayerTreeAction</title>
+
+      <para>The <code>LayerTreeAction</code> is your basic abstract class for
+      building layer tree buttons that are executed immediately when clicked.
+      The <code>onClick()</code> method needs to be implemented and it also
+      requires you to specify an icon, a tool tip and a disabled icon. Note
+      that the <code>onClick()</code> has the selected layer within the
+      <code>LayerTree</code> as a parameter.</para>
+
+      <para><code>LayerTreeAction</code> classes need to be registered in the
+      <code>LayerTreeRegistry</code> class. The tools which are always part of
+      the GWT face are statically defined in the class. Other tools can be
+      added (or overwritten) at runtime before the map is initialised.</para>
+
+      <xi:include href="listing/LayerTreeAction.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section id="ltLayerTreeModalAction">
+      <title>LayerTree: LayerTreeModalAction</title>
+
+      <para>The <code>LayerTreeModalAction</code> is the basic template for
+      creating selectable layer tree buttons. Usually they enable and disable
+      a certain state for the selected layer within the layer tree (for
+      example that layer's visibility).</para>
+
+      <para><code>LayerTreeModalAction</code> classes need to be registered in
+      the <code>LayerTreeRegistry</code> class. The tools which are always
+      part of the GWT face are statically defined in the class. Other tools
+      can be added (or overwritten) at runtime before the map is
+      initialised.</para>
+    </section>
+
+    <section id="mMenuAction">
+      <title>Menu: MenuAction</title>
+
+      <para>To create menu items or context menu items, Geomajas provides a
+      base which extends from SmartGWT's <code>MenuItem</code> class. It
+      requires you to set a title and icon. It also implements the
+      <code>ClickHandler</code> interface for defining the
+      <code>onClick()</code> execution function.</para>
+
+      <xi:include href="listing/MenuAction.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section id="mapControllers">
+      <title>Controllers on the map</title>
+
+      <section id="cGraphicsController">
+        <title>GraphicsController</title>
+
+        <para>For interactive mouse controllers on the map there is a general
+        interface, <code>GraphicsController</code>. To write a custom
+        controller, you should always extend
+        <code>AbstractGraphicsController</code>.</para>
+
+        <caution>
+          <para>The <code>GraphicsController</code> interface does NOT use
+          SmartGWT events as they provide no way of getting the target DOM
+          element from the mouse events. So the list of handlers that the
+          <code>GraphicsController</code> extends, are all basic GWT event
+          handlers. A separate widget (<code>GraphicsWidget</code>) has been
+          created to catch the events, while the normal <code>MapWidget</code>
+          (which encapsulates the <code>GraphicsWidget</code>) can still
+          handle SmartGWT events.</para>
+        </caution>
+
+        <para>On top of all the event handling methods that come from the
+        different handlers, the interface also has <code>onActivate()</code>
+        and an <code>onDeactivate()</code> methods. The
+        <code>onActivate()</code> is called before the controller is actually
+        applied on the <code>GraphicsWidget</code>. This is usually used to
+        apply a new context menu on the map and such. The
+        <code>onDeactivate()</code> method is called when the controller is
+        removed from the <code>GraphicsWidget</code>. This is usually used for
+        cleaning up.</para>
+
+        <xi:include href="listing/GraphicsController.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>You should never directly implement
+        <code>GraphicsController</code> (not that it does not have the
+        "<code>@UserImplemented</code>" annotation), you should always extend
+        <code>AbstractGraphicsController</code>. This abstract class
+        implements all methods as empty methods so you don't have to clutter
+        your code with empty methods (often only a few of the mouse event
+        methods are actually used). It also has some extra methods for return
+        useful information for the mouse events, such as the position
+        (expressed in screen coordinates) or the target DOM element.</para>
+
+        <para>Small extract from the <code>AbstractGraphicsController</code>
+        class:</para>
+
+        <xi:include href="listing/AbstractGraphicsController.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Now that you have your controller you can set it;</para>
+
+        <programlisting>mapWidget.setController(new MeasureDistanceController(mapWidget));</programlisting>
+
+        <note>
+          <para>There are more abstractions than just the
+          <code>AbstractGraphicsController</code>:</para>
+
+          <itemizedlist>
+            <listitem>
+              <para><emphasis> <code>AbstractRectangleController</code>
+              </emphasis>: abstract controller that handles drawing a
+              rectangle by dragging the mouse on the map.</para>
+            </listitem>
+
+            <listitem>
+              <para><emphasis> <code>AbstractSnappingController</code>
+              </emphasis>: abstract controller that allows snapping to be
+              enabled and disabled. When enabled, the returned points when
+              asking <code>getPosition()</code>, are snapped (depending on the
+              configured snapping rules).</para>
+            </listitem>
+          </itemizedlist>
+        </note>
+
+        <para>In order to disable the active controller, set a "null" value as
+        controller:</para>
+
+        <para><programlisting>mapWidget.setController(null);</programlisting></para>
+      </section>
+
+      <section id="activeAndFallback">
+        <title>Active and fallback controllers</title>
+
+        <para>Only one <code>GraphicsController</code> can be active at any
+        one time on a map. This is done deliberately in order for controllers
+        not to interfere with each other. By default the MapWidget uses a
+        "fallback controller" that is activated when no explicit controller is
+        set (a navigation controller by default). So when no explicit
+        controller is set, or <code>mapWidget.setController(null)</code> is
+        used, the map will turn to it's fallback controller.</para>
+
+        <para>It is possible to replace this fallback controller by another
+        than the default, by calling:</para>
+
+        <programlisting>mapWidget.setFallbackController(&lt;the new controller&gt;);</programlisting>
+
+        <para>In order to completely disable the use of a fallback controller,
+        set "null" as the new fallback controller.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Addons on the map</title>
+
+      <para>A way to let a user set controllers on the map is by providing
+      addons for him/her on the map. Default addons are provided to pan and
+      zoom in and out:</para>
+
+      <para>Code-wise an addon is basically an (SmartGWT) widget composed out
+      of background image, a foreground image (or icon) and a
+      <code>GraphicsController.</code><figure>
+          <title>Default map addons</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/defaultAddons.png" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Beside these default addons you can create your own addons by
+      combining a background image, with an icon and a
+      <code>GraphicsController</code> or a <code>ToolbarAction</code>.</para>
+
+      <para>Before you can add your own addons however, your first need to
+      disable the creation of the default addons by setting the property
+      "panButtonsEnabled" of your <code>ClientMapInfo</code> bean to
+      false.</para>
+
+      <para><programlisting>&lt;bean name="mapNoNav" class="org.geomajas.configuration.client.ClientMapInfo"&gt; 
+  &lt;property name="panButtonsEnabled" value="false" /&gt; 
+&lt;/bean&gt;</programlisting><note>
+          <para>The name of the <code>ClientMapInfo</code> bean is the id used
+          in the constructor of the <code>MapWidget</code>.</para>
+        </note></para>
+
+      <para>Now you can create an addon by constructing a
+      <code>SingleMapAddon</code>. Depending on your desires you can construct
+      a <code>SingleMapAddon</code> in different ways:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>With just a icon or with a background image as well.</para>
+        </listitem>
+
+        <listitem>
+          <para>With a <code>GraphicsController</code> or a
+          <code>ToolbarAction.</code></para>
+        </listitem>
+
+        <listitem>
+          <para>With a explicit size or automatically based on the size of the
+          given image(s).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The creation of a zoom-in <code>SingleMapAddon</code> can be
+      achieved like this:</para>
+
+      <xi:include href="listing/SingleMapAddon.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>A more complex zoom slider is created like this:</para>
+
+      <xi:include href="listing/ZoomSliderMapAddon.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <programlisting>/*
+ * Slider handler icon
+ */
+Image sliderUnit = ImageUtil.createRectangleImage(ZoomSlider.SLIDER_UNIT + "icon", 
+Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderUnit.png", 0, 0, SLIDER_UNIT_WIDTH, SLIDER_UNIT_HEIGHT);
+/*
+ * Part of the background on which the zoomslider handler can move.
+ * One zoom level is represented by one image.
+ */
+Image backgroundPart = ImageUtil.createRectangleImage(ZoomSlider.SLIDER + "Bg", 
+Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderbg.png", 0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
+/*
+ * Zoom in; the top of ZoomSlider
+ */
+Image in = ImageUtil.createSquareImage(ZOOM_IN + ICON,
+Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomPlus.png",
+0, 0, SLIDER_WIDTH);
+Image sliderTop = ImageUtil.createSquareImage(
+ZoomSlider.SLIDER + "Top", Geomajas.getIsomorphicDir()
++ EXAMPLE_IMAGE_FOLDER + "sliderbgtop.png", 0, 0,
+SLIDER_WIDTH);
+SingleMapAddon zoomIn = new SingleMapAddon(ZOOM_IN, in, sliderTop,
+mapWidget, new ZoomInAndOutController(mapWidget, 1.01));
+
+/*
+ * Zoom out; the bottom of ZoomSlider
+ */
+Image out = ImageUtil.createRectangleImage(ZOOM_OUT + ICON,
+Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomMinus.png", 
+0, 0, SLIDER_WIDTH, SLIDER_WIDTH);
+Image sliderBottom = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
++ "Bottom", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
++ "sliderbgbottom.png", 0, 0, SLIDER_WIDTH, SLIDER_WIDTH);
+SingleMapAddon zoomOut = new SingleMapAddon(ZOOM_OUT, out,
+sliderBottom, mapWidget, new ZoomInAndOutController(mapWidget,
+0.99));
+
+/*
+ * Zoom slider itself
+ */
+ZoomSlider slider = new ZoomSlider(ZoomSlider.SLIDER, mapWidget);
+slider.setZoomIn(zoomIn);
+slider.setBackgroundPart(backgroundPart);
+slider.setSliderUnit(sliderUnit);
+slider.setZoomOut(zoomOut);
+slider.setHorizontalMargin(HORIZONTAL_MIDDLE - SLIDER_WIDTH / 2);
+slider.setVerticalMargin(pan.getVerticalMargin() + PAN_DIA + 2 * MARGIN);
+mapWidget.registerMapAddon(slider);
+/* And finally add the slider as a MapViewChangedHandler to let it's handle be adjusted, 
+ * in case the zoomlevel is changed outside the slider.
+ */
+mapWidget.getMapModel().getMapView().addMapViewChangedHandler(slider);</programlisting>
+
+      <note>
+        <para>For the full snippet in the Geomajas showcase, open the
+        <abbrev>Map and rendering</abbrev> section, click the <abbrev>Zoom
+        slider</abbrev> example and view the attached sources.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>Listeners on the map</title>
+
+      <para>As an alternative to the interactive controllers on a map, there
+      are passive <code>Listeners</code> as well. These listener have an
+      interface very much like the <code>GraphicsController</code> interface,
+      but they never receive the real mouse events. As such they are meant to
+      be passive observers, which receive notifications of mouse events. As
+      opposed to the <code>GraphicsControllers</code>, these listeners are
+      never allowed to interfere.</para>
+
+      <para>As a result, multiple listeners can be registered on the map,
+      while only one <code>GraphicsController</code> can be active at any
+      given time. Instead of the real mouse events, listeners receive
+      placeholder events of the type <code>ListenerEvent</code>. These
+      <code>ListenerEvent</code> objects resemble the GWT mouse events a bit,
+      and contain most of the information of the real mouse events.</para>
+
+      <para>In order to add a listener to the map, or remove a listener from
+      the map, your code should be something like this:</para>
+
+      <programlisting>// Define a new Listener, starting from the AbstractListener:
+Listener myListener = new AbstractListener() {
+    public void onMouseMove(ListenerEvent event) {
+        // Do something...
+    }
+};
+
+// Add the Listener to the map:
+mapWidget.addListener(myListener);
+
+// Remove the Listener from the map:
+mapWidget.removeListener(myListener);</programlisting>
+
+      <para><note>
+          <para>When creating a new Listener, often it is easiest to start
+          from the <code>AbstractListener</code> class, which has all empty
+          methods for catching the mouse events. In this case you override the
+          methods for the events you are interested in.</para>
+        </note></para>
+    </section>
+
+    <section>
+      <title>Changing the cursor on the map</title>
+
+      <para>The MapWidget in the GWT face provides the possibility to apply
+      different cursors when hovering the map. In previous versions this was
+      done through the <code>setCursor</code> method, which only supported
+      default cursors. Since version 1.10 of the GWT face however, the
+      <code>MapWidget</code> also provides the <code>setCursorString</code>
+      method, which support custom images to be used as cursors on top of the
+      default cursors.</para>
+    </section>
+  </section>
+
+  <section id="i18n">
+    <title>Internationalization in Geomajas</title>
+
+    <para>For internationalization, Geomajas uses the default GWT i18n
+    implementation. For Geomajas specifically, the i18n is used in several
+    places, each having it's own list of messages. Basically all i18n message
+    definitions are located in the package
+    <code>org.geomajas.gwt.client.i18n</code>, as are the properties files
+    containing the translations.</para>
+
+    <para>Several separate definitions have been created:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>MenuMessages</emphasis>: the <code>MenuMessages</code>
+        defines parameterized string values that are used in the titles of
+        <code>MenuAction</code> classes. Examples are the editing context
+        menus.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>ToolbarConstants</emphasis>: this defines strings that
+        are used as tool tips when hovering over the buttons in the tool bar.
+        This list of values is used by the <code>ToolbarAction</code> and
+        <code>ToolbarSelectAction</code> classes. Note that for tool tips the
+        "&amp;nbsp;" character is used instead of the default space.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>AttributeMessages</emphasis>: .....</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GlobalMessages</emphasis>: .....</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>LayerTreeMessages</emphasis>: .....</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>SearchMessages</emphasis>: .....</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>To avoid multiple instantiations of the constants and messages
+    classes and have a central access point for all internationalization
+    concerns, the <code>I18nProvider</code> class has been created. This class
+    has static methods for accessing the constants and messages classes. Usage
+    is as follows:</para>
+
+    <programlisting>String dist = I18nProvider.getMenu().getMeasureDistanceString(totalDistance, radius); 
+setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/b&gt;:&lt;/div&gt;&lt;div style='margin-top:5px;'&gt;" + dist + "&lt;/div&gt;"); </programlisting>
+  </section>
+
+  <section>
+    <title>Styling and skinning</title>
+
+    <para>The GWT face uses SmartGWT for the widgets, styling and skinning.
+    The skin for the application is defined in your gwt.xml file. This can for
+    example be done using something like:</para>
+
+    <programlisting>&lt;inherits name="com.smartclient.theme.simplicity.Simplicity" /&gt;</programlisting>
+
+    <para>Extra tuning can be done in CSS.</para>
+
+    <para>In some cases this is not sufficient. SmartGWT handles the flowing
+    of widgets itself based on CSS and size and position information which is
+    included in code. To alleviate this, there is a special class names
+    WidgetLayout which contains many of the fixed values which are used for
+    the sizing and styling used in the widgets. The fields in the class can be
+    set on the onLoad() method in your GWT entry point class to influence the
+    style of the widgets.</para>
+  </section>
+
+  <section id="junit">
+    <title>Unit testing GWT widgets</title>
+
+    <para>A GWT unit test should inherit from the <code>GWTTestcase</code>
+    base class and should be named <code>GwtTestXxx.java</code>. GWT unit
+    tests are run inside a development mode environment and can refer to most
+    of the GWT API. To run a GWT test case, run the Maven command
+    <command>gwt:test </command>or execute the integration test phase.</para>
+  </section>
+
+  <section>
+    <title>Creating (custom) feature forms</title>
+
+    <remark>This functionality has been added to the GWT client API in version
+    1.9.0.</remark>
+
+    <para>When working with vector layers, one often has a need for editing
+    not only the vector component of the features, but also the
+    alpha-numerical attributes. To this end, special factories have been
+    created that can be passed to the editing widgets (FeatureAttirbuteEditor
+    and FeatureAttributeWindow) to create such forms.</para>
+
+    <para>All interfaces and classes in this section can be found in the
+    following package:
+    <code>org.geomajas.gwt.client.widget.attribute</code></para>
+
+    <para>Central in all this, is the <code>FeatureForm</code> and the
+    <code>FeatureFormFactory</code>. The <code>FeatureFormFactory</code> is an
+    interface that defines a single method for the creation of a
+    <code>FeatureForm</code> instance.</para>
+
+    <example>
+      <title>FeatureFormFactory interface</title>
+
+      <para><programlisting>public interface FeatureFormFactory {
+
+   /**
+    * Creates a form using the specified attribute information.
+    *
+    * @param infos
+    *           List of attribute definitions. Normally taken from a {@link VectorLayer}.
+    * @return An attribute form that allows for editing of it's values.
+    */
+    FeatureForm createFeatureForm(VectorLayer layer);
+}</programlisting></para>
+    </example>
+
+    <para>The default implementation of this factory has been implemented
+    <code>as DefaultFeatureFormFactory</code>. This factory returns a default
+    implementation for the feature form for each layer:
+    <code>DefaultFeatureForm</code>. When the default layout of a feature form
+    is sufficient use the <code>DefaultFeatureFormFactory</code> as is,
+    otherwise feel free to implement your own factory that returns custom
+    instances of a <code>FeatureForm</code>.</para>
+
+    <para>The <code>FeatureForm</code> is a form definition that has been
+    tuned towards the Geomajas GWT feature definition, and is used in the
+    central editing widgets (<code>FeatureAttributeEditor</code> and
+    <code>FeatureAttributeWindow</code>). Note that those editing widgets have
+    constructors to accept a <code>FeatureFormFactory</code>, so you have to
+    pass them a custom factory that returns your custom form.</para>
+
+    <para>Of course implementing your own <code>FeatureForm</code> might be a
+    bit overwhelming and fortunately is usually not necessary as you can
+    easily extend the <code>DefaultFeatureForm</code> to suit your needs. The
+    <code>DefaultFeatureForm</code> has several hooks to allow you to
+    influence its layout:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>The <code>createField(AttributeInfo)</code> and/or
+        <code>createItem(AttributeInfo)</code> methods can be overridden to
+        customize form items or create your own.</para>
+      </listitem>
+
+      <listitem>
+        <para>The <code>isIncluded(AttributeInfo)</code> method can be
+        overridden to omit certain attributes.</para>
+      </listitem>
+
+      <listitem>
+        <para>The <code>prepareForm(FormItemList, DataSource)</code> method
+        can be overridden to set the layout properties of the form and add
+        additional items such as spacers or headers.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Adding new form item types can also be done in a more global way.
+    Therefore, an extra utility class has been added to create the individual
+    form items that represent the feature's attributes. This utility class is
+    the <code>AttributeFormFieldRegistry</code>. This registry keeps a
+    pre-defined set of form item definitions and data source fields (both are
+    necessary to successfully create forms in SmartGWT) that map onto
+    attribute types. For example, it will map a DateItem and
+    DataSourceDateField onto all attributes of type "DATE". This registry can
+    now be used to create the individual items within the form, or to register
+    custom form items types to use in the forms.</para>
+
+    <note>
+      <para>Internally, the
+      <code>org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm</code>
+      makes use of the AttributeFormFieldRegistry. This means that if you
+      register custom form items for certain attribute types, these custom
+      items will also appear in the default feature forms, without you having
+      to implement a custom FeatureForm.</para>
+    </note>
+
+    <para>In the following sections, the details of registering custom form
+    items and creating custom forms will be explained.</para>
+
+    <section>
+      <title>Using custom form items within a FeatureForm</title>
+
+      <para>In order to use custom form items within a FeatureForm, there are
+      2 ways: override one the default for a certain attribute type, or define
+      a completely new type.</para>
+
+      <para>In any case, you will need to register a custom type with the
+      AttributeFormFieldRegistry. Let us start with a coding example:</para>
+
+      <programlisting>// We define the custom type "myType" in the AttributeFormItemFactory:
+        AttributeFormFieldRegistry.registerCustomFormItem("myType", new DataSourceFieldFactory() {
+
+            public DataSourceField create() {
+                return new DataSourceIntegerField();
+            }
+        }, new FormItemFactory() {
+
+            public FormItem create() {
+                return new SliderItem();
+            }
+        }, null);
+
+</programlisting>
+
+      <para>This short piece of code will register a "SliderItem" for all
+      attributes of the type "myType". Let us first go over the code in more
+      detail. In order to register a new type, 4 arguments are
+      required:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The key associated with the given <code>FormItemFactory</code>
+          and <code>DataSourceFieldFactory</code>. This key is either the name
+          of an attribute type (i.e. <code>PrimitiveType.DATE.name()</code>)
+          to overwrite the default definitions, or a completely new type which
+          can be configured in the attribute definitions with the
+          <code>formInputType</code> field (see further in this section). This
+          key is a unique identifier. In the example above: "myType".</para>
+        </listitem>
+
+        <listitem>
+          <para>A <code>DataSourceFieldFactory</code> definition. This factory
+          will create a SmartGWT <code>DataSourceField</code> that represents
+          the underlying data-source in the form.</para>
+        </listitem>
+
+        <listitem>
+          <para>A <code>FormItemFactory</code> definition. This factory will
+          create a SmartGWT FormItem that represents the actual widget by
+          which the attribute is presented in the form. In the case above, the
+          attribute will be represented by a <code>SliderItem</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>A list of validators that can be attached to the underlying
+          <code>DataSourceField</code>. Any time the user changes values
+          within a FeatureForm, the associated validators will be executed. In
+          the example above no extra validators are attached to the
+          <code>DataSourceIntegerField (value null)</code>.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>So the parameter explanation already told us how to overwrite the
+      default attribute types: by registering a new type for an attribute type
+      (i.e. <code>PrimitiveType.DATE.name()</code>). The other option, to
+      register completely new types, is done by using a new key
+      (i.e."myType"). The only thing left to do than is to associate
+      attributes with this key. This can be done within the vector layer XML
+      configuration, where a field by the name of "<code>formInputType</code>"
+      can be added to an attribute configuration. For more information on
+      attribute configuration, visit the configuration part in the <ulink
+      url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#conf-vectorInfo">Geomajas
+      developer guide</ulink>.</para>
+    </section>
+
+    <section>
+      <title>Using custom form items for association attributes</title>
+
+      <para>Association attributes (one-to-many and many-to-one) require a
+      specific treatment because they are too complex to be mapped to a
+      single-valued form item. For these attributes, special interfaces have
+      been constructed that provide full control over the way association
+      value data travels between the feature and it's form
+      representation:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The <code>ManyToOneItem</code> interface defines the contract
+          for a custom form item that represents a many-to-one
+          assocation</para>
+        </listitem>
+
+        <listitem>
+          <para>he <code>OneToManyItem</code> interface defines the contract
+          for a custom form item that represents a one-to-many
+          assocation</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Both interfaces contain the following methods:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code><code>getItem</code>()</code>: this methods returns the
+          actual form item to be used in the form. This can either be an item
+          that holds the actual value or a button or link that opens a more
+          complex editor.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>fromItem(), toItem()</code> : these methods govern the
+          actual transfer of data between the form and the association value.
+          This may include transfer from and to a more complex editor.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>init(AssociationAttributeInfo attributeInfo,
+          AttributeProvider attributeProvider)</code>: this method provides a
+          way to initialize the custom form item and/or editor. It passes
+          information on the nested attributes of the association value and an
+          attribute provider interface. The provider interface allows to query
+          a list of possible attribute values in case the user has to select
+          the value from a predefined list.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>clearValue() </code>: this method allows custom
+          clearance of the form item and editor.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The default implementation of <code>ManyToOneItem</code> is a
+      simple combobox.</para>
+
+      <para>The default implementation of <code>OneToManyItem</code> is a
+      "<code>More...</code>" link that pops up a master-detail editor
+      configuration for editing a list of association values.</para>
+
+      <para>These are in line with our default interpretation of a many-to-one
+      attribute as being an association by reference to an externally managed
+      list and a one-to-many item as being a parent-child relationship. Custom
+      behavior can of course be implemented by registering a different
+      implementation of the interfaces.</para>
+    </section>
+
+    <section>
+      <title>Creating a custom FeatureForm</title>
+
+      <para>The next step is to create a custom <code>FeatureForm</code>. Let
+      us again start with a short code example:<programlisting>public class AttributeCustomForm extends DefaultFeatureForm {
+
+ public AttributeCustomForm(VectorLayer vectorLayer) {
+  super(vectorLayer);
+ }
+
+ @Override
+ protected FormItem createItem(AttributeInfo info) {
+  FormItem formItem = super.createItem(info); // call super to create the default item
+  formItem.setWidth("*");
+  if ("dateAttr".equals(info.getName())) {
+   // The date attribute will span all 4 columns:
+   formItem.setColSpan(4);
+  }
+  return formItem;
+ }
+
+ @Override
+ protected void prepareForm(FormItemList formItems, DataSource source) {
+  // Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
+  formItems.insertBefore("stringAttr", new RowSpacerItem()); // inserting an item via the FormItemList
+  getWidget().setNumCols(4);
+  getWidget().setWidth(450);
+  getWidget().setColWidths(100, 180, 20, 150);
+  getWidget().setGroupTitle("Custom Attribute Form");
+  getWidget().setIsGroup(true);
+ }
+}
+</programlisting></para>
+
+      <para>The <code>createItem(AttributeInfo info)</code> method is
+      overridden to set the item width and make the date attribute span 4
+      columns. The <code>prepareForm(FormItemList formItems, DataSource
+      source)</code> method is overridden to insert an extra spacer item
+      before the string attribute and set the general column layout. The form
+      that results from this will not differ all too much from the default
+      implementation, but it should get you on your way.</para>
+    </section>
+  </section>
+</chapter>

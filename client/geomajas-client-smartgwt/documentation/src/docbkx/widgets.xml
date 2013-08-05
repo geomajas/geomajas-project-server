@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-gwt-widgets">
+  <title>GWT widgets</title>
+
+  <para>This second chapter of the GWT face describes all the widgets that
+  Geomajas has added on top of the SmartGWT widget list. Each widget will be
+  handled in detail so that developers might get a better understanding of
+  what they are here for, and how to use them. Know that many of these widgets
+  are closely connected, either through configuration or coding.</para>
+
+  <section id="GraphicsWidget">
+    <title>GraphicsWidget</title>
+
+    <para>The <code>GraphicsWidget</code> is the basic widget that allows
+    drawing onto a <code>GraphicsContext</code>, and catches mouse events at
+    the same time. It implements the <code>MapContext</code> interface and
+    provides it's own <code>MenuContext</code> implementation. As for the
+    <code>VectorContext</code>, it delegates to a browser specific
+    implementation (<code>VmlGraphicsContext</code> or
+    <code>SvgGraphicsContext</code>). It is also responsible for handling
+    <code>GraphicsController</code>s (only one global controller at a time!).
+    The reason to place the controller handling here, is because we needed a
+    default GWT widget to handle the events, not a SmartGWT widget. The
+    SmartGWT events do not contain the actual DOM elements for MouseEvents,
+    while the default GWT events do - for some functionality it is absolutely
+    vital that it is well-known which DOM node was the target of an
+    event.</para>
+
+    <para>Using the MenuContext, this widget always has the coordinates of the
+    latest right mouse click. Usually the right mouse button is used for
+    drawing context menus. But sometimes it is necessary to have the DOM
+    element onto which the context menu was clicked, to influence this menu.
+    That is why this widget always stores this latest event (or at least it's
+    DOM element id, and screen location).</para>
+
+    <para>This widget is the bridge between the internal Svg or Vml rendering
+    in GWT and the SmartGWT widget library. It is used internally in the
+    MapWidget, but is not meant to be used directly by developers.</para>
+  </section>
+
+  <section id="MapWidget">
+    <title>MapWidget</title>
+
+    <para>The main map for any Geomajas application using the GWT face. This
+    widget controls the <code>MapModel</code>, the <code>MapView</code>
+    objects, has an internal <code>GraphicsWidget</code> for the actual
+    rendering, and much more. Being the most central of all widget, the
+    MapWidget has quite a few responsibilities and options.</para>
+
+    <para><emphasis role="bold">Map - initialization</emphasis></para>
+
+    <para>A first responsibility of the map is the correct initialization of
+    it's model and all layers from the configuration. When the MapWidget is
+    added to the HTML (onDraw), it will automatically fetch the configuration
+    from the server, and than initialize itself (more precisely, build the
+    <code>MapModel</code>). When this is done, the <code>MapModel</code> will
+    fire a <code>MapModelEvent</code>. Many other widgets wait for this moment
+    to initialize themselves, as they often require the
+    <code>MapModel</code>'s contents.</para>
+
+    <para><emphasis role="bold">View - rendering</emphasis></para>
+
+    <para>A second responsibility lies in the ability to render shapes. The
+    <code>render()</code> method uses a <code>PainterVisitor</code> to
+    recursively go through <code>Paintable</code> objects and look for the
+    correct <code>Painter</code>. All <code>Painter</code> definitions must be
+    registered in the <code>MapWidget</code>, by means of the
+    <code>registerPainter()</code> and <code>unregisterPainter()</code>
+    methods. Also the full list of <code>WorldPaintables</code> is stored
+    within the <code>MapWidget</code>. For more information regarding the
+    rendering, using the render method, visit the <link
+    linkend="graphics"><corpauthor>rendering
+    manual</corpauthor></link>.</para>
+
+    <para>As an addition of the <code>Paintable</code> objects in
+    screen-space, the definition of a <code>MapAddon</code> has been created
+    as well. <code>MapAddons</code> are self regulating pieces of software
+    that are visible at a certain location on the map (in screen space!), and
+    optionally have attached behaviour. Examples are the Navigation buttons
+    and the scale bar.</para>
+
+    <para><emphasis role="bold">Controller</emphasis></para>
+
+    <para>To add interactivity to a map, you can add two types of controllers:
+    the <code>GraphicsController</code> and the GWT
+    <code>MouseWheelHandler</code>. For both it is possible to apply a single
+    instance using the <code>setController()</code> and
+    <code>setMouseWheelController()</code> methods.</para>
+
+    <para><emphasis role="bold">Options</emphasis></para>
+
+    <para>On top of the previous list of responsibilities, the map also has a
+    few options that allow certain functionality to be present or not. The
+    following options are standard:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>navigationAddonEnabled</emphasis>: this option can be
+        configured from within the configuration, and determines whether or
+        not the navigation <code>MapAddon</code> is visible. This
+        <code><code>MapAddon</code></code> is placed in the upper left corner
+        of the map and allows the user to pan, zoom in and out, and zoom to
+        maximum extent.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>scaleBarEnabled</emphasis>: this option can be
+        configured from within the configuration, and determines whether or
+        not the scale bar is visible. This shows you the scale of the map by
+        means of a bar of certain length, expressed in the preferred unit type
+        (metric versus English).</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>zoomOnScrollEnabled</emphasis>: this option determines
+        whether or not the <code>ZoomOnScrollController</code> is active by
+        default. This allows zooming in and out on the map using the mouse
+        wheel.</para>
+      </listitem>
+    </itemizedlist>
+
+    <figure>
+      <title>MapWidget example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_mapwidget.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="OverviewMap">
+    <title>OverviewMap</title>
+
+    <para>The overview map is an extension of the <code>MapWidget</code>,
+    which keeps the overview of a target <code><code>MapWidget</code></code>.
+    It keeps track of the target map's view, and reacts whenever that target
+    map changes it's view. The <classname>OverViewMap</classname> implements
+    the <code>MapViewChangedHandler</code> to track the changes of it's target
+    map. As it is an extension of a normal <code>MapWidget</code>, it has all
+    the functionality of a normal map. So you can configure layers for an
+    overview map, just as you would for a normal map.</para>
+
+    <figure>
+      <title>OverviewMap example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_overviewmap.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>What can be tricky is to properly configure the bounds of the
+    overview map. In the image above, this is slightly bigger than the world
+    (which in this case is probably not what you want). The bounds for the
+    overview map normally uses the initial bounds as defined on the map.
+    However, when you set the useTargetMapMaxExtent parameter to true when
+    creating the overview map, following locations are checked, using the
+    first which was configured:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>targetMap.maxBounds</para>
+      </listitem>
+
+      <listitem>
+        <para>union of layer extents</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The bounds are automatically extended by a percentage. The default
+    is 5%, but this can be configured when creating the overview map.</para>
+  </section>
+
+  <section id="Toolbar">
+    <title>Toolbar</title>
+
+    <para>The Geomajas tool bar is an extension of the SmartGWT
+    <code>ToolStrip</code> widget, and allows for many different widgets to be
+    added to it. A tool bar must be initialized with an instance of the
+    <code>MapWidget</code> it is related to. When the <code>MapWidget</code>
+    has successfully initialized itself, it's <code>MapModel</code> will fire
+    the <code>MapModelEvent</code> saying so. The tool bar reacts on this
+    event by searching in the map configuration for the correct list of tool
+    bar buttons. The map configuration can contain tool ids to indicate the
+    tools which need to be added, together with optional parameters. Using the
+    <code>ToolbarRegistry</code>, which contains the mappings between these
+    ids and the relevant <code>ToolbarAction</code> or
+    <code>ToolbarModalAction</code> classes, the tool bar will initialize
+    itself (for more info; see <link linkend="interaction">User
+    Interaction</link>).</para>
+
+    <para>Existing tools which can be defined include:</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>EditMode</emphasis>: a ToolbarModalAction for
+          editing on the map. Allows the user to create new objects in the
+          selected layer, and allows updating and deleting of selected
+          objects.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>MeasureDistanceMode</emphasis>: a ToolbarModalAction
+          which allows the user to measure distances on the map.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>SelectionMode</emphasis>: allow selecting features
+          either by clicking on them, or by dragging a rectangle, thus
+          selecting the features which are inside the rectangle. You need an
+          active (vector) layer for the selection to work. The right click
+          menu allows clearing the selected features and toggling selection at
+          the current position. Press shift or control while selecting to add
+          the selection to the previously selected features. Possible
+          parameters:</para>
+
+          <para><itemizedlist>
+              <listitem>
+                <para><emphasis>clickTimeout</emphasis>: when the button it
+                released in less than the number of milliseconds specified
+                here, then the selection is treated as a click. When it takes
+                longer, it is treated as dragging. Default is "500"
+                (ms).</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>coverageRatio</emphasis>: ratio of the feature
+                which needs to be inside the selected area for the feature to
+                be selected. When this is "1.0" then the entire feature needs
+                to be inside the selection rectangle. Default is "0.7".</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>priorityToSelectedLayer</emphasis>: when this
+                is "true" selection will first check the selected layer, and
+                use default behaviour only if nothing is found in that layer.
+                Default behaviour is to try all visible layers, from front to
+                back.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>pixelTolerance</emphasis>: number of pixels of
+                tolerance allowed when trying to select features. The default
+                pixel tolerance is 5.</para>
+              </listitem>
+            </itemizedlist></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ZoomIn</emphasis>: zoom in to the map at the
+          location clicked (will be centered), using the zoom factor which is
+          configured.</para>
+
+          <para><itemizedlist>
+              <listitem>
+                <para><emphasis>delta</emphasis>: zoom in factor, should be
+                &gt;1 to effectively zoom in.</para>
+              </listitem>
+            </itemizedlist></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ZoomOut</emphasis>: zoom out of the map at the
+          location clicked (will be centered), using the zoom factor which is
+          configured.</para>
+
+          <para><itemizedlist>
+              <listitem>
+                <para><emphasis>delta</emphasis>: zoom in factor, should be in
+                the ]0,1[ range to effectively zoom out</para>
+              </listitem>
+            </itemizedlist></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>PanMode</emphasis>: this action allows you to pan
+          the screen by dragging. When keeping either the shift or control key
+          down, it is also possible to indicate an area to zoom into (like
+          <emphasis>ZoomToRectangleMode</emphasis>).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ZoomToRectangleMode</emphasis>: you can indicate a
+          rectangle (by dragging) and it will zoom to make the selected area
+          as big as possible while still entirely inside the map
+          widget.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ZoomToSelection</emphasis>: first select some items
+          on the map. After clicking on the the zoomToSelection button the map
+          will be zoomed so that all selected items will fit nicely on the
+          screen.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>panToSelection</emphasis>: first select some items
+          on the map. After clicking on the panToSelection button the map will
+          be panned in such a way that the center of the selected items is in
+          the center of the screen.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ZoomPrevious</emphasis>: go back to the previous
+          zoom level (and location).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ZoomNext</emphasis>: go forward again, cancelling a
+          click on <emphasis>ZoomPrevious</emphasis>.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ScaleSelect</emphasis>: scale select drop-down
+          box.</para>
+
+          <para><itemizedlist>
+              <listitem>
+                <para>precision: precision of the scale. For example using
+                1000 as precision ensure the value "1:12,345" is displayed as
+                "1:12,000".</para>
+              </listitem>
+
+              <listitem>
+                <para>significantDigits: maximum number of significant digits
+                to display in the scale. For example using 3 as value ensures
+                that "1:1,234,567" is displayed as "1:1,230,000".</para>
+              </listitem>
+            </itemizedlist></para>
+        </listitem>
+      </itemizedlist></para>
+
+    <figure>
+      <title>Tool bar example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_toolbar.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="LayerTree">
+    <title>LayerTree</title>
+
+    <para>This widget represents a view on the map model which is focused on
+    layers. You see the map layers in a tree, just as they are configured.
+    Accompanied with this view, there are buttons that define certain actions
+    on these layers. Originally there are no buttons in this widget, so they
+    have to be added manually or through configuration. These buttons can
+    either be single actions or selectable buttons (similar to the
+    <code>Toolbar</code> widget - see <link linkend="interaction">User
+    Interaction</link>).</para>
+
+    <para>Just like the tool bar, the <code>LayerTree</code> waits for the
+    <code>MapModel</code> to be initialized, and also reacts to the
+    <code>MapModelEvent</code>. The layer tree configuration is contained in
+    the map configuration. When the <code>MapModelEvent</code> is fired, the
+    <code>LayerTree</code> will read configuration to know the layer tree
+    structure, which buttons to include,...</para>
+
+    <para>Below you see a screen shot of a simple <code>LayerTree</code> where
+    no layer has been selected (and thus all the buttons are disabled):</para>
+
+    <figure>
+      <title>LayerTree example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_layertree1.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Once a layer is selected, the <code>LayerTree</code> will ask all
+    buttons whether they should be enabled for that layer. For example, the
+    <code>org.geomajas.gwt.client.action.layertree.LabelAction</code>, which
+    toggles a layer's labels, is only applicable on vector layers, so if the
+    selected layer is a raster layer, that button will remain disabled. The
+    same <code>LayerTree</code> with a selected layer looks like this:</para>
+
+    <figure>
+      <title>LayerTree with selected layer</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_layertree2.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The <code>LayerTree</code> has few public methods, but it does quite
+    a lot behind the screen. The tree is a SmartGWT <code>TreeGrid</code>,
+    where the <code>LayerTree</code> adds handlers to the nodes and leaves
+    (using <code>LeafClickHandler</code> and <code>FolderClickHandler</code>),
+    which trigger layer selection in the <code>MapModel</code>. The
+    <code>LayerTree</code> also listens to layer selection events, to adjust
+    it's own appearance. For example, when a layer is selected, the proper
+    node has to be selected and all the buttons updated.</para>
+
+    <para>The <code>LayerTreeAction</code> and
+    <code>LayerTreeModalAction</code> are also specifically designed to cope
+    with the different stages that they should be able to display. The
+    <code>LayerTreeModalAction</code> can be disabled, enabled and selected or
+    enabled and deselected. For each it is imperative that clear markings are
+    given. This means that different icons are usually used for the different
+    stages. These different icons should be given to the actions at
+    construction time.</para>
+
+    <para>Currently the following actions are defined:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>org.geomajas.gwt.client.action.layertree.VisibleAction</emphasis>:
+        a <code>LayerTreeModalAction</code> that switches the visible flag on
+        the selected layer.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>org.geomajas.gwt.client.action.layertree.LabelAction</emphasis>:
+        a <code>LayerTreeModalAction</code> that switches the display of
+        labels for the selected layer.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>org.geomajas.gwt.client.action.layertree.LayerRefreshAction</emphasis>:
+        a <code>LayerTreeAction</code> that refreshes the selected layer on
+        click.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section id="Legend">
+    <title>Legend</title>
+
+    <para>The <code>Legend</code> is a graphical widget that shows all styles
+    for the currently visible vector layers. In that sense it is another view
+    on the map model that only shows the style definitions that are currently
+    relevant. Just like the map widget, the legend is built on
+    <code>GraphicsWidget</code>. It reads the available layers from the map
+    model and draws a legend to match the style of these layers.</para>
+
+    <figure>
+      <title>Legend</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/gwtface_widget_legend.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="FeatureListGrid">
+    <title>FeatureListGrid</title>
+
+    <para>The <code>FeatureListGrid</code> is a table listing the attributes
+    of features within a single vector layer. Each feature is represented by a
+    row in the grid, with at the top a header that shows the attribute label,
+    as configured in the configuration. As only vector layers can contain
+    features, the grid will be empty for raster layers.</para>
+
+    <para>The <code>FeatureListGrid</code> has a few options that determine
+    it's behaviour and appearance:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>selectionEnabled</emphasis>: enables or disables
+        selection of features when selecting a row in the table. When this is
+        enabled, the table will keep feature selection consistent with the map
+        model. If the user selects a row, the feature will also be selected on
+        the map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>allAttributesDisplayed</emphasis>: show all attributes
+        (true) or only the 'identifying' attributes (false)? Attributes can be
+        configured as "identifying" in the configuration. This difference
+        allows for a select list of attributes to be visible in the grid,
+        keeping overview. The user can always ask more details by double
+        clicking the line.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>editingEnabled</emphasis>: determines whether or not
+        editing the attributes is allowed. When double clicking a row in the
+        table, a <code>FeatureAttributeWindow</code> will appear, containing
+        the feature of the selected row. This setting determines if that
+        window allows editing or not.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>idInTable</emphasis>: show the feature's id in the
+        table. This is false by default, and should not really be
+        necessary.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>This table is an extension of the SmartGWT <code>ListGrid</code>
+    widget. It automatically has grouping, filtering and sorting abilities
+    (and much more...). The <code>FeatureListGrid</code> makes it possible to
+    easily display features. You have to set the layer from which to display
+    features. Then you can add features one by one. If no layer is set, then
+    then "<code>addFeature</code>" method will not add any rows to the table.
+    Setting the layer will automatically create the grid header, using the
+    layer's attribute definitions.</para>
+
+    <figure>
+      <title>FeatureListGrid example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_featurelistgrid.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="FeatAttrWind">
+    <title>FeatureAttributeWindow</title>
+
+    <para>The <code>FeatureAttributeWindow</code> is a floating window to
+    display and enable editing of a feature's attributes and persist these
+    changes. This widget is a <code>FeatureAttributeEditor</code> with some
+    extra buttons like "save". When setting a feature, it first makes a clone
+    so you are not editing the feature directly and changes are only applied
+    when the save is clicked. This widget also checks whether or not all
+    fields are valid, and will not allow saving when at least one of the
+    fields is not valid.</para>
+
+    <para>The <code>FeatureAttributeWindow</code> has the following
+    options:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>editingAllowed: is editing allowed? This must be set
+        <emphasis>before</emphasis> the widget is actually drawn.</para>
+      </listitem>
+
+      <listitem>
+        <para>editingEnabled: is editing currently enabled or not? This widget
+        can toggle this value on the fly. When editing is enabled, it will
+        display an editable attribute form with save, cancel and reset
+        buttons. When editing is not enabled, these buttons will disappear,
+        and a simple attribute form is shown that displays the attribute
+        values, but does not allow editing. This effect only works when
+        <emphasis>editingAllowed</emphasis> is true.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Below is a screen shot of a <code>FeatureAttributeWindow</code> with
+    editing allowed but not enabled. Without the editing allowed, there would
+    be now "edit" button. The button itself triggers setting editing
+    enabled.</para>
+
+    <figure>
+      <title>FeatureAttributeWIndow, editing allowed but not enabled</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_featureattributewindow.png"
+                     width="60%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="ActivityMon">
+    <title>ActivityMonitor</title>
+
+    <para>This widget monitors client-server communication traffic, and
+    displays that activity to the end-user. It's purpose is inform the user
+    that a server request is in progress. For example, when the user zooms in,
+    it can sometimes take a few seconds before everything is redrawn. This
+    widget displays that traffic by listening to the
+    <code>GwtCommandDispatcher</code> events. On the screen shot below, you
+    can see the difference between it being passive and active:</para>
+
+    <figure>
+      <title>ActivityMonitor example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_activitymonitor.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="ScaleSelect">
+    <title>ScaleSelect</title>
+
+    <para>Combo box for changing the scale on the map which can be added to a
+    tool bar. It displays a list of possible scales to choose from, but also
+    allows the user to type a specific scale. The scale select is constructed
+    with a <code>MapView</code> as parameter. If this <code>MapView</code>
+    contains pre-configured resolutions (zoom-steps - these can be set in the
+    configuration), than the scale select will allow selection from these
+    scales. If no resolutions are present, the scale select will automatically
+    choose relevant scales to choose from.</para>
+
+    <para>Using the <code>setScales()</code> method, one can always override
+    the list of scales in the widget.</para>
+
+    <para>The setPrecision() and setSignificantDigits() methods allow you to
+    configure the rounding which is applied on the displayed scale
+    values.</para>
+
+    <figure>
+      <title>ScaleSelect example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/gwtface_widget_scaleselect.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+
+  <section id="FeatureSearch">
+    <title>FeatureSearch</title>
+
+    <para>Widget that supports searching for features on the attributes.
+    Requires a value for <code>manualLayerSelection</code> at construction
+    time. If true, a select box will be shown so the user can select what
+    layer to search in. The possible list of layers consists of all the vector
+    layers that are present in the map model. If false, this widget will
+    search in the currently selected layer.</para>
+
+    <para>When the "search" button is indicated, the search will be performed
+    server-side. When the result returns, a <code>SearchEvent</code> is fired.
+    This event holds a reference to the <code>VectorLayer</code> in which the
+    search took place, and a list of all the features that were found. In
+    order to do something with the results (such as displaying in a
+    <code>FeatureListGrid</code>), add a <code>SearchHandler</code>. For the
+    specific case of displaying the feature in a <code>FeatureListGrid</code>,
+    there is a <code>DefaultSearchHandler</code> that already does
+    this.</para>
+
+    <para>Note that there is a limit to the number of features that are
+    returned. By default this limit is set to 100. Modify
+    <code>maximumResultSize</code> to change this. Note that a high limit can
+    have a serious impact on performance and memory consumption!</para>
+
+    <figure>
+      <title>FeatureSearch example</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/gwtface_widget_featuresearch.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+</chapter>
