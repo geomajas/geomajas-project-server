@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>The GWT face allows you to use Java code for development of your AJAX
+  based GIS web applications. It uses Google Web Toolkit and the SmartGWT
+  widget library to have powerful widget which look nice.</para>
+
+  <para>GWT is a toolkit from Google which is used amongst others for the
+  development of Google AdWords and Google Wave. It compiles your Java code to
+  JavaScript to allow the code to run on the client side, in the browser.
+  While doing so, it takes care of many browser idiosyncrasies to alleviate
+  the need to consider browser compatibility issues. GWT tries to make the
+  user experience as comfortable as possible, to a large extent by focusing on
+  responsiveness of the user interface. It combines all code and aggressively
+  compresses that to reduce loading delays and allow caching. When the script
+  file gets large, you still have the option to split it to reduce load time
+  (the other parts are then loaded asynchronously. It also contains support
+  for building internationalized applications, for combining resources
+  etc.</para>
+
+  <para>For the developer, there is the ability to run your applications in
+  development mode. Though this is slower than production mode, it does remove
+  the need for the full compilation before application startup (a big
+  improvement as GWT produces different code per browser and language pair),
+  and what's more, it allows debugging your application in Java!</para>
+</chapter>
