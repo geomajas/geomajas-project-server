@@ -30,9 +30,8 @@
 	</scm>
 	
 	<modules>
-		<module>geomajas-gwt-showcase</module>
-		<module>geomajas-puregwt-showcase</module>
 		<module>geomajas-gwtclient-showcase</module>
+		<module>geomajas-smartgwtclient-showcase</module>
 	</modules>
 
 </project>
