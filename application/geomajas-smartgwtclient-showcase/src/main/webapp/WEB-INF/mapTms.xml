@@ -1,0 +1,90 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- OpenStreetMap sample -->
+	<bean name="mapTms" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:31370" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="18000.0" />
+				<property name="y" value="152999.75" />
+				<property name="width" value="241500.25" />
+				<property name="height" value="241500.25" />
+			</bean>
+		</property>
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="zoomLevels">
+					<list>
+						<value>0.703125</value>
+						<value>0.3515625</value>
+						<value>0.17578125</value>
+						<value>0.087890625</value>
+						<value>0.0439453125</value>
+						<value>0.02197265625</value>
+						<value>0.010986328125</value>
+						<value>0.0054931640625</value>
+						<value>0.00274658203125</value>
+						<value>0.001373291015625</value>
+						<value>6.866455078125E-4</value>
+						<value>3.4332275390625E-4</value>
+						<value>1.71661376953125E-4</value>
+						<value>8.58306884765625E-5</value>
+						<value>4.291534423828125E-5</value>
+						<value>2.1457672119140625E-5</value>
+						<value>1.0728836059570312E-5</value>
+						<value>5.364418029785156E-6</value>
+						<value>2.682209014892578E-6</value>
+						<value>1.341104507446289E-6</value>
+						<value>6.705522537231445E-7</value>
+						<value>3.3527612686157227E-7</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="clientLayerTms" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerTms">
+		<property name="serverLayerId" value="layerTms" />
+		<property name="label" value="TMS layer (raster)" />
+		<property name="visible" value="true" />
+		<property name="style" value="1" />
+	</bean>
+
+</beans>

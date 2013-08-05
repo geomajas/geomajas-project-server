@@ -1,0 +1,241 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+		>
+
+	<!-- @extract-start StaticSecurityStart, Partial staticsecurity configuration -->
+	<bean name="SecurityService" class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
+	
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="true"/>
+		<property name="securityServices">
+			<list>
+				<ref bean="SecurityService"/>
+				<bean class="org.geomajas.plugin.staticsecurity.security.LoginAllowedSecurityService"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
+		<property name="users">
+			<list>
+
+				<!-- User elvis has restricted attribute editing permissions on roads layer -->
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
+					<property name="userId" value="elvis"/>
+					<property name="password" value="BUOMyQ95onvc7gMrMjFtDQ"/> <!-- "elvis" -->
+					<property name="userName" value="Elvis Presley"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.AttributeAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>layerBeans</value>
+										<value>layerBeansEditableGrid</value>
+									</list>
+								</property>
+								<!-- @extract-end -->
+								<property name="layers">
+									<map>
+										<entry key="layerBeans">
+											<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAttributeAuthorizationInfo">
+												<property name="readableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="readableExcludes">
+													<list>
+														<value>longAttr</value>
+														<value>doubleAttr</value>
+													</list>
+												</property>
+												<property name="writableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="writableExcludes">
+													<list>
+														<value>shortAttr</value>
+													</list>
+												</property>
+											</bean>
+										</entry>
+										<entry key="layerBeansEditableGrid">
+											<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAttributeAuthorizationInfo">
+												<property name="readableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="writableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+											</bean>
+										</entry>
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<!-- User luc has full access. Lucky luc :-) -->
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
+					<property name="userId" value="luc"/>
+					<property name="password" value="b7NMSP1pZN3Hi6nJGVe9JA"/> <!-- "luc" -->
+					<property name="userName" value="Luc Van Lierde"/>	
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="toolsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="createAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="deleteAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<!-- User marino has restricted layer access -->
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
+					<property name="userId" value="marino"/>
+					<property name="password" value="kMSqVf2EMWilIKhZyV3dKA"/> <!-- "marino" -->
+					<property name="userName" value="Marino Van Hoenacker"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>layerCountries110m2</value>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<!-- user mark has restricted command and tool access -->
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
+					<property name="userId" value="mark"/>
+					<property name="password" value="7dbGxrB3eNTa17i3ZtGNLQ"/> <!-- "mark" -->
+					<property name="userName" value="Mark Herremans"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>command.configuration.GetMap</value>
+										<value>command.configuration.Get</value>
+										<value>command.render.GetRasterTiles</value>
+									</list>
+								</property>
+								<property name="toolsInclude">
+									<list>
+										<value>ZoomIn</value>
+										<value>ZoomOut</value>
+										<value>ZoomToRectangleMode</value>
+										<value>PanMode</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<!-- User jan has restricted feature access on roads layer -->
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
+					<property name="userId" value="jan"/>
+					<property name="password" value="k/yCnEyOOYzrK+Oe2fGM8Q"/> <!-- "jan" -->
+					<property name="userName" value="Jan Something"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="filters">
+									<map>
+										<entry key="layerCountries110m2" value="(PEOPLE > 50000000)"/>
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
