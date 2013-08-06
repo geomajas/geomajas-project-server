@@ -161,8 +161,8 @@
 	</profiles>
 
 	<properties>
-		<staticsecurity-backend-version>1.11.1</staticsecurity-backend-version>
-		<staticsecurity-gwt-face-version>1.11.1</staticsecurity-gwt-face-version>
+		<staticsecurity-backend-version>1.13.1</staticsecurity-backend-version>
+		<staticsecurity-gwt-face-version>2.0.0</staticsecurity-gwt-face-version>
 		<staticsecurity-smartgwtclient-version>1.15.0-SNAPSHOT</staticsecurity-smartgwtclient-version>
 		<staticsecurity-gwt-version>2.5.0</staticsecurity-gwt-version>
 	</properties>
