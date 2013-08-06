@@ -1,0 +1,48 @@
+// geomajas-plugin-staticsecurity-gwt module API, 1.9.0
+org.geomajas.plugin.staticsecurity.client.LoginWindow::1.7.1
+org.geomajas.plugin.staticsecurity.client.LoginWindow:LoginWindow():1.7.1
+org.geomajas.plugin.staticsecurity.client.LoginWindow:LoginWindow(LoginHandler, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.LoginWindow:LoginWindow(LoginHandler, String, String, int, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.LogoutButton::1.7.1
+org.geomajas.plugin.staticsecurity.client.LogoutButton:LogoutButton():1.7.1
+org.geomajas.plugin.staticsecurity.client.LogoutButton:LogoutButton(LogoutHandler, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandler::1.9.0
+org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandler:StaticSecurityTokenRequestHandler():1.9.0
+org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandler:StaticSecurityTokenRequestHandler(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.client.TokenReleaseButton::1.9.0
+org.geomajas.plugin.staticsecurity.client.TokenReleaseButton:TokenReleaseButton():1.9.0
+org.geomajas.plugin.staticsecurity.client.TokenRequestWindow::1.9.0
+org.geomajas.plugin.staticsecurity.client.TokenRequestWindow:TokenRequestWindow():1.9.0
+org.geomajas.plugin.staticsecurity.client.TokenRequestWindow:TokenRequestWindow(TokenChangedHandler, ):1.9.0
+org.geomajas.plugin.staticsecurity.client.TokenRequestWindow:void setSlogan(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent::1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent:List<String> getMessages():1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginHandler:. TYPE:1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginHandler::1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginHandler:void onLoginFailure(LoginFailureEvent, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginHandler:void onLoginSuccess(LoginSuccessEvent, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent::1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent:String getToken():1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LogoutFailureEvent::1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LogoutHandler:. TYPE:1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LogoutHandler::1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LogoutHandler:void onLogoutFailure(LogoutFailureEvent, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LogoutHandler:void onLogoutSuccess(LogoutSuccessEvent, ):1.7.1
+org.geomajas.plugin.staticsecurity.client.event.LogoutSuccessEvent::1.7.1
+org.geomajas.plugin.staticsecurity.client.util.SsecAccess::1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout::1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String iconLogin:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String iconLogout:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowBackground:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowButtonLayoutWidth:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowButtonWidth:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowErrorHeight:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowErrorStyle:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowFieldWidth:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowHeight:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowLogo:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowLogoHeight:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowLogoWidth:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowSloganHeight:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static String tokenRequestWindowWidth:1.9.0
+org.geomajas.plugin.staticsecurity.client.util.SsecLayout:static boolean tokenRequestWindowKeepInScreen:1.9.0
