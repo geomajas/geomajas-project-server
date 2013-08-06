@@ -35,8 +35,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${staticsecurity-gwt-face-version}</version>
+				<artifactId>geomajas-client-smartgwt-all</artifactId>
+				<version>${staticsecurity-smartgwtclient-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -76,7 +76,7 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client</artifactId>
+			<artifactId>geomajas-client-smartgwt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>

@@ -19,7 +19,7 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas staticsecurity plug-in GWT</name>
+	<name>Geomajas staticsecurity plug-in SmartGWT client code</name>
 	<description>Geomajas security plugin which allows all users and policies to be defined as part of spring configuration</description>
 
 	<dependencies>
@@ -41,7 +41,7 @@
 		<!-- GWT dependency -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client</artifactId>
+			<artifactId>geomajas-client-smartgwt</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->

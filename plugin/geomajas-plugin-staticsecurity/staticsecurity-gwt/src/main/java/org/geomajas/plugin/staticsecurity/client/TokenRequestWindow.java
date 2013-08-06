@@ -34,7 +34,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.util.HtmlBuilder;
-import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.smartgwt.client.util.WidgetLayout;
 import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 import org.geomajas.plugin.staticsecurity.client.util.SsecLayout;
 

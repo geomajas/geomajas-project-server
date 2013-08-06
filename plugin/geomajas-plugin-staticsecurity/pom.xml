@@ -55,6 +55,8 @@
 		<module>staticsecurity-ldap</module>
 		<module>staticsecurity-gwt</module>
 		<module>staticsecurity-gwt-example</module>
+		<module>staticsecurity-smartgwtclient</module>
+		<module>staticsecurity-smartgwtclient-example</module>
 	</modules>
 
 	<dependencyManagement>
@@ -70,6 +72,13 @@
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
 				<version>${staticsecurity-gwt-face-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-smartgwt-all</artifactId>
+				<version>${staticsecurity-smartgwtclient-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -156,6 +165,7 @@
 	<properties>
 		<staticsecurity-backend-version>1.11.1</staticsecurity-backend-version>
 		<staticsecurity-gwt-face-version>1.11.1</staticsecurity-gwt-face-version>
+		<staticsecurity-smartgwtclient-version>1.15.0-SNAPSHOT</staticsecurity-smartgwtclient-version>
 		<staticsecurity-gwt-version>2.5.0</staticsecurity-gwt-version>
 	</properties>
 </project>
