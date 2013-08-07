@@ -266,7 +266,6 @@
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt-example-jar</artifactId>
 		</dependency>
--->
  		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google-gwt-example-jar</artifactId>
@@ -283,6 +282,7 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools-gwt-example-jar</artifactId>
 		</dependency>
+-->
 
 		<!-- Base application -->
 		<dependency>
