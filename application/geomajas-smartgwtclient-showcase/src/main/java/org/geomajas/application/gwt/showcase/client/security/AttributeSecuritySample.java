@@ -17,12 +17,12 @@ import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.smartgwt.client.map.MapModel;
+import org.geomajas.smartgwt.client.map.feature.Feature;
+import org.geomajas.smartgwt.client.map.layer.VectorLayer;
+import org.geomajas.smartgwt.client.widget.FeatureAttributeWindow;
+import org.geomajas.smartgwt.example.base.SamplePanel;
+import org.geomajas.smartgwt.example.base.SamplePanelFactory;
 import org.geomajas.layer.feature.SearchCriterion;
 
 import com.google.gwt.core.client.GWT;

@@ -25,9 +25,9 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.example.base.command.dto.GetResourceRequest;
+import org.geomajas.smartgwt.example.base.SamplePanel;
+import org.geomajas.smartgwt.example.base.SamplePanelFactory;
+import org.geomajas.smartgwt.example.base.command.dto.GetResourceRequest;
 
 /**
  * <p>

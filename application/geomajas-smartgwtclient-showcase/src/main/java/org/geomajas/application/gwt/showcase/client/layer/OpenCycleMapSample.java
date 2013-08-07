@@ -15,10 +15,10 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.application.gwt.showcase.client.i18n.ShowcaseMessages;
-import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.smartgwt.client.controller.PanController;
+import org.geomajas.smartgwt.client.widget.MapWidget;
+import org.geomajas.smartgwt.example.base.SamplePanel;
+import org.geomajas.smartgwt.example.base.SamplePanelFactory;
 
 /**
  * <p>

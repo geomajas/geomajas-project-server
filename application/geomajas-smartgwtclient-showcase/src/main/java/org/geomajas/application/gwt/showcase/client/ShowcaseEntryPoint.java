@@ -23,10 +23,10 @@ import org.geomajas.application.gwt.showcase.client.security.ToolSecuritySample;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.gwt.example.base.ExampleLayout;
-import org.geomajas.gwt.example.base.SampleTree;
-import org.geomajas.gwt.example.base.SampleTreeNode;
-import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
+import org.geomajas.smartgwt.example.base.ExampleLayout;
+import org.geomajas.smartgwt.example.base.SampleTree;
+import org.geomajas.smartgwt.example.base.SampleTreeNode;
+import org.geomajas.smartgwt.example.base.SampleTreeNodeRegistry;
 import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 
 import com.google.gwt.core.client.EntryPoint;
