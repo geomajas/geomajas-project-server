@@ -11,11 +11,11 @@
 
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
-import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.Toolbar;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.smartgwt.client.util.WidgetLayout;
+import org.geomajas.smartgwt.client.widget.MapWidget;
+import org.geomajas.smartgwt.client.widget.Toolbar;
+import org.geomajas.smartgwt.example.base.SamplePanel;
+import org.geomajas.smartgwt.example.base.SamplePanelFactory;
 import org.geomajas.plugin.geocoder.client.GeocoderWidget;
 import org.geomajas.plugin.geocoder.gwt.example.client.i18n.GeocoderMessages;
 

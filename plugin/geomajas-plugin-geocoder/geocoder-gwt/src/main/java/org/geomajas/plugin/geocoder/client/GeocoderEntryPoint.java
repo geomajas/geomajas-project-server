@@ -12,10 +12,10 @@
 package org.geomajas.plugin.geocoder.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import org.geomajas.gwt.client.action.ToolCreator;
-import org.geomajas.gwt.client.action.ToolbarBaseAction;
-import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
-import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.smartgwt.client.action.ToolCreator;
+import org.geomajas.smartgwt.client.action.ToolbarBaseAction;
+import org.geomajas.smartgwt.client.action.toolbar.ToolbarRegistry;
+import org.geomajas.smartgwt.client.widget.MapWidget;
 
 /**
  * {@link EntryPoint} for the geocoder plug-in.
