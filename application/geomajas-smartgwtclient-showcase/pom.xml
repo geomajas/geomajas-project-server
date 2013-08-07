@@ -245,14 +245,15 @@
 			<artifactId>geomajas-plugin-printing-gwt</artifactId>
 		</dependency>
 
-<!--
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-utility-gwt-example-jar</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-geocoder-gwt-example-jar</artifactId>
+		</dependency>
+
+	<!--
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-utility-gwt-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
