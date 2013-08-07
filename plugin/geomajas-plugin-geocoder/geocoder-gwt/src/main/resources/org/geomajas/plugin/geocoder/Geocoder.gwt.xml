@@ -11,7 +11,7 @@
 
 <module>
 
-	<inherits name="org.geomajas.gwt.GeomajasClient" />
+	<inherits name="org.geomajas.smartgwt.GeomajasClient" />
 
 	<source path="client" />
 	<source path="command/dto" />

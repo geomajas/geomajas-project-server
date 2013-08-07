@@ -9,28 +9,13 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
-        <setting name="additionalCompilerParameters" value="-Xmx1024M -Xss1024k" />
-        <setting name="compilerParameters" value="-XdisableCastChecking -draftCompile -optimize 0" />
         <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.5.0/" />
         <setting name="gwtSdkType" value="maven" />
         <setting name="webFacet" value="Web" />
-      </configuration>
-    </facet>
-    <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/applicationContext.xml</file>
-          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/security.xml</file>
-          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/webContext.xml</file>
-        </fileset>
       </configuration>
     </facet>
   </component>
@@ -96,8 +81,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.yaml:snakeyaml:1.8" level="project" />
     <orderEntry type="module" module-name="geomajas-plugin-geocoder-gwt-example-jar" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.geomajas:geomajas-gwt-example-base:1.14.0" level="project" />
-    <orderEntry type="library" name="Maven: org.geomajas:geomajas-gwt-client:1.14.0" level="project" />
+    <orderEntry type="module" module-name="geomajas-client-smartgwt-example-base" />
+    <orderEntry type="module" module-name="geomajas-client-smartgwt" />
     <orderEntry type="library" name="Maven: org.geomajas:geomajas-face-common-gwt:1.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.geomajas:geomajas-api:1.13.1" level="project" />
     <orderEntry type="library" name="Maven: org.geomajas.project:geomajas-project-sld-api:1.1.0" level="project" />
@@ -211,7 +196,6 @@
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-lgpl:1.6.4" level="project" />
     <orderEntry type="library" name="Maven: org.geonames:geonames-ws:1.0.4" level="project" />
     <orderEntry type="module" module-name="geomajas-plugin-geocoder" />
-    <orderEntry type="library" name="Maven: org.geomajas.plugin:geomajas-plugin-geocoder:sources:1.4.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.gwt:gwt-servlet:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.4" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:log4j-over-slf4j:1.6.4" level="project" />
