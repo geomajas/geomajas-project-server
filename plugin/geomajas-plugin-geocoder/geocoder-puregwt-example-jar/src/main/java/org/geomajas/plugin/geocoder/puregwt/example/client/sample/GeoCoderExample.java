@@ -24,7 +24,6 @@ import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 
 /**
