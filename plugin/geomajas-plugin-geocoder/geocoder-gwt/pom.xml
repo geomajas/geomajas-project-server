@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>geocoder (GWT face)</name>
-	<description>geocoder (GWT face)</description>
+	<name>geocoder (SmartGWT client)</name>
+	<description>geocoder (SmartGWT client)</description>
 
 	<dependencies>
 		<dependency>

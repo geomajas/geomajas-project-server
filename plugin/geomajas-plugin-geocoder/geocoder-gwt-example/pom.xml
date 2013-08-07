@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-geocoder-gwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas GWT example</name>
-	<description>Geocoder GWT example application</description>
+	<name>Geomajas SmartGWT example</name>
+	<description>Geocoder SmartGWT example application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
