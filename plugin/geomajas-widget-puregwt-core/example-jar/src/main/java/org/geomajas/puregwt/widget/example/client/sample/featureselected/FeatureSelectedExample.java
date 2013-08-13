@@ -10,6 +10,15 @@
  */
 package org.geomajas.puregwt.widget.example.client.sample.featureselected;
 
+import org.geomajas.gwt.client.GeomajasGinjector;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.widget.MapLayoutPanel;
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedEvent;
+import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedHandler;
+import org.geomajas.puregwt.widget.client.featureselectbox.presenter.impl.FeatureClickedListener;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -18,15 +27,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.puregwt.client.GeomajasGinjector;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.feature.Feature;
-import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedEvent;
-import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedHandler;
-import org.geomajas.puregwt.widget.client.featureselectbox.presenter.impl.FeatureClickedListener;
 
 /**
  * Class description.

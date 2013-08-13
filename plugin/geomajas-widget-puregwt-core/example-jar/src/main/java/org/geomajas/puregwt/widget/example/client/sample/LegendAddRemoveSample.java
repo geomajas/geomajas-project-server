@@ -10,15 +10,14 @@
  */
 
 package org.geomajas.puregwt.widget.example.client.sample;
-
-import org.geomajas.puregwt.client.GeomajasGinjector;
-import org.geomajas.puregwt.client.event.LayerAddedEvent;
-import org.geomajas.puregwt.client.event.LayerRemovedEvent;
-import org.geomajas.puregwt.client.event.MapCompositionHandler;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt.client.GeomajasGinjector;
+import org.geomajas.gwt.client.event.LayerAddedEvent;
+import org.geomajas.gwt.client.event.LayerRemovedEvent;
+import org.geomajas.gwt.client.event.MapCompositionHandler;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.example.base.client.ExampleBase;
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.widget.client.map.MapLegendPanel;
 
 import com.google.gwt.core.client.GWT;
@@ -81,7 +80,7 @@ public class LegendAddRemoveSample implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapLegend");
+		mapPresenter.initialize("gwt-app", "mapLegend");
 		return layout;
 	}
 

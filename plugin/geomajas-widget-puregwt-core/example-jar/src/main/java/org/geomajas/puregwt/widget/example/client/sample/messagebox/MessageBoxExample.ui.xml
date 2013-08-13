@@ -1,6 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 			 xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<ui:with field='resource' type='org.geomajas.puregwt.example.base.client.resource.ShowcaseResource' />
+	<ui:with field='resource' type='org.geomajas.gwt.example.base.client.resource.ShowcaseResource' />
 	<ui:with field='messages' type='org.geomajas.puregwt.widget.example.client.i18n.SampleMessages' />
 
 	<ui:style>

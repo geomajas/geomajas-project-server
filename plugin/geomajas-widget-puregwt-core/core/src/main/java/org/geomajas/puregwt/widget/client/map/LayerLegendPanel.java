@@ -12,13 +12,13 @@
 package org.geomajas.puregwt.widget.client.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.event.LayerHideEvent;
-import org.geomajas.puregwt.client.event.LayerShowEvent;
-import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
-import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
-import org.geomajas.puregwt.client.map.MapEventBus;
-import org.geomajas.puregwt.client.map.layer.HasLegendWidget;
-import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.event.LayerHideEvent;
+import org.geomajas.gwt.client.event.LayerShowEvent;
+import org.geomajas.gwt.client.event.LayerVisibilityHandler;
+import org.geomajas.gwt.client.event.LayerVisibilityMarkedEvent;
+import org.geomajas.gwt.client.map.MapEventBus;
+import org.geomajas.gwt.client.map.layer.HasLegendWidget;
+import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

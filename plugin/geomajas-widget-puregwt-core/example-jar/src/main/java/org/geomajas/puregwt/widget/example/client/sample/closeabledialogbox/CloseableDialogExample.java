@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.widget.client.dialog.CloseableDialogBox;
 import org.geomajas.puregwt.widget.example.client.ExampleJar;
 import org.geomajas.puregwt.widget.example.client.resource.ExampleWidgetResource;

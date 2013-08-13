@@ -19,13 +19,13 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.controller.MapController;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.feature.Feature;
-import org.geomajas.puregwt.client.map.feature.FeatureMapFunction;
-import org.geomajas.puregwt.client.map.feature.FeatureService.QueryType;
-import org.geomajas.puregwt.client.map.feature.FeatureService.SearchLayerType;
-import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
+import org.geomajas.gwt.client.controller.MapController;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.FeatureMapFunction;
+import org.geomajas.gwt.client.map.feature.FeatureService.QueryType;
+import org.geomajas.gwt.client.map.feature.FeatureService.SearchLayerType;
+import org.geomajas.gwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedEvent;
 import org.geomajas.puregwt.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
 import org.geomajas.puregwt.widget.client.featureselectbox.view.FeatureSelectBox;
@@ -53,7 +53,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 
 	private View featureSelectBoxView;
 
-	private Map<String, org.geomajas.puregwt.client.map.feature.Feature> clickedFeatures;
+	private Map<String, org.geomajas.gwt.client.map.feature.Feature> clickedFeatures;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -70,7 +70,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	 */
 	public FeatureClickedListener(int pixelBuffer) {
 		super(false);
-		clickedFeatures = new HashMap<String, org.geomajas.puregwt.client.map.feature.Feature>();
+		clickedFeatures = new HashMap<String, org.geomajas.gwt.client.map.feature.Feature>();
 		featureSelectBoxView = new FeatureSelectBox();
 		featureSelectBoxView.setHandler(this);
 		setView(featureSelectBoxView);
@@ -129,10 +129,10 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 		clickedFeatures.clear(); // clear all stored features
 
 		for (FeaturesSupported layer : featureMap.keySet()) {
-			List<org.geomajas.puregwt.client.map.feature.Feature> features = featureMap.get(layer);
+			List<org.geomajas.gwt.client.map.feature.Feature> features = featureMap.get(layer);
 
 			if (features != null) {
-				for (org.geomajas.puregwt.client.map.feature.Feature f : features) {
+				for (org.geomajas.gwt.client.map.feature.Feature f : features) {
 					GWT.log("Feature label =" + f.getLabel());
 					GWT.log("Feature id =" + f.getId());
 
@@ -154,7 +154,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 		if (clickedFeatures.size() >= 2) {
 			featureSelectBoxView.clear();
 
-			for (org.geomajas.puregwt.client.map.feature.Feature f : clickedFeatures.values()) {
+			for (org.geomajas.gwt.client.map.feature.Feature f : clickedFeatures.values()) {
 				featureSelectBoxView.addLabel(f.getLabel());
 			}
 

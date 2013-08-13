@@ -10,18 +10,18 @@
  */
 package org.geomajas.puregwt.widget.example.client.sample.featuremouseover;
 
+import org.geomajas.gwt.client.GeomajasGinjector;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.widget.MapLayoutPanel;
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
+import org.geomajas.puregwt.widget.client.mouseover.listener.MouseOverListener;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.puregwt.client.GeomajasGinjector;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.mouseover.listener.MouseOverListener;
 
 /**
  * Class description.

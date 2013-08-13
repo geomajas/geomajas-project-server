@@ -41,18 +41,18 @@
 		<!-- Geomajas Client: -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-example-base</artifactId>
+			<artifactId>geomajas-gwt-example-base</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-example-base</artifactId>
+			<artifactId>geomajas-gwt-example-base</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 		
 		<!-- Include default showcase jar for it's map configurations -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-gwt-example-jar</artifactId>
 		</dependency>
 		
 		<!-- Core Widgets -->

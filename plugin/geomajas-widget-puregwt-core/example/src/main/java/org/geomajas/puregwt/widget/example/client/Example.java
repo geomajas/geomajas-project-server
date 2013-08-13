@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.widget.example.client;
 
-import org.geomajas.puregwt.example.base.client.ExampleBase;
+import org.geomajas.gwt.example.base.client.ExampleBase;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;

@@ -28,10 +28,10 @@ import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.puregwt.client.controller.MapController;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
-import org.geomajas.puregwt.client.map.layer.ServerLayer;
+import org.geomajas.gwt.client.controller.MapController;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.layer.FeaturesSupported;
+import org.geomajas.gwt.client.map.layer.ServerLayer;
 import org.geomajas.puregwt.widget.client.mouseover.component.ToolTipBox;
 
 import com.google.gwt.core.client.GWT;
@@ -212,7 +212,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 		List<String> serverLayerIds = new ArrayList<String>();
 
 		for (int i = 0; i < index; i++) {
-			org.geomajas.puregwt.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
+			org.geomajas.gwt.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
 
 			if (layer.isShowing() && layer instanceof FeaturesSupported && layer instanceof ServerLayer) {
 				// filter request.addLayerWithFilter(layer.getId(), layer., ((VectorLayer) layer).getFilter());
@@ -240,7 +240,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 		int index = mapPresenter.getLayersModel().getLayerCount();
 
 		for (int i = 0; i < index; i++) {
-			org.geomajas.puregwt.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
+			org.geomajas.gwt.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
 
 			if (layer instanceof ServerLayer) {
 				ServerLayer<?> serverLayer = (ServerLayer<?>) layer;

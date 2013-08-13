@@ -51,7 +51,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
+				<artifactId>geomajas-face-gwt</artifactId>
 				<version>${widget-puregwt-core-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -125,7 +125,7 @@
 
 	<properties>
 		<widget-puregwt-core-backend-version>1.13.1</widget-puregwt-core-backend-version>
-		<widget-puregwt-core-puregwt-face-version>1.0.0-SNAPSHOT</widget-puregwt-core-puregwt-face-version>
+		<widget-puregwt-core-puregwt-face-version>2.0.0</widget-puregwt-core-puregwt-face-version>
 	</properties>
 
 </project>

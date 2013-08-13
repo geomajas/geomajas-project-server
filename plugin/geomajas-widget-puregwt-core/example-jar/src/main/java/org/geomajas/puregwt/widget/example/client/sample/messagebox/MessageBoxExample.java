@@ -10,7 +10,8 @@
  */
 package org.geomajas.puregwt.widget.example.client.sample.messagebox;
 
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
+
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
 import org.geomajas.puregwt.widget.client.dialog.MessageBox;
 import org.geomajas.puregwt.widget.client.dialog.MessageBox.MessageStyleType;
 import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;

@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.widget.client.featureselectbox.event;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.Feature;
 import com.google.web.bindery.event.shared.Event;
 
 /**

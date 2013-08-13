@@ -45,7 +45,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client-impl</artifactId>
+			<artifactId>geomajas-gwt-client-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

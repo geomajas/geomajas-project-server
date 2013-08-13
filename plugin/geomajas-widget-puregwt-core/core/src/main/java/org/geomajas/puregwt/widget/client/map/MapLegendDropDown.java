@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.widget.client.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.MapPresenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
