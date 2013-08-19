@@ -64,7 +64,7 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
 
-	private static final int LEGEND_DPI = 288;
+	private static final int LEGEND_DPI = 72;
 
 	@Inject
 	private WmsTileService tileService;
@@ -240,7 +240,14 @@ public class WmsServiceImpl implements WmsService {
 				url.append(legendConfig.getFontStyle().getSize());
 				url.append(";");
 			}
-			url.append("bgColor:0xFFFFFF;dpi:" + LEGEND_DPI);
+			
+//	TODO:	
+//			int dpi = legendConfig.getDpi();
+//			if (dpi <= 0) {
+//				dpi = LEGEND_DPI;
+//			}
+			int dpi = LEGEND_DPI;
+			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
 		}
 
 		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);
