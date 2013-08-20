@@ -1,0 +1,15 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="resource" type="org.geomajas.gwt.widget.client.dialog.CloseableDialogBoxResource"/>
+
+	<g:HorizontalPanel width="100%">
+		<g:cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+			<g:SimplePanel ui:field="titleElement" styleName="{resource.css.closeableDialogTitle}"/>
+		</g:cell>
+
+		<g:cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_LEFT">
+			<g:Button ui:field="closeIcon" styleName="{resource.css.closeableDialogCloseIcon}"/>
+		</g:cell>
+	</g:HorizontalPanel>
+
+</ui:UiBinder> 

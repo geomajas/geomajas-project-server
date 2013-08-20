@@ -16,13 +16,13 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-widget-puregwt-core-all</artifactId>
+		<artifactId>geomajas-widget-gwt-core-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-widget-puregwt-core</artifactId>
-	<name>Geomajas Plugin PureGWT Core Widget: Library</name>
-	<description>Geomajas Plugin PureGWT Core Widget: Library</description>
+	<artifactId>geomajas-widget-gwt-core</artifactId>
+	<name>Geomajas Plugin GWT Core Widget: Library</name>
+	<description>Geomajas Plugin GWT Core Widget: Library</description>
 
 	<dependencies>
 		<dependency>
@@ -92,7 +92,5 @@
 			</resource>
 		</resources>
 	</build>
-
-
 
 </project>
