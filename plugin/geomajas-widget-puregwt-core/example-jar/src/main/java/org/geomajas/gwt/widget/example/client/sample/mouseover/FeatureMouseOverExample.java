@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.widget.example.client.sample.featuremouseover;
+package org.geomajas.gwt.widget.example.client.sample.mouseover;
 
 import org.geomajas.gwt.client.GeomajasGinjector;
 import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.gwt.client.widget.MapLayoutPanel;
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.mouseover.listener.MouseOverListener;
+import org.geomajas.gwt.widget.client.mouseover.listener.MouseOverListener;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

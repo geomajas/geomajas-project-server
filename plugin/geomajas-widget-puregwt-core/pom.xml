@@ -20,11 +20,11 @@
 	</parent>
 
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-widget-puregwt-core-all</artifactId>
+	<artifactId>geomajas-widget-gwt-core-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>Geomajas Plugin PureGWT Core Widget: Parent</name>
-	<description>Geomajas Plugin PureGWT Core Widget: Parent</description>
+	<name>Geomajas Plugin GWT Core Widget: Parent</name>
+	<description>Geomajas Plugin GWT Core Widget: Parent</description>
 
 	<!-- SCM information -->
 	<scm>
@@ -45,50 +45,50 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${widget-puregwt-core-backend-version}</version>
+				<version>${widget-gwt-core-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${widget-puregwt-core-puregwt-face-version}</version>
+				<version>${widget-gwt-core-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core</artifactId>
+				<artifactId>geomajas-widget-gwt-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core</artifactId>
+				<artifactId>geomajas-widget-gwt-core</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core-example-jar</artifactId>
+				<artifactId>geomajas-widget-gwt-core-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core-example-jar</artifactId>
+				<artifactId>geomajas-widget-gwt-core-example-jar</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core-example</artifactId>
+				<artifactId>geomajas-widget-gwt-core-example</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core-example</artifactId>
+				<artifactId>geomajas-widget-gwt-core-example</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
@@ -124,8 +124,8 @@
 	</profiles>
 
 	<properties>
-		<widget-puregwt-core-backend-version>1.13.1</widget-puregwt-core-backend-version>
-		<widget-puregwt-core-puregwt-face-version>2.0.0</widget-puregwt-core-puregwt-face-version>
+		<widget-gwt-core-backend-version>1.13.1</widget-gwt-core-backend-version>
+		<widget-gwt-core-gwt-face-version>2.0.0</widget-gwt-core-gwt-face-version>
 	</properties>
 
 </project>

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox;
+package org.geomajas.gwt.widget.example.client.sample.dialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -20,9 +20,9 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.dialog.CloseableDialogBox;
-import org.geomajas.puregwt.widget.example.client.ExampleJar;
-import org.geomajas.puregwt.widget.example.client.resource.ExampleWidgetResource;
+import org.geomajas.gwt.widget.client.dialog.CloseableDialogBox;
+import org.geomajas.gwt.widget.example.client.ExampleJar;
+import org.geomajas.gwt.widget.example.client.resource.ExampleWidgetResource;
 
 /**
  * Closeable dialog widget showcase panel.

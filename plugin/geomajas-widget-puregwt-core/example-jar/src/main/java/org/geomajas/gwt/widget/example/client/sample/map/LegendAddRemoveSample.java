@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.widget.example.client.sample;
+package org.geomajas.gwt.widget.example.client.sample.map;
 import org.geomajas.gwt.client.GeomajasGinjector;
 import org.geomajas.gwt.client.event.LayerAddedEvent;
 import org.geomajas.gwt.client.event.LayerRemovedEvent;
@@ -18,7 +18,7 @@ import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.example.base.client.ExampleBase;
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.map.MapLegendPanel;
+import org.geomajas.gwt.widget.client.map.MapLegendPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

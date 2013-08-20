@@ -13,8 +13,8 @@
 
 <module rename-to="widgetExamplejar">
 	<inherits name='org.geomajas.gwt.example.base.ExampleBase' />
-	<inherits name='org.geomajas.puregwt.widget.GeomajasPureGwtWidget' />
+	<inherits name='org.geomajas.gwt.widget.GeomajasGwtWidget' />
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
-    <entry-point class="org.geomajas.puregwt.widget.example.client.ExampleJar"/>
+    <entry-point class="org.geomajas.gwt.widget.example.client.ExampleJar"/>
 	<source path='client'/>
 </module>

@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.widget.example.client.sample.messagebox;
+package org.geomajas.gwt.widget.example.client.sample.dialog;
 
 
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.dialog.MessageBox;
-import org.geomajas.puregwt.widget.client.dialog.MessageBox.MessageStyleType;
-import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
+import org.geomajas.gwt.widget.client.dialog.MessageBox;
+import org.geomajas.gwt.widget.client.dialog.MessageBox.MessageStyleType;
+import org.geomajas.gwt.widget.example.client.i18n.SampleMessages;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;

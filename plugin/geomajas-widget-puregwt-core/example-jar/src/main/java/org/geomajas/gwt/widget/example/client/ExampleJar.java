@@ -9,21 +9,21 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.widget.example.client;
+package org.geomajas.gwt.widget.example.client;
 
 
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt.example.base.client.sample.ShowcaseSampleDefinition;
-import org.geomajas.puregwt.widget.example.client.i18n.SampleMessages;
-import org.geomajas.puregwt.widget.example.client.resource.ExampleWidgetResource;
-import org.geomajas.puregwt.widget.example.client.sample.LegendAddRemoveSample;
-import org.geomajas.puregwt.widget.example.client.sample.LegendOrderSample;
-import org.geomajas.puregwt.widget.example.client.sample.MapLegendDropDownSample;
-import org.geomajas.puregwt.widget.example.client.sample.closeabledialogbox.CloseableDialogExample;
-import org.geomajas.puregwt.widget.example.client.sample.featuremouseover.FeatureMouseOverExample;
-import org.geomajas.puregwt.widget.example.client.sample.featureselected.FeatureSelectedExample;
-import org.geomajas.puregwt.widget.example.client.sample.messagebox.MessageBoxExample;
+import org.geomajas.gwt.widget.example.client.i18n.SampleMessages;
+import org.geomajas.gwt.widget.example.client.resource.ExampleWidgetResource;
+import org.geomajas.gwt.widget.example.client.sample.dialog.CloseableDialogExample;
+import org.geomajas.gwt.widget.example.client.sample.dialog.MessageBoxExample;
+import org.geomajas.gwt.widget.example.client.sample.featureselectbox.FeatureSelectedExample;
+import org.geomajas.gwt.widget.example.client.sample.map.LegendAddRemoveSample;
+import org.geomajas.gwt.widget.example.client.sample.map.LegendOrderSample;
+import org.geomajas.gwt.widget.example.client.sample.map.MapLegendDropDownSample;
+import org.geomajas.gwt.widget.example.client.sample.mouseover.FeatureMouseOverExample;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

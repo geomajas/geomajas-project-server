@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.widget.example.client.sample;
+package org.geomajas.gwt.widget.example.client.sample.map;
 
 import org.geomajas.gwt.client.GeomajasGinjector;
 import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.map.MapLegendDropDown;
+import org.geomajas.gwt.widget.client.map.MapLegendDropDown;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;

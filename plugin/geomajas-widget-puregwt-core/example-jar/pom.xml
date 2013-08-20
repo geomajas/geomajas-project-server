@@ -15,15 +15,15 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-widget-puregwt-core-all</artifactId>
+		<artifactId>geomajas-widget-gwt-core-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-widget-puregwt-core-example-jar</artifactId>
+	<artifactId>geomajas-widget-gwt-core-example-jar</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Geomajas Plugin PureGWT Core Widget: Showcase Samples Library</name>
-	<description>Geomajas Plugin PureGWT Core Widget: Showcase Samples Library</description>
+	<name>Geomajas Plugin GWT Core Widget: Showcase Samples Library</name>
+	<description>Geomajas Plugin GWT Core Widget: Showcase Samples Library</description>
 
 	<dependencies>
 		<!-- Google dependencies -->
@@ -58,11 +58,11 @@
 		<!-- Core Widgets -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-widget-puregwt-core</artifactId>
+			<artifactId>geomajas-widget-gwt-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-widget-puregwt-core</artifactId>
+			<artifactId>geomajas-widget-gwt-core</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 

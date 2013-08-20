@@ -8,16 +8,16 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.widget.example.client.sample.featureselected;
+package org.geomajas.gwt.widget.example.client.sample.featureselectbox;
 
 import org.geomajas.gwt.client.GeomajasGinjector;
 import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.widget.MapLayoutPanel;
 import org.geomajas.gwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedEvent;
-import org.geomajas.puregwt.widget.client.featureselectbox.event.FeatureClickedHandler;
-import org.geomajas.puregwt.widget.client.featureselectbox.presenter.impl.FeatureClickedListener;
+import org.geomajas.gwt.widget.client.featureselectbox.event.FeatureClickedEvent;
+import org.geomajas.gwt.widget.client.featureselectbox.event.FeatureClickedHandler;
+import org.geomajas.gwt.widget.client.featureselectbox.presenter.FeatureClickedListener;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
