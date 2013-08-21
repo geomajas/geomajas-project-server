@@ -234,9 +234,6 @@
 					</resource>
 					<resource>
 						<directory>src/main/java</directory>
-						<includes>
-							<include>**/*.java</include>
-						</includes>
 					</resource>
 				</resources>
 			</build>

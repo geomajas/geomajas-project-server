@@ -11,7 +11,7 @@
 <module>
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.xml.XML" />
-    <inherits name="org.geomajas.puregwt.GeomajasClient"/>
+    <inherits name="org.geomajas.gwt.GeomajasClient"/>
     <inherits name="com.google.gwt.inject.Inject"/>
     
     <!-- Source for this plug-in -->
