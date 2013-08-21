@@ -82,17 +82,9 @@
 			</dependency>
 			
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${printing-puregwt-face-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core-all</artifactId>
-				<version>${printing-widget-puregwt-version}</version>
+				<artifactId>geomajas-widget-gwt-core-all</artifactId>
+				<version>${printing-widget-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -274,10 +266,10 @@
 	<properties>
 		<printing-backend-version>1.11.1</printing-backend-version>
 		<printing-gwt-face-version>1.13.0</printing-gwt-face-version>
-		<printing-puregwt-face-version>1.0.0-M5</printing-puregwt-face-version>
-		<printing-widget-puregwt-version>1.0.0-M3</printing-widget-puregwt-version>
+		<printing-widget-gwt-version>1.0.0-SNAPSHOT</printing-widget-gwt-version>
 		<printing-rasterizing-version>1.2.0-M1</printing-rasterizing-version>
 		<printing-gwt-version>2.5.0</printing-gwt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
+
 </project>

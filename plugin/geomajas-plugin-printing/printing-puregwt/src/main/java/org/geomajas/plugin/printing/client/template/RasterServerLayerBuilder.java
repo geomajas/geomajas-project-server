@@ -13,16 +13,15 @@ package org.geomajas.plugin.printing.client.template;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.RasterServerLayer;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.RasterServerLayer;
 
 /**
  * {@link PrintableLayerBuilder} for {@link RasterServerLayer} instances.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RasterServerLayerBuilder implements PrintableLayerBuilder {
 
@@ -41,5 +40,4 @@ public class RasterServerLayerBuilder implements PrintableLayerBuilder {
 	public boolean supports(Layer layer) {
 		return layer instanceof RasterServerLayer;
 	}
-
 }

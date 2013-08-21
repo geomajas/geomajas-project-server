@@ -19,12 +19,12 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.VectorServerLayer;
 import org.geomajas.gwt.client.util.StyleUtil;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.feature.Feature;
-import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
 import org.geomajas.sld.RuleInfo;
 
 /**
@@ -59,7 +59,6 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 				case MULTILINESTRING:
 					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getLineSelectStyle();
 					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getLineSelectStyle();
-
 					break;
 				case MULTIPOINT:
 				case POINT:

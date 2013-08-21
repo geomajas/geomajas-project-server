@@ -13,6 +13,7 @@ package org.geomajas.plugin.printing.client.widget;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.plugin.printing.client.PrintingMessages;
 import org.geomajas.plugin.printing.client.template.DefaultTemplateBuilder;
 import org.geomajas.plugin.printing.client.template.PageSize;
@@ -23,7 +24,6 @@ import org.geomajas.plugin.printing.client.util.UrlBuilder;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
-import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

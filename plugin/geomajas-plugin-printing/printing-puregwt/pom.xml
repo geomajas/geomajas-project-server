@@ -73,6 +73,12 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing-puregwt</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.geomajas</artifactId>
+					<groupId>geomajas-puregwt-client</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		 <dependency>
@@ -88,22 +94,23 @@
 		
 		<dependency>
 		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-puregwt-client</artifactId>
+		    <artifactId>geomajas-gwt-client</artifactId>
+		    <version>2.0.0</version>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-puregwt-client-impl</artifactId>
+		    <artifactId>geomajas-gwt-client-impl</artifactId>
+		    <version>2.0.0</version>
 		</dependency>
 
 		<dependency>
 		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-widget-puregwt-core</artifactId>
+		    <artifactId>geomajas-widget-gwt-core</artifactId>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-widget-puregwt-core</artifactId>
+		    <artifactId>geomajas-widget-gwt-core</artifactId>
 		    <classifier>sources</classifier>
 		</dependency>
 				
