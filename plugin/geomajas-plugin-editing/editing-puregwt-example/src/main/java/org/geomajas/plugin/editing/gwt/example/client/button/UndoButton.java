@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.puregwt.example.client.button;
+package org.geomajas.plugin.editing.gwt.example.client.button;
 
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
@@ -23,24 +23,23 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 
 /**
- * Button that executes an "REDO" during the editing process.
+ * Button that executes an "UNDO" during the editing process.
  * 
  * @author Pieter De Graef
  */
-public class RedoButton extends Button implements GeometryEditStopHandler, GeometryEditShapeChangedHandler {
+public class UndoButton extends Button implements GeometryEditStopHandler, GeometryEditShapeChangedHandler {
 
 	private GeometryEditService editService;
 
-	public RedoButton() {
-		super("Redo");
+	public UndoButton() {
+		super("Undo");
 		this.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				try {
-					editService.redo();
+					editService.undo();
 					onGeometryShapeChanged(null);
 				} catch (GeometryOperationFailedException e) {
-					e.printStackTrace();
 				}
 			}
 		});
@@ -51,7 +50,7 @@ public class RedoButton extends Button implements GeometryEditStopHandler, Geome
 		this.editService = editService;
 		editService.addGeometryEditShapeChangedHandler(this);
 		editService.addGeometryEditStopHandler(this);
-		this.setEnabled(editService.canRedo());
+		this.setEnabled(editService.canUndo());
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class RedoButton extends Button implements GeometryEditStopHandler, Geome
 
 	@Override
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
-		if (editService.canRedo()) {
+		if (editService.canUndo()) {
 			setEnabled(true);
 		} else {
 			setEnabled(false);

@@ -24,7 +24,7 @@
 	<packaging>pom</packaging>
 
 	<name>Geomajas Editing plugin - Parent</name>
-	<description>Parent pom for the Geomajas Editing plugin</description>
+	<description>Geomajas Editing plugin - Parent</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-editing</connection>

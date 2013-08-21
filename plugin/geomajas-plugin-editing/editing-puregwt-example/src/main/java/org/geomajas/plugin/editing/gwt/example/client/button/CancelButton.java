@@ -9,13 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.puregwt.example.client.button;
+package org.geomajas.plugin.editing.gwt.example.client.button;
 
-import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
-import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,24 +22,20 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 
 /**
- * Button that executes an "UNDO" during the editing process.
+ * Button that cancels the editing process.
  * 
  * @author Pieter De Graef
  */
-public class UndoButton extends Button implements GeometryEditStopHandler, GeometryEditShapeChangedHandler {
+public class CancelButton extends Button implements GeometryEditStartHandler, GeometryEditStopHandler {
 
 	private GeometryEditService editService;
 
-	public UndoButton() {
-		super("Undo");
+	public CancelButton() {
+		super("Delete");
 		this.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				try {
-					editService.undo();
-					onGeometryShapeChanged(null);
-				} catch (GeometryOperationFailedException e) {
-				}
+				editService.stop();
 			}
 		});
 		this.setEnabled(false);
@@ -48,9 +43,9 @@ public class UndoButton extends Button implements GeometryEditStopHandler, Geome
 	
 	public void setEditService(GeometryEditService editService) {
 		this.editService = editService;
-		editService.addGeometryEditShapeChangedHandler(this);
+		editService.addGeometryEditStartHandler(this);
 		editService.addGeometryEditStopHandler(this);
-		this.setEnabled(editService.canUndo());
+		this.setEnabled(editService.getGeometry() != null);
 	}
 
 	@Override
@@ -59,11 +54,7 @@ public class UndoButton extends Button implements GeometryEditStopHandler, Geome
 	}
 
 	@Override
-	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
-		if (editService.canUndo()) {
-			setEnabled(true);
-		} else {
-			setEnabled(false);
-		}
+	public void onGeometryEditStart(GeometryEditStartEvent event) {
+		this.setEnabled(true);
 	}
 }

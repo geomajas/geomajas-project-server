@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.puregwt.example.client.button;
+package org.geomajas.plugin.editing.gwt.example.client.button;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.geomajas.command.dto.BufferInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryOperationServiceImpl;
-import org.geomajas.plugin.editing.puregwt.example.client.GeometryToShapeConverter;
+import org.geomajas.plugin.editing.gwt.example.client.GeometryToShapeConverter;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ClickEvent;

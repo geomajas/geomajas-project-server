@@ -9,8 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.puregwt.client;
+package org.geomajas.plugin.editing.gwt.client;
 
+import org.geomajas.gwt.client.controller.MapController;
+import org.geomajas.gwt.client.event.ViewPortChangedEvent;
+import org.geomajas.gwt.client.event.ViewPortChangedHandler;
+import org.geomajas.gwt.client.event.ViewPortScaledEvent;
+import org.geomajas.gwt.client.event.ViewPortTranslatedEvent;
+import org.geomajas.gwt.client.gfx.GfxUtil;
+import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
@@ -18,15 +25,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.snap.SnapService;
-import org.geomajas.plugin.editing.puregwt.client.controller.EditGeometryBaseController;
-import org.geomajas.plugin.editing.puregwt.client.gfx.GeometryRendererImpl;
-import org.geomajas.puregwt.client.controller.MapController;
-import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
-import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
-import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
-import org.geomajas.puregwt.client.gfx.GfxUtil;
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
+import org.geomajas.plugin.editing.gwt.client.gfx.GeometryRendererImpl;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;

@@ -58,7 +58,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client-impl</artifactId>
+			<artifactId>geomajas-gwt-client</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-client-impl</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -139,7 +145,7 @@
 					<draftCompile>true</draftCompile>
 					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<module>org.geomajas.plugin.editing.puregwt.example.Showcase</module>
+					<module>org.geomajas.plugin.editing.gwt.example.Showcase</module>
 					<runTarget>plugin-editing-puregwt.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>

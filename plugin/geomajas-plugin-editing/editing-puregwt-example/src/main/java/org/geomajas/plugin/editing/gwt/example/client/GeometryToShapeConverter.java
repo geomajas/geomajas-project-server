@@ -8,17 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.puregwt.example.client;
+package org.geomajas.plugin.editing.gwt.example.client;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.gfx.GfxUtil;
+import org.geomajas.gwt.client.gfx.VectorContainer;
+import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
-import org.geomajas.puregwt.client.gfx.GfxUtil;
-import org.geomajas.puregwt.client.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.VectorObject;
 

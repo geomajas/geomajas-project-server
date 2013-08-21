@@ -8,15 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.puregwt.client;
+package org.geomajas.plugin.editing.gwt.client;
 
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.MapPresenter;
 
 /**
  * Gin factory for {@link GeometryEditor} instances.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface GeometryEditorFactory {
 

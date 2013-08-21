@@ -8,11 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.puregwt.example.client;
+package org.geomajas.plugin.editing.gwt.example.client;
 
-import org.geomajas.plugin.editing.puregwt.client.GeomajasEditorModule;
-import org.geomajas.plugin.editing.puregwt.client.GeometryEditorFactory;
-import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.gwt.client.GeomajasGinjector;
+import org.geomajas.plugin.editing.gwt.client.GeomajasEditorModule;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
 
 import com.google.gwt.inject.client.GinModules;
 

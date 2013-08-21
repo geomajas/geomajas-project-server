@@ -9,24 +9,24 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.puregwt.example.client;
+package org.geomajas.plugin.editing.gwt.example.client;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.event.MapResizedEvent;
+import org.geomajas.gwt.client.event.MapResizedHandler;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.widget.MapLayoutPanel;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.puregwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.puregwt.example.client.button.BufferAllButton;
-import org.geomajas.plugin.editing.puregwt.example.client.button.CancelButton;
-import org.geomajas.plugin.editing.puregwt.example.client.button.RedoButton;
-import org.geomajas.plugin.editing.puregwt.example.client.button.UndoButton;
-import org.geomajas.puregwt.client.event.MapResizedEvent;
-import org.geomajas.puregwt.client.event.MapResizedHandler;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.widget.MapLayoutPanel;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.example.client.button.BufferAllButton;
+import org.geomajas.plugin.editing.gwt.example.client.button.CancelButton;
+import org.geomajas.plugin.editing.gwt.example.client.button.RedoButton;
+import org.geomajas.plugin.editing.gwt.example.client.button.UndoButton;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

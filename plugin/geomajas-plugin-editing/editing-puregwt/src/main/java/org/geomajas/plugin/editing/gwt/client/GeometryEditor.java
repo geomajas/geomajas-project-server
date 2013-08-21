@@ -8,11 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.puregwt.client;
+package org.geomajas.plugin.editing.gwt.client;
 
+import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.BaseGeometryEditor;
-import org.geomajas.plugin.editing.puregwt.client.controller.EditGeometryBaseController;
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
 
 /**
  * Extends {@link BaseGeometryEditor} to provide access to the {@link MapPresenter}.
