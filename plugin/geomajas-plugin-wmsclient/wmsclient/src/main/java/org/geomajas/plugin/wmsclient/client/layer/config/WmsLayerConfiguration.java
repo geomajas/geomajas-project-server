@@ -14,8 +14,8 @@ package org.geomajas.plugin.wmsclient.client.layer.config;
 import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
-import org.geomajas.puregwt.client.map.layer.LegendConfig;
 
 /**
  * General WMS configuration object. The values herein will be translated into parameters for the WMS service. Note that

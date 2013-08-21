@@ -13,9 +13,9 @@ package org.geomajas.plugin.wmsclient.client.layer;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.layer.FeaturesSupported;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
-import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 import com.google.gwt.core.client.Callback;
 

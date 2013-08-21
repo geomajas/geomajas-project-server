@@ -12,14 +12,14 @@ package org.geomajas.plugin.wmsclient.printing.client;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.ZoomStrategy.ZoomOption;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.OpacitySupported;
 import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
-import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.OpacitySupported;
 
 /**
  * Builder for WMS layer.

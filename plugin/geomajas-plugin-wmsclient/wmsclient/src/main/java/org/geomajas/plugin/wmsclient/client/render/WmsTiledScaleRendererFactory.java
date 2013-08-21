@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
+import org.geomajas.gwt.client.gfx.HtmlContainer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
-import org.geomajas.puregwt.client.gfx.HtmlContainer;
 
 /**
  * Factory that creates renderers for a fixed scale within a WMS layer.

@@ -16,8 +16,8 @@
 	</parent>
 
 	<artifactId>geomajas-plugin-wmsclient-printing</artifactId>
-	<name>geomajas-plugin-wmsclient-printing</name>
-	<description>geomajas-plugin-wmsclient-printing</description>
+	<name>Geomajas WMS Client plugin: Printing extension</name>
+	<description>Geomajas WMS Client plugin: Printing extension</description>
 
 	<dependencies>
 		<dependency>

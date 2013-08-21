@@ -16,13 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.event.FeatureDeselectedEvent;
+import org.geomajas.gwt.client.event.FeatureSelectedEvent;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
-import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
-import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
-import org.geomajas.puregwt.client.map.feature.Feature;
 
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;

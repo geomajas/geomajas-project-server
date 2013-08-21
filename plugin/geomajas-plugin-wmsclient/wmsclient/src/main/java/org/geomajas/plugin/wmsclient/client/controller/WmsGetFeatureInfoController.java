@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.AbstractMapController;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
-import org.geomajas.puregwt.client.controller.AbstractMapController;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.MouseUpEvent;

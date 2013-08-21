@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.gfx.HtmlContainer;
+import org.geomajas.gwt.client.map.ViewPort;
+import org.geomajas.gwt.client.map.layer.AbstractLayer;
+import org.geomajas.gwt.client.map.layer.LegendConfig;
+import org.geomajas.gwt.client.map.render.LayerRenderer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
@@ -23,11 +28,6 @@ import org.geomajas.plugin.wmsclient.client.render.WmsLayerRenderer;
 import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererFactory;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
-import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.layer.AbstractLayer;
-import org.geomajas.puregwt.client.map.layer.LegendConfig;
-import org.geomajas.puregwt.client.map.render.LayerRenderer;
 
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;

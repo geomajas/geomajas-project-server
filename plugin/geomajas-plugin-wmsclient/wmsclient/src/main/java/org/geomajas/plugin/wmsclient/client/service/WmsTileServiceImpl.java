@@ -16,10 +16,10 @@ import java.util.List;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.ViewPort;
+import org.geomajas.gwt.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
-import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 
 /**
  * Default implementation of the {@link WmsTileService}.

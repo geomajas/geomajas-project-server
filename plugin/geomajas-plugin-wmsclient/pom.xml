@@ -24,8 +24,8 @@
 	<artifactId>geomajas-plugin-wmsclient-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>geomajas-plugin-wmsclient plug-in parent</name>
-	<description>geomajas-plugin-wmsclient plug-in grouping module</description>
+	<name>Geomajas WMS Client plugin: Parent</name>
+	<description>Geomajas WMS Client plugin: Parent</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-wmsclient</connection>
@@ -38,8 +38,8 @@
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${wmsclient-puregwt-face-version}</version>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${wmsclient-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -76,7 +76,7 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-puregwt-core</artifactId>
+				<artifactId>geomajas-widget-gwt-core</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 			</dependency>
 
@@ -166,7 +166,7 @@
 
 	<properties>
 		<wmsclient-geotools-version>9.2</wmsclient-geotools-version>
-		<wmsclient-puregwt-face-version>1.0.0-SNAPSHOT</wmsclient-puregwt-face-version>
+		<wmsclient-gwt-face-version>2.0.0</wmsclient-gwt-face-version>
 		<wmsclient-printing-version>2.4.0-SNAPSHOT</wmsclient-printing-version>
 		<wmsclient-httpclient-version>4.2.1</wmsclient-httpclient-version>
 	</properties>

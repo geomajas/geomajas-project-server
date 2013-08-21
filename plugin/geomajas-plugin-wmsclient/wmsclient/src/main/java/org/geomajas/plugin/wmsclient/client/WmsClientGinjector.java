@@ -12,10 +12,10 @@
 package org.geomajas.plugin.wmsclient.client;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.GeomajasGinModule;
+import org.geomajas.gwt.client.GeomajasGinjector;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerFactory;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
-import org.geomajas.puregwt.client.GeomajasGinModule;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 
 import com.google.gwt.inject.client.GinModules;
 

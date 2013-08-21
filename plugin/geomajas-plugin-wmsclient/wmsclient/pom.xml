@@ -16,8 +16,8 @@
 	</parent>
 
 	<artifactId>geomajas-plugin-wmsclient</artifactId>
-	<name>geomajas-plugin-wmsclient</name>
-	<description>geomajas-plugin-wmsclient</description>
+	<name>Geomajas WMS Client plugin: Library</name>
+	<description>Geomajas WMS Client plugin: Library</description>
 
 	<dependencies>
 		<!-- GeoTools dependencies -->
@@ -81,7 +81,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client</artifactId>
+			<artifactId>geomajas-gwt-client</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>xalan</groupId>
@@ -95,37 +95,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client</artifactId>
-			<classifier>sources</classifier>
-			<exclusions>
-				<exclusion>
-					<groupId>xalan</groupId>
-					<artifactId>xalan</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client-impl</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>xalan</groupId>
-					<artifactId>xalan</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client-impl</artifactId>
-			<classifier>sources</classifier>
+			<artifactId>geomajas-gwt-client-impl</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>xalan</groupId>
@@ -186,7 +156,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-client-impl</artifactId>
+			<artifactId>geomajas-gwt-client-impl</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>

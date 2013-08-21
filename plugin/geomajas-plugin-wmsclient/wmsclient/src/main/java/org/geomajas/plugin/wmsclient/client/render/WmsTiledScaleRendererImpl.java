@@ -18,15 +18,15 @@ import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
+import org.geomajas.gwt.client.event.ScaleLevelRenderedEvent;
+import org.geomajas.gwt.client.gfx.HtmlContainer;
+import org.geomajas.gwt.client.gfx.HtmlImage;
+import org.geomajas.gwt.client.gfx.HtmlImageFactory;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
-import org.geomajas.puregwt.client.event.ScaleLevelRenderedEvent;
-import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.gfx.HtmlImage;
-import org.geomajas.puregwt.client.gfx.HtmlImageFactory;
 
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
