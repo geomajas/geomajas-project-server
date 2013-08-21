@@ -10,6 +10,6 @@
   -->
 
 <module>
-	<inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
+	<inherits name="org.geomajas.gwt.GeomajasClientImpl" />
 	<source path="command/dto" />
 </module>
