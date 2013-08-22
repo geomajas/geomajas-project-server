@@ -180,7 +180,7 @@ public class LabelComponentInfo extends PrintComponentInfo {
 	}
 
 	/**
-	 * Get margin around the text..
+	 * Get margin around the text.
 	 * 
 	 * @return margin
 	 */
