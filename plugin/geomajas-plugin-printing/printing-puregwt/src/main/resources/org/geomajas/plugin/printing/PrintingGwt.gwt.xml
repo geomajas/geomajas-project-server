@@ -13,8 +13,8 @@
 <module rename-to="PrintingPuregwt">
 
 	<!-- Geomajas Client -->
-    <inherits name="org.geomajas.puregwt.GeomajasClientImpl" />
-	<inherits name="org.geomajas.plugin.printing.theme.PrintingPuregwtTheme" />
+    <inherits name="org.geomajas.gwt.GeomajasClientImpl" />
+	<inherits name="org.geomajas.plugin.printing.theme.PrintingGwtTheme" />
  	<inherits name="org.geomajas.plugin.rasterizing.Rasterizing" />
  	
 	<source path="client" />

@@ -34,10 +34,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="name" value="Simple printing" />
 					<property name="version" value="${printing-print-plugin-backend-version}" />
 				</bean>
-				
+
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="PureGWT face" />
-					<property name="version" value="${printing-puregwt-face-version}"/>
+					<property name="name" value="GWT face" />
+					<property name="version" value="2.0.0"/>
 				</bean>
 			</list>
 		</property>
