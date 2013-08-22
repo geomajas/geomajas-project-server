@@ -41,6 +41,7 @@ import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Utilities;
+import com.lowagie.text.pdf.codec.PngImage;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -145,24 +146,47 @@ LegendViaUrlComponent {
 
 		// Retrieve legend image from URL if not yet retrieved
 		if (null == image && visible && null == warning) {
-			try {
-				image = Image.getInstance(new URL(getLegendImageServiceUrl()));
-				image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
-			} catch (BadElementException e) {
-				log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
-				e.printStackTrace();
-			} catch (MalformedURLException e) {
-				log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
-				e.printStackTrace();
-			} catch (IOException e) {
-				// This exception is OK if no legend image is generated because out of scale range
-				// for a dynamic layer, then a text message which indicates an invisible legend is referred
-				// to by the URL 
-				visible = !hasInVisibleResponse();
-				if (visible) {
-					log.warn("Unexpected IOException for Image.getInstance() for URL "
-								+ getLegendImageServiceUrl(), e);
+			if (getLegendImageServiceUrl().contains("=image/png")) {
+				// It´s much approx. 2 times faster to use PngImage.getImage() instead of Image.getInstance()
+				// since the latter will retrieve the URL twice!
+    			try {
+    				image = PngImage.getImage(new URL(getLegendImageServiceUrl()));
+    								// Image.getInstance(new URL(getLegendImageServiceUrl()));
+    				image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
+    			} catch (MalformedURLException e) {
+    				log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				// This exception is OK if no legend image is generated because out of scale range
+    				// for a dynamic layer, then a text message which indicates an invisible legend is referred
+    				// to by the URL 
+    				visible = !hasInVisibleResponse();
+    				if (visible) {
+    					log.warn("Unexpected IOException for Image.getInstance() for URL "
+    								+ getLegendImageServiceUrl(), e);
+    				}
+    			}
+    		} else {
+				try {
+					image = Image.getInstance(new URL(getLegendImageServiceUrl()));
+					image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
+				} catch (BadElementException e) {
+					log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
+					e.printStackTrace();
+				} catch (MalformedURLException e) {
+					log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
+					e.printStackTrace();
+				} catch (IOException e) {
+					// This exception is OK if no legend image is generated because out of scale range
+					// for a dynamic layer, then a text message which indicates an invisible legend is referred
+					// to by the URL 
+					visible = !hasInVisibleResponse();
+					if (visible) {
+						log.warn("Unexpected IOException for Image.getInstance() for URL "
+									+ getLegendImageServiceUrl(), e);
+					}
 				}
+				
 			}
 		}
 		if (!visible) {
@@ -172,7 +196,7 @@ LegendViaUrlComponent {
 		} else {
 
 			if (width <= 0 && height <= 0) {
-				// when / 2.0f: The image is generated with a scale of 1:0.5
+				// when / 2.0f: The image is generated with a scale of 1:0.5 (but looks awful!)
 				width = image.getWidth(); // 2.0f;
 				height = image.getHeight(); // 2.0f;
 			} else if (width <= 0) {
