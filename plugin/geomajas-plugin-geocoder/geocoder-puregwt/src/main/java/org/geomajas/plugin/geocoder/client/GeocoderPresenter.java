@@ -16,6 +16,7 @@ import java.util.List;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;
@@ -23,7 +24,6 @@ import org.geomajas.plugin.geocoder.client.event.SelectLocationHandler;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
-import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;

@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.geocoder.client;
 
-import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.map.MapPresenter;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;

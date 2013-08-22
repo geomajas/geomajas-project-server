@@ -45,8 +45,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${geocoder-gwt-face-version}</version>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geocoder-gwt-client-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -186,7 +186,7 @@
 	<properties>
 		<geocoder-backend-version>1.13.1</geocoder-backend-version>
 		<geocoder-smartgwt-client-version>1.15.0-SNAPSHOT</geocoder-smartgwt-client-version>
-		<geocoder-gwt-face-version>1.0.0-SNAPSHOT</geocoder-gwt-face-version>
+		<geocoder-gwt-client-version>2.0.0</geocoder-gwt-client-version>
 		<geocoder-gwt-version>2.5.0</geocoder-gwt-version>
 	</properties>
 </project>

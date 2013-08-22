@@ -11,9 +11,10 @@
 
 package org.geomajas.plugin.geocoder.puregwt.example.client;
 
+import org.geomajas.gwt.example.base.client.ExampleBase;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
 
 /**
  * Entry point and main class for core widget example application.

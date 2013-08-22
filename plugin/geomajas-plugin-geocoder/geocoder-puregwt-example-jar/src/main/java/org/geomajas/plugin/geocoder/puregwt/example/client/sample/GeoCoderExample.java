@@ -10,6 +10,14 @@
  */
 package org.geomajas.plugin.geocoder.puregwt.example.client.sample;
 
+import org.geomajas.gwt.client.GeomajasGinjector;
+import org.geomajas.gwt.client.event.MapInitializationEvent;
+import org.geomajas.gwt.client.event.MapInitializationHandler;
+import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt.client.widget.MapLayoutPanel;
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
+import org.geomajas.plugin.geocoder.client.GeocoderWidget;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -17,14 +25,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import org.geomajas.plugin.geocoder.client.GeocoderWidget;
-import org.geomajas.puregwt.client.GeomajasGinjector;
-import org.geomajas.puregwt.client.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.widget.MapLayoutPanel;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
 
 /**
  * Class description.

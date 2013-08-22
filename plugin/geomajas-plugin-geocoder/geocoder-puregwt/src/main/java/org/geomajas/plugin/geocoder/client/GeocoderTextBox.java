@@ -11,11 +11,11 @@
 
 package org.geomajas.plugin.geocoder.client;
 
+import org.geomajas.gwt.client.map.MapPresenter;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationHandler;
-import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;

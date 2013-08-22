@@ -48,11 +48,11 @@
 		
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-gwt-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-gwt-example-jar</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 

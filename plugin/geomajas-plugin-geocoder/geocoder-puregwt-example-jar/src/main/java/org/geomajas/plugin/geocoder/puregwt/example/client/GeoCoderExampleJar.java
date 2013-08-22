@@ -11,14 +11,14 @@
 
 package org.geomajas.plugin.geocoder.puregwt.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-
+import org.geomajas.gwt.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt.example.base.client.sample.SamplePanelRegistry;
+import org.geomajas.gwt.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.geocoder.puregwt.example.client.i18n.GeoCoderMessages;
 import org.geomajas.plugin.geocoder.puregwt.example.client.sample.GeoCoderExample;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
-import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Class description.
