@@ -71,7 +71,8 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 				0, 20, 20)); /* marginX: 20 ; marginY: 20 */
 		LabelComponentImpl titleLabel = new LabelComponentImpl();
 		titleLabel.getConstraint().setAlignmentX(LayoutConstraint.CENTER);
-		titleLabel.getConstraint().setMarginY(5);
+		titleLabel.getConstraint().setMarginY(4); // margin at the top
+		titleLabel.setMargin(0.3F * getFont().getSize()); // extra margin around the text
 		titleLabel.setTextOnly(true);
 		titleLabel.setText(getTitle()); // Usually "Legend" (if English)
 		titleLabel.setTag(PrintTemplate.TITLE);
