@@ -264,7 +264,7 @@
 	</profiles>
 
 	<properties>
-		<printing-backend-version>1.11.1</printing-backend-version>
+		<printing-backend-version>1.13.1</printing-backend-version>
 		<printing-gwt-face-version>1.13.0</printing-gwt-face-version>
 		<printing-widget-gwt-version>1.0.0-SNAPSHOT</printing-widget-gwt-version>
 		<printing-rasterizing-version>1.2.0-M1</printing-rasterizing-version>
