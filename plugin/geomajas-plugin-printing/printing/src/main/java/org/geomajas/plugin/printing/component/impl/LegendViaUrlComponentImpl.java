@@ -151,24 +151,24 @@ LegendViaUrlComponent {
 			if (getLegendImageServiceUrl().contains("=image/png")) {
 				// It´s approx. 2 times faster to use PngImage.getImage() instead of Image.getInstance()
 				// since the latter will retrieve the URL twice!
-    			try {
-    				image = PngImage.getImage(new URL(getLegendImageServiceUrl()));
-    								// Image.getInstance(new URL(getLegendImageServiceUrl()));
-    				image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
-    			} catch (MalformedURLException e) {
-    				log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
-    				e.printStackTrace();
-    			} catch (IOException e) {
-    				// This exception is OK if no legend image is generated because out of scale range
-    				// for a dynamic layer, then a text message which indicates an invisible legend is referred
-    				// to by the URL 
-    				visible = !hasInVisibleResponse();
-    				if (visible) {
-    					log.warn("Unexpected IOException for Image.getInstance() for URL "
-    								+ getLegendImageServiceUrl(), e);
-    				}
-    			}
-    		} else {
+				try {
+					image = PngImage.getImage(new URL(getLegendImageServiceUrl()));
+									// Image.getInstance(new URL(getLegendImageServiceUrl()));
+					image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
+				} catch (MalformedURLException e) {
+					log.error("Error in Image.getInstance() for URL " + getLegendImageServiceUrl(), e);
+					e.printStackTrace();
+				} catch (IOException e) {
+					// This exception is OK if no legend image is generated because out of scale range
+					// for a dynamic layer, then a text message which indicates an invisible legend is referred
+					// to by the URL 
+					visible = !hasInVisibleResponse();
+					if (visible) {
+						log.warn("Unexpected IOException for Image.getInstance() for URL "
+									+ getLegendImageServiceUrl(), e);
+					}
+				}
+			} else {
 				try {
 					image = Image.getInstance(new URL(getLegendImageServiceUrl()));
 					image.setDpi(DPI_FOR_IMAGE, DPI_FOR_IMAGE); // Increase the precision
