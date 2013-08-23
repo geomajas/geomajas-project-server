@@ -137,7 +137,9 @@ LegendViaUrlComponent {
 		if (getConstraint().getMarginX() <= 0.0f) {
 			getConstraint().setMarginX(MARGIN_LEFT_IMAGE_RELATIVE_TO_FONTSIZE * getLegend().getFont().getSize());
 		}
-		getConstraint().setMarginY(MARGIN_TOP_IMAGE_RELATIVE_TO_FONTSIZE * getLegend().getFont().getSize());
+		if (getConstraint().getMarginY() <= 0.0f) {
+			getConstraint().setMarginY(MARGIN_TOP_IMAGE_RELATIVE_TO_FONTSIZE * getLegend().getFont().getSize());
+		}
 
 		@SuppressWarnings("deprecation")
 		float width = getConstraint().getWidth();
@@ -147,7 +149,7 @@ LegendViaUrlComponent {
 		// Retrieve legend image from URL if not yet retrieved
 		if (null == image && visible && null == warning) {
 			if (getLegendImageServiceUrl().contains("=image/png")) {
-				// It´s much approx. 2 times faster to use PngImage.getImage() instead of Image.getInstance()
+				// It´s approx. 2 times faster to use PngImage.getImage() instead of Image.getInstance()
 				// since the latter will retrieve the URL twice!
     			try {
     				image = PngImage.getImage(new URL(getLegendImageServiceUrl()));

@@ -72,8 +72,8 @@ public class LegendForLayerComponentImpl extends AbstractPrintComponent<LegendFo
 					// presenting the legend symbols of the concerning layer)
 
 					if (child.getConstraint().getMarginX() <= 0) {
-						child.getConstraint().setMarginX(marginX * 2.0f); // 2 times the margin
-					} // of the title (usually the layer´s label
+						child.getConstraint().setMarginX(marginX * 1.5F ); // 1.5 times the margin
+					} // of the title (usually the layer´s label)
 				}
 
 			}
