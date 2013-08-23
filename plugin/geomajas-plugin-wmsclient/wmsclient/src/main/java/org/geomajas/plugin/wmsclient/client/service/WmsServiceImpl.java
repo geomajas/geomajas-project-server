@@ -64,7 +64,7 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
 
-	private static final int LEGEND_DPI = 72;
+	private static final int LEGEND_DPI = 91;
 
 	@Inject
 	private WmsTileService tileService;
