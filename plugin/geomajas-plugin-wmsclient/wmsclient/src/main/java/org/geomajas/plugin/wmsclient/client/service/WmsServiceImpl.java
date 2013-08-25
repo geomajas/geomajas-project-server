@@ -14,8 +14,11 @@ package org.geomajas.plugin.wmsclient.client.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.ExceptionDto;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -139,8 +142,8 @@ public class WmsServiceImpl implements WmsService {
 
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
 		command.setCommandRequest(new GetFeatureInfoRequest(url));
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetFeatureInfoResponse>() {
-
+		GwtCommandDispatcher.getInstance().execute(command, new  AbstractCommandCallback<GetFeatureInfoResponse>() {
+			@Override
 			public void execute(GetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
@@ -149,7 +152,27 @@ public class WmsServiceImpl implements WmsService {
 
 				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));
 			}
+			
+			@Override
+			public void onCommunicationException(Throwable error) {
+				callback.onFailure(error.toString());
+				super.onCommunicationException(error);
+			}
+			
+			@Override
+			public void onCommandException(CommandResponse response) {
+				
+				String msg = "";
+				for (ExceptionDto error : response.getExceptions()) {
+					msg = error.getClassName() + ": " + error.getMessage();
+					break;
+				}
+				callback.onFailure(msg);
+				super.onCommandException(response);
+			} 
+			
 		});
+						
 	}
 
 	@Override
