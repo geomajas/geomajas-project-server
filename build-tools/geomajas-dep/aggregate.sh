@@ -109,13 +109,13 @@ include "org.geomajas.project" "geomajas-project-api-annotation" "1.1.0-SNAPSHOT
     "incubating" "master.pdf" \
     "org.geomajas.project" "geomajas-project-api-annotation" "1.0.0"
 
-include "org.geomajas.documentation" "geomajas-project-codemirror-gwt-documentation" "3.13.0-SNAPSHOT" \
+include "org.geomajas.project" "geomajas-project-codemirror-gwt-documentation" "3.13.0-SNAPSHOT" \
     "Codemirror GWT wrapper project" \
     "In-browser code editing made bearable. Based on CodeMirror version 3.1." \
     "incubating" "master.pdf" \
     "org.geomajas.project" "geomajas-project-codemirror-gwt" "3.1.1"
 
-include "org.geomajas.documentation" "geomajas-project-geometry-documentation" "1.2.0-SNAPSHOT" \
+include "org.geomajas.project" "geomajas-project-geometry-documentation" "1.2.0-SNAPSHOT" \
     "Geometry DTO project" \
     "Set of GWT compatible Geometry DTOs and services to manipulate them." \
     "incubating" "master.pdf" \
@@ -144,10 +144,10 @@ include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.15.0-S
     "org.geomajas" "geomajas-gwt-client" "1.14.0"
 
 include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "2.1.0-SNAPSHOT" \
-    "PureGWT face" \
-    "GWT face for building powerful AJAX web user interfaces without depending on a widget library. Ideal for mobile." \
+    "GWT face" \
+    "GWT face for building powerful AJAX web user interfaces without depending on a widget library. Also suitable for mobile." \
     "incubating" "master.pdf" \
-    "org.geomajas" "geomajas-puregwt-client" "2.0.0"
+    "org.geomajas" "geomajas-gwt-client" "2.0.0"
 
 include "org.geomajas.documentation" "common-gwt-documentation" "1.5.0-SNAPSHOT" \
     "Common-GWT " \
@@ -227,7 +227,7 @@ include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.5.0-SN
     "Printing plug-in" \
     "Geomajas extension for printing." \
     "graduated" "printing.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-printing" "2.5.0-SNAPSHOT"
+    "org.geomajas.plugin" "geomajas-plugin-printing" "2.4.0-M4"
 
 # include "org.geomajas.plugin" "geomajas-plugin-profiling-documentation" "1.0.0-SNAPSHOT" \
 #    "Profiling plug-in" \
@@ -277,11 +277,11 @@ include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1
     "incubating" "master.pdf" \
     "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-M5"
 
-include "org.geomajas.plugin" "geomajas-plugin-deskmanager-documentation" "1.0.0-SNAPSHOT" \
+include "" "" "" \
     "Deskmanager plug-in" \
     "Deskmanager plug-in." \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-deskmanager" "1.0.0-M4"
+    "org.geomajas.plugin" "geomajas-plugin-deskmanager" "1.0.0-M7"
 
 include "org.geomajas.plugin" "geomajas-plugin-runtimeconfig-documentation" "1.0.0-SNAPSHOT" \
     "Runtimeconfig plug-in" \
@@ -302,7 +302,7 @@ include "org.geomajas.plugin" "geomajas-plugin-javascript-api-documentation" "1.
     "" "" ""
 #    "org.geomajas.plugin" "geomajas-plugin-javascript-api" "1.0.0-SNAPSHOT"
 
-include "org.geomajas.plugin" "geomajas-plugin-editing-documentation" "1.0.1-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-editing-documentation" "1.0.0-SNAPSHOT" \
     "Editing plug-in" \
     "Geomajas extension for more powerful editing." \
     "incubating" "master.pdf" \
@@ -324,7 +324,7 @@ include "org.geomajas.project" "geomajas-project-sld-editor-documentation" "1.0.
     "SLD editor project" \
     "SLD editor project." \
     "incubating" "master.pdf" \
-    "org.geomajas.project" "geomajas-project-sld-editor" "1.0.0-M1"
+    "org.geomajas.project" "geomajas-project-sld-editor-gwt" "1.0.0-M1"
 
 include "org.geomajas.project" "geomajas-project-geometry-documentation" "1.2.0-SNAPSHOT" \
     "Geometry project" \
