@@ -277,7 +277,7 @@ include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1
     "incubating" "master.pdf" \
     "org.geomajas.widget" "geomajas-widget-searchandfilter" "1.0.0-M5"
 
-include "" "" "" \
+include "org.geomajas.plugin" "geomajas-plugin-deskmanager" "1.0.0-SNAPSHOT" \
     "Deskmanager plug-in" \
     "Deskmanager plug-in." \
     "incubating" "master.pdf" \
