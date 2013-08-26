@@ -25,6 +25,8 @@ public class GetGeotoolsVectorCapabilitiesRequest implements CommandRequest {
 	// neutral & independent strings that accidentally contain the same value as their geotools counterparts...
 	public static final String PROPERTY_WFS_CAPABILITIESURL = "WFSDataStoreFactory:GET_CAPABILITIES_URL";
 
+	public static final String PROPERTY_WFS_TIMEOUT = "WFSDataStoreFactory:TIMEOUT";
+
 	public static final String PROPERTY_WFS_USERNAME = "WFSDataStoreFactory:USERNAME";
 
 	public static final String PROPERTY_WFS_PASSWORD = "WFSDataStoreFactory:PASSWORD";
@@ -45,6 +47,8 @@ public class GetGeotoolsVectorCapabilitiesRequest implements CommandRequest {
 
 	public static final String COMMAND = "command.deskmanager.manager.GetGeotoolsVectorCapabilities";
 
+	public static final int DEFAULT_TIMEOUT = 15000;
+
 	private Map<String, String> connectionProperties = new LinkedHashMap<String, String>();
 
 	public Map<String, String> getConnectionProperties() {
@@ -53,6 +57,7 @@ public class GetGeotoolsVectorCapabilitiesRequest implements CommandRequest {
 
 	public void setConnectionProperties(Map<String, String> connectionProperties) {
 		this.connectionProperties = connectionProperties;
+		this.connectionProperties.put(PROPERTY_WFS_TIMEOUT, "" + DEFAULT_TIMEOUT);
 	}
 
 }
