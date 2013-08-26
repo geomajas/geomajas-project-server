@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-printing-documentation</artifactId>
-	<version>2.4.0-M5</version>
+	<version>2.4.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas simple printing plugin documentation</name>
 	<description>Geomajas simple printing plugin documentation</description>	
@@ -26,10 +26,4 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-printing-all-2.4.0-M5/geomajas-plugin-printing-documentation</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-printing-all-2.4.0-M5/geomajas-plugin-printing-documentation</developerConnection>
-    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-printing-all-2.4.0-M5/geomajas-plugin-printing-documentation</url>
-  </scm>
 </project>

@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-printing-all</artifactId>
-	<version>2.4.0-M5</version>
+	<version>2.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas simple printing plug-in</name>
 	<description>Geomajas simple printing plug-in</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-printing-all-2.4.0-M5</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-printing-all-2.4.0-M5</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-printing-all-2.4.0-M5</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-printing</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-printing</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-printing</url>
 	</scm>
 
 	<developers>
