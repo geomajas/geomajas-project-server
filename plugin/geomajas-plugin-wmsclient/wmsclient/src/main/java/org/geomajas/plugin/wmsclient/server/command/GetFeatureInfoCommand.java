@@ -47,7 +47,8 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -62,6 +63,8 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, GetFeatureInfoResponse> {
 
+	private final Logger log = LoggerFactory.getLogger(GetFeatureInfoCommand.class);
+	
 	private static final String PARAM_FORMAT = "info_format";
 
 	public void execute(GetFeatureInfoRequest request, GetFeatureInfoResponse response) throws Exception {
@@ -69,17 +72,17 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		GML gml;
 
 		GetFeatureInfoFormat format = getFormatFromUrl(request.getUrl());
-		List<AbstractReadOnlyAttributeInfo> attributeDescriptors = new ArrayList<AbstractReadOnlyAttributeInfo>();
+		List<AbstractReadOnlyAttributeInfo> attributeInfos = new ArrayList<AbstractReadOnlyAttributeInfo>();
 		switch (format) {
 			case GML2:
 				gml = new GML(Version.GML2);
-				response.setFeatures(getFeaturesFromUrl(url, gml, attributeDescriptors));
-				response.setAttributeDescriptors(attributeDescriptors);
+				response.setFeatures(getFeaturesFromUrl(url, gml, attributeInfos));
+				response.setAttributeDescriptors(attributeInfos);
 				break;
 			case GML3:
 				gml = new GML(Version.GML3);
-				response.setFeatures(getFeaturesFromUrl(url, gml, attributeDescriptors));
-				response.setAttributeDescriptors(attributeDescriptors);
+				response.setFeatures(getFeaturesFromUrl(url, gml, attributeInfos));
+				response.setAttributeDescriptors(attributeInfos);
 				break;
 			default:
 				String content = readUrl(url);
@@ -91,28 +94,28 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		return new GetFeatureInfoResponse();
 	}
 
-	private List<Feature> getFeaturesFromUrl(URL url, GML gml, List<AbstractReadOnlyAttributeInfo> attributeDescriptors)
+	private List<Feature> getFeaturesFromUrl(URL url, GML gml, List<AbstractReadOnlyAttributeInfo> attributeInfos)
 			throws IOException, SAXException, ParserConfigurationException {
 
 		List<Feature> dtoFeatures = new ArrayList<Feature>();
 		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(url.openStream());
 		FeatureIterator<SimpleFeature> it = collection.features();
 		if (it.hasNext()) {
-			try {
+			
 				SimpleFeature feature = it.next();
-				dtoFeatures.add(toDto(feature));
-				attributeDescriptors.clear();
-
+				attributeInfos.clear();
 				for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
-					attributeDescriptors.add(toAttributeInfo(desc));
+					attributeInfos.add(toAttributeInfo(desc));
 				}
-			} catch (Exception e) {
+				try {	
+					dtoFeatures.add(toDto(feature, attributeInfos));
+				} catch (Exception e) {
 			}
 		}
 		while (it.hasNext()) {
+			SimpleFeature feature = it.next();
 			try {
-				SimpleFeature feature = it.next();
-				dtoFeatures.add(toDto(feature));
+				dtoFeatures.add(toDto(feature, attributeInfos));
 			} catch (Exception e) {
 				continue;
 			}
@@ -129,6 +132,10 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		AbstractReadOnlyAttributeInfo attributeInfo;
 		if (Integer.class.equals(binding)) {
 			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.INTEGER);
+		} else if (Short.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.SHORT);
+		} else if (Long.class.equals(binding)) {
+			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.LONG);			
 		} else if (Float.class.equals(binding)) {
 			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.FLOAT);
 		} else if (Double.class.equals(binding)) {
@@ -142,9 +149,67 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		}
 		return attributeInfo;
 	}
+	
+	@SuppressWarnings("incomplete-switch")
+	private Attribute<?> toPrimitive(Object value, PrimitiveType primitiveType) {
+
+		Attribute<?> attribute = null;
+
+		try {
+			
+			switch (primitiveType) {
+				case BOOLEAN:
+					attribute = new BooleanAttribute((Boolean) convertToClass(value, Boolean.class));
+					break;
+				case DOUBLE:
+					attribute = new DoubleAttribute((Double) convertToClass(value, Double.class));
+					break;
+				case FLOAT:
+					attribute = new FloatAttribute((Float) convertToClass(value, Float.class));
+					break;
+				case INTEGER:
+					attribute = new IntegerAttribute((Integer) convertToClass(value, Integer.class));
+					break;
+				case LONG:
+					attribute = new LongAttribute((Long) convertToClass(value, Long.class));
+					break;
+				case SHORT:
+					attribute = new ShortAttribute((Short) convertToClass(value, Short.class));
+					break;
+				case STRING:
+					attribute = new StringAttribute(value == null ? null : value.toString());
+					break;
+				default:
+					//Unexpected!
+					log.warn("toPrimitive() for unsupported type " + primitiveType);
+					break;
+			}
+		
+		} catch (NumberFormatException e) {
+			switch (primitiveType) {
+				case DOUBLE:
+					attribute = new DoubleAttribute(null);
+					break;
+				case FLOAT:
+					attribute = new FloatAttribute(null);
+					break;
+				case INTEGER:
+					attribute = new IntegerAttribute(null);
+					break;
+				case LONG:
+					attribute = new LongAttribute(null);
+					break;
+				case SHORT:
+					attribute = new ShortAttribute(null);
+			}
+		}
+		
+		return attribute;
+	}
 
 	@SuppressWarnings("rawtypes")
-	private Feature toDto(SimpleFeature feature) throws IllegalArgumentException {
+	private Feature toDto(SimpleFeature feature,
+					List<AbstractReadOnlyAttributeInfo> attributeInfos) throws IllegalArgumentException {
 		if (feature == null) {
 			throw new IllegalArgumentException("");
 		}
@@ -152,11 +217,14 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 
 		HashMap<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
-		for (org.opengis.feature.type.AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
+		for (AbstractReadOnlyAttributeInfo desc : attributeInfos) {
 			Object obj = feature.getAttribute(desc.getName());
 			Attribute<?> value = null;
-			value = toPrimitive(obj, desc.getType());
-			attributeMap.put(desc.getLocalName(), value);
+			if (desc instanceof PrimitiveAttributeInfo) {
+				value = toPrimitive(obj, ((PrimitiveAttributeInfo) desc).getType());
+				attributeMap.put(desc.getName(), value);
+			}
+			
 		}
 
 		dto.setAttributes(attributeMap);
@@ -178,39 +246,39 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		return dto;
 	}
 
-	private Attribute<?> toPrimitive(Object value, AttributeType type) {
-
-		if (type.getBinding().equals(String.class)) {
-			return new StringAttribute(value == null ? null : value.toString());
-		}
-		// Number attributes
-		try {
-			if ((Integer.class).equals(type.getBinding())) {
-				return new IntegerAttribute((Integer) convertToClass(value, Integer.class));
-			}
-			if ((Short.class).equals(type.getBinding())) {
-				return new ShortAttribute((Short) convertToClass(value, Short.class));
-			} else if (Long.class.equals(type.getBinding())) {
-				return new LongAttribute((Long) convertToClass(value, Long.class));
-			} else if (Float.class.equals(type.getBinding())) {
-				return new FloatAttribute((Float) convertToClass(value, Float.class));
-			} else if (Double.class.equals(type.getBinding())) {
-				return new DoubleAttribute((Double) convertToClass(value, Double.class));
-			} else if (BigDecimal.class.equals(type.getBinding())) {
-				return new DoubleAttribute((Double) convertToClass(Double.valueOf(value.toString()), Double.class));
-			}
-		} catch (NumberFormatException e) {
-			// Fallback to String
-			return new StringAttribute(value.toString());
-		}
-
-		if (Boolean.class.equals(type.getBinding())) {
-			return new BooleanAttribute((Boolean) convertToClass(value, Boolean.class));
-		}
-
-		return new StringAttribute(value == null ? null : value.toString());
-
-	}
+//	private Attribute<?> toPrimitive(Object value, AttributeType type) {
+//
+//		if (type.getBinding().equals(String.class)) {
+//			return new StringAttribute(value == null ? null : value.toString());
+//		}
+//		// Number attributes
+//		try {
+//			if ((Integer.class).equals(type.getBinding())) {
+//				return new IntegerAttribute((Integer) convertToClass(value, Integer.class));
+//			}
+//			if ((Short.class).equals(type.getBinding())) {
+//				return new ShortAttribute((Short) convertToClass(value, Short.class));
+//			} else if (Long.class.equals(type.getBinding())) {
+//				return new LongAttribute((Long) convertToClass(value, Long.class));
+//			} else if (Float.class.equals(type.getBinding())) {
+//				return new FloatAttribute((Float) convertToClass(value, Float.class));
+//			} else if (Double.class.equals(type.getBinding())) {
+//				return new DoubleAttribute((Double) convertToClass(value, Double.class));
+//			} else if (BigDecimal.class.equals(type.getBinding())) {
+//				return new DoubleAttribute((Double) convertToClass(Double.valueOf(value.toString()), Double.class));
+//			}
+//		} catch (NumberFormatException e) {
+//			// Fallback to String
+//			return new StringAttribute(value.toString());
+//		}
+//
+//		if (Boolean.class.equals(type.getBinding())) {
+//			return new BooleanAttribute((Boolean) convertToClass(value, Boolean.class));
+//		}
+//
+//		return new StringAttribute(value == null ? null : value.toString());
+//
+//	}
 
 	private Object convertToClass(Object object, Class<?> c) {
 		if (object == null) {
