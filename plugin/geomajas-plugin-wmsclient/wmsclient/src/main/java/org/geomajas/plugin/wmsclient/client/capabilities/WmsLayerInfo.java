@@ -83,6 +83,12 @@ public interface WmsLayerInfo extends Serializable {
 	String getBoundingBoxCrs();
 
 	/**
+	 * Get the extent for this layer in the specified CRS.
+	 * 
+	 * @return Get the extent for this layer in the specified CRS.
+	 */
+	Bbox getBoundingBox(String crs);
+	/**
 	 * Get the extent for this layer. This bounding box is expressed in the CRS as returned by
 	 * {@link #getBoundingBoxCrs()}.
 	 * 
@@ -103,4 +109,5 @@ public interface WmsLayerInfo extends Serializable {
 	 * @return The list of styles.
 	 */
 	List<WmsLayerStyleInfo> getStyleInfo();
+
 }
