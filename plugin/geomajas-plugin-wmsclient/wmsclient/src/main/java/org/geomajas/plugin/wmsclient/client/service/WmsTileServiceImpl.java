@@ -38,6 +38,10 @@ public class WmsTileServiceImpl implements WmsTileService {
 
 		double actualScale = viewPort.getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST);
 		int tileLevel = viewPort.getZoomStrategy().getZoomStepIndex(actualScale);
+		if (tileLevel > tileConfig.getMaximumTileLevel()) {
+			tileLevel = tileConfig.getMaximumTileLevel();
+			actualScale = viewPort.getZoomStrategy().getZoomStepScale(tileLevel);
+		}
 		double resolution = 1 / actualScale;
 		double worldTileWidth = tileConfig.getTileWidth() * resolution;
 		double worldTileHeight = tileConfig.getTileHeight() * resolution;
