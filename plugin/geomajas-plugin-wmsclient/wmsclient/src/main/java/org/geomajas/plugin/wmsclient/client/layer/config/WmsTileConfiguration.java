@@ -31,8 +31,6 @@ public class WmsTileConfiguration implements Serializable {
 
 	private int tileHeight;
 
-	private int maximumTileLevel = Integer.MAX_VALUE;
-
 	private Coordinate tileOrigin;
 
 	// ------------------------------------------------------------------------
@@ -119,24 +117,4 @@ public class WmsTileConfiguration implements Serializable {
 	public void setTileOrigin(Coordinate tileOrigin) {
 		this.tileOrigin = tileOrigin;
 	}
-
-	/**
-	 * Get the maximum (map) tile level for this layer. If not set this is unlimited.
-	 *
-	 * @return the maximum tile level
-	 */
-	public int getMaximumTileLevel() {
-		return maximumTileLevel;
-	}
-
-	/**
-	 * Set the maximum (map) tile level for this layer. If not set this is unlimited.
-	 *
-	 * @param maximumTileLevel
-	 */
-	public void setMaximumTileLevel(int maximumTileLevel) {
-		this.maximumTileLevel = maximumTileLevel;
-	}
-
-
 }
