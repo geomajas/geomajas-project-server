@@ -114,6 +114,22 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	// ------------------------------------------------------------------------
+	// Layer implementation:
+	// ------------------------------------------------------------------------
+
+
+	@Override
+	public boolean isShowing() {
+		if (markedAsVisible) {
+			if (viewPort.getScale() >= wmsConfig.getMinimumScale().getPixelPerUnit()
+					&& viewPort.getScale() < wmsConfig.getMaximumScale().getPixelPerUnit()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// ------------------------------------------------------------------------
 	// HasMapScalesRenderer implementation:
 	// ------------------------------------------------------------------------
 

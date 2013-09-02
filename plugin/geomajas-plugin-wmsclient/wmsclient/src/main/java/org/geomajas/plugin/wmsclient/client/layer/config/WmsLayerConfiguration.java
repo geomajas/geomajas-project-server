@@ -14,6 +14,7 @@ package org.geomajas.plugin.wmsclient.client.layer.config;
 import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
 
@@ -48,6 +49,11 @@ public class WmsLayerConfiguration implements Serializable {
 	private LegendConfig legendConfig = new LegendConfig();
 
 	private WmsServiceVendor wmsServiceVendor = WmsServiceVendor.UNSPECIFIED;
+
+	private ScaleInfo minimumScale = new ScaleInfo(ScaleInfo.MINIMUM_PIXEL_PER_UNIT); // maximum zoom out
+
+	private ScaleInfo maximumScale = new ScaleInfo(ScaleInfo.MAXIMUM_PIXEL_PER_UNIT); // maximum zoom in
+
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:
@@ -227,5 +233,43 @@ public class WmsLayerConfiguration implements Serializable {
 	 */
 	public void setLegendConfig(LegendConfig legendConfig) {
 		this.legendConfig = legendConfig;
+	}
+
+	/**
+	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
+	 * 
+	 * @return the minimum scale (unit type is defined in )
+	 */
+	public ScaleInfo getMinimumScale() {
+		return minimumScale;
+	}
+
+	/**
+	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
+	 * 
+	 * @param minimumScale
+	 *            the minimum scale
+	 */
+	public void setMinimumScale(ScaleInfo minimumScale) {
+		this.minimumScale = minimumScale;
+	}
+
+	/**
+	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
+	 * 
+	 * @return the maximum scale
+	 */
+	public ScaleInfo getMaximumScale() {
+		return maximumScale;
+	}
+
+	/**
+	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
+	 * 
+	 * @param maximumScale
+	 *            the maximum scale
+	 */
+	public void setMaximumScale(ScaleInfo maximumScale) {
+		this.maximumScale = maximumScale;
 	}
 }
