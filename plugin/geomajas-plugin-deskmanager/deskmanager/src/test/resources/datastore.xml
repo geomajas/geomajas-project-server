@@ -23,8 +23,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<entry key="dbtype" value="h2" />
 		<entry key="database" value="deskmanager" />
 		<entry key="user" value="sa" />
-		<entry key="passwd" value="sa" />
-		<entry key="host" value="mem" />
+		<entry key="passwd" value="" />
+		<!--<entry key="host" value="mem" />-->
 	</util:map>
 
 </beans>

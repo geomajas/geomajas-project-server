@@ -13,6 +13,7 @@ package org.geomajas.plugin.deskmanager.service.manager;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,6 +59,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,39 +163,24 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
 
 		SimpleFeatureType featureType = SimpleFeatureTypeBuilder.retype(sourceStore.getSchema(), targetCrs);
-		DataStore dataStore = new MemoryDataStore(featureType);
 
-		SimpleFeatureCollection featureCollection = sourceStore.getFeatureSource().getFeatures();
+		DataStore datastore = new MemoryDataStore(sourceStore.getFeatureSource().getFeatures());
 
-		Transaction transaction = new DefaultTransaction("Reproject");
+		SimpleFeatureIterator it = datastore.getFeatureSource(datastore.getTypeNames()[0]).getFeatures().features();
 
-		FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(
-				featureType.getTypeName(), transaction);
-		SimpleFeatureIterator iterator = featureCollection.features();
 		try {
-			while (iterator.hasNext()) {
-				// copy the contents of each feature and transform the geometry
-				SimpleFeature feature = iterator.next();
-				SimpleFeature copy = writer.next();
-				copy.setAttributes(feature.getAttributes());
-
+			//Reproject geometr
+			while (it.hasNext()) {
+				SimpleFeature feature = it.next();
 				Geometry geometry = (Geometry) feature.getDefaultGeometry();
 				Geometry geometry2 = JTS.transform(geometry, transform);
-
-				copy.setDefaultGeometry(geometry2);
-				writer.write();
+				feature.setDefaultGeometry(geometry2);
 			}
-			transaction.commit();
-		} catch (Exception problem) {
-			problem.printStackTrace();
-			transaction.rollback();
-		} finally {
-			writer.close();
-			iterator.close();
-			transaction.close();
-		}
 
-		return dataStore;
+		} catch (TransformException e) {
+			log.warn(e.getLocalizedMessage(), e);
+		}
+		return datastore;
 	}
 
 	@SuppressWarnings({ "rawtypes", "deprecation" })
