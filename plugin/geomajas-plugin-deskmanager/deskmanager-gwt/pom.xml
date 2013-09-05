@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-plugin-deskmanager-all</artifactId>
-		<version>1.0.0-M8</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>geomajas-plugin-deskmanager-gwt</artifactId>
