@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-geotools-documentation</artifactId>
-	<version>1.12.0-SNAPSHOT</version>
+	<version>1.11.2</version>
 	<packaging>jar</packaging>
 	<name>Geomajas GeoTools layer documentation</name>
 	<description>Geomajas GeoTools layer documentation</description>
@@ -26,4 +26,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.11.2/geomajas-layer-geotools-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.11.2/geomajas-layer-geotools-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-geotools-all-1.11.2/geomajas-layer-geotools-documentation</url>
+  </scm>
 </project>
