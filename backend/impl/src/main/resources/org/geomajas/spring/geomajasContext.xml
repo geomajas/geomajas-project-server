@@ -319,33 +319,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- @extract-end -->
 
 	<bean class="org.geomajas.global.CrsInfo">
-		<property name="key" value="EPSG:3857" />
-		<property name="crsWkt">
-			<value>
-				PROJCS["WGS 84 / Pseudo-Mercator",
-				GEOGCS["WGS 84",
-				DATUM["World Geodetic System 1984",
-				SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
-				AUTHORITY["EPSG","6326"]],
-				PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
-				UNIT["degree", 0.017453292519943295],
-				AXIS["Geodetic latitude", NORTH],
-				AXIS["Geodetic longitude", EAST],
-				AUTHORITY["EPSG","4326"]],
-				PROJECTION["Popular Visualisation Pseudo Mercator", AUTHORITY["EPSG","1024"]],
-				PARAMETER["Latitude of natural origin", 0.0],
-				PARAMETER["Longitude of natural origin", 0.0],
-				PARAMETER["False easting", 0.0],
-				PARAMETER["False northing", 0.0],
-				UNIT["metre", 1.0],
-				AXIS["Easting", EAST],
-				AXIS["Northing", NORTH],
-				AUTHORITY["EPSG","3857"]]
-			</value>
-		</property>
-	</bean>
-
-	<bean class="org.geomajas.global.CrsInfo">
 		<property name="key" value="EPSG:31300" />
 		<property name="crsWkt">
 			<value>
