@@ -244,11 +244,11 @@
 	</dependencyManagement>
 
 	<properties>
-		<gdm-backend-version>1.14.0-SNAPSHOT</gdm-backend-version>
+		<gdm-backend-version>1.13.2</gdm-backend-version>
 		<gdm-gwt-version>1.14.0</gdm-gwt-version>
 		<gdm-sldeditor-version>1.0.0-M1</gdm-sldeditor-version>
 		<gdm-geotools-version>9.5</gdm-geotools-version>
-		<gdm-plugin-geotools-version>1.12.0-SNAPSHOT</gdm-plugin-geotools-version>
+		<gdm-plugin-geotools-version>1.11.2</gdm-plugin-geotools-version>
 		<gdm-plugin-wms-version>1.11.0</gdm-plugin-wms-version>
 		<gdm-plugin-runtimeconfig-version>1.0.0-M2</gdm-plugin-runtimeconfig-version>
 		<gdm-plugin-hibernate-version>1.11.0</gdm-plugin-hibernate-version>
