@@ -90,7 +90,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 							<property name="strokeWidth" value="5" />
 						</bean>
 					</property>
-					<property name="crs" value="EPSG:31370" />
+					<property name="crs" ref="applicationCrs" />
 					<property name="scaleBarEnabled" value="true" />
 					<property name="panButtonsEnabled" value="false" />
 					<property name="scaleConfiguration" ref="scaleConfiguration" />
@@ -107,7 +107,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="id" value="overviewMap" />
 					<property name="backgroundColor" value="#FFFFFF" />
 
-					<property name="crs" value="EPSG:900913" />
+					<property name="crs" ref="applicationCrs" />
 					<property name="scaleBarEnabled" value="false" />
 					<property name="panButtonsEnabled" value="false" />
 					<property name="maximumScale" value="10000000" />

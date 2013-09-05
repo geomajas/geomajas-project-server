@@ -59,16 +59,6 @@ public class ShapeFileServiceTest {
 	public void testCrsTransform() {
 		MathTransform mt = null;
 		try {
-			mt = CRS.findMathTransform(geoService.getCrs2("EPSG:3857"), geoService.getCrs2("EPSG:31370"));
-		} catch (FactoryException e) {
-			e.printStackTrace();
-		} catch (LayerException e) {
-			e.printStackTrace();
-		}
-		Assert.assertNotNull(mt);
-		mt = null;
-
-		try {
 			mt = CRS.findMathTransform(geoService.getCrs2("EPSG:31370"), geoService.getCrs2("EPSG:31370"));
 		} catch (FactoryException e) {
 			e.printStackTrace();

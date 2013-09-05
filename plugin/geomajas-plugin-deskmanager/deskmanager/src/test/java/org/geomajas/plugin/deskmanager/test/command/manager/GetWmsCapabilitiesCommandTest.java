@@ -109,6 +109,8 @@ public class GetWmsCapabilitiesCommandTest {
 		GetWmsCapabilitiesResponse response = (GetWmsCapabilitiesResponse) dispatcher
 				.execute(GetWmsCapabilitiesRequest.COMMAND, request, userToken, "en");
 
+		Assert.assertTrue(response.getErrors().isEmpty());
+		Assert.assertTrue(response.getErrorMessages().isEmpty());
 		Assert.assertEquals(defaultGeodesk.getMaps().get(0).getCrs(), response.getDefaultCrs());
 	}
 	

@@ -6,6 +6,10 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean name="applicationCrs" class="java.lang.String">
+		<constructor-arg value="EPSG:3857"/>
+	</bean>
+
 	<bean name="worldExtents" class="org.geomajas.geometry.Bbox">
 		<property name="x" value="-20026376.393709917" />
 		<property name="y" value="-20026376.393709917" />
