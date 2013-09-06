@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.wmsclient.printing.server.layer;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,17 +23,23 @@ import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
+import org.geomajas.service.DispatcherUrlService;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * This factory creates a GeoTools layer that is capable of rendering WMS layers.
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
  */
 @Component
 public class WmsLayerFactory implements LayerFactory {
+	@Autowired
+	private DispatcherUrlService dispatcherUrlService;
+
 
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof WmsClientLayerInfo;
@@ -46,6 +54,14 @@ public class WmsLayerFactory implements LayerFactory {
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		List<RasterTile> tiles = rasterInfo.getTiles();
+		
+		for (RasterTile rasterTile : tiles) {
+			if (null != rasterTile.getUrl() && !rasterTile.getUrl().isEmpty()) {
+				rasterTile.setUrl(calculateUrl(rasterTile.getUrl()));				
+			}
+		}
+
+		
 		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, rasterInfo.getTileHeight(),
 				rasterInfo.getTileWidth(), rasterInfo.getScale(), extraInfo.getCssStyle());
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
@@ -60,6 +76,36 @@ public class WmsLayerFactory implements LayerFactory {
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
+	}
+	
+	private String calculateUrl(String urlAsString) {
+		
+		URL absoluteUrl = null;
+
+		if (!urlAsString.startsWith("http:") && !urlAsString.startsWith("https:")) {
+
+			try {
+				String baseUrlAsString = dispatcherUrlService.getLocalDispatcherUrl();
+				
+				URL baseUrl = new URL(baseUrlAsString);
+				absoluteUrl = new URL(baseUrl, "../" + urlAsString);
+				
+			} catch (MalformedURLException e) {
+				// Should never happen...
+				//log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				absoluteUrl = new URL(urlAsString);
+			} catch (MalformedURLException e) {
+				// Should never happen...
+				//log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
+				e.printStackTrace();
+			}
+		}
+		
+		return absoluteUrl.toExternalForm();
 	}
 
 }
