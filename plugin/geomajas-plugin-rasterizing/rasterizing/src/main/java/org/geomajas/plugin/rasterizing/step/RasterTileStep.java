@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
@@ -78,14 +79,15 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		context.put(RasterizingPipelineCode.CONTAINER_KEY, rasterizingContainer);
 	}
 
-	private byte[] renderMap(ClientMapInfo mapInfo) {
+	private byte[] renderMap(ClientMapInfo mapInfo) throws GeomajasException {
 		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(1024 * 10);
 		try {
 			imageService.writeMap(imageStream, mapInfo);
 			recorder.record(CacheCategory.RASTER, "Rasterization success");
 		} catch (Exception ex) { // NOSONAR
 			recorder.record(CacheCategory.RASTER, "Rasterization failed");
-			log.error("Problem while rasterizing tile, image will be zero-length.", ex);
+			log.error("Problem while rasterizing tile, no image will be returned.", ex);
+			throw new GeomajasException(ExceptionCode.LAYER_MODEL_IO_EXCEPTION, ex);
 		}
 
 		return imageStream.toByteArray();
