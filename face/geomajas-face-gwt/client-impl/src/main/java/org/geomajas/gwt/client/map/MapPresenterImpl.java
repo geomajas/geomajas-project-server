@@ -65,6 +65,7 @@ import org.geomajas.gwt.client.widget.control.zoom.ZoomControl;
 import org.geomajas.gwt.client.widget.control.zoomtorect.ZoomToRectangleControl;
 import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.VectorObject;
+import org.vaadin.gwtgraphics.client.shape.Circle;
 
 import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -628,12 +629,20 @@ public final class MapPresenterImpl implements MapPresenter {
 			VectorObject shape = gfxUtil.toShape(f.getGeometry());
 			String type = f.getGeometry().getGeometryType();
 			if (Geometry.POINT.equals(type) || Geometry.MULTI_POINT.equals(type)) {
+				
+				// if no radius is defined in symbol circle it will be default 5px
+				if (shape instanceof Circle && null != pointStyle.getSymbol()
+						&& null != pointStyle.getSymbol().getCircle()) {
+					((Circle) shape).setUserRadius(pointStyle.getSymbol().getCircle().getR());
+				}
+				
 				gfxUtil.applyStroke(shape, pointStyle.getStrokeColor(), pointStyle.getStrokeOpacity(),
 						pointStyle.getStrokeWidth(), pointStyle.getDashArray());
 				gfxUtil.applyFill(shape, pointStyle.getFillColor(), pointStyle.getFillOpacity());
 			} else if (Geometry.LINE_STRING.equals(type) || Geometry.MULTI_LINE_STRING.equals(type)) {
 				gfxUtil.applyStroke(shape, lineStyle.getStrokeColor(), lineStyle.getStrokeOpacity(),
 						lineStyle.getStrokeWidth(), lineStyle.getDashArray());
+				gfxUtil.applyFill(shape, lineStyle.getFillColor(), lineStyle.getFillOpacity());
 			} else {
 				gfxUtil.applyStroke(shape, ringStyle.getStrokeColor(), ringStyle.getStrokeOpacity(),
 						ringStyle.getStrokeWidth(), ringStyle.getDashArray());
