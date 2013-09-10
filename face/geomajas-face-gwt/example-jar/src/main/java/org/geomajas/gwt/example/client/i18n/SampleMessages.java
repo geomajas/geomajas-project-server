@@ -151,4 +151,10 @@ public interface SampleMessages extends Messages {
 	String renderingCanvasShort();
 
 	String renderingCanvasDescription();
+
+	String markerPanelTitle();
+
+	String markerPanelShort();
+
+	String markerPanelDescription();
 }

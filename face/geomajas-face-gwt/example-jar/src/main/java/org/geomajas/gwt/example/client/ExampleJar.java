@@ -33,6 +33,7 @@ import org.geomajas.gwt.example.client.sample.listener.ListenerPanel;
 import org.geomajas.gwt.example.client.sample.rendering.CanvasRenderingPanel;
 import org.geomajas.gwt.example.client.sample.rendering.DrawingInteractionPanel;
 import org.geomajas.gwt.example.client.sample.rendering.FixedSizeWorldSpaceRenderingPanel;
+import org.geomajas.gwt.example.client.sample.rendering.HtmlMarkerPanel;
 import org.geomajas.gwt.example.client.sample.rendering.ScreenSpaceRenderingPanel;
 import org.geomajas.gwt.example.client.sample.rendering.WorldSpaceRenderingPanel;
 
@@ -411,6 +412,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.renderingWorldSpaceDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_RENDERING;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new HtmlMarkerPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.markerPanelTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.markerPanelShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.markerPanelDescription();
 			}
 
 			public String getCategory() {

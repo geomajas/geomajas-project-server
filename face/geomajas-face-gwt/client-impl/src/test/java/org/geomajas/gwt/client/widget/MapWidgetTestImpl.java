@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.geomajas.gwt.client.gfx.CanvasContainer;
 import org.geomajas.gwt.client.gfx.HtmlContainer;
+import org.geomajas.gwt.client.gfx.TransformableWidget;
+import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.map.MapPresenterImpl.MapWidget;
 import org.vaadin.gwtgraphics.client.Transformable;
@@ -225,4 +227,19 @@ public class MapWidgetTestImpl implements MapWidget {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public TransformableWidgetContainer getNewWorldWidgetContainer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean removeWorldWidgetContainer(TransformableWidgetContainer container) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	
 }

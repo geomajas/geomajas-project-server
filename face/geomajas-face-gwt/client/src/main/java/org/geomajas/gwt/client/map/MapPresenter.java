@@ -17,6 +17,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.controller.MapController;
 import org.geomajas.gwt.client.gfx.CanvasContainer;
+import org.geomajas.gwt.client.gfx.TransformableWidget;
+import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.map.feature.FeatureService;
 import org.geomajas.gwt.client.map.layer.LayersModel;
@@ -78,6 +80,19 @@ public interface MapPresenter extends IsWidget {
 	 * @return Returns the world vector container.
 	 */
 	VectorContainer addWorldContainer();
+	
+	/**
+	 * <p>
+	 * Create a new container in world space to which one can add transformable widgets and return it. Note that all
+	 * objects drawn into such a container should be expressed in world coordinates (the CRS of the map). These objects
+	 * will also be automatically redrawn when the view port on the map changes.<br/>
+	 * New containers are automatically drawn on top of all other containers - that includes both world and screen
+	 * containers and vector object containers.
+	 * </p>
+	 * 
+	 * @return Returns the world widget container.
+	 */
+	TransformableWidgetContainer addWorldWidgetContainer();
 
 	/**
 	 * <p>
@@ -111,6 +126,14 @@ public interface MapPresenter extends IsWidget {
 	 * @return Was the removal successful or not?
 	 */
 	boolean removeVectorContainer(VectorContainer container);
+
+	/**
+	 * Remove an existing widget container from the map.
+	 * 
+	 * @param container The identifier of the container. If no such container exists, false will be returned.
+	 * @return Was the removal successful or not?
+	 */
+	boolean removeWorldWidgetContainer(TransformableWidgetContainer container);
 
 	/**
 	 * Bring an existing vector container to the front. This container must be a registered world or screen container.

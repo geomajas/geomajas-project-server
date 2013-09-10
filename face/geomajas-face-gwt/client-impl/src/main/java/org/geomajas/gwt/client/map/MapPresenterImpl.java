@@ -50,6 +50,8 @@ import org.geomajas.gwt.client.event.ViewPortTranslatingEvent;
 import org.geomajas.gwt.client.gfx.CanvasContainer;
 import org.geomajas.gwt.client.gfx.GfxUtil;
 import org.geomajas.gwt.client.gfx.HtmlContainer;
+import org.geomajas.gwt.client.gfx.TransformableWidget;
+import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureService;
@@ -148,14 +150,29 @@ public final class MapPresenterImpl implements MapPresenter {
 		 */
 		VectorContainer getNewWorldContainer();
 
+
+		/**
+		 * Returns a new user-defined container for world space widgets.
+		 * 
+		 * @return the container
+		 */
+		TransformableWidgetContainer getNewWorldWidgetContainer();
+
 		/**
 		 * Removes a user-defined container.
 		 * 
-		 * @param container
-		 *            container
+		 * @param container container
 		 * @return true if removed, false if unknown
 		 */
 		boolean removeVectorContainer(VectorContainer container);
+
+		/**
+		 * Removes a user-defined container.
+		 * 
+		 * @param container container
+		 * @return true if removed, false if unknown
+		 */
+		boolean removeWorldWidgetContainer(TransformableWidgetContainer container);
 
 		/**
 		 * Brings the user-defined container to the front (relative to its world-space or screen-space peers!).
@@ -376,6 +393,16 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	@Override
+	public TransformableWidgetContainer addWorldWidgetContainer() {
+		TransformableWidgetContainer container = display.getNewWorldWidgetContainer();
+		// set transform parameters once, after that all is handled by WorldContainerRenderer
+		Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+		container.setScale(matrix.getXx(), matrix.getYy());
+		container.setTranslation(matrix.getDx(), matrix.getDy());
+		return container;
+	}
+
+	@Override
 	public CanvasContainer addWorldCanvas() {
 		CanvasContainer container = display.getNewWorldCanvas();
 		// set transform parameters once, after that all is handled by WorldContainerRenderer
@@ -388,6 +415,11 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Override
 	public VectorContainer addScreenContainer() {
 		return display.getNewScreenContainer();
+	}
+
+	@Override
+	public boolean removeWorldWidgetContainer(TransformableWidgetContainer container) {
+		return display.removeWorldWidgetContainer(container);
 	}
 
 	@Override

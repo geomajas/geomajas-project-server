@@ -18,6 +18,9 @@ import org.geomajas.gwt.client.gfx.CanvasContainer;
 import org.geomajas.gwt.client.gfx.CanvasContainerImpl;
 import org.geomajas.gwt.client.gfx.HtmlContainer;
 import org.geomajas.gwt.client.gfx.HtmlGroup;
+import org.geomajas.gwt.client.gfx.TransformableWidget;
+import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
+import org.geomajas.gwt.client.gfx.TransformableWidgetContainerImpl;
 import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.gfx.VectorGroup;
 import org.geomajas.gwt.client.map.MapPresenterImpl.MapWidget;
@@ -58,6 +61,7 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -95,6 +99,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// Parent container for all canvases:
 	private AbsolutePanel canvasPanel;
+	
+	// Parent container for all transformable widget containers
+	private FlowPanel widgetPanel;
 
 	// List of all screen containers:
 	private List<VectorContainer> screenContainers = new ArrayList<VectorContainer>();
@@ -104,6 +111,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// List of all world canvas containers:
 	private List<CanvasContainer> worldCanvases = new ArrayList<CanvasContainer>();
+
+	// List of all widget containers:
+	private List<TransformableWidgetContainer> widgetContainers = new ArrayList<TransformableWidgetContainer>();
 
 	// List of all world transformables (canvas + vector):
 	private List<Transformable> worldTransformables = new ArrayList<Transformable>();
@@ -133,6 +143,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
 		drawingArea.add(layerVectorContainer);
+		
+		widgetPanel = new FlowPanel();
+		add(widgetPanel, 0, 0);
 
 		// Firefox and Chrome allow for DnD of images. This default behavior is not wanted.
 		addMouseDownHandler(new MouseDownHandler() {
@@ -208,6 +221,15 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		worldTransformables.add(container);
 		return container;
 	}
+	
+	@Override
+	public TransformableWidgetContainer getNewWorldWidgetContainer() {
+		TransformableWidgetContainerImpl container = new TransformableWidgetContainerImpl();
+		widgetPanel.add(container);
+		widgetContainers.add(container);
+		worldTransformables.add(container);
+		return container;
+	}
 
 	@Override
 	public boolean removeVectorContainer(VectorContainer container) {
@@ -222,6 +244,19 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 				screenContainers.remove(container);
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	
+
+	@Override
+	public boolean removeWorldWidgetContainer(TransformableWidgetContainer container) {
+		if (worldContainers.contains(container)) {
+			widgetPanel.remove(container);
+			widgetContainers.remove(container);
+			worldTransformables.remove(container);
+			return true;
 		}
 		return false;
 	}
