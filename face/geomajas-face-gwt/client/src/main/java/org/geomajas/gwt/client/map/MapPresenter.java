@@ -17,7 +17,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.controller.MapController;
 import org.geomajas.gwt.client.gfx.CanvasContainer;
-import org.geomajas.gwt.client.gfx.TransformableWidget;
 import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.map.feature.FeatureService;
