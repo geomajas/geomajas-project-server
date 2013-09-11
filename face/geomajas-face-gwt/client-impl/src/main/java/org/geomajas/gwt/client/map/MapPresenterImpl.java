@@ -50,7 +50,6 @@ import org.geomajas.gwt.client.event.ViewPortTranslatingEvent;
 import org.geomajas.gwt.client.gfx.CanvasContainer;
 import org.geomajas.gwt.client.gfx.GfxUtil;
 import org.geomajas.gwt.client.gfx.HtmlContainer;
-import org.geomajas.gwt.client.gfx.TransformableWidget;
 import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.gfx.VectorContainer;
 import org.geomajas.gwt.client.map.feature.Feature;

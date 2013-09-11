@@ -18,7 +18,6 @@ import org.geomajas.gwt.client.gfx.CanvasContainer;
 import org.geomajas.gwt.client.gfx.CanvasContainerImpl;
 import org.geomajas.gwt.client.gfx.HtmlContainer;
 import org.geomajas.gwt.client.gfx.HtmlGroup;
-import org.geomajas.gwt.client.gfx.TransformableWidget;
 import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.gfx.TransformableWidgetContainerImpl;
 import org.geomajas.gwt.client.gfx.VectorContainer;

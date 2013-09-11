@@ -13,6 +13,7 @@ package org.geomajas.gwt.example.client.sample.rendering;
 
 import org.geomajas.gwt.client.event.MapInitializationEvent;
 import org.geomajas.gwt.client.event.MapInitializationHandler;
+import org.geomajas.gwt.client.gfx.AbstractTransformableWidget;
 import org.geomajas.gwt.client.gfx.TransformableWidget;
 import org.geomajas.gwt.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt.client.map.MapPresenter;
@@ -23,6 +24,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -53,7 +55,7 @@ public class HtmlMarkerPanel implements SamplePanel {
 
 	private TransformableWidgetContainer container;
 
-	static MarkerImageResources resources = GWT.create(MarkerImageResources.class);
+	private static MarkerImageResources resources = GWT.create(MarkerImageResources.class);
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -81,7 +83,7 @@ public class HtmlMarkerPanel implements SamplePanel {
 		for (int i = 0; i < 20; i++) {
 			double userX = Random.nextDouble() * 40000000 - 20000000;
 			double userY = Random.nextDouble() * 40000000 - 20000000;
-			Marker1 marker1 = new Marker1(userX, userY);
+			Marker1 marker1 = new Marker1(resources.marker1(), userX, userY, 16, 32);
 			container.add(marker1);
 		}
 	}
@@ -103,55 +105,37 @@ public class HtmlMarkerPanel implements SamplePanel {
 		}
 	}
 
-	private class Marker1 extends Image implements TransformableWidget {
+	/**
+	 * A simple image-based marker.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class Marker1 extends AbstractTransformableWidget implements TransformableWidget {
 
-		private double userX;
+		private Image image;
 
-		private double userY;
+		private int anchorX;
 
-		private double deltaX;
+		private int anchorY;
 
-		private double deltaY;
-
-		private double scaleX;
-
-		private double scaleY;
-
-		public Marker1(double userX, double userY) {
-			super(resources.marker1());
-			getElement().getStyle().setPosition(Position.ABSOLUTE);
-			this.userX = userX;
-			this.userY = userY;
+		public Marker1(ImageResource url, double x, double y, int anchorX, int anchorY) {
+			super(x, y);
+			this.anchorX = anchorX;
+			this.anchorY = anchorY;
+			image = new Image(url);
+			image.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		}
 
 		@Override
-		public void setTranslation(double deltaX, double deltaY) {
-			this.deltaX = deltaX;
-			this.deltaY = deltaY;
-			render();
+		public Widget asWidget() {
+			return image;
 		}
 
 		@Override
-		public void setScale(double scaleX, double scaleY) {
-			this.scaleX = scaleX;
-			this.scaleY = scaleY;
-			render();
-		}
-
-		@Override
-		public void setFixedSize(boolean fixedSize) {
-		}
-
-		@Override
-		public boolean isFixedSize() {
-			return true;
-		}
-
-		private void render() {
-			double left = userX * scaleX + deltaX;
-			double top = userY * scaleY + deltaY;
-			getElement().getStyle().setLeft(left - 16, Unit.PX);
-			getElement().getStyle().setTop(top - 32, Unit.PX);
+		protected void setScreenPosition(double left, double top) {
+			image.getElement().getStyle().setLeft(left - anchorX, Unit.PX);
+			image.getElement().getStyle().setTop(top - anchorY, Unit.PX);
 		}
 
 	}
