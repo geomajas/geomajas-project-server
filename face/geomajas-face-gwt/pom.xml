@@ -206,6 +206,6 @@
 		<gwt-face-rasterizing-version>1.2.0</gwt-face-rasterizing-version>
 		<gwt-face-common-gwt-version>1.4.0</gwt-face-common-gwt-version>
 		<gwt-face-gwt-version>2.5.0</gwt-face-gwt-version>
-		<gwt-face-gwt-graphics-version>1.0.0.TX10</gwt-face-gwt-graphics-version>
+		<gwt-face-gwt-graphics-version>1.0.0.TX11</gwt-face-gwt-graphics-version>
 	</properties>
 </project>

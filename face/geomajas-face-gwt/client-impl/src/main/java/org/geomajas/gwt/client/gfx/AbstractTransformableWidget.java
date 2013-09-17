@@ -12,6 +12,9 @@ package org.geomajas.gwt.client.gfx;
 
 import org.geomajas.geometry.Coordinate;
 
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
+
 /**
  * Base class for {@link TransformableWidget} implementations. Subclasses should implement
  * {@link #setScreenPosition(double, double)} to position their widget on the map when scaling/panning occurs. The
@@ -34,21 +37,30 @@ public abstract class AbstractTransformableWidget implements TransformableWidget
 	private double scaleY;
 
 	private boolean fixedSize = true;
+	
+	private IsWidget widget;
 
-	protected AbstractTransformableWidget(double x, double y) {
-		this(new Coordinate(x, y));
+	protected AbstractTransformableWidget(IsWidget widget, double x, double y) {
+		this(widget, new Coordinate(x, y));
 	}
 
-	protected AbstractTransformableWidget(Coordinate worldPosition) {
+	protected AbstractTransformableWidget(IsWidget widget, Coordinate worldPosition) {
+		this.widget = widget;
 		setWorldPosition(worldPosition);
 	}
 
 	protected void setWorldPosition(Coordinate worldPosition) {
 		this.worldPosition = (Coordinate) worldPosition.clone();
+		render();
 	}
 
 	public Coordinate getWorldPosition() {
 		return worldPosition;
+	}
+
+	@Override
+	public Widget asWidget() {
+		return widget.asWidget();
 	}
 
 	@Override

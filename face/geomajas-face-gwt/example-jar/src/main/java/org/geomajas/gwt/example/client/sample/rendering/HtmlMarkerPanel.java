@@ -113,29 +113,21 @@ public class HtmlMarkerPanel implements SamplePanel {
 	 */
 	private class Marker1 extends AbstractTransformableWidget implements TransformableWidget {
 
-		private Image image;
-
 		private int anchorX;
 
 		private int anchorY;
 
 		public Marker1(ImageResource url, double x, double y, int anchorX, int anchorY) {
-			super(x, y);
+			super(new Image(url), x, y);
 			this.anchorX = anchorX;
 			this.anchorY = anchorY;
-			image = new Image(url);
-			image.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		}
-
-		@Override
-		public Widget asWidget() {
-			return image;
+			asWidget().getElement().getStyle().setPosition(Position.ABSOLUTE);
 		}
 
 		@Override
 		protected void setScreenPosition(double left, double top) {
-			image.getElement().getStyle().setLeft(left - anchorX, Unit.PX);
-			image.getElement().getStyle().setTop(top - anchorY, Unit.PX);
+			asWidget().getElement().getStyle().setLeft(left - anchorX, Unit.PX);
+			asWidget().getElement().getStyle().setTop(top - anchorY, Unit.PX);
 		}
 
 	}
