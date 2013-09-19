@@ -38,21 +38,21 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.12.0</version>
+				<version>1.13.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-common-gwt-all</artifactId>
-				<version>1.2.0</version>
+				<version>1.4.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.12.0</version>
+				<version>1.14.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -66,14 +66,14 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-geometry-all</artifactId>
-				<version>1.0.0</version>
+				<version>1.1.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-sld-all</artifactId>
-				<version>1.1.0</version>
+				<version>1.2.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -87,42 +87,35 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.10.0</version>
+				<version>1.11.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-google-all</artifactId>
-				<version>2.0.0</version>
+				<version>2.1.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-hibernate-all</artifactId>
-				<version>1.10.0</version>
+				<version>1.11.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
-				<version>1.9.0</version>
+				<version>1.10.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.10.1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.10.1</version>
+				<version>1.11.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -143,7 +136,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
-				<version>1.1.0</version>
+				<version>1.2.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -161,21 +154,21 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!-- no stable release yet
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-tms-all</artifactId>
-				<version>1.1.0-M1</version>
+				<version>1.1.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-layer-common-all</artifactId>
-				<version>1.0.0-M1</version>
+				<version>1.0.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- no stable release yet
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-widget-utility-all</artifactId>
@@ -303,7 +296,7 @@
 
 	<properties>
 		<gwt-version>2.5.0</gwt-version>
-		<geotools-version>2.7.5</geotools-version>
+		<geotools-version>9.5</geotools-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<dojo-version>1.1.0</dojo-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
