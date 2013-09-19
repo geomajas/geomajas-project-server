@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.geomajas.project</groupId>
+		<artifactId>geomajas-project-graphics-all</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>geomajas-project-graphics-example</artifactId>
+	<packaging>war</packaging>
+	<name>Geomajas Graphics example</name>
+	<description>Geomajas Graphics example application</description>
+	<url>http://www.geomajas.org/</url>
+
+	<dependencies>
+		<!-- Geomajas dependencies -->
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-graphics</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-graphics</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		
+		<!-- GWT dependencies -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${graphics-gwt-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${graphics-gwt-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- logging dependencies, delegate all to slf4j and use logback -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>gwt-graphics</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${graphics-gwt-version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${graphics-gwt-version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${graphics-gwt-version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>false</disableClassMetadata>
+					<!--<logLevel>DEBUG</logLevel>-->
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
+					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<module>org.geomajas.project.graphics.example.Example</module>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
+				</configuration>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+						<baseResource implementation="org.mortbay.resource.ResourceCollection">
+							<!-- need both the webapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+						</baseResource>
+					</webAppConfig>
+					<reload>manual</reload>
+				</configuration>
+			</plugin>
+
+			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/webapp/example</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.2.1</version>
+
+				<configuration>
+
+					<!-- Container configuration -->
+					<container>
+						<containerId>tomcat7x</containerId>
+						<type>remote</type>
+					</container>
+
+					<!-- Configuration to use with the container -->
+					<configuration>
+						<type>runtime</type>
+						<properties>
+							<cargo.remote.username>${dev.deploy.username}</cargo.remote.username>
+							<cargo.remote.password>${dev.deploy.password}</cargo.remote.password>
+							<cargo.remote.uri>${dev.deploy.uri}</cargo.remote.uri>
+						</properties>
+					</configuration>
+					<deployer>
+						<deployables>
+							<deployable>
+								<groupId>org.geomajas.project</groupId>
+								<artifactId>geomajas-project-graphics-example</artifactId>
+								<type>war</type>
+								<properties>
+									<context>graphics</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
+
+				</configuration>
+				<executions>
+					<execution>
+						<id>redeploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>redeploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- m2eclipse with embedded jetty -->
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.geomajas</groupId>
+					<artifactId>geomajas-jetty-runner</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+				<dependency>
+					<groupId>com.google.gwt</groupId>
+					<artifactId>gwt-dev</artifactId>
+					<version>${graphics-gwt-version}</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+				<gwt-version>${graphics-gwt-version}</gwt-version>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>skipGwt</id>
+			<activation>
+				<property>
+					<name>skipGwt</name>
+				</property>
+			</activation>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>selenium-tests</id>
+			<activation>
+				<property>
+					<name>!skipSelenium</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Run the application using "mvn jetty:run" -->
+					<plugin>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
+						<version>6.1.20</version>
+						<configuration>
+							<webAppConfig>
+								<contextPath>/</contextPath>
+							</webAppConfig>
+							<reload>manual</reload>
+							<stopPort>9966</stopPort>
+							<stopKey>stop-jetty</stopKey>
+						</configuration>
+						<executions>
+							<execution>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<daemon>true</daemon>
+									<scanIntervalSeconds>5</scanIntervalSeconds>
+									<connectors>
+										<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+											<port>9080</port>
+											<maxIdleTime>60000</maxIdleTime>
+										</connector>
+									</connectors>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-jetty</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<includes>
+										<include>**/*TestInt.java</include>
+										<include>**/IntTest*.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the Apache
+  ~ License, Version 2.0. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>The Geomajas graphics Project is a stand-alone project under the
+  Geomajas banner.</para>
+
+  <section>
+    <title>Purpose</title>
+
+    <para>The Geomajas Graphics project will provide drawing capabilities
+    (SVG, VML) in support of advanced client side redlining, annotation or
+    mark-ups. Basic use cases are dragging resizing, labeling, styling and
+    CRUD. The idea is to create a graphics library that does not necessarily
+    depend on the Geomajas client, but draws directly into SVG or VML. By
+    doing so we could create a general purpose graphics library that might be
+    useful outside Geomajas or even the GIS world as well. The project is will
+    therefore not depend on any a priori geographical constructs like
+    coordinate spaces or transformations. In Geomajas speak, the project
+    focusses on annotating objects in screen space, not in world space
+    (although the latter will emerge from world referencing the screen
+    objects, but this is considered a separate stage).</para>
+
+    <para>The idea is to support different types of annotations and
+    interaction mechanisms, some of which are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>graphical objects of varying nature, primarily based on what is
+        available in SVG: points/markers, rectangles, ellipses, paths, lines,
+        polygons, images, text</para>
+      </listitem>
+
+      <listitem>
+        <para>object attributes like color, font, line style, opacity</para>
+      </listitem>
+
+      <listitem>
+        <para>associations of text with objects, also known as labeling</para>
+      </listitem>
+
+      <listitem>
+        <para>specific objects like notes, callouts, popups</para>
+      </listitem>
+
+      <listitem>
+        <para>basic operations like adding, deleting, dragging, resizing,
+        moving back/front</para>
+      </listitem>
+
+      <listitem>
+        <para>advanced operations like styling, coordinate-by-coordinate
+        editing, uploading images, grouping</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The goal is to achieve the equivalent of typical drawing
+    applications like PowerPoint or OpenOffice Draw, etc... but with a focus
+    on annotating other objects (think geographical features or
+    imagery).</para>
+  </section>
+
+  <section>
+    <title>Relationship with other Geomajas projects</title>
+
+    <para>The project will of course smoothly integrate with the Geomajas
+    Client and, in combination with the Geometry Editing plug-in, you should
+    be able to reuse the intuïtive, yet powerful ways of changing the Path
+    (add/remove intermediate points, etc.). The following picture illustrates
+    the relationship of the Graphics project with other projects:</para>
+
+    <para><figure>
+        <title>Project interrelationship</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/projectview.png" width="75%" />
+          </imageobject>
+        </mediaobject>
+      </figure>The project depends on the GWT Graphics project for rendering
+    and the Geometry project for simple geometry concepts and geometrical
+    calculations. The Geomajas Editing plugin will be extended with an extra
+    module that hooks up the geometry editor to the graphical object
+    controller framework (see architecture), making sure that the Graphics
+    project itself stays light-weight and independent of the more complex
+    editing mechanisms defined by the Editing plugin.</para>
+  </section>
+
+  <section>
+    <title>Requirements for the first iteration</title>
+
+    <para>The initial version of the project will support the following object
+    types:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Rectangle</para>
+      </listitem>
+
+      <listitem>
+        <para>Ellipse (including circles)</para>
+      </listitem>
+
+      <listitem>
+        <para>Image</para>
+      </listitem>
+
+      <listitem>
+        <para>Path</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The following operations will be available:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Initial object creation</para>
+      </listitem>
+
+      <listitem>
+        <para>Dragging/resizing</para>
+      </listitem>
+
+      <listitem>
+        <para>Labeling</para>
+      </listitem>
+
+      <listitem>
+        <para>Deleting</para>
+      </listitem>
+
+      <listitem>
+        <para>Undo/redo</para>
+      </listitem>
+
+      <listitem>
+        <para>Moving objects back and front</para>
+      </listitem>
+
+      <listitem>
+        <para>Object selection</para>
+      </listitem>
+
+      <listitem>
+        <para>Object persistence: preferably standards, through SVG</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Basic concepts and architecture</title>
+
+    <para>A <code>GraphicsObject</code> is an object that can be rendered in a
+    <code>GraphicsObjectContainer</code>. The container supports
+    addition/removal and update of objects and sends out events on the
+    <code>EventBus</code> for each of these operations. The
+    GraphicsObjectContainer wraps the "physical"
+    <code>VectorObjectContainer</code> that implements the rendering of the
+    objects in SVG or VML.</para>
+
+    <para>A <code>GraphicsObject</code> supports different types of roles,
+    depending on the context and the operation that the object is subjected
+    to. The following roles can be distinguished: <code>Draggable</code>,
+    <code>Resizable</code>, <code>Fillable</code>, <code>Strokable</code>,
+    <code>Labeled</code> and so on. Possible <code>GraphicsObject</code>
+    implementations are <code>GRectangle</code>, <code>GEllipse</code>,
+    <code>GImage</code>, etc...Graphics objects usually do not directly
+    implement these roles but use role-composition instead, making them
+    dynamically extensible. Graphics objects can be rendered by supporting the
+    <code>Renderable</code> role.</para>
+
+    <figure>
+      <title>Graphical objects and roles</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/graphicsobject.png"
+                     width="75%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>A <code>GraphicsObjectController</code> is responsible for
+    interpreting user events and converting them into operations that will
+    eventually be applied to the graphics objects by the
+    <code>GraphicsService</code> (see further). The controller has access to
+    the <code>VectorObjectContainer</code> to render helper objects like
+    handlers (for resizing), drag lines (while creating a path) or drag masks
+    (while dragging) and can register for whatever mouse events or key events
+    it is interested in. Possible <code>GraphicsObjectController</code>
+    implementations are <code>DragAndResizeController</code>,
+    <code>DeleteController</code>, <code>EditGeometryController</code>,
+    <code>PropertyEditController</code>, etc...Controllers act on one object
+    only (controller-per-instance or a single controller for all instances
+    with varying object scope) and can be activated and deactivated.</para>
+
+    <para>Activation can be achieved by defining a special meta-controller
+    that activates the controller(s) for a specific object. Initially a
+    single-selection meta-controller that activates all controllers at once by
+    clicking on the object should be sufficient. All controllers that act on a
+    single object should be able to coexist. This implies that controllers do
+    not register for all <code>VectorObjectContainer</code> events but instead
+    delegate their work to specific helper objects like resize handlers, drag
+    masks or special icons (e.g. to activate a specific editor).</para>
+
+    <para>The <code>GraphicsService</code> is a manager class that manages the
+    <code>GraphicsObjectContainer</code>, instantiates the
+    <code>GraphicsObjectController</code> objects (and acts a registry for
+    their factories) and executes <code>GraphicsOperations</code> on the
+    <code>GraphicsObject</code> instances. A <code>GraphicsOperation</code> is
+    undoable and redoable by keeping sufficient information to restore the
+    object state to what it was before the operation.</para>
+
+    <figure>
+      <title>Graphics service and controllers</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/graphicsservice.png" width="75%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+</chapter>

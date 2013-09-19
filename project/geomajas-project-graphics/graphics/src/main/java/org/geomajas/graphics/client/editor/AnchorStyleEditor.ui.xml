@@ -1,0 +1,87 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:w="urn:import:org.geomajas.graphics.client.util.textbox"
+	xmlns:i="urn:import:org.geomajas.graphics.client.widget">
+
+	<g:HTMLPanel>
+		<table>
+			<tr class="strokeRow">
+				<td colspan="3" class="captionPopup">
+					<g:Label ui:field="strokeLabel"/>
+				</td>
+			</tr>
+			<tr class="strokeRow">
+				<td>
+					<g:Label>Width:</g:Label>
+				</td>
+				<td class="textBoxCell">
+					<w:TextBoxEditorDecorator ui:field="strokeWidthBoxDecorator">
+							<w:valuebox>
+								<g:TextBox ui:field="strokeWidthBox"/>
+							</w:valuebox>
+					</w:TextBoxEditorDecorator>
+				
+				</td>
+				<td></td>
+			</tr>
+			<tr class="strokeRow">
+				<td>
+					<g:Label>Color:</g:Label>
+				</td>
+				<td class="textBoxCell">
+					<g:TextBox ui:field="strokeColorBox"></g:TextBox>
+				</td>
+				<td>
+					<g:Button ui:field="strokeColorButton">...</g:Button>
+				</td>
+			</tr>
+			<tr class="opacityRow strokeRow">
+				<td>
+					<g:Label>Transparency:</g:Label>
+				</td>
+				<td colspan="2" class="transparencySliderCell">
+					<i:TransparencySliderBar ui:field="strokeOpacitySlider"></i:TransparencySliderBar>
+				</td>
+			</tr>
+			<tr class="pointRow strokeRow">
+				<td colspan="3" class="lineCell">
+				</td>
+			</tr>
+			<tr class="pointRow">
+				<td colspan="3" class="captionPopup">
+					<g:Label ui:field="pointLabel"/>
+				</td>
+			</tr>
+			<tr class="pointRow">
+				<td>
+					<g:Label>Position:</g:Label>
+				</td>
+				<td colspan="2">
+					X: <g:TextBox ui:field="pointPositionX"/>
+					Y: <g:TextBox ui:field="pointPositionY"/>
+				</td>
+			</tr>
+			<tr class="pointRow">
+				<td>
+					<g:Label>Color:</g:Label>
+				</td>
+				<td class="textBoxCell">
+					<g:TextBox ui:field="pointColorBox"></g:TextBox>
+				</td>
+				<td>
+					<g:Button ui:field="pointColorButton">...</g:Button>
+				</td>
+			</tr>
+			<tr class="opacityRow pointRow">
+				<td>
+					<g:Label>Transparency:</g:Label>
+				</td>
+				<td colspan="2" class="transparencySliderCell">
+					<i:TransparencySliderBar ui:field="pointOpacitySlider"></i:TransparencySliderBar>
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

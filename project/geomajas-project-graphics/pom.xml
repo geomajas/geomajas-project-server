@@ -1,0 +1,176 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the Apache
+  ~ License, Version 2.0. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-al-parent</artifactId>
+		<version>1.2.0</version>
+	</parent>
+
+	<groupId>org.geomajas.project</groupId>
+	<artifactId>geomajas-project-graphics-all</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Geomajas Graphics Project</name>
+	<description>
+		Geomajas Graphics project. The graphics project defines a set of interfaces and controllers for editing graphical objects based on gwt-graphics.
+		It can be used as a basis for annotations (based on SVG/VML elements) as well as to extend geometry editing with operations like dragging/resizing.
+
+		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
+		for the display, analysis and management of geographic information. It is a building block that allows
+		developers to add maps and other geographic data capabilities to their web applications.
+	</description>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-graphics</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-graphics</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/geomajas-project-graphics</url>
+	</scm>
+
+	<modules>
+		<module>graphics</module>
+		<module>example</module>
+		<module>documentation</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-geometry-all</artifactId>
+				<version>${graphics-geomajas-geometry-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.vaadin.addons</groupId>
+				<artifactId>gwt-graphics</artifactId>
+				<version>${graphics-gwt-graphics-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-api-annotation</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.sourceforge.findbugs</groupId>
+				<artifactId>annotations</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>4.2.2</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.7</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${graphics-gwt-version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-dev</artifactId>
+				<version>${graphics-gwt-version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-graphics</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-graphics</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>1.9.0</version>
+			</dependency>
+
+			<dependency>
+			  <groupId>com.mogaleaf</groupId>
+			  <artifactId>simplecolorpicker</artifactId>
+			  <version>1.0.1</version>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+
+	<properties>
+		<graphics-geomajas-geometry-version>1.1.0</graphics-geomajas-geometry-version>
+		<graphics-gwt-graphics-version>1.0.0.TX10</graphics-gwt-graphics-version>
+		<graphics-gwt-version>2.5.0</graphics-gwt-version>
+	</properties>
+
+</project>

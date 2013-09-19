@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the Apache
+  ~ License, Version 2.0. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <para>In order to use this project through Maven, use the following
+  dependency:</para>
+
+  <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.project&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-graphics&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+
+  <note>
+    <para>For those not using Maven, this project depends on the Geomajas
+    annotation project.</para>
+  </note>
+</chapter>

@@ -1,0 +1,7 @@
+<module>
+	<source path="geometry">
+		<exclude name="Crs.java"/>
+		<exclude name="CrsTransform.java"/>
+	</source>
+</module>
+	

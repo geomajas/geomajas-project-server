@@ -1,0 +1,8 @@
+Geomajas Geometry project
+Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+
+Copyright/license notices for dependent projects:
+
+JTS
+    licenseName: GNU Lesser General Public License
+    licenseUrl: http://www.gnu.org/licenses/lgpl.html

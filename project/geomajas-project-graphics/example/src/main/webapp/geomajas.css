@@ -1,0 +1,88 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+.sgwtTitle {
+    font-family: Arial,Verdana,tahoma,serif;
+    color: #454545;
+    font-size: 18px;
+}
+
+/*------------- ATTRIBUTE FORMS -------------*/
+
+.attributeForm .formTitle, .attributeForm .formCell,
+.attributeForm .formTitleFocused, .attributeForm .formCellFocused,
+.attributeForm .formTitleError, .attributeForm .formCellError,
+.attributeForm .formTitleDisabled, .attributeForm .formCellDisabled
+{
+	/* Style for the form TD's */
+	padding: 3px 10px;
+	border: 1px solid #EBEADB;
+	border-right-color: #D5CDB5;
+
+	background-color: #FFFFFF;
+}
+.attributeForm .formTitleError, .attributeForm .formCellError {
+	/* Style title texts on the left side */
+	font-weight: normal;
+	color: #C00000;
+}
+.attributeForm .formTitleDisabled, .attributeForm .formCellDisabled {
+	/* Style for the disabled forms */
+	color: #000000;
+}
+
+.attributeForm .textItemDisabled, .attributeForm .selectItemTextDisabled,
+.attributeForm .labelAnchorDisabled
+{
+	/* Style for the disabled forms */
+	border: 0;
+	padding-top: 4px;
+	color: #000000;
+}
+
+.attributeForm .formCellError div {
+	/* Style for error signs, when typing faulty data */
+	border: 0;
+	padding: 0;
+}
+
+.attributeForm table {
+	/* General style for the form table */
+	padding: 2px;
+}
+
+
+
+/*------------- SEARCH -------------*/
+
+.searchHeader {
+	height: 24px;
+	line-height: 24px;
+	padding: 0 5px;
+}
+
+.searchRow {
+	border-bottom: 1px solid lightgray;
+	height: 32px;
+	line-height: 32px;
+}
+
+
+
+
+/*------------- LOADING SCREEN -------------*/
+
+.loadingScreenLabel {
+	font-family: Arial,Verdana,tahoma,serif;
+	font-weight: normal;
+	font-size: 10px;
+	color: #FFFFFF;
+}

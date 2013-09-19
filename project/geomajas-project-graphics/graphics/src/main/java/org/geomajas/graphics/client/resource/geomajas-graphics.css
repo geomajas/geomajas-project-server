@@ -1,0 +1,214 @@
+/*---------------------------------------------------------------------------*/
+/*                        Dropdown popup menu                             	 */
+/*---------------------------------------------------------------------------*/
+
+@external .popupMenuItem;
+.popupMenuItem {
+	cursor: pointer;
+}
+
+@external .popupMenuItem:hover;
+.popupMenuItem:hover {
+	background-color:#EBEFF9;
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        General popup dialog                           	 */
+/*---------------------------------------------------------------------------*/
+@external .gwt-DialogBox .Caption;
+.gwt-DialogBox .Caption{
+	text-align : center;
+}
+
+@external .captionPopup;
+.captionPopup{
+	text-align : center;
+	margin-top: 10px;
+	font-weight:bold;
+	font-size:120%;
+	padding-top: 5px;
+}
+
+@external .popupWindow td;
+.popupWindow td{
+	padding-bottom:5px;
+}
+
+@external .popupWindow .opacityRow td;
+.popupWindow .opacityRow td{
+	padding-bottom:25px;
+	padding-top:5px;
+}
+
+@external .popupWindow .lineCell;
+.popupWindow .lineCell{
+	border-bottom:1px solid grey;
+}
+
+@external .popupWindow .textBoxCell;
+.popupWindow .textBoxCell {
+/* 	float:left; */
+	width: 150px;
+}
+
+@external .popupWindow .transparencySliderCell;
+.popupWindow .transparencySliderCell {
+	width: 220px;
+}
+
+@external .popup-buttons Button;
+.popup-buttons Button{
+	margin:5px;
+}
+
+@external .popup-buttons;
+.popup-buttons {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        Fill Stroke popup menu                           	 */
+/*---------------------------------------------------------------------------*/
+
+@external .strokeFillPopup-noFillParameters .fillRow;
+.strokeFillPopup-noFillParameters .fillRow{
+	display:none;
+}
+
+@external .strokeFillPopup-noStrokeParameters .strokeRow;
+.strokeFillPopup-noStrokeParameters .strokeRow{
+	display:none;
+}
+
+@external .strokeFillPopup;
+.strokeFillPopup{
+	text-align : right;
+}
+
+@external .strokeFillPopup .textBoxCell;
+.strokeFillPopup .textBoxCell {
+	padding:0px;
+}
+
+@external .strokeFillPopup Button;
+.strokeFillPopup Button{
+	float:left;
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        Anchor popup menu                           	 */
+/*---------------------------------------------------------------------------*/
+
+/* @external .anchorPointPopup TextBox; */
+/* .anchorPointPopup TextBox{ */
+/* 	width: 150px; */
+/* } */
+
+@external .anchorPointPopup .anchorPopupPositionTextBox;
+.anchorPointPopup .anchorPopupPositionTextBox{
+	width: 100px;
+	margin-right: 10px;
+}
+
+@external .anchorPointPopup Button;
+.popup-buttons Button{
+	float:left;
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        Icon Creation popup menu                         	 */
+/*---------------------------------------------------------------------------*/
+
+@external .iconCreationChoiceTable-noMarker .markerRow;
+.iconCreationChoiceTable-noMarker .markerRow{
+	display:none;
+}
+
+/*---------------------------------------------------------------------------*/
+/*                             SLIDER			                             */
+/*---------------------------------------------------------------------------*/
+
+@external .transparency-SliderBar-panel,.transparencySliderBarPanelSlider;
+.transparency-SliderBar-panel,.transparencySliderBarPanelSlider{
+	width: 200px;
+}
+
+@external .transparency-SliderBar-panel;
+.transparency-SliderBar-panel{
+	position: absolute;
+}
+
+@external .transparency-SliderBar-shell;
+.transparency-SliderBar-shell {
+	position: relative;
+	top: -10px;
+	left: 15px;
+	width: 90%;
+	heigt: 40px;
+}
+
+@external .transparency-SliderBar-line;
+.transparency-SliderBar-line {
+	cursor: pointer;
+	border-bottom: 1px solid #999999;
+	height: 1px;
+	overflow: hidden;
+	top: 30px;
+	width: 100%;
+	opacity: 0.8;
+}
+
+@external .transparency-SliderBar-knob;
+.transparency-SliderBar-knob {
+	top: 19px;
+	width: 11px;
+	height: 21px;
+	z-index: 1;
+	cursor: pointer;
+	background: no-repeat center center;
+	border: 0;
+}
+
+@external .transparency-SliderBar-tick;
+.transparency-SliderBar-tick {
+	cursor: pointer;
+	background: none repeat scroll 0 0 #999999;
+	height: 12px;
+	overflow: hidden;
+	top: 15px;
+	width: 1px;
+}
+
+@external .transparency-SliderBar-tick-disabled;
+.transparency-SliderBar-tick-disabled {
+	background: gray;
+}
+
+@external .transparency-SliderBar-label;
+.transparency-SliderBar-label {
+/* 	top: 2pt; */
+	font-size: 8pt;
+	cursor: default;
+}
+
+@external .transparency-SliderBar-shell .transparency-SliderBar-line-sliding;
+.transparency-SliderBar-shell .transparency-SliderBar-line-sliding {
+	cursor: pointer;
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        General popup dialog                           	 */
+/*---------------------------------------------------------------------------*/
+.iconsPanel {
+}
+
+.iconsPanel img {
+	margin: 5px;
+	cursor: pointer;
+}
+
+.iconsPanelSelectImage {
+	margin : 4px;
+	border: 1px solid #021a40;
+}

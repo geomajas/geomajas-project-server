@@ -1,0 +1,8 @@
+<module>
+	<inherits name='org.vaadin.gwtgraphics.GWTGraphics'/>
+	<inherits name='org.geomajas.Geometry'/>
+	<inherits name="com.mogaleaf.SimpleColorPicker"/>
+
+	<entry-point class="org.geomajas.graphics.client.Graphics" />
+</module>
+	
