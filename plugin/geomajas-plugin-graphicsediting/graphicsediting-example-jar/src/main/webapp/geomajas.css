@@ -1,0 +1,31 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+.banner {
+	font-size: 48px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: right;
+	line-height: 100px;
+	border-bottom: 1px solid #337428;
+	background-color: #337428;
+}
+
+.layer-block {
+	width: 100%;
+	margin-bottom: 5px;
+	background: #E6F6E6;
+	padding: 3px;
+	border: 1px solid #C0D6C0;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+	line-height: 24px;
+}
