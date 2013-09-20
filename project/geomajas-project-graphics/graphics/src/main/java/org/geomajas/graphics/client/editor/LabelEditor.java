@@ -10,6 +10,8 @@
  */
 package org.geomajas.graphics.client.editor;
 
+import org.geomajas.graphics.client.object.ExternalLabel;
+import org.geomajas.graphics.client.object.GText;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.TemplateLabeled;
@@ -117,7 +119,10 @@ public class LabelEditor implements Editor {
 
 	@Override
 	public boolean validate() {
-		if (labelBox.getText().isEmpty()) {
+		// only if renderable is labeled, there should always be text
+		// This is the case for GText
+		// TODO make more generic
+		if (object instanceof GText && !(object instanceof ExternalLabel)) {
 			return false;
 		}
 		return true;

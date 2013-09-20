@@ -164,7 +164,7 @@ public class LabelController extends AbstractGraphicsController implements Doubl
 
 	@Override
 	public void setVisible(boolean visible) {
-		// TODO?
+		getObject().asObject().setVisible(visible);
 	}
 
 }

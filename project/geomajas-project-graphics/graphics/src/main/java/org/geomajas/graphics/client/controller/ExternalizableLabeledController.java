@@ -94,6 +94,11 @@ public class ExternalizableLabeledController extends AbstractGraphicsController
 				setLabelExternal(externalizableLabel.isLabelExternal());
 			}
 		}
+		if (event.getOperation().getObject() == externalizableLabel.getExternalLabel()) {
+			if (event.getOperation() instanceof LabelOperation) {
+				setLabelProperties();
+			}
+		}
 	}
 	
 	private void setLabelProperties() {
@@ -102,6 +107,9 @@ public class ExternalizableLabeledController extends AbstractGraphicsController
 		externalizableLabel.setFontFamily(labeled.getFontFamily());
 		externalizableLabel.setFontSize(labeled.getFontSize());
 		externalizableLabel.setLabel(labeled.getLabel());
+		boolean visible = !labeled.getLabel().isEmpty();
+		((MetaController) getService().getMetaController()).
+			setControllersOfObjectVisible(externalizableLabel.getExternalLabel(), visible);
 	}
 	
 	public void setLabelExternal(boolean labelExternal) {

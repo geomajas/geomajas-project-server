@@ -99,16 +99,11 @@ public class CreateTextController extends AbstractGraphicsController implements 
 	}
 
 	protected GText createText(String text) {
-		GText result = new GText(0, 0, text);
-		result.addResizableBorderer();
-		result.setPosition(position);
-		result.setFontColor("black");
-		return result;
+		return CreateTextController.createTextDefault(text, position);
 	}
 	
 	public static GText createTextDefault(String text, Coordinate position) {
 		GText result = new GText(0, 0, text);
-		result.addResizableBorderer();
 		result.setPosition(position);
 		result.setFontColor("black");
 		return result;

@@ -72,7 +72,7 @@ public class GraphicsServiceImplTest {
 			Assert.assertEquals(result.get(i), m.getFlipState());
 		}
 		
-		for (int i = 4; i >= 0; i--) {
+		for (int i = 4; i >=0; i--) {
 			Assert.assertTrue(BboxService.equals(m.getUserBounds(), boxes.get(i), 0.0001));
 			Assert.assertEquals(result.get(i), m.getFlipState());
 			service.undo();

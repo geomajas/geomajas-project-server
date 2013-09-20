@@ -12,6 +12,7 @@ package org.geomajas.graphics.client.object.labeler;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.ExternalLabel;
+import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.object.ResizableAwareRole;
 import org.geomajas.graphics.client.object.anchor.AnchoredTo;
@@ -37,13 +38,16 @@ public class ResizableExternalizableLabeler extends ResizableLabeler implements 
 	private boolean showLabelExternal;
 
 	private ExternalLabel externalTextObject;
+	
+	private GraphicsObject masterObject;
 
 	public ResizableExternalizableLabeler() {
-		this(null, false);
+		this(null, null, false);
 	}
 
-	public ResizableExternalizableLabeler(String label, boolean showLabelExternal) {
+	public ResizableExternalizableLabeler(GraphicsObject masterObject, String label, boolean showLabelExternal) {
 		super(label);
+		this.masterObject = masterObject;
 		this.showLabelExternal = showLabelExternal;
 		externalTextObject = new ExternalLabel(this);
 	}
@@ -120,8 +124,8 @@ public class ResizableExternalizableLabeler extends ResizableLabeler implements 
 	}
 	
 	@Override
-	public Resizable getMasterObject() {
-		return getResizabel();
+	public GraphicsObject getMasterObject() {
+		return masterObject;
 	}
 
 	@Override

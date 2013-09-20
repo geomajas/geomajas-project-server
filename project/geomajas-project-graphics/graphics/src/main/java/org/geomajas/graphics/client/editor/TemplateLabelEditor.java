@@ -18,6 +18,8 @@ import org.geomajas.graphics.client.operation.LabelOperation;
 
 /**
  * {@link Editor} for the {@link TemplateLabeled} role.
+ * This will be supported by both the object that has the role,
+ * as an external label that is associated with that object.s
  * 
  * @author Jan De Moerloose
  * 
@@ -34,13 +36,8 @@ public class TemplateLabelEditor extends LabelEditor {
 
 	@Override
 	public void setObject(GraphicsObject object) {
-		if (object instanceof ExternalLabel) {
-			TemplateLabeled templLabeled = ((TemplateLabeled) ((ExternalLabel) object).getExternalizableLabeled());
-			this.object = (GraphicsObject) templLabeled.getMasterObject();
-		} else {
-			this.object = object;
-		}
-		TemplateLabeled label = (TemplateLabeled) this.object.getRole(Labeled.TYPE);
+		this.object = object;
+		Labeled label = getTemplateLabeled();
 		labelBox.setText(label.getLabel());
 		fillColorBox.setText(label.getFontColor());
 		fontSize.setText(label.getFontSize()  + "");
@@ -49,7 +46,7 @@ public class TemplateLabelEditor extends LabelEditor {
 	}
 	
 	public void onOk() {
-		TemplateLabeled label = (TemplateLabeled) this.object.getRole(Labeled.TYPE);
+		TemplateLabeled label = getTemplateLabeled();
 		String beforeLabelTemplateText = label.getLabelTemplateText();
 		String beforeColor = label.getFontColor();
 		int beforeSize = label.getFontSize();
@@ -62,5 +59,18 @@ public class TemplateLabelEditor extends LabelEditor {
 	@Override
 	public String getLabel() {
 		return "Edit template text";
+	}
+	
+	private TemplateLabeled getTemplateLabeled() {
+		Labeled label;
+		if (object instanceof ExternalLabel) {
+			label  = ((ExternalLabel) object).getExternalizableLabeled();
+		} else {
+			label = object.getRole(Labeled.TYPE);
+		}
+		if (label instanceof TemplateLabeled) {
+			return (TemplateLabeled) label;
+		}
+		return null;
 	}
 }

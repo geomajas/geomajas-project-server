@@ -41,12 +41,9 @@ public class GText extends ResizableGraphicsObject implements Labeled, Fillable,
 		addRole(Strokable.TYPE, this);
 		addRole(Labeled.TYPE, this);
 		removeRole(Resizable.TYPE);
-	}
-	
-	public void addResizableBorderer() {
 		addRole(getText().getResizableBorderer());
 	}
-
+	
 	@Override
 	public GraphicsObject cloneObject() {
 		GText clone = new GText((DraggableText) getText().cloneObject());

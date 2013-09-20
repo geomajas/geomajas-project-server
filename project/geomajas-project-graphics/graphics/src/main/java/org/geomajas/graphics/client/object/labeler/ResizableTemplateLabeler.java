@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.object.labeler;
 
+import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.object.ResizableAwareRole;
 import org.geomajas.graphics.client.object.role.Labeled;
@@ -27,11 +28,11 @@ public class ResizableTemplateLabeler extends ResizableExternalizableLabeler imp
 	private String templateText;
 
 	public ResizableTemplateLabeler() {
-		super(null, false);
+		this(null, null, false);
 	}
 	
-	public ResizableTemplateLabeler(String label, boolean externalText) {
-		super(null, externalText);
+	public ResizableTemplateLabeler(GraphicsObject masterObject, String label, boolean externalText) {
+		super(masterObject, null, externalText);
 		if (label != null) {
 			templateText = label;
 		}

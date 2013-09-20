@@ -37,4 +37,9 @@ public class ExternalLabelEditor extends LabelEditor {
 		fontSize.setText(label.getFontSize()  + "");
 		fontFamily.setText(label.getFontFamily());
 	}
+	
+	@Override
+	public boolean validate() {
+		return true;
+	}
 }

@@ -10,10 +10,8 @@
  */
 package org.geomajas.graphics.client.action;
 
+import org.geomajas.graphics.client.object.ExternalLabel;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.ResizableGraphicsObject;
-import org.geomajas.graphics.client.object.anchor.Anchorable;
-import org.geomajas.graphics.client.object.labeler.ResizableLabeler;
 import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
 import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.operation.ToggleExternalizableLabelOperation;
@@ -34,23 +32,15 @@ public class ToggleLabelAction implements Action {
 	private String label = "toggle label";
 
 	public boolean supports(GraphicsObject object) {
-		if (object.hasRole(Anchorable.TYPE) && object.hasRole(Labeled.TYPE)
-				&& object.getRole(Labeled.TYPE) instanceof ExternalizableLabeled) {
-	// set correct resizable for the ExternalizableLabeled object (possible it is still the constrcution object)
-			ExternalizableLabeled eLabeled = (ExternalizableLabeled) object.getRole(Labeled.TYPE);
-			if (eLabeled instanceof ResizableLabeler) {
-				((ResizableLabeler) eLabeled).setResizable((ResizableGraphicsObject) object);
-			}
-			
-			// Set position of external label
-//			ExternalLabel exLab = eLabeled.getExternalLabel();
-//			exLab.setPosition(((ResizableGraphicsObject) object).getPosition());
-			return true;
-		}
-		return false;
+		return (object.hasRole(Labeled.TYPE) && object.getRole(Labeled.TYPE) instanceof ExternalizableLabeled) ||
+				object instanceof ExternalLabel;
 	}
 
 	public void execute(GraphicsObject object) {
+		if (object instanceof ExternalLabel) {
+			ExternalLabel exLabel = (ExternalLabel) object;
+			object = (GraphicsObject) exLabel.getExternalizableLabeled().getMasterObject();
+		}
 		service.execute(new ToggleExternalizableLabelOperation(object));
 	}
 

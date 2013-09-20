@@ -173,7 +173,6 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	@Override
 	public void add(GraphicsObject object) {
 		objectGroup.add(object.asObject());
-//		object.getRole(Anchored.TYPE);
 		objects.add(object);
 		eventBus.fireEvent(new GraphicsObjectContainerEvent(object, ActionType.ADD));
 	}

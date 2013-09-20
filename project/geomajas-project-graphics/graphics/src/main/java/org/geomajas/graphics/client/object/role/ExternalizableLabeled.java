@@ -12,7 +12,7 @@ package org.geomajas.graphics.client.object.role;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.ExternalLabel;
-import org.geomajas.graphics.client.object.Resizable;
+import org.geomajas.graphics.client.object.GraphicsObject;
 
 /**
  * Implemented by labeled graphics objects.
@@ -35,5 +35,5 @@ public interface ExternalizableLabeled extends Labeled {
 	
 	ExternalLabel getExternalLabel();
 	
-	Resizable getMasterObject();
+	GraphicsObject getMasterObject();
 }

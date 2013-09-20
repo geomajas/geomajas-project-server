@@ -30,7 +30,6 @@ public class ExternalLabel extends GText {
 	public ExternalLabel(ExternalizableLabeled labeled) {
 		super(0, 0, "");
 		this.labeled = labeled;
-		addResizableBorderer();
 	}
 	
 	@Override

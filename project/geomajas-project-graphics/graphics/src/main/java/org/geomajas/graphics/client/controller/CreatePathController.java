@@ -131,7 +131,7 @@ public class CreatePathController extends AbstractGraphicsController implements 
 
 	protected void addObject(GPath path) {
 		path.removeRole(Labeled.TYPE);
-		path.addRole(new ResizableExternalizableLabeler(text, false));
+		path.addRole(new ResizableExternalizableLabeler(path, text, false));
 		execute(new AddOperation(path));
 	}
 
