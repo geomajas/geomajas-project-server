@@ -123,7 +123,7 @@
 		<profile>
 			<id>deploy-snapshot-profile</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<!--<activeByDefault>true</activeByDefault>-->
 			</activation>
 			<build>
 				<plugins>
