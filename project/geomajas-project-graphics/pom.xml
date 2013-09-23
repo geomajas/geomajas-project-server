@@ -169,7 +169,7 @@
 
 	<properties>
 		<graphics-geomajas-geometry-version>1.1.0</graphics-geomajas-geometry-version>
-		<graphics-gwt-graphics-version>1.0.0.TX10</graphics-gwt-graphics-version>
+		<graphics-gwt-graphics-version>1.0.0.TX11</graphics-gwt-graphics-version>
 		<graphics-gwt-version>2.5.0</graphics-gwt-version>
 	</properties>
 
