@@ -1,0 +1,159 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean name="layerRoads" class="org.geomajas.layer.geotools.GeoToolsLayer">
+		<property name="layerInfo" ref="layerRoadsInfo"/>
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="namespace" />
+					<property name="value" value="sqlserver" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="user" />
+					<property name="value" value="app" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="passwd" />
+					<property name="value" value="app" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="database" />
+					<property name="value" value="app" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="host" />
+					<property name="value" value="localhost" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="port" />
+					<property name="value" value="1433" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="dbtype" />
+					<property name="value" value="sqlserver" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="layerRoadsInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTILINESTRING" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180"/>
+				<property name="y" value="-90"/>
+				<property name="width" value="360"/>
+				<property name="height" value="180"/>
+			</bean>
+		</property>
+		<property name="featureInfo" ref="layerRoadsFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="layerRoadsStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerRoadsStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Roads" />
+					<property name="fillColor" value="${symbol_pound}FFFFFF" />
+					<property name="fillOpacity" value="0" />
+					<property name="strokeColor" value="${symbol_pound}998811" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="4" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="id" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="${symbol_pound}998811" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="${symbol_pound}000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="${symbol_pound}998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerRoadsFeatureInfo">
+		<property name="dataSourceName" value="road" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="id" />
+				<property name="name" value="osm_id" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="geometry" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Name" />
+					<property name="name" value="name" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Reference" />
+					<property name="name" value="ref" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Type" />
+					<property name="name" value="type" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="i18n:road.label.Tooltip" />
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
+
