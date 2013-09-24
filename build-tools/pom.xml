@@ -37,6 +37,7 @@
 		<module>geomajas-parent</module>
 		<module>geomajas-plugin-archetype</module>
 		<module>geomajas-puregwt-archetype</module>
+		<module>geomajas-smartgwt-archetype</module>
 	</modules>
 
 </project>
