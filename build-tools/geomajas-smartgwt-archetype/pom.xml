@@ -32,22 +32,12 @@
 
 	<developers>
 		<developer>
-			<id>joachimvda</id>
-			<name>Joachim Van der Auwera</name>
-			<email>joachim@geosparc.com</email>
+			<id>oliverm</id>
+			<name>Oliver May</name>
+			<email>oliver.may@geomajas.org</email>
 			<roles>
 				<role>Module maintainer</role>
 			</roles>
-		</developer>
-		<developer>
-			<id>pieterdg</id>
-			<name>Pieter De Graef</name>
-			<email>pieter.degraef@geosparc.com</email>
-		</developer>
-		<developer>
-			<id>jandm</id>
-			<name>Jan De Moerloose</name>
-			<email>jan.demoerloose@geosparc.com</email>
 		</developer>
 	</developers>
 	
