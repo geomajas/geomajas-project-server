@@ -91,10 +91,24 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					// not authorized
 					response = new CommandResponse();
 					response.setId(id);
-					response.getErrors().add(
-							new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, userToken));
+
+					GeomajasSecurityException credentialsException =
+							new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, commandName,
+									securityContext.getUserId());
+
+					Locale localeObject = null;
+					if (null != locale) {
+						localeObject = new Locale(locale);
+					}
+
+					String msg = getErrorMessage(credentialsException, localeObject);
+					if (log.isDebugEnabled()) {
+						log.debug(id + MSG_START + commandName + ", " + msg, credentialsException);
+					}
+
+					response.getErrorMessages().add(msg);
+					response.getExceptions().add(toDto(credentialsException, localeObject, msg));
 					response.setExecutionTime(System.currentTimeMillis() - begin);
-					return response;
 				}
 			}
 
