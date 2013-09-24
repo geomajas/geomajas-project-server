@@ -85,9 +85,4 @@
 			</includes>
 		</fileSet>
 	</fileSets>
-	<requiredProperties>
-		<requiredProperty key="geomajas-dep-version">
-			<defaultValue>1.13.38</defaultValue>
-		</requiredProperty>
-	</requiredProperties>
 </archetype-descriptor>

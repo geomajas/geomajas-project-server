@@ -1,0 +1,212 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<bean name="mainMapRibbonToolbar"
+		  class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
+		<property name="groups">
+			<list>
+				<bean class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+					<property name="columns">
+						<list>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="ZoomToRectangleMode" />
+									</list>
+								</property>
+							</bean>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="ZoomPrevious" />
+									</list>
+								</property>
+							</bean>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="ZoomNext" />
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+					<property name="columns">
+						<list>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="MultilayerFeatureInfoMode" />
+									</list>
+								</property>
+								<property name="parameters">
+									<list>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="selected" />
+											<property name="value" value="false" />
+										</bean>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="pixelTolerance" />
+											<property name="value" value="10" />
+										</bean>
+									</list>
+								</property>
+							</bean>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="TooltipOnMouseOverMode" />
+									</list>
+								</property>
+								<property name="parameters">
+									<list>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="radioGroup" />
+											<property name="value" value="TooltipOnMouseOverMode" />
+										</bean>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="selected" />
+											<property name="value" value="true" />
+										</bean>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="pixelTolerance" />
+											<property name="value" value="10" />
+										</bean>
+									</list>
+								</property>
+							</bean>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="MeasureDistanceMode" />
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+					<property name="columns">
+						<list>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="SelectionMode" />
+									</list>
+								</property>
+							</bean>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="AddRemark" />
+									</list>
+								</property>
+							</bean>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="ShowDefaultPrint" />
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+
+				<bean class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+					<property name="columns">
+						<list>
+							<bean
+									class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarDropDownButton" />
+								<property name="parameters">
+									<list>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="title" />
+											<property name="value" value="Search" />
+										</bean>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="icon" />
+											<property name="value"
+													  value="[ISOMORPHIC]/geomajas/searchIcons/combined.png" />
+										</bean>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="panelWidth" />
+											<property name="value" value="150" />
+										</bean>
+									</list>
+								</property>
+								<property name="tools">
+									<list>
+										<bean class="org.geomajas.configuration.client.ClientToolInfo">
+											<property name="toolId" value="ButtonGroup" />
+											<property name="title" value="Zoeken" />
+											<property name="parameters">
+												<list>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="buttonLayout" />
+														<property name="value" value="ICON_TITLE_AND_DESCRIPTION" />
+													</bean>
+												</list>
+											</property>
+										</bean>
+										<ref bean="GeometricSearch" />
+										<ref bean="AttributeSearch" />
+										<ref bean="CombinedSearch" />
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,68 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="mainMapThemeSelection" class="org.geomajas.widget.advancedviews.configuration.client.ThemesInfo">
+		<property name="hideOtherlayers" value="true" />
+		<property name="showDescription" value="true" />
+		<property name="themeConfigs">
+			<list>
+				<bean
+						class="org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig">
+					<property name="title" value="OpenStreetMaps" />
+					<property name="description" value="Community driven map of the world." />
+					<property name="rangeConfigs">
+						<list>
+							<bean
+									class="org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig">
+								<property name="minimumScale">
+									<bean class="org.geomajas.configuration.client.ScaleInfo">
+										<property name="numerator" value="1" />
+										<property name="denominator" value="1000000000" />
+									</bean>
+								</property>
+								<property name="maximumScale">
+									<bean class="org.geomajas.configuration.client.ScaleInfo">
+										<property name="numerator" value="1" />
+										<property name="denominator" value="1" />
+									</bean>
+								</property>
+								<property name="layerConfigs">
+									<list>
+										<bean
+												class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
+											<property name="layer" ref="clientLayerOsm" />
+											<property name="visible" value="true" />
+											<property name="opacity" value="0.7" />
+										</bean>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>
