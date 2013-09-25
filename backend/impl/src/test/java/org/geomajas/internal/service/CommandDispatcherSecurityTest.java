@@ -65,9 +65,12 @@ public class CommandDispatcherSecurityTest {
 		securityService.put("someToken", createTestAuthentication());
 		CommandResponse response = commandDispatcher.execute("test.BadCommand", null, "someToken", null);
 		Assert.assertEquals(1, response.getErrors().size());
+		Assert.assertEquals(1, response.getExceptions().size());
 		Throwable error = response.getErrors().get(0);
 		Assert.assertTrue(error instanceof GeomajasException);
+		Assert.assertEquals(response.getExceptions().get(0).getClassName(),error.getClass().getName());
 		Assert.assertEquals(ExceptionCode.COMMAND_ACCESS_DENIED, ((GeomajasException) error).getExceptionCode());
+		Assert.assertEquals(ExceptionCode.COMMAND_ACCESS_DENIED, response.getExceptions().get(0).getExceptionCode());
 	}
 
 	@Test
