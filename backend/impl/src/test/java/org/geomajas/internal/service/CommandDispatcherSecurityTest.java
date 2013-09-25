@@ -14,6 +14,7 @@ package org.geomajas.internal.service;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.ExceptionDto;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.security.AllowTestAuthorization;
 import org.geomajas.internal.security.InMemorySecurityService;
@@ -78,6 +79,12 @@ public class CommandDispatcherSecurityTest {
 		Assert.assertTrue(error instanceof GeomajasSecurityException);
 		Assert.assertEquals(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID,
 				((GeomajasSecurityException) error).getExceptionCode());
+
+		Assert.assertEquals(1, response.getExceptions().size());
+		ExceptionDto exceptionDto = response.getExceptions().get(0);
+		Assert.assertEquals(exceptionDto.getExceptionCode(),((GeomajasSecurityException) error).getExceptionCode());
+		Assert.assertEquals(exceptionDto.getClassName(),error.getClass().getName());
+
 	}
 
 	@Test
@@ -88,6 +95,11 @@ public class CommandDispatcherSecurityTest {
 		Assert.assertTrue(error instanceof GeomajasSecurityException);
 		Assert.assertEquals(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID,
 				((GeomajasSecurityException) error).getExceptionCode());
+
+		Assert.assertEquals(1, response.getExceptions().size());
+		ExceptionDto exceptionDto = response.getExceptions().get(0);
+		Assert.assertEquals(exceptionDto.getExceptionCode(),((GeomajasSecurityException) error).getExceptionCode());
+		Assert.assertEquals(exceptionDto.getClassName(),error.getClass().getName());
 	}
 	
 	@Test
@@ -102,6 +114,8 @@ public class CommandDispatcherSecurityTest {
 		});
 		CommandResponse response = commandDispatcher.execute("test.SecurityTestCommand", null, "someToken", null);
 		Assert.assertEquals(0, response.getErrors().size());
+		Assert.assertEquals(0, response.getExceptions().size());
+
 	}
 
 	@After

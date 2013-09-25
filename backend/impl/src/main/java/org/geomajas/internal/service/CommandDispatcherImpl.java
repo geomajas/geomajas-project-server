@@ -91,24 +91,12 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					// not authorized
 					response = new CommandResponse();
 					response.setId(id);
+					response.getErrors().add(
+							new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, userToken));
+					serializeExceptions(response, "", locale, id);
 
-					GeomajasSecurityException credentialsException =
-							new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, commandName,
-									securityContext.getUserId());
-
-					Locale localeObject = null;
-					if (null != locale) {
-						localeObject = new Locale(locale);
-					}
-
-					String msg = getErrorMessage(credentialsException, localeObject);
-					if (log.isDebugEnabled()) {
-						log.debug(id + MSG_START + commandName + ", " + msg, credentialsException);
-					}
-
-					response.getErrorMessages().add(msg);
-					response.getExceptions().add(toDto(credentialsException, localeObject, msg));
 					response.setExecutionTime(System.currentTimeMillis() - begin);
+					return response;
 				}
 			}
 
@@ -129,11 +117,13 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					} catch (Throwable throwable) { //NOPMD
 						log.debug(id + MSG_START + commandName + ", error executing command", throwable);
 						response.getErrors().add(throwable);
+						serializeExceptions(response, commandName, locale, id);
 					}
 				} else {
 					response = new CommandResponse();
 					response.setId(id);
 					response.getErrors().add(new GeomajasException(ExceptionCode.COMMAND_NOT_FOUND, commandName));
+					serializeExceptions(response, commandName, locale, id);
 				}
 
 			} else {
@@ -143,24 +133,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				response.getErrors().add(
 						new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, commandName, securityContext
 								.getUserId()));
-			}
-
-			// Now process the errors for display on the client:
-			List<Throwable> errors = response.getErrors();
-			if (null != errors && !errors.isEmpty()) {
-				Locale localeObject = null;
-				if (null != locale) {
-					localeObject = new Locale(locale);
-				}
-				for (Throwable t : errors) {
-					String msg = getErrorMessage(t, localeObject);
-					if (log.isDebugEnabled()) {
-						log.debug(id + MSG_START + commandName + ", " + msg, t);
-					}
-					// For each exception, make sure the entire exception is sent to the client:
-					response.getErrorMessages().add(msg);
-					response.getExceptions().add(toDto(t, localeObject, msg));
-				}
+				serializeExceptions(response, commandName, locale, id);
 			}
 
 			long executionTime = System.currentTimeMillis() - begin;
@@ -176,6 +149,26 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 			if (!tokenIdentical) {
 				// clear security context
 				securityManager.clearSecurityContext();
+			}
+		}
+	}
+
+	private void serializeExceptions(CommandResponse response, String commandName, String locale, String id) {
+		// Now process the errors for display on the client:
+		List<Throwable> errors = response.getErrors();
+		if (null != errors && !errors.isEmpty()) {
+			Locale localeObject = null;
+			if (null != locale) {
+				localeObject = new Locale(locale);
+			}
+			for (Throwable t : errors) {
+				String msg = getErrorMessage(t, localeObject);
+				if (log.isDebugEnabled()) {
+					log.debug(id + MSG_START + commandName + ", " + msg, t);
+				}
+				// For each exception, make sure the entire exception is sent to the client:
+				response.getErrorMessages().add(msg);
+				response.getExceptions().add(toDto(t, localeObject, msg));
 			}
 		}
 	}
