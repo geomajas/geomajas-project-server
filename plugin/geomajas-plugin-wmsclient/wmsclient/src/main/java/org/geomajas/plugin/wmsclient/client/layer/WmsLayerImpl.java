@@ -61,6 +61,8 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected WmsLayerRenderer renderer;
 
+	private double opacity = 1.0;
+
 	@Inject
 	protected WmsLayerImpl(@Assisted String title, @Assisted WmsLayerConfiguration wmsConfig,
 			@Assisted WmsTileConfiguration tileConfig) {
@@ -105,12 +107,18 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Override
 	public void setOpacity(double opacity) {
-		renderer.getHtmlContainer().setOpacity(opacity);
+		this.opacity  = opacity;
+		if (null != renderer) {
+			renderer.getHtmlContainer().setOpacity(opacity);
+		} 
 	}
 
 	@Override
 	public double getOpacity() {
-		return renderer.getHtmlContainer().getOpacity();
+		if (null != renderer) {
+			return renderer.getHtmlContainer().getOpacity();
+		}
+		return this.opacity;
 	}
 
 	// ------------------------------------------------------------------------
@@ -140,6 +148,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	public LayerRenderer getRenderer(HtmlContainer container) {
 		if (renderer == null) {
 			renderer = rendererFactory.create(this, container);
+			renderer.getHtmlContainer().setOpacity(opacity);
 		}
 		return renderer;
 	}
