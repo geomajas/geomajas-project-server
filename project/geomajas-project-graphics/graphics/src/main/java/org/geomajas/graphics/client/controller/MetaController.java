@@ -348,7 +348,9 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 	public void setControllersOfObjectVisible(GraphicsObject object, boolean visible) {
 		if (controllers.containsKey(object)) {
 			for (GraphicsController controller : controllers.get(object)) {
-				controller.setVisible(visible);
+				if (controller.isActive()) {
+					controller.setVisible(visible);
+				}
 			}
 		}
 	}

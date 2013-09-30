@@ -28,7 +28,6 @@ import org.geomajas.graphics.client.controller.CreateIconController;
 import org.geomajas.graphics.client.controller.CreateImageController;
 import org.geomajas.graphics.client.controller.CreateLineWithTemplateLabeledController;
 import org.geomajas.graphics.client.controller.CreatePathController;
-import org.geomajas.graphics.client.controller.CreatePolygonWithTextSlaveController;
 import org.geomajas.graphics.client.controller.CreateRectangleController;
 import org.geomajas.graphics.client.controller.CreateTextAreaHtmlController;
 import org.geomajas.graphics.client.controller.CreateTextController;
@@ -140,7 +139,6 @@ public class Example implements EntryPoint, Handler {
 				"http://tuxpaint.org/stamps/stamps/animals/birds/cartoon/tux.png"), "image");
 		addControllerButton(new CreatePathController(service, false), "line");
 		addControllerButton(new CreatePathController(service, true), "polygon");
-		addControllerButton(new CreatePolygonWithTextSlaveController(service), "polygon with text anchor");
 		addControllerButton(new NavigationController(service, rc.getRootContainer()), "navigation");
 		addControllerButton(new CreateLineWithTemplateLabeledController(service), "line with template label");
 		
