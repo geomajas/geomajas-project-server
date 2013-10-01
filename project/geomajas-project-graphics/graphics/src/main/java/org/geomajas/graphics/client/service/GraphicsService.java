@@ -56,4 +56,8 @@ public interface GraphicsService {
 	boolean isShowOriginalObjectWhileDragging();
 	
 	void setShowOriginalObjectWhileDragging(boolean showOriginalObjectWhileDragging);
+	
+	boolean isExternalizableLabeledOriginallyExternal();
+	
+	void setExternalizableLabeledOriginallyExternal(boolean externalizableLabeledOriginallyExternal);
 }

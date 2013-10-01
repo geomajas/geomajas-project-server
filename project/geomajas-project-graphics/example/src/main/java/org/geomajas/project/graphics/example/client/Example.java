@@ -60,6 +60,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -80,29 +81,52 @@ public class Example implements EntryPoint, Handler {
 	
 	private CheckBox checkShowDrag;
 	
+	private CheckBox checkExternalLabel;
+	
 	private List<String> urls = new ArrayList<String>(Arrays.asList(GWT.getModuleBaseURL() + "image/slider.gif",
 			GWT.getModuleBaseURL() + "image/cloud.png",
 			GWT.getModuleBaseURL() + "image/sun.jpg"));
 	
 	private List<String> url = new ArrayList<String>(Arrays.asList(urls.get(0)));
+	
+	private PopupMenuControllerFactory popupFactory;
 
 	@Override
 	public void onModuleLoad() {
 		SimpleEventBus bus = new SimpleEventBus();
 		final TestContainer rc = new TestContainer(bus);
-		DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-		buttonPanel = new FlowPanel();
 		service = new GraphicsServiceImpl(bus, true, true);
 		service.setObjectContainer(rc);
+		service.getObjectContainer().addGraphicsObjectContainerHandler(this);
+		
+		//functionalities
+		popupFactory = new PopupMenuControllerFactory(new PopupMenuFactory());
+		registerControllerFactories();
+		registerPopupFactoryActionsAndEditiors();		
+		
+		//layout
+		DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
+		buttonPanel = new FlowPanel();
+		createButtonPanel(rc);
+		buttonPanel.getElement().getStyle().setBackgroundColor("grey");
+		dock.addWest(buttonPanel, 100);
+		dock.add(rc);
+		RootLayoutPanel.get().add(dock);
+		
+		service.start();
+	}
+	
+	private void registerControllerFactories() {
 		service.registerControllerFactory(new ResizeControllerFactory());
 		service.registerControllerFactory(new DragControllerFactory());
 		service.registerControllerFactory(new DeleteControllerFactory());
 		service.registerControllerFactory(new LabelControllerFactory());
 		service.registerControllerFactory(new ExternalizableLabeledControllerFactory());
 		service.registerControllerFactory(new AnchorControllerFactory());
-		
-		// actions en editors of the popupMenu
-		PopupMenuControllerFactory popupFactory = new PopupMenuControllerFactory(new PopupMenuFactory());
+		service.registerControllerFactory(popupFactory);
+	}
+	
+	private void registerPopupFactoryActionsAndEditiors() {
 		popupFactory.registerAction(new DeleteAction());
 		popupFactory.registerEditor(new LabelEditor());
 		popupFactory.registerEditor(new StrokeFillEditor());
@@ -112,23 +136,20 @@ public class Example implements EntryPoint, Handler {
 		popupFactory.registerAction(new AddTextAsAnchorAction());
 		popupFactory.registerAction(new ToggleLabelAction());
 		popupFactory.registerEditor(new TemplateLabelEditor());
-		service.registerControllerFactory(popupFactory);
-		
-		//checkbox for showing original object when dragging
-		checkShowDrag = new CheckBox();
-		checkShowDrag.setValue(true);
-		checkShowDrag.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				service.setShowOriginalObjectWhileDragging(checkShowDrag.getValue());
-			}
-			
-		});
-		checkShowDrag.setText("duplicate on drag");
-		buttonPanel.add(checkShowDrag);
+	}
+	
+	private void createButtonPanel(final TestContainer rc) {
+		// create extra elements
+		createCheckShowDrag();
+		createCheckExternalLabel();
+		CreateIconController createIconController = new CreateIconController(service, 16, 16, url);
+		CreateAnchoredIconController createAnchoredIconController 
+			= new CreateAnchoredIconController(service, 16,	16, url);
+		createIconChoicePanel(createIconController, createAnchoredIconController);
 		
 		//buttons for creation of objects
+		addCheckbox(checkShowDrag);
+		addCheckbox(checkExternalLabel);
 		addControllerButton(new CreateTextController(service), "text");
 		addControllerButton(new CreateTextAreaHtmlController(service, 100, 70), "textarea");
 		addControllerButton(new CreateAnchoredTextController(service), "anchored text");
@@ -141,13 +162,51 @@ public class Example implements EntryPoint, Handler {
 		addControllerButton(new CreatePathController(service, true), "polygon");
 		addControllerButton(new NavigationController(service, rc.getRootContainer()), "navigation");
 		addControllerButton(new CreateLineWithTemplateLabeledController(service), "line with template label");
-		
-		final CreateIconController createIconController = new CreateIconController(service, 16, 16, url);
 		addControllerButton(createIconController, "icon");
-		final CreateAnchoredIconController createAnchoredIconController = new CreateAnchoredIconController(service, 16,
-				16, url);
 		addControllerButton(createAnchoredIconController, "anchored icon");
+		buttonPanel.add(iconChoicePanel);
+	}
 
+	private void addControllerButton(final GraphicsController controller, String name) {
+		buttonPanel.add(new ControllerButton(controller, name));
+	}
+	
+	private void addCheckbox(final CheckBox checkbox) {
+		buttonPanel.add(new SimplePanel(checkbox));
+	}
+	
+	//checkbox for showing original object when dragging
+	private void createCheckShowDrag() {
+		checkShowDrag = new CheckBox();
+		checkShowDrag.setValue(service.isShowOriginalObjectWhileDragging());
+		checkShowDrag.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				service.setShowOriginalObjectWhileDragging(checkShowDrag.getValue());
+			}
+			
+		});
+		checkShowDrag.setText("duplicate on drag");
+	}
+	
+	//checkbox for showing original object when dragging
+	private void createCheckExternalLabel() {
+		checkExternalLabel = new CheckBox();
+		checkExternalLabel.setValue(service.isExternalizableLabeledOriginallyExternal());
+		checkExternalLabel.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				service.setExternalizableLabeledOriginallyExternal(checkExternalLabel.getValue());
+			}
+			
+		});
+		checkExternalLabel.setText("label external on creation");
+	}
+	
+	private void createIconChoicePanel(final CreateIconController createIconController, 
+			final CreateAnchoredIconController createAnchoredIconController) {
 		iconChoicePanel = new VerticalPanel();
 		RadioButton rb0 = new RadioButton("myRadioGroup", "No icon: sets default");
 		rb0.addClickHandler(new ClickHandler() {
@@ -181,19 +240,10 @@ public class Example implements EntryPoint, Handler {
 		iconChoicePanel.add(rb1);
 		iconChoicePanel.add(rb2);
 		iconChoicePanel.setVisible(false);
-		buttonPanel.add(iconChoicePanel);
 		rb1.setValue(true);
-		service.getObjectContainer().addGraphicsObjectContainerHandler(this);
-		buttonPanel.getElement().getStyle().setBackgroundColor("grey");
-		dock.addWest(buttonPanel, 100);
-		dock.add(rc);
-		RootLayoutPanel.get().add(dock);
-		service.start();
 	}
-
-	private void addControllerButton(final GraphicsController controller, String name) {
-		buttonPanel.add(new ControllerButton(controller, name));
-	}
+	
+	
 
 	@Override
 	public void onAction(GraphicsObjectContainerEvent event) {

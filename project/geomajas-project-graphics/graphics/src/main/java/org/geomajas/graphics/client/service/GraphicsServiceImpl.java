@@ -58,6 +58,8 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	private HandlerRegistration standardGraphicsOperationEventRegistration;
 	
 	private boolean showOriginalObjectWhileDragging;
+	
+	private boolean externalizableLabeledOriginallyExternal;
 
 	public GraphicsServiceImpl(final EventBus eventBus, boolean undoKeys) {
 		this(eventBus, undoKeys, true);
@@ -201,6 +203,17 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	@Override
 	public void setShowOriginalObjectWhileDragging(boolean showOriginalObjectWhileDragging) {
 		this.showOriginalObjectWhileDragging = showOriginalObjectWhileDragging;
+	}
+
+	@Override
+	public boolean isExternalizableLabeledOriginallyExternal() {
+		return externalizableLabeledOriginallyExternal;
+	}
+
+	@Override
+	public void setExternalizableLabeledOriginallyExternal(
+			boolean externalizableLabeledOriginallyExternal) {
+		this.externalizableLabeledOriginallyExternal = externalizableLabeledOriginallyExternal;
 	}
 
 }
