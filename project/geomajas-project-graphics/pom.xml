@@ -101,14 +101,12 @@
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
 				<version>${graphics-gwt-version}</version>
-				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
 				<version>${graphics-gwt-version}</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
