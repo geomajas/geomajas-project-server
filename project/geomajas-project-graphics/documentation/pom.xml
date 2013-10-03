@@ -20,7 +20,7 @@
 
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-project-graphics-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M1</version>
 	<packaging>jar</packaging>
 
 	<name>Geomajas Graphics documentation</name>
@@ -29,4 +29,10 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-graphics-all-1.0.0-M1/geomajas-project-graphics-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-graphics-all-1.0.0-M1/geomajas-project-graphics-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-project-graphics-all-1.0.0-M1/geomajas-project-graphics-documentation</url>
+  </scm>
 </project>
