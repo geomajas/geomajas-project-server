@@ -17,6 +17,7 @@ import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
 import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.operation.LabelOperation;
+import org.geomajas.graphics.client.operation.RemoveOperation;
 import org.geomajas.graphics.client.operation.ToggleExternalizableLabelOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
@@ -40,7 +41,7 @@ public class ExternalizableLabeledController extends AbstractGraphicsController
 		getService().getObjectContainer().addGraphicsObjectContainerHandler(this);
 		getService().getObjectContainer().addGraphicsOperationEventHandler(this);
 		setLabelExternal(externalizableLabel.isLabelExternal());
-		setLabelProperties();
+		setExternalLabelProperties();
 	}
 
 	@Override
@@ -89,25 +90,27 @@ public class ExternalizableLabeledController extends AbstractGraphicsController
 			if (event.getOperation() instanceof ToggleExternalizableLabelOperation) {
 				setLabelExternal(externalizableLabel.isLabelExternal());
 			} else if (event.getOperation() instanceof LabelOperation) {
-				setLabelProperties();
+				setExternalLabelProperties();
 			} else if (event.getOperation() instanceof AddOperation) {
 				setLabelExternal(externalizableLabel.isLabelExternal());
+			} else if (event.getOperation() instanceof RemoveOperation) {
+				setLabelExternal(false);
 			}
 		}
 		if (event.getOperation().getObject() == externalizableLabel.getExternalLabel()) {
 			if (event.getOperation() instanceof LabelOperation) {
-				setLabelProperties();
+				setExternalLabelProperties();
 			}
 		}
 	}
 	
-	private void setLabelProperties() {
+	private void setExternalLabelProperties() {
 		Labeled labeled = getObject().getRole(Labeled.TYPE);
-		externalizableLabel.setFontColor(labeled.getFontColor());
-		externalizableLabel.setFontFamily(labeled.getFontFamily());
-		externalizableLabel.setFontSize(labeled.getFontSize());
-		externalizableLabel.setLabel(labeled.getLabel());
-		boolean visible = !labeled.getLabel().isEmpty();
+		externalizableLabel.getExternalLabel().setFontColor(labeled.getTextable().getFontColor());
+		externalizableLabel.getExternalLabel().setFontFamily(labeled.getTextable().getFontFamily());
+		externalizableLabel.getExternalLabel().setFontSize(labeled.getTextable().getFontSize());
+		externalizableLabel.getExternalLabel().setLabel(labeled.getTextable().getLabel());
+		boolean visible = !labeled.getTextable().getLabel().isEmpty();
 		((MetaController) getService().getMetaController()).
 			setControllersOfObjectVisible(externalizableLabel.getExternalLabel(), visible);
 	}

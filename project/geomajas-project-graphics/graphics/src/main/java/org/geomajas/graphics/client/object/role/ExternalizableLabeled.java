@@ -21,7 +21,11 @@ import org.geomajas.graphics.client.object.GraphicsObject;
  * @author Jan Venstermans
  * 
  */
-public interface ExternalizableLabeled extends Labeled {
+public interface ExternalizableLabeled {
+	
+	RoleType<ExternalizableLabeled> TYPE = new RoleType<ExternalizableLabeled>("ExternalizableLabeled");
+	
+	Labeled getLabeled();
 		
 	void setLabelExternal(boolean labelExternal);
 	

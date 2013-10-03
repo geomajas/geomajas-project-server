@@ -10,12 +10,12 @@
  */
 package org.geomajas.graphics.client.object.labeler;
 
-import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.object.ResizableAwareRole;
-import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.RoleType;
 import org.geomajas.graphics.client.object.role.TemplateLabeled;
+import org.geomajas.graphics.client.object.role.Textable;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Implementation of {@link TemplateLabeled} role for {@link Resizable} objects.
@@ -23,18 +23,16 @@ import org.geomajas.graphics.client.object.role.TemplateLabeled;
  * @author Jan Venstermans
  * 
  */
-public class ResizableTemplateLabeler extends ResizableExternalizableLabeler implements TemplateLabeled {
+public class ResizableTemplateLabeler extends ResizableTextable implements TemplateLabeled {
 
 	private String templateText;
-
-	public ResizableTemplateLabeler() {
-		this(null, null, false);
-	}
 	
-	public ResizableTemplateLabeler(GraphicsObject masterObject, String label, boolean externalText) {
-		super(masterObject, null, externalText);
-		if (label != null) {
-			templateText = label;
+	private ResizableTextable resTextable;
+
+	public ResizableTemplateLabeler(ResizableTextable resTextable) {
+		this.resTextable = resTextable;
+		if (resTextable.getLabel() != null) {
+			templateText = resTextable.getLabel();
 		}
 	}
 	
@@ -44,13 +42,14 @@ public class ResizableTemplateLabeler extends ResizableExternalizableLabeler imp
 	}
 
 	@Override
-	public RoleType<Labeled> getType() {
-		return TemplateLabeled.TYPE;
+	public RoleType<Textable> getType() {
+		return Textable.TYPE;
 	}
 
 	@Override
-	public ResizableAwareRole<Labeled> cloneRole(Resizable resizable) {
-		ResizableTemplateLabeler clone = new ResizableTemplateLabeler();
+	public ResizableAwareRole<Textable> cloneRole(Resizable resizable) {
+		ResizableTemplateLabeler clone = new ResizableTemplateLabeler(
+				(ResizableTextable) resTextable.cloneRole(resizable));
 		clone.setResizable(resizable);
 		clone.setLabel(getLabel());
 		// you don't want the text of the label be cloned
@@ -70,11 +69,11 @@ public class ResizableTemplateLabeler extends ResizableExternalizableLabeler imp
 	}
 
 	public String getLabelRenderedText() {
-		return super.getLabel();
+		return resTextable.getLabel();
 	}
 
 	public void setLabelRenderedText(String renderedText) {
-		super.setLabel(renderedText);
+		resTextable.setLabel(renderedText);
 	}
 	
 	@Override
@@ -91,5 +90,50 @@ public class ResizableTemplateLabeler extends ResizableExternalizableLabeler imp
 	public void renderTemplateText() {
 		// stub
 		setLabelRenderedText("template: " + templateText);
+	}
+
+	@Override
+	public void setFontColor(String color) {
+		resTextable.setFontColor(color);
+	}
+
+	@Override
+	public String getFontColor() {
+		return resTextable.getFontColor();
+	}
+
+	@Override
+	public void setFontSize(int size) {
+		resTextable.setFontSize(size);
+	}
+
+	@Override
+	public int getFontSize() {
+		return resTextable.getFontSize();
+	}
+
+	@Override
+	public void setFontFamily(String font) {
+		resTextable.setFontFamily(font);
+	}
+
+	@Override
+	public String getFontFamily() {
+		return resTextable.getFontFamily();
+	}
+
+	@Override
+	public void onUpdate() {
+		resTextable.onUpdate();
+	}
+
+	@Override
+	public void setResizable(Resizable resizable) {
+		resTextable.setResizable(resizable);
+	}
+
+	@Override
+	public VectorObject asObject() {
+		return resTextable.asObject();
 	}
 }

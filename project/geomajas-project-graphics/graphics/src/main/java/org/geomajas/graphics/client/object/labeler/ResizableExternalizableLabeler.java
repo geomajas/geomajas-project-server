@@ -14,11 +14,11 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.ExternalLabel;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.Resizable;
-import org.geomajas.graphics.client.object.ResizableAwareRole;
 import org.geomajas.graphics.client.object.anchor.AnchoredTo;
 import org.geomajas.graphics.client.object.anchor.ExternalLabelOfResizable;
 import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
 import org.geomajas.graphics.client.object.role.Labeled;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Implementation of {@link ExternalizableLabeled} role for {@link Resizable} objects.
@@ -33,31 +33,22 @@ import org.geomajas.graphics.client.object.role.Labeled;
  * @author Jan Venstermans
  * 
  */
-public class ResizableExternalizableLabeler extends ResizableLabeler implements ExternalizableLabeled {
+public class ResizableExternalizableLabeler implements ExternalizableLabeled {
 
 	private boolean showLabelExternal;
 
 	private ExternalLabel externalTextObject;
 	
 	private GraphicsObject masterObject;
-
-	public ResizableExternalizableLabeler() {
-		this(null, null, false);
-	}
-
-	public ResizableExternalizableLabeler(GraphicsObject masterObject, String label, boolean showLabelExternal) {
-		super(label);
+	
+	public ResizableExternalizableLabeler(GraphicsObject masterObject, boolean showLabelExternal) {
 		this.masterObject = masterObject;
 		this.showLabelExternal = showLabelExternal;
 		externalTextObject = new ExternalLabel(this);
-	}
-
-	@Override
-	public void setResizable(Resizable resizable) {
-		super.setResizable(resizable);
 		if (externalTextObject.hasRole(AnchoredTo.TYPE)) {
 			externalTextObject.removeRole(AnchoredTo.TYPE);
 		}
+		Resizable resizable = masterObject.getRole(Resizable.TYPE);
 		externalTextObject.addRole(new ExternalLabelOfResizable(resizable));
 		if (externalTextObject.getPosition().getX() == 0 && externalTextObject.getPosition().getY() == 0) {
 			externalTextObject.setPosition(new Coordinate(resizable.getPosition().getX(), resizable.getPosition()
@@ -65,44 +56,6 @@ public class ResizableExternalizableLabeler extends ResizableLabeler implements 
 		}
 	}
 
-	@Override
-	public void setLabel(String label) {
-		super.setLabel(label);
-		externalTextObject.setLabelExternalLabelOnly(label);
-	}
-
-	@Override
-	public ExternalizableLabeled asRole() {
-		return this;
-	}
-
-	@Override
-	public ResizableAwareRole<Labeled> cloneRole(Resizable resizable) {
-		ResizableExternalizableLabeler clone = new ResizableExternalizableLabeler();
-		clone.setResizable(resizable);
-		clone.setLabel(getLabel());
-		clone.setLabelExternal(isLabelExternal());
-		return clone;
-	}
-
-	@Override
-	public void setFontSize(int size) {
-		super.setFontSize(size);
-		externalTextObject.setFontSizeExternalLabelOnly(size);
-	}
-
-	@Override
-	public void setFontFamily(String font) {
-		super.setFontFamily(font);
-		externalTextObject.setFontFamilyExternalLabelOnly(font);
-	}
-
-	@Override
-	public void setFontColor(String color) {
-		super.setFontColor(color);
-		externalTextObject.setFontColorExternalLabelOnly(color);
-	}
-	
 	@Override
 	public void setPositionExternalLabel(Coordinate coordinate) {
 		externalTextObject.setPosition(coordinate);
@@ -143,6 +96,16 @@ public class ResizableExternalizableLabeler extends ResizableLabeler implements 
 	@Override
 	public boolean isLabelExternal() {
 		return showLabelExternal;
+	}
+
+
+	@Override
+	public Labeled getLabeled() {
+		return masterObject.getRole(Labeled.TYPE);
+	}
+	
+	private VectorObject getInternalLabel() {
+		return ((ResizableLabeler) masterObject.getRole(Labeled.TYPE)).asObject();
 	}
 
 }

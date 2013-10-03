@@ -17,7 +17,9 @@ package org.geomajas.graphics.client.object.role;
  * @author Jan Venstermans
  * 
  */
-public interface TemplateLabeled extends ExternalizableLabeled {
+public interface TemplateLabeled extends Textable {
+	
+	RoleType<TemplateLabeled> TYPE = new RoleType<TemplateLabeled>("TemplateLabeled");
 	
 	String getLabelTemplateText();
 	

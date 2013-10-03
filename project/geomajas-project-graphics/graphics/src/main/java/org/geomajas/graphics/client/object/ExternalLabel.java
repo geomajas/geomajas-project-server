@@ -10,8 +10,9 @@
  */
 package org.geomajas.graphics.client.object;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
+import org.geomajas.graphics.client.object.role.TemplateLabeled;
+import org.geomajas.graphics.client.object.role.Textable;
 
 
 /**
@@ -25,16 +26,21 @@ import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
  */
 public class ExternalLabel extends GText {
 	
-	private ExternalizableLabeled labeled;
+	private ExternalizableLabeled externalizableLabeled;
 	
 	public ExternalLabel(ExternalizableLabeled labeled) {
 		super(0, 0, "");
-		this.labeled = labeled;
+		this.externalizableLabeled = labeled;
+	}
+	
+	public ExternalizableLabeled getExternalizableLabeled() {
+		return externalizableLabeled;
 	}
 	
 	@Override
 	public void setFontSize(int size) {
-		labeled.setFontSize(size);
+		externalizableLabeled.getLabeled().getTextable().setFontSize(size);
+		super.setFontSize(externalizableLabeled.getLabeled().getTextable().getFontSize());
 	}
 	
 	public void setFontSizeExternalLabelOnly(int size) {
@@ -43,7 +49,8 @@ public class ExternalLabel extends GText {
 
 	@Override
 	public void setFontFamily(String font) {
-		labeled.setFontFamily(font);
+		externalizableLabeled.getLabeled().getTextable().setFontFamily(font);
+		super.setFontFamily(externalizableLabeled.getLabeled().getTextable().getFontFamily());
 	}
 	
 	public void setFontFamilyExternalLabelOnly(String font) {
@@ -52,7 +59,8 @@ public class ExternalLabel extends GText {
 
 	@Override
 	public void setFontColor(String color) {
-		labeled.setFontColor(color);
+		externalizableLabeled.getLabeled().getTextable().setFontColor(color);
+		super.setFontColor(externalizableLabeled.getLabeled().getTextable().getFontColor());
 	}
 	
 	public void setFontColorExternalLabelOnly(String color) {
@@ -61,19 +69,14 @@ public class ExternalLabel extends GText {
 	
 	@Override
 	public void setLabel(String label) {
-		labeled.setLabel(label);
+		externalizableLabeled.getLabeled().getTextable().setLabel(label);
+		Textable textable = externalizableLabeled.getLabeled().getTextable();
+		super.setLabel(textable instanceof TemplateLabeled ? 
+				((TemplateLabeled) textable).getLabelRenderedText() : textable.getLabel());
 	}
 	
 	public void setLabelExternalLabelOnly(String label) {
 		super.setLabel(label);
 	}
 	
-	@Override
-	public void setPosition(Coordinate coord) {
-		super.setPosition(coord);
-	}
-	
-	public ExternalizableLabeled getExternalizableLabeled() {
-		return labeled;
-	}
 }

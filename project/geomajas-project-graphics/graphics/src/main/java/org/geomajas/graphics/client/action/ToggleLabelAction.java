@@ -13,7 +13,6 @@ package org.geomajas.graphics.client.action;
 import org.geomajas.graphics.client.object.ExternalLabel;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
-import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.operation.ToggleExternalizableLabelOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -32,7 +31,8 @@ public class ToggleLabelAction implements Action {
 	private String label = "toggle label";
 
 	public boolean supports(GraphicsObject object) {
-		return (object.hasRole(Labeled.TYPE) && object.getRole(Labeled.TYPE) instanceof ExternalizableLabeled) ||
+		return (object.hasRole(ExternalizableLabeled.TYPE) 
+				&& object.getRole(ExternalizableLabeled.TYPE) instanceof ExternalizableLabeled) ||
 				object instanceof ExternalLabel;
 	}
 

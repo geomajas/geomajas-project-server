@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Labeled;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.operation.LabelOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
@@ -39,7 +39,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class LabelController extends AbstractGraphicsController implements DoubleClickHandler {
+public class TextableController extends AbstractGraphicsController implements DoubleClickHandler {
 
 	private boolean active;
 
@@ -51,11 +51,11 @@ public class LabelController extends AbstractGraphicsController implements Doubl
 
 	private List<HandlerRegistration> popupRegs = new ArrayList<HandlerRegistration>();
 
-	private Labeled object;
+	private Textable object;
 
-	public LabelController(GraphicsObject object, GraphicsService graphicsService) {
+	public TextableController(GraphicsObject object, GraphicsService graphicsService) {
 		super(graphicsService, object);
-		this.object = object.getRole(Labeled.TYPE);
+		this.object = object.getRole(Textable.TYPE);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class LabelController extends AbstractGraphicsController implements Doubl
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		popup.setText(object.getTextable().getLabel());
+		popup.setText(object.getLabel());
 		popup.clearAndShow(event.getClientX(), event.getClientY());
 		popupRegs.add(popup.addCloseHandler(handler));
 		popupRegs.add(popup.addDomHandler(handler, KeyDownEvent.getType()));
@@ -150,7 +150,7 @@ public class LabelController extends AbstractGraphicsController implements Doubl
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				execute(new LabelOperation(getObject(), null, object.getTextable().getLabel(), popup.getText()));
+				execute(new LabelOperation(getObject(), null, object.getLabel(), popup.getText()));
 				clearPopup();
 			}
 		}

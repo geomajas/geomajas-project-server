@@ -10,50 +10,48 @@
  */
 package org.geomajas.graphics.client.object.labeler;
 
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.object.ResizableAwareRole;
 import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.RoleType;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.shape.AnchoredText;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * Implementation of {@link ExternalizableLabeled} role for {@link Resizable} objects.
+ * Implementation of {@link Labeled} role for {@link Resizable} objects.
  * 
  * @author Jan De Moerloose
  * 
  */
 public class ResizableLabeler implements Labeled, ResizableAwareRole<Labeled> {
 
-	private Resizable resizable;
-
-	private AnchoredText text;
+	private ResizableTextable resTextable;
 
 	public ResizableLabeler() {
-		this(null);
+		this((String) null);
 	}
 
 	public ResizableLabeler(String label) {
-		String labelText = label != null ? label : "";
-		text = new AnchoredText(0, 0, labelText, 0.5, 0.5);
-		text.setFillColor("#000000");
-		text.setStrokeWidth(0);
+		this(new ResizableTextable(label));
+	}
+	
+	public ResizableLabeler(ResizableTextable restTextable) {
+		this.resTextable = restTextable;
 	}
 
 	@Override
 	public VectorObject asObject() {
-		return text;
+		return resTextable.asObject();
 	}
 	
 	public AnchoredText getInternalLabel() {
-		return text;
+		return resTextable.getInternalLabel();
 	}
 
 	@Override
 	public void setResizable(Resizable resizable) {
-		this.resizable = resizable;
+		resTextable.setResizable(resizable);
 	}
 
 	@Override
@@ -61,21 +59,8 @@ public class ResizableLabeler implements Labeled, ResizableAwareRole<Labeled> {
 		centerText();
 	}
 
-	@Override
-	public void setLabel(String label) {
-		text.setText(label);
-		centerText();
-	}
-
-	@Override
-	public String getLabel() {
-		return text.getText();
-	}
-
 	private void centerText() {
-		Coordinate center = BboxService.getCenterPoint(resizable.getUserBounds());
-		text.setUserX(center.getX());
-		text.setUserY(center.getY());
+		resTextable.onUpdate();
 	}
 
 	@Override
@@ -90,48 +75,29 @@ public class ResizableLabeler implements Labeled, ResizableAwareRole<Labeled> {
 
 	@Override
 	public ResizableAwareRole<Labeled> cloneRole(Resizable resizable) {
-		ResizableLabeler clone = new ResizableLabeler();
-		clone.setResizable(resizable);
-		clone.setLabel(getLabel());
+		ResizableTextable resTextClone = (ResizableTextable) resTextable.cloneRole(resizable);
+		ResizableLabeler clone = new ResizableLabeler(resTextClone);
+		clone.asObject().setVisible((resTextable.asObject().isVisible()));
 		return clone;
 	}
 
-	@Override
-	public void setFontSize(int size) {
-		text.setFontSize(size);
-	}
-
-	@Override
-	public int getFontSize() {
-		return text.getFontSize();
-	}
-
-	@Override
-	public void setFontFamily(String font) {
-		text.setFontFamily(font);
-	}
-
-	@Override
-	public String getFontFamily() {
-		return text.getFontFamily();
-	}
-
-	@Override
-	public void setFontColor(String color) {
-		text.setFillColor(color);
-	}
-
-	@Override
-	public String getFontColor() {
-		return text.getFillColor();
-	}
 	
 	public Resizable getResizabel() {
-		return resizable;
+		return resTextable.getResizabel();
 	}
 
 	@Override
 	public void setLabelVisible(boolean visible) {
-		text.setVisible(visible);
+		asObject().setVisible(visible);
+	}
+
+	@Override
+	public Textable getTextable() {
+		return resTextable;
+	}
+	
+	@Override
+	public void setTextable(ResizableTextable textable) {
+		resTextable = (ResizableTextable) textable;
 	}
 }

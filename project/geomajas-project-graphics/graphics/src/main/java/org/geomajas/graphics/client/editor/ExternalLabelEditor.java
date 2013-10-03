@@ -30,12 +30,12 @@ public class ExternalLabelEditor extends LabelEditor {
 	@Override
 	public void setObject(GraphicsObject object) {
 		// object is the object anchored to
-		this.object = (GraphicsObject) ((ExternalLabel) object).getExternalizableLabeled();
+		this.object = (GraphicsObject) ((ExternalLabel) object).getExternalizableLabeled().getMasterObject();
 		Labeled label = object.getRole(Labeled.TYPE);
-		labelBox.setText(label.getLabel());
-		fillColorBox.setText(label.getFontColor());
-		fontSize.setText(label.getFontSize()  + "");
-		fontFamily.setText(label.getFontFamily());
+		labelBox.setText(label.getTextable().getLabel());
+		fillColorBox.setText(label.getTextable().getFontColor());
+		fontSize.setText(label.getTextable().getFontSize()  + "");
+		fontFamily.setText(label.getTextable().getFontFamily());
 	}
 	
 	@Override

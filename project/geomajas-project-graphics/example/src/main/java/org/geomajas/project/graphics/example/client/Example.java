@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.geomajas.graphics.client.action.AddTextAsAnchorAction;
 import org.geomajas.graphics.client.action.BringToFrontAction;
 import org.geomajas.graphics.client.action.DeleteAction;
 import org.geomajas.graphics.client.action.DuplicateAction;
@@ -41,7 +40,6 @@ import org.geomajas.graphics.client.controller.ResizeControllerFactory;
 import org.geomajas.graphics.client.editor.AnchorStyleEditor;
 import org.geomajas.graphics.client.editor.LabelEditor;
 import org.geomajas.graphics.client.editor.StrokeFillEditor;
-import org.geomajas.graphics.client.editor.TemplateLabelEditor;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.ActionType;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.Handler;
@@ -129,13 +127,14 @@ public class Example implements EntryPoint, Handler {
 	private void registerPopupFactoryActionsAndEditiors() {
 		popupFactory.registerAction(new DeleteAction());
 		popupFactory.registerEditor(new LabelEditor());
+//		popupFactory.registerEditor(new ExternalLabelEditor());
 		popupFactory.registerEditor(new StrokeFillEditor());
 		popupFactory.registerAction(new DuplicateAction());
 		popupFactory.registerAction(new BringToFrontAction());
 		popupFactory.registerEditor(new AnchorStyleEditor());
-		popupFactory.registerAction(new AddTextAsAnchorAction());
+//		popupFactory.registerAction(new AddTextAsAnchorAction());
 		popupFactory.registerAction(new ToggleLabelAction());
-		popupFactory.registerEditor(new TemplateLabelEditor());
+//		popupFactory.registerEditor(new TemplateLabelEditor());
 	}
 	
 	private void createButtonPanel(final TestContainer rc) {

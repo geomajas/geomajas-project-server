@@ -57,7 +57,7 @@ public abstract class ResizableGraphicsObject extends BaseGraphicsObject impleme
 		addRole(new ResizableRenderer());
 		if (text != null) {
 			addRole(new ResizableLabeler());
-			getRole(Labeled.TYPE).setLabel(text);
+			getRole(Labeled.TYPE).getTextable().setLabel(text);
 		}
 		addRole(Draggable.TYPE, this);
 		addRole(Resizable.TYPE, this);
@@ -164,23 +164,23 @@ public abstract class ResizableGraphicsObject extends BaseGraphicsObject impleme
 	}
 
 	public void setColor(String color) {
-		getRole(Labeled.TYPE).setFontColor(color);
+		getRole(Labeled.TYPE).getTextable().setFontColor(color);
 	}
 
 	public String getColor() {
-		return getRole(Labeled.TYPE).getFontColor();
+		return getRole(Labeled.TYPE).getTextable().getFontColor();
 	}
 	
 	public void setSize(int size) {
-		getRole(Labeled.TYPE).setFontSize(size);
+		getRole(Labeled.TYPE).getTextable().setFontSize(size);
 	}
 
 	public int getSize() {
-		return getRole(Labeled.TYPE).getFontSize();
+		return getRole(Labeled.TYPE).getTextable().getFontSize();
 	}
 
 	public String getFont() {
-		return getRole(Labeled.TYPE).getFontFamily();
+		return getRole(Labeled.TYPE).getTextable().getFontFamily();
 	}
 
 	/**

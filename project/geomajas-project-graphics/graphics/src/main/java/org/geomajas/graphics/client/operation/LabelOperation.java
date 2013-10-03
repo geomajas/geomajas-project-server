@@ -12,6 +12,7 @@ package org.geomajas.graphics.client.operation;
 
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Labeled;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
@@ -61,22 +62,28 @@ public class LabelOperation implements GraphicsOperation {
 
 	@Override
 	public void execute() {
-		asLabeled().setLabel(afterLabel);
-		asLabeled().setFontColor(afterColor);
-		asLabeled().setFontSize(afterSize);
-		asLabeled().setFontFamily(afterFont);
+		asTextable().setLabel(afterLabel);
+		asTextable().setFontColor(afterColor);
+		asTextable().setFontSize(afterSize);
+		asTextable().setFontFamily(afterFont);
 	}
 
 	@Override
 	public void undo() {
-		asLabeled().setLabel(beforeLabel);
-		asLabeled().setFontColor(beforeColor);
-		asLabeled().setFontSize(beforeSize);
-		asLabeled().setFontFamily(beforeFont);
+		asTextable().setLabel(beforeLabel);
+		asTextable().setFontColor(beforeColor);
+		asTextable().setFontSize(beforeSize);
+		asTextable().setFontFamily(beforeFont);
 	}
 
-	public Labeled asLabeled() {
-		return labeled.getRole(Labeled.TYPE);
+	public Textable asTextable() {
+		Textable textable = null;
+		if (labeled.hasRole(Labeled.TYPE)) {
+			textable = labeled.getRole(Labeled.TYPE).getTextable();
+		} else if (labeled.hasRole(Textable.TYPE)) {
+			textable = labeled.getRole(Textable.TYPE);
+		}
+		return textable;
 	}
 
 	@Override

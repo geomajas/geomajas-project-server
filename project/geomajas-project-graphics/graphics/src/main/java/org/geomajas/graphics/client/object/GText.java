@@ -13,8 +13,8 @@ package org.geomajas.graphics.client.object;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.shape.AnchoredText;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
@@ -25,7 +25,7 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  * @author Jan De Moerloose
  * 
  */
-public class GText extends ResizableGraphicsObject implements Labeled, Fillable, Strokable {
+public class GText extends ResizableGraphicsObject implements Textable, Fillable, Strokable {
 
 	public GText(double userX, double userY, String text) {
 		this(new AnchoredText(userX, userY, text, 0.5, 0.5));
@@ -39,7 +39,7 @@ public class GText extends ResizableGraphicsObject implements Labeled, Fillable,
 		super(text);
 		addRole(Fillable.TYPE, this);
 		addRole(Strokable.TYPE, this);
-		addRole(Labeled.TYPE, this);
+		addRole(Textable.TYPE, this);
 		removeRole(Resizable.TYPE);
 		addRole(getText().getResizableBorderer());
 	}
@@ -140,7 +140,7 @@ public class GText extends ResizableGraphicsObject implements Labeled, Fillable,
 	/**
 	 *
 	 */
-	static class DraggableText implements Draggable, Strokable, Fillable, Labeled, Resizable {
+	static class DraggableText implements Draggable, Strokable, Fillable, Textable, Resizable {
 
 		// centered around userX, userY
 		private AnchoredText text;
@@ -322,17 +322,7 @@ public class GText extends ResizableGraphicsObject implements Labeled, Fillable,
 			return borderer;
 		}
 
-		@Override
-		public void setLabelVisible(boolean visible) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 
-	@Override
-	public void setLabelVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

@@ -13,8 +13,8 @@ package org.geomajas.graphics.client.object;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.shape.FixedScreenSizeRectangle;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.FlipState;
@@ -28,7 +28,7 @@ import com.google.gwt.dom.client.Style;
  * @author Jan De Moerloose
  * 
  */
-public class GTextAreaHtml extends ResizableGraphicsObject implements Labeled, Fillable, Strokable {
+public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, Fillable, Strokable {
 
 	public GTextAreaHtml(double userX, double userY, int defaultPixelWidth, int defaultPixelHeight, String text,
 			BboxPosition screenUpperLeftPositionInUserSpace) {
@@ -143,7 +143,7 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Labeled, F
 	/**
 	 * Resizable implementation for rectangle.
 	 */
-	static class TextPopup implements Resizable, Fillable, Strokable, Labeled, Draggable {
+	static class TextPopup implements Resizable, Fillable, Strokable, Textable, Draggable {
 		
 		private DraggableDecoratedPopupPanel panel;
 		
@@ -342,20 +342,6 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Labeled, F
 			return panel.getFontFamily();
 		}
 
-		@Override
-		public void setLabelVisible(boolean visible) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 
-	@Override
-	public void setLabelVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
-	}
-
-//	public class GraphicsContainerToHtmlPositionConverter {
-//		
-//	}
 }

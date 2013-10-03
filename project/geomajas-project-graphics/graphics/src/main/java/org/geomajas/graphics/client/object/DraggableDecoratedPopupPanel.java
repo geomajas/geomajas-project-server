@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.object;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.object.role.Labeled;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Label;
  * 
  */
 public class DraggableDecoratedPopupPanel extends DecoratedPopupPanel implements Resizable, Draggable,
-		Labeled, MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler {
+		Textable, MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler {
 
 	private Label label;
 	
@@ -181,9 +181,4 @@ public class DraggableDecoratedPopupPanel extends DecoratedPopupPanel implements
 //		dragging = false;
 	}
 
-	@Override
-	public void setLabelVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
-	}
 }

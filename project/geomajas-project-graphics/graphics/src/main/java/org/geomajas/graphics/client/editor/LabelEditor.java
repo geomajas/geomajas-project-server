@@ -14,7 +14,7 @@ import org.geomajas.graphics.client.object.ExternalLabel;
 import org.geomajas.graphics.client.object.GText;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Labeled;
-import org.geomajas.graphics.client.object.role.TemplateLabeled;
+import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.operation.LabelOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -89,27 +89,42 @@ public class LabelEditor implements Editor {
 
 	@Override
 	public boolean supports(GraphicsObject object) {
-		return object.hasRole(Labeled.TYPE) && !(object.getRole(Labeled.TYPE) instanceof TemplateLabeled);
+		return object.hasRole(Labeled.TYPE) || object.hasRole(Textable.TYPE);
 	}
 
 	@Override
 	public void setObject(GraphicsObject object) {
 		this.object = object;
-		Labeled label = object.getRole(Labeled.TYPE);
-		labelBox.setText(label.getLabel());
-		fillColorBox.setText(label.getFontColor());
-		fontSize.setText(label.getFontSize()  + "");
-		fontFamily.setText(label.getFontFamily());
+		Textable textable = getTextable();
+		if (textable != null) {
+			labelBox.setText(textable.getLabel());
+			fillColorBox.setText(textable.getFontColor());
+			fontSize.setText(textable.getFontSize()  + "");
+			fontFamily.setText(textable.getFontFamily());
+		}
 	}
 
 	public void onOk() {
-		String beforeLabel = object.getRole(Labeled.TYPE).getLabel();
-		String beforeColor = object.getRole(Labeled.TYPE).getFontColor();
-		int beforeSize = object.getRole(Labeled.TYPE).getFontSize();
-		String beforeFont = object.getRole(Labeled.TYPE).getFontFamily();
-		service.execute(new LabelOperation(object, null, beforeLabel, beforeColor, beforeSize,
-				beforeFont, labelBox.getText(), fillColorBox.getText(), Integer.parseInt(fontSize.getText()),
-				fontFamily.getText()));
+		Textable textable = getTextable();
+		if (textable != null) {
+			String beforeLabel = textable.getLabel();
+			String beforeColor = textable.getFontColor();
+			int beforeSize = textable.getFontSize();
+			String beforeFont = textable.getFontFamily();
+			service.execute(new LabelOperation(object, null, beforeLabel, beforeColor, beforeSize,
+					beforeFont, labelBox.getText(), fillColorBox.getText(), Integer.parseInt(fontSize.getText()),
+					fontFamily.getText()));
+		}
+	}
+	
+	private Textable getTextable() {
+		Textable textable = null;
+		if (object.hasRole(Labeled.TYPE)) {
+			textable = object.getRole(Labeled.TYPE).getTextable();
+		} else if (object.hasRole(Textable.TYPE)) {
+			textable = object.getRole(Textable.TYPE);
+		}
+		return textable;
 	}
 
 	@Override
@@ -123,7 +138,7 @@ public class LabelEditor implements Editor {
 		// This is the case for GText
 		// TODO make more generic
 		if (object instanceof GText && !(object instanceof ExternalLabel)) {
-			return false;
+			return !(((GText) object).getRole(Textable.TYPE).getLabel().isEmpty());
 		}
 		return true;
 	}

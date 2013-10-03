@@ -11,9 +11,11 @@
 package org.geomajas.graphics.client.controller;
 
 import org.geomajas.graphics.client.object.GPath;
+import org.geomajas.graphics.client.object.labeler.ResizableExternalizableLabeler;
 import org.geomajas.graphics.client.object.labeler.ResizableTemplateLabeler;
+import org.geomajas.graphics.client.object.labeler.ResizableTextable;
+import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
 import org.geomajas.graphics.client.object.role.Labeled;
-import org.geomajas.graphics.client.object.role.TemplateLabeled;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -30,9 +32,12 @@ public class CreateLineWithTemplateLabeledController extends CreatePathControlle
 	}
 
 	protected void addObject(GPath path) {
-		path.removeRole(Labeled.TYPE);
-		path.addRole(new ResizableTemplateLabeler());
-		((TemplateLabeled) path.getRole(Labeled.TYPE)).setLabelTemplateText("Line");
+		path.addRole(ExternalizableLabeled.TYPE, new ResizableExternalizableLabeler(path, 
+				getService().isExternalizableLabeledOriginallyExternal()));
+		ResizableTextable restTextable = (ResizableTextable) path.getRole(Labeled.TYPE).getTextable();
+		ResizableTemplateLabeler tempLabeled = new ResizableTemplateLabeler(restTextable);
+		tempLabeled.setLabelTemplateText("Line");
+		path.getRole(Labeled.TYPE).setTextable(tempLabeled);
 		execute(new AddOperation(path));
 	}
 }

@@ -16,8 +16,8 @@ import java.util.List;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GPath;
 import org.geomajas.graphics.client.object.labeler.ResizableExternalizableLabeler;
+import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
 import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
@@ -130,9 +130,8 @@ public class CreatePathController extends AbstractGraphicsController implements 
 	}
 
 	protected void addObject(GPath path) {
-		path.removeRole(Labeled.TYPE);
-		path.addRole(new ResizableExternalizableLabeler(path, 
-				text, getService().isExternalizableLabeledOriginallyExternal()));
+		path.addRole(ExternalizableLabeled.TYPE, new ResizableExternalizableLabeler(path, 
+				getService().isExternalizableLabeledOriginallyExternal()));
 		execute(new AddOperation(path));
 	}
 

@@ -10,6 +10,8 @@
  */
 package org.geomajas.graphics.client.object.role;
 
+import org.geomajas.graphics.client.object.labeler.ResizableTextable;
+
 
 /**
  * Implemented by labeled graphics objects.
@@ -21,21 +23,9 @@ public interface Labeled {
 	
 	RoleType<Labeled> TYPE = new RoleType<Labeled>("Labeled");
 
-	void setLabel(String label);
-
-	String getLabel();
-
-	void setFontColor(String color);
-
-	String getFontColor();
+	Textable getTextable();
 	
-	void setFontSize(int size);
-
-	int getFontSize();
-	
-	void setFontFamily(String font);
-
-	String getFontFamily();
+	void setTextable(ResizableTextable textable);
 	
 	void setLabelVisible(boolean visible);
 }

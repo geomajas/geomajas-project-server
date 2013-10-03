@@ -37,7 +37,7 @@ public class TemplateLabelEditor extends LabelEditor {
 	@Override
 	public void setObject(GraphicsObject object) {
 		this.object = object;
-		Labeled label = getTemplateLabeled();
+		TemplateLabeled label = getTemplateLabeled();
 		labelBox.setText(label.getLabel());
 		fillColorBox.setText(label.getFontColor());
 		fontSize.setText(label.getFontSize()  + "");
@@ -64,12 +64,12 @@ public class TemplateLabelEditor extends LabelEditor {
 	private TemplateLabeled getTemplateLabeled() {
 		Labeled label;
 		if (object instanceof ExternalLabel) {
-			label  = ((ExternalLabel) object).getExternalizableLabeled();
+			label  = ((ExternalLabel) object).getExternalizableLabeled().getLabeled();
 		} else {
 			label = object.getRole(Labeled.TYPE);
 		}
-		if (label instanceof TemplateLabeled) {
-			return (TemplateLabeled) label;
+		if (label.getTextable() instanceof TemplateLabeled) {
+			return (TemplateLabeled) label.getTextable();
 		}
 		return null;
 	}
