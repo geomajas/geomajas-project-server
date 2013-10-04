@@ -1,0 +1,287 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="beans3Info" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTIPOLYGON" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-85.05112877980659" />
+				<property name="y" value="-85.05112877980659" />
+				<property name="width" value="170.102257" />
+				<property name="height" value="170.102257" />
+			</bean>
+		</property>
+		<property name="featureInfo" ref="beans3FeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="beans3StyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.FeatureInfo" name="beans3FeatureInfo">
+		<property name="dataSourceName" value="org.geomajas.layer.bean.FeatureBean" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="id" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="geometry" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="String attribute" />
+					<property name="name" value="stringAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Boolean attribute" />
+					<property name="name" value="booleanAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="BOOLEAN" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Currency attribute" />
+					<property name="name" value="currencyAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="CURRENCY" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Date attribute" />
+					<property name="name" value="dateAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DATE" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Double attribute" />
+					<property name="name" value="doubleAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DOUBLE" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Float attribute" />
+					<property name="name" value="floatAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="FLOAT" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Image attribute" />
+					<property name="name" value="imageUrlAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="IMGURL" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Integer attribute" />
+					<property name="name" value="integerAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Long attribute" />
+					<property name="name" value="longAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="LONG" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Short attribute" />
+					<property name="name" value="shortAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="SHORT" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="URL attribute" />
+					<property name="name" value="urlAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="URL" />
+				</bean>
+				<bean class="org.geomajas.configuration.AssociationAttributeInfo">
+					<property name="label" value="ManyToOne attribute" />
+					<property name="name" value="manyToOneAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="MANY_TO_ONE" />
+					<property name="feature">
+						<bean class="org.geomajas.configuration.FeatureInfo">
+							<property name="dataSourceName" value="org.geomajas.layer.bean.ManyToOneAttributeBean" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
+							<property name="attributes">
+								<list>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="String attribute" />
+										<property name="name" value="stringAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="STRING" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.AssociationAttributeInfo">
+					<property name="label" value="OneToMany attribute" />
+					<property name="name" value="onetoManyAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="ONE_TO_MANY" />
+					<property name="feature">
+						<bean class="org.geomajas.configuration.FeatureInfo">
+							<property name="dataSourceName" value="org.geomajas.layer.bean.OneToManyAttributeBean" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
+							<property name="attributes">
+								<list>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="String attribute" />
+										<property name="name" value="stringAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="STRING" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beans3StyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="default" />
+					<property name="fillColor" value="#995500" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#995500" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="stringAttr" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#998811" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean name="beans3" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="beans3Info" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="1" />
+					<property name="booleanAttr" value="true" />
+					<property name="currencyAttr" value="100,23" />
+					<property name="dateAttr" value="2010-02-23" />
+					<property name="doubleAttr" value="123.456" />
+					<property name="floatAttr" value="456.789" />
+					<property name="imageUrlAttr" value="http://www.geomajas.org/image1" />
+					<property name="integerAttr" value="789" />
+					<property name="longAttr" value="123456789" />
+					<property name="shortAttr" value="123" />
+					<property name="stringAttr" value="bean1" />
+					<property name="urlAttr" value="http://www.geomajas.org/url1" />
+					<property name="manyToOneAttr">
+						<bean class="org.geomajas.layer.bean.ManyToOneAttributeBean">
+							<property name="id" value="1" />
+							<property name="stringAttr" value="manyToOne - bean1" />
+						</bean>
+					</property>
+					<property name="oneToManyAttr">
+						<list>
+							<bean class="org.geomajas.layer.bean.OneToManyAttributeBean">
+								<property name="id" value="1" />
+								<property name="stringAttr" value="oneToMany - 1" />
+							</bean>
+							<bean class="org.geomajas.layer.bean.OneToManyAttributeBean">
+								<property name="id" value="2" />
+								<property name="stringAttr" value="oneToMany - 2" />
+							</bean>
+						</list>
+					</property>
+					<property name="geometry"
+						value="MULTIPOLYGON(((0 0,1 0,1 1,0 1,0 0)))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="2" />
+					<property name="stringAttr" value="bean2" />
+					<property name="geometry"
+						value="MULTIPOLYGON(((4 0,6 0,6 3,4 3,4 0)))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="3" />
+					<property name="stringAttr" value="bean3" />
+					<property name="geometry"
+						value="MULTIPOLYGON(((2 1,6 1,7 2,2 2,2 1)))" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

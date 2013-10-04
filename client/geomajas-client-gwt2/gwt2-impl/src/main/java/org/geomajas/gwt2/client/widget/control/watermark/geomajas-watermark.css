@@ -1,0 +1,20 @@
+/*===========================================================================*/
+/*====                           Watermark                               ====*/
+/*===========================================================================*/
+
+@external gm-Watermark;
+@sprite .gm-Watermark {
+	background-color: #F0F0F0;
+	gwt-image: "poweredByGeomajas";
+	bottom: 0px;
+	right: 0px;
+	height: 12px;
+	width: 125px;
+	position: absolute;
+	-webkit-border-top-left-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	border-top-left-radius: 3px;
+	-moz-box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+  	-webkit-box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+	box-shadow: 0 1px 6px rgba(40, 42, 44, 0.8);
+}

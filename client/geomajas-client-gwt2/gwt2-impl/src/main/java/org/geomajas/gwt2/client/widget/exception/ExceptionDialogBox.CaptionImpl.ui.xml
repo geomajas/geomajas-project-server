@@ -1,0 +1,15 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="resource" type="org.geomajas.gwt2.client.resource.GeomajasWidgetResource" />
+
+	<ui:with field="msg" type="org.geomajas.gwt2.client.i18n.GlobalMessages" />
+
+	<g:HorizontalPanel width="100%">
+		<g:HTMLPanel>
+			<div ui:field="titleElement" class="{resource.css.exceptionDialogTitle}" />
+		</g:HTMLPanel>
+		<g:Button ui:field="closeIcon" title="{msg.exceptionDialogCloseTitle}"
+		  		styleName="{resource.css.exceptionDialogCloseIcon}" />		
+	</g:HorizontalPanel>
+
+</ui:UiBinder> 
