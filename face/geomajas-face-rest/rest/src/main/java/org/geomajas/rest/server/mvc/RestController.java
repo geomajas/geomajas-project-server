@@ -115,7 +115,6 @@ public class RestController {
 			@RequestParam(value = "queryable", required = false) List<String> queryable,
 			@RequestParam(value = "format", required = false, defaultValue = "json") String format,
 			@RequestParam(value = "epsg", required = false) String epsg,
-			@RequestParam(value = "filter", required = false) String filter,
 			WebRequest request, Model model)
 			throws RestException {
 
