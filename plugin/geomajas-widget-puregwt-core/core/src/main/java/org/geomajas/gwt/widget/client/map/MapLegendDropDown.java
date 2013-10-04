@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.widget.client.map;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.MapPresenter;
 
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import org.geomajas.gwt.widget.client.i18n.WidgetCoreInternationalization;
 
 /**
  * Drop down button that displays the {@link LegendPopupPanel}. When this widget is added to a MapPresenter's widget
@@ -31,6 +33,7 @@ import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
  */
 @Api
 public class MapLegendDropDown extends Button {
+	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
 
 	private final MapPresenter mapPresenter;
 
@@ -46,7 +49,7 @@ public class MapLegendDropDown extends Button {
 	 */
 	public MapLegendDropDown(final MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
-		setHTML("Legende");
+		setHTML(MSG.legendButName());
 		addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

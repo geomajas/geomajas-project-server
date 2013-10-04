@@ -14,12 +14,17 @@ package org.geomajas.gwt.widget.client.i18n;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * Localization constants for the GWT MessageBox widget.
+ * Localization constants for the GWT client widgets.
  * 
- * @author Kristof Heirwegh
+ * @author Dosi Bingov
  */
-public interface MessageBoxMessages extends Messages {
-	
+public interface WidgetCoreInternationalization extends Messages {
+
+	/*	Legend widget messages */
+	String legendButName();
+
+
+	/*	Message box widget messages */
 	String messageBoxBtnYes();
 	String messageBoxBtnNo();
 	String messageBoxBtnCancel();

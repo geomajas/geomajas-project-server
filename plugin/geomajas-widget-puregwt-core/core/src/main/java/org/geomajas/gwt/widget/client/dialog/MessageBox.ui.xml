@@ -1,7 +1,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
 	<ui:with field="resource" type="org.geomajas.gwt.widget.client.dialog.MessageBoxResource"/>
-	<ui:with field="msg" type="org.geomajas.gwt.widget.client.i18n.MessageBoxMessages" />
+	<ui:with field="msg" type="org.geomajas.gwt.widget.client.i18n.WidgetCoreInternationalization" />
 		
 	<g:HTMLPanel>
 		<div style="margin: 5px 15px 10px 15px;">

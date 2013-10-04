@@ -11,8 +11,6 @@
 
 package org.geomajas.gwt.widget.client.dialog;
 
-import org.geomajas.gwt.widget.client.i18n.MessageBoxMessages;
-
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
@@ -27,6 +25,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt.widget.client.i18n.WidgetCoreInternationalization;
 
 /**
  * General MessageBox for showing a message.
@@ -42,7 +41,7 @@ public class MessageBox implements IsWidget {
 
 	// can't directly inherit from CloseableDialogbox because it has ui:fields in its binder (which we don't need/want).
 
-	private static final MessageBoxMessages MSG = GWT.create(MessageBoxMessages.class);
+	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
 
 	/**
 	 * Style of the MessageBox.
