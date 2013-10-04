@@ -29,6 +29,8 @@ public class RestException extends GeomajasException {
 	public static final int PROBLEM_READING_LAYERSERVICE = 1;
 	public static final int NO_SUCH_ATTRIBUTE = 2;
 	public static final int UNSUPPORTED_QUERY_OPERATION = 3;
+	public static final int NO_ELEMENTS = 4;
+
 
 	/**
 	 * Create new RestException.

@@ -28,7 +28,19 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-geojson</artifactId>
 		</dependency>
-	
+		<dependency>
+			<groupId>org.geotools.xsd</groupId>
+			<artifactId>gt-xsd-kml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>

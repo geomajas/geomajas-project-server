@@ -56,6 +56,11 @@
 				<artifactId>gt-geojson</artifactId>
 				<version>${geomajas-face-rest-geotools-version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geotools.xsd</groupId>
+				<artifactId>gt-xsd-kml</artifactId>
+				<version>${geomajas-face-rest-geotools-version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	

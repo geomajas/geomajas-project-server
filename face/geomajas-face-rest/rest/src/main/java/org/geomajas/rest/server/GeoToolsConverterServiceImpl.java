@@ -15,6 +15,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -27,6 +32,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.geometry.aggregate.MultiPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +141,28 @@ public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 				}
 			}
 		}
-		builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), Geometry.class);
+		switch (vectorLayerInfo.getLayerType()) {
+			case POINT:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), Point.class);
+				break;
+			case LINESTRING:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), LineString.class);
+				break;
+			case POLYGON:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), Polygon.class);
+				break;
+			case MULTIPOINT:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), MultiPoint.class);
+				break;
+			case MULTILINESTRING:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), MultiLineString.class);
+				break;
+			case MULTIPOLYGON:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), MultiPolygon.class);
+				break;
+			default:
+				builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), Geometry.class);
+		}
 		builder.setDefaultGeometry(vectorLayerInfo.getFeatureInfo().getGeometryType().getName());
 
 		return builder.buildFeatureType();

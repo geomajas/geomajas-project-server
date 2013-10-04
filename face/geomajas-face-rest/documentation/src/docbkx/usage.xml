@@ -37,7 +37,7 @@
 
     <para>The method and request uri for reading a single feature is:</para>
 
-    <para><programlisting>GET http://base/rest/{layerId}/{featureId}.json</programlisting>The
+    <para><programlisting>GET http://base/rest/{layerId}/{featureId}.{format}</programlisting>The
     url parameters are:</para>
 
     <itemizedlist>
@@ -48,6 +48,10 @@
       <listitem>
         <para>featureId : the id of the feature</para>
       </listitem>
+
+		<listitem>
+			<para>format : the format of the returned feature, possible values are: json, kml, shp, txt</para>
+		</listitem>
     </itemizedlist>
 
     <para>If successful, the response is as follows:</para>
@@ -58,7 +62,7 @@
       </listitem>
 
       <listitem>
-        <para>a single GeoJSON feature</para>
+        <para>a single feature in GeoJSON, KML, shapefile or text format</para>
       </listitem>
     </itemizedlist>
 
@@ -198,10 +202,18 @@
 
             <entry>{num}</entry>
 
-            <entry>the EPSG code of the box value </entry>
+            <entry>the EPSG code of the box value and the returned geometries</entry>
           </row>
 
-          <row>
+			<row>
+				<entry>format</entry>
+
+				<entry>json|shp|txt|kml</entry>
+
+				<entry>The format of the response, default is json</entry>
+			</row>
+
+			<row>
             <entry>attrs</entry>
 
             <entry>{field1}[,{field2},...]</entry>

@@ -64,16 +64,25 @@ public class RestController {
 	@Autowired
 	private GeoService geoService;
 
-	static final String VIEW = "rest.server.mvc.GeoJsonView";
+	static final String TEXT_VIEW = "rest.server.mvc.TextView";
+
+	static final String GEOJSON_VIEW = "rest.server.mvc.GeoJsonView";
+
+	static final String KML_VIEW = "rest.server.mvc.KmlView";
+
+	static final String SHAPE_VIEW = "rest.server.mvc.ShpView";
 
 	static final String FEATURE_COLLECTION = "FeatureCollection";
 
 	static final String VECTOR_LAYER_INFO = "VectorLayerInfo";
 
+	static final String VECTOR_LAYER_ID = "VectorLayerId";
+
 	static final String ATTRIBUTES = "Attrs";
 
-	@RequestMapping(value = "/rest/{layerId}/{featureId}.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/rest/{layerId}/{featureId}.{format}", method = RequestMethod.GET)
 	public String readOneFeature(@PathVariable String layerId, @PathVariable String featureId,
+			@PathVariable String format,
 			@RequestParam(value = "no_geom", required = false) boolean noGeom,
 			@RequestParam(value = "attrs", required = false) List<String> attrs, Model model) throws RestException {
 		List<InternalFeature> features;
@@ -89,7 +98,8 @@ public class RestController {
 		model.addAttribute(FEATURE_COLLECTION, features.get(0));
 		model.addAttribute(VECTOR_LAYER_INFO, features.get(0).getLayer().getLayerInfo());
 		model.addAttribute(ATTRIBUTES, attrs);
-		return VIEW;
+		model.addAttribute(VECTOR_LAYER_ID, layerId);
+		return getView(format);
 	}
 
 	@RequestMapping(value = "/rest/{layerId}", method = RequestMethod.GET)
@@ -104,6 +114,7 @@ public class RestController {
 			@RequestParam(value = "order_by", required = false) String orderBy,
 			@RequestParam(value = "dir", required = false) FeatureOrder dir,
 			@RequestParam(value = "queryable", required = false) List<String> queryable,
+			@RequestParam(value = "format", required = false, defaultValue = "json") String format,
 			@RequestParam(value = "epsg", required = false) String epsg, WebRequest request, Model model)
 			throws RestException {
 
@@ -141,7 +152,20 @@ public class RestController {
 			model.addAttribute(FEATURE_COLLECTION, features);
 			model.addAttribute(ATTRIBUTES, attrs);
 		}
-		return VIEW;
+		model.addAttribute(VECTOR_LAYER_ID, layerId);
+		return getView(format);
+	}
+
+	private String getView(String fileType) {
+		if ("kml".equals(fileType)) {
+			return KML_VIEW;
+		} else if ("shp".equals(fileType)) {
+			return SHAPE_VIEW;
+		} else if ("txt".equals(fileType)) {
+			return TEXT_VIEW;
+		} else {
+			return GEOJSON_VIEW;
+		}
 	}
 
 	public ModelAndView createUpdateFeatures() {

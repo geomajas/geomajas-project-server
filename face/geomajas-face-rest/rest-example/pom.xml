@@ -29,7 +29,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.12.8</version>
+				<version>1.13.38</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -80,6 +80,11 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-jetty-runner</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
