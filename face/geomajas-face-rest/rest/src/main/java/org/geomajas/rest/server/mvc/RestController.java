@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
@@ -64,21 +65,21 @@ public class RestController {
 	@Autowired
 	private GeoService geoService;
 
-	static final String TEXT_VIEW = "rest.server.mvc.TextView";
+	public static final String TEXT_VIEW = "rest.server.mvc.TextView";
 
-	static final String GEOJSON_VIEW = "rest.server.mvc.GeoJsonView";
+	public static final String GEOJSON_VIEW = "rest.server.mvc.GeoJsonView";
 
-	static final String KML_VIEW = "rest.server.mvc.KmlView";
+	public static final String KML_VIEW = "rest.server.mvc.KmlView";
 
-	static final String SHAPE_VIEW = "rest.server.mvc.ShpView";
+	public static final String SHAPE_VIEW = "rest.server.mvc.ShpView";
 
-	static final String FEATURE_COLLECTION = "FeatureCollection";
+	public static final String FEATURE_COLLECTION = "FeatureCollection";
 
-	static final String VECTOR_LAYER_INFO = "VectorLayerInfo";
+	public static final String VECTOR_LAYER_INFO = "VectorLayerInfo";
 
-	static final String VECTOR_LAYER_ID = "VectorLayerId";
+	public static final String VECTOR_LAYER_ID = "VectorLayerId";
 
-	static final String ATTRIBUTES = "Attrs";
+	public static final String ATTRIBUTES = "Attrs";
 
 	@RequestMapping(value = "/rest/{layerId}/{featureId}.{format}", method = RequestMethod.GET)
 	public String readOneFeature(@PathVariable String layerId, @PathVariable String featureId,
@@ -115,8 +116,21 @@ public class RestController {
 			@RequestParam(value = "dir", required = false) FeatureOrder dir,
 			@RequestParam(value = "queryable", required = false) List<String> queryable,
 			@RequestParam(value = "format", required = false, defaultValue = "json") String format,
-			@RequestParam(value = "epsg", required = false) String epsg, WebRequest request, Model model)
+			@RequestParam(value = "epsg", required = false) String epsg,
+			@RequestParam(value = "filter", required = false) String filter,
+			WebRequest request, Model model)
 			throws RestException {
+
+		Crs crs = null;
+		try {
+			if (epsg != null) {
+				crs = geoService.getCrs2("EPSG:" + epsg);
+			} else {
+				crs = geoService.getCrs2(configurationService.getVectorLayer(layerId).getLayerInfo().getCrs());
+			}
+		} catch (Exception e) {
+			throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
+		}
 
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(createBBoxFilter(layerId, box, bbox));
@@ -133,10 +147,6 @@ public class RestController {
 		}
 		List<InternalFeature> features;
 		try {
-			CoordinateReferenceSystem crs = null;
-			if (epsg != null) {
-				crs = geoService.getCrs2("EPSG:" + epsg);
-			}
 			features = vectorLayerService.getFeatures(layerId, crs, and(filters), null, getIncludes(noGeom),
 					getOffset(offset), getLimit(maxFeatures, limit));
 		} catch (Exception e) {
