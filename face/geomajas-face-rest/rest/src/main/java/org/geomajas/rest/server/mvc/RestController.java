@@ -37,6 +37,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -83,7 +84,7 @@ public class RestController {
 	public String readOneFeature(@PathVariable String layerId, @PathVariable String featureId,
 			@PathVariable String format,
 			@RequestParam(value = "no_geom", required = false) boolean noGeom,
-			@RequestParam(value = "attrs", required = false) List<String> attrs, Model model) throws RestException {
+			@RequestParam(value = "attrs", required = false) String attrs, Model model) throws RestException {
 		List<InternalFeature> features;
 		try {
 			features = vectorLayerService.getFeatures(layerId, null, filterService
@@ -94,9 +95,14 @@ public class RestController {
 		if (features.size() != 1) {
 			throw new RestException(RestException.FEATURE_NOT_FOUND, featureId, layerId);
 		}
+		List<String> attributes = null;
+		if (attrs != null) {
+			attributes = Arrays.asList(attrs.split(","));
+		}
+
 		model.addAttribute(FEATURE_COLLECTION, features.get(0));
 		model.addAttribute(VECTOR_LAYER_INFO, features.get(0).getLayer().getLayerInfo());
-		model.addAttribute(ATTRIBUTES, attrs);
+		model.addAttribute(ATTRIBUTES, attributes);
 		model.addAttribute(VECTOR_LAYER_ID, layerId);
 		return getView(format);
 	}
@@ -104,7 +110,7 @@ public class RestController {
 	@RequestMapping(value = "/rest/{layerId}", method = RequestMethod.GET)
 	public String readFeatures(@PathVariable String layerId,
 			@RequestParam(value = "no_geom", required = false) boolean noGeom,
-			@RequestParam(value = "attrs", required = false) List<String> attrs,
+			@RequestParam(value = "attrs", required = false) String attrs,
 			@RequestParam(value = "box", required = false) Envelope box,
 			@RequestParam(value = "bbox", required = false) Envelope bbox,
 			@RequestParam(value = "maxFeatures", required = false) Integer maxFeatures,
@@ -112,13 +118,22 @@ public class RestController {
 			@RequestParam(value = "offset", required = false) Integer offset,
 			@RequestParam(value = "order_by", required = false) String orderBy,
 			@RequestParam(value = "dir", required = false) FeatureOrder dir,
-			@RequestParam(value = "queryable", required = false) List<String> queryable,
+			@RequestParam(value = "queryable", required = false) String queryable,
 			@RequestParam(value = "format", required = false, defaultValue = "json") String format,
 			@RequestParam(value = "epsg", required = false) String epsg,
 			WebRequest request, Model model)
 			throws RestException {
 
 		Crs crs = null;
+		List<String> attributes = null;
+		if (attrs != null) {
+			attributes = Arrays.asList(attrs.split(","));
+		}
+		List<String> queryables = null;
+		if (queryable != null) {
+			queryables = Arrays.asList(queryable.split(","));
+		}
+
 		try {
 			if (epsg != null) {
 				crs = geoService.getCrs2("EPSG:" + epsg);
@@ -132,7 +147,7 @@ public class RestController {
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(createBBoxFilter(layerId, box, bbox));
 		if (queryable != null) {
-			for (String attributeName : queryable) {
+			for (String attributeName : queryables) {
 				String prefix = attributeName + "_";
 				for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
 					if (entry.getKey().startsWith(prefix)) {
@@ -157,7 +172,7 @@ public class RestController {
 				Collections.sort(features, createComparator(layer, orderBy, dir));
 			}
 			model.addAttribute(FEATURE_COLLECTION, features);
-			model.addAttribute(ATTRIBUTES, attrs);
+			model.addAttribute(ATTRIBUTES, attributes);
 		}
 		model.addAttribute(VECTOR_LAYER_ID, layerId);
 		return getView(format);
