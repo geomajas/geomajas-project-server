@@ -22,6 +22,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.SyntheticAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
@@ -138,6 +139,9 @@ public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 									attr);
 							break;
 					}
+				} else if (a instanceof SyntheticAttributeInfo) {
+					SyntheticAttributeInfo attr = (SyntheticAttributeInfo) a;
+					builder.add(attr.getName(), String.class);
 				}
 			}
 		}
