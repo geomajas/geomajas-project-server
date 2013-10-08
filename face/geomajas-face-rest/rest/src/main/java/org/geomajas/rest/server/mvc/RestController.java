@@ -14,6 +14,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
@@ -122,7 +123,15 @@ public class RestController {
 			@RequestParam(value = "format", required = false, defaultValue = "json") String format,
 			@RequestParam(value = "epsg", required = false) String epsg,
 			WebRequest request, Model model)
-			throws RestException {
+			throws GeomajasException {
+
+		//Convert box: x,y,x,y to x,x,y,y
+		if (box != null) {
+			box = new Envelope(box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY());
+		}
+		if (bbox != null) {
+			bbox = new Envelope(bbox.getMinX(), bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY());
+		}
 
 		Crs crs = null;
 		List<String> attributes = null;
@@ -145,7 +154,7 @@ public class RestController {
 		}
 
 		List<Filter> filters = new ArrayList<Filter>();
-		filters.add(createBBoxFilter(layerId, box, bbox));
+		filters.add(createBBoxFilter(layerId, crs, box, bbox));
 		if (queryable != null) {
 			for (String attributeName : queryables) {
 				String prefix = attributeName + "_";
@@ -249,13 +258,16 @@ public class RestController {
 		}
 	}
 
-	private Filter createBBoxFilter(String layerId, Envelope... bbox) throws RestException {
+	private Filter createBBoxFilter(String layerId, Crs crs, Envelope... bbox) throws GeomajasException {
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		Crs layerCrs = geoService.getCrs2(layer.getLayerInfo().getCrs());
+		CrsTransform transform = geoService.getCrsTransform(crs, layerCrs);
+
 		for (Envelope envelope : bbox) {
 			if (envelope != null) {
 				try {
-					return filterService.createBboxFilter(layer.getLayerInfo().getCrs(), envelope, layer
-							.getFeatureModel().getGeometryAttributeName());
+					return filterService.createBboxFilter(layerCrs, geoService.transform(envelope, crs, layerCrs),
+							layer.getFeatureModel().getGeometryAttributeName());
 				} catch (LayerException e) {
 					throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 				}
@@ -338,5 +350,6 @@ public class RestController {
 			}
 		}
 	}
+
 
 }

@@ -46,6 +46,10 @@ public class KmlView extends AbstractView {
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		if (model.get(RestController.VECTOR_LAYER_INFO) == null) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "No elements where found.");
+			return;
+		}
 		Object ff = model.get(RestController.FEATURE_COLLECTION);
 		VectorLayerInfo info = (VectorLayerInfo) model.get(RestController.VECTOR_LAYER_INFO);
 		List<String> attrs = (List<String>) model.get(RestController.ATTRIBUTES);
