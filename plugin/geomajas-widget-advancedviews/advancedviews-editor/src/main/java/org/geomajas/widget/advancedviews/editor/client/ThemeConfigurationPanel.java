@@ -13,6 +13,7 @@ package org.geomajas.widget.advancedviews.editor.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smartgwt.client.widgets.IButton;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
@@ -55,15 +56,24 @@ public class ThemeConfigurationPanel extends VLayout {
 
 	public ThemeConfigurationPanel() {
 		super(5);
+		HLayout layout = new HLayout();
+		layout.setHeight(10);
+
 
 		BreadCrumb breadCrumb = new BreadCrumb();
+		breadCrumb.setWidth100();
+
+		BackButton backButton = new BackButton();
+
 
 		layerConfigPanel = new LayerConfigPanel(this);
 		rangeConfigPanel = new RangeConfigPanel(this);
 		viewConfigPanel = new ViewConfigPanel(this);
 		themeConfigPanel = new ThemeConfigPanel(this);
 
-		addMember(breadCrumb);
+		layout.addMember(breadCrumb);
+		layout.addMember(backButton);
+		addMember(layout);
 		addMember(themeConfigPanel);
 		addMember(viewConfigPanel);
 		addMember(rangeConfigPanel);
@@ -238,6 +248,69 @@ public class ThemeConfigurationPanel extends VLayout {
 	}
 
 	/**
+	 * Enumeration of the current view state.
+	 *
+	 * @author Oliver May
+	 */
+	private enum ActiveView {
+		THEMES, VIEW, RANGE, LAYER
+	}
+
+	/**
+	 * Back button that returns to the view state one level up.
+	 *
+	 * @author Oliver May
+	 */
+	private final class BackButton extends IButton implements StateChangedHandler {
+
+		private ActiveView activeView = ActiveView.THEMES;
+
+		private BackButton() {
+			super(MESSAGES.themeConfigBackButtonLabel());
+			addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent clickEvent) {
+					switch (activeView) {
+						case LAYER:
+							selectRangeConfig(state.getRangeConfig());
+							break;
+						case RANGE:
+							selectViewConfig(state.getViewConfig());
+							break;
+						case VIEW:
+						default:
+							selectThemeConfig(state.getThemesInfo());
+							break;
+					}
+				}
+			});
+			state.addStateChangedHandler(this);
+		}
+
+		@Override
+		public void onStateChange(State state) {
+			if (state.getThemesInfo() != null) {
+				activeView = ActiveView.THEMES;
+			}
+			if (state.getViewConfig() != null) {
+				activeView = ActiveView.VIEW;
+			}
+			if (state.getRangeConfig() != null) {
+				activeView = ActiveView.RANGE;
+			}
+			if (state.getLayerConfig() != null) {
+				activeView = ActiveView.LAYER;
+			}
+
+			if (activeView == ActiveView.THEMES) {
+				setDisabled(true);
+			} else {
+				setDisabled(false);
+			}
+		}
+	}
+
+	/**
 	 * 
 	 * @author Oliver May
 	 * 
@@ -260,6 +333,7 @@ public class ThemeConfigurationPanel extends VLayout {
 
 		private BreadCrumb() {
 			setHeight(10);
+			setLayoutTopMargin(3);
 			HLayout layout = new HLayout(5);
 			layout.setHeight(10);
 
@@ -272,6 +346,7 @@ public class ThemeConfigurationPanel extends VLayout {
 			});
 			themeLink.setWidth(1);
 			themeLink.setWrap(false);
+			themeLink.addStyleName("gav-clickable");
 			layout.addMember(themeLink);
 
 			viewLinkSpacer = new Label(">");
@@ -287,6 +362,7 @@ public class ThemeConfigurationPanel extends VLayout {
 			});
 			viewLink.setWidth(1);
 			viewLink.setWrap(false);
+			viewLink.addStyleName("gav-clickable");
 			layout.addMember(viewLink);
 
 			rangeLinkSpacer = new Label(">");
@@ -302,6 +378,7 @@ public class ThemeConfigurationPanel extends VLayout {
 			});
 			rangeLink.setWidth(1);
 			rangeLink.setWrap(false);
+			rangeLink.addStyleName("gav-clickable");
 			layout.addMember(rangeLink);
 
 			layerLinkSpacer = new Label(">");
@@ -311,6 +388,7 @@ public class ThemeConfigurationPanel extends VLayout {
 			layerLink = new Label(MESSAGES.themeConfigBreadcrumbLayerConfig());
 			layerLink.setWidth(1);
 			layerLink.setWrap(false);
+			layerLink.addStyleName("gav-clickable");
 			layout.addMember(layerLink);
 
 			state.addStateChangedHandler(this);
