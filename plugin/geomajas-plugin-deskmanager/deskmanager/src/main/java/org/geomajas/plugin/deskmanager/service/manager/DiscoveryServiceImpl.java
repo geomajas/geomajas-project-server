@@ -63,6 +63,7 @@ import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.ows.CRSEnvelope;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.WMSCapabilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wms.WMSUtils;
@@ -260,11 +261,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	public List<RasterCapabilitiesInfo> getRasterCapabilities(Map<String, String> connectionProperties)
 			throws Exception {
 		URL url = new URL(connectionProperties.get(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL));
-		WebMapServer wms = new WebMapServer(url);
+		SimpleHttpClient httpClient = new SimpleHttpClient();
 		if (connectionProperties.containsKey(WmsLayerBeanFactory.WMS_USERNAME)) {
-			wms.getHTTPClient().setUser(connectionProperties.get(WmsLayerBeanFactory.WMS_USERNAME));
-			wms.getHTTPClient().setPassword(connectionProperties.get(WmsLayerBeanFactory.WMS_PASSWORD));
+			httpClient.setUser(connectionProperties.get(WmsLayerBeanFactory.WMS_USERNAME));
+			httpClient.setPassword(connectionProperties.get(WmsLayerBeanFactory.WMS_PASSWORD));
 		}
+		WebMapServer wms = new WebMapServer(url, httpClient);
 		WMSCapabilities capabilities = wms.getCapabilities();
 		List<RasterCapabilitiesInfo> layers = new ArrayList<RasterCapabilitiesInfo>();
 
