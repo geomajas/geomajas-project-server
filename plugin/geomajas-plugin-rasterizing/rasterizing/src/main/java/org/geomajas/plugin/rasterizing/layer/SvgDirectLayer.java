@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Graphics2D;
@@ -13,6 +23,12 @@ import org.geotools.map.MapViewport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Geotools layer responsible for rendering svg (defined in world space).
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class SvgDirectLayer extends DirectLayer {
 
 	private GraphicsNode graphicsNode;
@@ -42,7 +58,7 @@ public class SvgDirectLayer extends DirectLayer {
 
 	private AffineTransform getSvgToScreen() throws NoninvertibleTransformException {
 		AffineTransform svgToWorld = getSvgToWorld();
-		AffineTransform worldToScreen = (AffineTransform)mapContent.getViewport().getWorldToScreen().clone();
+		AffineTransform worldToScreen = (AffineTransform) mapContent.getViewport().getWorldToScreen().clone();
 		worldToScreen.concatenate(svgToWorld);
 		return worldToScreen;
 	}

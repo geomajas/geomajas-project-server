@@ -27,7 +27,10 @@ public class RasterException extends GeomajasException {
 	public static final int IMAGE_WRITING_FAILED = 1;
 	/** Missing layer factory. */
 	public static final int MISSING_LAYER_FACTORY = 2;
-	/** Bad SVG. */
+	/**
+	 * Bad Svg content.
+	 * @since 1.3.0
+	 */	
 	public static final int BAD_SVG = 3;
 
 	/**

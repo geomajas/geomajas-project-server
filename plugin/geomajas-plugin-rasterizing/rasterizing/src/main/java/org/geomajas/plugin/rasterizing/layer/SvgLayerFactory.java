@@ -62,7 +62,7 @@ public class SvgLayerFactory implements LayerFactory {
 	@Autowired
 	private DtoConverterService converterService;
 
-	public boolean canCreateLayer(MapContext MapContent, ClientLayerInfo clientLayerInfo) {
+	public boolean canCreateLayer(MapContext mapContent, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientSvgLayerInfo;
 	}
 
