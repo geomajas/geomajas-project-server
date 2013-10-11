@@ -16,14 +16,14 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-client-gwt2-all</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>1.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas GWT client: Example showcase</name>
-	<description>Geomajas GWT client: Example showcase</description>
+	<name>Geomajas GWT2 client: Example showcase</name>
+	<description>Geomajas GWT2 client: Example showcase</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>

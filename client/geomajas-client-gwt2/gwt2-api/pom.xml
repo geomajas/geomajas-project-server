@@ -15,14 +15,14 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-client-gwt2-all</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>1.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-api</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Geomajas GWT client: API</name>
-	<description>Geomajas GWT client: API</description>
+	<name>Geomajas GWT2 client: API</name>
+	<description>Geomajas GWT2 client: API</description>
 
 	<dependencies>
 		<!-- Overwrite the xerces version that comes with JTS to make sure it is compatible with GWT UiBinder. -->
