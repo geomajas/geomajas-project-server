@@ -127,13 +127,13 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-graphics</artifactId>
-				<version>${project.version}</version>
+				<version>1.0.0-M1</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-graphics</artifactId>
-				<version>${project.version}</version>
+				<version>1.0.0-M1</version>
 				<classifier>sources</classifier>
 			</dependency>
 			
@@ -189,7 +189,7 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-graphics-all</artifactId>
-				<version>${project.version}</version>
+				<version>1.0.0-M1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
