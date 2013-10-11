@@ -22,7 +22,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="GWT Client api" />
+				<property name="name" value="GWT2 Client api" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
