@@ -24,7 +24,7 @@
 	<description>Geomajas clients</description>
 
 	<modules>
-		<module>geomajas-client-smartgwt</module>
+		<module>geomajas-client-gwt2</module>
 	</modules>
 	
 </project>
