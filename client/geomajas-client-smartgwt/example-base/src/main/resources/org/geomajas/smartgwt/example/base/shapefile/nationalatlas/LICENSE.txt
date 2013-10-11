@@ -1,6 +1,0 @@
-All files within this folder come from the U.S. Geological Survey, http://www.usgs.gov/
-
-Use_Constraints:
-    None.  Acknowledgment of the National Atlas of the United States of America
-    and (or) the U.S. Geological Survey would be appreciated in products derived
-    from these data.
