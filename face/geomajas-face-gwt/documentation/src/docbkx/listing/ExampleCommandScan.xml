@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<example id="ExampleCommandScan">
-<title>Scan to assure command is available</title>
-<programlisting language="xml"><![CDATA[<context:component-scan base-package="org.geomajas.gwt.example.server" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />]]>
-</programlisting>
-</example>
