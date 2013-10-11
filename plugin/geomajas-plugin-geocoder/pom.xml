@@ -51,6 +51,7 @@
 				<scope>import</scope>
 			</dependency>
 			
+<!--
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-client-smartgwt-all</artifactId>
@@ -58,7 +59,8 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-		
+-->
+
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
@@ -147,9 +149,11 @@
 	
 	<modules>
 		<module>geocoder</module>
+<!--
 		<module>geocoder-gwt</module>
 		<module>geocoder-gwt-example-jar</module>
 		<module>geocoder-gwt-example</module>
+-->
 		<module>geocoder-puregwt</module>
 		<module>geocoder-puregwt-example-jar</module>
 		<module>geocoder-puregwt-example</module>
@@ -185,7 +189,7 @@
 
 	<properties>
 		<geocoder-backend-version>1.13.1</geocoder-backend-version>
-		<geocoder-smartgwt-client-version>1.15.0-SNAPSHOT</geocoder-smartgwt-client-version>
+		<geocoder-smartgwt-client-version>1.14.0</geocoder-smartgwt-client-version>
 		<geocoder-gwt-client-version>2.0.0</geocoder-gwt-client-version>
 		<geocoder-gwt-version>2.5.0</geocoder-gwt-version>
 	</properties>
