@@ -1,0 +1,130 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="layerAirports" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerAirportsInfo" />
+		<property name="url" value="classpath:org/geomajas/gwt/example/base/shapefile/nationalatlas/airprtx020.shp" />
+	</bean>
+
+	<!-- @extract-start ShapeInMemAirportInfo, Style info -->
+	<bean name="layerAirportsInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="POINT" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-87.4" />
+				<property name="y" value="24.3" />
+				<property name="width" value="8.8" />
+				<property name="height" value="6.4" />
+			</bean>
+		</property>
+		<property name="featureInfo" ref="layerAirportsFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="layerAirportsStyleInfo" />
+			</list>
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
+	<!-- @extract-start ShapeInMemAirportFeatureInfo, Feature info -->
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerAirportsFeatureInfo">
+		<property name="dataSourceName" value="airprtx020" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="ID" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="the_geom" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Name" />
+					<property name="name" value="NAME" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="County" />
+					<property name="name" value="COUNTY" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="false" />
+					<property name="type" value="STRING" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
+	<!-- @extract-start ShapeInMemAirportStyleInfo, Style info -->
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerAirportsStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Airports (Florida)" />
+					<property name="fillColor" value="#FF3333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="rect">
+								<bean class="org.geomajas.configuration.RectInfo">
+									<property name="w" value="12" />
+									<property name="h" value="12" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="NAME" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#FEFEFE" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#888888" />
+						<property name="fillOpacity" value=".8" />
+						<property name="strokeColor" value="#CC0000" />
+						<property name="strokeOpacity" value=".7" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
+</beans>

@@ -1,0 +1,115 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="layerRoadsTrl020" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="url" value="classpath:org/geomajas/gwt/example/base/shapefile/nationalatlas/roadtrl020.shp" />
+		<property name="layerInfo" ref="layerRoadsTrl020Info" />
+	</bean>
+
+	<bean name="layerRoadsTrl020Info" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="LINESTRING" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-83.5" />
+				<property name="y" value="25.25" />
+				<property name="width" value="4.5" />
+				<property name="height" value="2" />
+			</bean>
+		</property>
+		<property name="featureInfo" ref="layerRoadsTrl020FeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="layerRoadsTrl020StyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerRoadsTrl020FeatureInfo">
+		<property name="dataSourceName" value="roadtrl020" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="ID" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="the_geom" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Feature" />
+					<property name="name" value="FEATURE" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Name" />
+					<property name="name" value="NAME" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="layerRoadsTrl020StyleInfo">
+		<property name="name" value="layerRoadsTrl020StyleInfo"/>
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Roads" />
+					<property name="fillColor" value="#FFFFFF" />
+					<property name="fillOpacity" value="0" />
+					<property name="strokeColor" value="#CCCCFF" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="3" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="NAME" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#999999" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#CCCCFF" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+</beans>
