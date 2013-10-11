@@ -20,7 +20,7 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-graphicsediting-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M1</version>
 	<packaging>pom</packaging>
 
 	<name>Geomajas Graphics Editing Plugin</name>
@@ -35,9 +35,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-graphicsediting</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-graphicsediting</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-graphicsediting</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-graphicsediting-all-1.0.0-M1</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-graphicsediting-all-1.0.0-M1</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-graphicsediting-all-1.0.0-M1</url>
 	</scm>
 
 	<modules>
