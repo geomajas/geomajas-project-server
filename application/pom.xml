@@ -31,7 +31,7 @@
 	
 	<modules>
 		<module>geomajas-gwtclient-showcase</module>
-		<module>geomajas-smartgwtclient-showcase</module>
+		<module>geomajas-gwt-showcase</module>
 	</modules>
 
 </project>

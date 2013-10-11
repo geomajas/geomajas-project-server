@@ -28,7 +28,7 @@
 	<packaging>war</packaging>
 
 	<name>Geomajas GWT client Showcase</name>
-	<description>Showcase of Geomajas GWT client project and plugins projects</description>
+	<description>Showcase of Geomajas GWT2 client project and plugins projects</description>
 	<url>http://www.geomajas.org/</url>
 
 	<developers>
@@ -140,7 +140,7 @@
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-geocoder-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-plugin-geocoder-gwt2-example-jar</artifactId>
 		</dependency>
 
 		<dependency>
