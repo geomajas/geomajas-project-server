@@ -19,15 +19,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-geocoder-all</artifactId>
-	<version>1.4.0-M1</version>
+	<version>1.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>geocoder plug-in parent</name>
 	<description>geocoder plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geocoder-all-1.4.0-M1</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geocoder-all-1.4.0-M1</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-geocoder-all-1.4.0-M1</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geocoder</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geocoder</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-geocoder</url>
 	</scm>
 
 	<developers>
