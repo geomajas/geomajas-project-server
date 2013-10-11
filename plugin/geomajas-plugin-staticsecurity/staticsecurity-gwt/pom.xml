@@ -41,7 +41,7 @@
 		<!-- GWT dependency -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-smartgwt</artifactId>
+			<artifactId>geomajas-gwt-client</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->

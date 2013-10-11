@@ -24,15 +24,15 @@ import org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandl
 import org.geomajas.plugin.staticsecurity.client.TokenReleaseButton;
 import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationRequest;
 import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationResponse;
-import org.geomajas.smartgwt.client.gfx.style.ShapeStyle;
-import org.geomajas.smartgwt.client.map.event.MapModelChangedEvent;
-import org.geomajas.smartgwt.client.map.event.MapModelChangedHandler;
-import org.geomajas.smartgwt.client.util.WidgetLayout;
-import org.geomajas.smartgwt.client.widget.LayerTree;
-import org.geomajas.smartgwt.client.widget.Legend;
-import org.geomajas.smartgwt.client.widget.MapWidget;
-import org.geomajas.smartgwt.client.widget.OverviewMap;
-import org.geomajas.smartgwt.client.widget.Toolbar;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
+import org.geomajas.gwt.client.util.WidgetLayout;
+import org.geomajas.gwt.client.widget.LayerTree;
+import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.smartgwt.client.types.VisibilityMode;

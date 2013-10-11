@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-staticsecurity-gwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas GWT application</name>
-	<description>Geomajas GWT application</description>
+	<name>Geomajas staticsecurity GWT application</name>
+	<description>Geomajas staticsecurity GWT application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencyManagement>
@@ -35,22 +35,15 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-client-smartgwt-all</artifactId>
-				<version>${staticsecurity-smartgwtclient-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.10.0</version>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${staticsecurity-face-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.11.36</version>
+				<version>1.13.38</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -76,7 +69,7 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-smartgwt</artifactId>
+			<artifactId>geomajas-gwt-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>

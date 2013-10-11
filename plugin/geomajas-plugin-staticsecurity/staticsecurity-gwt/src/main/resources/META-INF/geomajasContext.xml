@@ -35,8 +35,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="version" value="${project.version}" />
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="SmartGWT client" />
-					<property name="version" value="${staticsecurity-gwt-face-version}"/>
+					<property name="name" value="GWT face" />
+					<property name="version" value="${staticsecurity-face-gwt-version}"/>
 				</bean>
 			</list>
 		</property>
