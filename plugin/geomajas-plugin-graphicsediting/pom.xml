@@ -48,6 +48,12 @@
 
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-plugin-editing-puregwt</artifactId>
+                <version>1.0.0-M5</version>
+            </dependency>
+
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-geometry-all</artifactId>
@@ -173,7 +179,6 @@
 			
 
 <!-- 		following dependencies come from graphicsediting(-example) -->
-			<!--  TODO: replace with release version and uncomment snapshot repository -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
