@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.geocoder.puregwt.example.client;
 
-import org.geomajas.gwt.example.base.client.ExampleBase;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;

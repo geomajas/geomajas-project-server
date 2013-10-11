@@ -18,10 +18,10 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-geocoder-puregwt</artifactId>
+	<artifactId>geomajas-plugin-geocoder-gwt2</artifactId>
 	<packaging>jar</packaging>
-	<name>geocoder (PureGWT face)</name>
-	<description>geocoder (PureGWT face)</description>
+	<name>geocoder GWT2 client</name>
+	<description>geocoder (GWT2 client)</description>
 
 	<dependencies>
 	
@@ -37,11 +37,11 @@
 		
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client-impl</artifactId>
+			<artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client-impl</artifactId>
+			<artifactId>geomajas-client-gwt2-impl</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>

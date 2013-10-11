@@ -10,7 +10,7 @@
   -->
 
 <module>
-	<inherits name="org.geomajas.smartgwt.example.ExampleBase"/>
+	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
 	<inherits name="org.geomajas.plugin.geocoder.Geocoder"/>
 
     <entry-point class="org.geomajas.plugin.geocoder.gwt.example.client.GeocoderExample"/>

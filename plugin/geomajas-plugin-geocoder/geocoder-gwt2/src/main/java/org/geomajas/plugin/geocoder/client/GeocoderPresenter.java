@@ -16,7 +16,7 @@ import java.util.List;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;

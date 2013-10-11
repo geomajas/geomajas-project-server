@@ -16,7 +16,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.annotation.Api;
-import org.geomajas.smartgwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 

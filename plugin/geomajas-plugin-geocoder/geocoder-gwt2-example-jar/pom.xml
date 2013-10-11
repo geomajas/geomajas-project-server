@@ -17,11 +17,11 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>geomajas-plugin-geocoder-puregwt-example-jar</artifactId>
+	<artifactId>geomajas-plugin-geocoder-gwt2-example-jar</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Geocoder Plugin PureGWT: Showcase Samples Library</name>
-	<description>Geocoder Plugin PureGWT: Showcase Samples Library</description>
+	<name>Geocoder Plugin GWT2: Showcase Samples Library</name>
+	<description>Geocoder Plugin GWT2: Showcase Samples Library</description>
 
 	<dependencies>
 		<!-- Google dependencies -->
@@ -39,18 +39,18 @@
 		<!-- Gecoder plugin dependencies-->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-geocoder-puregwt</artifactId>
+			<artifactId>geomajas-plugin-geocoder-gwt2</artifactId>
 		</dependency>
 		
 		<!-- Geomajas GWT Client example jar (to use existing map config): -->
 		
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-example-jar</artifactId>
+			<artifactId>geomajas-client-gwt2-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-example-jar</artifactId>
+			<artifactId>geomajas-client-gwt2-example-jar</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 

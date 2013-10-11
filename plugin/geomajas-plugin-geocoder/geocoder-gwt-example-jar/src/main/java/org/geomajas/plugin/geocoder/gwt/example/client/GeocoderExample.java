@@ -12,8 +12,8 @@
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
 import com.google.gwt.core.client.GWT;
-import org.geomajas.smartgwt.example.base.SampleTreeNode;
-import org.geomajas.smartgwt.example.base.SampleTreeNodeRegistry;
+import org.geomajas.gwt.example.base.SampleTreeNode;
+import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
 
 import com.google.gwt.core.client.EntryPoint;
 import org.geomajas.plugin.geocoder.gwt.example.client.i18n.GeocoderMessages;

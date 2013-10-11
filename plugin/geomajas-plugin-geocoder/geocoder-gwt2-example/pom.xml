@@ -20,11 +20,11 @@
 		<version>1.4.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-geocoder-puregwt-example</artifactId>
+	<artifactId>geomajas-plugin-geocoder-gwt2-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas Plugin Geocoder GWT Client: Example Application</name>
-	<description>Geomajas Plugin Geocoder GWT Client: Example Application</description>
+	<name>Geomajas Plugin Geocoder GWT2 Client: Example Application</name>
+	<description>Geomajas Plugin Geocoder GWT2 Client: Example Application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
@@ -46,7 +46,7 @@
 		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-geocoder-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-plugin-geocoder-gwt2-example-jar</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -55,7 +55,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client-impl</artifactId>
+			<artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

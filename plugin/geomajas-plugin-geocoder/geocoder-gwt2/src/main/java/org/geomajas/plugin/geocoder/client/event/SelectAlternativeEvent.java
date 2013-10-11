@@ -14,7 +14,7 @@ package org.geomajas.plugin.geocoder.client.event;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 
 import com.google.gwt.event.shared.GwtEvent;

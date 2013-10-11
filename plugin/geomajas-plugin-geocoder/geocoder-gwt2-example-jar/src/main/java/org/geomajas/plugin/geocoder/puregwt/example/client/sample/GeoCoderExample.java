@@ -10,12 +10,12 @@
  */
 package org.geomajas.plugin.geocoder.puregwt.example.client.sample;
 
-import org.geomajas.gwt.client.GeomajasGinjector;
-import org.geomajas.gwt.client.event.MapInitializationEvent;
-import org.geomajas.gwt.client.event.MapInitializationHandler;
-import org.geomajas.gwt.client.map.MapPresenter;
-import org.geomajas.gwt.client.widget.MapLayoutPanel;
-import org.geomajas.gwt.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.event.MapInitializationEvent;
+import org.geomajas.gwt2.client.event.MapInitializationHandler;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.geocoder.client.GeocoderWidget;
 
 import com.google.gwt.core.client.GWT;

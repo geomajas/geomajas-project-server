@@ -12,11 +12,11 @@
 package org.geomajas.plugin.geocoder.client;
 
 import com.smartgwt.client.widgets.Canvas;
-import org.geomajas.smartgwt.client.action.ConfigurableAction;
-import org.geomajas.smartgwt.client.action.ToolbarBaseAction;
-import org.geomajas.smartgwt.client.action.ToolbarCanvas;
+import org.geomajas.gwt.client.action.ConfigurableAction;
+import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.ToolbarCanvas;
 import org.geomajas.gwt.client.util.Log;
-import org.geomajas.smartgwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Tool which displays a {@link GeocoderWidget}.

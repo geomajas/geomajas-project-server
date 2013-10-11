@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.geocoder.client;
 
-import org.geomajas.gwt.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.MapPresenter;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
  * Alternatives for ambiguous searches are shown in a drop-down panel below the text box.
  * </p>
  * <p>
- * <b>Tip</b>: To position next to the {@link org.geomajas.puregwt.client.map.gadget.ZoomToRectangleGadget}, set top to
+ * <b>Tip</b>: To position next to the {@link org.geomajas.gwt2.client.map.gadget.ZoomToRectangleGadget}, set top to
  * 5 and left to 90 with <code>new GeocoderGadget(5, 90)</code>
  * </p>
  * 
