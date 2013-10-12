@@ -22,16 +22,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="geomajas-puregwt-widget" />
+				<property name="name" value="geomajas-gwt2-widget" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${widget-puregwt-core-backend-version}"/>
+		<property name="backendVersion" value="${widget-gwt2-core-backend-version}"/>
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="GWT face" />
-					<property name="version" value="${widget-puregwt-core-puregwt-face-version}"/>
+					<property name="version" value="${widget-gwt2-core-gwt2-face-version}"/>
 				</bean>
 			</list>
 		</property>

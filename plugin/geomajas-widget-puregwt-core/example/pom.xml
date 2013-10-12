@@ -16,15 +16,15 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-widget-gwt-core-all</artifactId>
+		<artifactId>geomajas-widget-gwt2-core-all</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-widget-gwt-core-example</artifactId>
+	<artifactId>geomajas-widget-gwt2-core-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas Plugin GWT Core Widget: Example showcase</name>
-	<description>Geomajas Plugin GWT Core Widget: Example showcase</description>
+	<name>Geomajas Plugin GWT2 Core Widget: Example showcase</name>
+	<description>Geomajas Plugin GWT2 Core Widget: Example showcase</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
@@ -32,11 +32,11 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-widget-gwt-core-example-jar</artifactId>
+			<artifactId>geomajas-widget-gwt2-core-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-widget-gwt-core-example-jar</artifactId>
+			<artifactId>geomajas-widget-gwt2-core-example-jar</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
@@ -45,7 +45,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client-impl</artifactId>
+			<artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -121,7 +121,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<module>org.geomajas.gwt.widget.example.Example</module>
+					<module>org.geomajas.gwt2.widget.example.Example</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
