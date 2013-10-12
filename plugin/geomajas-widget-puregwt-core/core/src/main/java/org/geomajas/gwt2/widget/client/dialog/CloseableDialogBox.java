@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt.widget.client.dialog.CloseableDialogBoxResource;
 
 /**
  * Dialogbox with a close-button in the upper-right corner.

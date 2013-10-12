@@ -30,8 +30,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="GWT face" />
-					<property name="version" value="${widget-gwt2-core-gwt2-face-version}"/>
+					<property name="name" value="GWT2 Client impl" />
+					<property name="version" value="${widget-gwt2-core-client-gwt2-version}"/>
 				</bean>
 			</list>
 		</property>
