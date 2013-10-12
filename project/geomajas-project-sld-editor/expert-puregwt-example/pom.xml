@@ -19,19 +19,19 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>geomajas-project-sld-editor-expert-puregwt-example</artifactId>
+	<artifactId>geomajas-project-sld-editor-expert-gwt2-example</artifactId>
 
 	<packaging>war</packaging>
 
-	<name>Geomajas Expert SLD Editor PureGWT example</name>
-	<description>Expert SLD Editor PureGWT example application</description>
+	<name>Geomajas Expert SLD Editor GWT2 example</name>
+	<description>Expert SLD Editor GWT2 example application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-editor-expert-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-project-sld-editor-expert-gwt2-example-jar</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->

@@ -13,10 +13,10 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
-	<artifactId>geomajas-project-sld-editor-expert-puregwt</artifactId>
+	<artifactId>geomajas-project-sld-editor-expert-gwt2</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas Expert SLD PureGWT client library</name>
-	<description>Geomajas expert SLD editor (PureGWT)</description>
+	<name>Geomajas Expert SLD GWT2 client library</name>
+	<description>Geomajas expert SLD editor (GWT2)</description>
 
 	<dependencies>
 		<dependency>
@@ -53,22 +53,17 @@
 		
 		<dependency>
 		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-puregwt-client</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-puregwt-client-impl</artifactId>
+		    <artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
 
 		<dependency>
 		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-widget-puregwt-core</artifactId>
+		    <artifactId>geomajas-widget-gwt2-core</artifactId>
 		</dependency>
 		
 		<dependency>
 		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-widget-puregwt-core</artifactId>
+		    <artifactId>geomajas-widget-gwt2-core</artifactId>
 		    <classifier>sources</classifier>
 		</dependency>
 		

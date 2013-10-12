@@ -11,7 +11,7 @@
 
 package org.geomajas.sld.editor.expert.client.gin;
 
-import org.geomajas.sld.editor.expert.client.presenter.PureGwtRootPresenter;
+import org.geomajas.sld.editor.expert.client.presenter.Gwt2RootPresenter;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
 import org.geomajas.sld.editor.expert.client.view.SldEditorView;
 import org.geomajas.sld.editor.expert.client.view.ViewUtil;
@@ -22,13 +22,13 @@ import com.google.inject.Singleton;
 /**
  * @author Kristof Heirwegh
  */
-public class PureGwtClientModule extends ClientModule {
+public class Gwt2ClientModule extends ClientModule {
 
 	@Override
 	protected void configure() {
 		super.configure();
 
-		bind(PureGwtRootPresenter.class).asEagerSingleton();
+		bind(Gwt2RootPresenter.class).asEagerSingleton();
 
 		bind(ViewUtil.class).to(ViewUtilImpl.class).in(Singleton.class);
 

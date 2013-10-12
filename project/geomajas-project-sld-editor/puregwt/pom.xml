@@ -17,10 +17,10 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
-	<artifactId>geomajas-project-sld-editor-puregwt</artifactId>
+	<artifactId>geomajas-project-sld-editor-gwt2</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas SLD editor (PureGWT)</name>
-	<description>Geomajas SLD editor (PureGWT)</description>
+	<name>Geomajas SLD editor (GWT2)</name>
+	<description>Geomajas SLD editor (GWT2)</description>
 
 	<dependencies>
 		<dependency>

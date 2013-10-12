@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.editor.expert.client;
 
-import org.geomajas.puregwt.widget.client.dialog.CloseableDialogBox;
+import org.geomajas.gwt2.widget.client.dialog.CloseableDialogBox;
 import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
 import org.geomajas.sld.editor.expert.client.presenter.SldEditorExpertPresenter;
 

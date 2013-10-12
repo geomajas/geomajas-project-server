@@ -31,7 +31,7 @@
       </listitem>
 
       <listitem>
-        <para>geomajas-project-sld-editor-puregwt: the plain GWT
+        <para>geomajas-project-sld-editor-gwt2: the plain GWT
         implementation of the view classes</para>
       </listitem>
 

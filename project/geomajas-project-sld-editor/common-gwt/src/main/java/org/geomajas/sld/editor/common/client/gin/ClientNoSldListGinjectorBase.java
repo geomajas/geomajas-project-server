@@ -31,7 +31,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 /**
  * Base {@link Ginjector} for the SLD editor modules. Gives access to the common part and should be extended in the
- * specific modules for SmartGWT and PureGwt.
+ * specific modules for GWT and GWT2.
  * 
  * @author Jan De Moerloose
  * 

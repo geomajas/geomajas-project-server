@@ -27,12 +27,12 @@ import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
  * 
  * @author Jan De Moerloose
  */
-public class PureGwtRootPresenter extends RootPresenter {
+public class Gwt2RootPresenter extends RootPresenter {
 
 	/**
 	 * {@link RootPresenter}'s view.
 	 */
-	public static class PureGwtRootView extends RootView {
+	public static class Gwt2RootView extends RootView {
 
 		/**
 		 * The glass element.
@@ -81,7 +81,7 @@ public class PureGwtRootPresenter extends RootPresenter {
 	}
 
 	@Inject
-	public PureGwtRootPresenter(EventBus eventBus, PureGwtRootView view) {
+	public Gwt2RootPresenter(EventBus eventBus, Gwt2RootView view) {
 		super(eventBus, view);
 	}
 

@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.editor.expert.example.client;
 
-import org.geomajas.puregwt.example.base.client.ExampleBase;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;

@@ -10,8 +10,8 @@
  */
 package org.geomajas.sld.editor.expert.client.view;
 
-import org.geomajas.puregwt.widget.client.dialog.MessageBox;
-import org.geomajas.puregwt.widget.client.dialog.MessageBox.MessageStyleType;
+import org.geomajas.gwt2.widget.client.dialog.MessageBox;
+import org.geomajas.gwt2.widget.client.dialog.MessageBox.MessageStyleType;
 import org.geomajas.sld.editor.expert.client.i18n.SldEditorExpertMessages;
 
 import com.google.gwt.core.client.Callback;

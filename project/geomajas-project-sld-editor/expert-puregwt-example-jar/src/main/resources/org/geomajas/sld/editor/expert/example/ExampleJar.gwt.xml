@@ -18,9 +18,9 @@
 	<inherits name="com.gwtplatform.mvp.Mvp" />
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
     
-    <inherits name='org.geomajas.gwt2.widget.GeomajasGwt2Widget' />
+    <inherits name='org.geomajas.gwt2.widget.GeomajasGwtWidget' />
     
-    <inherits name="org.geomajas.sld.editor.expert.GeomajasSldExpertGwt2"/>  <!-- using pure Gwt -->
+    <inherits name="org.geomajas.sld.editor.expert.GeomajasSldExpertPureGwt"/>  <!-- using pure Gwt -->
     
     <extend-property name="locale" values="nl" />
 	<extend-property name="locale" values="en"/>
