@@ -44,9 +44,9 @@
 		<module>expert-gwt-example-jar</module>
  		<module>expert-gwt-example</module>
 
-  		<module>expert-puregwt</module>
-		<module>expert-puregwt-example-jar</module>
- 		<module>expert-puregwt-example</module>
+  		<module>expert-gwt2</module>
+		<module>expert-gwt2-example-jar</module>
+ 		<module>expert-gwt2-example</module>
  	</modules>
 
 	<dependencyManagement>
