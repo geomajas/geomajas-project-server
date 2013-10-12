@@ -1,0 +1,69 @@
+/*===========================================================================*/
+/*====                        LayerLegendPanel                           ====*/
+/*===========================================================================*/
+
+.gm-LayerLegendPanel{
+	padding: 3px 5px;
+}
+
+.gm-LayerLegendPanel-title {
+	font-weight: bold;
+	padding: 2px;
+	vertical-align: center;
+}
+
+.gm-LayerLegendPanel-StyleImg {
+	border: 0;
+}
+
+.gm-LayerLegendPanel-StyleLabel {
+	font-weight: normal;
+	white-space: nowrap;
+	padding-left: 5px;
+	vertical-align: center;
+}
+
+/*===========================================================================*/
+/*====                     LegendDisclosurePanel                         ====*/
+/*===========================================================================*/
+
+.gm-LegendDisclosurePanel {
+	position: absolute;
+	width: 100px;
+}
+.gm-LegendDisclosurePanel-title {
+	float: right;
+	padding: 5px 8px;
+	background: #FAFAFA;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#F6F6F6) );
+	background-image: -moz-linear-gradient(top, #FAFAFA, #F6F6F6);
+	border: 1px solid #666666;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	cursor: pointer;
+	cursor: hand;
+}
+.gm-LegendDisclosurePanel-title:hover {
+	background: #FCFCFC;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#FCFCFC), to(#F9F9F9) );
+	background-image: -moz-linear-gradient(top, #FCFCFC, #F9F9F9);
+	border: 1px solid #333333;
+}
+.gm-LegendDisclosurePanel-titleLabel {
+	text-align:right;
+	vertical-alignment: center;
+	background: url(images/drop-down.png) right no-repeat;
+	padding-right: 12px;
+}
+.gm-LegendDisclosurePanel-content{
+	float: right;
+}
+.gm-LegendDisclosurePanel-legend {
+	padding: 3px 5px;
+/* 	background-image: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#F6F6F6) ); */
+/* 	background-image: -moz-linear-gradient(top, #FAFAFA, #F6F6F6);	 */
+    background-color: #FAFAFA;
+	border: 1px solid #666666;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+}
