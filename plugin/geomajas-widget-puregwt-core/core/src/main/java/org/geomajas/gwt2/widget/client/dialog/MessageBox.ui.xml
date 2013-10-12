@@ -1,0 +1,40 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="resource" type="org.geomajas.gwt2.widget.client.dialog.MessageBoxResource"/>
+	<ui:with field="msg" type="org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization" />
+		
+	<g:HTMLPanel>
+		<div style="margin: 5px 15px 10px 15px;">
+			<table style="width:100%;">
+				<tr>
+					<td>
+						<table style="width:100%;">
+							<tr>
+								<td style="vertical-align: top;">
+									<g:SimplePanel ui:field="icon" addStyleNames="{resource.css.messageBoxIcon}" />
+								</td>
+								<td style="vertical-align: middle;">
+									<g:HTML ui:field="message" addStyleNames="{resource.css.messageBoxContent}" />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align='center' style="padding-top:15px;">
+						<g:Button ui:field="btnYes" addStyleNames="{resource.css.messageBoxButton}">
+							<ui:text from='{msg.messageBoxBtnYes}' />
+						</g:Button>
+						<g:Button ui:field="btnNo" addStyleNames="{resource.css.messageBoxButton}">
+							<ui:text from='{msg.messageBoxBtnNo}' />
+						</g:Button>
+						<g:Button ui:field="btnCancel" addStyleNames="{resource.css.messageBoxButton}">
+							<ui:text from='{msg.messageBoxBtnCancel}' />
+						</g:Button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</g:HTMLPanel>
+
+</ui:UiBinder> 

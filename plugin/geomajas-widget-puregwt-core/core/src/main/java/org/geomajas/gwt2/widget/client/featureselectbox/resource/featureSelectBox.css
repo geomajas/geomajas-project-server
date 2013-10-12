@@ -1,0 +1,16 @@
+@external .featureSelectBox;
+
+.featureSelectBox {
+	
+}
+
+@external .featureSelectBoxCell;
+.featureSelectBoxCell {
+	text-align: left;
+	cursor: pointer;
+}
+
+
+.featureSelectBoxCell:hover {
+	color: #f56c22;
+}

@@ -1,0 +1,50 @@
+/* ------------------------------------------------------------------------*/
+/* ---- MessageBox --------------------------------------------------------*/
+/* ------------------------------------------------------------------------*/
+
+@external .messageBoxContainer;
+.messageBoxContainer {
+	vertical-align: middle;
+}
+
+@external .messageBoxButton;
+.messageBoxButton {
+	margin-left: 3px;
+	margin-right: 3px;
+	width: 100px;
+}
+
+@external .messageBoxIcon;
+.messageBoxIcon {
+	float: left;
+	width: 48px;
+	height: 48px;
+}
+
+@external .messageBoxContent;
+.messageBoxContent {
+	float: left;
+	margin-left: 10px;
+}
+
+/* icons */
+
+@external .messageBoxIconHelp;
+@sprite .messageBoxIconHelp {
+	gwt-image: "messageBoxHelpIcon";
+}
+
+@external .messageBoxIconWarn;
+@sprite .messageBoxIconWarn {
+	gwt-image: "messageBoxWarnIcon";
+}
+
+@external .messageBoxIconError; 
+@sprite .messageBoxIconError {
+	gwt-image: "messageBoxErrorIcon";
+}
+
+@external .messageBoxIconInfo;
+@sprite .messageBoxIconInfo {
+	gwt-image: "messageBoxInfoIcon";
+}
