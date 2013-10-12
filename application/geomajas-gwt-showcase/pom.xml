@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-showcase</artifactId>
-	<version>1.11.0-SNAPSHOT</version>
+	<version>1.15.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas gwt showcase application</name>
 	<description>Geomajas gwt showcase application, combines the examples from the different plug-ins</description>
