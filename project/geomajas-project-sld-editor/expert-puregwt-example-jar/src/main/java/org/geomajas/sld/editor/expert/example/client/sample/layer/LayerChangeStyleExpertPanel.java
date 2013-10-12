@@ -11,6 +11,7 @@
 
 package org.geomajas.sld.editor.expert.example.client.sample.layer;
 
+import org.geomajas.gwt2.client.GeomajasGinjector;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
@@ -73,7 +74,7 @@ public class LayerChangeStyleExpertPanel implements SamplePanel {
 		widget = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleBase.getInjector().getMapPresenter();
+		mapPresenter = ((GeomajasGinjector) ExampleBase.getInjector()).getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
 
