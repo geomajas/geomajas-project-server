@@ -17,10 +17,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<!-- @extract-start ExampleCommandScan, Scan to assure command is available -->
-	<context:component-scan base-package="org.geomajas.puregwt.example.server" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
+	<context:component-scan base-package="org.geomajas.gwt2.example.server" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 	<!-- @extract-end -->
 
-	<bean name="puregwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean name="gwt2-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
 				<ref bean="mapOsm" />

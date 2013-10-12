@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.puregwt.widget.client.dialog.MessageBox;
+import org.geomajas.gwt2.widget.client.dialog.MessageBox;
 import org.geomajas.sld.NamedLayerInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;

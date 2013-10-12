@@ -11,9 +11,9 @@
 
 package org.geomajas.sld.editor.expert.example.client;
 
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanelRegistry;
-import org.geomajas.puregwt.example.base.client.sample.ShowcaseSampleDefinition;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
+import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.sld.editor.expert.example.client.gin.SldEditorClientGinjector;
 import org.geomajas.sld.editor.expert.example.client.i18n.SampleMessages;
 import org.geomajas.sld.editor.expert.example.client.sample.layer.LayerChangeStyleExpertPanel;

@@ -11,15 +11,15 @@
 
 package org.geomajas.sld.editor.expert.example.client.sample.layer;
 
-import org.geomajas.puregwt.client.event.LayerAddedEvent;
-import org.geomajas.puregwt.client.event.LayerRemovedEvent;
-import org.geomajas.puregwt.client.event.MapCompositionHandler;
-import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.map.layer.VectorServerLayer;
-import org.geomajas.puregwt.example.base.client.ExampleBase;
-import org.geomajas.puregwt.example.base.client.sample.SamplePanel;
-import org.geomajas.puregwt.widget.client.map.MapLegendPanel;
+import org.geomajas.gwt2.client.event.LayerAddedEvent;
+import org.geomajas.gwt2.client.event.LayerRemovedEvent;
+import org.geomajas.gwt2.client.event.MapCompositionHandler;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.widget.client.map.MapLegendPanel;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;

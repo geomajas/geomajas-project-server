@@ -10,12 +10,12 @@
  */
 package org.geomajas.sld.editor.expert.example.client.gin;
 
-import org.geomajas.sld.editor.expert.client.gin.PureGwtClientModule;
+import org.geomajas.sld.editor.expert.client.gin.Gwt2ClientModule;
 
 /**
  * @author Kristof Heirwegh
  */
-public class SldEditorClientModule extends PureGwtClientModule {
+public class SldEditor2ClientModule extends Gwt2ClientModule {
 
 	@Override
 	protected void configure() {

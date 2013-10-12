@@ -19,7 +19,7 @@ import com.google.gwt.inject.client.GinModules;
  * 
  * @author Kristof Heirwegh
  */
-@GinModules({ SldEditorClientModule.class })
+@GinModules({ SldEditor2ClientModule.class })
 public interface SldEditorClientGinjector extends ClientGinjector {
 
 	// add your own
