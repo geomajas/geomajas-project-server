@@ -83,17 +83,17 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmap</artifactId>
-			<version>1.10.0-SNAPSHOT</version>
+			<version>1.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
-			<version>1.11.0-SNAPSHOT</version>
+			<version>1.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>1.11.0-SNAPSHOT</version>
+			<version>1.11.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
