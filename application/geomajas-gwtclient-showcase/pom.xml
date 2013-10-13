@@ -145,7 +145,7 @@
 
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-editor-expert-puregwt-example-jar</artifactId>
+			<artifactId>geomajas-project-sld-editor-expert-gwt2-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
