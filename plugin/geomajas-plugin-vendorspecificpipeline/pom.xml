@@ -166,8 +166,8 @@
 	</profiles>
 
 	<properties>
-		<vendorspecificpipeline-backend-version>1.13.1</vendorspecificpipeline-backend-version>
-		<vendorspecificpipeline-gwt-face-version>1.14.0-SNAPSHOT</vendorspecificpipeline-gwt-face-version>
+		<vendorspecificpipeline-backend-version>1.13.2</vendorspecificpipeline-backend-version>
+		<vendorspecificpipeline-gwt-face-version>1.14.0</vendorspecificpipeline-gwt-face-version>
 		<vendorspecificpipeline-gwt-version>2.5.0</vendorspecificpipeline-gwt-version>
 		<google-gwt-version>2.5.0</google-gwt-version>
 		<geodb-version>0.7</geodb-version>
