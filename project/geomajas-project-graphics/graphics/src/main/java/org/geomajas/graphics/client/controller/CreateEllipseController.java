@@ -20,7 +20,7 @@ import org.geomajas.graphics.client.service.GraphicsService;
  * @author Jan De Moerloose
  * 
  */
-public class CreateEllipseController extends CreateResizableController {
+public class CreateEllipseController extends CreateResizableController<GEllipse> {
 
 	public CreateEllipseController(GraphicsService graphicsService) {
 		super(graphicsService);
@@ -31,5 +31,4 @@ public class CreateEllipseController extends CreateResizableController {
 		GEllipse ellipse = new GEllipse(0, 0, 0, 0, "Ellipse");
 		return ellipse;
 	}
-
 }

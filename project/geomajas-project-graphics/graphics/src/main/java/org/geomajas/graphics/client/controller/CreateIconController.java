@@ -18,7 +18,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.Draggable;
 import org.geomajas.graphics.client.object.GIcon;
 import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.shape.MarkerShape;
 
@@ -32,7 +31,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class CreateIconController extends AbstractGraphicsController implements MouseUpHandler {
+public class CreateIconController extends CreateController<GIcon> implements MouseUpHandler {
 
 	private boolean active;
 

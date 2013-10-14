@@ -19,7 +19,6 @@ import org.geomajas.graphics.client.object.labeler.ResizableExternalizableLabele
 import org.geomajas.graphics.client.object.role.ExternalizableLabeled;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
@@ -42,7 +41,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class CreatePathController extends AbstractGraphicsController implements MouseDownHandler, MouseMoveHandler,
+public class CreatePathController extends CreateController<GPath> implements MouseDownHandler, MouseMoveHandler,
 		DoubleClickHandler, Fillable {
 
 	private boolean active;

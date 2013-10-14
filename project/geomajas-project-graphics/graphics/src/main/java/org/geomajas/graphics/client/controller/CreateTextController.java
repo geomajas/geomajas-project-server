@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GText;
 import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 import com.google.gwt.core.client.Scheduler;
@@ -39,7 +38,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class CreateTextController extends AbstractGraphicsController implements MouseUpHandler {
+public class CreateTextController extends CreateController<GText> implements MouseUpHandler {
 
 	private boolean active;
 

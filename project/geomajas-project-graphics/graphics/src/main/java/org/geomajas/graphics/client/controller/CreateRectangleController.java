@@ -21,7 +21,7 @@ import org.geomajas.graphics.client.service.GraphicsService;
  * 
  */
 
-public class CreateRectangleController extends CreateResizableController {
+public class CreateRectangleController extends CreateResizableController<GRectangle> {
 
 	public CreateRectangleController(GraphicsService graphicsService) {
 		super(graphicsService);
@@ -31,5 +31,4 @@ public class CreateRectangleController extends CreateResizableController {
 	protected GraphicsObject createObject() {
 		return new GRectangle(0, 0, 0, 0, "Rectangle");
 	}
-
 }

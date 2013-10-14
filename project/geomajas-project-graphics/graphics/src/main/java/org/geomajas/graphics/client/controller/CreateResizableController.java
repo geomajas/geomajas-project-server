@@ -16,7 +16,6 @@ import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.object.anchor.Anchored;
 import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.BboxPosition;
@@ -36,9 +35,11 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * Generic controller that creates a {@link Resizable}.
  * 
  * @author Jan De Moerloose
+ * @param <T>
  * 
  */
-public abstract class CreateResizableController extends AbstractGraphicsController implements MouseDownHandler,
+public abstract class CreateResizableController<T extends GraphicsObject>
+	extends CreateController<T> implements MouseDownHandler,
 		MouseMoveHandler, MouseUpHandler {
 
 	private GraphicsObject dragResizable;

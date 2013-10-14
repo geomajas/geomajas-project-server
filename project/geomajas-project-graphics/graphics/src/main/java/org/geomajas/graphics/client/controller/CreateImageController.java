@@ -13,7 +13,6 @@ package org.geomajas.graphics.client.controller;
 import org.geomajas.graphics.client.object.Draggable;
 import org.geomajas.graphics.client.object.GImage;
 import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 import com.google.gwt.event.dom.client.MouseUpEvent;
@@ -26,7 +25,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class CreateImageController extends AbstractGraphicsController implements MouseUpHandler {
+public class CreateImageController extends CreateController<GImage> implements MouseUpHandler {
 
 	private boolean active;
 
