@@ -27,7 +27,7 @@ public class ColorTextBoxValidator extends StringTextBoxValidator {
 	@Override
 	public boolean isValid() {
 		validate();
-		evaluateErrorMessage("Color must have form #xxxxxx or be a stadard value (e.g. red).");
+		evaluateErrorMessage("Color must have form #xxxxxx or be a standard value (e.g. red).");
 		return super.isValid();
 	}
 	

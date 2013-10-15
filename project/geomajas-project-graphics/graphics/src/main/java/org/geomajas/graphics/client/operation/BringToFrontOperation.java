@@ -39,8 +39,9 @@ public class BringToFrontOperation implements GraphicsOperation {
 
 	private int beforeIndex;
 
-	public BringToFrontOperation(GraphicsObject object) {
+	public BringToFrontOperation(GraphicsObject object, GraphicsService service) {
 		this.object = object;
+		this.service = service;
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class BringToFrontAction implements Action {
 	}
 
 	public void execute(GraphicsObject object) {
-		service.execute(new BringToFrontOperation(object));
+		service.execute(new BringToFrontOperation(object, service));
 	}
 
 	@Override
