@@ -33,7 +33,7 @@ public class ExternalLabelEditor extends LabelEditor {
 		this.object = (GraphicsObject) ((ExternalLabel) object).getExternalizableLabeled().getMasterObject();
 		Labeled label = object.getRole(Labeled.TYPE);
 		labelBox.setText(label.getTextable().getLabel());
-		fillColorBox.setText(label.getTextable().getFontColor());
+		fillColorValidator.setLabel(label.getTextable().getFontColor());
 		fontSize.setText(label.getTextable().getFontSize()  + "");
 		fontFamily.setText(label.getTextable().getFontFamily());
 	}

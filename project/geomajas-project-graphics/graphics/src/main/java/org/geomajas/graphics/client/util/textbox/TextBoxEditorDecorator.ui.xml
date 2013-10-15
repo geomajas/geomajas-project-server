@@ -5,13 +5,13 @@
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>
-					<div class="ks-decorator-errorLabel" ui:field="errorLabel" />
-					<div class="ks-decorator-warningLabel" ui:field="warningLabel" />
+					<div class="txbx-decorator-errorLabel" ui:field="errorLabel" style="color:red" />
+					<div class="txbx-decorator-warningLabel" ui:field="warningLabel" style="color:blue" />
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<g:SimplePanel ui:field="contents" stylePrimaryName="ks-decorator-contents" />
+					<g:SimplePanel ui:field="contents" stylePrimaryName="txbx-decorator-contents" />
 				</td>
 			</tr>
 		</table>

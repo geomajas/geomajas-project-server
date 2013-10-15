@@ -16,12 +16,7 @@
 					<g:Label>Width:</g:Label>
 				</td>
 				<td class="textBoxCell">
-					<w:TextBoxEditorDecorator ui:field="strokeWidthBoxDecorator">
-							<w:valuebox>
-								<g:TextBox ui:field="strokeWidthBox"/>
-							</w:valuebox>
-					</w:TextBoxEditorDecorator>
-				
+					<w:IntegerTextBoxValidator ui:field="strokeWidthBox"/>				
 				</td>
 				<td></td>
 			</tr>
@@ -30,7 +25,7 @@
 					<g:Label>Color:</g:Label>
 				</td>
 				<td class="textBoxCell">
-					<g:TextBox ui:field="strokeColorBox"></g:TextBox>
+					<w:ColorTextBoxValidator ui:field="strokeColorBox"/>
 				</td>
 				<td>
 					<g:Button ui:field="strokeColorButton">...</g:Button>
@@ -58,8 +53,20 @@
 					<g:Label>Position:</g:Label>
 				</td>
 				<td colspan="2">
-					X: <g:TextBox ui:field="pointPositionX"/>
-					Y: <g:TextBox ui:field="pointPositionY"/>
+					<table>
+						<tr>
+							<td>X:</td>
+							<td>
+							<w:DoubleTextBoxValidator ui:field="pointPositionX"/>
+							</td>
+						</tr>
+						<tr>
+							<td>Y:</td>
+							<td>
+							<w:DoubleTextBoxValidator ui:field="pointPositionY"/>
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
 			<tr class="pointRow">
@@ -67,7 +74,7 @@
 					<g:Label>Color:</g:Label>
 				</td>
 				<td class="textBoxCell">
-					<g:TextBox ui:field="pointColorBox"></g:TextBox>
+					<w:ColorTextBoxValidator ui:field="pointColorBox"/>
 				</td>
 				<td>
 					<g:Button ui:field="pointColorButton">...</g:Button>

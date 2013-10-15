@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:i="urn:import:com.google.gwt.widgetideas.client">
+	xmlns:w="urn:import:org.geomajas.graphics.client.util.textbox">
 
 	<g:HTMLPanel>
 		<table>
@@ -18,7 +18,7 @@
 					<g:Label>Color:</g:Label>
 				</td>
 				<td class="textBoxCell">
-					<g:TextBox ui:field="fillColorBox"></g:TextBox>
+					<w:ColorTextBoxValidator ui:field="fillColorValidator"/>
 				</td>
 				<td>
 					<g:Button ui:field="fillColorButton">...</g:Button>

@@ -17,6 +17,7 @@ import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.operation.LabelOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -59,7 +60,7 @@ public class LabelEditor implements Editor {
 	protected Button fillColorButton;
 
 	@UiField
-	protected TextBox fillColorBox;
+	protected ColorTextBoxValidator fillColorValidator;
 	
 	@UiField
 	protected TextBox fontSize;
@@ -98,7 +99,7 @@ public class LabelEditor implements Editor {
 		Textable textable = getTextable();
 		if (textable != null) {
 			labelBox.setText(textable.getLabel());
-			fillColorBox.setText(textable.getFontColor());
+			fillColorValidator.setLabel(textable.getFontColor());
 			fontSize.setText(textable.getFontSize()  + "");
 			fontFamily.setText(textable.getFontFamily());
 		}
@@ -112,7 +113,7 @@ public class LabelEditor implements Editor {
 			int beforeSize = textable.getFontSize();
 			String beforeFont = textable.getFontFamily();
 			service.execute(new LabelOperation(object, null, beforeLabel, beforeColor, beforeSize,
-					beforeFont, labelBox.getText(), fillColorBox.getText(), Integer.parseInt(fontSize.getText()),
+					beforeFont, labelBox.getText(), fillColorValidator.getLabel(), Integer.parseInt(fontSize.getText()),
 					fontFamily.getText()));
 		}
 	}
@@ -134,13 +135,20 @@ public class LabelEditor implements Editor {
 
 	@Override
 	public boolean validate() {
+		boolean valid = true;
+		if (!fillColorValidator.isValid()) {
+			valid = false;
+		}
 		// only if renderable is labeled, there should always be text
 		// This is the case for GText
 		// TODO make more generic
 		if (object instanceof GText && !(object instanceof ExternalLabel)) {
-			return !(((GText) object).getRole(Textable.TYPE).getLabel().isEmpty());
+
+			if (!((GText) object).getRole(Textable.TYPE).getLabel().isEmpty()) {
+				valid = false;
+			}
 		}
-		return true;
+		return valid;
 	}
 
 	@Override
@@ -165,7 +173,7 @@ public class LabelEditor implements Editor {
 
 			@Override
 			public void newColorSelected(String color) {
-				fillColorBox.setText(color);
+				fillColorValidator.setLabel(color);
 			}
 		});
 		int left = widget.getAbsoluteLeft() + widget.getOffsetWidth() + 10;

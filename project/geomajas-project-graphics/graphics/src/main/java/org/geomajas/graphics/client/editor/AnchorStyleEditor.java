@@ -17,7 +17,9 @@ import org.geomajas.graphics.client.object.anchor.ResizableAnchorer;
 import org.geomajas.graphics.client.operation.AnchorOperation;
 import org.geomajas.graphics.client.operation.AnchorStyleOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.util.textbox.TextBoxEditorDecorator;
+import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
+import org.geomajas.graphics.client.util.textbox.DoubleTextBoxValidator;
+import org.geomajas.graphics.client.util.textbox.IntegerTextBoxValidator;
 import org.geomajas.graphics.client.widget.TransparencySliderBar;
 
 import com.google.gwt.core.client.GWT;
@@ -28,7 +30,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mogaleaf.client.common.widgets.ColorHandler;
 import com.mogaleaf.client.common.widgets.SimpleColorPicker;
@@ -59,25 +60,22 @@ public class AnchorStyleEditor implements Editor {
 	protected Label strokeLabel;
 
 	@UiField
-	protected TextBox strokeWidthBox;
-
-	@UiField
-	protected TextBoxEditorDecorator<String> strokeWidthBoxDecorator;
+	protected IntegerTextBoxValidator strokeWidthBox;
 
 	@UiField
 	protected Button strokeColorButton;
 
 	@UiField
-	protected TextBox strokeColorBox;
+	protected ColorTextBoxValidator strokeColorBox;
 
 	@UiField
 	protected TransparencySliderBar strokeOpacitySlider;
 
 	@UiField
-	protected TextBox pointPositionX;
+	protected DoubleTextBoxValidator pointPositionX;
 	
 	@UiField
-	protected TextBox pointPositionY;
+	protected DoubleTextBoxValidator pointPositionY;
 	
 	@UiField
 	protected Label pointLabel;
@@ -86,7 +84,7 @@ public class AnchorStyleEditor implements Editor {
 	protected Button pointColorButton;
 
 	@UiField
-	protected TextBox pointColorBox;
+	protected ColorTextBoxValidator pointColorBox;
 
 	@UiField
 	protected TransparencySliderBar pointOpacitySlider;
@@ -117,7 +115,7 @@ public class AnchorStyleEditor implements Editor {
 	 colorPicker.addListner(new ColorHandler() {
 		 @Override
 		 public void newColorSelected(String color) {
-		 strokeColorBox.setText(color);
+			 strokeColorBox.setLabel(color);
 		 }
 	 });
 	 int left = widget.getAbsoluteLeft() + widget.getOffsetWidth();
@@ -134,7 +132,7 @@ public class AnchorStyleEditor implements Editor {
 
 			@Override
 			public void newColorSelected(String color) {
-				pointColorBox.setText(color);
+				pointColorBox.setLabel(color);
 			}
 		});
 		int left = widget.getAbsoluteLeft() + widget.getOffsetWidth();
@@ -157,21 +155,21 @@ public class AnchorStyleEditor implements Editor {
 	public void setObject(GraphicsObject object) {
 		this.object = object;
 		//line
-		strokeWidthBox.setText(object.getRole(ResizableAnchorer.TYPE).getAnchorLineWidth() + "");
-		strokeColorBox.setText(object.getRole(ResizableAnchorer.TYPE).getAnchorLineColor());
+		strokeWidthBox.setLabel(object.getRole(ResizableAnchorer.TYPE).getAnchorLineWidth() + "");
+		strokeColorBox.setLabel(object.getRole(ResizableAnchorer.TYPE).getAnchorLineColor());
 		strokeOpacitySlider.setCurrentValue(
 				1 - object.getRole(ResizableAnchorer.TYPE).getAnchorLineOpacity());
 		strokeLabel.setText("Anchor Line Parameters");
 
 		//point style
-		pointColorBox.setText(object.getRole(ResizableAnchorer.TYPE).getAnchorPointColor());
+		pointColorBox.setLabel(object.getRole(ResizableAnchorer.TYPE).getAnchorPointColor());
 		pointOpacitySlider.setCurrentValue(
 				1 - object.getRole(ResizableAnchorer.TYPE).getAnchorPointOpacity());
 		pointLabel.setText("Anchor Point Parameters");
 	
 		//point coordinates
-		pointPositionX.setText(object.getRole(Anchored.TYPE).getAnchorPosition().getX() + "");
-		pointPositionY.setText(object.getRole(Anchored.TYPE).getAnchorPosition().getY() + "");
+		pointPositionX.setLabel(object.getRole(Anchored.TYPE).getAnchorPosition().getX() + "");
+		pointPositionY.setLabel(object.getRole(Anchored.TYPE).getAnchorPosition().getY() + "");
 		
 	}
 
@@ -183,15 +181,16 @@ public class AnchorStyleEditor implements Editor {
 		String beforePointColor = object.getRole(ResizableAnchorer.TYPE).getAnchorPointColor();
 		double beforePointOpacity = object.getRole(ResizableAnchorer.TYPE).getAnchorPointOpacity();
 		service.execute(new AnchorStyleOperation(object, beforeStrokeWidth,
-				beforeStrokeColor, beforeStrokeOpacity, beforePointColor, beforePointOpacity, Integer
-						.parseInt(strokeWidthBox.getText()), strokeColorBox.getText(), 1 - strokeOpacitySlider
-						.getCurrentValue(), pointColorBox.getText(), 1 - pointOpacitySlider
+				beforeStrokeColor, beforeStrokeOpacity, beforePointColor, 
+					beforePointOpacity, strokeWidthBox.getInteger(),
+						strokeColorBox.getLabel(), 1 - strokeOpacitySlider
+						.getCurrentValue(), pointColorBox.getLabel(), 1 - pointOpacitySlider
 						.getCurrentValue()));
 
 		//location
 		Coordinate beforePosition  = object.getRole(Anchored.TYPE).getAnchorPosition();
-		service.execute(new AnchorOperation(object, beforePosition, new Coordinate(Double
-				.parseDouble(pointPositionX.getText()), Double.parseDouble(pointPositionY.getText()))));
+		service.execute(new AnchorOperation(object, beforePosition, new Coordinate(
+				pointPositionX.getDouble(), pointPositionY.getDouble())));
 
 	}
 
@@ -202,14 +201,25 @@ public class AnchorStyleEditor implements Editor {
 
 	@Override
 	public boolean validate() {
-		try {
-			Integer.parseInt(strokeWidthBox.getText());
-			return true;
-		} catch (Exception e) {
-			strokeWidthBoxDecorator.showError("Stroke width must be an integer.");
-			return false;
+		boolean valid = true;
+		// validate all text boxes individually. This will result in 
+		// display of error message of each individual text box.
+		if (!strokeColorBox.isValid()) {
+			valid = false;
 		}
-
+		if (!pointColorBox.isValid()) {
+			valid = false;
+		}
+		if (!strokeWidthBox.isValid()) {
+			valid = false;
+		}
+		if (!pointPositionX.isValid()) {
+			valid = false;
+		}
+		if (!pointPositionY.isValid()) {
+			valid = false;
+		}
+		return valid;
 	}
 
 	@Override

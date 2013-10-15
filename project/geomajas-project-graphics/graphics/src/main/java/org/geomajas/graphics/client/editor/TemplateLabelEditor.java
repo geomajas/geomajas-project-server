@@ -39,7 +39,7 @@ public class TemplateLabelEditor extends LabelEditor {
 		this.object = object;
 		TemplateLabeled label = getTemplateLabeled();
 		labelBox.setText(label.getLabel());
-		fillColorBox.setText(label.getFontColor());
+		fillColorValidator.setLabel(label.getFontColor());
 		fontSize.setText(label.getFontSize()  + "");
 		fontFamily.setText(label.getFontFamily());
 		labelBox.setText(label.getLabel());
@@ -52,8 +52,8 @@ public class TemplateLabelEditor extends LabelEditor {
 		int beforeSize = label.getFontSize();
 		String beforeFont = label.getFontFamily();
 		service.execute(new LabelOperation(object, null, beforeLabelTemplateText,
-				beforeColor, beforeSize, beforeFont, labelBox.getText(), fillColorBox
-						.getText(), Integer.parseInt(fontSize.getText()), fontFamily.getText()));
+				beforeColor, beforeSize, beforeFont, labelBox.getText(), fillColorValidator
+						.getLabel(), Integer.parseInt(fontSize.getText()), fontFamily.getText()));
 	}
 	
 	@Override
