@@ -25,7 +25,7 @@ import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent;
 import org.geomajas.sld.editor.expert.client.presenter.event.SldCancelledEvent.SldCancelledHandler;
 import org.geomajas.sld.editor.expert.client.presenter.event.SldSaveEvent;
 import org.geomajas.sld.editor.expert.client.presenter.event.SldSaveEvent.SldSaveHandler;
-import org.geomajas.sld.editor.expert.example.client.ExampleJar;
+import org.geomajas.sld.editor.expert.example.client.SldEditorGwt2ClientExampleJar;
 import org.geomajas.sld.editor.expert.example.client.i18n.SampleMessages;
 
 import com.google.gwt.core.client.Callback;
@@ -85,7 +85,7 @@ public class ExpertSldEditorHelper {
 
 	public void showExpertStyleEditor() {
 		initializeExpertEditor();
-		ExampleJar.getInjector().getPlaceManager().revealDefaultPlace();
+		SldEditorGwt2ClientExampleJar.getInjector().getPlaceManager().revealDefaultPlace();
 	}
 
 	/**
@@ -106,21 +106,23 @@ public class ExpertSldEditorHelper {
 
 	private void initializeExpertEditor() {
 		if (!initialized) {
-			handlers.add(ExampleJar.getInjector().getSldEditorExpertPresenter().get()
+			handlers.add(SldEditorGwt2ClientExampleJar.getInjector().getSldEditorExpertPresenter().get()
 					.addSldSaveHandler(new SldSaveHandler() {
 						public void onSldSave(SldSaveEvent event) {
 							if (extractData()) {
-								ExampleJar.getInjector().getSldEditorExpertPresenter().get().closeEditor();
+								SldEditorGwt2ClientExampleJar.getInjector().
+									getSldEditorExpertPresenter().get().closeEditor();
 								apply(layer);
 								callback.onSuccess(ExpertSldEditorHelper.this);
 							}
 						}
 					}));
 
-			handlers.add(ExampleJar.getInjector().getSldEditorExpertPresenter().get()
+			handlers.add(SldEditorGwt2ClientExampleJar.getInjector().getSldEditorExpertPresenter().get()
 					.addSldCancelledHandler(new SldCancelledHandler() {
 						public void onSldCancelled(SldCancelledEvent event) {
-							ExampleJar.getInjector().getSldEditorExpertPresenter().get().closeEditor();
+							SldEditorGwt2ClientExampleJar.getInjector().
+								getSldEditorExpertPresenter().get().closeEditor();
 							initializeExpertEditor(); // reset;
 							callback.onFailure(null);
 						}
@@ -130,7 +132,8 @@ public class ExpertSldEditorHelper {
 
 		// -- load the sld data, if any
 		if (styleData != null) {
-			ExampleJar.getInjector().getSldEditorExpertPresenter().get().loadSld(getStyleDataAsSldI());
+			SldEditorGwt2ClientExampleJar.getInjector().
+				getSldEditorExpertPresenter().get().loadSld(getStyleDataAsSldI());
 		}
 	}
 
@@ -140,7 +143,7 @@ public class ExpertSldEditorHelper {
 		styleName = "";
 
 		// Find the userstyle.
-		StyledLayerDescriptorInfo sldi = ExampleJar.getInjector().getSldEditorExpertPresenter()
+		StyledLayerDescriptorInfo sldi = SldEditorGwt2ClientExampleJar.getInjector().getSldEditorExpertPresenter()
 				.get().getModel().getSldDescriptor();
 		if (sldi != null) {
 			if (sldi.getChoiceList() != null && sldi.getChoiceList().size() > 0) {

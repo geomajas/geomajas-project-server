@@ -19,9 +19,8 @@ import com.google.gwt.inject.client.GinModules;
  * 
  * @author Kristof Heirwegh
  */
-@GinModules({ SldEditor2ClientModule.class })
-public interface SldEditorClientGinjector extends ClientGinjector {
+@GinModules({ SldEditorGwt2ClientModule.class })
+public interface SldEditorGwt2ClientGinjector extends ClientGinjector {
 
 	// add your own
-
 }

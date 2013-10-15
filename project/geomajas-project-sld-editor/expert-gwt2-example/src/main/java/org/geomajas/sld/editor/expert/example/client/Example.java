@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
  * @author Pieter De Graef
  */
 public class Example implements EntryPoint {
-
+	
 	public void onModuleLoad() {
 		RootLayoutPanel.get().add(ExampleBase.getLayout());
 	}

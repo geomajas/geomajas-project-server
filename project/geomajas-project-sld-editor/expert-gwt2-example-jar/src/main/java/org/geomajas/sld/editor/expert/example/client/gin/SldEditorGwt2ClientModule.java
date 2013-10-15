@@ -15,7 +15,7 @@ import org.geomajas.sld.editor.expert.client.gin.Gwt2ClientModule;
 /**
  * @author Kristof Heirwegh
  */
-public class SldEditor2ClientModule extends Gwt2ClientModule {
+public class SldEditorGwt2ClientModule extends Gwt2ClientModule {
 
 	@Override
 	protected void configure() {

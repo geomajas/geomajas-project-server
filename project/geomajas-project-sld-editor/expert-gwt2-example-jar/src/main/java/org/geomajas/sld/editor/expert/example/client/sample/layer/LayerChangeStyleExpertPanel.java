@@ -51,6 +51,8 @@ public class LayerChangeStyleExpertPanel implements SamplePanel {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
+	
+	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	private MapPresenter mapPresenter;
 
@@ -74,7 +76,11 @@ public class LayerChangeStyleExpertPanel implements SamplePanel {
 		widget = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ((GeomajasGinjector) ExampleBase.getInjector()).getMapPresenter();
+		// Since the ExampleBase object does not instantiate a Ginjector object, 
+		// we create a GeomajasGinject here locally, to obtain the MapPresenter.
+		// Ideally, the ExampleBase contains a reference to MapPresenter (or GeomajasInjecor).
+//		mapPresenter = ((GeomajasGinjector) ExampleBase.getInjector()).getMapPresenter();
+		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
 
@@ -87,7 +93,7 @@ public class LayerChangeStyleExpertPanel implements SamplePanel {
 		legendPanel.add(mlp);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("puregwt-app", "mapLegend");
+		mapPresenter.initialize("gwt2-app", "mapLegend");
 		
 		editor = new ExpertSldEditorHelper(new Callback<ExpertSldEditorHelper, Void>() {
 			public void onFailure(Void reason) {

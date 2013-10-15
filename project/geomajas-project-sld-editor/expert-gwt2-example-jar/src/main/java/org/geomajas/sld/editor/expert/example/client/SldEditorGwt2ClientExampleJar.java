@@ -14,7 +14,7 @@ package org.geomajas.sld.editor.expert.example.client;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
-import org.geomajas.sld.editor.expert.example.client.gin.SldEditorClientGinjector;
+import org.geomajas.sld.editor.expert.example.client.gin.SldEditorGwt2ClientGinjector;
 import org.geomajas.sld.editor.expert.example.client.i18n.SampleMessages;
 import org.geomajas.sld.editor.expert.example.client.sample.layer.LayerChangeStyleExpertPanel;
 
@@ -28,11 +28,11 @@ import com.gwtplatform.mvp.client.DelayedBindRegistry;
  * @author Pieter De Graef
  * @author Kristof Heirwegh
  */
-public class ExampleJar implements EntryPoint {
+public class SldEditorGwt2ClientExampleJar implements EntryPoint {
 
 	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
 
-	private static final SldEditorClientGinjector GINJECTOR = GWT.create(SldEditorClientGinjector.class);
+	private static final SldEditorGwt2ClientGinjector GINJECTOR = GWT.create(SldEditorGwt2ClientGinjector.class);
 
 	public static final String CATEGORY_LAYER = "Layer functionalities";
 
@@ -47,7 +47,7 @@ public class ExampleJar implements EntryPoint {
 		return MESSAGES;
 	}
 
-	public static SldEditorClientGinjector getInjector() {
+	public static SldEditorGwt2ClientGinjector getInjector() {
 		 return GINJECTOR;
 	}
 
