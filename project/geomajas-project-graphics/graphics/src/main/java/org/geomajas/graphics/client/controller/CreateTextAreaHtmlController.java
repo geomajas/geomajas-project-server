@@ -10,34 +10,71 @@
  */
 package org.geomajas.graphics.client.controller;
 
-import org.geomajas.graphics.client.object.GText;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GTextAreaHtml;
-import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.util.BboxPosition;
+
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
- * Controller that creates a {@link GTextAreaHtml} with an {@link Anchored} role.
+ * Controller that creates a {@link GTextAreaHtml}.
  * 
  * @author Jan Venstermans
  * 
  */
-public class CreateTextAreaHtmlController extends CreateTextController {
-	
-	private int textAreaWidth;
-	
-	private int textAreaHeight;
+public class CreateTextAreaHtmlController extends CreateController<GTextAreaHtml> implements MouseUpHandler {
 
-	public CreateTextAreaHtmlController(GraphicsService graphicsService, int textAreaWidth, int textAreaHeight) {
+	private boolean active;
+
+	private HandlerRegistration registration;
+
+	public CreateTextAreaHtmlController(GraphicsService graphicsService) {
 		super(graphicsService);
-		this.textAreaWidth = textAreaWidth;
-		this.textAreaHeight = textAreaHeight;
 	}
 
 	@Override
-	protected void addObject(GText result) {
-		GTextAreaHtml textArea = new GTextAreaHtml(result.getPosition().getX(), result.getPosition().getY(),
-				textAreaWidth, textAreaHeight, result.getLabel(), BboxPosition.CORNER_LL);
-		execute(new AddOperation(textArea));
+	public void setActive(boolean active) {
+		this.active = active;
+		if (active) {
+			registration = getObjectContainer().addMouseUpHandler(this);
+		} else {
+			if (registration != null) {
+				registration.removeHandler();
+				registration = null;
+			}
+		}
 	}
+
+	@Override
+	public boolean isActive() {
+		return active;
+	}
+
+	@Override
+	public void destroy() {
+	}
+
+	@Override
+	public void onMouseUp(MouseUpEvent event) {
+		Coordinate position = getUserCoordinate(event);
+		GTextAreaHtml textAreaHtml = new GTextAreaHtml(position.getX(), position.getY(), 100, 100,
+				"Lorem ipsum dolor sit amet, consectetur adipisicing elit, "
+						+ "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+						+ " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+						+ " nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor"
+						+ " in reprehenderit in voluptate velit esse cillum dolore eu "
+						+ "fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, "
+						+ "sunt in culpa qui officia deserunt mollit anim id est laborum");
+		textAreaHtml.setFillColor("red");
+		addObject(textAreaHtml);
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

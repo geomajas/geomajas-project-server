@@ -15,25 +15,23 @@ import java.util.List;
 
 import org.geomajas.graphics.client.event.AddAnchoredLinesEvent;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
-import org.geomajas.graphics.client.event.GraphicsObjectSelectedEvent;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.ActionType;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.Handler;
+import org.geomajas.graphics.client.event.GraphicsObjectSelectedEvent;
 import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.anchor.AnchoredTo;
+import org.geomajas.graphics.client.object.role.HtmlRenderable;
 import org.geomajas.graphics.client.shape.CoordinatePath;
 import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
-import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DomEvent.Type;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
 import com.google.gwt.event.dom.client.HasMouseOutHandlers;
@@ -42,6 +40,7 @@ import com.google.gwt.event.dom.client.HasMouseUpHandlers;
 import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -56,6 +55,8 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
@@ -69,9 +70,9 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectContainer {
 
-	private VectorObjectContainer rootGroup;
+	private HasHandlerVectorObjectContainer rootGroup;
 
-	private BackGround backGround = new BackGround();
+	private HasHandlerWidget backGround;
 
 	private ObjectGroup objectGroup = new ObjectGroup();
 
@@ -79,23 +80,30 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	private List<GraphicsObject> objects = new ArrayList<GraphicsObject>();
 
+	private HasWidgets.ForIsWidget widgetContainer;
+
 	protected AbstractGraphicsObjectContainer(EventBus eventBus) {
 		this.eventBus = eventBus;
 	}
 
-	protected AbstractGraphicsObjectContainer(EventBus eventBus, VectorObjectContainer rootGroup) {
+	protected AbstractGraphicsObjectContainer(EventBus eventBus, VectorObjectContainer rootGroup,
+			Widget backGroundWidget) {
 		this.eventBus = eventBus;
 		setRootContainer(rootGroup);
+		setBackGround(backGroundWidget);
+	}
+
+	public void setBackGround(Widget backGroundWidget) {
+		backGround = new HasHandlerWidget(backGroundWidget, true);
 	}
 
 	public void setRootContainer(VectorObjectContainer rootGroup) {
-		this.rootGroup = rootGroup;
-		rootGroup.add(backGround);
-		rootGroup.add(objectGroup);
+		this.rootGroup = new HasHandlerVectorObjectContainer(rootGroup, true);
+		this.rootGroup.add(objectGroup);
 	}
 
-	public VectorObjectContainer getRootContainer() {
-		return rootGroup;
+	public void setWidgetContainer(HasWidgets.ForIsWidget widgetContainer) {
+		this.widgetContainer = widgetContainer;
 	}
 
 	@Override
@@ -104,8 +112,33 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	}
 
 	@Override
-	public HasAllMouseAndClickHandlers getBackGround() {
+	public HasHandlerWidget getBackGround() {
 		return backGround;
+	}
+
+	@Override
+	public boolean isObject(MouseEvent<?> event) {
+		for (GraphicsObject object : objects) {
+			if (object.asObject() == event.getSource()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public GraphicsObject getObject(MouseEvent<?> event) {
+		for (GraphicsObject object : objects) {
+			if (object.asObject() == event.getSource()) {
+				return object;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean isBackGround(MouseEvent<?> event) {
+		return backGround.asWidget() == event.getSource();
 	}
 
 	@Override
@@ -115,42 +148,55 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	@Override
 	public HandlerRegistration addMouseDownHandler(final MouseDownHandler handler) {
-		return registerHandler((HasHandlers) rootGroup, handler, MouseDownEvent.getType());
+		return registerRootAndBackGround(handler, MouseDownEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return registerHandler((HasHandlers) rootGroup, handler, MouseUpEvent.getType());
+		return registerRootAndBackGround(handler, MouseUpEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		return registerHandler((HasHandlers) rootGroup, handler, MouseOutEvent.getType());
+		return registerRootAndBackGround(handler, MouseOutEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		return registerHandler((HasHandlers) rootGroup, handler, MouseOverEvent.getType());
+		return registerRootAndBackGround(handler, MouseOverEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		return registerHandler((HasHandlers) rootGroup, handler, MouseMoveEvent.getType());
+		return registerRootAndBackGround(handler, MouseMoveEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		return registerHandler((HasHandlers) rootGroup, handler, MouseWheelEvent.getType());
+		return registerRootAndBackGround(handler, MouseWheelEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		return ((HasClickHandlers) rootGroup).addClickHandler(handler);
+		return registerRootAndBackGround(handler, ClickEvent.getType());
 	}
 
 	@Override
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return ((HasDoubleClickHandlers) rootGroup).addDoubleClickHandler(handler);
+		return registerRootAndBackGround(handler, DoubleClickEvent.getType());
+	}
+
+	private <H extends EventHandler> HandlerRegistration registerRootAndBackGround(H handler, DomEvent.Type<H> type) {
+		final HandlerRegistration rootRegistration = rootGroup.addDomHandler(handler, type);
+		final HandlerRegistration bgRegistration = backGround.addDomHandler(handler, type);
+		return new HandlerRegistration() {
+
+			@Override
+			public void removeHandler() {
+				rootRegistration.removeHandler();
+				bgRegistration.removeHandler();
+			}
+		};
 	}
 
 	@Override
@@ -173,6 +219,11 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	@Override
 	public void add(GraphicsObject object) {
 		objectGroup.add(object.asObject());
+		if (object.hasRole(HtmlRenderable.TYPE)) {
+			if (widgetContainer != null) {
+				widgetContainer.add(object.getRole(HtmlRenderable.TYPE).asWidget());
+			}
+		}
 		objects.add(object);
 		eventBus.fireEvent(new GraphicsObjectContainerEvent(object, ActionType.ADD));
 	}
@@ -210,12 +261,12 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	public com.google.web.bindery.event.shared.HandlerRegistration addGraphicsObjectContainerHandler(Handler handler) {
 		return eventBus.addHandler(GraphicsObjectContainerEvent.getType(), handler);
 	}
-	
+
 	@Override
 	public com.google.web.bindery.event.shared.HandlerRegistration addGraphicsOperationEventHandler(
 			org.geomajas.graphics.client.event.GraphicsOperationEvent.Handler handler) {
 		return eventBus.addHandler(GraphicsOperationEvent.getType(), handler);
-	}	
+	}
 
 	private <H extends EventHandler> HandlerRegistration registerHandler(HasHandlers o, H handler, Type<H> type) {
 		if (type == MouseDownEvent.getType()) {
@@ -241,35 +292,6 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	}
 
 	/**
-	 * Invisible background to capture all events. This is necessary to capture events outside the {@link ObjectGroup},
-	 * e.g. clicking on background to deactivate all objects.
-	 * 
-	 */
-	class BackGround extends Shape implements HasAllMouseAndClickHandlers {
-
-		public BackGround() {
-			setFillOpacity(0);
-			setStrokeOpacity(0);
-			getElement().getStyle().setCursor(Cursor.DEFAULT);
-			drawTransformed();
-		}
-
-		@Override
-		protected Class<? extends VectorObject> getType() {
-			return Rectangle.class;
-		}
-
-		@Override
-		protected void drawTransformed() {
-			getImpl().setX(getElement(), Integer.MIN_VALUE / 200, isAttached());
-			getImpl().setY(getElement(), Integer.MIN_VALUE / 200, isAttached());
-			getImpl().setWidth(getElement(), Integer.MAX_VALUE / 100);
-			getImpl().setHeight(getElement(), Integer.MAX_VALUE / 100);
-		}
-
-	}
-
-	/**
 	 * The {@link Group} that contains all {@link GraphicsObject}s of this container.
 	 * 
 	 * @author Jan De Moerloose
@@ -278,13 +300,12 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	class ObjectGroup extends Group implements HasAllMouseAndClickHandlers {
 
 	}
-	
+
 	@Override
 	public com.google.web.bindery.event.shared.HandlerRegistration addAddAnchoredLinesHandler(
 			org.geomajas.graphics.client.event.AddAnchoredLinesEvent.Handler handler) {
 		return eventBus.addHandler(AddAnchoredLinesEvent.getType(), handler);
 	}
-
 
 	@Override
 	public void findObjectsAnchoredTo(GraphicsObject object) {
@@ -295,6 +316,6 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 			}
 		}
 		eventBus.fireEvent(new AddAnchoredLinesEvent(object, coordinatePaths));
-	}	
+	}
 
 }

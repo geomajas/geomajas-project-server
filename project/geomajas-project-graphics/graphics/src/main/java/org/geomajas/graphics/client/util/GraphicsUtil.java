@@ -127,8 +127,12 @@ public final class GraphicsUtil {
 		}
 	}
 
-	private static Bbox toBbox(double x1, double x2, double y1, double y2) {
+	public static Bbox toBbox(double x1, double x2, double y1, double y2) {
 		return new Bbox(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
+	}
+
+	public static Bbox toBbox(Coordinate p1, Coordinate p2) {
+		return toBbox(p1.getX(), p2.getX(), p1.getY(), p2.getY());
 	}
 
 	private static FlipState toFlipState(double minX, double maxX, double minY, double maxY) {

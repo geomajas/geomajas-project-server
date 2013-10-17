@@ -39,6 +39,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -50,16 +51,22 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  */
 public class TestContainer extends AbstractGraphicsObjectContainer implements IsWidget, NativePreviewHandler {
-
+	private AbsolutePanel rootPanel;
+	
 	private DrawingArea canvas = new DrawingArea(1000, 1000);
 
 	private TransformingGroup rootContainer = new TransformingGroup();
 
 	public TestContainer(EventBus eventBus) {
 		super(eventBus);
+		rootPanel = new AbsolutePanel();
+		rootPanel.setPixelSize(1000, 1000);
 		canvas.getElement().setId("TestContainer");
 		canvas.add(rootContainer);
 		setRootContainer(rootContainer);
+		setBackGround(rootPanel);
+		setWidgetContainer(rootPanel);
+		rootPanel.add(canvas);
 		Event.addNativePreviewHandler(this);
 		GRectangle rect = new GRectangle(100, 100, 100, 100, "Rectangle label");
 		GCircle circle = new GCircle(300, 100, 50, "Circle");
@@ -87,14 +94,14 @@ public class TestContainer extends AbstractGraphicsObjectContainer implements Is
 		add(anchoredIcon);
 	}
 	
-	private List<String> urls = new ArrayList<String>(Arrays.asList(GWT.getModuleBaseURL() + "image/slider.gif",
-			GWT.getModuleBaseURL() + "image/cloud.png",
-			GWT.getModuleBaseURL() + "image/sun.jpg"));
-	
 	public TransformingGroup getRootContainer() {
 		return rootContainer;
 	}
 
+	private List<String> urls = new ArrayList<String>(Arrays.asList(GWT.getModuleBaseURL() + "image/slider.gif",
+			GWT.getModuleBaseURL() + "image/cloud.png",
+			GWT.getModuleBaseURL() + "image/sun.jpg"));
+	
 	public void onPreviewNativeEvent(NativePreviewEvent event) {
 		Element relatedEventTarget = event.getNativeEvent().getEventTarget().cast();
 		if (relatedEventTarget != null && canvas.isAttached()) {
@@ -105,7 +112,7 @@ public class TestContainer extends AbstractGraphicsObjectContainer implements Is
 	}
 
 	public Widget asWidget() {
-		return canvas;
+		return rootPanel;
 	}
 
 	@Override

@@ -56,8 +56,7 @@ public class CreateAnchoredTextAreaController extends CreateAnchoredTextControll
 
 	protected GTextAreaHtml createTextArea(GText text) {
 		BboxPosition screenUpperLeftPositionInUserSpace = transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER);
-		GTextAreaHtml textArea = new GTextAreaHtml(0.0, 0.0, textAreaWidth, textAreaHeight, text.getLabel(),
-				screenUpperLeftPositionInUserSpace);
+		GTextAreaHtml textArea = new GTextAreaHtml(0.0, 0.0, textAreaWidth, textAreaHeight, text.getLabel());
 		textArea.setPosition(text.getPosition());
 //		textArea.addRole(new ResizableAnchorer());
 //		textArea.getRole(Anchored.TYPE).setAnchorPosition(text.getRole(Anchored.TYPE).getAnchorPosition());

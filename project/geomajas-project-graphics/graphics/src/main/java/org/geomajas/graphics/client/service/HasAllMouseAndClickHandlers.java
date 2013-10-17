@@ -10,9 +10,12 @@
  */
 package org.geomajas.graphics.client.service;
 
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * Utility interface for UI classes that fire all events.
@@ -22,4 +25,5 @@ import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
  */
 public interface HasAllMouseAndClickHandlers extends HasAllMouseHandlers, HasClickHandlers, HasDoubleClickHandlers {
 
+	<H extends EventHandler> HandlerRegistration addDomHandler(H handler, DomEvent.Type<H> type);
 }

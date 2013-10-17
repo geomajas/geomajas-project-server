@@ -13,14 +13,15 @@ package org.geomajas.graphics.client.object;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.HtmlRenderable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.shape.FixedScreenSizeRectangle;
-import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.FlipState;
+import org.geomajas.graphics.client.widget.TextAreaWidget;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * Graphics rectangle.
@@ -30,28 +31,25 @@ import com.google.gwt.dom.client.Style;
  */
 public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, Fillable, Strokable {
 
-	public GTextAreaHtml(double userX, double userY, int defaultPixelWidth, int defaultPixelHeight, String text,
-			BboxPosition screenUpperLeftPositionInUserSpace) {
-		this(new FixedScreenSizeRectangle(userX, userY, defaultPixelWidth, defaultPixelHeight,
-				screenUpperLeftPositionInUserSpace), text, screenUpperLeftPositionInUserSpace);
+	public GTextAreaHtml(double userX, double userY, int width, int height, String text) {
+		this(new FixedScreenSizeRectangle(userX, userY, width, height, 0.5, 0.5), text);
 	}
 
-	public GTextAreaHtml(FixedScreenSizeRectangle rectangle, String text,
-			BboxPosition screenUpperLeftPositionInUserSpace) {
-		this(new TextPopup(rectangle, text, screenUpperLeftPositionInUserSpace));
+	public GTextAreaHtml(FixedScreenSizeRectangle rectangle, String text) {
+		this(new ResizableTextArea(rectangle, text));
 	}
-		
-	public GTextAreaHtml(TextPopup rectangle) {
-		super(rectangle);
-		getRectangle().setHeadClass(this);
+
+	public GTextAreaHtml(ResizableTextArea textArea) {
+		super(textArea);
 		addRole(Fillable.TYPE, this);
 		addRole(Strokable.TYPE, this);
+		addRole(HtmlRenderable.TYPE, getRectangle());
 	}
 
 	@Override
 	public GraphicsObject cloneObject() {
-		TextPopup rectangle = getRectangle();
-		GTextAreaHtml clone = new GTextAreaHtml((TextPopup) rectangle.cloneObject());
+		ResizableTextArea rectangle = getRectangle();
+		GTextAreaHtml clone = new GTextAreaHtml((ResizableTextArea) rectangle.cloneObject());
 		copyTo(clone);
 		return clone;
 	}
@@ -96,10 +94,10 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 		getRectangle().setStrokeOpacity(opacity);
 	}
 
-	private TextPopup getRectangle() {
-		return (TextPopup) getResizable();
+	private ResizableTextArea getRectangle() {
+		return (ResizableTextArea) getResizable();
 	}
-	
+
 	@Override
 	public void setLabel(String label) {
 		getRectangle().setText(label);
@@ -143,54 +141,31 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 	/**
 	 * Resizable implementation for rectangle.
 	 */
-	static class TextPopup implements Resizable, Fillable, Strokable, Textable, Draggable {
-		
-		private DraggableDecoratedPopupPanel panel;
-		
-		private BboxPosition userUlPosition;
+	static class ResizableTextArea implements Resizable, Fillable, Strokable, Textable, Draggable, HtmlRenderable {
 
 		private FixedScreenSizeRectangle rectangle;
-		
+
 		private String text;
 		
-		private GTextAreaHtml headClass;
+		private TextAreaWidget textDiv;
 
-		public TextPopup(FixedScreenSizeRectangle rectangle, String text) {
-			this(rectangle, text, BboxPosition.CORNER_LL);
+		public ResizableTextArea(FixedScreenSizeRectangle rectangle, String text) {
+			this.rectangle = rectangle;
+			this.text = text;
+			this.textDiv = new TextAreaWidget();
+			updateTextDiv();
 		}
 
-		public TextPopup(FixedScreenSizeRectangle rectangle, String text,
-				BboxPosition screenUpperLeftPositionInUserSpace) {
-			this.userUlPosition = screenUpperLeftPositionInUserSpace;
-
-			// check for position of UL in userspace, change sign of height and width if necessary
-			// standard: BboxPosition.CORNER_LL: width and height positive
-			if (userUlPosition.equals(BboxPosition.CORNER_LR) || userUlPosition.equals(BboxPosition.CORNER_UR)) {
-				// switch width
-				rectangle.setUserWidth(-rectangle.getUserWidth());
-			}
-			if (userUlPosition.equals(BboxPosition.CORNER_UL) || userUlPosition.equals(BboxPosition.CORNER_UR)) {
-				// switch height
-				rectangle.setUserHeight(-rectangle.getUserHeight());
-			}
-			this.text = text;
-			this.rectangle = rectangle;
-			rectangle.setFillColor("green");
-			panel = new DraggableDecoratedPopupPanel(text);
-			panel.setWidth(rectangle.getWidth() + "px");
-			panel.setHeight(rectangle.getHeight() + "px");
-			panel.show();
-			panel.setPosition(new Coordinate(rectangle.getUserX(), rectangle.getUserY()));
-			//panel.showRelativeTo(target)
-			setFillColor("red");
+		@Override
+		public IsWidget asWidget() {
+			return textDiv;
 		}
 
 		@Override
 		public void setPosition(Coordinate graphicsContainerPosition) {
 			rectangle.setUserX(graphicsContainerPosition.getX());
 			rectangle.setUserY(graphicsContainerPosition.getY());
-			
-//			panel.setPopupPosition((int)position.getX(), (int)position.getY());
+			updateTextDiv();
 		}
 
 		@Override
@@ -199,9 +174,9 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 		}
 
 		public Object cloneObject() {
-			FixedScreenSizeRectangle mask = new FixedScreenSizeRectangle(rectangle.getUserX(), rectangle.getUserY(),
-					rectangle.getPixelWidth(), rectangle.getPixelHeight(), userUlPosition);
-			return new TextPopup(mask, text, userUlPosition);
+			FixedScreenSizeRectangle copy = new FixedScreenSizeRectangle(rectangle.getUserX(), rectangle.getUserY(),
+					rectangle.getWidth(), rectangle.getHeight(), rectangle.getAnchorX(), rectangle.getAnchorY());
+			return new ResizableTextArea(copy, text);
 		}
 
 		@Override
@@ -211,21 +186,13 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 
 		@Override
 		public void setUserBounds(Bbox bounds) {
-			double x = bounds.getX();
-			double y = bounds.getY();
-			// Bbox always has positive height and width
-			// change the given bounds, so the position matches userUlPosition
-			if (userUlPosition.equals(BboxPosition.CORNER_LR) || userUlPosition.equals(BboxPosition.CORNER_UR)) {
-				// change x-axis values: x to other side
-				x += bounds.getWidth();
-			}
-			if (userUlPosition.equals(BboxPosition.CORNER_UL) || userUlPosition.equals(BboxPosition.CORNER_UR)) {
-				// change y-axis values: y to other side
-				y += bounds.getHeight();
-			}
-			rectangle.setUserX(x);
-			rectangle.setUserY(y);
-			update();
+			rectangle.setUserBounds(bounds);
+			updateTextDiv();
+		}
+
+		private void updateTextDiv() {
+			textDiv.setScreenBounds(getBounds());
+			textDiv.setText(text);
 		}
 
 		@Override
@@ -233,13 +200,13 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 			return false;
 		}
 
-		//bbox in user lengths
+		// bbox in user lengths
 		@Override
 		public Bbox getUserBounds() {
 			return rectangle.getUserBounds();
 		}
 
-		//bbox in pixel lengths
+		// bbox in pixel lengths
 		@Override
 		public Bbox getBounds() {
 			return rectangle.getBounds();
@@ -251,95 +218,84 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 		}
 
 		public String getFillColor() {
-			return panel.getElement().getStyle().getBackgroundColor();
+			return rectangle.getFillColor();
 		}
 
 		public void setFillColor(String color) {
-			panel.getElement().getStyle().setBackgroundColor(color);
+			rectangle.setFillColor(color);
 		}
 
 		public double getFillOpacity() {
-			return 1.0;
+			return rectangle.getFillOpacity();
 		}
 
 		public void setFillOpacity(double opacity) {
-			// do nothing
+			rectangle.setFillOpacity(opacity);
 		}
 
 		public String getStrokeColor() {
-			return panel.getElement().getStyle().getBorderColor();
+			return rectangle.getStrokeColor();
 		}
 
 		public void setStrokeColor(String color) {
-			panel.getElement().getStyle().setBorderColor(color);
+			rectangle.setStrokeColor(color);
 		}
 
 		public int getStrokeWidth() {
-			return Integer.parseInt(panel.getElement().getStyle().getBorderWidth());
+			return rectangle.getStrokeWidth();
 		}
 
 		public void setStrokeWidth(int width) {
-			panel.getElement().getStyle().setBorderWidth(width, Style.Unit.PX);
+			rectangle.setStrokeWidth(width);
 		}
 
 		public double getStrokeOpacity() {
-			return 1.0;
+			return rectangle.getStrokeOpacity();
 		}
 
 		public void setStrokeOpacity(double opacity) {
-			// do nothing
+			rectangle.setStrokeOpacity(opacity);
 		}
-		
+
 		public void setText(String text) {
 			this.text = text;
-		}
-		
-		public void update() {
-			headClass.update();
-		}
-		
-		public void setHeadClass(GTextAreaHtml headClass) {
-			this.headClass = headClass;
+			updateTextDiv();
 		}
 
 		@Override
 		public void setLabel(String text) {
-			panel.setLabel(text);
 		}
 
 		@Override
 		public String getLabel() {
-			return panel.getLabel();
+			return "";
 		}
 
 		@Override
 		public void setFontColor(String color) {
-			panel.setFontColor(color);
 		}
 
 		@Override
 		public String getFontColor() {
-			return panel.getFontColor();
+			return "";
 		}
 
 		@Override
 		public void setFontSize(int size) {
-			panel.setFontSize(size);
 		}
 
 		@Override
 		public int getFontSize() {
-			return panel.getFontSize();
+			return 0;
 		}
 
 		@Override
 		public void setFontFamily(String font) {
-			panel.setFontFamily(font);
 		}
 
 		@Override
 		public String getFontFamily() {
-			return panel.getFontFamily();
+			return "";
 		}
 
 	}

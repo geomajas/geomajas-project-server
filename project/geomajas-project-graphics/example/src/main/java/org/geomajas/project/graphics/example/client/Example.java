@@ -20,12 +20,12 @@ import org.geomajas.graphics.client.action.DuplicateAction;
 import org.geomajas.graphics.client.action.ToggleLabelAction;
 import org.geomajas.graphics.client.controller.AnchorControllerFactory;
 import org.geomajas.graphics.client.controller.CreateAnchoredIconController;
+import org.geomajas.graphics.client.controller.CreateAnchoredTextAreaController;
 import org.geomajas.graphics.client.controller.CreateAnchoredTextController;
 import org.geomajas.graphics.client.controller.CreateEllipseController;
 import org.geomajas.graphics.client.controller.CreateIconController;
 import org.geomajas.graphics.client.controller.CreateImageController;
 import org.geomajas.graphics.client.controller.CreateLineWithTemplateLabeledController;
-import org.geomajas.graphics.client.controller.CreateMetaController;
 import org.geomajas.graphics.client.controller.CreatePathController;
 import org.geomajas.graphics.client.controller.CreateRectangleController;
 import org.geomajas.graphics.client.controller.CreateTextAreaHtmlController;
@@ -147,24 +147,22 @@ public class Example implements EntryPoint, Handler {
 		createIconChoicePanel(createIconController, createAnchoredIconController);
 		
 		//buttons for creation of objects
-		addControllerButton(new NavigationController(service, rc.getRootContainer()), "navigation");
 		addCheckbox(checkShowDrag);
 		addCheckbox(checkExternalLabel);
-		
-		CreateMetaController createMetaController = new CreateMetaController(service);
-		createMetaController.add(new CreateTextController(service), "Text");
-		createMetaController.add(new CreateAnchoredTextController(service), "Text+Anchor");
-		createMetaController.add(new CreateTextAreaHtmlController(service, 100, 70), "textarea");
-		createMetaController.add(new CreateRectangleController(service), "Rectangle");
-		createMetaController.add(new CreateEllipseController(service), "Ellipse");
-		createMetaController.add(new CreateImageController(service, 200, 235,
+		addControllerButton(new CreateTextController(service), "text");
+		addControllerButton(new CreateTextAreaHtmlController(service), "textarea");
+		addControllerButton(new CreateAnchoredTextController(service), "anchored text");
+		addControllerButton(new CreateAnchoredTextAreaController(service, 100, 70), "anchored textarea");
+		addControllerButton(new CreateRectangleController(service), "rectangle");
+		addControllerButton(new CreateEllipseController(service), "ellipse");
+		addControllerButton(new CreateImageController(service, 200, 235,
 				"http://tuxpaint.org/stamps/stamps/animals/birds/cartoon/tux.png"), "image");
-		createMetaController.add(new CreatePathController(service, false), "line");
-		createMetaController.add(new CreatePathController(service, true), "polygon");
-		createMetaController.add(new CreateLineWithTemplateLabeledController(service), "Line With Templ Labeled");
-		createMetaController.add(createIconController, "icon");
-		createMetaController.add(createAnchoredIconController, "anchored icon");
-		buttonPanel.add(createMetaController.getToolbar());
+		addControllerButton(new CreatePathController(service, false), "line");
+		addControllerButton(new CreatePathController(service, true), "polygon");
+		addControllerButton(new NavigationController(service, rc.getRootContainer()), "navigation");
+		addControllerButton(new CreateLineWithTemplateLabeledController(service), "line with template label");
+		addControllerButton(createIconController, "icon");
+		addControllerButton(createAnchoredIconController, "anchored icon");
 		buttonPanel.add(iconChoicePanel);
 	}
 

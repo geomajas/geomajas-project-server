@@ -11,11 +11,9 @@
 package org.geomajas.graphics.client.controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
@@ -25,15 +23,13 @@ import org.geomajas.graphics.client.object.Draggable;
 import org.geomajas.graphics.client.object.GRectangle;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.Resizable;
+import org.geomajas.graphics.client.object.role.HtmlRenderable;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsController;
 import org.geomajas.graphics.client.service.GraphicsControllerFactory;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -41,14 +37,8 @@ import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
@@ -58,8 +48,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class MetaController extends AbstractGraphicsController implements MouseDownHandler, MouseUpHandler,
-		MouseMoveHandler, MouseOverHandler, MouseOutHandler, MouseWheelHandler, DoubleClickHandler, ClickHandler,
+public class MetaController extends AbstractGraphicsController implements MouseDownHandler, DoubleClickHandler,
 		GraphicsController, GraphicsObjectContainerEvent.Handler {
 
 	protected boolean active;
@@ -67,8 +56,6 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 	private VectorObjectContainer container;
 
 	private Map<GraphicsObject, List<GraphicsController>> controllers;
-
-	private Set<VectorObject> vectorObjects = new HashSet<VectorObject>();
 
 	private List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
@@ -87,18 +74,8 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 			if (active) {
 				// for activation of objects
 				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					registrations.add(object.asObject().addMouseDownHandler(this));
+					register(object.asObject().addMouseDownHandler(this));
 				}
-				// for preventing events to bubble up
-				register(getObjectContainer().addMouseDownHandler(this));
-				register(getObjectContainer().addMouseUpHandler(this));
-				register(getObjectContainer().addMouseMoveHandler(this));
-				register(getObjectContainer().addMouseOverHandler(this));
-				register(getObjectContainer().addMouseOutHandler(this));
-				register(getObjectContainer().addMouseWheelHandler(this));
-				register(getObjectContainer().addClickHandler(this));
-				register(getObjectContainer().addDoubleClickHandler(this));
-
 				// for de-activation and/or selection of objects
 				register(getObjectContainer().getBackGround().addMouseDownHandler(backGroundHandler));
 				register(getObjectContainer().getBackGround().addMouseMoveHandler(backGroundHandler));
@@ -126,26 +103,10 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 		return active;
 	}
 
-	protected Set<VectorObject> getVectorObjects() {
-		return vectorObjects;
-	}
-
-	@Override
-	public void onMouseWheel(MouseWheelEvent event) {
-	}
-
-	@Override
-	public void onMouseOut(MouseOutEvent event) {
-	}
-
-	@Override
-	public void onMouseOver(MouseOverEvent event) {
-	}
-
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		if (isActive()) {
-			if (getVectorObjects().contains(event.getSource())) {
+			if (getObjectContainer().isObject(event)) {
 				// deactivate controllers for other object, unless shift key is pressed
 				// STUB
 				boolean shiftKeyPressed = false;
@@ -153,52 +114,26 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 					deactivateAllControllers();
 				}
 				// activate controllers for this object
-				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					if (object.asObject() == event.getSource()) {
-						activateControllersForObject(object, event);
-						break;
-					}
-				}
+				activateControllersForObject(getObjectContainer().getObject(event), event);
 			}
 		}
-	}
-
-	@Override
-	public void onMouseMove(MouseMoveEvent event) {
-	}
-
-	@Override
-	public void onClick(ClickEvent event) {
-	}
-
-	@Override
-	public void onMouseUp(MouseUpEvent event) {
 	}
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
 		if (isActive()) {
-			if (getVectorObjects().contains(event.getSource())) {				
+			if (getObjectContainer().isObject(event)) {
 				// activate controllers for this object
-				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					if (object.asObject() == event.getSource()) {
-						activateControllersForObject(object, event);
-						break;
-					}
-				}
+				activateControllersForObject(getObjectContainer().getObject(event), event);
 			}
 		}
 	}
 
 	protected void deactivateAllControllers() {
-		vectorObjects.clear();
 		for (List<GraphicsController> cc : controllers.values()) {
 			for (GraphicsController graphicsController : cc) {
 				graphicsController.setActive(false);
 			}
-		}
-		for (GraphicsObject object : controllers.keySet()) {
-			vectorObjects.add(object.asObject());
 		}
 		getObjectContainer().deselectAll();
 	}
@@ -247,7 +182,6 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 	}
 
 	private void addObject(GraphicsObject object) {
-		vectorObjects.add(object.asObject());
 		for (GraphicsControllerFactory factory : getService().getControllerFactories()) {
 			if (factory.supports(object)) {
 				if (!controllers.containsKey(object)) {
@@ -259,6 +193,9 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 		if (active) {
 			registrations.add(object.asObject().addMouseDownHandler(this));
 			registrations.add(object.asObject().addDoubleClickHandler(this));
+			if (object.hasRole(HtmlRenderable.TYPE)) {
+				object.getRole(HtmlRenderable.TYPE).asWidget().asWidget().addDomHandler(this, MouseDownEvent.getType());
+			}
 		}
 	}
 
@@ -269,7 +206,6 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 				controller.destroy();
 			}
 			controllers.remove(object);
-			vectorObjects.remove(object);
 		}
 	}
 
@@ -344,7 +280,7 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 		}
 
 	}
-	
+
 	public void setControllersOfObjectVisible(GraphicsObject object, boolean visible) {
 		if (controllers.containsKey(object)) {
 			for (GraphicsController controller : controllers.get(object)) {
