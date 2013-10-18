@@ -99,6 +99,11 @@ public class GCircle extends ResizableGraphicsObject {
 		}
 
 		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
+
+		@Override
 		public Bbox getUserBounds() {
 			return new Bbox(circle.getUserX() - circle.getUserRadius(), circle.getUserY() - circle.getUserRadius(),
 					2 * circle.getUserRadius(), 2 * circle.getUserRadius());

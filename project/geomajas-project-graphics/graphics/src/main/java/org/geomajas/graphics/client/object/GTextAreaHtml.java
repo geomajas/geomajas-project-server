@@ -21,7 +21,7 @@ import org.geomajas.graphics.client.util.FlipState;
 import org.geomajas.graphics.client.widget.TextAreaWidget;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Graphics rectangle.
@@ -37,12 +37,16 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 
 	public GTextAreaHtml(FixedScreenSizeRectangle rectangle, String text) {
 		this(new ResizableTextArea(rectangle, text));
+		// don't show the svg part !!!
+		rectangle.setFillOpacity(0);
+		rectangle.setStrokeOpacity(0);
 	}
 
 	public GTextAreaHtml(ResizableTextArea textArea) {
 		super(textArea);
 		addRole(Fillable.TYPE, this);
 		addRole(Strokable.TYPE, this);
+		addRole(Textable.TYPE, this);
 		addRole(HtmlRenderable.TYPE, getRectangle());
 	}
 
@@ -100,7 +104,7 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 
 	@Override
 	public void setLabel(String label) {
-		getRectangle().setText(label);
+		getRectangle().setLabel(label);
 	}
 
 	@Override
@@ -157,8 +161,8 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 		}
 
 		@Override
-		public IsWidget asWidget() {
-			return textDiv;
+		public Widget asWidget() {
+			return textDiv.asWidget();
 		}
 
 		@Override
@@ -192,12 +196,17 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 
 		private void updateTextDiv() {
 			textDiv.setScreenBounds(getBounds());
-			textDiv.setText(text);
+			textDiv.setLabel(text);
 		}
 
 		@Override
 		public boolean isPreserveRatio() {
 			return false;
+		}
+
+		@Override
+		public boolean isAutoHeight() {
+			return true;
 		}
 
 		// bbox in user lengths
@@ -218,84 +227,84 @@ public class GTextAreaHtml extends ResizableGraphicsObject implements Textable, 
 		}
 
 		public String getFillColor() {
-			return rectangle.getFillColor();
+			return textDiv.getFillColor();
 		}
 
 		public void setFillColor(String color) {
-			rectangle.setFillColor(color);
+			textDiv.setFillColor(color);
 		}
 
 		public double getFillOpacity() {
-			return rectangle.getFillOpacity();
+			return textDiv.getFillOpacity();
 		}
 
 		public void setFillOpacity(double opacity) {
-			rectangle.setFillOpacity(opacity);
+			textDiv.setFillOpacity(opacity);
 		}
 
 		public String getStrokeColor() {
-			return rectangle.getStrokeColor();
+			return textDiv.getStrokeColor();
 		}
 
 		public void setStrokeColor(String color) {
-			rectangle.setStrokeColor(color);
+			textDiv.setStrokeColor(color);
 		}
 
 		public int getStrokeWidth() {
-			return rectangle.getStrokeWidth();
+			return textDiv.getStrokeWidth();
 		}
 
 		public void setStrokeWidth(int width) {
-			rectangle.setStrokeWidth(width);
+			textDiv.setStrokeWidth(width);
 		}
 
 		public double getStrokeOpacity() {
-			return rectangle.getStrokeOpacity();
+			return textDiv.getStrokeOpacity();
 		}
 
 		public void setStrokeOpacity(double opacity) {
-			rectangle.setStrokeOpacity(opacity);
+			textDiv.setStrokeOpacity(opacity);
 		}
 
-		public void setText(String text) {
+		@Override
+		public void setLabel(String text) {
 			this.text = text;
 			updateTextDiv();
 		}
 
 		@Override
-		public void setLabel(String text) {
-		}
-
-		@Override
 		public String getLabel() {
-			return "";
+			return text;
 		}
 
 		@Override
-		public void setFontColor(String color) {
+		public void setFontColor(String fontColor) {
+			textDiv.setFontColor(fontColor);
 		}
 
 		@Override
 		public String getFontColor() {
-			return "";
+			return textDiv.getFontColor();
 		}
 
 		@Override
-		public void setFontSize(int size) {
+		public void setFontSize(int fontSize) {
+			textDiv.setFontSize(fontSize);
 		}
 
 		@Override
 		public int getFontSize() {
-			return 0;
+			return textDiv.getFontSize();
 		}
 
 		@Override
-		public void setFontFamily(String font) {
+		public void setFontFamily(String fontFamily) {
+			textDiv.setFontFamily(fontFamily);
 		}
 
 		@Override
 		public String getFontFamily() {
-			return "";
+			return textDiv.getFontFamily();
 		}
 
 	}

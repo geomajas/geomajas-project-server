@@ -10,10 +10,10 @@
  */
 package org.geomajas.graphics.client.object.role;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 
 /***
- * Role for {@link IsWidget}.
+ * Role for {@link Widget}.
  * 
  * @author Jan De Moerloose
  * 
@@ -22,5 +22,5 @@ public interface HtmlRenderable {
 
 	RoleType<HtmlRenderable> TYPE = new RoleType<HtmlRenderable>("HtmlRenderable");
 
-	IsWidget asWidget();
+	Widget asWidget();
 }

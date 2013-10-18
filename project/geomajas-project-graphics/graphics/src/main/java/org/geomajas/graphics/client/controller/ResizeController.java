@@ -187,11 +187,21 @@ public class ResizeController extends UpdateHandlerGraphicsController implements
 		dragHandler = new GraphicsObjectDragHandler(getObject(), getService(), this);
 		getHandlerGroup().add(dragHandler.getInvisbleMaskGraphicsObject().asObject());
 		// create all resize handlers and attach them
-		for (BboxPosition type : BboxPosition.values()) {
-			ResizeHandler handler = new ResizeHandler(type);
-			handler.render();
-			handler.addToGroup(getHandlerGroup());
-			handlers.add(handler);
+		if (object.isAutoHeight()) {
+			BboxPosition[] positions = new BboxPosition[] { BboxPosition.CORNER_UL, BboxPosition.CORNER_UR };
+			for (BboxPosition position : positions) {
+				ResizeHandler handler = new ResizeHandler(position);
+				handler.render();
+				handler.addToGroup(getHandlerGroup());
+				handlers.add(handler);
+			}		
+		} else {
+			for (BboxPosition type : BboxPosition.values()) {
+				ResizeHandler handler = new ResizeHandler(type);
+				handler.render();
+				handler.addToGroup(getHandlerGroup());
+				handlers.add(handler);
+			}
 		}
 		// update positions
 		updateHandlers();

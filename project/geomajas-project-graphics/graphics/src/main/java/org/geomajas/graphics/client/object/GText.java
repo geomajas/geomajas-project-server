@@ -286,6 +286,11 @@ public class GText extends ResizableGraphicsObject implements Textable, Fillable
 		public boolean isPreserveRatio() {
 			return false;
 		}
+
+		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
 		
 		@Override
 		public void setFontColor(String color) {

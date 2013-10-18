@@ -110,6 +110,12 @@ public abstract class ResizableGraphicsObject extends BaseGraphicsObject impleme
 	public boolean isPreserveRatio() {
 		return resizable.isPreserveRatio();
 	}
+	
+	
+
+	public boolean isAutoHeight() {
+		return resizable.isAutoHeight();
+	}
 
 	@Override
 	public void setUserBounds(Bbox bounds) {

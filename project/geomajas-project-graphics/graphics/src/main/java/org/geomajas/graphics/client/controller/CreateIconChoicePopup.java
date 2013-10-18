@@ -321,7 +321,6 @@ public class CreateIconChoicePopup {
 			// this should be alternative for Click event
 			Coordinate coord = new Coordinate(event.getClientX(), event.getClientY());
 			if (BboxService.contains(getBoxOfSimpleShape(), coord)) {
-				System.out.println(getBoxOfSimpleShape().toString() + " " + coord.toString());
 				setMarkerShape(markerShape);
 			}
 

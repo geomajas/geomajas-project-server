@@ -152,6 +152,11 @@ public class DraggableDecoratedPopupPanel extends DecoratedPopupPanel implements
 	}
 
 	@Override
+	public boolean isAutoHeight() {
+		return false;
+	}
+
+	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 //		if(dragging){
 //			setPosition(new Coordinate(event.getScreenX(), event.getScreenY()));

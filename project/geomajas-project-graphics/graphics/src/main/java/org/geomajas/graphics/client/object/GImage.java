@@ -99,6 +99,11 @@ public class GImage extends ResizableGraphicsObject {
 		}
 
 		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
+
+		@Override
 		public Bbox getUserBounds() {
 			return new Bbox(image.getUserX(), image.getUserY(), image.getUserWidth(), image.getUserHeight());
 		}

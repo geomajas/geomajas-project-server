@@ -29,15 +29,8 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasMouseDownHandlers;
-import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
-import com.google.gwt.event.dom.client.HasMouseOutHandlers;
-import com.google.gwt.event.dom.client.HasMouseOverHandlers;
-import com.google.gwt.event.dom.client.HasMouseUpHandlers;
-import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -54,7 +47,6 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -121,6 +113,10 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 		for (GraphicsObject object : objects) {
 			if (object.asObject() == event.getSource()) {
 				return true;
+			} else if (object.hasRole(HtmlRenderable.TYPE)) {
+				if (object.getRole(HtmlRenderable.TYPE).asWidget() == event.getSource()) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -131,6 +127,10 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 		for (GraphicsObject object : objects) {
 			if (object.asObject() == event.getSource()) {
 				return object;
+			} else if (object.hasRole(HtmlRenderable.TYPE)) {
+				if (object.getRole(HtmlRenderable.TYPE).asWidget() == event.getSource()) {
+					return object;
+				}
 			}
 		}
 		return null;
@@ -266,29 +266,6 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	public com.google.web.bindery.event.shared.HandlerRegistration addGraphicsOperationEventHandler(
 			org.geomajas.graphics.client.event.GraphicsOperationEvent.Handler handler) {
 		return eventBus.addHandler(GraphicsOperationEvent.getType(), handler);
-	}
-
-	private <H extends EventHandler> HandlerRegistration registerHandler(HasHandlers o, H handler, Type<H> type) {
-		if (type == MouseDownEvent.getType()) {
-			return ((HasMouseDownHandlers) o).addMouseDownHandler((MouseDownHandler) handler);
-		}
-		if (type == MouseUpEvent.getType()) {
-			return ((HasMouseUpHandlers) o).addMouseUpHandler((MouseUpHandler) handler);
-		}
-		if (type == MouseMoveEvent.getType()) {
-			return ((HasMouseMoveHandlers) o).addMouseMoveHandler((MouseMoveHandler) handler);
-		}
-		if (type == MouseOverEvent.getType()) {
-			return ((HasMouseOverHandlers) o).addMouseOverHandler((MouseOverHandler) handler);
-		}
-		if (type == MouseOutEvent.getType()) {
-			return ((HasMouseOutHandlers) o).addMouseOutHandler((MouseOutHandler) handler);
-		}
-		if (type == MouseWheelEvent.getType()) {
-			return ((HasMouseWheelHandlers) o).addMouseWheelHandler((MouseWheelHandler) handler);
-		} else {
-			throw new IllegalArgumentException("Unsupported type " + type.getName());
-		}
 	}
 
 	/**

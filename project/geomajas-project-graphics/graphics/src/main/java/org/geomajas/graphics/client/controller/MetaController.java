@@ -74,7 +74,11 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 			if (active) {
 				// for activation of objects
 				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					register(object.asObject().addMouseDownHandler(this));
+					registrations.add(object.asObject().addMouseDownHandler(this));
+					if (object.hasRole(HtmlRenderable.TYPE)) {
+						registrations.add(object.getRole(HtmlRenderable.TYPE).asWidget()
+								.addDomHandler(this, MouseDownEvent.getType()));
+					}
 				}
 				// for de-activation and/or selection of objects
 				register(getObjectContainer().getBackGround().addMouseDownHandler(backGroundHandler));
@@ -192,9 +196,9 @@ public class MetaController extends AbstractGraphicsController implements MouseD
 		}
 		if (active) {
 			registrations.add(object.asObject().addMouseDownHandler(this));
-			registrations.add(object.asObject().addDoubleClickHandler(this));
 			if (object.hasRole(HtmlRenderable.TYPE)) {
-				object.getRole(HtmlRenderable.TYPE).asWidget().asWidget().addDomHandler(this, MouseDownEvent.getType());
+				registrations.add(object.getRole(HtmlRenderable.TYPE).asWidget()
+						.addDomHandler(this, MouseDownEvent.getType()));
 			}
 		}
 	}

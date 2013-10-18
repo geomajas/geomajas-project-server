@@ -143,6 +143,11 @@ public class GRectangle extends ResizableGraphicsObject implements Fillable, Str
 		}
 
 		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
+
+		@Override
 		public Bbox getUserBounds() {
 			return new Bbox(rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(),
 					rectangle.getUserHeight());

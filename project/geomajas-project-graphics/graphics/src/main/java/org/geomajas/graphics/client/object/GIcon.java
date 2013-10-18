@@ -118,6 +118,11 @@ public class GIcon extends ResizableGraphicsObject {
 		public boolean isPreserveRatio() {
 			return true;
 		}
+
+		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
 		
 		public Object cloneObject() {
 			return new DraggableImage(createCopy());

@@ -101,6 +101,11 @@ public class GEllipse extends ResizableGraphicsObject {
 		}
 
 		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
+
+		@Override
 		public Bbox getUserBounds() {
 			return new Bbox(ellipse.getUserX() - ellipse.getUserRadiusX(), ellipse.getUserY()
 					- ellipse.getUserRadiusY(), 2 * ellipse.getUserRadiusX(), 2 * ellipse.getUserRadiusY());

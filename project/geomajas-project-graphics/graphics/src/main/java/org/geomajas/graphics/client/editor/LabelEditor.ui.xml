@@ -10,7 +10,7 @@
 					<g:Label>Text:</g:Label>
 				</td>
 				<td>
-					<g:TextBox ui:field="labelBox"></g:TextBox>
+					<g:TextArea ui:field="labelBox"></g:TextArea>
 				</td>
 			</tr>
 			<tr>

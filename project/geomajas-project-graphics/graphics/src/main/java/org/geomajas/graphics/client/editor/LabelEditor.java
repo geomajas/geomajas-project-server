@@ -26,6 +26,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mogaleaf.client.common.widgets.ColorHandler;
@@ -54,24 +55,24 @@ public class LabelEditor implements Editor {
 	private HTMLPanel widget;
 
 	@UiField
-	protected TextBox labelBox;
-	
+	protected TextArea labelBox;
+
 	@UiField
 	protected Button fillColorButton;
 
 	@UiField
 	protected ColorTextBoxValidator fillColorValidator;
-	
+
 	@UiField
 	protected TextBox fontSize;
-	
+
 	@UiField
 	protected TextBox fontFamily;
 
 	protected GraphicsObject object;
-	
+
 	private String iconUrl;
-	
+
 	private SimpleColorPicker colorPicker;
 
 	public LabelEditor() {
@@ -98,9 +99,10 @@ public class LabelEditor implements Editor {
 		this.object = object;
 		Textable textable = getTextable();
 		if (textable != null) {
+			labelBox.setVisibleLines(Math.min(30, textable.getLabel().length() / 50));
 			labelBox.setText(textable.getLabel());
 			fillColorValidator.setLabel(textable.getFontColor());
-			fontSize.setText(textable.getFontSize()  + "");
+			fontSize.setText(textable.getFontSize() + "");
 			fontFamily.setText(textable.getFontFamily());
 		}
 	}
@@ -112,12 +114,12 @@ public class LabelEditor implements Editor {
 			String beforeColor = textable.getFontColor();
 			int beforeSize = textable.getFontSize();
 			String beforeFont = textable.getFontFamily();
-			service.execute(new LabelOperation(object, null, beforeLabel, beforeColor, beforeSize,
-					beforeFont, labelBox.getText(), fillColorValidator.getLabel(), Integer.parseInt(fontSize.getText()),
-					fontFamily.getText()));
+			service.execute(new LabelOperation(object, null, beforeLabel, beforeColor, beforeSize, beforeFont, labelBox
+					.getText(), fillColorValidator.getLabel(), Integer.parseInt(fontSize.getText()), fontFamily
+					.getText()));
 		}
 	}
-	
+
 	private Textable getTextable() {
 		Textable textable = null;
 		if (object.hasRole(Labeled.TYPE)) {
@@ -153,7 +155,7 @@ public class LabelEditor implements Editor {
 
 	@Override
 	public void undo() {
-		service.undo();		
+		service.undo();
 	}
 
 	@Override
@@ -165,7 +167,7 @@ public class LabelEditor implements Editor {
 	public String getIconUrl() {
 		return iconUrl;
 	}
-	
+
 	@UiHandler("fillColorButton")
 	public void showFillColorChoice(ClickEvent e) {
 		colorPicker = new SimpleColorPicker();

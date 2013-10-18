@@ -195,6 +195,11 @@ public class GPath extends ResizableGraphicsObject implements Fillable, Strokabl
 		}
 
 		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
+
+		@Override
 		public void setUserBounds(Bbox bounds) {
 			path.setUserBounds(bounds);
 		}

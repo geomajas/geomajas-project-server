@@ -129,6 +129,11 @@ public class MockResizable extends BaseGraphicsObject implements Resizable {
 	}
 
 	@Override
+	public boolean isAutoHeight() {
+		return false;
+	}
+
+	@Override
 	public Bbox getBounds() {
 		return bounds;
 	}

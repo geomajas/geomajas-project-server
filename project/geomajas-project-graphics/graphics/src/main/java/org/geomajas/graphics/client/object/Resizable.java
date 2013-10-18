@@ -24,7 +24,6 @@ public interface Resizable extends Draggable {
 
 	RoleType<Resizable> TYPE = new RoleType<Resizable>("Resizable");
 
-
 	/**
 	 * Flip the object according to the specified state.
 	 * 
@@ -35,7 +34,8 @@ public interface Resizable extends Draggable {
 	/**
 	 * Set the bounds in user space.
 	 * 
-	 * @param bounds the new bounds
+	 * @param bounds
+	 *            the new bounds
 	 */
 	void setUserBounds(Bbox bounds);
 
@@ -58,5 +58,12 @@ public interface Resizable extends Draggable {
 	 * @return true if preserved, false otherwise
 	 */
 	boolean isPreserveRatio();
+
+	/**
+	 * Should the object calculate its own height ?
+	 * 
+	 * @return true if height is automatic.
+	 */
+	boolean isAutoHeight();
 
 }
