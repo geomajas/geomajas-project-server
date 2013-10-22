@@ -57,7 +57,7 @@ public class MapLegendDropDown extends Button {
 					popup = new PopupPanel();
 					popup.setAutoHideEnabled(true);
 					popup.setAutoHideOnHistoryEventsEnabled(true);
-					popup.setWidget(new MapLegendPanel(mapPresenter));
+					popup.setWidget(createMapLegendPanel(mapPresenter));
 					popup.addAutoHidePartner(MapLegendDropDown.this.getElement());
 					showPopup();
 				} else if (popup.isShowing()) {
@@ -73,6 +73,10 @@ public class MapLegendDropDown extends Button {
 	// Protected and private methods:
 	// ------------------------------------------------------------------------
 
+	protected MapLegendPanel createMapLegendPanel(MapPresenter mapPresenter) {
+		return new MapLegendPanel(mapPresenter);
+	}
+	
 	protected void showPopup() {
 		positionPopup();
 		popup.show();
