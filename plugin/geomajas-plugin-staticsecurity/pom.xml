@@ -162,7 +162,7 @@
 
 	<properties>
 		<staticsecurity-backend-version>1.13.2</staticsecurity-backend-version>
-		<staticsecurity-client-gwt2-version>1.9.0-SNAPSHOT</staticsecurity-client-gwt2-version>
+		<staticsecurity-client-gwt2-version>1.9.0</staticsecurity-client-gwt2-version>
 		<staticsecurity-face-gwt-version>1.14.0</staticsecurity-face-gwt-version>
 		<staticsecurity-gwt-version>2.5.0</staticsecurity-gwt-version>
 	</properties>

@@ -185,7 +185,7 @@
 
 	<properties>
 		<geocoder-backend-version>1.13.2</geocoder-backend-version>
-		<geocoder-client-gwt2-version>1.9.0-SNAPSHOT</geocoder-client-gwt2-version>
+		<geocoder-client-gwt2-version>1.9.0</geocoder-client-gwt2-version>
 		<geocoder-face-gwt-version>1.14.0</geocoder-face-gwt-version>
 		<geocoder-gwt-version>2.5.0</geocoder-gwt-version>
 	</properties>
