@@ -22,7 +22,7 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-widget-gwt2-core-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M3</version>
 
 	<name>Geomajas Plugin GWT2 Core Widget: Documentation</name>
 	<description>Geomajas Plugin GWT2 Core Widget: Documentation</description>
@@ -32,8 +32,8 @@
 	</properties>
 
   <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-gwt2-core-all-1.0.0-M1/geomajas-widget-gwt2-core-documentation</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-gwt2-core-all-1.0.0-M1/geomajas-widget-gwt2-core-documentation</developerConnection>
-    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-gwt2-core-all-1.0.0-M1/geomajas-widget-gwt2-core-documentation</url>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-gwt2-core-all-1.0.0-M3/geomajas-widget-gwt2-core-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-gwt2-core-all-1.0.0-M3/geomajas-widget-gwt2-core-documentation</developerConnection>
+    <url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-gwt2-core-all-1.0.0-M3/geomajas-widget-gwt2-core-documentation</url>
   </scm>
 </project>
