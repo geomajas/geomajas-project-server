@@ -52,7 +52,7 @@ public class MapLegendPanel implements IsWidget {
 		this.contentPanel = new VerticalPanel();
 
 		// Add all layers (if there are any):
-		for (int i = mapPresenter.getLayersModel().getLayerCount()-1; i >= 0; i--) {
+		for (int i = mapPresenter.getLayersModel().getLayerCount()-1 ; i >= 0 ; i--) {
 			addLayer(mapPresenter.getLayersModel().getLayer(i));
 		}
 
@@ -103,25 +103,12 @@ public class MapLegendPanel implements IsWidget {
 	protected boolean addLayer(Layer layer) {
 		int index = getLayerIndex(layer);
 		if (index < 0) {
-			contentPanel.add(createLayerEntry(mapPresenter, layer));
+			contentPanel.add(new LayerLegendPanel(mapPresenter.getEventBus(), layer));
 			return true;
 		}
 		return false;
 	}
 	
-	/**
-	 * Defines the Widget that needs to be entered in the legend.
-	 * 
-	 * @param mapPresenter
-	 *            The mapPresenter.
-	 * @param layer
-	 *            The layer who's widget to add to the drop down panel.
-	 * @return widget.
-	 */
-	protected Widget createLayerEntry(MapPresenter mapPresenter, Layer layer) {
-		return new LayerLegendPanel(mapPresenter.getEventBus(), layer);
-	}
-
 	/**
 	 * Remove a layer from the drop down content panel again.
 	 * 
