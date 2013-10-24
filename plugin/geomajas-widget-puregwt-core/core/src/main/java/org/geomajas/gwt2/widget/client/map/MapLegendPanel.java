@@ -52,7 +52,7 @@ public class MapLegendPanel implements IsWidget {
 		this.contentPanel = new VerticalPanel();
 
 		// Add all layers (if there are any):
-		for (int i = mapPresenter.getLayersModel().getLayerCount()-1 ; i >= 0 ; i--) {
+		for (int i = mapPresenter.getLayersModel().getLayerCount() - 1 ; i >= 0 ; i--) {
 			addLayer(mapPresenter.getLayersModel().getLayer(i));
 		}
 
