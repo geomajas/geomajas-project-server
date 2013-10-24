@@ -125,7 +125,7 @@
 
 	<properties>
 		<widget-gwt2-core-backend-version>1.13.1</widget-gwt2-core-backend-version>
-		<widget-gwt2-core-client-gwt2-version>1.9.0-SNAPSHOT</widget-gwt2-core-client-gwt2-version>
+		<widget-gwt2-core-client-gwt2-version>1.9.0</widget-gwt2-core-client-gwt2-version>
 	</properties>
 
 </project>
