@@ -20,16 +20,16 @@
 
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-all</artifactId>
-	<version>1.9.0</version>
+	<version>1.9.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Geomajas GWT2 client: Parent POM</name>
 	<description>Geomajas GWT2 client: Parent POM</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-client-gwt2-all-1.9.0</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-client-gwt2-all-1.9.0</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-client-gwt2-all-1.9.0</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/client/geomajas-client-gwt2</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/client/geomajas-client-gwt2</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/client/geomajas-client-gwt2</url>
 	</scm>
 
 	<developers>

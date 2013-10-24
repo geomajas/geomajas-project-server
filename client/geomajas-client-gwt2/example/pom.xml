@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-client-gwt2-all</artifactId>
-		<version>1.9.0</version>
+		<version>1.9.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-example</artifactId>
