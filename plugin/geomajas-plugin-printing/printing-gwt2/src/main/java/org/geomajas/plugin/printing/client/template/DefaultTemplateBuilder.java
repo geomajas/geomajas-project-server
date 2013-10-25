@@ -18,12 +18,12 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.map.MapPresenter;
-import org.geomajas.gwt.client.map.ViewPort;
-import org.geomajas.gwt.client.map.layer.Layer;
-import org.geomajas.gwt.client.map.layer.LayersModel;
-import org.geomajas.gwt.client.map.layer.RasterServerLayer;
-import org.geomajas.gwt.client.map.layer.VectorServerLayer;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.layer.LayersModel;
+import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
+import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
 import org.geomajas.plugin.printing.client.util.PrintingLayout;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
@@ -324,7 +324,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	 * width/height ratio. and the same centerpoint.
 	 * 
 	 * @param bbox
-	 * @param target
+	 * @param newRatio
 	 *            width/height ratio
 	 * @return bbox
 	 */

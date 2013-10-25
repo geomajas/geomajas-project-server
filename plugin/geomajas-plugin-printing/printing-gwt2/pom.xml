@@ -13,25 +13,25 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-printing-puregwt</artifactId>
+	<artifactId>geomajas-plugin-printing-gwt2</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas extension for printing (pureGWT face)</name>
+	<name>Geomajas extension for printing (GWT2 client)</name>
 
  	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-user</artifactId>
-				<version>${printing-gwt-version}</version>
-				<scope>provided</scope>
-			</dependency>
-			
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-servlet</artifactId>
-				<version>${printing-gwt-version}</version>
-				<scope>runtime</scope>
-			</dependency>
+			<!--<dependency>-->
+				<!--<groupId>com.google.gwt</groupId>-->
+				<!--<artifactId>gwt-user</artifactId>-->
+				<!--<version>${printing-gwt-version}</version>-->
+				<!--<scope>provided</scope>-->
+			<!--</dependency>-->
+
+			<!--<dependency>-->
+				<!--<groupId>com.google.gwt</groupId>-->
+				<!--<artifactId>gwt-servlet</artifactId>-->
+				<!--<version>${printing-gwt-version}</version>-->
+				<!--<scope>runtime</scope>-->
+			<!--</dependency>-->
 
 		</dependencies>
 	</dependencyManagement>
@@ -91,27 +91,15 @@
 		    <artifactId>geomajas-face-common-gwt</artifactId>
 		    <classifier>sources</classifier>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-gwt-client</artifactId>
-		    <version>2.0.0</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-gwt-client-impl</artifactId>
-		    <version>2.0.0</version>
+		    <artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
 
 		<dependency>
 		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-widget-gwt-core</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-widget-gwt-core</artifactId>
-		    <classifier>sources</classifier>
+		    <artifactId>geomajas-widget-gwt2-core</artifactId>
 		</dependency>
 				
 		<!-- Google dependencies -->

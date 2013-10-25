@@ -12,8 +12,8 @@ package org.geomajas.plugin.printing.client.template;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.map.MapPresenter;
-import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
  * Builder that prepares a specific type of layer for printing. Server layers should enhance their existing client info,

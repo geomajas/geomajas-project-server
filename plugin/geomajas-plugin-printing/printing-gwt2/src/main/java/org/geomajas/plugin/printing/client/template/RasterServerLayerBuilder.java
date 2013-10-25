@@ -13,9 +13,9 @@ package org.geomajas.plugin.printing.client.template;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.map.MapPresenter;
-import org.geomajas.gwt.client.map.layer.Layer;
-import org.geomajas.gwt.client.map.layer.RasterServerLayer;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 
 /**

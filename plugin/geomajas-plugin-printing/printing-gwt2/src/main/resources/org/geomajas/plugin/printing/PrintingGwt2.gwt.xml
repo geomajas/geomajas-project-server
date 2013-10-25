@@ -10,10 +10,10 @@
   -->
 
 
-<module rename-to="PrintingPuregwt">
+<module rename-to="PrintingGwt2">
 
 	<!-- Geomajas Client -->
-    <inherits name="org.geomajas.gwt.GeomajasClientImpl" />
+    <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
 	<inherits name="org.geomajas.plugin.printing.theme.PrintingGwtTheme" />
  	<inherits name="org.geomajas.plugin.rasterizing.Rasterizing" />
  	

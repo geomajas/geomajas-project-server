@@ -18,9 +18,9 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.map.MapPresenter;
-import org.geomajas.gwt.client.map.ViewPort;
-import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 
