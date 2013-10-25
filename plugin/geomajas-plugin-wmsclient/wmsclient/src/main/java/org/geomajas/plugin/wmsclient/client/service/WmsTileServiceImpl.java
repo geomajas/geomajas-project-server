@@ -11,15 +11,15 @@
 
 package org.geomajas.plugin.wmsclient.client.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.ViewPort;
-import org.geomajas.gwt.client.map.ZoomStrategy.ZoomOption;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.ZoomStrategy;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default implementation of the {@link WmsTileService}.
@@ -36,7 +36,7 @@ public class WmsTileServiceImpl implements WmsTileService {
 			return codes;
 		}
 
-		double actualScale = viewPort.getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST);
+		double actualScale = viewPort.getZoomStrategy().checkScale(scale, ZoomStrategy.ZoomOption.LEVEL_CLOSEST);
 		int tileLevel = viewPort.getZoomStrategy().getZoomStepIndex(actualScale);
 		double resolution = 1 / actualScale;
 		double worldTileWidth = tileConfig.getTileWidth() * resolution;
@@ -80,7 +80,7 @@ public class WmsTileServiceImpl implements WmsTileService {
 	@Override
 	public TileCode getTileCodeForLocation(ViewPort viewPort, WmsTileConfiguration tileConfig, Coordinate location,
 			double scale) {
-		double actualScale = viewPort.getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST);
+		double actualScale = viewPort.getZoomStrategy().checkScale(scale, ZoomStrategy.ZoomOption.LEVEL_CLOSEST);
 		int tileLevel = viewPort.getZoomStrategy().getZoomStepIndex(actualScale);
 		double resolution = 1 / actualScale;
 		double worldTileWidth = tileConfig.getTileWidth() * resolution;

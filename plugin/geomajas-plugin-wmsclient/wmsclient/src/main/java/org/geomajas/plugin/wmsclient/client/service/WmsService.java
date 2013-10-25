@@ -14,7 +14,7 @@ package org.geomajas.plugin.wmsclient.client.service;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.layer.LegendConfig;
+import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wmsclient.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;

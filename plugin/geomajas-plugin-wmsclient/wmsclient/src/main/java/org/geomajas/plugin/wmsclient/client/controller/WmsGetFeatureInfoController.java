@@ -11,18 +11,17 @@
 
 package org.geomajas.plugin.wmsclient.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.event.dom.client.MouseUpEvent;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.controller.AbstractMapController;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.controller.AbstractMapController;
 import org.geomajas.plugin.wmsclient.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.event.dom.client.MouseUpEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default map controller that executes WMS GetFeatureInfo requests on the registered layers.
@@ -123,7 +122,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	/**
 	 * Set the callback to use in case the GetFeatureInfoFormat is NOT {@link GetFeatureInfoFormat#GML2}.
 	 * 
-	 * @param gmlCallback
+	 * @param htmlCallback
 	 *            The callback to execute when the response returns. Note that the response is the bare boned WMS
 	 *            GetFeatureInfo. It is up to you to parse it.
 	 */

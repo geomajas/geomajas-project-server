@@ -11,11 +11,11 @@
 
 package org.geomajas.plugin.wmsclient.client.layer.feature;
 
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
+import org.geomajas.gwt2.client.map.feature.Feature;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
-import org.geomajas.gwt.client.map.feature.Feature;
 
 /**
  * DTO containing a list of features + the attribute descriptors for all attributes that can be in use by the features.

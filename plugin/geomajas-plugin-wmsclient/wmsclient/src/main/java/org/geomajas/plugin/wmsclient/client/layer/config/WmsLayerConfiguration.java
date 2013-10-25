@@ -11,12 +11,12 @@
 
 package org.geomajas.plugin.wmsclient.client.layer.config;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.gwt.client.map.layer.LegendConfig;
+import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
+
+import java.io.Serializable;
 
 /**
  * General WMS configuration object. The values herein will be translated into parameters for the WMS service. Note that

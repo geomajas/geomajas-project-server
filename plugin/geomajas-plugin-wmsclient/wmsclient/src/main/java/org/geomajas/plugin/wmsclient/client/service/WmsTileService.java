@@ -11,13 +11,13 @@
 
 package org.geomajas.plugin.wmsclient.client.service;
 
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
+
+import java.util.List;
 
 /**
  * Service definition with helper methods for tile calculations. These may help when rendering a tile based layer.

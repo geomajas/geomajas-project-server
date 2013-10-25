@@ -11,14 +11,13 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
-import org.geomajas.gwt.client.gfx.HtmlContainer;
-import org.geomajas.gwt.client.gfx.HtmlGroup;
-import org.geomajas.gwt.client.map.render.LayerScaleRenderer;
-import org.geomajas.gwt.client.map.render.LayerScalesRendererImpl;
-import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import org.geomajas.gwt2.client.gfx.HtmlContainer;
+import org.geomajas.gwt2.client.gfx.HtmlGroup;
+import org.geomajas.gwt2.client.map.render.LayerScaleRenderer;
+import org.geomajas.gwt2.client.map.render.LayerScalesRendererImpl;
+import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 
 /**
  * Renderer definition for this type of Layer. Used scale-based rendering through {@link WmsTiledScaleRendererImpl}.

@@ -38,8 +38,8 @@
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${wmsclient-gwt-face-version}</version>
+				<artifactId>geomajas-client-gwt2-all</artifactId>
+				<version>${wmsclient-gwt2-client-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -166,8 +166,8 @@
 
 	<properties>
 		<wmsclient-geotools-version>9.2</wmsclient-geotools-version>
-		<wmsclient-gwt-face-version>2.0.0</wmsclient-gwt-face-version>
-		<wmsclient-printing-version>2.4.0-M5</wmsclient-printing-version>
+		<wmsclient-gwt2-client-version>1.9.0</wmsclient-gwt2-client-version>
+		<wmsclient-printing-version>2.4.0-SNAPSHOT</wmsclient-printing-version>
 		<wmsclient-httpclient-version>4.2.1</wmsclient-httpclient-version>
 	</properties>
 </project>

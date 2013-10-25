@@ -12,8 +12,8 @@
 package org.geomajas.plugin.wmsclient.client;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.GeomajasGinModule;
-import org.geomajas.gwt.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.GeomajasGinModule;
+import org.geomajas.gwt2.client.GeomajasGinjector;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayerFactory;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 

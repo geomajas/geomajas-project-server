@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
-import org.geomajas.gwt.client.gfx.HtmlContainer;
+import org.geomajas.gwt2.client.gfx.HtmlContainer;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 
 /**

@@ -11,11 +11,11 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.map.render.LayerScaleRenderer;
+import org.geomajas.gwt2.client.map.render.LayerScaleRenderer;
 import org.geomajas.layer.tile.RasterTile;
+
+import java.util.List;
 
 /**
  * Renderer for a fixed scale of a WMS layer.

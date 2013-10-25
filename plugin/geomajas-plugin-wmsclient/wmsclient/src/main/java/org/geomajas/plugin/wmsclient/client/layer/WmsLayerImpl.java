@@ -11,15 +11,16 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.gfx.HtmlContainer;
-import org.geomajas.gwt.client.map.ViewPort;
-import org.geomajas.gwt.client.map.layer.AbstractLayer;
-import org.geomajas.gwt.client.map.layer.LegendConfig;
-import org.geomajas.gwt.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.gfx.HtmlContainer;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.AbstractLayer;
+import org.geomajas.gwt2.client.map.layer.LegendConfig;
+import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
@@ -29,10 +30,8 @@ import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererFactory;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default implementation of a {@link WmsLayer}.

@@ -11,27 +11,26 @@
 
 package org.geomajas.plugin.wmsclient.client.render;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.core.client.Callback;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.web.bindery.event.shared.EventBus;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.gwt.client.event.ScaleLevelRenderedEvent;
-import org.geomajas.gwt.client.gfx.HtmlContainer;
-import org.geomajas.gwt.client.gfx.HtmlImage;
-import org.geomajas.gwt.client.gfx.HtmlImageFactory;
+import org.geomajas.gwt2.client.event.ScaleLevelRenderedEvent;
+import org.geomajas.gwt2.client.gfx.HtmlContainer;
+import org.geomajas.gwt2.client.gfx.HtmlImage;
+import org.geomajas.gwt2.client.gfx.HtmlImageFactory;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 
-import com.google.gwt.core.client.Callback;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.google.web.bindery.event.shared.EventBus;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of a {@link WmsTiledScaleRenderer}.
@@ -148,7 +147,7 @@ public class WmsTiledScaleRendererImpl implements WmsTiledScaleRenderer {
 
 	/**
 	 * Counts the number of images that are still inbound. If all images are effectively rendered, we call
-	 * {@link #onTilesRendered}.
+	 * onTilesRendered.
 	 * 
 	 * @author Pieter De Graef
 	 */

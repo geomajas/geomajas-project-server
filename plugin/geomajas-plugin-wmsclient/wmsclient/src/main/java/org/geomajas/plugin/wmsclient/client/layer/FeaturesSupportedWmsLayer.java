@@ -11,13 +11,12 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
+import com.google.gwt.core.client.Callback;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.layer.FeaturesSupported;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
-
-import com.google.gwt.core.client.Callback;
 
 /**
  * <p>
