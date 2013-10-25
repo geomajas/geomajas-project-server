@@ -21,7 +21,7 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-widget-gwt2-core-all</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-M3</version>
 
 	<name>Geomajas Plugin GWT Core Widget: Parent</name>
 	<description>Geomajas Plugin GWT Core Widget: Parent</description>
