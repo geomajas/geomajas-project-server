@@ -28,9 +28,9 @@
 
 	<!-- SCM information -->
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-gwt2-core-all-1.0.0-M3</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-widget-gwt2-core-all-1.0.0-M3</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-widget-gwt2-core-all-1.0.0-M3</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-gwt2-core</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-gwt2-core</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-widget-gwt2-core</url>
 	</scm>
 
 	<modules>
