@@ -20,7 +20,7 @@
 
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-graphics-all</artifactId>
-	<version>1.0.0-M2</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Geomajas Graphics Project</name>
@@ -34,9 +34,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-graphics-all-1.0.0-M2</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-project-graphics-all-1.0.0-M2</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-project-graphics-all-1.0.0-M2</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-graphics</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-graphics</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/geomajas-project-graphics</url>
 	</scm>
 
 	<modules>
