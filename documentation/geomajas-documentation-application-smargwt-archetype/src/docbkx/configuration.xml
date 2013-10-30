@@ -12,7 +12,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="configuration" lang="en">
-  <title>Basic configuring of the archetype's layers, widgets and security.</title>
+  <title>Basic configuration of the archetype's layers, widgets and security.</title>
 
   <para>This section explains how to activate or deactivate a number of pre-installed functionalities in the
   SmartGwt archetype. For each functionality, a link to their specific documentation document is included.</para>
@@ -21,90 +21,139 @@
     <title>Layers</title>
 
       <para>Geomajas is a GIS framework, so the central activity is on the map of the application.
-      A map will generaly display a number of different layers, each on top of the other.
-      Many different type of layer formats can be added: raster (OSM, WMS, TMS) or vector (MFS, SHP, PostGis).</para>
+      A map will generaly display a number of different layers, each on top of the other.</para>
 
-    <section id="layersConfig">
-        <title>General configuration</title>
-        <para>To add a layer to the map, a number of actions need to be performed.
+        <para>To add a layer to the map, a number of changes need to be performed.
             We explain the general scheme as it is used in the example application.</para>
         <orderedlist>
         <listitem>
-            <para>The layer properties: in an XML file, define a bean with the appropriate properties.
-            e.g. "layerOsm.xml"</para>
+            <para>Define a server side Layer object with the specific properties. Normally, this definition is in an xml file.</para>
+			<para>e.g.: In file src/main/webapp/WEB-INF/OSM/layerOsm.xml, a bean "layerOsm" of class OsmLayer is defined.</para>
         </listitem>
         <listitem>
-            <para>Create an XML file with a client bean.
-            e.g. "clientLayerOsm.xml".</para>
+            <para>Define a client side ClientLayerInfo object for the layer. Normally, this definition is in an xml file.</para>
+				<para>e.g. In file src/main/webapp/WEB-INF/OSM/clientLayerOsm.xml, a bean "clientLayerOsm" of
+					class ClientRasterLayerInfo is defined. This bean refers to the created Layer object.</para>
         </listitem>
         <listitem>
-            <para>Add both new XML files to the web application path in the web.xml file.
-                </para>
+            <para>Add both new XML files to the web application path in the src/main/webapp/WEB-INF/web.xml file.</para>
+			<programlisting language="xml"><![CDATA[<context-param>
+    <param-name>contextConfigLocation</param-name>
+        <param-value>
+        ...
+        WEB-INF/layer/OSM/clientLayerOsm.xml
+        WEB-INF/layer/OSM/layerOsm.xml
+        ...
+    </param-value>
+</context-param>]]></programlisting>
         </listitem>
         <listitem>
-            <para>Add the client bean to the map.
-            </para>
+            <para>Show the layer on the map.</para>
+			<para>In file src/main/webapp/WEB-INF/map/mainMap, the mainMap property "layers" contains a list of the layers that are presented in the map.
+				In the example below, there are seven layers configures, but only three will be displayed; the rest is in comments. </para>
+			<programlisting language="xml"><![CDATA[<property name="layers">
+    <list>
+        <!-- <ref bean="clientLayerOsm" />    -->
+        <!-- <ref bean="clientLayerSimplifiedCountriesTms" />     -->
+        <ref bean="clientLayerSimplifiedCountriesWms" />
+        <!--<ref bean="clientLayerSimplifiedCountriesWfs" />-->
+        <!--<ref bean="clientLayerCountries" />-->
+        <ref bean="clientLayerCountriesWithFlag" />
+        <ref bean="clientLayerCities" />
+    </list>
+</property>]]></programlisting>
         </listitem>
         <listitem>
-            <para>Add the client bean to the layer tree.
-            </para>
+            <para>If wanted, add the layer to the layer tree.</para>
+			<para>This is not done automatically. How to add a layer to the tree, is explained below for the section widgets.</para>
         </listitem>
         </orderedlist>
 
-    </section>
+	   <para>The difference between the layers is in the type of object/beans created in the first two steps.
+		  There are two main types of layers: raster (OSM, WMS, TMS) or vector (MFS, SHP, PostGis).
+		   Each specific type of layer has it's own specific configuration necessities.</para>
+	<section id="rasterLayers">
+		<title>Raster Layers</title>
+		<para>The different types of raster layers are supported by plugins. See the plugin documentation for more info.</para>
 
-    <section id="rasterLayers">
-      <title>Raster Layers</title>
+	  <itemizedlist>
 
-      <section id="osmLayers">
-        <title>OSM</title>
+		 	<listitem>  <para>OSM layer
+				<ulink url="http://files.geomajas.org/maven/trunk/geomajas/geomajas-layer-openstreetmap-documentation/html/master.html">
+			 	 info</ulink>.</para></listitem>
+			<listitem>  <para>WMS layer
+				<ulink url="http://files.geomajas.org/maven/trunk/geomajas/geomajas-layer-wms-documentation/html/master.html">
+			  	info</ulink>.</para></listitem>
+			<listitem>  <para>TMS layer
+				<ulink url="http://files.geomajas.org/maven/trunk/geomajas/geomajas-layer-tms-documentation/html/master.html">
+				info</ulink>.</para></listitem>
+	  </itemizedlist >
+	</section>
+	<section id="vetorLayers">
+		<title>Vector Layers</title>
+		<para>The different types of raster layers are supported by plugins.</para>
+	  <itemizedlist id="vectorLayers">
 
-
-      </section>
-
-        <section id="wmsLayers">
-            <title>WMS</title>
-
-
-        </section>
-
-        <section id="tmsLayers">
-            <title>TMS</title>
-
-
-        </section>
-    </section>
-
-    <section id="vectorLayers">
-          <title>Vector Layers</title>
-
-          <section id="wfsLayers">
-              <title>WFS</title>
-
-
-          </section>
-
-          <section id="shpLayers">
-              <title>SHP</title>
-
-
-          </section>
-
-          <section id="postgisLayers">
-              <title>PostGis</title>
-
-
-          </section>
-      </section>
-
+		  <listitem><para>WFS layer</para></listitem>
+		  <listitem><para>SHP layer</para></listitem>
+		  <listitem><para>PostGis layer</para></listitem>
+	  </itemizedlist >
+	</section>
     </section>
 
   <section id="widgets">
       <title>Widgets</title>
+	  <para>A list of widgets can be added to the map. In the archetype, 3 widgets are included: a layer tree, a toolbar and theme.</para>
+	  <para>Generaly, for a widget to be registrated to the map, it need to be defined in the "widgetInfo"
+		  attribute of the src/main/webapp/WEB-INF/map/mainMap file. The widget is referenced by a specific bean;
+		  the widget beans are defined in folder src/main/webapp/WEB-INF/widget.</para>
+	  <programlisting language="xml"><![CDATA[<property name="widgetInfo">
+    <map>
+        <entry>
+            <key>
+                <util:constant
+                    static-field="org.geomajas.widget.layer.configuration.client.ClientLayerTreeInfo.IDENTIFIER" />
+            </key>
+            <ref bean="mainMapLayerTreeInfo"/>
+         </entry>
+
+        <entry key="ribbon-bar">
+            <ref bean="mainMapRibbonToolbar"/>
+        </entry>
+
+        <entry>
+            <key>
+                <util:constant
+                    static-field="org.geomajas.widget.advancedviews.configuration.client.ThemesInfo.IDENTIFIER" />
+            </key>
+            <ref bean="mainMapThemeSelection" />
+        </entry>
+    </map>
+</property>]]></programlisting>
+	  <para>Let's look at these widgets individually.</para>
 
       <section id="layerTree">
           <title>LayerTree</title>
-
+		  <para>The Layer tree is a panel that shows the registrated layer, with their legend info.
+			  You can set the individual layers visible/invisible by clicking the eye icons.</para>
+		  <para>The layer tree configuration is in XML file src/main/webapp/WEB-INF/widget/layerTree.xml.
+			  In it's property "treeNodes", the layers are registered: a reference to their ClientLayerInfo is
+			  inserted as follows:</para>
+		  <programlisting language="xml"><![CDATA[<property name="treeNodes">
+    <list>
+        <bean
+            class="org.geomajas.widget.layer.configuration.client.ClientLayerNodeInfo">
+            <property name="layerId" value="clientLayerOsm" />
+        </bean>
+        <bean
+            class="org.geomajas.widget.layer.configuration.client.ClientLayerNodeInfo">
+            <property name="layerId" value="clientLayerCountries" />
+        </bean>
+        ...
+    </list>
+</property>]]></programlisting>
+		  <para>To register an additional layer, simply add a ClientLayerNodeInfo bean to the list.
+		  The order in witch the layers are inserted in the list, is the order in the tree.</para>
 
       </section>
 
@@ -123,6 +172,36 @@
 
     <section id="security">
         <title>Security plugin</title>
+        <para>In the example project, the static security plugin is added, but the security configuration will allow everyone to do everything.
+			To activate the security on the application, make these changes:  </para>
+    <itemizedlist >
+        <listitem>
+        <para>in src/main/webapp/WEB-INF/security.xml
+        change the in the bean security.securityInfo property securityServices to </para>
+        <programlisting language="xml"><![CDATA[<!--start disable security-->
+<!--<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />-->
+<!--end disable security-->
+<!--start enable security-->
+<bean class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
+<bean class="org.geomajas.plugin.staticsecurity.security.LoginAllowedSecurityService"/>
+<!--end enable security-->]]></programlisting>
+    </listitem>
+        <listitem>
+        <para>in src/main/java/org/mypackage/client/Application.java:
+        uncomment code for showing login screen:</para>
+        <programlisting language="java">// start section "security enabled": this will show a login screen.
+dispatcher.setTokenRequestHandler(
+new StaticSecurityTokenRequestHandler(
+"Possible users are 'luc' and 'marino'. The password is the same as the login."));
+// end section "security enabled"</programlisting>
+    </listitem>
+
+    </itemizedlist >
+        <para>After these changes have been made, a login screen will appear when running the application.
+        The users and roles are defined in file src/main/webapp/BEB-INF/security.xml. Beans of type NamedRoleInfo are the roles;
+			the users can be found in bean class "org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo". </para>
+			<para> For more info, see the <ulink url="http://files.geomajas.org/maven/trunk/geomajas/geomajas-plugin-staticsecurity-documentation/html/master.html">
+				plugin documentation</ulink> page.</para>
     </section>
 
 </chapter>

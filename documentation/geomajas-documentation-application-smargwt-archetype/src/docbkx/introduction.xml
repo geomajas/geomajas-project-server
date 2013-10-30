@@ -43,7 +43,7 @@
       <para>
           <ulink
                   url="http://tomcat.apache.org/tomcat-7.0-doc/setup.html">Installation instructions</ulink> and
-          <link linkend="http://tomcat.apache.org/tomcat-7.0-doc/deployer-howto.html">how to deploy war file</link></para>
+          <ulink url="http://tomcat.apache.org/tomcat-7.0-doc/deployer-howto.html">how to deploy war file</ulink></para>
 
     </section>
   </section>
