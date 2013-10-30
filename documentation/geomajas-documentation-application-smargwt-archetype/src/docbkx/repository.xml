@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<appendix id="repository" lang="en">
+  <title>Maven repository</title>
+
+  <para>The project use the <ulink url="http://nexus.sonatype.org/">nexus
+  repository manager</ulink> to store all Geomajas jars and all
+  dependencies.</para>
+
+  <para>The following configuration can be used in your maven profile :</para>
+
+  <para><programlisting>&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;Geomajas&lt;/id&gt;
+        &lt;name&gt;Geomajas repository&lt;/name&gt;
+        &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+    &lt;/repository&gt;
+
+    &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  --&gt;
+    &lt;repository&gt;
+        &lt;id&gt;Geomajas snapshots&lt;/id&gt;
+        &lt;name&gt;Geomajas repository&lt;/name&gt;
+        &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;</programlisting>If you do not need access to the
+  snapshot releases, then it is recommended to remove that repository from
+  your pom (it will make your compilation a little faster).</para>
+
+  <para>The Geomajas build has quite a few dependencies which are gathered
+  from several repositories.</para>
+
+  <para>Our nexus instance functions as a proxy for the following repositories
+  ;</para>
+
+  <itemizedlist>
+    <listitem>
+       <para>maven central: http://repo1.maven.org/maven2/</para>
+    </listitem>
+
+    <listitem>
+       <para>java.net repo: http://download.java.net/maven/2/</para>
+    </listitem>
+
+    <listitem>
+       <para>jts4gwt: http://jts4gwt.sourceforge.net/maven/repository/</para>
+    </listitem>
+
+    <listitem>
+       <para>OSGeo: http://download.osgeo.org/webdav/geotools/</para>
+    </listitem>
+
+    <listitem>
+       <para>OpenGeo: http://repo.opengeo.org/</para>
+    </listitem>
+
+    <listitem>
+       <para>geotools: http://download.osgeo.org/webdav/geotools/</para>
+    </listitem>
+
+    <listitem>
+       <para>smartgwt: http://www.smartclient.com/maven2</para>
+    </listitem>
+
+    <listitem>
+       <para>spring milestones: http://repository.springsource.com/maven/bundles/milestone</para>
+    </listitem>
+
+    <listitem>
+       <para>spring releases: http://repository.springsource.com/maven/bundles/release</para>
+    </listitem>
+
+    <listitem>
+       <para>selenium: http://nexus.openqa.org/content/repositories/releases</para>
+    </listitem>
+
+    <listitem>
+       <para>selenium snapshots: http://nexus.openqa.org/content/repositories/snapshots</para>
+    </listitem>
+
+    <listitem>
+       <para>hibernate-spatial: http://www.hibernatespatial.org/repository</para> 
+    </listitem>
+ 
+    <listitem>
+       <para>alfresco: http://maven.alfresco.com/nexus/content/repositories/public/</para> 
+    </listitem>
+
+    <listitem>
+       <para>vaadin-addons: http://maven.vaadin.com/vaadin-addons</para>
+    </listitem>
+
+  </itemizedlist>
+</appendix>

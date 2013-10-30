@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="codingstyle" lang="en">
+  <title>Coding quality and style</title>
+
+  <!--
+References
+- http://maven.apache.org/developers/conventions/code.html
+- http://docs.jboss.org/process-guide/en/html/coding.html
+- http://equanda.org/developers.html
+- http://svn.collab.net/repos/svn/trunk/www/hacking.html
+- http://java.sun.com/docs/codeconv/
+- http://geosoft.no/development/javastyle.html (!)
+- http://192.220.96.201/essays/java-style/single-page.html
+- http://gee.cs.oswego.edu/dl/html/javaCodingStd.html
+- http://www.ambysoft.com/essays/javaCodingStandards.html
+- http://docs.codehaus.org/display/GEOT/5+Project+Conventions
+-->
+
+  <para>As a general note, the coding style and naming conventions should be
+  adhered to. Some parts are even checked by the checkstyle maven plug-in.
+  However, deviations are always allowed when this enhances code
+  readability.</para>
+
+  <para>Formatters are available for the style as described here (see bottom
+  of document). You can be liberal on applying this on new code, but be
+  prudent when applying these to the existing code base. Code style changes
+  make revision changes a lot more difficult and should thus be limited. If
+  there is a need to reformat existing code, then this should be done in a
+  separate commit.</para>
+
+  <section id="cmvnames">
+    <title>Class, method and variable names</title>
+
+    <para>Rules</para>
+
+    <itemizedlist>
+      <listitem>
+         Use meaningful names. Especially class and method names should explain their purpose. 
+      </listitem>
+
+      <listitem>
+         For class, method and (non-static) variable names, use camelCase to separate the words, not underscores. For abbreviations, capitalize he first letter, lower case for the others. 
+      </listitem>
+
+      <listitem>
+         Class names start with a capital, for example "CommandDispatcher". 
+      </listitem>
+
+      <listitem>
+         Method and (non-static) variable names start lower case, for example "getEmptyCommandResponse". 
+      </listitem>
+
+      <listitem>
+         All static variables should have capitalized names with words separated by underscores. 
+      </listitem>
+
+      <listitem>
+         Package names are all lower case and should be singular. 
+      </listitem>
+
+      <listitem>
+         Use get/set/isXxx. 
+      </listitem>
+
+      <listitem>
+         Abbreviations and acronyms should not be uppercase when used as name (for example, use "exportHtml()"). 
+      </listitem>
+
+      <listitem>
+         All names should be written in English. 
+      </listitem>
+
+      <listitem>
+         The terms get/set must be used where an attribute is accessed directly. 
+      </listitem>
+
+      <listitem>
+         "is" prefix should be used for boolean variables and methods. In some cases, when this is more readable, "has", "can" or "should" can also be used as prefix. 
+      </listitem>
+
+      <listitem>
+         Complement names must be used for complement entities. These include get/set, add/remove, create/destroy, start/stop, insert/delete, increment/decrement, old/new, begin/end, first/last, up/down, min/max, next/previous, old/new, open/close, show/hide, suspend/resume, etc. 
+      </listitem>
+
+      <listitem>
+         Exception classes should be suffixed with Exception. 
+      </listitem>
+    </itemizedlist>
+
+    <para>Recommendations</para>
+
+    <itemizedlist>
+      <listitem>
+         Usually class names are nouns and method names are verbs. 
+      </listitem>
+
+      <listitem>
+         Generic variables should have the same name as their type. 
+      </listitem>
+
+      <listitem>
+         Variables with a large scope should have long names, variables with a small scope can have short names. Scratch variables used for temporary storage or indices are best kept short. A programmer reading such variables should be able to assume that its value is not used outside a few lines of code. Common scratch variables for integers are i, j, k, m, n and for characters c and d. 
+      </listitem>
+
+      <listitem>
+         The name of the object is implicit, and should be avoided in a method name. For example, use "line.getLength()" instead of "line.getLineLength()". The latter might seem natural in the class declaration, but proves superfluous in use, as shown in the example. 
+      </listitem>
+
+      <listitem>
+         The term compute can be used in methods where something is computed. 
+      </listitem>
+
+      <listitem>
+         The term find can be used in methods where something is looked up. 
+      </listitem>
+
+      <listitem>
+         The term initialize can be used where an object or a concept is established. 
+      </listitem>
+
+      <listitem>
+         Plural form should be used on names representing a collection of objects. 
+      </listitem>
+
+      <listitem>
+         Negated boolean variable names must be avoided. 
+      </listitem>
+
+      <listitem>
+         Default interface implementations can be prefixed by Default. However, if it is not expected that there will even be another implementation, it can be a lot more natural to suffix with "Impl" instead. 
+      </listitem>
+
+      <listitem>
+         Singleton classes should return their sole instance through method getInstance, should have a private constructor and be declared final. 
+      </listitem>
+
+      <listitem>
+         Functions (methods returning an object) should be named after what they return and procedures (void methods) after what they do. 
+      </listitem>
+
+      <listitem>
+         Data transfer objects sometimes exist in two flavors, one which contains the Geomajas geometry dto's and one which contains JTS geometry objects. In that case, the variant with the geometry dto's should use the natural name, and the variant with JTS geometry objects should have a class name which has the "JG" suffix (JG stands for Jts Geometry). 
+      </listitem>
+    </itemizedlist>
+
+    <section id="comments">
+       
+
+      <title>Comments</title>
+
+       Each file should have the correct copyright notice at the start of the file. 
+
+      <programlisting>/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+</programlisting>
+
+       
+
+      <para>Note that the end year (shown here is 2010) should always be the
+      current year. All headers will be updated at the beginning of each
+      year.</para>
+
+       
+
+      <itemizedlist>
+        <listitem>The copyright message should be at the top of the file.
+        However, for js files, it is allowed to have the "dojo.provide" line
+        above the copyright as this helps for debugging.</listitem>
+
+        <listitem>Each class and interface should have class comments
+        indicating the purpose of the class.</listitem>
+
+        <listitem>Public methods should be commented if the meaning is not
+        entirely clear from method and parameter names (is it ever?). When the
+        method overrides or implements a method, then repeating the javadoc is
+        not needed.</listitem>
+
+        <listitem>Comments in the code are recommended when they explain a
+        block of code or when they explain why things are done in a certain
+        way. Repeating the code in human readable wording is
+        wasteful.</listitem>
+
+        <listitem>Use "@todo" comments to indicate shortcuts or hacks which
+        should be fixed. Better still is just to do it right and not have the
+        shortcut.</listitem>
+
+        <listitem>All comments should be written in English.</listitem>
+
+        <listitem>Comments should be indented relative to their position in
+        the code.</listitem>
+
+        <listitem>
+          <para>Javadoc comments should be active, not descriptive (for exampe
+          on method "getXxx()" the comment could be "Get xxx").</para>
+        </listitem>
+
+        <listitem>
+          <para>All classes and interfaces need javadoc class comments.</para>
+        </listitem>
+
+        <listitem>
+          <para>All classes and interfaces in the geomajas-api module need
+          full javadoc comments on all methods.</para>
+        </listitem>
+
+        <listitem>
+          <para>All classes, interfaces and methods which have a
+          "<code>@Api</code>" annotation needs a "<code>@since</code>" javadoc
+          comment to indicate the version in which the class or method was
+          added. This is also the case for methods which are added in classes
+          with "<code>@Api(allMethods = true)</code>" annotation.</para>
+        </listitem>
+
+        <listitem>
+          <para>All methods and fields which are not private should have full
+          javadoc or be annotated with @Override or have (for implementing
+          methods) {@inheritDoc} as javadoc. (This is enforced for all api
+          methods and fields).</para>
+        </listitem>
+
+        <listitem>
+          <para>All parameters and the return value need Javadoc. This
+          includes both the parameter name and the value.</para>
+        </listitem>
+
+        <listitem>
+          <para>Please use the following order in the javadoc to keep
+          everything consistent:</para>
+
+          <para>
+            <itemizedlist>
+              <listitem>
+                <para>description</para>
+              </listitem>
+
+              <listitem>
+                <para>@param</para>
+              </listitem>
+
+              <listitem>
+                <para>@return</para>
+              </listitem>
+
+              <listitem>
+                <para>@author</para>
+              </listitem>
+
+              <listitem>
+                <para>@since</para>
+              </listitem>
+
+              <listitem>
+                <para>@see</para>
+              </listitem>
+
+              <listitem>
+                <para>@deprecateted</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </listitem>
+
+        <listitem>
+          <para />
+        </listitem>
+      </itemizedlist>
+
+       
+    </section>
+
+    <section id="cyc">
+      <title>Claim your code</title>
+
+      <para>Be proud of your code and take responsibility of your changes.
+      When making any kind of significant changes (not for reformatting,
+      fixing typing errors or renaming), add your full name at the bottom of
+      the authors list in the class comments.</para>
+    </section>
+
+    <section id="codelayout">
+      <title>Code layout</title>
+
+      <para>See the example below</para>
+
+      <programlisting>/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+package org.geomajas.bladibla;
+
+/**
+ * Short description of the purpose of this class.
+ *
+ * @author Author's name
+ * @author Another Author's name
+ */
+@Annotation(param1 = "value1", param2 = "value2")
+public class Foo implements Serializable {
+
+    int[] x = new int[] {1, 3, 5, 6, 7, 87, 1213, 2};
+
+    /**
+     * Do something
+     *
+     * @param x some data
+     * @param y more data
+     */
+    public void foo(int x, int y) throws Exception {
+        for (int i = 0; i &lt; x; i++) {
+            y += (y ^ 0x123) &lt;&lt; 2;
+        }
+        do {
+            try {
+                if (0 &lt; x &amp;&amp; x &lt; 10) {
+                    while (x != y) {
+                        x = f(x * 3 + 5);
+                    }
+                } else {
+                    synchronized (this) {
+                        switch (e.getCode()) {
+                            //...
+                        }
+                    }
+                }
+            }
+            catch (MyException e) {}
+            finally {
+                int[] arr = (int[]) g(y);
+                x = y &gt;= 0 ? arr[y] : -1;
+            }
+        }
+        while (true);
+    }
+}</programlisting>
+
+      <itemizedlist>
+        <listitem>
+           The code is written with the right margin at 120 characters and lines should not be longer than that if possible. 
+        </listitem>
+
+        <listitem>
+           Tabs should be used for all indents. We assume a tab is four spaces for determining line length. 
+        </listitem>
+
+        <listitem>
+           When lines are split because they are too long, a double indentation should be used. 
+        </listitem>
+
+        <listitem>
+           Opening braces on the same line as the declaration/for/if..., so not aligned with the closing brace. 
+        </listitem>
+
+        <listitem>
+           No spaces inside brackets. 
+        </listitem>
+
+        <listitem>
+           Spaces around operators. 
+        </listitem>
+
+        <listitem>
+           No wildcards allowed on import statements. 
+        </listitem>
+
+        <listitem>
+           Always a space before braces. 
+        </listitem>
+
+        <listitem>
+           Always use braces (and thus multiple lines) for if, while, do-while. 
+        </listitem>
+
+        <listitem>
+           Array specifiers must be attached to the type not the variable. 
+        </listitem>
+
+        <listitem>
+           Class variables should never be declared public. 
+        </listitem>
+
+        <listitem>
+           Logical units within a block should be separated by one blank line. 
+        </listitem>
+      </itemizedlist>
+
+      <para>We have both an <ulink
+      url="http://files.geomajas.org/geomajas_formatter_eclipse.xml">eclipse</ulink>
+      and <ulink
+      url="http://files.geomajas.org/geomajas_formatter_intellij.xml">IntelliJ
+      IDEA</ulink> formatter which can be used. However, be careful not to
+      change the entire formatting of a class.</para>
+    </section>
+
+    <section>
+      <title>Miscellaneous</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>All request and response objects should have a toString()
+            method to aid in debugging (these are used by the debug/trace
+            logging in the command dispatcher).</para>
+          </listitem>
+
+          <listitem>
+            <para>Always provide a default case in switch statements. This can
+            throw an IllegalStateException. This is done to assure that
+            problems are caught easily when adding values in enums etc.</para>
+          </listitem>
+
+          <listitem>
+            <para>Regularly have a look at sonar and try to minimize
+            violations. This is intented to improve our code quality and
+            maintainability.</para>
+          </listitem>
+
+          <listitem>
+            <para>Use a StringBuilder when concatenating strings in a loop.
+            Don't use + to concatenate strings in the append methods.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+  </section>
+</chapter>

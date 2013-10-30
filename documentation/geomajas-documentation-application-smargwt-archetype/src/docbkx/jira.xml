@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="jira" lang="en">
+  <title>JIRA conventions</title>
+
+  <section id="jira-basics">
+    <title>Basic issue tracker rules</title>
+
+    <section id="jira-opoi">
+      <title>One problem one issue</title>
+
+      <para>When you report a problem, please submit one issue per problem.
+      There are various reasons for this, amongst them:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The more crowded an issue is, the more likely is it that some
+          problems may get lost over time.</para>
+        </listitem>
+
+        <listitem>
+          <para>Different problems are likely to be handled by different
+          people. The more problems you put into the issue, the more difficult
+          is this issue to handle for all involved parties.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>In particular, if you're going to write sentences like "Besides
+      this, I noticed that..." or "There are several problems with....", then
+      please seriously ask yourself whether you should submit multiple issues
+      instead of a single one.</para>
+
+      <para>If you don't follow this rule, be prepared for people asking you
+      to split up your issue.</para>
+    </section>
+
+    <section id="jira-summary">
+      <title>Provide a meaningful summary</title>
+
+      <para>Providing a meaningful summary helps the committers to easily
+      recognize an issue in a list of dozens of others. Since duplicate issues
+      are draining a lot of work from committers, you should always check if
+      the issue you wish to report hasn't already been reported. Of course
+      this works best if the summaries of the existing issues are as
+      descriptive as possible.</para>
+    </section>
+
+    <section id="jira-desc">
+      <title>Provide a clear description</title>
+
+      <para>You, as the submitter of a problem, know exactly what you were
+      doing when you were hit by the problem. However, most other people
+      probably don't. For instance, they may have a completely different
+      workflow for doing the same things you are doing.</para>
+
+      <para>In order to prevent committers to have to ask back how exactly an
+      issue can be reproduced, it is the task of the issue's submitter to be
+      as clear on this as possible - preferably by given a step-by-step
+      description.</para>
+    </section>
+  </section>
+
+  <section id="jira-form">
+    <title>Filling out the JIRA form</title>
+
+    <para>In order to create a new issue, you need to log in to the <ulink
+    url="http://jira.geomajas.org/">JIRA issue tracker</ulink>.</para>
+
+    <para>When creating a new issue, the first thing you will be asked, is to
+    select the project and issue type:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Project: the project you wish to report an issue for (please try
+        to use the correct module, only use the Geomajas when it doesn't fit a
+        specific module - if it fits multiple modules, please add to
+        all).</para>
+      </listitem>
+
+      <listitem>
+        <para>Issue Type: the type of issue you want to report. Is it a bug,
+        task or a question? Please be correct in this.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Then a new form appears with new fields to fill in. The summary and
+    description have been discussed earlier. As for the other fields:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Priority: how urgent is the issue? This value can always be
+        changed by the Geomajas committers if they feel that the priority does
+        not match the issue's impact.</para>
+      </listitem>
+
+      <listitem>
+        <para>Due date: not used.</para>
+      </listitem>
+
+      <listitem>
+        <para>Components: What component do you think the issue relates to?
+        Not necessary to fill this in.</para>
+      </listitem>
+
+      <listitem>
+        <para>Affects version: In what version of Geomajas did you encounter
+        the issue?</para>
+      </listitem>
+
+      <listitem>
+        <para>Assignee: Assign the issue to someone you believe is best suited
+        to fix the issue.</para>
+      </listitem>
+
+      <listitem>
+        <para>CLA: Whether you agree to the CLA. This needs to be ticked when
+        you include a patch with the issue and haven't sent a signed CLA to
+        the project.</para>
+      </listitem>
+
+      <listitem>
+        <para>The rest is not used.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+</chapter>

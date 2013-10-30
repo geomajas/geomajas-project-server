@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="spring" lang="en">
+  <title>Spring usage in Geomajas</title>
+
+  <section id="spring-di">
+    <title>Spring dependency injection</title>
+
+    <para>To assure the spring dependency injection is used, you should obtain
+    beans through either injection (possibly autowiring) or the application
+    context. When you directly instantiate classes which require spring
+    dependency injection, you are likely to encounter NullPointerException or
+    other problems.</para>
+
+    <programlisting>@Component
+public class MyClass {
+
+    @Autowired
+    private ApplicationContainer applicationContainer;
+
+    public void myMethod() {
+        Command command = applicationContext.getBean("controller.general.LogCommand", Command.class);
+        .....</programlisting>
+
+    <para>We recommend using the annotations when possible.</para>
+
+    <para>You cannot assume that (auto) wired services are initialized while
+    the application context is being built. If you need to do some
+    initialization of the bean state, this should be removed from the setters
+    which are called while building the context, and moved to a post construct
+    method.</para>
+
+    <para><programlisting>@PostConstruct
+private postConstruct() {
+    // dome some stuff here
+}</programlisting></para>
+
+    <section id="spring-bnc">
+      <title>Bean naming convention</title>
+
+      <para>Bean names match the (fully qualified name of the) interface they
+      implement if there is only one implementation to be used. When this is
+      not the case, the bean name is the (fully qualified) classname. When the
+      bean name starts with "org.geomajas.", this is cut off. Interfaces which
+      are expected to have several alternate implementations should be
+      annotated with the "@ExpectAlternatives" interface.</para>
+
+      <para>There is a "GeomajasBeanNameGenerator" class which tries to
+      automatically determine the bean names, assuring that you don't need to
+      mention this explicitly in the "@Component" annotation. If the first
+      interface which is implemented by the class does not have the
+      "@ExpectAlternatives" annotation, then the fully qualified name of the
+      first interface is used as bean name. For all other beans, and for beans
+      which are in a "command" package and don't have a class name starting
+      with "Default" the fully qualified class name is used. In all cases the
+      bean name has the "org.geomajas." prefix removed is present (using the
+      "GeomajasBeanNameGenerator.simplify()" method.</para>
+
+      <para>Note that these rules are built to easily replace instantiation
+      based on class names by instantiating based on bean names. For the same
+      class name, you can often replace the code</para>
+
+      <programlisting>Class.forName(className).newInstance();</programlisting>
+
+      <para>by</para>
+
+      <programlisting>applicationContext.getBean(GeomajasBeanNameGenerator.simplify(className));</programlisting>
+    </section>
+
+    <section id="spring-init">
+      <title>Initialising the application context</title>
+
+      <para>For servlets, you should configure the Spring context loader
+      listener in the web.xml file. You should also add the request context
+      listener to assure session scoped beans work and can access the request.
+      This is shown in the code below. </para>
+
+      <example>
+        <title>web.xml configuration to initialise application context</title>
+
+        <programlisting>&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
+&lt;web-app&gt;
+    &lt;display-name&gt;Geomajas application&lt;/display-name&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;
+            classpath:org/geomajas/spring/geomajasContext.xml<co id="co-20101222-9" />
+            WEB-INF/applicationContext.xml<co id="co-20101222-10" />
+        &lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+    &lt;listener&gt;
+         &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
+            id="co-20101222-11" />
+    &lt;/listener&gt;
+    &lt;listener&gt;
+         &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
+            id="co-20101222-12" />
+    &lt;/listener&gt;
+    .....</programlisting>
+
+        <calloutlist>
+          <callout arearefs="co-20101222-9">
+            <para>root context for geomajas</para>
+          </callout>
+
+          <callout arearefs="co-20101222-10">
+            <para>additional context for your application</para>
+          </callout>
+
+          <callout arearefs="co-20101222-11">
+            <para>assures the application context is available</para>
+          </callout>
+
+          <callout arearefs="co-20101222-12">
+            <para>assures the request can be accessed</para>
+          </callout>
+        </calloutlist>
+      </example>
+
+      <para>The "contextConfigLocation" context parameter is a space separated
+      list of Spring context files. The root Geomajas context - which is
+      contained in the Geomajas backend - should always be put on top of this
+      list. The root context will load all the predefined back-end services
+      and automatically import plug-in context files of all the available
+      plug-ins on the class path. Below that you may specify additional
+      application context definition files which are needed for your
+      application. You can include several files by separating them using
+      whitespace. Each location can include the protocol/location used to find
+      the file. Ant-style wild cards can be used. If no protocol is specified,
+      the web application context root is searched. The following are examples
+      of allowed patterns:</para>
+
+      <para><programlisting>WEB-INF/applicationContext.xml
+WEB-INF/layer*.xml
+file:C:/some/path/*-context.xml
+classpath:com/mycompany/**/applicationContext.xml
+classpath*:conf/appContext.xml
+</programlisting>The classpath* pattern is specific in that it will combine
+      all the resources that match this exact pattern in the class path, not
+      just the first one.</para>
+
+      <para>The web application context can conveniently be retrieved from the
+      servlet configuration in other servlets:</para>
+
+      <programlisting>public void init(ServletConfig config) throws ServletException {
+    return WebApplicationContextUtils.getWebApplicationContext(servletContext);
+    .....</programlisting>
+    </section>
+  </section>
+</chapter>

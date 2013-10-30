@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="plugin" lang="en">
+  <title>Face or plug-in</title>
+
+  <para>Geomajas is an extensible frameworks which can be extended by
+  including additional plug-ins on the class path when the application is
+  started.</para>
+
+  <para>Some of the possible extensions include</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para>adding security services.</para>
+      </listitem>
+
+      <listitem>
+        <para>providing specific rendering pipeline which modify the default
+        rendering.</para>
+      </listitem>
+
+      <listitem>
+        <para>additional services which may be used (also by by other
+        plug-ins), for example printing support.</para>
+      </listitem>
+
+      <listitem>
+        <para>a different face (in principle a face is just another plug-in,
+        the term "face" is used when the plug-in produces data or makes data
+        available to the outside world).</para>
+      </listitem>
+
+      <listitem>
+        <para>access to a kind of data store (these are referred to as "layer"
+        plug-ins, they consume data).</para>
+      </listitem>
+    </itemizedlist></para>
+
+  <section id="pi-struct">
+    <title>Plug-in structure</title>
+
+    <para>Some conventions are in use to make plug-ins easily accessible and
+    auto-register, and to make plug-ins good citizens of the Geomajas
+    project.</para>
+
+    <section id="pi-appcontext">
+      <title>Plug-in application context</title>
+
+      <para>Each plug-in can have a configuration file in
+      <code>META-INF/geomajasContext</code>.xml which is automatically
+      included in the application context (after the main
+      <code>geomajasContext</code> which comes from the <code>impl</code>
+      module, but before all files which are explicitly added (through
+      <code>web.xml</code>)).</para>
+
+      <para>This context file should at least declare the plug-in, the
+      plug-ins and dependent version it depends on, and the copyright and/or
+      license information for all other dependencies. It also has to indicate
+      the API version which is used. This is also version which is used for
+      the back-end (which includes the API) which is used in the pom. Assuming
+      this compiles and that you only used</para>
+
+      <para>The dependencies are used to check compatibility of the plug-in
+      with the back-end and required plug-ins. If you only access them using
+      the API, this should assure that everything stays compatible.</para>
+
+      <example>
+        <title>Plug-in declaration in geomajasContext.xml</title>
+
+        <para><programlisting>&lt;bean class="org.geomajas.global.PluginInfo"&gt;
+    &lt;property name="version"&gt;
+        &lt;bean class="org.geomajas.global.PluginVersionInfo"&gt;
+            &lt;property name="name" value="Plug-in name" /&gt;
+            &lt;property name="version" value="${project.version}" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="backendVersion" value="1.7.1" /&gt;
+    &lt;property name="dependencies"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.global.PluginVersionInfo"&gt;
+                &lt;property name="name" value="Static security" /&gt;
+                &lt;property name="version" value="1.7.1" /&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="copyrightInfo"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.global.CopyrightInfo"&gt;
+                &lt;property name="key" value="Geomajas"/&gt;
+                &lt;property name="copyright" value="(c) 2008-2011 Geosparc nv"/&gt;
+                &lt;property name="licenseName" value="GNU Affero General Public License, Version 3"/&gt;
+                &lt;property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.global.CopyrightInfo"&gt;
+                &lt;property name="key" value="Apache commons"/&gt;
+                &lt;property name="copyright" value=""/&gt;
+                &lt;property name="licenseName" value="Apache License, Version 2.0"/&gt;
+                &lt;property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html"/&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting></para>
+      </example>
+
+      <para>You can add any other configuration which is necessary in this
+      file, for example configure pipelines, register services.</para>
+
+      <para>Note that when adding dependencies, you should run dependency:tree
+      (or similar) to check for sub-dependencies and assure the copyrightInfo
+      list remains complete with copyright and license details for the
+      dependent libraries.</para>
+    </section>
+
+    <section id="pi-webcontext">
+      <title>Plug-in web context</title>
+
+      <para>Each plug-in can have a configuration file in
+      <code>META-INF/geomajasWebContext.xml</code> which is automatically
+      included in the web context for the dispatcher servlet. This is used to
+      allow plug-ins to define additional web endpoints without the need to
+      define servlet entries in web.xml.</para>
+
+      <para>The DispatcherServlet allows use of Spring MVC for defining your
+      controllers and views. Any definitions which are specific to the web
+      tier, should be put in the web context file. The services which are
+      defined in the application context can also be used.</para>
+
+      <para>A typical context will define the package to scan (note that if
+      the package which contains the controllers was already scanned in
+      geomajasContext.xml, you will still need to redeclare the scanning to
+      allow controllers to be picked up). The example context as used for the
+      ResourceController looks like this:</para>
+
+      <example>
+        <title>geomajasWebContext.xml for ResourceController</title>
+
+        <para><programlisting>&lt;beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"&gt;
+
+    &lt;context:component-scan base-package="org.geomajas.servlet"/&gt;
+
+&lt;/beans&gt;</programlisting></para>
+      </example>
+    </section>
+
+    <section id="pi-pom">
+      <title>Plug-in pom</title>
+
+      <para>The pom needs to be complete to allow proper release of the
+      plug-in. This is basically done by including the geomajas-parent as
+      parent pom (alternatively, you can use geomajas-al-parent for Apache
+      licensed modules.</para>
+
+      <para>The following sections need to be included:<itemizedlist>
+          <listitem>
+            <para>name</para>
+          </listitem>
+
+          <listitem>
+            <para>description</para>
+          </listitem>
+
+          <listitem>
+            <para>repositories</para>
+          </listitem>
+
+          <listitem>
+            <para>pluginRepositories</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>This is for the main pom for the plug-in. All other modules should
+      include this main (-all) pom as parent (except documentation which
+      requires geomajas-doc-parent).</para>
+
+      <para>Version management for all dependencies and plug-ins should be
+      done in the plug-in parent (example modules may be exceptions to this
+      though it is strongly discouraged).</para>
+
+      <section>
+        <title>When not using the Geomajas parent</title>
+
+        <para>When not using the Geomajas parent, you should consider the
+        following:</para>
+
+        <para>The following sections need to be filled in:</para>
+
+        <para><itemizedlist>
+            <listitem>
+              <para>description</para>
+            </listitem>
+
+            <listitem>
+              <para>scm</para>
+            </listitem>
+
+            <listitem>
+              <para>organization</para>
+            </listitem>
+
+            <listitem>
+              <para>mailinglists</para>
+            </listitem>
+
+            <listitem>
+              <para>licenses</para>
+            </listitem>
+
+            <listitem>
+              <para>issueManagement</para>
+            </listitem>
+
+            <listitem>
+              <para>ciManagement</para>
+            </listitem>
+
+            <listitem>
+              <para>developers</para>
+            </listitem>
+
+            <listitem>
+              <para>repositories</para>
+            </listitem>
+
+            <listitem>
+              <para>pluginRepositories</para>
+            </listitem>
+          </itemizedlist></para>
+
+        <para>The build should also include the following settings</para>
+
+        <para><itemizedlist>
+            <listitem>
+              <para>properties should contain
+              "&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;".</para>
+            </listitem>
+
+            <listitem>
+              <para>the following compiler build plug-in declaration should be
+              used:</para>
+
+              <para><programlisting>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;encoding&gt;utf8&lt;/encoding&gt;
+        &lt;source&gt;1.5&lt;/source&gt;
+        &lt;target&gt;1.5&lt;/target&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</programlisting></para>
+            </listitem>
+
+            <listitem>
+              <para>The checkstyle plug-in should be activated, using the
+              latest Geomajas style.</para>
+
+              <para><programlisting>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.5-DF&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;configLocation&gt;config/geomajas-checkstyle.xml&lt;/configLocation&gt;
+    &lt;/configuration&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;phase&gt;verify&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;check&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-checkstyle&lt;/artifactId&gt;
+            &lt;version&gt;1.0.6&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/plugin&gt;
+</programlisting></para>
+            </listitem>
+
+            <listitem>
+              <para>A source jar should be produced.</para>
+
+              <para><programlisting>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;jar&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;includePom&gt;true&lt;/includePom&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</programlisting></para>
+            </listitem>
+
+            <listitem>
+              <para>The jar should include indices.</para>
+
+              <para><programlisting>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;archive&gt;
+            &lt;manifest&gt;
+                &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+            &lt;/manifest&gt;
+            &lt;manifestEntries&gt;
+                &lt;geomajas-version&gt;${project.version}&lt;/geomajas-version&gt;
+                &lt;license&gt;AGPLv3&lt;/license&gt;
+                &lt;more-info&gt;http://www.geomajas.org/ and http://www.geosparc.com/&lt;/more-info&gt;
+            &lt;/manifestEntries&gt;
+            &lt;compress&gt;true&lt;/compress&gt;
+            &lt;index&gt;true&lt;/index&gt;
+        &lt;/archive&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</programlisting></para>
+            </listitem>
+          </itemizedlist></para>
+
+        <para>Many of these requirements can be met by inheriting from the
+        <code>geomajas-parent</code> project.</para>
+      </section>
+    </section>
+
+    <section id="pi-modules">
+      <title>Plug-in modules</title>
+
+      <para>All plug-ins consist of at least three modules, possibly
+      more.</para>
+
+      <para>There is a -all module which is the main module for the plug-in.
+      This one is used for compiling, releasing etc. It should be possible to
+      checkout this module on an empty machine and compile the plug-in (the
+      other modules need not be individually buildable on an empty
+      machine).</para>
+
+      <para>One module contains the documentation for the plug-in in docbook
+      format. A template module is generated when you use the
+      <code>geomajas-plugin-archetype</code>.</para>
+
+      <para>The actual work should be done in one or more modules. You need
+      more than one module when there is face specific code in the
+      plug-in.</para>
+    </section>
+  </section>
+
+  <section id="pi-creation">
+    <title>Plug-in creation</title>
+
+    <para>To add a plug-in to the Geomajas project, you should write a
+    proposal which is sent to the Geomajas developers mailing list
+    (majas-dev). It will be discussed and once some kind of consensus seems to
+    be reached, you can initiate a vote to allow creation of the plug-in. The
+    vote should contain the following details</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>plug-in name</para>
+        </listitem>
+
+        <listitem>
+          <para>plug-in lead</para>
+        </listitem>
+
+        <listitem>
+          <para>general description</para>
+        </listitem>
+
+        <listitem>
+          <para>technical description</para>
+        </listitem>
+      </itemizedlist>If the persons developing the plug-in don't have commit
+    rights yet, they can get a directory in the sandbox (a part of our version
+    control system) where they can prove their skills until they get full
+    commit rights.</para>
+
+    <para>When the vote is accepted and commit rights are in place, the
+    plug-in can be moved to trunk and a JIRA module and continuous integration
+    can be set up. The module should also be added to the aggregate.sh file
+    (which assures all documentation can be found in one place), and it should
+    be added in the geomajas-dep pom (until the first release, it should be
+    commented in that file).</para>
+
+    <para>To start the actual coding, we have provided a plug-in archetype
+    which can be used using the following command line (to use the latest
+    release):</para>
+
+    <example>
+      <title>Create project using GWT Maven archetype</title>
+
+      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting></para>
+    </example>
+
+    <para>Alternatively, you can use the very latest (snapshot) archetype
+    using the following command.</para>
+
+    <example>
+      <title>Create project using GWT Maven archetype</title>
+
+      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting></para>
+    </example>
+
+    <para>You first have to select the archetype you want to build
+    (geomajas-plugin-archetype). Then it will ask you the "groupId",
+    "artifactId", version and base package. Once you confirmed the settings,
+    the project will be created in a sub-directory with a name equalling the
+    "artifactId" you choose.</para>
+  </section>
+
+  <section id="pi-state">
+    <title>Plug-in state</title>
+
+    <para>A Geomajas plug-in has a "state" which indicates the
+    maturity.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>incubating</emphasis>: work-in-progress plug-in
+          which has not reached graduation criteria yet.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>graduated</emphasis>: the plug-in is considered
+          stable, development is active and there is sufficient documentation
+          to be usable and testing to prove it works.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>retired</emphasis>: t he plug-in is no longer
+          maintained. It can be deprecated or development just stopped for
+          some reason. Both graduated and incubation plug-ins can become
+          retired, so this does not give an indication of quality.</para>
+        </listitem>
+      </itemizedlist>All plug-ins start at in the incubating state.</para>
+
+    <para></para>
+
+    <section id="pi-grad">
+      <title>Plug-in graduation</title>
+
+      <para>The process for a plug-in to move state from incubation to
+      graduated, is called graduation. In order for a plug-in to graduate,
+      several criteria need to be met.</para>
+
+      <para>The following is a list of plug-in graduation criteria:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>A plug-in requires a maintainer. This is the contact-person
+            for the plug-in. He should watch the mailing lists and be
+            available for user questions.</para>
+          </listitem>
+
+          <listitem>
+            <para>All code should oblige to the programming rules as laid out
+            in the Geomajas contributor guide (code style, javadoc,
+            check-style, author tags,...).</para>
+          </listitem>
+
+          <listitem>
+            <para>A check must be made to assure all dependencies of the
+            plug-in have their licenses respected. Examples of issues to
+            consider are compatibility of the license (with the AGPL license
+            for the module) and possible copyright/license display
+            requirements. All the relevant information needs to be supplied in
+            the META-INF/geomajasContext.xml file for the plug-in.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the plug-in is a face, the copyright information for all
+            plug-ins needs to be included in the user interface (for example
+            in an "about" box).</para>
+          </listitem>
+
+          <listitem>
+            <para>There must be enough documentation for users to easily start
+            using the plug-in without having to ask the basic questions and
+            the documentation needs to be in the expected location and format
+            (to allow inclusion in project documentation).</para>
+          </listitem>
+
+          <listitem>
+            <para>There must be enough tests available to prove code
+            stability.</para>
+          </listitem>
+        </itemizedlist>Graduation is an all-or-nothing process. A plug-in
+      either meets all criteria, or it does not. The plug-in maintainer can
+      propose to graduate a plug-in on the majas-dev mailing list. When there
+      is community agreement on the proposal, he or she can initiate a PSC
+      vote. A request for graduation can only be vetoed by including the steps
+      which need to be taken to graduate. Once these steps are taken, the
+      plug-in maintainer can again propose to graduate.</para>
+    </section>
+
+    <section id="pi-retire">
+      <title>Plug-in retirement</title>
+
+      <para>Plug-in retirement is also handled by a PSC vote. This will
+      typically happen when a plug-in is deprecated (focus moves to a
+      different plug-in which supersedes the retired one), or when a plug- in
+      maintainer wants to quit without having someone to follow up. However,
+      anyone can propose to retire a module. This will normally be denied if
+      the plug-in maintainer is still actively maintaining the module.</para>
+
+      <para>Both incubation and graduated plug-in can become retired.
+      Reactivation of a retired plug-in, is of course possible when a new
+      maintainer can be found. In this case the plug-in becomes an incubation
+      plug-in again (and the maintainer must have signed a CLA).</para>
+    </section>
+  </section>
+</chapter>
