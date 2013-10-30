@@ -17,6 +17,16 @@
   <para>This section explains how to activate or deactivate a number of pre-installed functionalities in the
   SmartGwt archetype. For each functionality, a link to their specific documentation document is included.</para>
 
+	<section id="structure">
+		<title>Project structure</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="images/smartgwt-archetype-structure.png" width="100%" />
+			</imageobject>
+		</mediaobject>
+		<para>Structure discription.</para>
+	</section>
   <section id="layers">
     <title>Layers</title>
 
@@ -105,8 +115,9 @@
       <title>Widgets</title>
 	  <para>A list of widgets can be added to the map. In the archetype, 3 widgets are included: a layer tree, a toolbar and theme.</para>
 	  <para>Generaly, for a widget to be registrated to the map, it need to be defined in the "widgetInfo"
-		  attribute of the src/main/webapp/WEB-INF/map/mainMap file. The widget is referenced by a specific bean;
-		  the widget beans are defined in folder src/main/webapp/WEB-INF/widget.</para>
+		  attribute of the src/main/webapp/WEB-INF/map/mainMap file. This attribute is a map: for each type of widget,
+		  there can be maximum one specific class or bean.
+		  The widget beans are defined in folder src/main/webapp/WEB-INF/widget.</para>
 	  <programlisting language="xml"><![CDATA[<property name="widgetInfo">
     <map>
         <entry>
@@ -159,13 +170,64 @@
 
       <section id="toolbar">
           <title>Toolbar</title>
-
+		  <para>The toolbar is the horizontal icon band at the top of the application page. Each icon
+		  has a different function. These icons are collected in groups and these groups are registered in the toolbar file
+			  src/main/webapp/WEB-INF/widget/ribbonToolbar.xml.
+		  </para>
+		  <para>Each group (RibbonGroupInfo) contains a list of "columns" (RibbonColumnInfo).
+			  This column represents a specific action button (ToolbarActionButton).
+			  As the implementation of these action buttons is very divers, you are motivated to look
+			  into the specific code of ribbonToolbar.xml.
+		  </para>
 
       </section>
 
       <section id="theme">
-          <title>Theme</title>
-
+          <title>ThemeSelection</title>
+		  <para>A theme is specific layout of the application. The ThemeSelection enables to register different
+			  view configurations and to choose a specific theme at runtime.
+			  The them selection is registered in the XML file src/main/webapp/WEB-INF/widget/themeSelection.xml.
+		  </para>
+		  <para>themeSelection.xml contains a "themeConfigs" parameter that is a list of ViewConfig ("theme") objects.
+			    In the example application, there is one ViewConfig registered, i.e. an OpenStreetMaps theme.
+			  A number of parameters are configured for this theme: minimum and maximum scale and the visibility of
+			  the layer(s):
+		  </para>
+		  <programlisting language="xml"><![CDATA[<bean
+				  class="org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig">
+    <property name="title" value="OpenStreetMaps" />
+    <property name="description" value="Community driven map of the world." />
+    <property name="rangeConfigs">
+        <list>
+            <bean
+				  class="org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig">
+                <property name="minimumScale">
+                    <bean class="org.geomajas.configuration.client.ScaleInfo">
+                        <property name="numerator" value="1" />
+                        <property name="denominator" value="1000000000" />
+                    </bean>
+                </property>
+                <property name="maximumScale">
+                    <bean class="org.geomajas.configuration.client.ScaleInfo">
+                            <property name="numerator" value="1" />
+                            <property name="denominator" value="1" />
+                    </bean>
+                </property>
+                <property name="layerConfigs">
+                    <list>
+					  <bean
+                               class="org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig">
+                            <property name="layer" ref="clientLayerOsm" />
+                            <property name="visible" value="true" />
+                            <property name="opacity" value="0.7" />
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </list>
+    </property>
+</bean>]]></programlisting>
+		  <para>Of course, new customized Themes can be added.</para>
 
       </section>
   </section>
