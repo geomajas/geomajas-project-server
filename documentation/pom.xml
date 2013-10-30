@@ -66,6 +66,7 @@
 		<module>devuserguide</module>
 		<module>enduserguide</module>
 		<module>contributorguide</module>
+		<module>geomajas-documentation-application-smargwt-archetype</module>
 	</modules>
 
 	<properties>

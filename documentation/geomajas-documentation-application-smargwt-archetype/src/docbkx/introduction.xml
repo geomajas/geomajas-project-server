@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="introduction" lang="en">
+  <title>Introduction</title>
+
+  <section id="download-war">
+    <title>Download the Geomajas SmartGwt Example Project</title>
+
+    <para>You can download example project <ulink
+            url="">an example project</ulink> .
+    </para>
+
+    <para>a) The download consists of a .zip file, containing the source code
+    of the Example Project? If you want to change the source code, unzip the
+    .zip file and change the corresponding files. (Then you would have to build it to a war.)</para>
+
+    <para>b) The downoad is a WAR file (Web application ARchive), containing a
+    compiled application that can be run on a web container.</para>
+
+    <section id="toWar">
+      <title>Creating war from source code? </title>
+
+      <para>Default text.</para>
+    </section>
+
+    <section id="runWar">
+      <title>Running a war file</title>
+
+      <para>To run a war file, you need a web container, e.g. Apache Tomcat.
+      Useful links for Tomcat:</para>
+
+      <para>
+          <ulink
+                  url="http://tomcat.apache.org/tomcat-7.0-doc/setup.html">Installation instructions</ulink> and
+          <link linkend="http://tomcat.apache.org/tomcat-7.0-doc/deployer-howto.html">how to deploy war file</link></para>
+
+    </section>
+  </section>
+
+    <section id="archetype">
+        <title>Create a maven project from the SmartGWT archetype</title>
+
+        <para>This is general info: command line creating/running/building Maven projects.</para>
+
+        <section id="prerequisits">
+            <title>Prerequisits: Java and Maven</title>
+
+            <para>The project resulting from running the SmartGWT archetype, is a Maven project, using Java
+                as the coding language. For that reason, both Maven and Java need to be installed on your computer.
+                This section explains how to install and configure both simultaniously.
+            </para>
+        </section>
+
+        <section id="createProject">
+            <title>Creation of the project</title>
+
+            <para>Command line.</para>
+        </section>
+
+        <section id="buildProject">
+            <title>Building project</title>
+
+            <para>The project can be build from the command line of the project folder.    </para>
+            <para>Run "mvn clean install".</para>
+            <para>This will create a war file at location ... .</para>
+
+        </section>
+    </section>
+</chapter>

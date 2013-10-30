@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="configuration" lang="en">
+  <title>Basic configuring of the archetype's layers, widgets and security.</title>
+
+  <para>This section explains how to activate or deactivate a number of pre-installed functionalities in the
+  SmartGwt archetype. For each functionality, a link to their specific documentation document is included.</para>
+
+  <section id="layers">
+    <title>Layers</title>
+
+      <para>Geomajas is a GIS framework, so the central activity is on the map of the application.
+      A map will generaly display a number of different layers, each on top of the other.
+      Many different type of layer formats can be added: raster (OSM, WMS, TMS) or vector (MFS, SHP, PostGis).</para>
+
+    <section id="layersConfig">
+        <title>General configuration</title>
+        <para>To add a layer to the map, a number of actions need to be performed.
+            We explain the general scheme as it is used in the example application.</para>
+        <orderedlist>
+        <listitem>
+            <para>The layer properties: in an XML file, define a bean with the appropriate properties.
+            e.g. "layerOsm.xml"</para>
+        </listitem>
+        <listitem>
+            <para>Create an XML file with a client bean.
+            e.g. "clientLayerOsm.xml".</para>
+        </listitem>
+        <listitem>
+            <para>Add both new XML files to the web application path in the web.xml file.
+                </para>
+        </listitem>
+        <listitem>
+            <para>Add the client bean to the map.
+            </para>
+        </listitem>
+        <listitem>
+            <para>Add the client bean to the layer tree.
+            </para>
+        </listitem>
+        </orderedlist>
+
+    </section>
+
+    <section id="rasterLayers">
+      <title>Raster Layers</title>
+
+      <section id="osmLayers">
+        <title>OSM</title>
+
+
+      </section>
+
+        <section id="wmsLayers">
+            <title>WMS</title>
+
+
+        </section>
+
+        <section id="tmsLayers">
+            <title>TMS</title>
+
+
+        </section>
+    </section>
+
+    <section id="vectorLayers">
+          <title>Vector Layers</title>
+
+          <section id="wfsLayers">
+              <title>WFS</title>
+
+
+          </section>
+
+          <section id="shpLayers">
+              <title>SHP</title>
+
+
+          </section>
+
+          <section id="postgisLayers">
+              <title>PostGis</title>
+
+
+          </section>
+      </section>
+
+    </section>
+
+  <section id="widgets">
+      <title>Widgets</title>
+
+      <section id="layerTree">
+          <title>LayerTree</title>
+
+
+      </section>
+
+      <section id="toolbar">
+          <title>Toolbar</title>
+
+
+      </section>
+
+      <section id="theme">
+          <title>Theme</title>
+
+
+      </section>
+  </section>
+
+    <section id="security">
+        <title>Security plugin</title>
+    </section>
+
+</chapter>

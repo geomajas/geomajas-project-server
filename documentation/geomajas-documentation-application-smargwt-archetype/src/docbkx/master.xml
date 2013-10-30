@@ -13,7 +13,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <book id="contributor" lang="en">
-	<title>Geomajas contributor guide</title>
+	<title>SmartGWT Example Application Guide</title>
 
 	<bookinfo>
 		<copyright>
@@ -34,23 +34,10 @@
 	<toc/>
 	<lot/>
 
-	<xi:include href="developers.xml"
+	<xi:include href="introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="codingstyle.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="spring.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="plugin.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="jira.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="environment.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="release.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="CLA.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="repository.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="configuration.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
 
 </book>
