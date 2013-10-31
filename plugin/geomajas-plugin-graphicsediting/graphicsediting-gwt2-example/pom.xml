@@ -132,7 +132,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<module>org.geomajas.plugin.graphicsediting.example.GraphicsEditingExample</module>
+					<module>org.geomajas.plugin.graphicsediting.gwt2.example.GraphicsEditingGwt2Example</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
