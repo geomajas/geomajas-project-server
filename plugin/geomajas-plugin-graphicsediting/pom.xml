@@ -193,12 +193,20 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
 			<!-- External GWT libraries -->
 			<dependency>
 				<groupId>com.google.code.gwt-dnd</groupId>
 				<artifactId>gwt-dnd</artifactId>
 				<version>3.1.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.mogaleaf</groupId>
+				<artifactId>simplecolorpicker</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>

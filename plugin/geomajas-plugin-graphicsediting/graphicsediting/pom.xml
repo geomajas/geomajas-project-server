@@ -43,13 +43,19 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Added this for Jenkins's sake -->
+		<dependency>
+			<groupId>com.mogaleaf</groupId>
+			<artifactId>simplecolorpicker</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Test dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
