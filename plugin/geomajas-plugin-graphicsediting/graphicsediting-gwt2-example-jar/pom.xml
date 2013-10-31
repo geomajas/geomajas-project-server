@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-graphicsediting-all</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>geomajas-plugin-graphicsediting-gwt2-example-jar</artifactId>
+	<packaging>jar</packaging>
+	
+	<name>Geomajas Graphics Editing Showcase Example Library</name>
+	<description>Geomajas Graphics Editing Showcase Example Library</description>
+	<url>http://www.geomajas.org/</url>
+
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- @todo you probably want to set the developers, otherwise it inherits from the parent if any
+	<developers>
+		<developer>
+			<id>jd</id>
+			<name>John Doe</name>
+			<email>john.doe@acmee.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	-->
+	
+	<dependencies>
+	
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
+		</dependency>
+		
+		<!-- Geomajas GWT Client example jar (to use existing map config): -->
+		
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-client-gwt2-example-jar</artifactId>
+		</dependency>
+
+		<!-- Google dependencies -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- logging dependencies, delegate all to slf4j and use logback -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<!--  include sources in build -->
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.java</include>
+							<include>**/*.ui.xml</include>
+							<include>**/*.png</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<!--  no sources needed in eclipse -->
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+	
+</project>

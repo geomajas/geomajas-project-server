@@ -41,17 +41,17 @@
 	</scm>
 
 	<modules>
-		<module>graphicsediting</module>
-		<module>graphicsediting-example-jar</module>
-		<module>graphicsediting-example</module>
+		<module>graphicsediting-gwt2</module>
+		<module>graphicsediting-gwt2-example-jar</module>
+		<module>graphicsediting-gwt2-example</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
             <dependency>
                 <groupId>org.geomajas.plugin</groupId>
-                <artifactId>geomajas-plugin-editing-puregwt</artifactId>
-                <version>1.0.0-M5</version>
+                <artifactId>geomajas-plugin-editing-gwt2</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
 
 			<dependency>
@@ -140,49 +140,49 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting</artifactId>
+				<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting</artifactId>
-				<version>${project.version}</version>
-				<classifier>sources</classifier>
-			</dependency>
-			
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting-example</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting-example</artifactId>
+				<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting-example-jar</artifactId>
+				<artifactId>geomajas-plugin-graphicsediting-gwt2-example</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting-example-jar</artifactId>
+				<artifactId>geomajas-plugin-graphicsediting-gwt2-example</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-graphicsediting-gwt2-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-graphicsediting-gwt2-example-jar</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
 			
 
-<!-- 		following dependencies come from graphicsediting(-example) -->
+<!-- 		following dependencies come from graphicsediting-gwt2(-example) -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>2.0.0</version>
+				<artifactId>geomajas-client-gwt2-all</artifactId>
+				<version>1.9.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

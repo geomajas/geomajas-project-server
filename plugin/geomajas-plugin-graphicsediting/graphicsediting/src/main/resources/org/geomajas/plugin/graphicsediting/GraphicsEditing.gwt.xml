@@ -1,7 +1,0 @@
-<module>
-	<inherits name='org.geomajas.graphics.Graphics'/>
-	<inherits name="org.geomajas.plugin.editing.gwt.Editing" />
-	
-	<entry-point class="org.geomajas.plugin.graphicsediting.client.GraphicsEditing" />
-</module>
-	
