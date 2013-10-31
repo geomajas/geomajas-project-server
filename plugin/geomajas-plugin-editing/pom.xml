@@ -66,13 +66,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-puregwt</artifactId>
-				<version>${geomajas-plugin-editing-puregwt-face-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.geomajas</groupId>
+                <artifactId>geomajas-client-gwt2-all</artifactId>
+                <version>${geomajas-plugin-editing-gwt2-client-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-javascript-api-all</artifactId>
@@ -103,12 +103,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-editing-puregwt</artifactId>
+				<artifactId>geomajas-plugin-editing-gwt2</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-editing-puregwt</artifactId>
+				<artifactId>geomajas-plugin-editing-gwt2</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
@@ -154,8 +154,8 @@
   		<module>editing-gwt</module>
 		<module>editing-gwt-example-jar</module>
 		<module>editing-gwt-example</module>
-		<module>editing-puregwt</module>
-  		<module>editing-puregwt-example</module>
+		<module>editing-gwt2</module>
+  		<module>editing-gwt2-example</module>
 <!--  		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
 		<module>editing-javascript-gwt-example</module>
@@ -193,7 +193,7 @@
 		<geomajas-plugin-editing-backend-version>1.13.1</geomajas-plugin-editing-backend-version>
 		<geomajas-plugin-editing-common-gwt-face-version>1.4.0</geomajas-plugin-editing-common-gwt-face-version>
 		<geomajas-plugin-editing-gwt-face-version>1.13.0</geomajas-plugin-editing-gwt-face-version>
-		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
+		<geomajas-plugin-editing-gwt2-client-version>1.9.0</geomajas-plugin-editing-gwt2-client-version>
 		<geomajas-plugin-editing-gwt-version>2.5.0</geomajas-plugin-editing-gwt-version>
 	</properties>
 

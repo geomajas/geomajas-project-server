@@ -48,7 +48,7 @@
 
         <note>
           <para>As the rendering is face specific, the focus has first gone to
-          the GWT face. An implementation for the PureGWT face will follow
+          the GWT face. An implementation for the GWT2 Client face will follow
           later.</para>
         </note>
       </listitem>
