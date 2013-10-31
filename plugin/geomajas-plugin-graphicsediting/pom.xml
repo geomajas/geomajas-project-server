@@ -202,12 +202,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.mogaleaf</groupId>
-				<artifactId>simplecolorpicker</artifactId>
-				<version>1.0.1</version>
-			</dependency>
-
-			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
 				<version>1.12.36</version>
