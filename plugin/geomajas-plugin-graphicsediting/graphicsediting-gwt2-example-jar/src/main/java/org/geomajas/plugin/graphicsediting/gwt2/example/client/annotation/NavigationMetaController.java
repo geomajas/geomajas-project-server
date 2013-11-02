@@ -22,7 +22,6 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
-import org.geomajas.plugin.graphicsediting.gwt2.example.client.annotation.IntervalNavigationController;
 
 /**
  * Extension of {@link MetaController}.
