@@ -184,7 +184,7 @@
 						<deployables>
 							<deployable>
 								<groupId>org.geomajas.plugin</groupId>
-								<artifactId>geomajas-plugin-graphicsediting-example</artifactId>
+								<artifactId>geomajas-plugin-graphicsediting-gwt2-example</artifactId>
 								<type>war</type>
 								<properties>
 									<context>graphics-editing</context>
