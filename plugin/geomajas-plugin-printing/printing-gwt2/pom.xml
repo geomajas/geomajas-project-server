@@ -17,27 +17,32 @@
 	<packaging>jar</packaging>
 	<name>Geomajas extension for printing (GWT2 client)</name>
 
- 	<dependencyManagement>
-		<dependencies>
-			<!--<dependency>-->
-				<!--<groupId>com.google.gwt</groupId>-->
-				<!--<artifactId>gwt-user</artifactId>-->
-				<!--<version>${printing-gwt-version}</version>-->
-				<!--<scope>provided</scope>-->
-			<!--</dependency>-->
-
-			<!--<dependency>-->
-				<!--<groupId>com.google.gwt</groupId>-->
-				<!--<artifactId>gwt-servlet</artifactId>-->
-				<!--<version>${printing-gwt-version}</version>-->
-				<!--<scope>runtime</scope>-->
-			<!--</dependency>-->
-
-		</dependencies>
-	</dependencyManagement>
-
-
 	<dependencies>
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-rasterizing-gwt2</artifactId>
+            <!--Is this exclusion resolved/unnecessary?-->
+            <exclusions>
+            <exclusion>
+                <artifactId>org.geomajas</artifactId>
+                    <groupId>geomajas-gwt2-client-impl</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Server part of geomajas rasterizing plugin (also used by smartGWT) -->
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-rasterizing</artifactId>
+        </dependency>
+
+        <!-- Sources needed for dto part of Server part of geomajas rasterizing plugin -->
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-rasterizing</artifactId>
+            <classifier>sources</classifier>
+        </dependency>
+
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
@@ -57,29 +62,7 @@
 			<classifier>sources</classifier>
 		</dependency>
 
-		<!-- Server part of geomajas rasterizing plugin (also used by smartGWT) -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
-		</dependency>
-		
-		<!-- Sources needed for dto part of Server part of geomajas rasterizing plugin -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-	 
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing-puregwt</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>org.geomajas</artifactId>
-					<groupId>geomajas-puregwt-client</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+
 
 		 <dependency>
   			<groupId>org.geomajas</groupId>
