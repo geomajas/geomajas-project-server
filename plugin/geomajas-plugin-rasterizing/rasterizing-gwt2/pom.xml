@@ -29,7 +29,7 @@
             <artifactId>geomajas-client-gwt2-impl</artifactId>
             <!--have to include this here, otherwise, no version of geomajas-client-gwt2-impl
      is found. Of course this needs to be removed. -->
-            <version>1.9.0</version>
+            <version>${rasterizing-gwt2-client-version}</version>
         </dependency>
 
 		<dependency>

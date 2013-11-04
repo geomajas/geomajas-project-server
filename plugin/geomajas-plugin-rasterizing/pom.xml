@@ -32,19 +32,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-            <dependency>
-                <groupId>org.geomajas</groupId>
-                <artifactId>geomajas-client-gwt2-all</artifactId>
-                <version>${rasterizing-gwt2-client-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
-            <dependency>
-                <groupId>org.geomajas</groupId>
-                <artifactId>geomajas-client-gwt2-impl</artifactId>
-                <version>${rasterizing-gwt2-client-version}</version>
-            </dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
@@ -64,6 +52,20 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+            <dependency>
+                <groupId>org.geomajas</groupId>
+                <artifactId>geomajas-client-gwt2-all</artifactId>
+                <version>${rasterizing-gwt2-client-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.geomajas</groupId>
+                <artifactId>geomajas-client-gwt2-impl</artifactId>
+                <version>${rasterizing-gwt2-client-version}</version>
+            </dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
