@@ -31,7 +31,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="GWT2 face" />
+					<property name="name" value="GWT2 client" />
 					<property name="version" value="${geocoder-client-gwt2-version}"/>
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
@@ -44,7 +44,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geomajas"/>
-					<property name="copyright" value="(c) 2008-2011 Geosparc nv"/>
+					<property name="copyright" value="(c) 2008-2013 Geosparc nv"/>
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
