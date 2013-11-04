@@ -18,10 +18,10 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-rasterizing-puregwt</artifactId>
+	<artifactId>geomajas-plugin-rasterizing-gwt2</artifactId>
 	<packaging>jar</packaging>
-	<name>rasterizing (pure GWT face)</name>
-	<description>rasterizing (pure GWT face)</description>
+	<name>rasterizing (GWT2 client)</name>
+	<description>rasterizing (GWT2 client)</description>
 
 	<dependencies>
 		<dependency>
