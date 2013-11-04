@@ -32,6 +32,19 @@
 
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>org.geomajas</groupId>
+                <artifactId>geomajas-client-gwt2-all</artifactId>
+                <version>${rasterizing-gwt2-client-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.geomajas</groupId>
+                <artifactId>geomajas-client-gwt2-impl</artifactId>
+                <version>${rasterizing-gwt2-client-version}</version>
+            </dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
@@ -59,6 +72,8 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -191,6 +206,7 @@
 	<properties>
 		<rasterizing-backend-version>1.13.2</rasterizing-backend-version>
 		<rasterizing-gwt-face-version>1.14.0</rasterizing-gwt-face-version>
+        <rasterizing-gwt2-client-version>1.9.0</rasterizing-gwt2-client-version>
 		<rasterizing-caching-version>2.0.0</rasterizing-caching-version>
 		<rasterizing-gwt-version>2.5.0</rasterizing-gwt-version>
 		<rasterizing-geotools-version>9.2</rasterizing-geotools-version>

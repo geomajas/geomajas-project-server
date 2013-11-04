@@ -24,6 +24,14 @@
 	<description>rasterizing (GWT2 client)</description>
 
 	<dependencies>
+        <dependency>
+            <groupId>org.geomajas</groupId>
+            <artifactId>geomajas-client-gwt2-impl</artifactId>
+            <!--have to include this here, otherwise, no version of geomajas-client-gwt2-impl
+     is found. Of course this needs to be removed. -->
+            <version>1.9.0</version>
+        </dependency>
+
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId>
@@ -34,7 +42,7 @@
 			<artifactId>geomajas-plugin-rasterizing</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
