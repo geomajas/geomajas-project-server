@@ -31,7 +31,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="GWT2 client" />
+					<property name="name" value="GWT2 Client impl" />
 					<property name="version" value="${geocoder-client-gwt2-version}"/>
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
