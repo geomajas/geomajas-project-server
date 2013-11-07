@@ -1,13 +1,22 @@
 /*
- * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ * Ktunaxa Referral Management System.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright (C) see version control system
  *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
- * by the Geomajas Contributors License Agreement. For full licensing
- * details, see LICENSE.txt in the project root.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.layer.hibernate;
 
 import java.text.DateFormat;
@@ -69,6 +78,7 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.temporal.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,7 +149,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	// FilterVisitor implementation:
 	// -------------------------------------------------------------------------
 
-	@Override
+	/** {@inheritDoc} */
 	public Object visit(And filter, Object userData) {
 		Criterion c = null;
 		for (Filter element : filter.getChildren()) {
@@ -152,12 +162,14 @@ public class CriteriaVisitor implements FilterVisitor {
 		return c;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Not filter, Object userData) {
 		Criterion c = (Criterion) filter.getFilter().accept(this, userData);
 		return Restrictions.not(c);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Or filter, Object userData) {
 		Criterion c = null;
@@ -171,6 +183,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return c;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsBetween filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression());
@@ -181,6 +194,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.between(finalName, lo, hi);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsEqualTo filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression1());
@@ -190,6 +204,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.eq(finalName, value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsNotEqualTo filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression1());
@@ -199,6 +214,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.ne(finalName, value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsGreaterThan filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression1());
@@ -208,6 +224,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.gt(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression1());
@@ -217,6 +234,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.ge(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsLessThan filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression1());
@@ -226,6 +244,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.lt(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsLessThanOrEqualTo filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression1());
@@ -235,6 +254,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.le(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsLike filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression());
@@ -250,6 +270,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsNull filter, Object userData) {
 		String propertyName = getPropertyName(filter.getExpression());
@@ -257,6 +278,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.isNull(finalName);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(BBOX filter, Object userData) {
 		Envelope env = new Envelope(filter.getMinX(), filter.getMaxX(), filter.getMinY(), filter.getMaxY());
@@ -264,70 +286,82 @@ public class CriteriaVisitor implements FilterVisitor {
 		return SpatialRestrictions.filter(finalName, env, srid);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Beyond filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Beyond filter, Object userData)");
 	}
 
-	@Override
+	/** {@inheritDoc} */
 	public Object visit(Contains filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Contains filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Crosses filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Crosses filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Disjoint filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Disjoint filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(DWithin filter, Object userData) {
 		throw new UnsupportedOperationException("visit(DWithin filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Equals filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Equals filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Intersects filter, Object userData) {
 		String finalName = parsePropertyName(geomName, userData);
 		return SpatialRestrictions.intersects(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Overlaps filter, Object userData) {
 		String finalName = parsePropertyName(geomName, userData);
 		return SpatialRestrictions.overlaps(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Touches filter, Object userData) {
 		String finalName = parsePropertyName(geomName, userData);
 		return SpatialRestrictions.touches(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Within filter, Object userData) {
 		String finalName = parsePropertyName(geomName, userData);
 		return SpatialRestrictions.within(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(ExcludeFilter filter, Object userData) {
 		return Restrictions.not(Restrictions.conjunction());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(IncludeFilter filter, Object userData) {
 		return Restrictions.conjunction();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Id filter, Object userData) {
 		String idName;
@@ -341,84 +375,124 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.in(idName, c);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visitNullFilter(Object userData) {
 		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(PropertyIsNil filter, Object extraData) {
-		throw new UnsupportedOperationException("visit(PropertyIsNil filter, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(After after, Object extraData) {
-		throw new UnsupportedOperationException("visit(After after, Object extraData)");
+		String propertyName = getPropertyName(after.getExpression1());
+		String finalName = parsePropertyName(propertyName, after);
+		Object literal = getLiteralValue(after.getExpression2());
+		if (literal instanceof Date) {
+			return Restrictions.gt(finalName, literal);
+		} else {
+			throw new UnsupportedOperationException("visit(Object userData)");
+		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(AnyInteracts anyInteracts, Object extraData) {
-		throw new UnsupportedOperationException("visit(AnyInteracts anyInteracts, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Before before, Object extraData) {
-		throw new UnsupportedOperationException("visit(Before before, Object extraData)");
+		String propertyName = getPropertyName(before.getExpression1());
+		String finalName = parsePropertyName(propertyName, before);
+		Object literal = getLiteralValue(before.getExpression2());
+		if (literal instanceof Date) {
+			return Restrictions.lt(finalName, literal);
+		} else {
+			throw new UnsupportedOperationException("visit(Object userData)");
+		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Begins begins, Object extraData) {
-		throw new UnsupportedOperationException("visit(Begins begins, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(BegunBy begunBy, Object extraData) {
-		throw new UnsupportedOperationException("visit(BegunBy begunBy, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public Object visit(During during, Object extraData) {
-		throw new UnsupportedOperationException("visit(During during, Object extraData)");
+	public Object visit(During during, Object userData) {
+		String propertyName = getPropertyName(during.getExpression1());
+		String finalName = parsePropertyName(propertyName, userData);
+		Object literal = getLiteralValue(during.getExpression2());
+		if (literal instanceof Period) {
+			Period p = (Period) literal;
+			Date begin = p.getBeginning().getPosition().getDate();
+			Date end = p.getEnding().getPosition().getDate();
+			return Restrictions.between(finalName, begin, end);
+		} else {
+			throw new UnsupportedOperationException("visit(Object userData)");
+		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(EndedBy endedBy, Object extraData) {
-		throw new UnsupportedOperationException("visit(EndedBy endedBy, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Ends ends, Object extraData) {
-		throw new UnsupportedOperationException("visit(Ends ends, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(Meets meets, Object extraData) {
-		throw new UnsupportedOperationException("visit(Meets meets, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(MetBy metBy, Object extraData) {
-		throw new UnsupportedOperationException("visit(MetBy metBy, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(OverlappedBy overlappedBy, Object extraData) {
-		throw new UnsupportedOperationException("visit(OverlappedBy overlappedBy, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(TContains contains, Object extraData) {
-		throw new UnsupportedOperationException("visit(TContains contains, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(TEquals equals, Object extraData) {
-		throw new UnsupportedOperationException("visit(TEquals equals, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Object visit(TOverlaps contains, Object extraData) {
-		throw new UnsupportedOperationException("visit(TOverlaps contains, Object extraData)");
+		throw new UnsupportedOperationException("visit(Object userData)");
 	}
 
 	// -------------------------------------------------------------------------
