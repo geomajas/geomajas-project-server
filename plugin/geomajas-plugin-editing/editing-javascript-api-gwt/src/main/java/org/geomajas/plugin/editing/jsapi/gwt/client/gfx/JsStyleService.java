@@ -11,6 +11,7 @@
 package org.geomajas.plugin.editing.jsapi.gwt.client.gfx;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.plugin.editing.gwt.client.gfx.DefaultStyleService;
 import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
 import org.timepedia.exporter.client.Export;
@@ -64,6 +65,82 @@ public class JsStyleService implements Exportable {
 	 */
 	public boolean isCloseRingWhileInserting() {
 		return delegate.isCloseRingWhileInserting();
+	}
+
+	public ShapeStyle getVertexStyle() {
+		return delegate.getVertexStyle();
+	}
+
+	public ShapeStyle getEdgeTentativeMoveStyle() {
+		return delegate.getEdgeTentativeMoveStyle();
+	}
+
+	public ShapeStyle getBackgroundStyle() {
+		return delegate.getBackgroundStyle();
+	}
+
+	public ShapeStyle getBackgroundMarkedForDeletionStyle() {
+		return delegate.getBackgroundMarkedForDeletionStyle();
+	}
+
+	public ShapeStyle getVertexMarkForDeletionStyle() {
+		return delegate.getVertexMarkForDeletionStyle();
+	}
+
+	public ShapeStyle getVertexHoverStyle() {
+		return delegate.getVertexHoverStyle();
+	}
+
+	public ShapeStyle getVertexSelectStyle() {
+		return delegate.getVertexSelectStyle();
+	}
+
+	public ShapeStyle getBackgroundDisabledStyle() {
+		return delegate.getBackgroundDisabledStyle();
+	}
+
+	public ShapeStyle getVertexDisabledStyle() {
+		return delegate.getVertexDisabledStyle();
+	}
+
+	public ShapeStyle getVertexSelectHoverStyle() {
+		return delegate.getVertexSelectHoverStyle();
+	}
+
+	public ShapeStyle getEdgeSelectHoverStyle() {
+		return delegate.getEdgeSelectHoverStyle();
+	}
+
+	public ShapeStyle getVertexSnappedStyle() {
+		return delegate.getVertexSnappedStyle();
+	}
+
+	public ShapeStyle getEdgeDisabledStyle() {
+		return delegate.getEdgeDisabledStyle();
+	}
+
+	public ShapeStyle getEdgeMarkForDeletionStyle() {
+		return delegate.getEdgeMarkForDeletionStyle();
+	}
+
+	public ShapeStyle getEdgeStyle() {
+		return delegate.getEdgeStyle();
+	}
+
+	public ShapeStyle getEdgeHoverStyle() {
+		return delegate.getEdgeHoverStyle();
+	}
+
+	public ShapeStyle getLineStringStyle() {
+		return delegate.getLineStringStyle();
+	}
+
+	public ShapeStyle getEdgeSelectStyle() {
+		return delegate.getEdgeSelectStyle();
+	}
+
+	public ShapeStyle getLinearRingStyle() {
+		return delegate.getLinearRingStyle();
 	}
 
 }

@@ -61,6 +61,7 @@
 			var labelHandler; // HandlerRegistration for delete from point
 			var labelFlag = false;
 			var infoFlag = false;
+            var styleService;
 			
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapMain", "js-map-element");
@@ -68,6 +69,9 @@
 				editor = new org.geomajas.plugin.editing.GeometryEditor();
 				editor.setMap(map);
 				service = editor.getService();
+                styleService = editor.getStyleService();
+                styleService.getVertexStyle().setFillColor("blue");
+                styleService.getEdgeStyle().setStrokeColor("red");
 			}
 
 			function cancel() {
@@ -97,6 +101,7 @@
 			}
 
 			function drawPoint() {
+                service.stop();
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Point", 0, 0);
 				service.start(geometry);
 				var index = service.getIndexService().create("vertex", [0]);
@@ -105,6 +110,7 @@
 			}
 
 			function drawLineString() {
+                service.stop();
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("LineString", 0, 0);
 				service.start(geometry);
 				var index = service.getIndexService().create("vertex", [0]);
@@ -113,6 +119,7 @@
 			}
 
 			function drawPolygon() {
+                service.stop();
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Polygon", 0, 0);
 				infoHandler = new org.geomajas.plugin.editing.gfx.InfoHandler(editor);
 				labelHandler = new org.geomajas.plugin.editing.gfx.LabelHandler(editor);
