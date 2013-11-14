@@ -11,21 +11,21 @@
 package org.geomajas.plugin.deskmanager.client.gwt.common;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow.AskRoleCallback;
 
 /**
  * @author Oliver May
  * @since 1.0.0
  */
 @Api (allMethods = true)
-public interface ProfileSelectionWindow {
+public interface TokenRequestHandler {
 
 	/**
-	 * Ask for the role. This message will actually open a window asking for the roll.
+	 * Ask for the role. This message will actually open a window asking for the role.
 	 * 
+	 * @param  geodeskId
+	 * 			  the geodesk for which the tokens are requested
 	 * @param callback
 	 *            callback for when a role is selected.
 	 */
-	void askRole(String geodeskId, final AskRoleCallback callback);
-
+	void requestToken(String geodeskId, final TokenRequestCallback callback);
 }

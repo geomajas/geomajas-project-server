@@ -17,7 +17,8 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileSelectionWindow;
+import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.i18n.CommonMessages;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesResponse;
@@ -35,12 +36,12 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * RolesWindow that asks for a specific role from a list.
+ * Default role implementation that asks for a role from a list of roles retrieved from the server.
  * 
  * @author Oliver May
  * 
  */
-public class RolesWindow implements ProfileSelectionWindow {
+public class RolesWindow implements TokenRequestHandler {
 
 	private static final CommonMessages MESSAGES = GWT.create(CommonMessages.class);
 
@@ -58,7 +59,8 @@ public class RolesWindow implements ProfileSelectionWindow {
 		this.onlyAdminRoles = onlyAdminRoles;
 	}
 
-	public void askRole(String geodeskId, final AskRoleCallback callback) {
+	@Override
+	public void requestToken(String geodeskId, final TokenRequestCallback callback) {
 		RetrieveRolesRequest request = new RetrieveRolesRequest();
 		request.setGeodeskId(geodeskId);
 		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
@@ -77,10 +79,10 @@ public class RolesWindow implements ProfileSelectionWindow {
 				}
 
 				if (guest != null) {
-					callback.execute(guest.getKey(), guest.getValue());
+					callback.onTokenChanged(guest.getKey(), guest.getValue());
 				} else if (response.getRoles().size() == 1) {
 					for (Entry<String, ProfileDto> role : response.getRoles().entrySet()) {
-						callback.execute(role.getKey(), role.getValue());
+						callback.onTokenChanged(role.getKey(), role.getValue());
 					}
 				} else if (response.getRoles().size() > 0) {
 					askRoleWindow(response.getRoles(), callback);
@@ -111,7 +113,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 	}
 
 	
-	private void askRoleWindow(Map<String, ProfileDto> roles, final AskRoleCallback callback) {
+	private void askRoleWindow(Map<String, ProfileDto> roles, final TokenRequestCallback callback) {
 		final Window winModal = new Window();
 		winModal.setWidth(500);
 		winModal.setHeight(300);
@@ -148,7 +150,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 				button.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
 					public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-						callback.execute(role.getKey(), role.getValue());
+						callback.onTokenChanged(role.getKey(), role.getValue());
 						winModal.destroy();
 					}
 				});
@@ -171,24 +173,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 		
 	}
 
-	/**
-	 * Callback class for the roles window.
-	 * 
-	 * @author Oliver May
-	 * 
-	 */
-	public interface AskRoleCallback {
-
-		/**
-		 * Callback when a role is selected.
-		 * 
-		 * @param token
-		 *            the selected token.
-		 */
-		void execute(String token, ProfileDto profile);
-	}
-	
-	private static String getRoleDescription(Role role) {
+	private String getRoleDescription(Role role) {
 		switch (role)  {
 			case UNASSIGNED:
 				return MESSAGES.roleUnsignedDescription();
@@ -207,7 +192,7 @@ public class RolesWindow implements ProfileSelectionWindow {
 		}
 		
 	}
-	private static String getRoleContentC(ProfileDto profileDto) {
+	private String getRoleContentC(ProfileDto profileDto) {
 		if (profileDto.getTerritory() != null) {
 			return "<b>" + 
 					getRoleDescription(profileDto.getRole()) + "</b> (" + profileDto.getTerritory().getName() + ")";

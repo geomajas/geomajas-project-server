@@ -12,6 +12,7 @@ package org.geomajas.plugin.deskmanager.client.gwt.geodesk;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
+import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplication;
 import org.geomajas.plugin.deskmanager.client.gwt.common.UserApplicationRegistry;
 import org.geomajas.plugin.deskmanager.client.gwt.common.impl.DeskmanagerTokenRequestHandler;
@@ -47,9 +48,20 @@ public class GeodeskApplicationLoader {
 	private LoadingScreen loadScreen;
 
 	/**
+	 * Add a token request handler to handler the login.
+ 	 * @param tokenRequestHandler
+	 */
+	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
+		this.tokenRequestHandler = tokenRequestHandler;
+	}
+
+	private TokenRequestHandler tokenRequestHandler;
+
+	/**
 	 * Constructor for the GeodeskApplicationLoader.
 	 */
 	public GeodeskApplicationLoader() {
+		this.tokenRequestHandler = new RolesWindow(false);
 	}
 
 	/**
@@ -130,7 +142,7 @@ public class GeodeskApplicationLoader {
 		});
 
 		// Get application info for the geodesk
-		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
+		initializer.loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, tokenRequestHandler));
 	}
 
 	/**

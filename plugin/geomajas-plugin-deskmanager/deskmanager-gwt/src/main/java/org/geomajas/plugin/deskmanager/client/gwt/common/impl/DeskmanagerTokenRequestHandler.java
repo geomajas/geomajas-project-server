@@ -10,11 +10,10 @@
  */
 package org.geomajas.plugin.deskmanager.client.gwt.common.impl;
 
-import org.geomajas.gwt.client.command.TokenRequestHandler;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileSelectionWindow;
-import org.geomajas.plugin.deskmanager.client.gwt.common.impl.RolesWindow.AskRoleCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestHandler;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 
 /**
@@ -26,25 +25,25 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * 
  * @author Oliver May
  */
-public class DeskmanagerTokenRequestHandler implements TokenRequestHandler {
+public class DeskmanagerTokenRequestHandler implements org.geomajas.gwt.client.command.TokenRequestHandler {
 
 	private String geodeskId;
 
-	private ProfileSelectionWindow profileSelectionWindow;
+	private TokenRequestHandler profileSelectionWindow;
 
 	protected String token;
 
 	protected ProfileDto profile;
 
-	public DeskmanagerTokenRequestHandler(String geodeskId, ProfileSelectionWindow profileSelectionWindow) {
+	public DeskmanagerTokenRequestHandler(String geodeskId, TokenRequestHandler profileSelectionWindow) {
 		this.geodeskId = geodeskId;
 		this.profileSelectionWindow = profileSelectionWindow;
 	}
 
 	public void login(final TokenChangedHandler tokenChangedHandler) {
-		profileSelectionWindow.askRole(geodeskId, new AskRoleCallback() {
+		profileSelectionWindow.requestToken(geodeskId, new TokenRequestCallback() {
 
-			public void execute(String token, ProfileDto profile) {
+			public void onTokenChanged(String token, ProfileDto profile) {
 				DeskmanagerTokenRequestHandler.this.token = token;
 				DeskmanagerTokenRequestHandler.this.profile = profile;
 				tokenChangedHandler.onTokenChanged(new TokenChangedEvent(token));
