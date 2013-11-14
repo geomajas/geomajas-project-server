@@ -16,6 +16,7 @@ import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
+import org.geomajas.plugin.editing.gwt.client.gfx.PointSymbolizerShapeAndSize;
 import org.geomajas.plugin.editing.gwt.example.client.i18n.EditingMessages;
 import org.geomajas.plugin.editing.gwt.example.client.widget.MenuBar;
 
@@ -45,6 +46,8 @@ public class EditingPanel extends SamplePanel {
 	public Canvas getViewPanel() {
 		final MapWidget map = new MapWidget("mapGepEditing", "appEditing");
 		final GeometryEditor editor = new GeometryEditorImpl(map);
+		editor.setPointSymbolizerShapeAndSize(new PointSymbolizerShapeAndSize(
+				PointSymbolizerShapeAndSize.Shape.CIRCLE, 6));
 		VLayout layout = new VLayout();
 		MenuBar editingToolStrip = new MenuBar(editor);
 		layout.addMember(editingToolStrip);

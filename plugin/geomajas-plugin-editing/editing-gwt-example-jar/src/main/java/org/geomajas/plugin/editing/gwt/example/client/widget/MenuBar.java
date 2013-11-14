@@ -11,18 +11,6 @@
 
 package org.geomajas.plugin.editing.gwt.example.client.widget;
 
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditState;
-import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.gwt.client.handler.InfoDragLineHandler;
-import org.geomajas.plugin.editing.gwt.client.handler.LabelDragLineHandler;
-import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
-
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -37,6 +25,18 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.toolbar.ToolStripMenuButton;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
+import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.service.GeometryIndexType;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.handler.InfoDragLineHandler;
+import org.geomajas.plugin.editing.gwt.client.handler.LabelDragLineHandler;
+import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
 
 /**
  * The editing toolbar used within this sample application.
@@ -52,6 +52,8 @@ public class MenuBar extends ToolStrip {
 	private EventBus eventBus;
 
 	private SnappingOptionWindow wnd;
+
+	private VectorLayer geometrySaveLayer;
 
 	public MenuBar(GeometryEditor editor) {
 		this.editor = editor;
@@ -116,6 +118,7 @@ public class MenuBar extends ToolStrip {
 		pointItem.addClickHandler(new ClickHandler() {
 
 			public void onClick(MenuItemClickEvent event) {
+				stopEditingServiceIfStarted() ;
 				Geometry point = new Geometry(Geometry.POINT, 0, 0);
 				GeometryIndex index = editor.getEditService().getIndexService()
 						.create(GeometryIndexType.TYPE_VERTEX, 0);
@@ -129,6 +132,7 @@ public class MenuBar extends ToolStrip {
 		lineItem.addClickHandler(new ClickHandler() {
 
 			public void onClick(MenuItemClickEvent event) {
+				stopEditingServiceIfStarted();
 				Geometry line = new Geometry(Geometry.LINE_STRING, 0, 0);
 				GeometryIndex index = editor.getEditService().getIndexService()
 						.create(GeometryIndexType.TYPE_VERTEX, 0);
@@ -142,6 +146,7 @@ public class MenuBar extends ToolStrip {
 		polyItem.addClickHandler(new ClickHandler() {
 
 			public void onClick(MenuItemClickEvent event) {
+				stopEditingServiceIfStarted();
 				Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 				editor.getEditService().start(polygon);
 				try {
@@ -163,6 +168,12 @@ public class MenuBar extends ToolStrip {
 		menuButton.setWidth(100);
 		menuButton.setHeight(32);
 		return menuButton;
+	}
+
+	private void stopEditingServiceIfStarted() {
+		if (editor.getEditService().isStarted()) {
+			saveGeometry(editor.getEditService().stop());
+		}
 	}
 
 	protected ToolStripMenuButton getEditGeometryButton() {
@@ -195,7 +206,7 @@ public class MenuBar extends ToolStrip {
 				Coordinate c4 = new Coordinate(center.getX() + deltaX / 2, center.getY());
 				Coordinate c5 = new Coordinate(center.getX() + deltaX / 2, center.getY() + deltaY / 2);
 
-				line.setCoordinates(new Coordinate[] { c1, c2, c3, c4, c5 });
+				line.setCoordinates(new Coordinate[]{c1, c2, c3, c4, c5});
 				editor.getEditService().start(line);
 			}
 		});
@@ -218,7 +229,7 @@ public class MenuBar extends ToolStrip {
 				Geometry shell = new Geometry(Geometry.LINEAR_RING, 0, 0);
 				shell.setCoordinates(new Coordinate[] { c1, c2, c3, c4, c5 });
 
-				polgon.setGeometries(new Geometry[] { shell });
+				polgon.setGeometries(new Geometry[]{shell});
 				editor.getEditService().start(polgon);
 			}
 		});
@@ -318,6 +329,17 @@ public class MenuBar extends ToolStrip {
 		menuButton.setWidth(100);
 		menuButton.setHeight(32);
 		return menuButton;
+	}
+
+	/**
+	 * add geometry to a vectorlayer
+	 *
+	 * @param geometry geometry to process
+	 */
+	private void saveGeometry(Geometry geometry) {
+		if (null != geometry) {
+			// how to save the geometry?
+		}
 	}
 
 }

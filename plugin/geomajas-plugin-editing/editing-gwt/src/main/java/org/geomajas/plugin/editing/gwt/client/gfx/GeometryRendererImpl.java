@@ -95,9 +95,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		GeometryIndexSnappingBeginHandler, GeometryIndexSnappingEndHandler, GeometryEditTentativeMoveHandler,
 		MapViewChangedHandler, CoordinateSnapHandler {
 
-	private static final int VERTEX_SIZE = 12;
+	private int vertexSize;
 
-	private static final int HALF_VERTEX_SIZE = 6;
+	private int halfVertexSize;
 
 	private final MapWidget mapWidget;
 
@@ -115,9 +115,20 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	private HandlerRegistration mapViewRegistration;
 
+	private PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize;
+
 	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
+		this(mapWidget, editingService, eventParser,
+				new PointSymbolizerShapeAndSize(PointSymbolizerShapeAndSize.Shape.SQUARE, 12));
+	}
+
+	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser,
+								PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
+		this.pointSymbolizerShapeAndSize = pointSymbolizerShapeAndSize;
+		vertexSize = pointSymbolizerShapeAndSize.getSize();
+		halfVertexSize = vertexSize / 2;
 	}
 
 	// ------------------------------------------------------------------------
@@ -427,14 +438,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 			Coordinate temp = event.getTo();
 			Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
-			Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
-					VERTEX_SIZE, VERTEX_SIZE);
-			if (event.hasSnapped()) {
-				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle,
-						styleService.getVertexSnappedStyle());
-			} else {
-				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, new ShapeStyle());
-			}
+			addShapeToGraphicsContext(mapWidget.getVectorContext(), parentGroup, identifier, coordinate,
+					event.hasSnapped() ? styleService.getVertexSnappedStyle() : new ShapeStyle());
 		}
 	}
 	
@@ -507,10 +512,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 		Coordinate temp = editingService.getIndexService().getVertex(geometry, index);
 		Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
-		Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
-				VERTEX_SIZE, VERTEX_SIZE);
-
-		mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
+		addShapeToGraphicsContext(mapWidget.getVectorContext(), parentGroup, identifier, coordinate,
+				findVertexStyle(index));
 		if (moveToBack) {
 			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
 		}
@@ -661,17 +664,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				graphics.setController(edgeGroup, identifier, createEdgeController(edgeIndex));
 			}
 
-			// Draw individual vertices, but first an invisible rectangle. Can be used later!:
-			Bbox firstRectangle = new Bbox(0, 0, VERTEX_SIZE, VERTEX_SIZE);
-			graphics.drawRectangle(vertexGroup, "first", firstRectangle, new ShapeStyle());
+			addInivisibleShapeToGraphicsContext(graphics, vertexGroup);
 			for (int i = 0; i < coordinates.length - 1; i++) {
 				GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
 						GeometryIndexType.TYPE_VERTEX, i);
 				String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
-
-				Bbox rectangle = new Bbox(coordinates[i].getX() - HALF_VERTEX_SIZE, coordinates[i].getY()
-						- HALF_VERTEX_SIZE, VERTEX_SIZE, VERTEX_SIZE);
-				graphics.drawRectangle(vertexGroup, identifier, rectangle, findVertexStyle(vertexIndex));
+				addShapeToGraphicsContext(graphics, vertexGroup, identifier, coordinates[i],
+						findVertexStyle(vertexIndex));
 				graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 			}
 		}
@@ -699,20 +698,22 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				graphics.setController(edgeGroup, identifier, createEdgeController(edgeIndex));
 			}
 
-			// Draw individual vertices, but first an invisible rectangle. Can be used later!:
-			Bbox firstRectangle = new Bbox(0, 0, VERTEX_SIZE, VERTEX_SIZE);
-			graphics.drawRectangle(vertexGroup, "first", firstRectangle, new ShapeStyle());
+			addInivisibleShapeToGraphicsContext(graphics, vertexGroup);
 			for (int i = 0; i < coordinates.length; i++) {
 				GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
 						GeometryIndexType.TYPE_VERTEX, i);
 				String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
 
-				Bbox rectangle = new Bbox(coordinates[i].getX() - HALF_VERTEX_SIZE, coordinates[i].getY()
-						- HALF_VERTEX_SIZE, VERTEX_SIZE, VERTEX_SIZE);
-				graphics.drawRectangle(vertexGroup, identifier, rectangle, findVertexStyle(vertexIndex));
+				addShapeToGraphicsContext(graphics, vertexGroup, identifier, coordinates[i],
+						findVertexStyle(vertexIndex));
 				graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 			}
 		}
+	}
+
+	private void addInivisibleShapeToGraphicsContext(GraphicsContext graphics, Composite parentGroup) {
+		addShapeToGraphicsContext(graphics, parentGroup, "first",
+				new Coordinate(halfVertexSize, halfVertexSize), new ShapeStyle());
 	}
 
 	private void draw(Object parentGroup, GeometryIndex parentIndex, Point point, GraphicsContext graphics) {
@@ -722,16 +723,14 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
 
-		Bbox firstRectangle = new Bbox(0, 0, VERTEX_SIZE, VERTEX_SIZE);
-		graphics.drawRectangle(vertexGroup, "first", firstRectangle, new ShapeStyle());
+		addInivisibleShapeToGraphicsContext(graphics, vertexGroup);
 		if (!point.isEmpty()) {
 			GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
 					GeometryIndexType.TYPE_VERTEX, 0);
 			String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
 
-			Bbox rectangle = new Bbox(point.getCoordinate().getX() - HALF_VERTEX_SIZE, point.getCoordinate().getY()
-					- HALF_VERTEX_SIZE, VERTEX_SIZE, VERTEX_SIZE);
-			graphics.drawRectangle(vertexGroup, identifier, rectangle, findVertexStyle(vertexIndex));
+			addShapeToGraphicsContext(graphics, vertexGroup, identifier, point.getCoordinate(),
+					findVertexStyle(vertexIndex));
 			graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 		}
 	}
@@ -833,6 +832,31 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			controller.addMapHandler(handler);
 		}
 		return controller;
+	}
+
+
+	public PointSymbolizerShapeAndSize getPointSymbolizerShapeAndSize() {
+		return pointSymbolizerShapeAndSize;
+	}
+
+	public void setPointSymbolizerShapeAndSize(PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize) {
+		this.pointSymbolizerShapeAndSize = pointSymbolizerShapeAndSize;
+		this.vertexSize = pointSymbolizerShapeAndSize.getSize();
+		this.halfVertexSize = vertexSize / 2;
+	}
+
+	private void addShapeToGraphicsContext(GraphicsContext graphics, Object parentGroup,
+										   String identifier, Coordinate coordinate, ShapeStyle style) {
+		switch(pointSymbolizerShapeAndSize.getShape()) {
+			case SQUARE:
+				Bbox rectangle = new Bbox(coordinate.getX() - halfVertexSize, coordinate.getY() - halfVertexSize,
+						vertexSize, vertexSize);
+				graphics.drawRectangle(parentGroup, identifier, rectangle, style);
+				break;
+			case CIRCLE:
+				graphics.drawCircle(parentGroup, identifier, coordinate, vertexSize, style);
+				break;
+		}
 	}
 
 }

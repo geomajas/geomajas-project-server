@@ -25,6 +25,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.snap.SnapService;
 import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
+import org.geomajas.plugin.editing.gwt.client.gfx.PointSymbolizerShapeAndSize;
 import org.geomajas.plugin.editing.gwt.client.gfx.GeometryRendererImpl;
 import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
 
@@ -177,5 +178,10 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 
 	public boolean isBusyEditing() {
 		return isBusyEditing;
+	}
+
+	@Override
+	public void setPointSymbolizerShapeAndSize(PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize) {
+		 renderer.setPointSymbolizerShapeAndSize(pointSymbolizerShapeAndSize);
 	}
 }

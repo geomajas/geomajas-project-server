@@ -20,6 +20,7 @@ import org.timepedia.exporter.client.ExportPackage;
  * JavaScript wrapper of {@link org.geomajas.gwt.client.gfx.style.ShapeStyle}.
  *
  * @author Jan De Moerloose
+ * @author Jan Venstermans
  * @since 1.0.0
  *
  */
@@ -28,24 +29,74 @@ import org.timepedia.exporter.client.ExportPackage;
 @Api(allMethods = true)
 public interface JsShapeStyle extends ExportOverlay<ShapeStyle> {
 
+	/**
+	 * Gets the fill color.
+	 *
+	 * @return fill color
+	 */
 	String getFillColor() ;
 
+	/**
+	 * Sets the fill color.
+	 *
+	 * @param fillColor
+	 */
 	void setFillColor(String fillColor) ;
 
+	/**
+	 * Gets the fill opacity.
+	 *
+	 * @return fill opacity
+	 */
 	float getFillOpacity() ;
 
+	/**
+	 * Sets the fill opacity.
+	 *
+	 * @param fillOpacity
+	 */
 	void setFillOpacity(float fillOpacity) ;
 
+	/**
+	 * Gets the stroke color.
+	 *
+	 * @return stroke color
+	 */
 	String getStrokeColor() ;
 
+	/**
+	 * Sets the stroke color.
+	 *
+	 * @param strokeColor
+	 */
 	void setStrokeColor(String strokeColor) ;
 
+	/**
+	 * Gets the stroke opacity.
+	 *
+	 * @return stroke opacity
+	 */
 	float getStrokeOpacity() ;
 
+	/**
+	 * Sets the stroke opacity.
+	 *
+	 * @param strokeOpacity
+	 */
 	void setStrokeOpacity(float strokeOpacity) ;
 
+	/**
+	 * Gets the stroke width.
+	 *
+	 * @return stroke width
+	 */
 	float getStrokeWidth() ;
 
+	/**
+	 * Sets the stroke width.
+	 *
+	 * @param strokeWidth
+	 */
 	void setStrokeWidth(float strokeWidth) ;
 
 }

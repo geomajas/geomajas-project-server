@@ -67,78 +67,173 @@ public class JsStyleService implements Exportable {
 		return delegate.isCloseRingWhileInserting();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexStyle() {
 		return delegate.getVertexStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge tantative move.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeTentativeMoveStyle() {
 		return delegate.getEdgeTentativeMoveStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for the background.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getBackgroundStyle() {
 		return delegate.getBackgroundStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for background marked-for-deletion elements.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getBackgroundMarkedForDeletionStyle() {
 		return delegate.getBackgroundMarkedForDeletionStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements marked for deletion.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexMarkForDeletionStyle() {
 		return delegate.getVertexMarkForDeletionStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements when hovering over them.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexHoverStyle() {
 		return delegate.getVertexHoverStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements when selected.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexSelectStyle() {
 		return delegate.getVertexSelectStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for background when disabled.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getBackgroundDisabledStyle() {
 		return delegate.getBackgroundDisabledStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements when disabled.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexDisabledStyle() {
 		return delegate.getVertexDisabledStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements when selected and hovering over.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexSelectHoverStyle() {
 		return delegate.getVertexSelectHoverStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge elements when selected and hovering over.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeSelectHoverStyle() {
 		return delegate.getEdgeSelectHoverStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for vertex elements when snapped.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getVertexSnappedStyle() {
 		return delegate.getVertexSnappedStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge elements when disabled.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeDisabledStyle() {
 		return delegate.getEdgeDisabledStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge elements that are marked for deletion.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return delegate.getEdgeMarkForDeletionStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge elements.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeStyle() {
 		return delegate.getEdgeStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge elements when hovered over.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeHoverStyle() {
 		return delegate.getEdgeHoverStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for line elements.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getLineStringStyle() {
 		return delegate.getLineStringStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for edge elements when selected.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getEdgeSelectStyle() {
 		return delegate.getEdgeSelectStyle();
 	}
 
+	/**
+	 * Gets the {@link ShapeStyle} for linearRing elements.
+	 *
+	 * @return shapestyle with configurable fill and style properties
+	 */
 	public ShapeStyle getLinearRingStyle() {
 		return delegate.getLinearRingStyle();
 	}
