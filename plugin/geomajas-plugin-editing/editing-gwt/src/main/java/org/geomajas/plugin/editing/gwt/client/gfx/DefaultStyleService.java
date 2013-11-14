@@ -60,6 +60,9 @@ public class DefaultStyleService implements StyleService {
 	
 	private boolean closeRingWhileInserting;
 
+	private PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize =
+			new PointSymbolizerShapeAndSize();
+
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
 	}
@@ -215,7 +218,12 @@ public class DefaultStyleService implements StyleService {
 	public boolean isCloseRingWhileInserting() {
 		return closeRingWhileInserting;
 	}
-	
+
+	@Override
+	public PointSymbolizerShapeAndSize getPointSymbolizerShapeAndSize() {
+		return pointSymbolizerShapeAndSize;
+	}
+
 	public void setCloseRingWhileInserting(boolean closeRingWhileInserting) {
 		this.closeRingWhileInserting = closeRingWhileInserting;
 	}

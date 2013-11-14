@@ -46,8 +46,8 @@ public class EditingPanel extends SamplePanel {
 	public Canvas getViewPanel() {
 		final MapWidget map = new MapWidget("mapGepEditing", "appEditing");
 		final GeometryEditor editor = new GeometryEditorImpl(map);
-		editor.setPointSymbolizerShapeAndSize(new PointSymbolizerShapeAndSize(
-				PointSymbolizerShapeAndSize.Shape.CIRCLE, 6));
+		editor.getStyleService().getPointSymbolizerShapeAndSize().setShape(PointSymbolizerShapeAndSize.Shape.CIRCLE);
+		editor.getStyleService().getPointSymbolizerShapeAndSize().setSize(6);
 		VLayout layout = new VLayout();
 		MenuBar editingToolStrip = new MenuBar(editor);
 		layout.addMember(editingToolStrip);

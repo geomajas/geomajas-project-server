@@ -95,10 +95,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		GeometryIndexSnappingBeginHandler, GeometryIndexSnappingEndHandler, GeometryEditTentativeMoveHandler,
 		MapViewChangedHandler, CoordinateSnapHandler {
 
-	private int vertexSize;
-
-	private int halfVertexSize;
-
 	private final MapWidget mapWidget;
 
 	private final GeometryEditService editingService;
@@ -115,20 +111,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	private HandlerRegistration mapViewRegistration;
 
-	private PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize;
-
 	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
-		this(mapWidget, editingService, eventParser,
-				new PointSymbolizerShapeAndSize(PointSymbolizerShapeAndSize.Shape.SQUARE, 12));
-	}
-
-	public GeometryRendererImpl(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser,
-								PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
-		this.pointSymbolizerShapeAndSize = pointSymbolizerShapeAndSize;
-		vertexSize = pointSymbolizerShapeAndSize.getSize();
-		halfVertexSize = vertexSize / 2;
 	}
 
 	// ------------------------------------------------------------------------
@@ -712,6 +697,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	}
 
 	private void addInivisibleShapeToGraphicsContext(GraphicsContext graphics, Composite parentGroup) {
+		int halfVertexSize = getStyleService().getPointSymbolizerShapeAndSize().getSize() / 2 ;
 		addShapeToGraphicsContext(graphics, parentGroup, "first",
 				new Coordinate(halfVertexSize, halfVertexSize), new ShapeStyle());
 	}
@@ -834,20 +820,11 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		return controller;
 	}
 
-
-	public PointSymbolizerShapeAndSize getPointSymbolizerShapeAndSize() {
-		return pointSymbolizerShapeAndSize;
-	}
-
-	public void setPointSymbolizerShapeAndSize(PointSymbolizerShapeAndSize pointSymbolizerShapeAndSize) {
-		this.pointSymbolizerShapeAndSize = pointSymbolizerShapeAndSize;
-		this.vertexSize = pointSymbolizerShapeAndSize.getSize();
-		this.halfVertexSize = vertexSize / 2;
-	}
-
 	private void addShapeToGraphicsContext(GraphicsContext graphics, Object parentGroup,
 										   String identifier, Coordinate coordinate, ShapeStyle style) {
-		switch(pointSymbolizerShapeAndSize.getShape()) {
+		int vertexSize = getStyleService().getPointSymbolizerShapeAndSize().getSize() ;
+		int halfVertexSize = vertexSize / 2 ;
+		switch(styleService.getPointSymbolizerShapeAndSize().getShape()) {
 			case SQUARE:
 				Bbox rectangle = new Bbox(coordinate.getX() - halfVertexSize, coordinate.getY() - halfVertexSize,
 						vertexSize, vertexSize);

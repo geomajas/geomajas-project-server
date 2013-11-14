@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.jsapi.gwt.client.gfx;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.plugin.editing.gwt.client.gfx.DefaultStyleService;
+import org.geomajas.plugin.editing.gwt.client.gfx.PointSymbolizerShapeAndSize;
 import org.geomajas.plugin.editing.gwt.client.gfx.StyleService;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -29,7 +30,7 @@ import org.timepedia.exporter.client.NoExport;
 @Export("StyleService")
 @ExportPackage("org.geomajas.plugin.editing.gfx")
 @Api(allMethods = true)
-public class JsStyleService implements Exportable {
+public class JsStyleService implements Exportable, StyleService {
 
 	private StyleService delegate;
 
@@ -236,6 +237,15 @@ public class JsStyleService implements Exportable {
 	 */
 	public ShapeStyle getLinearRingStyle() {
 		return delegate.getLinearRingStyle();
+	}
+
+	/**
+	 * Gets the {@link PointSymbolizerShapeAndSize} for the point on drawing.
+	 *
+	 * @return pointSymbolizerShapeAndSize with shape and size
+	 */
+	public PointSymbolizerShapeAndSize getPointSymbolizerShapeAndSize() {
+		return delegate.getPointSymbolizerShapeAndSize();
 	}
 
 }

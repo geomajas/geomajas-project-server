@@ -62,4 +62,5 @@ public interface StyleService {
 
 	boolean isCloseRingWhileInserting();
 
+	PointSymbolizerShapeAndSize getPointSymbolizerShapeAndSize();
 }
