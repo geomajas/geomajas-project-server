@@ -17,6 +17,7 @@ import org.geomajas.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,9 @@ public class StaticSecurityProfileService implements ProfileService, LoginServic
 
 	@Override
 	public List<Profile> getProfiles(String token) {
-		return cacheService.get(StaticSecurityProfileService.class.toString(), token, List.class);
+		List<Profile> profiles = cacheService.get(StaticSecurityProfileService.class.toString(), token,
+				List.class);
+		return profiles != null ? profiles : Collections.EMPTY_LIST;
 	}
 
 	@Override

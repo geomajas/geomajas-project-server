@@ -19,8 +19,25 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="profiles">
 						<list>
 							<bean class="org.geomajas.plugin.deskmanager.staticsecurity.StaticSecurityProfile">
-								<property name="role" value="ADMINISTRATOR"/>
+								<property name="role" value="DESK_MANAGER"/>
 								<property name="territoryCode" value="BE" />
+							</bean>
+							<bean class="org.geomajas.plugin.deskmanager.staticsecurity.StaticSecurityProfile">
+								<property name="role" value="CONSULTING_USER"/>
+								<property name="territoryCode" value="BE" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.geomajas.plugin.deskmanager.staticsecurity.StaticSecurityUser">
+					<property name="username" value="superluc" />
+					<property name="password" value="superluc" />
+					<property name="profiles">
+						<list>
+							<bean class="org.geomajas.plugin.deskmanager.staticsecurity.StaticSecurityProfile">
+								<property name="role" value="ADMINISTRATOR"/>
+								<property name="territoryCode" value="ADMIN" />
 							</bean>
 						</list>
 					</property>

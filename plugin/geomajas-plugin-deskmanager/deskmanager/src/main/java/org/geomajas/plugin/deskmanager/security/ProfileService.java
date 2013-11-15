@@ -30,7 +30,7 @@ public interface ProfileService {
 	 *
 	 * @param securityToken securityToken for which profiles should be retrieved.
 	 *
-	 * @return the list of profiles.
+	 * @return the list of profiles, must not be null.
 	 */
 	List<Profile> getProfiles(String securityToken);
 }

@@ -61,7 +61,7 @@ public class StaticSecurityProfileServiceTest {
 		String token = loginService.login("luc", "luc");
 		List<Profile> profiles = profileService.getProfiles(token);
 
-		Assert.assertEquals(1, profiles.size());
+		Assert.assertEquals(2, profiles.size());
 		Assert.assertNotNull(profiles.get(0).getTerritory());
 	}
 }
