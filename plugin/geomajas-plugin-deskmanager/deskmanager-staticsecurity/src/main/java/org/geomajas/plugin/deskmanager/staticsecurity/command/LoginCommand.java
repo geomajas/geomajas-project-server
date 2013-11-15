@@ -12,7 +12,6 @@ package org.geomajas.plugin.deskmanager.staticsecurity.command;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.staticsecurity.LoginService;
-import org.geomajas.plugin.deskmanager.staticsecurity.StaticSecurityProfileService;
 import org.geomajas.plugin.deskmanager.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.deskmanager.staticsecurity.command.dto.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;

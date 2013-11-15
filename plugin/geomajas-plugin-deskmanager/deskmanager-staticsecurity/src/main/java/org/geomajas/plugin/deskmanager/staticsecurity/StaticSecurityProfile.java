@@ -10,11 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.staticsecurity;
 
-import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * Representation of a user profile, defined by a role and territory.

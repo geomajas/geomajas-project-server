@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.staticsecurity;
 
-import org.geomajas.plugin.deskmanager.domain.security.Profile;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
