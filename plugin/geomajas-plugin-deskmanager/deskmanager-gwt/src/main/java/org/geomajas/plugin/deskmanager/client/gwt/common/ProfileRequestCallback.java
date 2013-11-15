@@ -18,7 +18,7 @@ import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
  * @author Oliver May
  *
  */
-public interface TokenRequestCallback {
+public interface ProfileRequestCallback {
 
 	/**
 	 * Callback when a role is selected.

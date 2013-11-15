@@ -42,7 +42,7 @@ public class GeodeskInitializer {
 	 * the default token request handler.
 	 */
 	public void loadApplication(String geodeskId) {
-		loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(geodeskId, new RolesWindow(false)));
+		loadApplication(geodeskId, new DeskmanagerTokenRequestHandler(null, geodeskId, new RolesWindow(false)));
 	}
 
 	

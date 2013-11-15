@@ -12,8 +12,8 @@ package org.geomajas.plugin.deskmanager.client.gwt.common.impl;
 
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestCallback;
-import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileRequestCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileRequestHandler;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 
 /**
@@ -29,19 +29,22 @@ public class DeskmanagerTokenRequestHandler implements org.geomajas.gwt.client.c
 
 	private String geodeskId;
 
-	private TokenRequestHandler profileSelectionWindow;
+	private ProfileRequestHandler profileSelectionWindow;
 
 	protected String token;
 
 	protected ProfileDto profile;
 
-	public DeskmanagerTokenRequestHandler(String geodeskId, TokenRequestHandler profileSelectionWindow) {
+	private String securityToken;
+
+	public DeskmanagerTokenRequestHandler(String securityToken, String geodeskId,
+			ProfileRequestHandler profileSelectionWindow) {
 		this.geodeskId = geodeskId;
 		this.profileSelectionWindow = profileSelectionWindow;
 	}
 
 	public void login(final TokenChangedHandler tokenChangedHandler) {
-		profileSelectionWindow.requestToken(geodeskId, new TokenRequestCallback() {
+		profileSelectionWindow.requestProfile(securityToken, geodeskId, new ProfileRequestCallback() {
 
 			public void onTokenChanged(String token, ProfileDto profile) {
 				DeskmanagerTokenRequestHandler.this.token = token;

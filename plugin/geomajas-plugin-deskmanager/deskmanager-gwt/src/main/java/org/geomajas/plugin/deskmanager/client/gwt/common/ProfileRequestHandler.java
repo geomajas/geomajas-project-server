@@ -17,15 +17,18 @@ import org.geomajas.annotation.Api;
  * @since 1.0.0
  */
 @Api (allMethods = true)
-public interface TokenRequestHandler {
+public interface ProfileRequestHandler {
 
 	/**
 	 * Ask for the role. This message will actually open a window asking for the role.
-	 * 
+	 *
+	 * @param securityToken
+	 * 			  security token for which the profiles are requested
 	 * @param  geodeskId
-	 * 			  the geodesk for which the tokens are requested
+	 * 			  the geodesk for which the profiles are requested
 	 * @param callback
 	 *            callback for when a role is selected.
 	 */
-	void requestToken(String geodeskId, final TokenRequestCallback callback);
+	void requestProfile(String securityToken, String geodeskId, final ProfileRequestCallback callback);
+
 }

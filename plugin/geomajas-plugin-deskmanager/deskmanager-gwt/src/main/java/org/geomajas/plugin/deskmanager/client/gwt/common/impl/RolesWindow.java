@@ -17,8 +17,8 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
-import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestCallback;
-import org.geomajas.plugin.deskmanager.client.gwt.common.TokenRequestHandler;
+import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileRequestCallback;
+import org.geomajas.plugin.deskmanager.client.gwt.common.ProfileRequestHandler;
 import org.geomajas.plugin.deskmanager.client.gwt.common.i18n.CommonMessages;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesResponse;
@@ -41,7 +41,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  * 
  */
-public class RolesWindow implements TokenRequestHandler {
+public class RolesWindow implements ProfileRequestHandler {
 
 	private static final CommonMessages MESSAGES = GWT.create(CommonMessages.class);
 
@@ -60,11 +60,12 @@ public class RolesWindow implements TokenRequestHandler {
 	}
 
 	@Override
-	public void requestToken(String geodeskId, final TokenRequestCallback callback) {
+	public void requestProfile(String securityToken, String geodeskId, final ProfileRequestCallback callback) {
 		RetrieveRolesRequest request = new RetrieveRolesRequest();
 		request.setGeodeskId(geodeskId);
 		request.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
-		
+		request.setSecurityToken(securityToken);
+
 		GwtCommand command = new GwtCommand(RetrieveRolesRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<RetrieveRolesResponse>() {
@@ -93,7 +94,6 @@ public class RolesWindow implements TokenRequestHandler {
 		});
 	}
 
-	
 	private void showUnauthorizedWindow() {
 		final Window winModal = new Window();
 		winModal.setWidth(500);
@@ -113,7 +113,7 @@ public class RolesWindow implements TokenRequestHandler {
 	}
 
 	
-	private void askRoleWindow(Map<String, ProfileDto> roles, final TokenRequestCallback callback) {
+	private void askRoleWindow(Map<String, ProfileDto> roles, final ProfileRequestCallback callback) {
 		final Window winModal = new Window();
 		winModal.setWidth(500);
 		winModal.setHeight(300);

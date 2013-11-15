@@ -37,8 +37,28 @@ public final class ManagerApplicationLoader {
 
 	private ProfileDto profile;
 
+	private String securityToken;
+
 	// Hide default constructor.
 	private ManagerApplicationLoader() {
+	}
+
+	/**
+	 * Get the security token to log in with.
+	 *
+	 * @return the security token.
+	 */
+	public String getSecurityToken() {
+		return securityToken;
+	}
+
+	/**
+	 * Set the security token to log in with.
+	 *
+	 * @param securityToken the security token
+	 */
+	public void setSecurityToken(String securityToken) {
+		this.securityToken = securityToken;
 	}
 
 	/**
@@ -63,7 +83,8 @@ public final class ManagerApplicationLoader {
 		loadScreen.draw();
 
 		ManagerInitializer initializer = new ManagerInitializer();
-		initializer.loadManagerApplication(new DeskmanagerTokenRequestHandler(RetrieveRolesRequest.MANAGER_ID,
+		initializer.loadManagerApplication(new DeskmanagerTokenRequestHandler(securityToken,
+				RetrieveRolesRequest.MANAGER_ID,
 				new RolesWindow(true)));
 		if (handler != null) {
 			initializer.addHandler(handler);
