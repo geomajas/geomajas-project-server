@@ -16,6 +16,12 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-deskmanager</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-deskmanager</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Geomajas dependencies -->
 		<dependency>

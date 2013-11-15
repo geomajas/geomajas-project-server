@@ -11,73 +11,34 @@
 package org.geomajas.plugin.deskmanager.staticsecurity;
 
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Representation of a user login, defined by username, password and a list of profiles.
+ * Representation of a user profile, defined by a role and territory.
  *
  * @author Oliver May
  */
 public class StaticSecurityProfile {
 
-	@NotNull
-	private String username;
-	@NotNull
-	private String password;
-	@NotNull
-	private List<Profile> profiles;
+	private Role role;
+	private String territoryCode;
 
-	/**
-	 * Get the username of this user.
-	 * @return the username.
-	 */
-	public String getUsername() {
-		return username;
+	public Role getRole() {
+		return role;
 	}
 
-	/**
-	 * Set the username of this user.
-	 *
-	 * @param username the username
-	 */
-	public void setUsername(String username) {
-		this.username = username;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
-	/**
-	 * Get the password of this user.
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
+	public String getTerritoryCode() {
+		return territoryCode;
 	}
 
-	/**
-	 * Set the password of this user.
-	 *
-	 * @param password the password
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * Get the profiles attached to this user.
-	 *
-	 * @return the profiles
-	 */
-	public List<Profile> getProfiles() {
-		return profiles;
-	}
-
-	/**
-	 * Set the profiles attached to this user.
-	 *
-	 * @param profiles the profiles
-	 */
-	public void setProfiles(List<Profile> profiles) {
-		this.profiles = profiles;
+	public void setTerritoryCode(String territoryCode) {
+		this.territoryCode = territoryCode;
 	}
 }

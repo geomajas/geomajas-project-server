@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-spatial>
+<!--
+ 	<default_dialect>org.hibernatespatial.postgis.PostgisDialect</default_dialect> 
+-->
+	<default_dialect>org.geomajas.layer.hibernate.HSQLSpatialDialect</default_dialect>
+	<precision_model>FIXED</precision_model>
+	<precision_model_scale>100</precision_model_scale>
+</hibernate-spatial>

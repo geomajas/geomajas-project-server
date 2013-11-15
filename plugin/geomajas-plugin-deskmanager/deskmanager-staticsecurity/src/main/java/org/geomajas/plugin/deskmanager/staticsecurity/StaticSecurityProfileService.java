@@ -12,9 +12,11 @@ package org.geomajas.plugin.deskmanager.staticsecurity;
 
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.geomajas.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,29 +25,36 @@ import java.util.UUID;
  *
  * @author Oliver May
  */
-public class StaticSecurityProfileService implements ProfileService {
+public class StaticSecurityProfileService implements ProfileService, LoginService {
 
-	private List<StaticSecurityProfile> staticSecurityProfiles;
+
+	private List<StaticSecurityUser> staticSecurityUsers;
 
 	@Autowired
 	private CacheService cacheService;
+
+	@Autowired
+	private TerritoryService territoryService;
 
 	@Override
 	public List<Profile> getProfiles(String token) {
 		return cacheService.get(StaticSecurityProfileService.class.toString(), token, List.class);
 	}
 
+	@Override
 	public String login(String username, String password) {
-		for (StaticSecurityProfile profile : staticSecurityProfiles) {
-			if (profile.getUsername().equals(username) && profile.getPassword().equals(password)) {
+		for (StaticSecurityUser user : staticSecurityUsers) {
+			if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
 				UUID uuid = UUID.randomUUID();
-				cacheService.put(StaticSecurityProfileService.class.toString(), uuid.toString(), profile.getProfiles());
+				cacheService.put(StaticSecurityProfileService.class.toString(), uuid.toString(),
+						createProfiles(user));
 				return uuid.toString();
 			}
 		}
 		return null;
 	}
 
+	@Override
 	public void logout(String token) {
 		cacheService.remove(StaticSecurityProfileService.class.toString(), token);
 	}
@@ -55,17 +64,31 @@ public class StaticSecurityProfileService implements ProfileService {
 	 *
 	 * @return the list of static security profiles.
 	 */
-	public List<StaticSecurityProfile> getStaticSecurityProfiles() {
-		return staticSecurityProfiles;
+	public List<StaticSecurityUser> getStaticSecurityUsers() {
+		return staticSecurityUsers;
 	}
 
 	/**
 	 * Set the list of static security profiles.
 	 *
-	 * @param staticSecurityProfiles
+	 * @param staticSecurityUsers
 	 */
-	public void setStaticSecurityProfiles(List<StaticSecurityProfile> staticSecurityProfiles) {
-		this.staticSecurityProfiles = staticSecurityProfiles;
+	public void setStaticSecurityUsers(List<StaticSecurityUser> staticSecurityUsers) {
+		this.staticSecurityUsers = staticSecurityUsers;
+	}
+
+	private List<Profile> createProfiles(StaticSecurityUser user) {
+		List<Profile> profiles = new ArrayList<Profile>(user.getProfiles().size());
+		for (StaticSecurityProfile staticSecurityProfile : user.getProfiles()) {
+			Profile profile = new Profile();
+			profile.setFirstName(user.getName());
+			profile.setSurname(user.getSurname());
+			profile.setId(user.getName().toString() + staticSecurityProfile.getRole().toString() + staticSecurityProfile
+					.getTerritoryCode());
+			profile.setTerritory(territoryService.getByCode(staticSecurityProfile.getTerritoryCode()));
+			profiles.add(profile);
+		}
+		return profiles;
 	}
 
 }
