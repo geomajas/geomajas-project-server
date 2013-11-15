@@ -67,7 +67,7 @@ public class RetrieveRolesCommand implements Command<RetrieveRolesRequest, Retri
 			log.error(e.getLocalizedMessage());
 			throw e;
 		} else if (!RetrieveRolesRequest.MANAGER_ID.equals(geodeskId)) {
-			for (Profile profile : profileService.getProfiles()) {
+			for (Profile profile : profileService.getProfiles(request.getSecurityToken())) {
 				DeskmanagerAuthorization auth = new DeskmanagerAuthorization(profile, geodeskId, applicationContext);
 				if (auth.isGeodeskUseAllowed(geodeskId)) {
 					String token = securityService.registerRole(request.getGeodeskId(), profile);
@@ -75,7 +75,7 @@ public class RetrieveRolesCommand implements Command<RetrieveRolesRequest, Retri
 				}
 			}
 		} else if (RetrieveRolesRequest.MANAGER_ID.equals(geodeskId)) { // manager interface: ignore guest role
-			for (Profile profile : profileService.getProfiles()) {
+			for (Profile profile : profileService.getProfiles(null)) {
 				if (!Role.GUEST.equals(profile.getRole())) {
 					String token = securityService.registerRole(request.getGeodeskId(), profile);
 					profiles.put(token, dtoService.toDto(profile));

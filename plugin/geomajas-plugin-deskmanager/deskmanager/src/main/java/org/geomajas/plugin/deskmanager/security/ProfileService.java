@@ -22,13 +22,15 @@ import org.geomajas.plugin.deskmanager.domain.security.Profile;
  * @author Oliver May
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface ProfileService {
 
 	/**
-	 * Get a list of profiles that are available for the current user.
-	 * 
+	 * Get a list of profiles that are available for the security token.
+	 *
+	 * @param securityToken securityToken for which profiles should be retrieved.
+	 *
 	 * @return the list of profiles.
 	 */
-	List<Profile> getProfiles();
+	List<Profile> getProfiles(String securityToken);
 }

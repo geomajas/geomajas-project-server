@@ -32,10 +32,10 @@ public class StubProfileService implements ProfileService {
 	@Autowired
 	private TerritoryService groupService;
 	
-	public List<Profile> getProfiles() {
+	public List<Profile> getProfiles(String token) {
 		ArrayList<Profile> profiles = new ArrayList<Profile>();
 		
-		
+
 		Profile admin = new Profile();
 		admin.setRole(Role.ADMINISTRATOR);
 		admin.setId(UUID.randomUUID().toString());
@@ -79,7 +79,7 @@ public class StubProfileService implements ProfileService {
 	 * @return the profile
 	 */
 	public Profile getProfileByRole(Role role) {
-		for (Profile p : getProfiles()) {
+		for (Profile p : getProfiles(null)) {
 			if (p.getRole().equals(role)) {
 				return p;
 			}

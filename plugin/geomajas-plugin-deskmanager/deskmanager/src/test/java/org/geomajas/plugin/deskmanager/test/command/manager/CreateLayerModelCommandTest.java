@@ -72,7 +72,7 @@ public class CreateLayerModelCommandTest {
 	public void setup() throws Exception {
 		// First profile in list is admin
 		userToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				profileService.getProfiles().get(0));
+				profileService.getProfiles(null).get(0));
 		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
 				DeskmanagerSecurityService.createGuestProfile());
 

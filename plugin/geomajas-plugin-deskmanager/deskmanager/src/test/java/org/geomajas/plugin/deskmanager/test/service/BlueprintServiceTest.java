@@ -54,7 +54,7 @@ public class BlueprintServiceTest {
 	public void testLoadBlueprints() throws Exception {
 
 		String token = ((DeskmanagerSecurityService) securityService).registerRole(
-				RetrieveRolesRequest.MANAGER_ID, profileService.getProfiles().get(1));
+				RetrieveRolesRequest.MANAGER_ID, profileService.getProfiles(null).get(1));
 		securityManager.createSecurityContext(token);
 
 		List<Blueprint> blueprints = blueprintService.getBlueprints();

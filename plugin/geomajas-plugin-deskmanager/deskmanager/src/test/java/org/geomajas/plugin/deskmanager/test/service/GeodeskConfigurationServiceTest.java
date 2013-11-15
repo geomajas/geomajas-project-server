@@ -78,8 +78,8 @@ public class GeodeskConfigurationServiceTest {
 	@Before
 	public void setup() throws Exception {
 		// First profile in list is admin
-		String token = ((DeskmanagerSecurityService) securityService).registerRole("42", profileService.getProfiles()
-				.get(0));
+		String token = ((DeskmanagerSecurityService) securityService).registerRole("42",
+				profileService.getProfiles(null).get(0));
 		// Log in
 		securityManager.createSecurityContext(token);
 

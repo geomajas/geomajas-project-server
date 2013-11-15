@@ -28,7 +28,25 @@ public class RetrieveRolesRequest implements CommandRequest {
 	
 	private String locale;
 
-	public static final String COMMAND = "command.deskmanager.security.RetrieveRolesCommand"; 
+	private String securityToken;
+
+	/**
+	 * Get the security token to retrieve roles for.
+	 * @return the token
+	 */
+	public String getSecurityToken() {
+		return securityToken;
+	}
+
+	/**
+	 * Set the security token to retrieve roles for.
+	 * @param securityToken the token
+	 */
+	public void setSecurityToken(String securityToken) {
+		this.securityToken = securityToken;
+	}
+
+	public static final String COMMAND = "command.deskmanager.security.RetrieveRolesCommand";
 
 	
 	/**
