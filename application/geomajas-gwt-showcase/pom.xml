@@ -464,6 +464,7 @@
 				</configuration>
 			</plugin>
 
+<!--
 			<plugin>
 				<groupId>com.cloudbees</groupId>
 				<artifactId>bees-maven-plugin</artifactId>
@@ -474,6 +475,7 @@
 					<secret>${bees.secret}</secret>
 				</configuration>
 			</plugin>
+-->
 
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
