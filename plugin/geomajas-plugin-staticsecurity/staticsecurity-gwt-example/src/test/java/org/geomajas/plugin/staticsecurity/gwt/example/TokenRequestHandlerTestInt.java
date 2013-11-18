@@ -86,8 +86,8 @@ public class TokenRequestHandlerTestInt {
 		// login in using faulty user name/login combination
 		WebElement userName = driver.findElement(By.name("userName"));
 		WebElement password = driver.findElement(By.name("password"));
-		WebElement login = driver.findElement(By.xpath("//*[@aria-label='Log in']"));
-		WebElement reset = driver.findElement(By.xpath("//*[@aria-label='Reset']"));
+		WebElement login = driver.findElement(By.xpath("//*[contains(.,'Log in')]"));
+		WebElement reset = driver.findElement(By.xpath("//*[contains(.,'Reset')]"));
 		userName.sendKeys("blabla");
 		password.sendKeys("blabla");
 		login.click();
@@ -149,7 +149,7 @@ public class TokenRequestHandlerTestInt {
 		Assert.assertEquals("user: Luc Van Lierde", user.getText());
 		elements = driver.findElements(By.xpath(LAYER_RASTER_XPATH));
 		Assert.assertFalse(elements.isEmpty()); // there should be a raster layer
-		WebElement blabla = driver.findElement(By.xpath("//*[@aria-label='blabla']")); // blabla button
+		WebElement blabla = driver.findElement(By.xpath("//*[contains(.,'blabla')]")); // blabla button
 		Assert.assertNotNull(blabla); // should exist
 		Assert.assertFalse(blabla.getAttribute("style").contains("visibility: hidden")); // and not invisible
 		// login window should be gone
@@ -157,7 +157,7 @@ public class TokenRequestHandlerTestInt {
 		// expecting approx 30 command invocations
 		commandCountAssert.assertBetween(20, 40);
 
-		WebElement logout = driver.findElement(By.xpath("//*[@aria-label='Log out']"));
+		WebElement logout = driver.findElement(By.xpath("//*[contains(.,'Log out')]"));
 		logout.click();
 		// the login window should appear
 		wait.until(new ExpectedCondition<Boolean>() {
@@ -173,7 +173,7 @@ public class TokenRequestHandlerTestInt {
 		// login as other user
 		userName = driver.findElement(By.name("userName"));
 		password = driver.findElement(By.name("password"));
-		login = driver.findElement(By.xpath("//*[@aria-label='Log in']"));
+		login = driver.findElement(By.xpath("//*[contains(.,'Log in')]"));
 		userName.sendKeys("marino");
 		password.sendKeys("marino");
 		login.click();
@@ -186,7 +186,7 @@ public class TokenRequestHandlerTestInt {
 		});
 		source = driver.getPageSource();
 		Assert.assertFalse(source.contains(LAYER_VECTOR));
-		blabla = driver.findElement(By.xpath("//*[@aria-label='blabla']"));
+		blabla = driver.findElement(By.xpath("//*[contains(.,'blabla')]"));
 		Assert.assertTrue(blabla.getAttribute("style").contains("visibility: hidden"));
 	}
 
