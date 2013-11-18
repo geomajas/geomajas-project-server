@@ -1,22 +1,13 @@
 /*
- * Ktunaxa Referral Management System.
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright (C) see version control system
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.layer.hibernate;
 
 import java.text.DateFormat;
