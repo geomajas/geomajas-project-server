@@ -1,9 +1,0 @@
-// contrived test
-test.AllMethodsUsed::1.2.3
-// comment/uncomment following line to verify check on things removed from API
-//test.AllMethodsUsed:Object getSomething():1.2.3
-test.AllMethodsUsed:void doSomething():1.2.3
-test.AllMethodsUsed:void newMethod():1.2.3
-test.AllMethodsUsed:void oldMethod():1.2.3
-test.AnInterface::1.2.3
-test.AnInterface:String getString():1.2.3

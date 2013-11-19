@@ -1,1 +1,0 @@
-// Geomajas rasterizing-gwt-example-jar API, version 1.0.0

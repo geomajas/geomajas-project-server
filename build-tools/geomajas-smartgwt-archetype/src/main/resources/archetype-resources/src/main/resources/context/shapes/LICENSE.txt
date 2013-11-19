@@ -1,5 +1,0 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-The shape-files within this folder come from Natural Earth, and are free for use in any context:
-http://www.naturalearthdata.com/about/terms-of-use/

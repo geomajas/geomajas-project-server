@@ -1,6 +1,0 @@
-<binding name="binding" package="org.geomajas.sld" trim-whitespace="true">
-  <include path="sldBinding.xml"/>
-  <include path="_1999_xlinkBinding.xml"/>
-  <include path="ogcBinding.xml"/>
-  <include path="gmlBinding.xml"/>
-</binding>

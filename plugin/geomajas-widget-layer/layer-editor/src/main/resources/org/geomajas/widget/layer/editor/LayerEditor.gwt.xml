@@ -1,6 +1,0 @@
-<module>
-  	<inherits name="org.geomajas.plugin.deskmanager.Manager"/>
-	 
-	<source path="client" />
-	<entry-point class='org.geomajas.widget.layer.editor.client.LayerEditor' />
-</module>

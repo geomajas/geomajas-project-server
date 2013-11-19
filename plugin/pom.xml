@@ -12,45 +12,36 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.9</version>
+		<groupId>org.geomajas.project</groupId>
+		<artifactId>geomajas-project-server</artifactId>
+		<version>1.14.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas</groupId>
-	<artifactId>geomajas-plugin</artifactId>
-	<version>dummy-SNAPSHOT</version>
+	<groupId>org.geomajas.server</groupId>
+	<artifactId>geomajas-server-plugin-all</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas plugins</name>
-	<description>Grouping of Geomajas plugins</description>
+	<name>Geomajas server plugins</name>
+	<description>Grouping of Geomajas server plugins</description>
 
 	<modules>
-		<module>geomajas-layer-common</module>
-		<module>geomajas-layer-geotools</module>
-		<module>geomajas-layer-google</module>
-		<module>geomajas-layer-hibernate</module>
-		<module>geomajas-layer-openstreetmap</module>
-		<module>geomajas-layer-tms</module>
-		<module>geomajas-layer-wms</module>
-		<module>geomajas-plugin-caching</module>
-		<module>geomajas-plugin-deskmanager</module>
-		<module>geomajas-plugin-editing</module>
-		<module>geomajas-plugin-geocoder</module>
-		<module>geomajas-plugin-javascript-api</module>
-		<module>geomajas-plugin-printing</module>
-		<module>geomajas-plugin-profiling</module>
-		<module>geomajas-plugin-rasterizing</module>
-		<module>geomajas-plugin-reporting</module>
-		<module>geomajas-plugin-runtimeconfig</module>
-		<module>geomajas-plugin-staticsecurity</module>
-		<module>geomajas-plugin-vendorspecificpipeline</module>
-		<module>geomajas-plugin-wmsclient</module>
-		<module>geomajas-widget-advancedviews</module>
-		<module>geomajas-widget-featureinfo</module>
-		<module>geomajas-widget-layer</module>
-		<module>geomajas-widget-searchandfilter</module>
-		<module>geomajas-widget-utility</module>
-		<module>geomajas-widget-puregwt-core</module>
+		<module>cache</module>
+		<module>face-rest</module>
+		<module>geocoder</module>
+		<module>profiling</module>
+		<module>layer-wms</module>
+		<module>rasterizing</module>
+		<module>reporting</module>
+		<module>staticsecurity</module>
+		<module>vendorspecificpipeline</module>
+		<module>layer-common</module>
+		<module>layer-geotools</module>
+		<module>layer-googlemaps</module>
+		<module>layer-hibernate</module>
+		<module>layer-openstreetmap</module>
+		<module>layer-tms</module>
+		<module>printing</module>
+		<module>runtimeconfig</module>
+		<module>deskmanager</module>
 	</modules>
 	
 </project>

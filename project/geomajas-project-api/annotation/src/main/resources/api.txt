@@ -1,5 +1,0 @@
-// geomajas-project-api-annotation module API, 1.0.0
-org.geomajas.annotation.Api::1.0.0
-org.geomajas.annotation.ExpectAlternatives::1.0.0
-org.geomajas.annotation.FutureApi::1.0.0
-org.geomajas.annotation.UserImplemented::1.0.0

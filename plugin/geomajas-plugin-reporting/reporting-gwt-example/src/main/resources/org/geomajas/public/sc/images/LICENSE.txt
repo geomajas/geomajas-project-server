@@ -1,8 +1,0 @@
-pdf.png comes from wikipedia and has a Creative Commons Attribution-ShareAlike License,
-see http://en.wikipedia.org/wiki/PDF
-
-report.png: free for public use,
-see http://www.softicons.com/free-icons/toolbar-icons/rinoa-icon-free-set-by-creative-9-design/report-icon
-
-LibreOfficeWriter.png icon has a Creative Commons Attribution-ShareAlike License,
-see http://wiki.documentfoundation.org/File:LibreOffice_icons_256.png

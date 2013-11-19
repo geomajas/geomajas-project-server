@@ -1,3 +1,0 @@
-// geomajas-layer-google module GWT add-on, 1.8.0
-org.geomajas.layer.google.gwt.client.GoogleAddon::1.8.0
-org.geomajas.layer.google.gwt.client.GoogleAddon:GoogleAddon(String, MapWidget, MapType, boolean, ):1.8.0
