@@ -91,6 +91,10 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-runtimeconfig</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -108,7 +112,7 @@
 		<!-- Need to depend on printing plugin because we override the print service to inject our own configuration -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing</artifactId>
+			<artifactId>geomajas-plugin-print</artifactId>
 		</dependency>
 
 		<!-- Dependencies for dynamic layers -->
@@ -137,23 +141,6 @@
 			<artifactId>gt-data</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-runtimeconfig-gwt</artifactId>
-		</dependency>
-
-
-		<!-- Google dependencies -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
