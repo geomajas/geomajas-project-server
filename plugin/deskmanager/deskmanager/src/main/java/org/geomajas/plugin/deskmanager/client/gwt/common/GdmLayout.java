@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.client.gwt.common;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Utility class to change default behaviour of the deskmanager layouts.
@@ -70,7 +69,7 @@ public final class GdmLayout {
 	/**
 	 * Default loading logo.
 	 */
-	public static String loadingLogo = WidgetLayout.loadingScreenLogo;
+	public static String loadingLogo = "";
 
 	/**
 	 * Version of the application.

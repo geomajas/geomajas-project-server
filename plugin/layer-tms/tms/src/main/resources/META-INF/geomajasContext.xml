@@ -26,12 +26,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${tms-layer-backend-version}" />
+		<property name="backendVersion" value="${project.version}" />
 		<property name="optionalDependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="caching" />
-					<property name="version" value="${tms-layer-caching-version}" />
+					<property name="version" value="${project.version}" />
 				</bean>
 			</list>
 		</property>
