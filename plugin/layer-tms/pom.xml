@@ -42,14 +42,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${tms-layer-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-server-plugin-cache-parent</artifactId>
 				<version>${tms-layer-cache-version}</version>
