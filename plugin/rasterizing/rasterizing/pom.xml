@@ -10,7 +10,8 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-plugin-rasterizing-all</artifactId>
@@ -48,7 +49,7 @@
 			<artifactId>geomajas-testdata</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
@@ -59,12 +60,12 @@
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-api</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-render</artifactId>
@@ -74,12 +75,12 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-svg</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-process-feature</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-process</artifactId>
@@ -144,15 +145,15 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>org/geomajas/plugin/rasterizing/rasterizing-service.xml</include>
-				</includes>	
+				</includes>
 			</testResource>
 			<testResource>
 				<directory>src/test/resources</directory>
 				<excludes>
 					<exclude>org/geomajas/plugin/rasterizing/rasterizing-service.xml</exclude>
-				</excludes>	
+				</excludes>
 			</testResource>
-		</testResources>	
+		</testResources>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -171,6 +172,35 @@
 	</build>
 
 	<profiles>
+		<!--  include sources in build -->
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.java</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<!--  no sources needed in eclipse -->
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
 		<profile>
 			<id>windows</id>
 			<properties>
@@ -181,7 +211,7 @@
 					<family>Windows</family>
 				</os>
 			</activation>
-   		</profile>
+		</profile>
 		<profile>
 			<id>hudson</id>
 			<activation>
@@ -191,6 +221,6 @@
 				<image.profile>hudson</image.profile>
 			</properties>
 		</profile>
-	</profiles>	
+	</profiles>
 
 </project>
