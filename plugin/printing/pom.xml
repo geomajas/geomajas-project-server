@@ -12,12 +12,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-server-plugin-all</artifactId>
+		<artifactId>geomajas-server-plugin-parent</artifactId>
 		<version>1.14.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-server-plugin-print-all</artifactId>
+	<artifactId>geomajas-server-plugin-print-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Geomajas simple printing plug-in</name>
 	<description>Geomajas simple printing plug-in</description>
@@ -56,7 +56,7 @@
 		<dependencies>
             <dependency>
             <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-server-plugin-rasterizing-all</artifactId>
+            <artifactId>geomajas-server-plugin-rasterizing-parent</artifactId>
             <version>${printing-rasterizing-version}</version>
             <type>pom</type>
             <scope>import</scope>
@@ -91,23 +91,23 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-hibernate-all</artifactId>
-				<version>1.9.0</version>
+				<artifactId>geomajas-server-layer-hibernate-parent</artifactId>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.10.0</version>
+				<artifactId>geomajas-server-layer-geotools-parent</artifactId>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>1.9.0</version>
+				<artifactId>geomajas-server-layer-wms-parent</artifactId>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

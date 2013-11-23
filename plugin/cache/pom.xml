@@ -13,12 +13,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-server-plugin-all</artifactId>
+		<artifactId>geomajas-server-plugin-parent</artifactId>
 		<version>1.14.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-server-plugin-cache-all</artifactId>
+	<artifactId>geomajas-server-plugin-cache-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Cache plug-in</name>
 	<description>Cache plug-in grouping module</description>
@@ -89,8 +89,8 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
-				<version>1.8.0</version>
+				<artifactId>geomajas-server-plugin-staticsecurity-parent</artifactId>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

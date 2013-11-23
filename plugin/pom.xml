@@ -18,7 +18,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
-	<artifactId>geomajas-server-plugin-all</artifactId>
+	<artifactId>geomajas-server-plugin-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Geomajas server plugins</name>
 	<description>Grouping of Geomajas server plugins</description>

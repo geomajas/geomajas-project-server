@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-server-plugin-all</artifactId>
+		<artifactId>geomajas-server-plugin-parent</artifactId>
 		<version>1.14.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-server-plugin-deskmanager-all</artifactId>
+	<artifactId>geomajas-server-plugin-deskmanager-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Geomajas Deskmanager server plugin grouping module</name>
 
@@ -43,21 +43,21 @@
 
 			<dependency>
 				<groupId>org.eclipse.jetty.aggregate</groupId>
-				<artifactId>jetty-all</artifactId>
+				<artifactId>jetty-parent</artifactId>
 				<version>7.2.0.v20101020</version>
 			</dependency>
 
 			<!--######### Geomajas: the plugins ######### -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-layer-geotools-all</artifactId>
+				<artifactId>geomajas-server-layer-geotools-parent</artifactId>
 				<version>${gdm-plugin-geotools-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-layer-wms-all</artifactId>
+				<artifactId>geomajas-server-layer-wms-parent</artifactId>
 				<version>${gdm-plugin-wms-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -70,14 +70,14 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-plugin-runtimeconfig-all</artifactId>
+				<artifactId>geomajas-server-plugin-runtimeconfig-parent</artifactId>
 				<version>${gdm-plugin-runtimeconfig-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-layer-hibernate-all</artifactId>
+				<artifactId>geomajas-server-layer-hibernate-parent</artifactId>
 				<version>${gdm-plugin-hibernate-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -86,7 +86,7 @@
 			<!-- Needed because of cache -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-plugin-staticsecurity-all</artifactId>
+				<artifactId>geomajas-server-plugin-staticsecurity-parent</artifactId>
 				<version>${gdm-plugin-staticsecurity-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -94,7 +94,7 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-plugin-print-all</artifactId>
+				<artifactId>geomajas-server-plugin-print-parent</artifactId>
 				<version>${gdm-plugin-printing-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
