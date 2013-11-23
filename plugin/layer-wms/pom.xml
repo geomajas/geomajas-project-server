@@ -61,15 +61,6 @@
 				<artifactId>geomajas-plugin-layer-common</artifactId>
 				<version>${wms-layer-common-version}</version>
 			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${wms-layer-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-server-plugin-cache-all</artifactId>

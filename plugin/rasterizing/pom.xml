@@ -39,14 +39,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${rasterizing-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-server-plugin-cache-all</artifactId>
 				<version>${rasterizing-cache-version}</version>

@@ -46,13 +46,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${google-layer-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
 				<version>${google-layer-osm-version}</version>

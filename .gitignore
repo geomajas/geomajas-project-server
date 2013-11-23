@@ -10,3 +10,6 @@ listing/
 *.versionsBackup
 *.patch
 .settings.xml
+.project
+.classpath
+.settings
