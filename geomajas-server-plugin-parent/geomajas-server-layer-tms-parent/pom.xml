@@ -33,42 +33,6 @@
 		</developer>
 	</developers>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-tms</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-plugin-cache-parent</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-layer-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
- 			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpcomponents-version}</version>
-			</dependency>
-			
-	 		<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>${httpcomponents-version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<modules>
 		<module>geomajas-layer-tms</module>
 	</modules>

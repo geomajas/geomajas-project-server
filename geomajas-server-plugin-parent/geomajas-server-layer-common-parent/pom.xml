@@ -9,7 +9,8 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-server-plugin-parent</artifactId>
@@ -32,31 +33,6 @@
 			</roles>
 		</developer>
 	</developers>
-
-	<dependencyManagement>
-		<dependencies>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-server-plugin-cache-parent</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
- 			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.2.1</version>
-			</dependency>
-			
-	 		<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>4.2.1</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<modules>
 		<module>geomajas-plugin-layer-common</module>

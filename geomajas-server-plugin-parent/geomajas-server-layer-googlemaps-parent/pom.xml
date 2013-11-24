@@ -43,43 +43,6 @@
 		</developer>
 	</developers>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-openstreetmap</artifactId>
-				<version>${google-layer-osm-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-googlemaps</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-googlemaps</artifactId>
-				<classifier>sources</classifier>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>xml-apis</groupId>
-				<artifactId>xml-apis</artifactId>
-				<version>1.3.04</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>1.7</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.2.2</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
 	<modules>
 		<module>geomajas-layer-googlemaps</module>
 	</modules>

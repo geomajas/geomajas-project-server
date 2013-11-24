@@ -10,7 +10,8 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-server-plugin-parent</artifactId>
@@ -22,7 +23,8 @@
 	<packaging>pom</packaging>
 	<name>geocoder server plug-in parent</name>
 	<description>geocoder
-		server plug-in grouping module</description>
+		server plug-in grouping module
+	</description>
 
 	<developers>
 		<developer>
@@ -35,58 +37,6 @@
 		</developer>
 	</developers>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder</artifactId>
-				<version>${project.version}</version>
-				<classifier>sources</classifier>
-			</dependency>
-			<dependency>
-				<groupId>org.geonames</groupId>
-				<artifactId>geonames-ws</artifactId>
-				<version>1.0.4</version>
-			</dependency>
-			<dependency>
-				<groupId>jdom</groupId>
-				<artifactId>jdom</artifactId>
-				<version>1.0</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>xml-apis</groupId>
-				<artifactId>xml-apis</artifactId>
-				<version>1.3.04</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>1.7</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.2.2</version>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-lgpl</artifactId>
-				<version>1.6.4</version>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-lgpl</artifactId>
-				<version>1.6.4</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
 	<modules>
 		<module>geomajas-plugin-geocoder</module>
 	</modules>

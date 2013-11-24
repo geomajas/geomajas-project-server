@@ -9,7 +9,8 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-server-plugin-parent</artifactId>
@@ -22,21 +23,9 @@
 	<name>Geomajas profiling plug-in parent</name>
 	<description>Geomajas profiling plug-in grouping module</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-profiling-all</artifactId>
-				<version>1.0.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
 	<modules>
 		<module>geomajas-plugin-profiling</module>
-  </modules>
+	</modules>
 
 	<profiles>
 		<profile>

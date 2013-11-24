@@ -9,7 +9,8 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -27,7 +28,7 @@
 		developers to add maps and other geographic data capabilities to their web applications.
 
 		Dependencies for the back-end, specifying back-end version and it's most important dependencies.
-		
+
 		When this is combined with geomajas-dep to use the snapshot back-end, then this dependency needs to be
 		mentioned first in the pom.
 	</description>
@@ -51,27 +52,8 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-api-all</artifactId>
-				<version>1.0.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-all</artifactId>
-				<version>1.2.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-geometry-all</artifactId>
-				<version>1.1.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+			<!-- === Server dependencies === -->
+			<!-- provide -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
@@ -117,10 +99,31 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
-				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- depend -->
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-api-all</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-sld-all</artifactId>
+				<version>1.2.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-geometry-all</artifactId>
+				<version>1.1.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
@@ -145,7 +148,7 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring-version}</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
@@ -157,25 +160,21 @@
 				<artifactId>cglib-nodep</artifactId>
 				<version>2.2</version>
 			</dependency>
-
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
 				<version>1.0.0.GA</version>
 			</dependency>
-
 			<dependency>
 				<groupId>xml-apis</groupId>
 				<artifactId>xml-apis</artifactId>
 				<version>1.3.04</version>
 			</dependency>
-
 			<dependency>
 				<groupId>javax.persistence</groupId>
 				<artifactId>persistence-api</artifactId>
 				<version>1.0</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
@@ -192,7 +191,7 @@
 				<artifactId>geronimo-activation_1.1_spec</artifactId>
 				<version>1.0</version>
 			</dependency>
-			
+
 			<!-- GEOTOOLS -->
 			<dependency>
 				<groupId>com.vividsolutions</groupId>
@@ -219,7 +218,7 @@
 				<artifactId>gt-cql</artifactId>
 				<version>${geotools-ecql-fix-version}</version>
 			</dependency>
- 			<dependency>
+			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-epsg-hsql</artifactId>
 				<version>${geotools-version}</version>
@@ -347,6 +346,463 @@
 				<version>1.0.0</version>
 			</dependency>
 
+
+			<!-- === geomajas-server-face-rest === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-rest</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools.xsd</groupId>
+				<artifactId>gt-xsd-kml</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+
+			<!-- === geomajas-server-layer-common === -->
+			<!-- provide -->
+			<dependency>
+				<artifactId>geomajas-plugin-layer-common</artifactId>
+				<version>${project.version}</version>
+				<groupId>org.geomajas.plugin</groupId>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>4.2.2</version>
+			</dependency>
+
+			<!-- === geomajas-server-layer-geotools === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.opengeo</groupId>
+				<artifactId>geodb</artifactId>
+				<version>${geodb-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>14.0</version>
+			</dependency>
+
+			<!-- geomajas-layer-server-googlemaps -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-googlemaps</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+
+			<!-- === geomajas-server-layer-hibernate === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-hibernate</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.hibernatespatial</groupId>
+				<artifactId>hibernate-spatial</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernatespatial</groupId>
+				<artifactId>hibernate-spatial-postgis</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>3.5.2-Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-annotations</artifactId>
+				<version>3.5.2-Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-cglib-repack</artifactId>
+				<version>2.1_3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.0.2.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.postgis</groupId>
+				<artifactId>postgis-jdbc</artifactId>
+				<version>1.1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>8.4-701.jdbc3</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>1.8.0.7</version>
+			</dependency>
+
+
+			<!-- === geomajas-server-layer-openstreetmap === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+
+			<!-- === geomajas-server-layer-tms === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-tms</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+
+			<!-- === geomajas-server-layer-wms === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- dependency -->
+			<dependency>
+				<groupId>xpp3</groupId>
+				<artifactId>xpp3</artifactId>
+				<version>1.1.4c</version>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-cache === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-cache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-cache-infinispan</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>com.twmacinta</groupId>
+				<artifactId>fast-md5</artifactId>
+				<version>2.7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.infinispan</groupId>
+				<artifactId>infinispan-core</artifactId>
+				<version>5.1.0.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>org.infinispan</groupId>
+				<artifactId>infinispan-cachestore-jdbm</artifactId>
+				<version>5.1.0.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>org.rhq.helpers</groupId>
+				<artifactId>rhq-pluginAnnotations</artifactId>
+				<version>3.0.4</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-deskmanager === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-deskmanager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-deskmanager</artifactId>
+				<type>test-jar</type>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.tuckey</groupId>
+				<artifactId>urlrewritefilter</artifactId>
+				<version>4.0.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-wfs</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-wms</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>1.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-net</groupId>
+				<artifactId>commons-net</artifactId>
+				<version>3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.11.0.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>3.5.2-Final</version>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-geocoder === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geocoder</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geonames</groupId>
+				<artifactId>geonames-ws</artifactId>
+				<version>1.0.4</version>
+			</dependency>
+			<dependency>
+				<groupId>jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-lgpl</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-lgpl</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-print === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-print</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>2.1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>jpedal</groupId>
+				<artifactId>jpedal</artifactId>
+				<version>4.45-b-105</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.media</groupId>
+				<artifactId>jai-core</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.media</groupId>
+				<artifactId>jai_codec</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.0.1</version>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-profiling === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-profiling</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-profiling-all</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- geomajas-server-rasterizing -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-process</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-process-feature</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+
+			<!-- geomajas-server-plugin-reporting  -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-reporting</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>net.sf.jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>4.1.2</version>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-runtimeconfig === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-runtimeconfig</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<!-- === geomajas-server-plugin-staticsecurity === -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity-ldap</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>com.unboundid</groupId>
+				<artifactId>unboundid-ldapsdk</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+
+			<!-- geomajas-server-plugin-vendorspecificpipeline -->
+			<!-- provide -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-vendorspecificpipeline</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- depend -->
+			<dependency>
+				<groupId>com.jolbox</groupId>
+				<artifactId>bonecp</artifactId>
+				<version>0.7.1-rc3</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -355,7 +811,6 @@
 		<geotools-ecql-fix-version>9.2-GEOT-4211</geotools-ecql-fix-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<geodb-version>0.7</geodb-version>
-		<httpcomponents-version>4.2.1</httpcomponents-version>
 	</properties>
 
 </project>
