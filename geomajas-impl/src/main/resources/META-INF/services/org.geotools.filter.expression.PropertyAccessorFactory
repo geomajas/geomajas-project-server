@@ -1,0 +1,2 @@
+org.geomajas.internal.filter.FeatureModelPropertyAccessorFactory
+org.geomajas.internal.filter.InternalFeaturePropertyAccessorFactory

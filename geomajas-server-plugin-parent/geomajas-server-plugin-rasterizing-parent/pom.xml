@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-server-plugin-parent</artifactId>
+		<version>1.14.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas.plugin</groupId>
+	<artifactId>geomajas-server-plugin-rasterizing-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>rasterizing plug-in</name>
+	<description>rasterizing plug-in grouping module</description>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api</artifactId>
+				<version>${rasterizing-backend-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-impl</artifactId>
+				<version>${rasterizing-backend-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-server-plugin-cache-parent</artifactId>
+				<version>${rasterizing-cache-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-server-layer-wms-parent</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.2.2</version>
+			</dependency>
+ 			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+   			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>xpp3</groupId>
+				<artifactId>xpp3</artifactId>
+				<version>1.1.4c</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-jdbc</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-process</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-process-feature</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<modules>
+		<module>geomajas-plugin-rasterizing</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+</project>

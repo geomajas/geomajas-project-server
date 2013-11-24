@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-server-plugin-parent</artifactId>
+		<version>1.14.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas.plugin</groupId>
+	<artifactId>geomajas-server-plugin-cache-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>Cache plug-in</name>
+	<description>Cache plug-in grouping module</description>
+
+	<developers>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<modules>
+		<module>geomajas-plugin-cache</module>
+		<module>geomajas-plugin-cache-infinispan</module>
+  </modules>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-cache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-cache-infinispan</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.twmacinta</groupId>
+				<artifactId>fast-md5</artifactId>
+				<version>2.7.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss</groupId>
+				<artifactId>jboss-serialization</artifactId>
+				<version>1.0.4.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>trove</groupId>
+				<artifactId>trove</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.infinispan</groupId>
+				<artifactId>infinispan-core</artifactId>
+				<version>5.1.0.FINAL</version>
+			</dependency>
+ 			<dependency>
+				<groupId>org.infinispan</groupId>
+				 <artifactId>infinispan-cachestore-jdbm</artifactId>
+				<version>5.1.0.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>org.rhq.helpers</groupId>
+				<artifactId>rhq-pluginAnnotations</artifactId>
+				<version>3.0.4</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-server-plugin-staticsecurity-parent</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>geomajas-plugin-cache-documentation</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+</project>
