@@ -28,7 +28,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-server-plugin-rasterizing-parent</artifactId>
-				<version>${reporting-rasterizing-version}</version>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -48,7 +48,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
-				<version>${reporting-spring-version}</version>
+				<version>${spring-version}</version>
 			</dependency>
 
 			<dependency>

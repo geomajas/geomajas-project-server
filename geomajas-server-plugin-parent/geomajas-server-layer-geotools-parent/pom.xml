@@ -51,11 +51,6 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-geotools-gwt-example-jar</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.opengeo</groupId>
 				<artifactId>geodb</artifactId>
 				<version>${geodb-version}</version>
