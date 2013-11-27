@@ -27,7 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +55,11 @@ public class ShapeFileServiceTest {
 	public void testImportShapeFile() throws Exception {
 		URL url = ClassLoader.getSystemResource("shp/werken2013.shp");
 
-		Assert.assertTrue(shapeFileService.importShapeFile(url.getFile(), UUID.randomUUID().toString()));
+		String path = url.getPath();
+		path = URLDecoder.decode(path, "utf-8");
+		path = new File(path).getPath();
+
+		Assert.assertTrue(shapeFileService.importShapeFile(path, UUID.randomUUID().toString()));
 	}
 
 	@Test
