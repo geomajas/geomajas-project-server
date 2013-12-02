@@ -41,13 +41,13 @@
 
 
 	<modules>
-		<module>geomajas-api</module>
-		<module>geomajas-api-experimental</module>
-		<module>geomajas-impl</module>
-		<module>geomajas-common-servlet</module>
-		<module>geomajas-command</module>
-		<module>geomajas-server-plugin-parent</module>
-		<module>geomajas-testdata</module>
+		<module>api</module>
+		<module>api-experimental</module>
+		<module>impl</module>
+		<module>common-servlet</module>
+		<module>command</module>
+		<module>plugin</module>
+		<module>testdata</module>
 	</modules>
 
 	<dependencyManagement>
