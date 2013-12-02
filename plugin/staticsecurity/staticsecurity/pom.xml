@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-staticsecurity</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas staticsecurity plug-in core</name>
-	<description>Geomajas security plug-in which allows all users and policies to be defined as part of spring configuration</description>
+	<name>Geomajas server: Plugin staticsecurity - Implementation</name>
+	<description>Geomajas server: Plugin staticsecurity - Implementation</description>
 
 	<dependencies>
 		<dependency>

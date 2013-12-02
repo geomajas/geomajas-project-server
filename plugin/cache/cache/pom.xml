@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-cache</artifactId>
 	<packaging>jar</packaging>
-	<name>Cache</name>
-	<description>Cache to allow data to be calculated only once and cached for later use.</description>
+	<name>Geomajas server: Plugin cache - Implementation</name>
+	<description>Geomajas server: Plugin cache - Implementation</description>
 
 	<dependencies>
 		<dependency>

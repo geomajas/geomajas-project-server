@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-api-experimental</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas experimental api</name>
-	<description>Geomajas experimental api</description>
+	<name>Geomajas server: Main - experimental api</name>
+	<description>Geomajas server: Main - experimental api</description>
 
 	<dependencies>
 		<dependency>

@@ -21,8 +21,8 @@
 	<artifactId>geomajas-face-rest-documentation</artifactId>
 	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>geomajas-face-rest documentation</name>
-	<description>geomajas-face-rest documentation</description>
+	<name>Geomajas server: REST - Documentation</name>
+	<description>Geomajas server: REST - Documentation</description>
 	
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

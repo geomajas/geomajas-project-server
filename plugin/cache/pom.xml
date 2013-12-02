@@ -21,8 +21,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-cache-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Cache plug-in</name>
-	<description>Cache plug-in grouping module</description>
+	<name>Geomajas server: Plugin cache - Parent</name>
+	<description>Geomajas server: Plugin cache - Parent</description>
 
 	<developers>
 		<developer>

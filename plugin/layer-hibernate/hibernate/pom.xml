@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-hibernate</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using hibernate</name>
-	<description>Geomajas layer model using hibernate</description>
+	<name>Geomajas server: Layer hibernate - Implementation</name>
+	<description>Geomajas server: Layer hibernate - Implementation</description>
 
 	<dependencies>
 		<dependency>

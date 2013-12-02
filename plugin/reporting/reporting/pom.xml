@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-reporting</artifactId>
 	<packaging>jar</packaging>
-	<name>geomajas-plugin-reporting</name>
-	<description>geomajas-plugin-reporting</description>
+	<name>Geomajas server: Plugin reporting - Implementation</name>
+	<description>Geomajas server: Plugin reporting - Implementation</description>
 
 	<dependencies>
 		<dependency>

@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-googlemaps</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using Google Maps</name>
-	<description>Geomajas layer model using Google Maps</description>
+	<name>Geomajas server: Layer googlemaps - Implementation</name>
+	<description>Geomajas server: Layer googlemaps - Implementation</description>
 
 	<dependencies>
 		<dependency>

@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-geocoder</artifactId>
 	<packaging>jar</packaging>
-	<name>geocoder</name>
-	<description>geocoder</description>
+	<name>Geomajas server: Plugin geocoder - Implementation</name>
+	<description>Geomajas server: Plugin geocoder - Implementation</description>
 
 	<dependencies>
 			<dependency>

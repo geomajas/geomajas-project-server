@@ -46,9 +46,28 @@
 		<module>impl</module>
 		<module>common-servlet</module>
 		<module>command</module>
-		<module>plugin</module>
 		<module>testdata</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>plugin</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>skipPlugins</id>
+			<activation>
+				<property>
+					<name>skipPlugins</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
 	<dependencyManagement>
 		<dependencies>

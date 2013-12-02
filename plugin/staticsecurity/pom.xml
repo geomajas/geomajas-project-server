@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-staticsecurity-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas staticsecurity plug-in parent</name>
-	<description>Geomajas static security plug-in</description>
+	<name>Geomajas server: Plugin staticsecurity - Parent</name>
+	<description>Geomajas server: Plugin staticsecurity - Parent</description>
 
 	<developers>
 		<developer>

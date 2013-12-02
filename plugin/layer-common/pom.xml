@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-common-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas common layer tools plug-in</name>
-	<description>Geomajas common layer tools plug-in</description>
+	<name>Geomajas server: Layer common - Parent</name>
+	<description>Geomajas server: Layer common - Parent</description>
 
 	<developers>
 		<developer>

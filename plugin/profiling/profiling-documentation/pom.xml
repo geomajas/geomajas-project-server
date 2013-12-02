@@ -19,10 +19,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>profiling-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>profiling documentation</name>
-	<description>profiling documentation</description>
+	<name>Geomajas server: Plugin profiling - Documentation</name>
+	<description>Geomajas server: Plugin profiling - Documentation</description>
 	
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

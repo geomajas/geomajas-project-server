@@ -10,7 +10,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-deskmanager-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas Deskmanager server plugin grouping module</name>
+	<name>Geomajas server: Plugin deskmanager - Parent</name>
+	<description>Geomajas server: Plugin deskmanager - Parent</description>
 
 	<developers>
 		<developer>

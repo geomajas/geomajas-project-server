@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-profiling-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas profiling plug-in parent</name>
-	<description>Geomajas profiling plug-in grouping module</description>
+	<name>Geomajas server: Plugin profiling - Parent</name>
+	<description>Geomajas server: Plugin profiling - Parent</description>
 
 	<modules>
 		<module>profiling</module>

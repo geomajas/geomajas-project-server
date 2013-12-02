@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-openstreetmap-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas OpenStreetMap layer plug-in</name>
-	<description>Geomajas OpenStreetMap layer plug-in</description>
+	<name>Geomajas server: Layer openstreetmap - Parent</name>
+	<description>Geomajas server: Layer openstreetmap - Parent</description>
 
 	<developers>
 		<developer>

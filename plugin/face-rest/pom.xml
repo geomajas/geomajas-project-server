@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-face-rest-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>geomajas-face-rest plug-in parent</name>
-	<description>geomajas-face-rest plug-in grouping module</description>
+	<name>Geomajas server: REST - Parent</name>
+	<description>Geomajas server: REST - Parent</description>
 
 	<modules>
 		<module>face-rest</module>

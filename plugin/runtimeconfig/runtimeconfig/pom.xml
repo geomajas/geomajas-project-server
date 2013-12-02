@@ -16,8 +16,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-runtimeconfig</artifactId>
 	<packaging>jar</packaging>
-	<name>runtimeconfig</name>
-	<description>runtimeconfig</description>
+	<name>Geomajas server: Plugin runtimeconfig - Implementation</name>
+	<description>Geomajas server: Plugin runtimeconfig - Implementation</description>
 
 	<dependencies>
 		<dependency>

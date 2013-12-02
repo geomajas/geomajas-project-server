@@ -20,8 +20,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-server-plugin-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas server plugins</name>
-	<description>Grouping of Geomajas server plugins</description>
+	<name>Geomajas server: Plugin parent</name>
+	<description>Geomajas server: Plugin parent</description>
 
 	<modules>
 		<module>cache</module>

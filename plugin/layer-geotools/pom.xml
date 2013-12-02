@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-geotools-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas GeoTools layer plug-in</name>
-	<description>Geomajas GeoTools layer plug-in</description>
+	<name>Geomajas server: Layer geotools - Parent</name>
+	<description>Geomajas server: Layer geotools - Parent</description>
 
 	<developers>
 		<developer>

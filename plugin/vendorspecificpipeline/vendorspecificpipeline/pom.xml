@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-vendorspecificpipeline</artifactId>
 	<packaging>jar</packaging>
-	<name>geomajas-plugin-vendorspecificpipeline</name>
-	<description>geomajas-plugin-vendorspecificpipeline</description>
+	<name>Geomajas server: Plugin vendorspecificpipeline - Implementation</name>
+	<description>Geomajas server: Plugin vendorspecificpipeline - Implementation</description>
 
 	<dependencies>
 		<!-- Geomajas -->

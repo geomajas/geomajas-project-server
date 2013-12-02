@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-reporting-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>geomajas-plugin-reporting plug-in parent</name>
-	<description>geomajas-plugin-reporting plug-in grouping module</description>
+	<name>Geomajas server: Plugin reporting - Parent</name>
+	<description>Geomajas server: Plugin reporting - Parent</description>
 
 	<modules>
 		<module>reporting</module>

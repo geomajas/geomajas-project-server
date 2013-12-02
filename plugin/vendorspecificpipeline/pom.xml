@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-vendorspecificpipeline-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>vendorspecificpipeline plug-in parent</name>
-	<description>vendorspecificpipeline plug-in grouping module</description>
+	<name>Geomajas server: Plugin vendorspecificpipeline - Parent</name>
+	<description>Geomajas server: Plugin vendorspecificpipeline - Parent</description>
 
 	<developers>
 		<developer>

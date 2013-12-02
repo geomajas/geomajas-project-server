@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-googlemaps-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas Google layer plug-in</name>
-	<description>Geomajas Google layer plug-in</description>
+	<name>Geomajas server: Layer googlemaps - Parent</name>
+	<description>Geomajas server: Layer googlemaps - Parent</description>
 
 	<developers>
 		<developer>

@@ -18,10 +18,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-tms-documentation</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas TMS layer documentation</name>
-	<description>Geomajas TMS layer documentation</description>
+	<name>Geomajas server: Layer TMS - Documentation</name>
+	<description>Geomajas server: Layer TMS - Documentation</description>
 
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

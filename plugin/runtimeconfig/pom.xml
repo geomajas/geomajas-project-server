@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-runtimeconfig-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>runtime configuration plug-in parent</name>
-	<description>runtime configuration plug-in grouping module</description>
+	<name>Geomajas server: Plugin runtimeconfig - Parent</name>
+	<description>Geomajas server: Plugin runtimeconfig - Parent</description>
 
 	<developers>
 		<developer>

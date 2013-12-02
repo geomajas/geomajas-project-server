@@ -21,10 +21,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-geocoder-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>geocoder server plug-in parent</name>
-	<description>geocoder
-		server plug-in grouping module
-	</description>
+	<name>Geomajas server: Plugin geocoder - Parent</name>
+	<description>Geomajas server: Plugin geocoder - Parent</description>
 
 	<developers>
 		<developer>

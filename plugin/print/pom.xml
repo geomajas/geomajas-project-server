@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-print-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas simple printing plug-in</name>
-	<description>Geomajas simple printing plug-in</description>
+	<name>Geomajas server: Plugin print - Parent</name>
+	<description>Geomajas server: Plugin print - Parent</description>
 
 	<developers>
 		<developer>

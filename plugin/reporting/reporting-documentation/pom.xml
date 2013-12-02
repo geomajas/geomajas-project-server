@@ -19,10 +19,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-reporting-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>geomajas-plugin-reporting documentation</name>
-	<description>geomajas-plugin-reporting documentation</description>
+	<name>Geomajas server: Plugin reporting - Documentation</name>
+	<description>Geomajas server: Plugin reporting - Documentation</description>
 	
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

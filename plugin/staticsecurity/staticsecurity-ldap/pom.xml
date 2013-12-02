@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-staticsecurity-ldap</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas staticsecurity LDAP authentication service</name>
-	<description>Geomajas security plug-in LDAP authentication service</description>
+	<name>Geomajas server: Plugin staticsecurity - LDAP</name>
+	<description>Geomajas server: Plugin staticsecurity - LDAP</description>
 
 	<dependencies>
 		<dependency>

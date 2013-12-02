@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-api</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas core api</name>
-	<description>Geomajas core api</description>
+	<name>Geomajas server: Main - api</name>
+	<description>Geomajas server: Main - api</description>
 
 	<dependencies>
 		<dependency>

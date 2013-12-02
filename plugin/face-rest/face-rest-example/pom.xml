@@ -20,21 +20,9 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-rest-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas REST example application</name>
-	<description>Geomajas REST example application</description>
-	<url>http://www.geomajas.org/</url>
+	<name>Geomajas server: REST - Example</name>
+	<description>Geomajas server: REST - Example</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.13.38</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 
 		<!-- Geomajas dependencies -->

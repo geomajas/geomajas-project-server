@@ -21,8 +21,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-rasterizing</artifactId>
 	<packaging>jar</packaging>
-	<name>rasterizing</name>
-	<description>rasterizing</description>
+	<name>Geomajas server: Plugin rasterizing - Implementation</name>
+	<description>Geomajas server: Plugin rasterizing - Implementation</description>
 
 	<dependencies>
 		<dependency>

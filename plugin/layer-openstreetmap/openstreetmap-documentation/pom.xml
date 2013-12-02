@@ -18,10 +18,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-openstreetmap-documentation</artifactId>
-	<version>1.11.0-SNAPSHOT</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas OpenStreetMap layer documentation</name>
-	<description>Geomajas OpenStreetMap layer documentation</description>
+	<name>Geomajas server: Layer openstreetmap - Documentation</name>
+	<description>Geomajas server: Layer openstreetmap - Documentation</description>
 
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

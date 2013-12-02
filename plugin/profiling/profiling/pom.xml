@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-profiling</artifactId>
 	<packaging>jar</packaging>
-	<name>profiling</name>
-	<description>profiling</description>
+	<name>Geomajas server: Plugin profiling - Implementation</name>
+	<description>Geomajas server: Plugin profiling - Implementation</description>
 
 	<dependencies>
 		<dependency>

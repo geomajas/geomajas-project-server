@@ -20,8 +20,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-cache-infinispan</artifactId>
 	<packaging>jar</packaging>
-	<name>Cache using Infinispan</name>
-	<description>Infinispan cache service.</description>
+	<name>Geomajas server: Plugin cache - Infinispan</name>
+	<description>Geomajas server: Plugin cache - Infinispan</description>
 
 	<dependencies>
 		<dependency>

@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-tms-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas TMS layer plug-in</name>
-	<description>Geomajas TMS layer plug-in</description>
+	<name>Geomajas server: Layer TMS - Parent</name>
+	<description>Geomajas server: Layer TMS - Parent</description>
 
 	<developers>
 		<developer>

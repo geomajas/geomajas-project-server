@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-wms</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using WMS</name>
-	<description>Geomajas layer model using WMS</description>
+	<name>Geomajas server: Layer WMS - Implementation</name>
+	<description>Geomajas server: Layer WMS - Implementation</description>
 
 	<dependencies>
 		<dependency>

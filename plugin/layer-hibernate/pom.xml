@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-hibernate-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas Hibernate layer plug-in parent</name>
-	<description>Geomajas Hibernate layer plug-in</description>
+	<name>Geomajas server: Layer hibernate - Parent</name>
+	<description>Geomajas server: Layer hibernate - Parent</description>
 
 	<developers>
 		<developer>

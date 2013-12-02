@@ -20,8 +20,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-rest</artifactId>
 	<packaging>jar</packaging>
-	<name>geomajas-face-rest</name>
-	<description>geomajas-face-rest</description>
+	<name>Geomajas server: REST - Implementation</name>
+	<description>Geomajas server: REST - Implementation</description>
 
 	<dependencies>
 		<dependency>

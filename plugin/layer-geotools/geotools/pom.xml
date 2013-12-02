@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-geotools</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using Geotools</name>
-	<description>Geomajas layer model using Geotools</description>
+	<name>Geomajas server: Layer geotools - Implementation</name>
+	<description>Geomajas server: Layer geotools - Implementation</description>
 
 	<dependencies>
 		<dependency>

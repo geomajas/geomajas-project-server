@@ -21,8 +21,8 @@
 	<artifactId>geomajas-plugin-cache-documentation</artifactId>
 	<version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Caching documentation</name>
-	<description>Caching documentation</description>
+	<name>Geomajas server: Plugin cache - Documentation</name>
+	<description>Geomajas server: Plugin cache - Documentation</description>
 	
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

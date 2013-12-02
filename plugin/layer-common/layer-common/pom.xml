@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-layer-common</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas common layer tools</name>
-	<description>Geomajas common layer tools</description>
+	<name>Geomajas server: Layer common - Implementation</name>
+	<description>Geomajas server: Layer common - Implementation</description>
 
 	<dependencies>
 		<dependency>

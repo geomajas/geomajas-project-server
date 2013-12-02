@@ -21,8 +21,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-plugin-rasterizing-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>rasterizing plug-in</name>
-	<description>rasterizing plug-in grouping module</description>
+	<name>Geomajas server: Plugin rasterizing - Parent</name>
+	<description>Geomajas server: Plugin rasterizing - Parent</description>
 
 	<modules>
 		<module>rasterizing</module>

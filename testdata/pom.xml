@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-testdata</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas test data</name>
-	<description>Geomajas test data</description>
+	<name>Geomajas server: Main - test data</name>
+	<description>Geomajas server: Main - test data</description>
 
 	<dependencies>
 		<dependency>

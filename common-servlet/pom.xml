@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-common-servlet</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas servlet code common to all faces</name>
-	<description>Geomajas servlet code common to all servlet-based faces</description>
+	<name>Geomajas server: Main - common servlets</name>
+	<description>Geomajas server: Main - common servlets</description>
 
 	<dependencies>
 		<dependency>

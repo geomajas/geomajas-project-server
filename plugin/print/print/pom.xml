@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-print</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas extension for printing</name>
-	<description>Geomajas extension for printing</description>
+	<name>Geomajas server: Plugin print - Implementation</name>
+	<description>Geomajas server: Plugin print - Implementation</description>
 
 	<dependencies>
 		<dependency>

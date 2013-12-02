@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-tms</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using TMS</name>
-	<description>Geomajas layer model using TMS</description>
+	<name>Geomajas server: Layer TMS - Implementation</name>
+	<description>Geomajas server: Layer TMS - Implementation</description>
 
 	<dependencies>
 		<dependency>

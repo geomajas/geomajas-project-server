@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-command</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas commands</name>
-	<description>Geomajas back-end commands</description>
+	<name>Geomajas server: Main - commands</name>
+	<description>Geomajas server: Main - commands</description>
 
 	<dependencies>
 		<dependency>

@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-openstreetmap</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using OpenStreetMap</name>
-	<description>Geomajas layer model using OpenStreetMap</description>
+	<name>Geomajas server: Layer openstreetmap - Implementation</name>
+	<description>Geomajas server: Layer openstreetmap - Implementation</description>
 
 	<dependencies>
 		<dependency>

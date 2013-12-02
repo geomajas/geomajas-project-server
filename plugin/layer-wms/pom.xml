@@ -19,8 +19,8 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-server-layer-wms-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Geomajas WMS layer plug-in</name>
-	<description>Geomajas WMS layer plug-in</description>
+	<name>Geomajas server: Layer WMS - Parent</name>
+	<description>Geomajas server: Layer WMS - Parent</description>
 
 	<developers>
 		<developer>

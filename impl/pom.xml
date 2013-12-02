@@ -19,8 +19,8 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-impl</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas core implementation</name>
-	<description>Geomajas core implementation</description>
+	<name>Geomajas server: Main - Implementation</name>
+	<description>Geomajas server: Main - Implementation</description>
 
 	<dependencies>
 		<dependency>
