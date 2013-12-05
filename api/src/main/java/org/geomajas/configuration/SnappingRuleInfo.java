@@ -44,6 +44,9 @@ public class SnappingRuleInfo implements IsInfo {
 	@NotNull
 	private String layerId;
 
+	@NotNull
+	private boolean priority;
+
 	/**
 	 * Create snapping rule.
 	 */
@@ -104,4 +107,25 @@ public class SnappingRuleInfo implements IsInfo {
 		this.layerId = layerId;
 	}
 
+	/**
+	 * Get value for rule priority.
+	 *
+	 * @return rule priority
+	 * @since 1.14.0
+	 */
+	public boolean isPriority() {
+		return priority;
+	}
+
+	/**
+	 * Set the propiority of this snapping. Priority true will result in this rule being chose above others
+	 * in case of snap conflict.
+	 * Please set one rule with priority true, not more.
+	 *
+	 * @param priority rule priority
+	 * @since 1.14.0
+	 */
+	public void setPriority(boolean priority) {
+		this.priority = priority;
+	}
 }
