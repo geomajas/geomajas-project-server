@@ -35,6 +35,8 @@ public class ScaleInfo implements IsInfo {
 	
 	private boolean pixelPerUnitBased;
 
+	private boolean postConstruct;
+
 	/**
 	 * Default conversion factor between map unit and pixel size (based on meter and 96 DPI).
 	 * @since 1.11.1
@@ -113,6 +115,9 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale value (pix/map unit)
 	 */
 	public double getPixelPerUnit() {
+		if (!postConstruct) {
+			postConstruct();
+		}
 		return pixelPerUnit;
 	}
 
@@ -160,6 +165,9 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale numerator
 	 */
 	public double getNumerator() {
+		if (!postConstruct) {
+			postConstruct();
+		}
 		return numerator;
 	}
 
@@ -179,6 +187,9 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale denominator
 	 */
 	public double getDenominator() {
+		if (!postConstruct) {
+			postConstruct();
+		}
 		return denominator;
 	}
 
@@ -190,6 +201,15 @@ public class ScaleInfo implements IsInfo {
 	 */
 	public void setDenominator(double denominator) {
 		this.denominator = denominator;
+	}
+
+	/**
+	 * Flags if the object has post construct processing done.
+	 * @param postConstruct
+	 * 			true if the post construct is done
+	 */
+	public void setPostConstruct(boolean postConstruct) {
+		this.postConstruct = postConstruct;
 	}
 	
 	/** Finish configuration. */
@@ -208,5 +228,6 @@ public class ScaleInfo implements IsInfo {
 			}
 			setPixelPerUnitBased(false);
 		}
+		postConstruct = true;
 	}
 }
