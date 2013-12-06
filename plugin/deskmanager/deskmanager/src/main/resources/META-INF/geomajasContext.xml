@@ -51,6 +51,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="BSD licence"/>
 					<property name="licenseUrl" value="https://code.google.com/p/urlrewritefilter/source/browse/trunk/LICENSE.txt"/>
 				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="imgscalr"/>
+					<property name="copyright" value="(c) 2011, The Buzz Media, LLC"/>
+					<property name="licenseName" value="ASF 2.0"/>
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				</bean>
 			</list>
 		</property>
 	</bean>
