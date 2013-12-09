@@ -35,6 +35,10 @@ public class ScaleInfo implements IsInfo {
 	
 	private boolean pixelPerUnitBased;
 
+	private boolean postConstructed;
+
+	private double conversionFactor = PIXEL_PER_METER;
+
 	/**
 	 * Default conversion factor between map unit and pixel size (based on meter and 96 DPI).
 	 * @since 1.11.1
@@ -113,6 +117,9 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale value (pix/map unit)
 	 */
 	public double getPixelPerUnit() {
+		if (!postConstructed) {
+			postConstruct();
+		}
 		return pixelPerUnit;
 	}
 
@@ -140,6 +147,9 @@ public class ScaleInfo implements IsInfo {
 	 * @since 1.11.1
 	 */
 	public boolean isPixelPerUnitBased() {
+		if (!postConstructed) {
+			postConstruct();
+		}
 		return pixelPerUnitBased;
 	}
 
@@ -160,6 +170,9 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale numerator
 	 */
 	public double getNumerator() {
+		if (!postConstructed) {
+			postConstruct();
+		}
 		return numerator;
 	}
 
@@ -179,6 +192,9 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale denominator
 	 */
 	public double getDenominator() {
+		if (!postConstructed) {
+			postConstruct();
+		}
 		return denominator;
 	}
 
@@ -191,16 +207,36 @@ public class ScaleInfo implements IsInfo {
 	public void setDenominator(double denominator) {
 		this.denominator = denominator;
 	}
-	
+
+	/**
+	 * Get the conversion factor between map units and pixel size.
+	 *
+	 * @return the conversion factor
+	 * @since 1.14.0
+	 */
+	public double getConversionFactor() {
+		return conversionFactor;
+	}
+
+	/**
+	 * Set the conversion factor betweeen map units and pixel size. Defaults to {@link PIXEL_PER_METER}.
+	 *
+	 * @param conversionFactor the conversion factor
+	 * @since 1.14.0
+	 */
+	public void setConversionFactor(double conversionFactor) {
+		this.conversionFactor = conversionFactor;
+	}
+
 	/** Finish configuration. */
 	@PostConstruct
 	protected void postConstruct() {
 		if (denominator != 0) {
-			setPixelPerUnit(numerator / denominator * PIXEL_PER_METER);
+			setPixelPerUnit(numerator / denominator * conversionFactor);
 			setPixelPerUnitBased(true);
 		} else {
 			if (pixelPerUnit > PIXEL_PER_METER) {
-				setNumerator(pixelPerUnit / PIXEL_PER_METER);
+				setNumerator(pixelPerUnit / conversionFactor);
 				setDenominator(1);
 			} else {
 				setNumerator(1);
@@ -208,5 +244,6 @@ public class ScaleInfo implements IsInfo {
 			}
 			setPixelPerUnitBased(false);
 		}
+		postConstructed = true;
 	}
 }
