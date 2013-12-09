@@ -46,8 +46,8 @@ public class FileUploadController {
 
 	/**
 	 * Uploads a file and persists it with an id. If a targetWidth or targetHeight is passed, the file is assumed to be
-	 * an image and the image will be rescaled to the target size before saving it as png. However, if the image is smaller than
-	 * the target size, it will per saved in its original format.
+	 * an image and the image will be rescaled to the target size before saving it as png.
+	 * However, if the image is smaller than the target size, it will per saved in its original format.
 	 * 
 	 * @param binaryFile
 	 * @param targetWidth
