@@ -141,7 +141,7 @@ public class ConfigurationDtoPostProcessor {
 		RasterLayerInfo info = layer.getLayerInfo();
 		for (ScaleInfo scale : info.getZoomLevels()) {
 			// for raster layers we don't accept x:y notation !
-			if (scale.getDenominator() != 0) {
+			if (scale.isPixelPerUnitBased()) {
 				throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, "Raster layer " + layer.getId()
 						+ " has zoom level " + scale.getNumerator() + ":" + scale.getDenominator()
 						+ " in disallowed x:y notation");

@@ -147,6 +147,9 @@ public class ScaleInfo implements IsInfo {
 	 * @since 1.11.1
 	 */
 	public boolean isPixelPerUnitBased() {
+		if (!postConstructed) {
+			postConstruct();
+		}
 		return pixelPerUnitBased;
 	}
 
