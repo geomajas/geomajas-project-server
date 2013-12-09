@@ -530,7 +530,6 @@ public class ConfigurationDtoPostProcessor {
 				scaleInfo.setDenominator(mapUnitInPixels / pixelPerUnit);
 			}
 		}
-		scaleInfo.setPostConstruct(true);
 	}
 
 	private void checkLayerTree(ClientMapInfo map) throws BeansException {
