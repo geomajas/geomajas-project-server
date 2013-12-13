@@ -212,15 +212,11 @@
 				</os>
 			</activation>
 		</profile>
-		<profile>
-			<id>hudson</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<image.profile>hudson</image.profile>
-			</properties>
-		</profile>
 	</profiles>
+
+	<properties>
+		<image.profile>hudson</image.profile>
+	</properties>
+
 
 </project>
