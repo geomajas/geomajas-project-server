@@ -95,7 +95,7 @@
 
 		<dependency>
 			<groupId>javax.media</groupId>
-			<artifactId>jai-core</artifactId>
+			<artifactId>jai_core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.media</groupId>
