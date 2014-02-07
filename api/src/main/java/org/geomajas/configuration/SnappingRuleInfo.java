@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -43,9 +43,6 @@ public class SnappingRuleInfo implements IsInfo {
 
 	@NotNull
 	private String layerId;
-
-	@NotNull
-	private boolean priority;
 
 	/**
 	 * Create snapping rule.
@@ -105,27 +102,5 @@ public class SnappingRuleInfo implements IsInfo {
 	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
-	}
-
-	/**
-	 * Get value for rule priority.
-	 *
-	 * @return rule priority
-	 * @since 1.14.0
-	 */
-	public boolean isPriority() {
-		return priority;
-	}
-
-	/**
-	 * Set the propiority of this snapping. Priority true will result in this rule being chose above others
-	 * in case of snap conflict.
-	 * Please set one rule with priority true, not more.
-	 *
-	 * @param priority rule priority
-	 * @since 1.14.0
-	 */
-	public void setPriority(boolean priority) {
-		this.priority = priority;
 	}
 }

@@ -1,7 +1,7 @@
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
-  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
   ~
   ~ The program is available in open source according to the GNU Affero
   ~ General Public License. All contributions in this program are covered
@@ -41,7 +41,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geomajas"/>
-					<property name="copyright" value="(c) 2008-2013 Geosparc nv"/>
+					<property name="copyright" value="(c) 2008-2014 Geosparc nv"/>
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
@@ -50,6 +50,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="copyright" value="(c) 2005-2012, Paul Tuckey"/>
 					<property name="licenseName" value="BSD licence"/>
 					<property name="licenseUrl" value="https://code.google.com/p/urlrewritefilter/source/browse/trunk/LICENSE.txt"/>
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="imgscalr"/>
+					<property name="copyright" value="(c) 2011, The Buzz Media, LLC"/>
+					<property name="licenseName" value="ASF 2.0"/>
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				</bean>
 			</list>
 		</property>

@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -44,7 +44,7 @@ public class ScaleInfoEditorTest {
 		ScaleInfo info = (ScaleInfo)o;
 		Assert.assertEquals(1, info.getNumerator(), 0.001);
 		Assert.assertEquals(2000, info.getDenominator(), 0.001);
-		Assert.assertEquals(0, info.getPixelPerUnit(), 0);
+		Assert.assertEquals(1.8890, info.getPixelPerUnit(), 0.001);
 		cdpp.completeScale(info, 10);
 		Assert.assertEquals(0.005, info.getPixelPerUnit(), 0.00001);
 	}
@@ -54,7 +54,7 @@ public class ScaleInfoEditorTest {
 		ScaleInfo info = holder.getScaleInfo();
 		Assert.assertEquals(1, info.getNumerator(), 0.001);
 		Assert.assertEquals(2500, info.getDenominator(), 0.001);
-		Assert.assertEquals(0, info.getPixelPerUnit(), 0);
+		Assert.assertEquals(1.512, info.getPixelPerUnit(), 0.001);
 		cdpp.completeScale(info, 100);
 		Assert.assertEquals(0.04, info.getPixelPerUnit(), 0.00001);
 	}
