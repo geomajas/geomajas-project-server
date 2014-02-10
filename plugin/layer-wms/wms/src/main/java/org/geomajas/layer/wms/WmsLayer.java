@@ -10,19 +10,9 @@
  */
 package org.geomajas.layer.wms;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import org.apache.commons.io.IOUtils;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
@@ -58,9 +48,21 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.xml.sax.SAXException;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import javax.annotation.PostConstruct;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -92,6 +94,26 @@ import com.vividsolutions.jts.geom.Envelope;
 @Api
 public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
+	/**
+	 * Feature info format for WMS layers.
+	 * @since 1.15.0
+	 */
+	@Api
+	public enum WmsFeatureInfoFormat {
+		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html"), TEXT("text/plain"),
+		JSON("application/json");
+
+		private String format;
+
+		private WmsFeatureInfoFormat(String format) {
+			this.format = format;
+		}
+
+		public String toString() {
+			return format;
+		}
+	}
+
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
 	private final List<Resolution> resolutions = new ArrayList<Resolution>();
@@ -114,6 +136,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private Crs crs;
 
 	private String id;
+
+	private WmsFeatureInfoFormat feautureInfoFormat = WmsFeatureInfoFormat.GML2;
 
 	/**
 	 * @deprecated use layerAuthentication
@@ -213,6 +237,28 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	/**
+	 * Get the feature info format.
+	 *
+	 * @return the feature info format.
+	 * @since 1.15.0
+	 */
+	@Api
+	public WmsFeatureInfoFormat getFeautureInfoFormat() {
+		return feautureInfoFormat;
+	}
+
+	/**
+	 * Get the feature info format.
+	 *
+	 * @param feautureInfoFormat the feature info format
+	 * @since 1.15.0
+	 */
+	@Api
+	public void setFeautureInfoFormat(WmsFeatureInfoFormat feautureInfoFormat) {
+		this.feautureInfoFormat = feautureInfoFormat;
+	}
+
+	/**
 	 * Set the layer configuration.
 	 * 
 	 * @param layerInfo
@@ -252,15 +298,26 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					layerBox, x, y);
 			log.debug("getFeaturesByLocation: {} {} {} {}", new Object[] { layerCoordinate, layerScale, pixelTolerance,
 					url });
-			GML gml = new GML(Version.GML3);
-
 			stream = httpService.getStream(url, getLayerAuthentication(), getId());
-			FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
-			FeatureIterator<SimpleFeature> it = collection.features();
 
-			while (it.hasNext()) {
-				features.add(toDto(it.next()));
+			switch (feautureInfoFormat) {
+				case GML2:
+					features = getGmlFeatures(stream, Version.GML2);
+					break;
+				case GML3:
+					features = getGmlFeatures(stream, Version.GML3);
+					break;
+				case HTML:
+					features = getHtmlFeatures(stream);
+					break;
+				case TEXT:
+					features = getTextFeatures(stream);
+					break;
+				case JSON:
+					features = getTextFeatures(stream);
+					break;
 			}
+
 		} catch (LayerException le) {
 			throw le; // NOSONAR
 		} catch (Exception e) { // NOSONAR
@@ -275,6 +332,41 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 			}
 		}
 
+		return features;
+	}
+
+	private List<Feature> getTextFeatures(InputStream stream) throws IOException {
+		List<Feature> features;
+		String html = IOUtils.toString(stream);
+		Feature feature = new Feature();
+		feature.setId("text");
+		feature.setAttributes(new HashMap<String, Attribute>());
+		feature.getAttributes().put("wmsStringAttribute", new StringAttribute(html));
+		features = Arrays.asList(feature);
+		return features;
+	}
+
+	private List<Feature> getHtmlFeatures(InputStream stream) throws IOException {
+		List<Feature> features;
+		String html = IOUtils.toString(stream);
+		Feature feature = new Feature();
+		feature.setId("html");
+		feature.setAttributes(new HashMap<String, Attribute>());
+		feature.getAttributes().put("wmsHtmlAttribute", new StringAttribute(html));
+		features = Arrays.asList(feature);
+		return features;
+	}
+
+	private List<Feature> getGmlFeatures(InputStream stream, Version version) throws IOException, SAXException,
+			ParserConfigurationException {
+		List<Feature> features = new ArrayList<Feature>();
+		GML gml = new GML(version);
+		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
+		FeatureIterator<SimpleFeature> it = collection.features();
+
+		while (it.hasNext()) {
+			features.add(toDto(it.next()));
+		}
 		return features;
 	}
 
@@ -413,7 +505,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 			url.append(Integer.toString(x));
 			url.append("&Y=");
 			url.append(Integer.toString(y));
-			url.append("&INFO_FORMAT=application/vnd.ogc.gml");
+			url.append("&INFO_FORMAT=");
+			url.append(feautureInfoFormat);
 			return url.toString();
 		} catch (UnsupportedEncodingException uee) {
 			throw new IllegalStateException("Cannot find UTF8 encoding?", uee);
