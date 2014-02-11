@@ -297,6 +297,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		info.setName(owsLayer.getName());
 		info.setExtent(toBbox(owsLayer.getEnvelope(crs)));
 		info.setDescription(owsLayer.getTitle());
+		info.setGetFeatureInfoFormats(wms.getCapabilities().getRequest().getGetFeatureInfo().getFormats());
 		// create a sample request
 		GetMapRequest request = wms.createGetMapRequest();
 		request.setFormat("image/png");
