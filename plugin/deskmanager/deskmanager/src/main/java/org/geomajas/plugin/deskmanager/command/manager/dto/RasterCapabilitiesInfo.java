@@ -86,10 +86,20 @@ public class RasterCapabilitiesInfo implements Serializable {
 		this.baseUrl = baseUrl;
 	}
 
+	/**
+	 * Get a list of feature info formats supported by the server.
+	 *
+	 * @return the list of feature info formats.
+	 */
 	public List<String> getGetFeatureInfoFormats() {
 		return getFeatureInfoFormats;
 	}
 
+	/**
+	 * Set a list of feature info formats.
+	 *
+	 * @param getFeatureInfoFormats the supported formats.
+	 */
 	public void setGetFeatureInfoFormats(List<String> getFeatureInfoFormats) {
 		this.getFeatureInfoFormats = getFeatureInfoFormats;
 	}
