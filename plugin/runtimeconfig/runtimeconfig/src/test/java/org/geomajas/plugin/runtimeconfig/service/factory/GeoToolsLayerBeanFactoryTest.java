@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml",
-		"classpath*:META-INF/geomajasContext.xml", "/org/geomajas/testdata/layerCountries.xml" })
+		"/org/geomajas/testdata/layerCountries.xml" })
 public class GeoToolsLayerBeanFactoryTest {
 
 	@Autowired
