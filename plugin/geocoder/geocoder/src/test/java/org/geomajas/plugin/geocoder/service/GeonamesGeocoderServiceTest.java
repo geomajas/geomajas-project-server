@@ -14,6 +14,7 @@ package org.geomajas.plugin.geocoder.service;
 import junit.framework.Assert;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
 import org.geomajas.service.GeoService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -32,6 +33,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/completeContext.xml"})
+@Ignore //FIXME: GC-54
 public class GeonamesGeocoderServiceTest {
 
 	@Autowired
