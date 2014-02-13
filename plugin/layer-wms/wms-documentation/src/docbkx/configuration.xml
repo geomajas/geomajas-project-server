@@ -224,6 +224,19 @@
               command to access the GetFeatureInfo capability of the WMS
               server.</entry>
             </row>
+
+			  <row>
+				  <entry><emphasis role="bold">feautureInfoFormat</emphasis>
+					  (optional)</entry>
+
+				  <entry>Set this if you want to change the featureInfoFormat when
+					  feature info is enabled. Most wms servers support the default GML2 format,
+					  but some servers only allow plain text or html. Possible values are:
+					  GML2, GML3, HTML, TEXT and JSON. When set to something different than GML,
+					  the feature returned to the client will contain one attribute with the
+					  HTML or TEXT string.
+				  </entry>
+			  </row>
           </tbody>
         </tgroup>
       </table>

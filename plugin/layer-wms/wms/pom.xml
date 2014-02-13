@@ -91,6 +91,10 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
