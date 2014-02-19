@@ -39,7 +39,7 @@
 
 	<profiles>
 		<profile>
-			<id>documentation</id>
+			<id>full-build</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>

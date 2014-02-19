@@ -36,7 +36,17 @@
 
 	<modules>
 		<module>layer-common</module>
-		<module>layer-common-documentation</module>
 	</modules>
 
+    <profiles>
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>layer-common-documentation</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
