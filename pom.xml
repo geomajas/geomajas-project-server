@@ -571,12 +571,12 @@
 			<dependency>
 				<groupId>org.infinispan</groupId>
 				<artifactId>infinispan-core</artifactId>
-				<version>5.1.0.FINAL</version>
+				<version>6.0.1.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>org.infinispan</groupId>
-				<artifactId>infinispan-cachestore-jdbm</artifactId>
-				<version>5.1.0.FINAL</version>
+				<artifactId>infinispan-cachestore-leveldb</artifactId>
+				<version>6.0.1.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>org.rhq.helpers</groupId>

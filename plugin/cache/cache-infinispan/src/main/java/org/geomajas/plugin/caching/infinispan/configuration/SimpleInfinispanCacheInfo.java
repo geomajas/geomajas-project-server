@@ -11,17 +11,18 @@
 
 package org.geomajas.plugin.caching.infinispan.configuration;
 
+import java.io.File;
+import java.util.Properties;
+
 import org.geomajas.annotation.Api;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.cache.ConfigurationChildBuilder;
+import org.infinispan.configuration.cache.SingleFileStoreConfigurationBuilder;
 import org.infinispan.eviction.EvictionStrategy;
-import org.infinispan.loaders.jdbm.JdbmCacheStore;
 import org.infinispan.util.concurrent.IsolationLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 /**
  * Easy Infinispan cache configuration based on some sensible default.
@@ -44,6 +45,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	private IsolationLevel isolationLevel;
 	private String location;
 	private int maxEntries;
+	private int level2MaxEntries;
 	private int expiration = EXPIRATION_NOT_SET;
 
 	/**
@@ -74,14 +76,15 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 			builder = builder.locking().isolationLevel(isolationLevel);
 		}
 		if (null != location) {
-			builder = builder.loaders()
-					.passivation(true)
-					.addCacheLoader()
-					.cacheLoader(new JdbmCacheStore())
-					.addProperty("location", location);
+			SingleFileStoreConfigurationBuilder sfBuilder = builder.persistence().addSingleFileStore();
+			sfBuilder.location(location);
+			if(level2MaxEntries > 0) {
+				sfBuilder.maxEntries(level2MaxEntries);
+			}
+			builder= sfBuilder;
 		}
 		if (maxEntries > 0) {
-			builder = builder.eviction().maxEntries(maxEntries);
+			builder.eviction().maxEntries(maxEntries);
 		}
 		if (EXPIRATION_NOT_SET != expiration) {
 			builder = builder.expiration().maxIdle(expiration < 0 ? -1L : expiration * MILLISECONDS_PER_MINUTE);
@@ -186,7 +189,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	}
 
 	/**
-	 * Set the number of items which should be kept in memory by the cache. This will be rounded up to the next bigger
+	 * Set the maximum number of items which should be kept in memory by the cache. This will be rounded up to the next bigger
 	 * power of two.
 	 * <p/>
 	 * When there are more items to be stored, they can be moved to the second level cache if
@@ -196,6 +199,15 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 */
 	public void setMaxEntries(int maxEntries) {
 		this.maxEntries = maxEntries;
+	}
+	
+	/**
+	 * Set the maximum number of items which should be stored in the second level cache (> maxEntries).
+	 *
+	 * @param maxEntries maximum entries for the second level cache
+	 */
+	public void setLevel2MaxEntries(int level2MaxEntries) {
+		this.level2MaxEntries = level2MaxEntries;
 	}
 
 }
