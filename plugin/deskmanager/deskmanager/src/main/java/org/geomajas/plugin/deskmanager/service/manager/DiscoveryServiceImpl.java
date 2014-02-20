@@ -10,21 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.service.manager;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import javax.annotation.Resource;
-
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -81,12 +72,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
 
 /**
  * @author Kristof Heirwegh
@@ -383,11 +381,17 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	public void createRasterLayerParams(DynamicRasterLayerConfiguration rlc, Map<String, Object> params)
 			throws Exception {
-		// TODO: this mixes WMS and generic stuff: split this up for WMS/TMS/OSM or make a generic
-		// RasterLayerBeanFactory ?
+		// TODO: this mixes WMS and generic stuff: split this up for WMS/TMS/OSM or make generic
+
+		//Set layer properties for reflection
 		params.put(BeanFactory.CLASS_NAME, WmsLayer.class.getName());
 		params.put(BaseRasterLayerBeanFactory.LAYER_INFO, rlc.getRasterLayerInfo());
 		params.put(WmsLayerBeanFactory.BASE_WMS_URL, rlc.getParameterValue(WmsLayerBeanFactory.BASE_WMS_URL));
+		params.put(WmsLayerBeanFactory.ENABLE_FEATURE_INFO, Boolean.parseBoolean(rlc.getParameterValue(
+				WmsLayerBeanFactory.ENABLE_FEATURE_INFO)));
+
+		params.put(WmsLayerBeanFactory.FEATURE_INFO_FORMAT, WmsLayer.WmsFeatureInfoFormat.parseFormat(rlc
+				.getParameterValue(WmsLayerBeanFactory.FEATURE_INFO_FORMAT)));
 		//TODO: all these parameters should be configurable too
 		params.put("useProxy", true);
 		params.put("useCache", true);

@@ -31,6 +31,10 @@ public class WmsLayerBeanFactory extends BaseRasterLayerBeanFactory {
 
 	public static final String PARAMETERS = "parameters";
 
+	public static final String ENABLE_FEATURE_INFO = "enableFeatureInfoSupport";
+
+	public static final String FEATURE_INFO_FORMAT = "featureInfoFormat";
+
 	protected WmsLayerBeanFactory() {
 		super(WmsLayer.class);
 	}
