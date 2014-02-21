@@ -83,7 +83,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- default cache implementations -->
 	<!-- @extract-start DefaultInfinispanConfiguration, Default Infinispan configuration -->
-	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
+	<bean name="infinispanCacheServiceInfo" class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.infinispan.cache.InfinispanCacheFactory">
 				<property name="defaultConfiguration" ref="defaultInfinispanCacheConfig" />

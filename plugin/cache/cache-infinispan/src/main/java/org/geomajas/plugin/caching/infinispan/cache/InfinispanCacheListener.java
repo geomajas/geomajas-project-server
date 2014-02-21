@@ -35,15 +35,15 @@ import org.slf4j.LoggerFactory;
 @Listener
 public class InfinispanCacheListener {
 
-	private final Logger log = LoggerFactory.getLogger(InfinispanCacheFactory.class);
+	private final Logger log = LoggerFactory.getLogger(InfinispanCacheListener.class);
 
 	@CacheEntriesEvicted
 	public void dataEvicted(CacheEntriesEvictedEvent event) {
 		if (log.isTraceEnabled()) {
 			if (event.isPre()) {
-				log.trace("Going to evict " + event.getEntries().size() + " entries from the cache");
+				log.trace("Going to evict " + event.getEntries().size() + " entries from the cache " + event.getCache().getName());
 			} else {
-				log.trace("Evicted " + event.getEntries().size() + " entries from the cache");
+				log.trace("Evicted " + event.getEntries().size() + " entries from the cache " + event.getCache().getName());
 			}
 		}
 	}
@@ -52,9 +52,9 @@ public class InfinispanCacheListener {
 	public void dataAdded(CacheEntryCreatedEvent event) {
 		if (log.isTraceEnabled()) {
 			if (event.isPre()) {
-				log.trace("Going to add new entry " + event.getKey() + " to the cache");
+				log.trace("Going to add new entry " + event.getKey() + " to the cache " + event.getCache().getName());
 			} else {
-				log.trace("Added new entry " + event.getKey() + " to the cache" + event.getCache().getName());
+				log.trace("Added new entry " + event.getKey() + " to the cache " + event.getCache().getName());
 			}
 		}
 	}
@@ -63,9 +63,9 @@ public class InfinispanCacheListener {
 	public void dataRemoved(CacheEntryRemovedEvent event) {
 		if (log.isTraceEnabled()) {
 			if (event.isPre()) {
-				log.trace("Going to remove entry " + event.getKey() + " from the cache");
+				log.trace("Going to remove entry " + event.getKey() + " from the cache " + event.getCache().getName());
 			} else {
-				log.trace("Removed entry " + event.getKey() + " from the cache");
+				log.trace("Removed entry " + event.getKey() + " from the cache " + event.getCache().getName());
 			}
 		}
 	}
@@ -74,9 +74,9 @@ public class InfinispanCacheListener {
 	public void dataLoaded(CacheEntryLoadedEvent event) {
 		if (log.isTraceEnabled()) {
 			if (event.isPre()) {
-				log.trace("Going to load entry " + event.getKey() + " from the cache");
+				log.trace("Going to load entry " + event.getKey() + " from the cache " + event.getCache().getName());
 			} else {
-				log.trace("Loaded entry " + event.getKey() + " from the cache");
+				log.trace("Loaded entry " + event.getKey() + " from the cache " + event.getCache().getName());
 			}
 		}
 	}
@@ -84,14 +84,14 @@ public class InfinispanCacheListener {
 	@CacheStarted
 	public void cacheStarted(CacheStartedEvent event) {
 		if (log.isTraceEnabled()) {
-			log.trace("Cache Started");
+			log.trace("Cache Started " + event.getCacheName());
 		}
 	}
 
 	@CacheStopped
 	public void cacheStopped(CacheStoppedEvent event) {
 		if (log.isTraceEnabled()) {
-			log.trace("Cache Started");
+			log.trace("Cache Started " + event.getCacheName());
 		}
 	}
 }
