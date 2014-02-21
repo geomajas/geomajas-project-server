@@ -72,7 +72,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-jetty-runner</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 

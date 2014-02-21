@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>2.0.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
@@ -122,6 +122,11 @@
 			</dependency>
 
 			<!-- depend -->
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-build-tools</artifactId>
+				<version>${geomajas-build-tools-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-api-all</artifactId>
@@ -835,6 +840,8 @@
 		<geotools-ecql-fix-version>9.2-GEOT-4211</geotools-ecql-fix-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<geodb-version>0.7</geodb-version>
+		<geomajas-build-tools-version>2.0.0</geomajas-build-tools-version>
+		<geomajas-parents-version>2.0.0</geomajas-parents-version>
 	</properties>
 
 </project>
