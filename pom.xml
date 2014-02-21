@@ -124,7 +124,7 @@
 			<!-- depend -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-build-tools</artifactId>
+				<artifactId>geomajas-jetty-runner</artifactId>
 				<version>${geomajas-build-tools-version}</version>
 			</dependency>
 			<dependency>
