@@ -34,7 +34,7 @@
       <programlisting language="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-layer-hibernate&lt;/artifactId&gt;
-    &lt;version&gt;1.0&lt;/version&gt;
+	 &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.hibernatespatial&lt;/groupId&gt;
