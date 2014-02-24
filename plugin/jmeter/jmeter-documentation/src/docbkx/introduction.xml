@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>This is a plug-in which automatically adds some profiling code in the code. This profiling information
+	  is made available as a JMX bean so you can access it using a tool like JConsole or VisualVM.</para>
+
+  <para>The profiling information is gathered in several beans, each profiling a specific piece with combined
+	  figures. You can also get figures for groups. The plugin gathers the number of invocations and total runtime.
+	  You can clear the information to reset the values and assure they are for a specific period.</para>
+</chapter>
