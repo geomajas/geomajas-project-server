@@ -191,7 +191,7 @@
       <programlisting>&lt;dependency&gt;
   &lt;groupId&gt;org.geotools&lt;/groupId&gt;
   &lt;artifactId&gt;gt-wfs&lt;/artifactId&gt;
-  &lt;version&gt;${geotools-version}&lt;/version&gt;
+  &lt;version&gt;9.5&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </section>
 
@@ -315,7 +315,7 @@
 &lt;dependency&gt;
    &lt;groupId&gt;org.geotools&lt;/groupId&gt;
    &lt;artifactId&gt;gt-jdbc-postgis&lt;/artifactId&gt;
-   &lt;version&gt;${geotools-version}&lt;/version&gt;
+   &lt;version&gt;9.5&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
 
       <note>

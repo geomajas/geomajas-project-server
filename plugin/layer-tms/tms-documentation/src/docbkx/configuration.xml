@@ -26,7 +26,7 @@
     the following dependency to your configuration:</para>
 
     <example>
-      <title>TMS layer dependency, using geomajas-dep</title>
+      <title>TMS layer dependency, using geomajas-project-server in dependency management</title>
 
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
@@ -34,7 +34,7 @@
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para>If you are not using geomajas-dep to manage versions, then you need
+    <para>If you are not using geomajas-project-server to manage versions, then you need
     to mention the version as well.</para>
 
     <para>If you are not a Maven user, make sure that there is a recent

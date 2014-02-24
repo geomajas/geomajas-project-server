@@ -27,8 +27,8 @@
 
 		<programlisting language="xml">&lt;dependency&gt;
 	  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-	  &lt;artifactId&gt;documentation&lt;/artifactId&gt;
-	  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+	  &lt;artifactId&gt;geomajas-plugin-reporting&lt;/artifactId&gt;
+	&lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
   &lt;/dependency&gt;</programlisting>
 	  </example>
 	</section>

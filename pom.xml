@@ -28,9 +28,6 @@
 		developers to add maps and other geographic data capabilities to their web applications.
 
 		Dependencies for the back-end, specifying back-end version and it's most important dependencies.
-
-		When this is combined with geomajas-dep to use the snapshot back-end, then this dependency needs to be
-		mentioned first in the pom.
 	</description>
 
 	<scm>
@@ -144,7 +141,7 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-geometry-all</artifactId>
-				<version>1.2.0-SNAPSHOT</version>
+				<version>${geomajas-geometry-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -468,7 +465,7 @@
 			<dependency>
 				<groupId>org.hibernatespatial</groupId>
 				<artifactId>hibernate-spatial</artifactId>
-				<version>1.0</version>
+				<version>${hibernate-spatial-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernatespatial</groupId>
@@ -498,12 +495,12 @@
 			<dependency>
 				<groupId>org.postgis</groupId>
 				<artifactId>postgis-jdbc</artifactId>
-				<version>1.1.6</version>
+				<version>${postgis-jdbc-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>postgresql</groupId>
 				<artifactId>postgresql</artifactId>
-				<version>8.4-701.jdbc3</version>
+				<version>${postgresql-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-dbcp</groupId>
@@ -842,6 +839,10 @@
 		<geodb-version>0.7</geodb-version>
 		<geomajas-build-tools-version>2.0.0</geomajas-build-tools-version>
 		<geomajas-parents-version>2.0.0</geomajas-parents-version>
+		<postgresql-version>8.4-701.jdbc3</postgresql-version>
+		<hibernate-spatial-version>1.0</hibernate-spatial-version>
+		<postgis-jdbc-version>1.1.6</postgis-jdbc-version>
+		<geomajas-geometry-version>1.2.0</geomajas-geometry-version>
 	</properties>
 
 </project>

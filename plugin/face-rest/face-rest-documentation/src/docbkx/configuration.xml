@@ -30,7 +30,7 @@
       <programlisting>&lt;dependency&gt;
   &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
   &lt;artifactId&gt;geomajas-face-rest&lt;/artifactId&gt;
-  &lt;version&gt;1.0&lt;/version&gt;
+		  &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;
 </programlisting>
     </example>

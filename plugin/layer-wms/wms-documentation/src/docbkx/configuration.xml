@@ -24,19 +24,18 @@
     <informalexample>
       <programlisting> &lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-wms-all&lt;/artifactId&gt;
-    &lt;version&gt;1.8.0&lt;/version&gt;
+    &lt;artifactId&gt;geomajas-server-layer-wms-parent&lt;/artifactId&gt;
+	&lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
     &lt;type&gt;pom&lt;/type&gt;
     &lt;scope&gt;import&lt;/scope&gt;
 &lt;/dependency&gt;
 </programlisting>
     </informalexample>
 
-    <para>If you are using geomajas-dep, this includes the latest released
+    <para>If you are using geomajas-project-server to manage dependencies, this includes the latest released
     version of the wms layer (at the time of publishing of that version). If
     you want to overwrite the caching plug-in version, make sure to include
-    this excerpt <emphasis>before</emphasis> the geomajas-dep
-    dependency.</para>
+    this excerpt <emphasis>before</emphasis> the geomajas-project-server dependency.</para>
 
     <para>You can now include the actual dependency without explicit
     version.</para>
@@ -50,22 +49,8 @@
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para>If you are using the GWT face and want the access the GetFeatureInfo
-    capability of your WMS server, then you should use the following
-    dependency instead.</para>
-
-    <example>
-      <title>WMS layer dependency</title>
-
-      <programlisting>&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-layer-wms-gwt-&lt;/artifactId&gt;
-&lt;/dependency&gt;</programlisting>
-    </example>
-
-    <para>In that case you should also put "&lt;inherits
-    name="org.geomajas.layer.wms.GeomajasWms"/&gt;" in your .gwt.xml
-    file.</para>
+	  <para>For using these functionalities in GWT or GWT2 client,
+		  see the specific client documentation.</para>
   </section>
 
   <section id="wmsconf">

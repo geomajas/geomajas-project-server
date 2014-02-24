@@ -25,19 +25,18 @@
     <informalexample>
       <programlisting> &lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-runtimeconfig-all&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;artifactId&gt;geomajas-server-plugin-runtimeconfig-parent&lt;/artifactId&gt;
+	&lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
     &lt;type&gt;pom&lt;/type&gt;
     &lt;scope&gt;import&lt;/scope&gt;
 &lt;/dependency&gt;
 </programlisting>
     </informalexample>
 
-    <para>If you are using geomajas-dep, this includes the latest released
-    version of the caching plug-in (at the time of publishing of that
-    version). If you want to overwrite the caching plug-in version, make sure
-    to include this excerpt <emphasis>before</emphasis> the geomajas-dep
-    dependency.</para>
+    <para>If you are using geomajas-project-server in dependency management, this includes the latest released
+    version of the runtimeconfig plug-in (at the time of publishing of that
+    version). If you want to overwrite the runtimeconfig plug-in version, make sure
+    to include this excerpt <emphasis>before</emphasis> the geomajas-project-server dependency.</para>
 
     <para>You can now include the actual dependency without explicit
     version.</para>
@@ -51,17 +50,7 @@
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para>If you want to use the admin widget for the GWT face, you need
-    the following dependency:</para>
-
-    <example>
-      <title>Plug-in GWT dependency</title>
-
-      <programlisting>&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-runtimeconfig-gwt&lt;/artifactId&gt;
-&lt;/dependency&gt;</programlisting>
-    </example>
+	  <para>For using these functionalities in GWT client, see the specific client documentation.</para>
 
   </section>
 </chapter>

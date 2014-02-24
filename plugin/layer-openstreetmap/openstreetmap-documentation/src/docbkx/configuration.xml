@@ -20,11 +20,11 @@
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
-    Maven and the geomajas-dep dependency to manage versions, include
+    Maven and the geomajas-project-server dependency to manage version, include
     following dependency to your pom:</para>
 
     <example>
-      <title>OpenStreetMap layer dependency, using geomajas-dep</title>
+      <title>OpenStreetMap layer dependency, using geomajas-project-server in dependency management</title>
 
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
@@ -32,7 +32,7 @@
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para>If you are not using geomajas-dep to manage versions, then you need
+    <para>If you are not using geomajas-project-server in dependency management, then you need
     to mention the version explicitly.</para>
 
     <example>

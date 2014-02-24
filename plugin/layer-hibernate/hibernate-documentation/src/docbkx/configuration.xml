@@ -34,7 +34,7 @@
       <programlisting language="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-layer-hibernate&lt;/artifactId&gt;
-    &lt;version&gt;${geomajas-layer-hibernate-version}&lt;/version&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.hibernatespatial&lt;/groupId&gt;
@@ -53,18 +53,18 @@
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para>If you use the geomajas-dep artifact in your dependencyManagement
+    <para>If you use the geomajas-project-server in your dependencyManagement
     section, then the versions do not need to be included;</para>
 
     <example>
-      <title>Hibernate layer dependency with geomajas-dep</title>
+      <title>Hibernate layer dependency with using geomajas-project-server in dependency management</title>
 
       <programlisting>&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
         &lt;dependency&gt;
-            &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
-            &lt;artifactId&gt;geomajas-dep&lt;/artifactId&gt;
-            &lt;version&gt;1.11.36&lt;/version&gt;
+            &lt;groupId&gt;org.geomajas.project&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-project-server&lt;/artifactId&gt;
+		  &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
             &lt;type&gt;pom&lt;/type&gt;
             &lt;scope&gt;import&lt;/scope&gt;
         &lt;/dependency&gt;
