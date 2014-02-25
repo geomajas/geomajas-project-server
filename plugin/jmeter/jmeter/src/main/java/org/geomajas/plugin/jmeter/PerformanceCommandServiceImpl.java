@@ -15,12 +15,17 @@ import java.util.HashMap;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
+import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Default implementation of {@link PerformanceCommandService}.
@@ -30,10 +35,15 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class PerformanceCommandServiceImpl implements PerformanceCommandService {
 
+	private final Logger log = LoggerFactory.getLogger(PerformanceCommandServiceImpl.class);
+
 	@Autowired
 	private CommandDispatcher commandDispatcher;
 
 	public CommandResponse execute(String commandName, CommandRequest commandRequest, String userToken, String locale) {
+		int port = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest()
+				.getRemotePort();
+		log.debug("Command on port " + port);
 		CommandResponse response = commandDispatcher.execute(commandName, commandRequest, userToken, locale);
 		filter(response);
 		return response;
