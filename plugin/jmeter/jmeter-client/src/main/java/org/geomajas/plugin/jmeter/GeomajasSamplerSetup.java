@@ -37,14 +37,19 @@ import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
+import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientPreferredPixelsPerTile;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.layer.Layer;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
@@ -200,6 +205,22 @@ public class GeomajasSamplerSetup {
 		CommandResponse response = commandDispatcher.execute(GetConfigurationRequest.COMMAND, request, userToken, null);
 		GetConfigurationResponse configResponse = (GetConfigurationResponse) response;
 		applicationInfo = configResponse.getApplication();
+		// fix scale bug
+		for (ClientMapInfo map : applicationInfo.getMaps()) {
+			for (ScaleInfo scale : map.getScaleConfiguration().getZoomLevels()) {
+				fix(scale);
+			}
+			fix(map.getScaleConfiguration().getMaximumScale());
+			for (ClientLayerInfo layer : map.getLayers()) {
+				fix(layer.getMaximumScale());
+				fix(layer.getMinimumScale());
+				fix(layer.getZoomToPointScale());
+			}
+		}
+	}
+
+	private void fix(ScaleInfo scale) {
+		scale.setConversionFactor(ScaleInfo.PIXEL_PER_METER);
 	}
 
 	protected void prepareTileRequests(JavaSamplerContext context) {
