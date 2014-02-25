@@ -44,7 +44,7 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 	@Override
 	public Arguments getDefaultParameters() {
 		Arguments defaultParameters = new Arguments();
-		defaultParameters.addArgument("baseUrl", "http://localhost:8888/");
+		defaultParameters.addArgument("baseUrl", "http://localhost:8888/d/performance");
 		defaultParameters.addArgument("appId", "sampleApp");
 		defaultParameters.addArgument("mapId", "sampleMap");
 		defaultParameters.addArgument("layerIds", "");

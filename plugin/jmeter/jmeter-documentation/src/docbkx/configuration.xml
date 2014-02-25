@@ -14,44 +14,165 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para>This chapter will describe the procedure to configure the Geomajas web
+  application and modify the jmeter installation to allow Geomajas performance
+  testing.</para>
 
-	<section id="dependencies">
-		<title>Dependencies</title>
+  <section id="dependencies">
+    <title>Web application dependencies</title>
 
-		<para>Make sure sure you include the correct version of the plug-in in
-			your project. Use the following excerpt (with the correct version) in the
-			dependencyManagement section of your project:</para>
+    <para>To allow for jmeter testing, you must add the following dependency
+    to your web application.</para>
 
-		<informalexample>
-			<programlisting> &lt;dependency&gt;
-				&lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-				&lt;artifactId&gt;geomajas-plugin-profiling-all&lt;/artifactId&gt;
-				&lt;version&gt;1.0.0&lt;/version&gt;
-				&lt;type&gt;pom&lt;/type&gt;
-				&lt;scope&gt;import&lt;/scope&gt;
-				&lt;/dependency&gt;
-			</programlisting>
-		</informalexample>
+    <example>
+      <title>Plug-in dependency</title>
 
-		<para>If you are using geomajas-dep, this includes the latest released
-			version of the caching plug-in (at the time of publishing of that
-			version). If you want to overwrite the caching plug-in version, make sure
-			to include this excerpt <emphasis>before</emphasis> the geomajas-dep
-			dependency.</para>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-jmeter&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
 
-		<para>You can now include the actual dependency without explicit
-			version.</para>
+    <para>Once the dependency is correctly included, everything is set up
+    automatically. In the startup logs, you should see an extra URL mapping
+    appearing:</para>
+  </section>
 
-		<example>
-			<title>Plug-in dependency</title>
+  <section>
+    <title>JMeter configuration</title>
 
-			<programlisting>&lt;dependency&gt;
-				&lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-				&lt;artifactId&gt;geomajas-plugin-profiling&lt;/artifactId&gt;
-				&lt;/dependency&gt;</programlisting>
-		</example>
-		<para>Once the dependency is correctly included, everything is set up automatically.</para>
-	</section>
+    <para>Start by installing JMeter. The recommended version of Apache JMeter
+    (TM) is 2.11 (we have not tested other versions). See <ulink
+    url="https://jmeter.apache.org">https://jmeter.apache.org</ulink> for
+    installation instructions, which boil down to unzipping the tar ball in a
+    directory of your choice (we will refer to this directory as<code>
+    JMETER_HOME</code>). </para>
 
+    <para>After the installation is done, you should add the Geomajas jmeter
+    client jar to your installation. Copy the following maven artifact to the
+    directory <code>JMETER_HOME/lib/ext</code>:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-jmeter-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+
+    <para>This artifact can be downloaded from the <ulink
+    url="http://repo.geomajas.org/nexus/index.html">Geomajas nexus
+    server</ulink> or the public maven repository (for releases). The jar is
+    an "überjar" that contains all the dependencies and is made using the
+    maven Shade plugin.</para>
+
+    <para>After starting up jmeter, the following GUI should appear:</para>
+
+    <figure>
+      <title>Jmeter startup screen</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/jmeter-startup.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Add a thread group to your test plan and a Java request:</para>
+
+    <figure>
+      <title>Jmeter java request in thread group</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/jmeter-java-request.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Select the GeomajasSamplerClient as classname:</para>
+
+    <figure>
+      <title>Jmeter Geomajas sampler client</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/jmeter-geomajas.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>You can now configure the following request parameters:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>baseUrl: the base URL for accessing your Geomajas server. This
+        URL is typically constructed by adding the extension
+        <code>/d/performance</code> to the URL of your Geomajas web
+        context.</para>
+      </listitem>
+
+      <listitem>
+        <para>appId: the Geomajas application id (see the Spring
+        context)</para>
+      </listitem>
+
+      <listitem>
+        <para>mapId: the Geomajas map id (see the Spring context)</para>
+      </listitem>
+
+      <listitem>
+        <para>layerIds: (optional) a comma-separated list of layer ids (client
+        layer ids, see the Geomajas Spring context)</para>
+      </listitem>
+
+      <listitem>
+        <para>runMode: random (for randomly selecting tiles for all allowed
+        layers) or topdown (for creating a pyramid by iterating scale levels
+        top down)</para>
+      </listitem>
+
+      <listitem>
+        <para>tileCount: the total number of tiles to be fetched</para>
+      </listitem>
+
+      <listitem>
+        <para>saveTiles: whether the tiles should be saved to the file
+        system</para>
+      </listitem>
+
+      <listitem>
+        <para>username: username for basic authentication</para>
+      </listitem>
+
+      <listitem>
+        <para>password: password for basic authentication</para>
+      </listitem>
+
+      <listitem>
+        <para>userToken: user token for accessing the Geomajas server (if the
+        server is secured). The token can be picked from a tile request (using
+        firebug, request parameter= userToken) after accessing your server via
+        the browser or sniffed from server logging. As the authentication
+        method may differ, we have not made this part of the jmeter
+        plugin.</para>
+      </listitem>
+
+      <listitem>
+        <para>tileFolder: absolute path to a folder were the tiles can be
+        stored</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The logging GUI can be activated by selecting options-&gt;Log
+    Viewer. It is also available from JMETER_HOME/bin/jmeter.log. The logging
+    will show you all the available client layers, which can be handy:</para>
+
+    <figure>
+      <title>Logging activated</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/jmeter-logging.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
 </chapter>

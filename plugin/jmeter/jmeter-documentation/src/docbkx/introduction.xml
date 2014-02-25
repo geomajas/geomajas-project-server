@@ -14,10 +14,45 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>This is a plug-in which automatically adds some profiling code in the code. This profiling information
-	  is made available as a JMX bean so you can access it using a tool like JConsole or VisualVM.</para>
+  <para>This is a plug-in which can be used to perform jmeter testing on a
+  Geomajas server. The plugin consists of:</para>
 
-  <para>The profiling information is gathered in several beans, each profiling a specific piece with combined
-	  figures. You can also get figures for groups. The plugin gathers the number of invocations and total runtime.
-	  You can clear the information to reset the values and assure they are for a specific period.</para>
+  <itemizedlist>
+    <listitem>
+      <para>a server project that should be added as a jar to the Geomajas
+      server web application (or at build time using maven dependency). This
+      will install a Spring controller that exposes the command dispatcher
+      through the Spring HTTP invoker protocol.</para>
+    </listitem>
+
+    <listitem>
+      <para>a client project that (along with some dependencies) should be
+      installed in the JMETER_HOME/lib/ext folder. This will create an extra
+      java sampler class
+      <code>org.geomajas.plugin.jmeter.GeomajasSamplerClient</code> in the
+      dropdown list of the Java Request Sampler configuration window. For
+      usage of this sampler, see the configuration instructions of this
+      plugin.</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>The plugin will allow to fetch a number of tiles from one or more
+  layers of a Geomajas project. Tiles can be concurrently fetched with
+  multiple threads in a thread group. Tiles can be optionally saved for
+  verification. Tiles can be fetched using 2 run modes:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>random mode: tiles are taken randomly from all scale levels of all
+      allowed layers</para>
+    </listitem>
+
+    <listitem>
+      <para>topdown mode: tiles are taken from the top scale level (lowest
+      scale) and going down to the lower levels (higher scales). </para>
+    </listitem>
+  </itemizedlist>
+
+  <para>The top down mode can be used to seed one or more layers on the
+  server.</para>
 </chapter>
