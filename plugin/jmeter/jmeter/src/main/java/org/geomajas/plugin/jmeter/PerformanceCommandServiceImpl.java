@@ -15,7 +15,6 @@ import java.util.HashMap;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
