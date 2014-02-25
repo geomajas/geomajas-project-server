@@ -46,7 +46,7 @@
     url="https://jmeter.apache.org">https://jmeter.apache.org</ulink> for
     installation instructions, which boil down to unzipping the tar ball in a
     directory of your choice (we will refer to this directory as<code>
-    JMETER_HOME</code>). </para>
+    JMETER_HOME</code>).</para>
 
     <para>After the installation is done, you should add the Geomajas jmeter
     client jar to your installation. Copy the following maven artifact to the
@@ -70,7 +70,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/jmeter-startup.png"/>
+          <imagedata fileref="images/jmeter-startup.png" width="75%"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -82,7 +82,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/jmeter-java-request.png"/>
+          <imagedata fileref="images/jmeter-java-request.png" width="75%"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -94,7 +94,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/jmeter-geomajas.png"/>
+          <imagedata fileref="images/jmeter-geomajas.png" width="75%"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -170,7 +170,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/jmeter-logging.png"/>
+          <imagedata fileref="images/jmeter-logging.png" width="75%"/>
         </imageobject>
       </mediaobject>
     </figure>
