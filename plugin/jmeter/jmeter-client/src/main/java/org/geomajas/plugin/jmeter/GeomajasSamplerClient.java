@@ -37,7 +37,7 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 	private static final Logger LOG = LoggingManager.getLoggerForClass();
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private GeomajasSamplerSetup setUp;
 
 	// set up default arguments for the JMeter GUI
@@ -66,7 +66,7 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 
 	@Override
 	public SampleResult runTest(JavaSamplerContext context) {
-		LOG.info("Starting GeomajasSamplerClient in thread "+Thread.currentThread().getName());
+		LOG.info("Starting GeomajasSamplerClient in thread " + Thread.currentThread().getName());
 		SampleResult result = new SampleResult();
 		result.sampleStart(); // start stopwatch
 		if (setUp.getErrorLabel() != null) {
@@ -83,8 +83,8 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 			if (request instanceof GetVectorTileRequest) {
 				GetVectorTileRequest vectorRequest = (GetVectorTileRequest) request;
 				LOG.info("Executing vector request for layer " + vectorRequest.getLayerId());
-				GetVectorTileResponse response = (GetVectorTileResponse) setUp.execute(
-						GetVectorTileRequest.COMMAND, vectorRequest);
+				GetVectorTileResponse response = (GetVectorTileResponse) setUp.execute(GetVectorTileRequest.COMMAND,
+						vectorRequest);
 				try {
 					if (setUp.consumeTile(vectorRequest.getLayerId(), response)) {
 						LOG.info("Succesfully consumed vector tile ");
@@ -103,8 +103,8 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 			} else if (request instanceof GetRasterTilesRequest) {
 				GetRasterTilesRequest rasterRequest = (GetRasterTilesRequest) request;
 				LOG.info("Executing raster request for layer " + rasterRequest.getLayerId());
-				GetRasterTilesResponse response = (GetRasterTilesResponse) setUp.execute(
-						GetRasterTilesRequest.COMMAND, rasterRequest);
+				GetRasterTilesResponse response = (GetRasterTilesResponse) setUp.execute(GetRasterTilesRequest.COMMAND,
+						rasterRequest);
 				try {
 					if (setUp.consumeTile(rasterRequest.getLayerId(), response)) {
 						LOG.info("Succesfully consumed raster tile ");
@@ -140,7 +140,6 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 	public void teardownTest(JavaSamplerContext context) {
 		GeomajasSamplerSetup.tearDown();
 	}
-	
 
 	protected String getLayerStatistics(Map<String, Integer> layerCount) {
 		StringBuilder sb = new StringBuilder();

@@ -159,4 +159,24 @@
 		</resources>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>nogui</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>chronos-jmeter-maven-plugin</artifactId>
+						<version>1.1.0</version>
+						<configuration>
+<!-- 							<jmeterhome>/home/jandm/projects/magdageo/apache-jmeter-2.11</jmeterhome>
+ -->                            <input>/home/jandm/projects/magdageo/apache-jmeter-2.11/bin/WorkBenchLocal.jmx</input>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+
 </project>

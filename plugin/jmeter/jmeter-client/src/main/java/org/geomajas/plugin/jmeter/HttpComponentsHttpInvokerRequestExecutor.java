@@ -9,7 +9,6 @@
  * details, see LICENSE.txt in the project root.
  */
 
-
 /*
  * Copyright 2002-2013 the original author or authors.
  *
@@ -50,16 +49,18 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link org.springframework.remoting.httpinvoker.HttpInvokerRequestExecutor} implementation that uses
- * <a href="http://hc.apache.org/httpcomponents-client-ga/httpclient/">Apache HttpComponents HttpClient</a>
- * to execute POST requests.
- *
- * <p>Allows to use a pre-configured {@link org.apache.http.client.HttpClient}
- * instance, potentially with authentication, HTTP connection pooling, etc.
- * Also designed for easy subclassing, providing specific template methods.
- *
- * <p>As of Spring 3.2, this request executor requires Apache HttpComponents 4.2 or higher.
- *
+ * 
+ * {@link org.springframework.remoting.httpinvoker.HttpInvokerRequestExecutor} implementation that uses <a
+ * href="http://hc.apache.org/httpcomponents-client-ga/httpclient/">Apache HttpComponents HttpClient</a> to execute POST
+ * requests.
+ * 
+ * <p>
+ * Allows to use a pre-configured {@link org.apache.http.client.HttpClient} instance, potentially with authentication,
+ * HTTP connection pooling, etc. Also designed for easy subclassing, providing specific template methods.
+ * 
+ * <p>
+ * As of Spring 3.2, this request executor requires Apache HttpComponents 4.2 or higher.
+ * 
  * @author Juergen Hoeller
  * @since 3.1
  * @see org.springframework.remoting.httpinvoker.SimpleHttpInvokerRequestExecutor
@@ -75,18 +76,20 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 
 	private HttpClient httpClient;
 
-
 	/**
-	 * Create a new instance of the HttpComponentsHttpInvokerRequestExecutor with a default
-	 * {@link HttpClient} that uses a default {@code org.apache.http.impl.conn.PoolingClientConnectionManager}.
+	 * Create a new instance of the HttpComponentsHttpInvokerRequestExecutor with a default {@link HttpClient} that uses
+	 * a default {@code org.apache.http.impl.conn.PoolingClientConnectionManager}.
 	 */
 	public HttpComponentsHttpInvokerRequestExecutor() {
 		org.apache.http.conn.scheme.SchemeRegistry schemeRegistry = new org.apache.http.conn.scheme.SchemeRegistry();
-		schemeRegistry.register(new org.apache.http.conn.scheme.Scheme("http", 80, org.apache.http.conn.scheme.PlainSocketFactory.getSocketFactory()));
-		schemeRegistry.register(new org.apache.http.conn.scheme.Scheme("https", 443, org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory()));
+		schemeRegistry.register(new org.apache.http.conn.scheme.Scheme("http", 80,
+				org.apache.http.conn.scheme.PlainSocketFactory.getSocketFactory()));
+		schemeRegistry.register(new org.apache.http.conn.scheme.Scheme("https", 443,
+				org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory()));
 
-		org.apache.http.impl.conn.PoolingClientConnectionManager connectionManager =
-				new org.apache.http.impl.conn.PoolingClientConnectionManager(schemeRegistry);
+		org.apache.http.impl.conn.PoolingClientConnectionManager connectionManager = 
+				new org.apache.http.impl.conn.PoolingClientConnectionManager(
+				schemeRegistry);
 		connectionManager.setMaxTotal(DEFAULT_MAX_TOTAL_CONNECTIONS);
 		connectionManager.setDefaultMaxPerRoute(DEFAULT_MAX_CONNECTIONS_PER_ROUTE);
 
@@ -95,14 +98,13 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 	}
 
 	/**
-	 * Create a new instance of the HttpComponentsClientHttpRequestFactory
-	 * with the given {@link HttpClient} instance.
+	 * Create a new instance of the HttpComponentsClientHttpRequestFactory with the given {@link HttpClient} instance.
+	 * 
 	 * @param httpClient the HttpClient instance to use for this request executor
 	 */
 	public HttpComponentsHttpInvokerRequestExecutor(HttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
-
 
 	/**
 	 * Set the {@link HttpClient} instance to use for this request executor.
@@ -119,18 +121,19 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 	}
 
 	/**
-	 * Set the connection timeout for the underlying HttpClient.
-	 * A timeout value of 0 specifies an infinite timeout.
+	 * Set the connection timeout for the underlying HttpClient. A timeout value of 0 specifies an infinite timeout.
+	 * 
 	 * @param timeout the timeout value in milliseconds
 	 */
 	public void setConnectTimeout(int timeout) {
 		Assert.isTrue(timeout >= 0, "Timeout must be a non-negative value");
-		getHttpClient().getParams().setIntParameter(org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
+		getHttpClient().getParams().setIntParameter(org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT,
+				timeout);
 	}
 
 	/**
-	 * Set the socket read timeout for the underlying HttpClient.
-	 * A timeout value of 0 specifies an infinite timeout.
+	 * Set the socket read timeout for the underlying HttpClient. A timeout value of 0 specifies an infinite timeout.
+	 * 
 	 * @param timeout the timeout value in milliseconds
 	 * @see #DEFAULT_READ_TIMEOUT_MILLISECONDS
 	 */
@@ -139,11 +142,11 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 		getHttpClient().getParams().setIntParameter(org.apache.http.params.CoreConnectionPNames.SO_TIMEOUT, timeout);
 	}
 
-
 	/**
 	 * Execute the given request through the HttpClient.
-	 * <p>This method implements the basic processing workflow:
-	 * The actual work happens in this class's template methods.
+	 * <p>
+	 * This method implements the basic processing workflow: The actual work happens in this class's template methods.
+	 * 
 	 * @see #createHttpPost
 	 * @see #setRequestBody
 	 * @see #executeHttpPost
@@ -151,8 +154,7 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 	 * @see #getResponseBody
 	 */
 	@Override
-	protected RemoteInvocationResult doExecuteRequest(
-			HttpInvokerClientConfiguration config, ByteArrayOutputStream baos)
+	protected RemoteInvocationResult doExecuteRequest(HttpInvokerClientConfiguration config, ByteArrayOutputStream baos)
 			throws IOException, ClassNotFoundException {
 
 		HttpPost postMethod = createHttpPost(config);
@@ -162,18 +164,18 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 			validateResponse(config, response);
 			InputStream responseBody = getResponseBody(config, response);
 			return readRemoteInvocationResult(responseBody, config.getCodebaseUrl());
-		}
-		finally {
+		} finally {
 			postMethod.releaseConnection();
 		}
 	}
 
 	/**
 	 * Create a HttpPost for the given configuration.
-	 * <p>The default implementation creates a standard HttpPost with
-	 * "application/x-java-serialized-object" as "Content-Type" header.
-	 * @param config the HTTP invoker configuration that specifies the
-	 * target service
+	 * <p>
+	 * The default implementation creates a standard HttpPost with "application/x-java-serialized-object" as
+	 * "Content-Type" header.
+	 * 
+	 * @param config the HTTP invoker configuration that specifies the target service
 	 * @return the HttpPost instance
 	 * @throws java.io.IOException if thrown by I/O methods
 	 */
@@ -194,17 +196,16 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 
 	/**
 	 * Set the given serialized remote invocation as request body.
-	 * <p>The default implementation simply sets the serialized invocation as the
-	 * HttpPost's request body. This can be overridden, for example, to write a
-	 * specific encoding and to potentially set appropriate HTTP request headers.
+	 * <p>
+	 * The default implementation simply sets the serialized invocation as the HttpPost's request body. This can be
+	 * overridden, for example, to write a specific encoding and to potentially set appropriate HTTP request headers.
+	 * 
 	 * @param config the HTTP invoker configuration that specifies the target service
 	 * @param httpPost the HttpPost to set the request body on
-	 * @param baos the ByteArrayOutputStream that contains the serialized
-	 * RemoteInvocation object
+	 * @param baos the ByteArrayOutputStream that contains the serialized RemoteInvocation object
 	 * @throws java.io.IOException if thrown by I/O methods
 	 */
-	protected void setRequestBody(
-			HttpInvokerClientConfiguration config, HttpPost httpPost, ByteArrayOutputStream baos)
+	protected void setRequestBody(HttpInvokerClientConfiguration config, HttpPost httpPost, ByteArrayOutputStream baos)
 			throws IOException {
 
 		ByteArrayEntity entity = new ByteArrayEntity(baos.toByteArray());
@@ -214,44 +215,45 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 
 	/**
 	 * Execute the given HttpPost instance.
+	 * 
 	 * @param config the HTTP invoker configuration that specifies the target service
 	 * @param httpClient the HttpClient to execute on
 	 * @param httpPost the HttpPost to execute
 	 * @return the resulting HttpResponse
 	 * @throws java.io.IOException if thrown by I/O methods
 	 */
-	protected HttpResponse executeHttpPost(
-			HttpInvokerClientConfiguration config, HttpClient httpClient, HttpPost httpPost)
-			throws IOException {
+	protected HttpResponse executeHttpPost(HttpInvokerClientConfiguration config, HttpClient httpClient,
+			HttpPost httpPost) throws IOException {
 
 		return httpClient.execute(httpPost);
 	}
 
 	/**
-	 * Validate the given response as contained in the HttpPost object,
-	 * throwing an exception if it does not correspond to a successful HTTP response.
-	 * <p>Default implementation rejects any HTTP status code beyond 2xx, to avoid
-	 * parsing the response body and trying to deserialize from a corrupted stream.
+	 * Validate the given response as contained in the HttpPost object, throwing an exception if it does not correspond
+	 * to a successful HTTP response.
+	 * <p>
+	 * Default implementation rejects any HTTP status code beyond 2xx, to avoid parsing the response body and trying to
+	 * deserialize from a corrupted stream.
+	 * 
 	 * @param config the HTTP invoker configuration that specifies the target service
 	 * @param response the resulting HttpResponse to validate
 	 * @throws java.io.IOException if validation failed
 	 */
-	protected void validateResponse(HttpInvokerClientConfiguration config, HttpResponse response)
-			throws IOException {
+	protected void validateResponse(HttpInvokerClientConfiguration config, HttpResponse response) throws IOException {
 
 		StatusLine status = response.getStatusLine();
 		if (status.getStatusCode() >= 300) {
-			throw new NoHttpResponseException(
-					"Did not receive successful HTTP response: status code = " + status.getStatusCode() +
-					", status message = [" + status.getReasonPhrase() + "]");
+			throw new NoHttpResponseException("Did not receive successful HTTP response: status code = "
+					+ status.getStatusCode() + ", status message = [" + status.getReasonPhrase() + "]");
 		}
 	}
 
 	/**
 	 * Extract the response body from the given executed remote invocation request.
-	 * <p>The default implementation simply fetches the HttpPost's response body stream.
-	 * If the response is recognized as GZIP response, the InputStream will get wrapped
-	 * in a GZIPInputStream.
+	 * <p>
+	 * The default implementation simply fetches the HttpPost's response body stream. If the response is recognized as
+	 * GZIP response, the InputStream will get wrapped in a GZIPInputStream.
+	 * 
 	 * @param config the HTTP invoker configuration that specifies the target service
 	 * @param httpResponse the resulting HttpResponse to read the response body from
 	 * @return an InputStream for the response body
@@ -264,23 +266,23 @@ public class HttpComponentsHttpInvokerRequestExecutor extends AbstractHttpInvoke
 
 		if (isGzipResponse(httpResponse)) {
 			return new GZIPInputStream(httpResponse.getEntity().getContent());
-		}
-		else {
+		} else {
 			return httpResponse.getEntity().getContent();
 		}
 	}
 
 	/**
 	 * Determine whether the given response indicates a GZIP response.
-	 * <p>The default implementation checks whether the HTTP "Content-Encoding"
-	 * header contains "gzip" (in any casing).
+	 * <p>
+	 * The default implementation checks whether the HTTP "Content-Encoding" header contains "gzip" (in any casing).
+	 * 
 	 * @param httpResponse the resulting HttpResponse to check
 	 * @return whether the given response indicates a GZIP response
 	 */
 	protected boolean isGzipResponse(HttpResponse httpResponse) {
 		Header encodingHeader = httpResponse.getFirstHeader(HTTP_HEADER_CONTENT_ENCODING);
-		return (encodingHeader != null && encodingHeader.getValue() != null &&
-				encodingHeader.getValue().toLowerCase().contains(ENCODING_GZIP));
+		return (encodingHeader != null && encodingHeader.getValue() != null && encodingHeader.getValue().toLowerCase()
+				.contains(ENCODING_GZIP));
 	}
 
 }

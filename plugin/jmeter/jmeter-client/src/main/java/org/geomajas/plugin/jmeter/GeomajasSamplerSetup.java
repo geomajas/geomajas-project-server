@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.plugin.jmeter;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +47,6 @@ import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
-import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -47,14 +56,18 @@ import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.LayerException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
+/**
+ * Singleton setup class for all {@link GeomajasSamplerClient} instances. First {@link GeomajasSamplerClient} calling
+ * {@link #getInstance(JavaSamplerContext)} will create the singleton.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class GeomajasSamplerSetup {
 
 	private static final Logger LOG = LoggingManager.getLoggerForClass();
@@ -79,16 +92,24 @@ public class GeomajasSamplerSetup {
 
 	private DefaultHttpClient httpClient;
 
-	private static volatile GeomajasSamplerSetup instance = null;
+	private static volatile GeomajasSamplerSetup instance;
 
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static GeomajasSamplerSetup getInstance(JavaSamplerContext context) {
+		// CHECKSTYLE: OFF
 		if (instance == null) {
 			synchronized (GeomajasSamplerSetup.class) {
-				if (instance == null)
+				if (instance == null) {
 					instance = new GeomajasSamplerSetup(context);
+				}
 			}
 		}
 		return instance;
+		// CHECKSTYLE: ON
 	}
 
 	public GeomajasSamplerSetup(JavaSamplerContext context) {
@@ -441,9 +462,11 @@ public class GeomajasSamplerSetup {
 		return commandDispatcher.execute(commandName, request, userToken, null);
 	}
 
+	// CHECKSTYLE: OFF
 	public static void tearDown() {
 		// prepare for next run
 		instance = null;
 	}
+	// CHECKSTYLE: ON
 
 }
