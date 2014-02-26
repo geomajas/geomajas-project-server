@@ -42,6 +42,7 @@
 		<module>print</module>
 		<module>runtimeconfig</module>
 		<module>deskmanager</module>
+		<module>jmeter</module>
 	</modules>
 	
 </project>
