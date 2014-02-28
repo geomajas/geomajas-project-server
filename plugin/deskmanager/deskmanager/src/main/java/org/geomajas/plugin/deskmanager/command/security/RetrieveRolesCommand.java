@@ -10,8 +10,10 @@
  */
 package org.geomajas.plugin.deskmanager.command.security;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
@@ -23,6 +25,7 @@ import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerAuthorization;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
+import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,9 @@ public class RetrieveRolesCommand implements Command<RetrieveRolesRequest, Retri
 	private DtoConverterService dtoService;
 
 	@Autowired
+	private GeodeskService geodeskService;
+
+	@Autowired
 	private ApplicationContext applicationContext;
 
 	public RetrieveRolesResponse getEmptyCommandResponse() {
@@ -66,16 +72,23 @@ public class RetrieveRolesCommand implements Command<RetrieveRolesRequest, Retri
 			Exception e = new IllegalArgumentException("Error retrieving roles: geodesk id is required.");
 			log.error(e.getLocalizedMessage());
 			throw e;
+		// non-manager geodesk
 		} else if (!RetrieveRolesRequest.MANAGER_ID.equals(geodeskId)) {
-			for (Profile profile : profileService.getProfiles(request.getSecurityToken())) {
+			response.setPublicGeodesk(geodeskService.isGeodeskPublic(geodeskId));
+			List<Profile> profilesOfToken = profileService.getProfiles(request.getSecurityToken());
+			if (profilesOfToken.size() == 0 && response.isPublicGeodesk()) {
+				profilesOfToken = Arrays.asList(profileService.createGuestProfile());
+			}
+			for (Profile profile : profilesOfToken) {
 				DeskmanagerAuthorization auth = new DeskmanagerAuthorization(profile, geodeskId, applicationContext);
 				if (auth.isGeodeskUseAllowed(geodeskId)) {
 					String token = securityService.registerRole(request.getGeodeskId(), profile);
 					profiles.put(token, dtoService.toDto(profile));
 				}
 			}
+		// manager geodesk
 		} else if (RetrieveRolesRequest.MANAGER_ID.equals(geodeskId)) { // manager interface: ignore guest role
-			for (Profile profile : profileService.getProfiles(null)) {
+			for (Profile profile : profileService.getProfiles(request.getSecurityToken())) {
 				if (!Role.GUEST.equals(profile.getRole())) {
 					String token = securityService.registerRole(request.getGeodeskId(), profile);
 					profiles.put(token, dtoService.toDto(profile));

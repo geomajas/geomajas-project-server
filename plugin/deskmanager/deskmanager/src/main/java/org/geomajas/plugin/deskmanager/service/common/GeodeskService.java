@@ -61,6 +61,14 @@ public interface GeodeskService {
 	boolean isGeodeskDeleteAllowed(Geodesk gd, Role role, Territory group);
 
 	/**
+	 * Returns whether or not a grodesk is public.
+	 *
+	 * @param geodeskPublicId
+	 * @return
+	 */
+	boolean isGeodeskPublic(String geodeskPublicId);
+
+	/**
 	 * This is slightly different than LoketExists, where the former will not check inactive & deleted loketten, this
 	 * method will check all (as key needs to be UNIQUE).
 	 * 

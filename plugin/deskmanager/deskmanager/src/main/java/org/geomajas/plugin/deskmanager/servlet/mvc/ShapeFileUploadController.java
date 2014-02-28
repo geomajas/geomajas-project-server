@@ -10,18 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.servlet.mvc;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
@@ -38,6 +26,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Spring MVC controller for uploading shapefiles.
@@ -127,9 +127,9 @@ public class ShapeFileUploadController {
 			shapeFile.transferTo(f);
 
 			// unzip the temporary file
-			if (unzip(tmpName, tmpDir)) {
+			if (service.unzip(tmpName, tmpDir)) {
 				// check if shp is available
-				String shpFileName = getShpFileName(tmpDir);
+				String shpFileName = service.getShpFileName(tmpDir);
 				if (shpFileName != null) {
 					//this will add the data of the shapefile to the database
 					boolean ok = service.importShapeFile(shpFileName, layerName);

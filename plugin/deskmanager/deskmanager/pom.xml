@@ -191,8 +191,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-staticsecurity</artifactId>
-			<scope>test</scope>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
 		</dependency>
 	</dependencies>
 

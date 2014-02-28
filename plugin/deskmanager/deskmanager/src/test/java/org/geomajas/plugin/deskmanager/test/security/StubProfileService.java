@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.security.LoginSession;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
@@ -72,7 +73,17 @@ public class StubProfileService implements ProfileService {
 		
 		return profiles;
 	}
-	
+
+	@Override
+	public String registerProfilesForUser(LoginSession session) {
+		return null;
+	}
+
+	@Override
+	public Profile createGuestProfile() {
+		return null;
+	}
+
 	/**
 	 * Helper method to retrieve a profile for a specific role.
 	 * @param role

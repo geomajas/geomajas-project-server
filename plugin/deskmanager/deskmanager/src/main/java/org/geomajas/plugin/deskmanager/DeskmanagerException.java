@@ -36,6 +36,8 @@ public class DeskmanagerException extends GeomajasException {
 
 	public static final int DELETE_SEARCH_FAVORITE_FAILURE = 7;
 
+	public static final int GROUP_NOT_FOUND = 8;
+
 	
 	/**
 	 * Constructor.

@@ -33,4 +33,19 @@ public interface ProfileService {
 	 * @return the list of profiles, must not be null.
 	 */
 	List<Profile> getProfiles(String securityToken);
+
+	/**
+	 * Register profiles in a session and return a token.
+	 *
+	 * @param session
+	 * @return token
+	 */
+	String registerProfilesForUser(LoginSession session);
+
+	/**
+	 * Create a defualt guest profile.
+	 *
+	 * @return the guest profile
+	 */
+	Profile createGuestProfile();
 }

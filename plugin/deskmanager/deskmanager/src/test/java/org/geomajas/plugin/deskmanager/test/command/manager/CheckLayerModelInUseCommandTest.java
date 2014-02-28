@@ -72,8 +72,14 @@ public class CheckLayerModelInUseCommandTest {
 				DeskmanagerSecurityService.createGuestProfile());
 		// Log in
 		securityManager.createSecurityContext(managerToken);
-		
-		layerModelId = layerModelService.getLayerModelsInternal().get(0).getId();
+
+		// get a layerModel Id , but not the osm layer.
+		// The OSM layer might be added due to a map in manager territory section.
+		if (!layerModelService.getLayerModelsInternal().get(0).getClientLayerId().equals("clientLayerOsm")) {
+			layerModelId = layerModelService.getLayerModelsInternal().get(0).getId();
+		} else {
+			layerModelId = layerModelService.getLayerModelsInternal().get(1).getId();
+		}
 	}
 
 	@Test

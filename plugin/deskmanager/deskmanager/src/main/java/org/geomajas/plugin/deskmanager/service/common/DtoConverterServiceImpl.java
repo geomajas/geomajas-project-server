@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.service.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -27,12 +28,15 @@ import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
 import org.geomajas.plugin.deskmanager.domain.dto.GeodeskDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
+import org.geomajas.plugin.deskmanager.domain.security.GroupMember;
 import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
+import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.CategoryDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.TerritoryDto;
+import org.geomajas.plugin.deskmanager.domain.security.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -52,32 +56,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private final Logger log = LoggerFactory.getLogger(DtoConverterServiceImpl.class);
-	
-	
+
 	@Autowired
 	private List<UserApplicationInfo> userApplications;
 
 	@Autowired
 	private ApplicationContext applicationContext;
+	
+	@Autowired
+	private org.geomajas.service.DtoConverterService converterService;
 
 	// ----------------------------------------------------------
 	private static ResourceBundle messages;
-	
+
 	static {
 		initMessages();
 	}
 
 	private static void initMessages() {
 		try {
-			messages =
-					ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages");
-	
-		} catch (MissingResourceException e ) {
+			messages = ResourceBundle.getBundle("org/geomajas/plugin/deskmanager/i18n/ServiceMessages");
+
+		} catch (MissingResourceException e) {
 		}
-		
+
 	}
-	
-	
+
 	public Blueprint fromDto(BlueprintDto dto) throws GeomajasException {
 		if (dto == null) {
 			return null;
@@ -142,8 +146,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		bpDto.setPublic(blueprint.isPublic());
 		bpDto.setApplicationClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getApplicationClientWidgetInfos()));
-		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint.
-				getMainMapClientWidgetInfos()));
+		bpDto.setMainMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
+				.getMainMapClientWidgetInfos()));
 		bpDto.setOverviewMapClientWidgetInfos(new HashMap<String, ClientWidgetInfo>(blueprint
 				.getOverviewMapClientWidgetInfos()));
 		if (blueprint.getMainMapLayers() != null) {
@@ -195,9 +199,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return lm;
 	}
 
-	
-	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences) 
-			throws GeomajasException {
+	public LayerModelDto toDto(LayerModel layerModel, boolean includeReferences) throws GeomajasException {
 		if (layerModel == null) {
 			return null;
 		}
@@ -219,7 +221,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			owner = getMessage("systemUsr");
 		} else {
 			owner = layerModel.getOwner().getName();
-		} 
+		}
 		if (owner == null) {
 			owner = "System";
 		}
@@ -359,6 +361,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		TerritoryDto gDto = new TerritoryDto();
 		gDto.setCategory(toDto(territory.getCategory()));
 		gDto.setCode(territory.getCode());
+		gDto.setCrs(territory.getCrs());
 		gDto.setId(territory.getId());
 		gDto.setName(territory.getName());
 
@@ -374,6 +377,19 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			for (Geodesk gd : territory.getGeodesks()) {
 				gdDto.add(toDto(gd, false));
 			}
+		}
+		return gDto;
+	}
+	
+	public TerritoryDto toDto(Territory territory, boolean includeBlueprints,
+							  boolean includeGeodesks, boolean includeGeometry)
+			throws GeomajasException {
+		if (territory == null) {
+			return null;
+		}
+		TerritoryDto gDto = toDto(territory, includeBlueprints, includeGeodesks);
+		if (includeGeometry) {
+			gDto.setGeometry(converterService.toDto(territory.getGeometry()));
 		}
 		return gDto;
 	}
@@ -456,4 +472,66 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return layer;
 	}
 
+	@Override
+	public UserDto toDto(User user, boolean includeProfiles) throws GeomajasException {
+		UserDto dto = new UserDto();
+		dto.setId(user.getId());
+		dto.setEmail(user.getEmail());
+		dto.setName(user.getName());
+		dto.setSurname(user.getSurname());
+		dto.setActive(user.isActive());
+		if (includeProfiles) {
+			for (GroupMember member : user.getGroups())  {
+				dto.getProfiles().add(toProfileDto(member));
+			}
+		}
+		return dto;
+	}
+
+	@Override
+	public User fromDto(UserDto dto, boolean includeProfiles) throws GeomajasException {
+		User user = new User();
+		user.setId(dto.getId());
+		user.setEmail(dto.getEmail());
+		user.setName(dto.getName());
+		user.setSurname(dto.getSurname());
+		user.setActive(dto.isActive());
+		if (includeProfiles) {
+			for (ProfileDto profileDto : dto.getProfiles()) {
+				user.getGroups().add(fromProfileDto(profileDto, user));
+			}
+		}
+		return user;
+	}
+
+	@Override
+	public ProfileDto toProfileDto(GroupMember groupMember) throws GeomajasException {
+		ProfileDto profileDto = new ProfileDto();
+		profileDto.setRole(groupMember.getRole());
+		profileDto.setTerritory(toDto(groupMember.getGroup(), false, false, false));
+		return profileDto;
+	}
+
+	@Override
+	public Profile toProfile(GroupMember groupMember) throws GeomajasException {
+		Profile profile = new Profile();
+		profile.setRole(groupMember.getRole());
+		profile.setTerritory(groupMember.getGroup());
+		return profile;
+	}
+
+	@Override
+	public GroupMember fromProfileDto(ProfileDto profileDto, User user) throws GeomajasException {
+		Territory group = fromDto(profileDto.getTerritory(), false, false);
+		return new GroupMember(user, group, profileDto.getRole());
+	}
+
+	@Override
+	public List<Long> getIds(List<UserDto> users) {
+		List<Long> userIds = new ArrayList<Long>();
+		for (UserDto userDto : users) {
+			userIds.add(userDto.getId());
+		}
+		return userIds;
+	}
 }
