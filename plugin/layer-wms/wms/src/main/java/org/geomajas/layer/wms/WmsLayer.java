@@ -114,6 +114,15 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		public String toString() {
 			return format;
 		}
+
+		public static WmsFeatureInfoFormat parseFormat(String value) {
+			for (WmsFeatureInfoFormat format : WmsFeatureInfoFormat.values()) {
+				if (format.toString().equals(value))  {
+					return format;
+				}
+			}
+			return null;
+		}
 	}
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
@@ -139,7 +148,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private String id;
 
-	private WmsFeatureInfoFormat feautureInfoFormat = WmsFeatureInfoFormat.GML2;
+	private WmsFeatureInfoFormat featureInfoFormat = WmsFeatureInfoFormat.GML2;
 
 	/**
 	 * @deprecated use layerAuthentication
@@ -245,19 +254,19 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @since 1.15.0
 	 */
 	@Api
-	public WmsFeatureInfoFormat getFeautureInfoFormat() {
-		return feautureInfoFormat;
+	public WmsFeatureInfoFormat getFeatureInfoFormat() {
+		return featureInfoFormat;
 	}
 
 	/**
 	 * Get the feature info format.
 	 *
-	 * @param feautureInfoFormat the feature info format
+	 * @param featureInfoFormat the feature info format
 	 * @since 1.15.0
 	 */
 	@Api
-	public void setFeautureInfoFormat(WmsFeatureInfoFormat feautureInfoFormat) {
-		this.feautureInfoFormat = feautureInfoFormat;
+	public void setFeatureInfoFormat(WmsFeatureInfoFormat featureInfoFormat) {
+		this.featureInfoFormat = featureInfoFormat;
 	}
 
 	/**
@@ -302,7 +311,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					url });
 			stream = httpService.getStream(url, getLayerAuthentication(), getId());
 
-			switch (feautureInfoFormat) {
+			switch (featureInfoFormat) {
 				case GML2:
 					features = getGmlFeatures(stream, Version.GML2);
 					break;
@@ -514,7 +523,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 			url.append("&Y=");
 			url.append(Integer.toString(y));
 			url.append("&INFO_FORMAT=");
-			url.append(feautureInfoFormat);
+			url.append(featureInfoFormat);
 			return url.toString();
 		} catch (UnsupportedEncodingException uee) {
 			throw new IllegalStateException("Cannot find UTF8 encoding?", uee);

@@ -10,18 +10,6 @@
  */
 package org.geomajas.plugin.runtimeconfig.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +33,17 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of {@link ContextConfiguratorService} based on obtaining a {@link BeanDefinitionRegistry} from the
@@ -119,9 +118,11 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 			}
 			rewireAll();
 		} catch (BeanDefinitionStoreException e) {
+			log.warn("Error configuring bean definitions. Restoring previous context.", e);
 			restoreContext(oldDefinitions, null);
 			throw new RuntimeConfigException(e, RuntimeConfigException.INVALID_BEAN_DEFINITION, concatNames(holders));
 		} catch (BeansException e) {
+			log.warn("Error configuring bean definitions. Restoring previous context.", e);
 			restoreContext(oldDefinitions, null);
 			throw new RuntimeConfigException(e, RuntimeConfigException.BEAN_CREATION_FAILED, concatNames(holders));
 		}

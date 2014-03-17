@@ -211,7 +211,7 @@
             </row>
 
 			  <row>
-				  <entry><emphasis role="bold">feautureInfoFormat</emphasis>
+				  <entry><emphasis role="bold">featureInfoFormat</emphasis>
 					  (optional)</entry>
 
 				  <entry>Set this if you want to change the featureInfoFormat when
