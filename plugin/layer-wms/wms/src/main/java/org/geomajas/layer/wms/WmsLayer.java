@@ -30,6 +30,7 @@ import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
+import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.caching.service.CacheManagerService;
@@ -51,6 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
+import javax.swing.text.html.HTML;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -295,7 +297,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		InputStream stream = null;
 		try {
 			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(),
-					layerBox, x, y);
+					layerBox, x, y, featureInfoFormat == WmsFeatureInfoFormat.HTML);
 			log.debug("getFeaturesByLocation: {} {} {} {}", new Object[] { layerCoordinate, layerScale, pixelTolerance,
 					url });
 			stream = httpService.getStream(url, getLayerAuthentication(), getId());
@@ -308,7 +310,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					features = getGmlFeatures(stream, Version.GML3);
 					break;
 				case HTML:
-					features = getHtmlFeatures(stream);
+					features = getHtmlFeatures(url);
 					break;
 				case TEXT:
 					features = getTextFeatures(stream);
@@ -346,13 +348,12 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return features;
 	}
 
-	private List<Feature> getHtmlFeatures(InputStream stream) throws IOException {
+	private List<Feature> getHtmlFeatures(String url) throws IOException {
 		List<Feature> features;
-		String html = IOUtils.toString(stream);
 		Feature feature = new Feature();
 		feature.setId("html");
 		feature.setAttributes(new HashMap<String, Attribute>());
-		feature.getAttributes().put("wmsHtmlAttribute", new StringAttribute(html));
+		feature.getAttributes().put("wmsHtmlAttribute", new UrlAttribute(url));
 		features = Arrays.asList(feature);
 		return features;
 	}
@@ -490,10 +491,17 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		}
 	}
 
-	private String formatGetFeatureInfoUrl(int width, int height, Bbox box, int x, int y) throws GeomajasException {
+	private String formatGetFeatureInfoUrl(int width, int height, Bbox box, int x, int y,
+			boolean internal) throws GeomajasException {
 		// Always use direct url
 		try {
-			StringBuilder url = formatBaseUrl(baseWmsUrl, width, height, box);
+			StringBuilder url;
+			if (internal) {
+				url = formatBaseUrl(getWmsTargetUrl(), width, height, box);
+			} else {
+				url = formatBaseUrl(baseWmsUrl, width, height, box);
+			}
+
 			String layers = getId();
 			if (layerInfo.getDataSourceName() != null) {
 				layers = layerInfo.getDataSourceName();
