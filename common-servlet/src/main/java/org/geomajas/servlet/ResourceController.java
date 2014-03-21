@@ -225,12 +225,8 @@ public class ResourceController implements LastModified, ServletContextAware {
 			throws IOException {
 		long lastModified = -1;
 		int contentLength = 0;
-		boolean isFile = false;
 		String mimeType = null;
 		for (URL resource : resources) {
-			if ("file".equals(resource.getProtocol())) {
-				isFile = true;
-			}
 			URLConnection resourceConn = resource.openConnection();
 			if (resourceConn.getLastModified() > lastModified) {
 				lastModified = resourceConn.getLastModified();
@@ -263,7 +259,6 @@ public class ResourceController implements LastModified, ServletContextAware {
 		response.setContentType(mimeType);
 		response.setHeader(HTTP_CONTENT_LENGTH_HEADER, Long.toString(contentLength));
 		response.setDateHeader(HTTP_LAST_MODIFIED_HEADER, lastModified);
-		configureCaching(response, isFile ? 0 : 31556926);
 	}
 
 	public long getLastModified(HttpServletRequest request) {
@@ -377,24 +372,5 @@ public class ResourceController implements LastModified, ServletContextAware {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Set HTTP headers to allow caching for the given number of seconds.
-	 *
-	 * @param response where to set the caching settings
-	 * @param seconds number of seconds into the future that the response should be cacheable for
-	 */
-	private void configureCaching(HttpServletResponse response, int seconds) {
-		// HTTP 1.0 header
-		response.setDateHeader(HTTP_EXPIRES_HEADER, System.currentTimeMillis() + seconds * 1000L);
-		if (seconds > 0) {
-			// HTTP 1.1 header
-			response.setHeader(HTTP_CACHE_CONTROL_HEADER, "max-age=" + seconds);
-		} else {
-			// HTTP 1.1 header
-			response.setHeader(HTTP_CACHE_CONTROL_HEADER, "no-cache");
-
-		}
 	}
 }
