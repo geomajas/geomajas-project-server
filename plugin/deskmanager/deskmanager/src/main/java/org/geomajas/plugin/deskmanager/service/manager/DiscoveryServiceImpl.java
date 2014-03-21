@@ -160,7 +160,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 				return res;
 			}
 		} catch (Exception e) {
-			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
+			throw new DeskmanagerException(e, DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER,
+					e.getMessage());
 		}
 
 		throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");
@@ -172,7 +173,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		try {
 			store = DataStoreFinder.getDataStore(connectionProperties);
 		} catch (Exception e) {
-			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
+			throw new DeskmanagerException(e, DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER,
+					e.getMessage());
 		}
 		if (store == null) {
 			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");
@@ -219,7 +221,11 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 				VectorLayerInfo vli = new VectorLayerInfo();
 				vli.setFeatureInfo(fi);
 				vli.setMaxExtent(maxExtent);
-				vli.setCrs(sft.getCoordinateReferenceSystem().getIdentifiers().iterator().next().toString());
+				if (sft.getCoordinateReferenceSystem() != null) {
+					vli.setCrs(sft.getCoordinateReferenceSystem().getIdentifiers().iterator().next().toString());
+				} else {
+					vli.setCrs(defaultGeodesk.getMaps().get(0).getCrs());
+				}
 				vli.setLayerType(toLayerType(sft));
 				vli.getNamedStyleInfos().add(
 						getDefaultStyleInfo(vli.getLayerType(), clientLayerName, identifier.getName()));
@@ -251,7 +257,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 				return vlc;
 			}
 		} catch (Exception e) {
-			throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, e.getMessage());
+			throw new DeskmanagerException(e, DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER,
+					e.getMessage());
 		}
 		throw new DeskmanagerException(DeskmanagerException.LAYER_NOT_FOUND, layerName);
 	}
@@ -344,7 +351,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			rlc.setParameters(params);
 			return rlc;
 		} catch (Exception e) {
-			throw new DeskmanagerException(DeskmanagerException.ERROR_CONSTRUCTING_RASTER_LAYER, e.getMessage());
+			throw new DeskmanagerException(e, DeskmanagerException.ERROR_CONSTRUCTING_RASTER_LAYER, e.getMessage());
 		}
 	}
 
