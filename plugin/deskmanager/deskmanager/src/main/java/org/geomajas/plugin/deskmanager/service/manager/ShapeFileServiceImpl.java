@@ -50,6 +50,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -75,6 +77,8 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 
 	private static final String SUBDELIM = ":";
 
+	private static final Charset DB_CHARSET = Charset.forName("UTF-8");
+
 	@Autowired
 	private VectorLayerService layerService;
 
@@ -90,11 +94,11 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	public boolean importShapeFile(String shpFileName, String layerName) {
 		log.info("Importing Shapefile using Geotools: " + shpFileName);
 		Transaction tr = new DefaultTransaction("transaction");
-		DataStore sourceStore = null;
+		ShapefileDataStore sourceStore = null;
 		try {
 			//Read shapefile
 			File shpFile = new File(shpFileName);
-			sourceStore = FileDataStoreFinder.getDataStore(shpFile);
+			sourceStore = (ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile);
 			SimpleFeatureSource featureSource = sourceStore.getFeatureSource(
 					sourceStore.getTypeNames()[0]);
 
@@ -124,7 +128,9 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 				while (reader.hasNext()) {
 					SimpleFeature original = reader.next();
 					SimpleFeature copy = writer.next();
-					copy.setAttributes(original.getAttributes());
+
+
+					copy.setAttributes(convertAttributes(original.getAttributes(), sourceStore.getStringCharset()));
 					Geometry geometry2 = JTS.transform((Geometry) original.getDefaultGeometry(), transform);
 					copy.setDefaultGeometry(geometry2);
 					writer.write();
@@ -151,6 +157,19 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			}
 		}
 		return true;
+	}
+
+	private List<Object> convertAttributes(List<Object> attributes, Charset stringCharset)
+			throws UnsupportedEncodingException {
+		List<Object> convertedAttributes = new ArrayList<Object>(attributes.size());
+		for (Object attribute : attributes) {
+			if (attribute instanceof String) {
+				convertedAttributes.add(new String(((String) attribute).getBytes(stringCharset), DB_CHARSET));
+			} else {
+				convertedAttributes.add(attribute);
+			}
+		}
+		return convertedAttributes;
 	}
 
 	@SuppressWarnings({"rawtypes", "deprecation" })
