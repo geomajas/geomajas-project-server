@@ -158,8 +158,10 @@ public class ShapeFileUploadController {
 
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) entries.nextElement();
-				copyInputStream(zipFile.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(tmpDir
-						+ "/" + entry.getName())));
+				if (!entry.getName().contains("__MACOSX")) {
+					copyInputStream(zipFile.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(tmpDir
+							+ "/" + entry.getName())));
+				}
 			}
 
 			zipFile.close();
