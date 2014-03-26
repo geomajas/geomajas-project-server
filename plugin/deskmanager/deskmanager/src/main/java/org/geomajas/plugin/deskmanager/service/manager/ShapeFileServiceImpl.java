@@ -77,8 +77,6 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 
 	private static final String SUBDELIM = ":";
 
-	private static final Charset DB_CHARSET = Charset.forName("UTF-8");
-
 	@Autowired
 	private VectorLayerService layerService;
 
@@ -122,7 +120,6 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(layerName, tr);
 			SimpleFeatureIterator reader = featureSource.getFeatures().features();
 
-
 			try {
 				//Copy all features, and convert geometries.
 				while (reader.hasNext()) {
@@ -164,7 +161,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		List<Object> convertedAttributes = new ArrayList<Object>(attributes.size());
 		for (Object attribute : attributes) {
 			if (attribute instanceof String) {
-				convertedAttributes.add(new String(((String) attribute).getBytes(stringCharset), DB_CHARSET));
+				convertedAttributes.add(attribute.toString().replaceAll("\\\\", "\\\\\\\\"));
 			} else {
 				convertedAttributes.add(attribute);
 			}
