@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Implementation of the dynamiclayerloadservice.
+ *
  * @author Kristof Heirwegh
  */
 @Component
