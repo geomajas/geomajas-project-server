@@ -73,6 +73,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -117,6 +118,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 	@Autowired
 	private CloneService cloneService;
+
+	@Resource(name = "dataSource")
+	private DataSource dataSource;
 
 	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo defaultGeodesk;
@@ -384,6 +388,11 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		params.put(BeanFactory.CLASS_NAME, GeoToolsLayer.class.getName());
 		params.put(BaseVectorLayerBeanFactory.LAYER_INFO, vlc.getVectorLayerInfo());
 		params.put(GeoToolsLayerBeanFactory.PARAMETERS, vlc.getParameters());
+
+		if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(vlc.getParameterValue(DynamicLayerConfiguration
+				.PARAM_SOURCE_TYPE))) {
+			params.put("dataSource", dataSource);
+		}
 	}
 
 	public void createRasterLayerParams(DynamicRasterLayerConfiguration rlc, Map<String, Object> params)
@@ -397,7 +406,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		params.put(WmsLayerBeanFactory.ENABLE_FEATURE_INFO, Boolean.parseBoolean(rlc.getParameterValue(
 				WmsLayerBeanFactory.ENABLE_FEATURE_INFO)));
 
-		params.put(WmsLayerBeanFactory.FEATURE_INFO_FORMAT, WmsLayer.WmsFeatureInfoFormat.parseFormat(rlc
+		params.put(WmsLayerBeanFactory.FEATURE_INFO_FORMAT, WmsLayer.WmsFeatureInfoFormat.parseFormat((String) rlc
 				.getParameterValue(WmsLayerBeanFactory.FEATURE_INFO_FORMAT)));
 		//TODO: all these parameters should be configurable too
 		params.put("useProxy", true);
