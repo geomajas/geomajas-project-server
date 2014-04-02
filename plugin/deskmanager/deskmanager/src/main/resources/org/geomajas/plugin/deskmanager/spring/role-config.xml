@@ -12,7 +12,7 @@
 	<bean name="security.SecurityManager"
 		  class="org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityManager" />
 	<bean name="security.SecurityContext" scope="thread"
-		  class="org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext">
+		  class="org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContextImpl">
 		<aop:scoped-proxy/>
   	</bean>
 
