@@ -46,6 +46,7 @@ import org.springframework.stereotype.Component;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
+ * @author Jan Venstermans
  * @since 1.6.0
  */
 @Api

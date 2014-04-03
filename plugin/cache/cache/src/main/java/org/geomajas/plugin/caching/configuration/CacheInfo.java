@@ -12,6 +12,7 @@
 package org.geomajas.plugin.caching.configuration;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.GwtTransient;
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.ServerSideOnlyInfo;
 import org.geomajas.plugin.caching.service.CacheCategory;
@@ -37,7 +38,9 @@ public class CacheInfo implements LayerExtraInfo, ServerSideOnlyInfo {
 	 */
 	public static final String KEY = CacheInfo.class.getName();
 
+	@GwtTransient
 	private Map<CacheCategory, CacheConfiguration> configuration;
+	@GwtTransient
 	private String id;
 
 	/**
