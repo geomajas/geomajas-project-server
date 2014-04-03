@@ -85,19 +85,21 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 				try {
 					clientLayerIds.add(lm.getClientLayerId());
 
-					LayerModel clonedLayerModel = (LayerModel) SerializationUtils.clone(lm);
+					//Clone layer configuration so that it doesn't get overwritten in the database.
+					DynamicLayerConfiguration clonedLayerConfiguration =
+							(DynamicLayerConfiguration) SerializationUtils.clone(lm.getDynamicLayerConfiguration());
 
-					updateLayerProperties(clonedLayerModel.getDynamicLayerConfiguration());
-					objects.addAll(getClientLayerInfoObject(clonedLayerModel.getDynamicLayerConfiguration()));
+					updateLayerProperties(clonedLayerConfiguration);
+					objects.addAll(getClientLayerInfoObject(clonedLayerConfiguration));
 
 					// -- serverside layer bean has to be processed separately --
-					Map<String, Object> params = discoService.createBeanLayerDefinitionParameters(clonedLayerModel
-							.getDynamicLayerConfiguration());
+					Map<String, Object> params = discoService.
+							createBeanLayerDefinitionParameters(clonedLayerConfiguration);
 					holders.addAll(beanFactoryService.createBeans(params));
 
 					// Add layer to the dynamicLayersApplication for dto postprocessing
 					applicationInfo.getMaps().get(0).getLayers()
-							.add(clonedLayerModel.getDynamicLayerConfiguration().getClientLayerInfo());
+							.add(clonedLayerConfiguration.getClientLayerInfo());
 				} catch (Exception e) {
 					log.warn("Error loading dynamic layers: " + e.getMessage());
 				}
