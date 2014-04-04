@@ -109,6 +109,9 @@ public class ScaleInfo implements IsInfo {
 		setDenominator(other.getDenominator());
 		setNumerator(other.getNumerator());
 		setPixelPerUnit(other.getPixelPerUnit());
+		// must copy all state
+		setPixelPerUnitBased(other.isPixelPerUnitBased());
+		postConstructed = other.postConstructed;
 	}
 
 	/**
@@ -223,7 +226,9 @@ public class ScaleInfo implements IsInfo {
 	 *
 	 * @param conversionFactor the conversion factor
 	 * @since 1.14.0
+	 * @deprecated fixed to default (96 DPI) to avoid conflict with {@link ClientApplicationInfo#getScreenDpi()}
 	 */
+	@Deprecated
 	public void setConversionFactor(double conversionFactor) {
 		this.conversionFactor = conversionFactor;
 	}
@@ -231,7 +236,8 @@ public class ScaleInfo implements IsInfo {
 	/** Finish configuration. */
 	@PostConstruct
 	protected void postConstruct() {
-		if (denominator != 0) {
+		// avoid == 0 comparison
+		if (denominator > MINIMUM_PIXEL_PER_UNIT) {
 			setPixelPerUnit(numerator / denominator * conversionFactor);
 			setPixelPerUnitBased(true);
 		} else {

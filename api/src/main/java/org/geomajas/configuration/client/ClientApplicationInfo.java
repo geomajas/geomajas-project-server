@@ -96,9 +96,10 @@ public class ClientApplicationInfo implements IsInfo {
 	/**
 	 * Set number of dots per inch of the client screen.
 	 * 
-	 * @param screenDpi
-	 *            number of dots per inch (default = 96)
+	 * @param screenDpi number of dots per inch (default = 96)
+	 * @deprecated fixed at 96 to avoid conflicts with {@link ScaleInfo} conversion factor
 	 */
+	@Deprecated
 	public void setScreenDpi(int screenDpi) {
 		this.screenDpi = screenDpi;
 	}
