@@ -12,6 +12,7 @@
 package org.geomajas.plugin.deskmanager.security;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerGeodeskAuthorization;
 import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerManagementAuthorization;
 
@@ -26,7 +27,8 @@ import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerMa
  * @since 1.0.0
  * 
  */
-@Api
+@Api(allMethods = true)
+@UserImplemented
 public interface DeskmanagerSecurityContext extends DeskmanagerManagementAuthorization,
 		DeskmanagerGeodeskAuthorization, DeskmanagerUserInfo {
 

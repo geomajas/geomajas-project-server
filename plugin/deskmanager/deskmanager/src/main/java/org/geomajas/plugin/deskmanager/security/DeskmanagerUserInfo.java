@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.deskmanager.security;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.security.UserInfo;
@@ -20,13 +22,31 @@ import org.geomajas.security.UserInfo;
  * 
  * @author Jan De Moerloose
  * 
+ * @since 1.15.0
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface DeskmanagerUserInfo extends UserInfo {
 
+	/**
+	 * Get the territory of this user.
+	 * 
+	 * @return the user's territory
+	 */
 	Territory getTerritory();
 
+	/**
+	 * Get the role of this user.
+	 * 
+	 * @return the user's role
+	 */
 	Role getRole();
 
+	/**
+	 * Get the full name of this user.
+	 * 
+	 * @return the full name
+	 */
 	String getFullName();
 
 }
