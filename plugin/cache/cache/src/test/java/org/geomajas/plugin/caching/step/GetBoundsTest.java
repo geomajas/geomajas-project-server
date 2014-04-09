@@ -37,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
+		"/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
 		"/cacheServiceContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
 		"/dummySecurity.xml", "/org/geomajas/spring/testRecorder.xml"})
 public class GetBoundsTest {

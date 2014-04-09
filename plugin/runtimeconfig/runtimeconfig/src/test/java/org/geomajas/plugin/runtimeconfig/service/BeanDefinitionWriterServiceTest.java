@@ -10,13 +10,7 @@
  */
 package org.geomajas.plugin.runtimeconfig.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
-
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +23,13 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml",
-		"classpath*:META-INF/geomajasContext.xml",
 		"/org/geomajas/plugin/runtimeconfig/service/converter/ContextA.xml" })
 public class BeanDefinitionWriterServiceTest {
 
