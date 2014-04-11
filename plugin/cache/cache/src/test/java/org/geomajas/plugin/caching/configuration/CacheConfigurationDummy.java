@@ -11,20 +11,11 @@
 
 package org.geomajas.plugin.caching.configuration;
 
-import org.geomajas.annotation.Api;
-
-import java.io.Serializable;
-
 /**
- * Marker interface which indicates a cache configuration.
- * Serializable for it's use in {@link org.geomajas.plugin.caching.configuration.CacheInfo}.
- * Since should be: 1.14.0.
+ * Test implementation of {@link CacheConfiguration}.
  *
- * @author Joachim Van der Auwera
  * @author Jan Venstermans
- * @since 2.0.0
  */
-@Api(allMethods = true)
-public interface CacheConfiguration extends Serializable {
+public class CacheConfigurationDummy implements CacheConfiguration {
 
 }

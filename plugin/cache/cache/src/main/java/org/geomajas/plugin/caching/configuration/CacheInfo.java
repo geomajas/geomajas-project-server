@@ -37,8 +37,8 @@ public class CacheInfo implements LayerExtraInfo, ServerSideOnlyInfo {
 	 */
 	public static final String KEY = CacheInfo.class.getName();
 
-	private Map<CacheCategory, CacheConfiguration> configuration;
-	private String id;
+	private transient Map<CacheCategory, CacheConfiguration> configuration;
+	private transient String id;
 
 	/**
 	 * Set the cache id. This is assigned automatically by setting the bean id.
