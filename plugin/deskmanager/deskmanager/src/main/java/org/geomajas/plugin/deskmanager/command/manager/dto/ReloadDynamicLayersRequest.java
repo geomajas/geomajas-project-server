@@ -8,18 +8,16 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.service.common;
+package org.geomajas.plugin.deskmanager.command.manager.dto;
 
-import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
+import org.geomajas.command.EmptyCommandRequest;
 
 /**
- * Service to (re)load the dynamic configuration from the database, into the spring context.
- * 
- * @author Jan De Moerloose
+ * Empty command request for reloading the dynamic layers.
  *
+ * @author Oliver May
  */
-public interface DynamicLayerLoadService {
-
-	void loadDynamicLayers() throws RuntimeConfigException;
+public class ReloadDynamicLayersRequest extends EmptyCommandRequest {
+	public static final String COMMAND = "command.deskmanager.manager.ReloadDynamicLayers";
 
 }

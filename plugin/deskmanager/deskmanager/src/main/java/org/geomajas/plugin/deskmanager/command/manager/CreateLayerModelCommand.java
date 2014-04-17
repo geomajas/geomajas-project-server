@@ -19,7 +19,6 @@ import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
-import org.geomajas.plugin.deskmanager.service.common.DynamicLayerLoadService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
 import org.geomajas.security.SecurityContext;
@@ -49,9 +48,6 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 
 	@Autowired
 	private SecurityContext securityContext;
-
-	@Autowired
-	private DynamicLayerLoadService loadService;
 
 	@Autowired
 	private DtoConverterService dtoService;
@@ -87,14 +83,6 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 		}
 		layerModelService.saveOrUpdateLayerModel(lm);
 		response.setLayerModel(dtoService.toDto(lm, false/* TODO: , request.getLocale() */));
-
-		try {
-			loadService.loadDynamicLayers();
-		} catch (Exception orig) {
-			Exception e = new Exception("Unexpected error removing layer.", orig);
-			log.error(e.getLocalizedMessage(), orig);
-			throw e;
-		}
 	}
 
 	@Override
