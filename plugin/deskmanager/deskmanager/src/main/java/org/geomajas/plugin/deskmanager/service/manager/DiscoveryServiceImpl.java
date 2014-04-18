@@ -194,9 +194,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 			String layerName) throws IOException, DeskmanagerException {
 		Map<String, Object> connectionPropertiesObjects = new HashMap<String, Object>();
 		connectionPropertiesObjects.putAll(connectionProperties);
-		if (dataSource != null) {
-			connectionPropertiesObjects.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
-		}
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
 		return getVectorLayerConfigurationInternal(connectionPropertiesObjects, layerName);
 	}
 
