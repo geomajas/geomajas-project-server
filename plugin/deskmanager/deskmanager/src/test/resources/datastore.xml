@@ -13,18 +13,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<!-- Datasource -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:mem:deskmanager" />
+		<property name="driverClassName" value="org.h2.Driver" />
+		<property name="url" value="jdbc:h2:mem:deskmanager" />
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>
-	<util:map id="postGisDatastoreParams" key-type="java.lang.String"
-		value-type="java.lang.String">
-		<entry key="dbtype" value="h2" />
-		<entry key="database" value="deskmanager" />
-		<entry key="user" value="sa" />
-		<entry key="passwd" value="" />
-		<!--<entry key="host" value="mem" />-->
-	</util:map>
+
+	<bean id="dataSourceDbType" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="h2"/>
+	</bean>
+	<bean id="dataSourceNamespace" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="h2"/>
+	</bean>
 
 </beans>

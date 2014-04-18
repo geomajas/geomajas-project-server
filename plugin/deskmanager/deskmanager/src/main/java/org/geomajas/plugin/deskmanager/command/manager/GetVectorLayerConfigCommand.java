@@ -10,20 +10,21 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager;
 
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import org.geomajas.command.Command;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kristof Heirwegh
@@ -37,8 +38,13 @@ public class GetVectorLayerConfigCommand implements
 	@Autowired
 	private DiscoveryService discoServ;
 
-	@Resource(name = "postGisDatastoreParams")
-	private Map<String, String> postgisDataStoreParams;
+	@Autowired(required = false)
+	@Qualifier("dataSourceDbType")
+	private String dataSourceDbType = "postgis";
+
+	@Autowired(required = false)
+	@Qualifier("dataSourceNamespace")
+	private String dataSourceNamespace = "postgis";
 
 	//FIXME: inconsistent with GetRasterLayerConfigCommand (String layer vs RasterCapabilitiesInfo)
 	public void execute(GetVectorLayerConfigRequest request, GetVectorLayerConfigResponse response)
@@ -50,12 +56,14 @@ public class GetVectorLayerConfigCommand implements
 			throw e;
 		} else {
 			String sourceType = request.getConnectionProperties().get(DynamicLayerConfiguration.PARAM_SOURCE_TYPE);
-			Map<String, String> connProps;
-			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
-				connProps = postgisDataStoreParams; // get database properties
-			} else {
+			Map<String, String> connProps = new HashMap<String, String>();
+			if (!DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				connProps = request.getConnectionProperties();
+			} else {
+				connProps.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
+				connProps.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
 			}
+
 
 			response.setVectorLayerConfiguration(discoServ.getVectorLayerConfiguration(connProps,
 					request.getLayerName()));

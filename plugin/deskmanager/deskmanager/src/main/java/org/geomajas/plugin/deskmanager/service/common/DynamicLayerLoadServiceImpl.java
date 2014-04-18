@@ -24,9 +24,11 @@ import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterService;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterServiceImpl;
 import org.geomajas.plugin.runtimeconfig.service.BeanFactoryService;
 import org.geomajas.plugin.runtimeconfig.service.ContextConfiguratorService;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
@@ -61,8 +63,13 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	@Autowired
 	private BeanFactoryService beanFactoryService;
 
-	@Resource(name = "postGisDatastoreParams")
-	private Map<String, String> postgisDataStoreParams;
+	@Autowired(required = false)
+	@Qualifier("dataSourceDbType")
+	private String dataSourceDbType = "postgis";
+
+	@Autowired(required = false)
+	@Qualifier("dataSourceNamespace")
+	private String dataSourceNamespace = "postgis";
 
 	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo applicationInfo;
@@ -134,12 +141,8 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 
 			// inject private properties for shapelayers
 			// this is only used for dbtype and namespace
-			for (Map.Entry<String, String> entry : postgisDataStoreParams.entrySet()) {
-				Parameter p = new Parameter();
-				p.setName(entry.getKey());
-				p.setValue(entry.getValue());
-				lc.getParameters().add(p);
-			}
+			lc.getParameters().add(new Parameter(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace));
+			lc.getParameters().add(new Parameter(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType));
 		}
 	}
 

@@ -170,11 +170,6 @@
 		
 		<!--  Testing -->
 		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.geotools.jdbc</groupId>
 			<artifactId>gt-jdbc-h2</artifactId>
 			<scope>test</scope>
