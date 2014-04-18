@@ -197,6 +197,13 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		connectionPropertiesObjects.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
 		connectionPropertiesObjects.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
 		connectionPropertiesObjects.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
+
+		//Following properties are required, but not used because we do dataSource...
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.HOST.key, "");
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.USER.key, "");
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.PASSWD.key, "");
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.PORT.key, 0);
+
 		return getVectorLayerConfigurationInternal(connectionPropertiesObjects, layerName);
 	}
 
