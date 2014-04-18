@@ -16,11 +16,9 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigR
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigResponse;
 import org.geomajas.plugin.deskmanager.domain.dto.DynamicLayerConfiguration;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
-import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -38,14 +36,6 @@ public class GetVectorLayerConfigCommand implements
 	@Autowired
 	private DiscoveryService discoServ;
 
-	@Autowired(required = false)
-	@Qualifier("dataSourceDbType")
-	private String dataSourceDbType = "postgis";
-
-	@Autowired(required = false)
-	@Qualifier("dataSourceNamespace")
-	private String dataSourceNamespace = "postgis";
-
 	//FIXME: inconsistent with GetRasterLayerConfigCommand (String layer vs RasterCapabilitiesInfo)
 	public void execute(GetVectorLayerConfigRequest request, GetVectorLayerConfigResponse response)
 			throws Exception {
@@ -59,14 +49,14 @@ public class GetVectorLayerConfigCommand implements
 			Map<String, String> connProps = new HashMap<String, String>();
 			if (!DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				connProps = request.getConnectionProperties();
+				response.setVectorLayerConfiguration(discoServ.getVectorLayerConfiguration(connProps,
+						request.getLayerName()));
 			} else {
-				connProps.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
-				connProps.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
+				response.setVectorLayerConfiguration(discoServ.getShapeFileInDatabaseConfiguration(connProps,
+						request.getLayerName()));
 			}
 
 
-			response.setVectorLayerConfiguration(discoServ.getVectorLayerConfiguration(connProps,
-					request.getLayerName()));
 
 			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				// remove connection properties, these are private and should not be sent to the client
