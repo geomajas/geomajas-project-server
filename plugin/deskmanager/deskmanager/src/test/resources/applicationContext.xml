@@ -53,12 +53,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 	
-	
-	<bean name="postGisDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
-	   <constructor-arg ref="postGisDatastoreParams" />
-	</bean>	
-
-	
 	<!-- Override some beans to allow configuration from database -->
 	<bean class="org.geomajas.plugin.deskmanager.command.common.GetConfigurationCommand" id="command.configuration.Get" />
 	<bean class="org.geomajas.plugin.deskmanager.command.common.GetMapConfigurationCommand" id="command.configuration.GetMap" />

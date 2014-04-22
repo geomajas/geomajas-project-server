@@ -63,6 +63,7 @@ import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -70,6 +71,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -122,6 +124,14 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	@Resource(name = "dataSource")
 	private DataSource dataSource;
 
+	@Autowired(required = false)
+	@Qualifier("dataSourceDbType")
+	private String dataSourceDbType = "postgis";
+
+	@Autowired(required = false)
+	@Qualifier("dataSourceNamespace")
+	private String dataSourceNamespace = "postgis";
+
 	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo defaultGeodesk;
 
@@ -131,6 +141,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	@Autowired(required = false)
 	private Map<String, Layer<?>> serverLayerMap = new LinkedHashMap<String, Layer<?>>();
 
+	@Override
 	public List<VectorCapabilitiesInfo> getVectorCapabilities(Map<String, String> connectionProperties)
 			throws DeskmanagerException {
 		DataStore store = null;
@@ -171,8 +182,34 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		throw new DeskmanagerException(DeskmanagerException.NO_CONNECTION_TO_CAPABILITIES_SERVER, "Not found");
 	}
 
+	@Override
 	public DynamicVectorLayerConfiguration getVectorLayerConfiguration(Map<String, String> connectionProperties,
 			String layerName) throws DeskmanagerException {
+		Map<String, Object> connectionPropertiesObjects = new HashMap<String, Object>();
+		connectionPropertiesObjects.putAll(connectionProperties);
+		return getVectorLayerConfigurationInternal(connectionPropertiesObjects, layerName);
+	}
+
+	@Override
+	public DynamicVectorLayerConfiguration getShapeFileInDatabaseConfiguration(Map<String, String> connectionProperties,
+			String layerName) throws IOException, DeskmanagerException {
+		Map<String, Object> connectionPropertiesObjects = new HashMap<String, Object>();
+		connectionPropertiesObjects.putAll(connectionProperties);
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
+
+		//Following properties are required, but not used because we do dataSource...
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.HOST.key, "");
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.USER.key, "");
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.PASSWD.key, "");
+		connectionPropertiesObjects.put(JDBCDataStoreFactory.PORT.key, 0);
+
+		return getVectorLayerConfigurationInternal(connectionPropertiesObjects, layerName);
+	}
+
+	private DynamicVectorLayerConfiguration getVectorLayerConfigurationInternal(
+			Map<String, Object> connectionProperties, String layerName) throws DeskmanagerException {
 		DataStore store = null;
 		try {
 			store = DataStoreFinder.getDataStore(connectionProperties);
@@ -267,6 +304,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		throw new DeskmanagerException(DeskmanagerException.LAYER_NOT_FOUND, layerName);
 	}
 
+	@Override
 	public List<RasterCapabilitiesInfo> getRasterCapabilities(Map<String, String> connectionProperties)
 			throws Exception {
 		URL url = new URL(connectionProperties.get(GetWmsCapabilitiesRequest.GET_CAPABILITIES_URL));
@@ -324,6 +362,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		return new Bbox(envelope.getMinimum(0), envelope.getMinimum(1), envelope.getSpan(0), envelope.getSpan(1));
 	}
 
+	@Override
 	public DynamicRasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
 			RasterCapabilitiesInfo rasterCapabilitiesInfo) throws IOException, DeskmanagerException {
 		try {
@@ -359,6 +398,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 	}
 
+	@Override
 	public Map<String, Object> createBeanLayerDefinitionParameters(DynamicLayerConfiguration lc) throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
@@ -395,7 +435,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 	}
 
-	public void createRasterLayerParams(DynamicRasterLayerConfiguration rlc, Map<String, Object> params)
+	private void createRasterLayerParams(DynamicRasterLayerConfiguration rlc, Map<String, Object> params)
 			throws Exception {
 		// TODO: this mixes WMS and generic stuff: split this up for WMS/TMS/OSM or make generic
 
@@ -423,8 +463,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	}
 
 	// -------------------------------------------------
-
-	public Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc) 
+	private Map<String, Object> createBeanClientLayerDefinitionParameters(DynamicLayerConfiguration lc)
 		throws Exception {
 		if (clientLayerInfoMap.containsKey(lc.getClientLayerInfo().getId())) {
 			throw new DeskmanagerException(DeskmanagerException.CLIENT_LAYERID_ALREADY_IN_USE, lc.getClientLayerInfo()
@@ -460,12 +499,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		}
 	}
 
-	private List<Parameter> toParameters(Map<String, String> props) {
+	private List<Parameter> toParameters(Map<String, ?> props) {
 		List<Parameter> params = new ArrayList<Parameter>();
-		for (Entry<String, String> entry : props.entrySet()) {
+		for (Entry<String, ?> entry : props.entrySet()) {
 			Parameter p = new Parameter();
 			p.setName(entry.getKey());
-			p.setValue(entry.getValue());
+			p.setValue(entry.getValue().toString());
 			params.add(p);
 		}
 		return params;

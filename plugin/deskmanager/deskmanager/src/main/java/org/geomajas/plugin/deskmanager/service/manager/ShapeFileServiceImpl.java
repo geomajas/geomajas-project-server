@@ -19,6 +19,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.geotools.DataStoreFactory;
 import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
@@ -37,6 +38,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -45,10 +47,13 @@ import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -80,8 +85,16 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	@Autowired
 	private VectorLayerService layerService;
 
-	@Resource(name = "postGisDatastore")
-	private DataStore dataStore;
+	@Autowired(required = false)
+	@Qualifier("dataSourceDbType")
+	private String dataSourceDbType = "postgis";
+
+	@Autowired(required = false)
+	@Qualifier("dataSourceNamespace")
+	private String dataSourceNamespace = "postgis";
+
+	@Resource(name = "dataSource")
+	private DataSource dataSource;
 
 	@Autowired
 	private GeoService geoService;
@@ -93,7 +106,11 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		log.info("Importing Shapefile using Geotools: " + shpFileName);
 		Transaction tr = new DefaultTransaction("transaction");
 		ShapefileDataStore sourceStore = null;
+
+
 		try {
+			DataStore dataStore = createDataStore();
+
 			//Read shapefile
 			File shpFile = new File(shpFileName);
 			sourceStore = (ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile);
@@ -154,6 +171,21 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			}
 		}
 		return true;
+	}
+
+	private DataStore createDataStore() throws IOException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
+		// these are apparently required but not used
+		params.put(JDBCDataStoreFactory.DATABASE.key, "some_database");
+		params.put(JDBCDataStoreFactory.USER.key, "some_user");
+		params.put(JDBCDataStoreFactory.PASSWD.key, "some_password");
+		params.put(JDBCDataStoreFactory.HOST.key, "some host");
+		params.put(JDBCDataStoreFactory.PORT.key, "0");
+		params.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
+		params.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
+
+		return DataStoreFactory.create(params);
 	}
 
 	private List<Object> convertAttributes(List<Object> attributes, Charset stringCharset)
