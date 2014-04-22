@@ -10,10 +10,10 @@
  */
 package org.geomajas.configuration.client;
 
-import javax.annotation.PostConstruct;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.IsInfo;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Represents a single scale. This class is needed to support 1:x notation because annotation-based formatters only
@@ -34,8 +34,6 @@ public class ScaleInfo implements IsInfo {
 	private double denominator;
 	
 	private boolean pixelPerUnitBased;
-
-	private boolean postConstructed;
 
 	private double conversionFactor = PIXEL_PER_METER;
 
@@ -77,8 +75,7 @@ public class ScaleInfo implements IsInfo {
 		if (pixelPerUnit > MAXIMUM_PIXEL_PER_UNIT) {
 			pixelPerUnit = MAXIMUM_PIXEL_PER_UNIT;
 		}
-		this.pixelPerUnit = pixelPerUnit;
-		pixelPerUnitBased = true;
+		setPixelPerUnit(pixelPerUnit);
 	}
 
 	/**
@@ -96,7 +93,8 @@ public class ScaleInfo implements IsInfo {
 		if (denominator <= 0) {
 			throw new IllegalArgumentException("Scale denominator must be positive");
 		}
-		pixelPerUnitBased = false;
+		setNumerator(numerator);
+		setDenominator(denominator);
 	}
 	
 	/**
@@ -109,6 +107,8 @@ public class ScaleInfo implements IsInfo {
 		setDenominator(other.getDenominator());
 		setNumerator(other.getNumerator());
 		setPixelPerUnit(other.getPixelPerUnit());
+		// must copy all state
+		setPixelPerUnitBased(other.isPixelPerUnitBased());
 	}
 
 	/**
@@ -117,9 +117,6 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale value (pix/map unit)
 	 */
 	public double getPixelPerUnit() {
-		if (!postConstructed) {
-			postConstruct();
-		}
 		return pixelPerUnit;
 	}
 
@@ -137,6 +134,8 @@ public class ScaleInfo implements IsInfo {
 			pixelPerUnit = MAXIMUM_PIXEL_PER_UNIT;
 		}
 		this.pixelPerUnit = pixelPerUnit;
+		setPixelPerUnitBased(true);
+		postConstruct();
 	}
 	
 	/**
@@ -147,9 +146,6 @@ public class ScaleInfo implements IsInfo {
 	 * @since 1.11.1
 	 */
 	public boolean isPixelPerUnitBased() {
-		if (!postConstructed) {
-			postConstruct();
-		}
 		return pixelPerUnitBased;
 	}
 
@@ -170,9 +166,6 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale numerator
 	 */
 	public double getNumerator() {
-		if (!postConstructed) {
-			postConstruct();
-		}
 		return numerator;
 	}
 
@@ -184,6 +177,10 @@ public class ScaleInfo implements IsInfo {
 	 */
 	public void setNumerator(double numerator) {
 		this.numerator = numerator;
+		setPixelPerUnitBased(false);
+		if (denominator != 0) {
+			postConstruct();
+		}
 	}
 
 	/**
@@ -192,9 +189,6 @@ public class ScaleInfo implements IsInfo {
 	 * @return the scale denominator
 	 */
 	public double getDenominator() {
-		if (!postConstructed) {
-			postConstruct();
-		}
 		return denominator;
 	}
 
@@ -206,6 +200,8 @@ public class ScaleInfo implements IsInfo {
 	 */
 	public void setDenominator(double denominator) {
 		this.denominator = denominator;
+		setPixelPerUnitBased(false);
+		postConstruct();
 	}
 
 	/**
@@ -223,7 +219,9 @@ public class ScaleInfo implements IsInfo {
 	 *
 	 * @param conversionFactor the conversion factor
 	 * @since 1.14.0
+	 * @deprecated fixed to default (96 DPI) to avoid conflict with {@link ClientApplicationInfo#getScreenDpi()}
 	 */
+	@Deprecated
 	public void setConversionFactor(double conversionFactor) {
 		this.conversionFactor = conversionFactor;
 	}
@@ -231,19 +229,20 @@ public class ScaleInfo implements IsInfo {
 	/** Finish configuration. */
 	@PostConstruct
 	protected void postConstruct() {
-		if (denominator != 0) {
-			setPixelPerUnit(numerator / denominator * conversionFactor);
-			setPixelPerUnitBased(true);
-		} else {
+		if (pixelPerUnitBased) {
+			//	Calculate numerator and denominator
 			if (pixelPerUnit > PIXEL_PER_METER) {
-				setNumerator(pixelPerUnit / conversionFactor);
-				setDenominator(1);
+				this.numerator = pixelPerUnit / conversionFactor;
+				this.denominator = 1;
 			} else {
-				setNumerator(1);
-				setDenominator(PIXEL_PER_METER / pixelPerUnit);
+				this.numerator = 1;
+				this.denominator = PIXEL_PER_METER / pixelPerUnit;
 			}
 			setPixelPerUnitBased(false);
+		} else {
+			// Calculate PPU
+			this.pixelPerUnit = numerator / denominator * conversionFactor;
+			setPixelPerUnitBased(true);
 		}
-		postConstructed = true;
 	}
 }
