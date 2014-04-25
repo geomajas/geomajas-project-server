@@ -25,6 +25,8 @@ import org.geomajas.service.TestRecorder;
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
+import org.infinispan.configuration.global.GlobalConfiguration;
+import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
@@ -115,17 +117,18 @@ public class InfinispanCacheFactory implements CacheFactory {
 			log.debug("Get base configuration from {}", configurationFile);
 			manager = new DefaultCacheManager(configurationFile);
 		} else {
-			manager = new DefaultCacheManager();
+			GlobalConfigurationBuilder builder = new GlobalConfigurationBuilder();
+			builder.globalJmxStatistics().allowDuplicateDomains(true);
+			manager = new DefaultCacheManager(builder.build());
 		}
-		
-		if(listener == null) {
+
+		if (listener == null) {
 			listener = new InfinispanCacheListener();
 		}
 		manager.addListener(listener);
 
 		// cache for caching the cache configurations (hmmm, sounds a bit strange)
-		Map<String, Map<CacheCategory, CacheService>> cacheCache =
-				new HashMap<String, Map<CacheCategory, CacheService>>();
+		Map<String, Map<CacheCategory, CacheService>> cacheCache = new HashMap<String, Map<CacheCategory, CacheService>>();
 
 		// build default configuration
 		if (null != defaultConfiguration) {
