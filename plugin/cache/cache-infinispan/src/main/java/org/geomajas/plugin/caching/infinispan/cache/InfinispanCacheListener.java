@@ -41,9 +41,11 @@ public class InfinispanCacheListener {
 	public void dataEvicted(CacheEntriesEvictedEvent event) {
 		if (log.isTraceEnabled()) {
 			if (event.isPre()) {
-				log.trace("Going to evict " + event.getEntries().size() + " entries from the cache " + event.getCache().getName());
+				log.trace("Going to evict " + event.getEntries().size() + " entries from the cache "
+						+ event.getCache().getName());
 			} else {
-				log.trace("Evicted " + event.getEntries().size() + " entries from the cache " + event.getCache().getName());
+				log.trace("Evicted " + event.getEntries().size() + " entries from the cache "
+						+ event.getCache().getName());
 			}
 		}
 	}
