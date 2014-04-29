@@ -13,23 +13,40 @@ package org.geomajas.plugin.deskmanager.security;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
-import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerGeodeskAuthorization;
-import org.geomajas.plugin.deskmanager.security.role.authorization.DeskmanagerManagementAuthorization;
+import org.geomajas.plugin.deskmanager.domain.security.Territory;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.security.UserInfo;
 
 /**
- * The security context is a thread scoped service which allows you to query the authorization details for the logged in
- * user.
+ * Deskmanager user has a role and territory.
  * 
- * @author Oliver May
- * @author Kristof Heirwegh
  * @author Jan De Moerloose
  * 
- * @since 1.0.0
- * 
+ * @since 1.15.0
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface DeskmanagerSecurityContext extends DeskmanagerManagementAuthorization,
-		DeskmanagerGeodeskAuthorization, DeskmanagerUserInfo {
+public interface DeskmanagerUserInfo extends UserInfo {
+
+	/**
+	 * Get the territory of this user.
+	 * 
+	 * @return the user's territory
+	 */
+	Territory getTerritory();
+
+	/**
+	 * Get the role of this user.
+	 * 
+	 * @return the user's role
+	 */
+	Role getRole();
+
+	/**
+	 * Get the full name of this user.
+	 * 
+	 * @return the full name
+	 */
+	String getFullName();
 
 }

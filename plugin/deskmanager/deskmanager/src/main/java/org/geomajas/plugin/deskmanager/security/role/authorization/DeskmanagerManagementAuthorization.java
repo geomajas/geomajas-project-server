@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.deskmanager.security.role.authorization;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
@@ -22,7 +24,10 @@ import org.hibernate.criterion.Criterion;
  * @author Kristof Heirwegh
  * @author Oliver May
  * 
+ * @since 1.15.0
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface DeskmanagerManagementAuthorization {
 
 	/**

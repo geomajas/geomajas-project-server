@@ -79,7 +79,7 @@ public class Profile implements Serializable {
 
 	/**
 	 * Return the territory. Note that Profile is most probably retrieved from a serialized state, thus some properties
-	 * of Territory might not be loaded (lazy load). Use DeskmanagerSecurityContext.getGroup to retrieve the territory
+	 * of Territory might not be loaded (lazy load). Use DeskmanagerAllAuthorization.getGroup to retrieve the territory
 	 * rebound to the database session.
 	 * 
 	 * @return the territory
