@@ -58,8 +58,9 @@ public class AddLayersStep extends AbstractRasterizingStep {
 		Crs mapCrs = geoService.getCrs2(clientMapInfo.getCrs());
 		ReferencedEnvelope mapArea = new ReferencedEnvelope(
 				converterService.toInternal(mapRasterizingInfo.getBounds()), mapCrs);
-		Rectangle paintArea = new Rectangle((int) (mapRasterizingInfo.getScale() * mapArea.getWidth()),
-				(int) (mapRasterizingInfo.getScale() * mapArea.getHeight()));
+		int paintWidth = (int) Math.round(mapRasterizingInfo.getScale() * mapArea.getWidth());
+		int paintHeight = (int) Math.round(mapRasterizingInfo.getScale() * mapArea.getHeight());
+		Rectangle paintArea = new Rectangle(paintWidth, paintHeight);
 		MapViewport viewPort = mapContext.getViewport();
 		viewPort.setBounds(mapArea);
 		viewPort.setCoordinateReferenceSystem(mapCrs);

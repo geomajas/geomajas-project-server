@@ -11,18 +11,36 @@
 
 package org.geomajas.plugin.rasterizing.mvc;
 
+import java.util.Enumeration;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.geomajas.command.dto.GetVectorTileRequest;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
+import org.geomajas.internal.rendering.strategy.TileUtil;
+import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.plugin.caching.service.CachingSupportService;
 import org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
@@ -30,6 +48,7 @@ import org.geomajas.plugin.rasterizing.step.RebuildCacheContainer;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.StyleService;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -42,6 +61,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Controller which serves the actual rasterized images.
@@ -58,8 +79,10 @@ public class RasterizingController {
 
 	public static final String LAYER_MAPPING = MAPPING + "layer/";
 
+	public static final String TILE_MAPPING = MAPPING + "tile/";
+
 	public static final String IMAGE_MAPPING = MAPPING + "image/";
-	
+
 	@Autowired
 	private PipelineService<GetTileContainer> pipelineService;
 
@@ -81,8 +104,122 @@ public class RasterizingController {
 	@Autowired
 	private CachingSupportServiceSecurityContextAdder securityContextAdder;
 
+	@Autowired
+	private StyleService styleService;
+
+	@Autowired
+	private VectorLayerService layerService;
+
+	@Autowired
+	private RasterLayerService rasterLayerService;
+
+	@Autowired
+	private CachingSupportService cachingSupportService;
+
+	private final HttpClient httpClient;
+
+	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
+			PipelineCode.TILE_MAX_EXTENT_KEY };
+
+	public RasterizingController() {
+		PoolingClientConnectionManager manager = new PoolingClientConnectionManager();
+		manager.setDefaultMaxPerRoute(10);
+		httpClient = new DefaultHttpClient(manager);
+
+	}
+
 	@RequestMapping(value = LAYER_MAPPING + "{layerId}/{key}.png", method = RequestMethod.GET)
 	public void getImage(@PathVariable String layerId, @PathVariable String key, HttpServletResponse response)
+			throws Exception {
+		renderImage(layerId, key, null, response);
+	}
+
+	@RequestMapping(value = IMAGE_MAPPING + "{key}.png", method = RequestMethod.GET)
+	public void getMap(@PathVariable String key, HttpServletResponse response) throws Exception {
+		try {
+			RasterizingContainer rasterizeContainer = (RasterizingContainer) cacheManagerService.get(null,
+					CacheCategory.RASTER, key);
+			// Prepare the response:
+			CacheFilter.configureNoCaching(response);
+			response.setContentType("image/png");
+			response.getOutputStream().write(rasterizeContainer.getImage());
+		} catch (Throwable e) { // NOSONAR need to log all problems
+			log.error("Could not rasterize image " + key, e);
+			response.sendError(HttpServletResponse.SC_NO_CONTENT);
+		}
+	}
+
+	@RequestMapping(value = LAYER_MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	public void getTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
+			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
+			HttpServletResponse response) throws Exception {
+		try {
+			Crs tileCrs = geoService.getCrs2(crs);
+			GetVectorTileRequest tileMetadata = new GetVectorTileRequest();
+			tileMetadata.setCode(new TileCode(tileLevel, xIndex, yIndex));
+			tileMetadata.setCrs(geoService.getCodeFromCrs(tileCrs));
+			tileMetadata.setLayerId(layerId);
+			tileMetadata.setPaintGeometries(true);
+			tileMetadata.setPaintLabels(false);
+			tileMetadata.setPanOrigin(new Coordinate(0, 0));
+			tileMetadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
+			// calculate the tile extent
+			Envelope tileExtent = getLayerExtent(tileMetadata);
+			// default tiles are 512 and square !!!
+			double tileMaxWidth = tileExtent.getWidth();
+			double scale = getScale(512, tileLevel, tileMaxWidth);
+			tileMetadata.setScale(scale);
+			tileMetadata.setStyleInfo(styleService.retrieveStyle(layerId, styleKey));
+
+			RebuildCacheContainer rcc = new RebuildCacheContainer();
+			rcc.setMetadata(tileMetadata);
+			PipelineContext context = pipelineService.createContext();
+			context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
+			context.put(PipelineCode.LAYER_ID_KEY, layerId);
+			Envelope maxTileExtent = new Envelope(tileExtent.getMinX(), tileExtent.getMinX() + tileMaxWidth,
+					tileExtent.getMinY(), tileExtent.getMinY() + tileMaxWidth);
+			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, new Envelope(tileExtent.getMinX(), tileExtent.getMinX()
+					+ tileMaxWidth, tileExtent.getMinY(), tileExtent.getMinY() + tileMaxWidth));
+			// store container to recover the key
+			cachingSupportService.putContainer(context, securityContextAdder, CacheCategory.REBUILD, KEYS,
+					RasterizingPipelineCode.IMAGE_ID_KEY, RasterizingPipelineCode.IMAGE_ID_CONTEXT, rcc, null);
+			String key = context.get(RasterizingPipelineCode.IMAGE_ID_KEY, String.class);
+			renderImage(layerId, key, maxTileExtent, response);
+		} catch (Throwable e) { // NOSONAR need to log all problems
+			log.error("Could not rasterize tile " + layerId + "/" + styleKey + "/" + tileLevel + "-" + xIndex + "-"
+					+ yIndex + ".png", e);
+			response.sendError(HttpServletResponse.SC_NO_CONTENT);
+		}
+	}
+
+	@RequestMapping(value = LAYER_MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
+			@PathVariable Integer xIndex, @PathVariable Integer yIndex, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Crs tileCrs = geoService.getCrs2(crs);
+		// calculate the tile extent
+		Envelope maxExtent = getRasterLayerExtent(layerId, crs);
+		RasterLayer layer = configurationService.getRasterLayer(layerId);
+		double scale = getScale(layer.getLayerInfo().getTileWidth(), tileLevel, maxExtent.getWidth());
+		Envelope tileBounds = TileUtil.getTileBounds(new TileCode(tileLevel, xIndex, yIndex), maxExtent, scale);
+		// shrink a bit to avoid overlap with other tiles !!!
+		tileBounds.expandBy(-0.25 * tileBounds.getWidth());
+		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, scale);
+		if (tiles.size() == 1) {
+			writeToResponse(tiles.get(0).getUrl(), request, response);
+		}
+	}
+
+	/**
+	 * Renders the image by fetching it from the cache or, if that fails, using the rebuild container.
+	 * 
+	 * @param layerId
+	 * @param key
+	 * @param tileExtent
+	 * @param response
+	 * @throws Exception
+	 */
+	private void renderImage(String layerId, String key, Envelope tileExtent, HttpServletResponse response)
 			throws Exception {
 
 		try {
@@ -109,24 +246,24 @@ public class RasterizingController {
 				recorder.record(CacheCategory.REBUILD, "Got rebuild info from cache");
 				TileMetadata tileMetadata = rebuildCacheContainer.getMetadata();
 				context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-				Crs crs = geoService.getCrs2(tileMetadata.getCrs());
-				context.put(PipelineCode.CRS_KEY, crs);
-				CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
-				context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
-				Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
-				Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
+				if (tileExtent == null) {
+					tileExtent = getLayerExtent(tileMetadata);
+				}
 				context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
 				// can't stop here, we have only prepared the context, not built the tile !
 				InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
 				tileContainer.setTile(tile);
 				securityContextAdder.restoreSecurityContext(rebuildCacheContainer.getContext());
-
+				Crs crs = geoService.getCrs2(tileMetadata.getCrs());
+				context.put(PipelineCode.CRS_KEY, crs);
+				CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
+				context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
 				pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
 						tileContainer);
 				rasterizeContainer = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);
 			} else {
 				recorder.record(CacheCategory.RASTER, "Got item from cache");
-					log.debug("Got item from cache: {}", key);
+				log.debug("Got item from cache: {}", key);
 			}
 			// Prepare the response:
 			CacheFilter.configureNoCaching(response);
@@ -138,18 +275,42 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = IMAGE_MAPPING + "{key}.png", method = RequestMethod.GET)
-	public void getMap(@PathVariable String key, HttpServletResponse response) throws Exception {
+	private double getScale(int screenWidth, int level, double width) {
+		double scale = (screenWidth * Math.pow(2, level) / width);
+		return scale;
+	}
+
+	private Envelope getLayerExtent(TileMetadata tileMetadata) throws GeomajasException {
+		VectorLayer layer = configurationService.getVectorLayer(tileMetadata.getLayerId());
+		Crs layerCrs = layerService.getCrs(layer);
+		Crs tileCrs = geoService.getCrs2(tileMetadata.getCrs());
+		CrsTransform layerToMap = geoService.getCrsTransform(layerCrs, tileCrs);
+		Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
+		Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
+		return tileExtent;
+	}
+
+	private Envelope getRasterLayerExtent(String layerId, String crs) throws GeomajasException {
+		RasterLayer layer = configurationService.getRasterLayer(layerId);
+		Crs layerCrs = layerService.getCrs(layer);
+		Crs tileCrs = geoService.getCrs2(crs);
+		CrsTransform layerToMap = geoService.getCrsTransform(layerCrs, tileCrs);
+		Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
+		Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
+		return tileExtent;
+	}
+
+	private void writeToResponse(String url, HttpServletRequest request, HttpServletResponse response) {
+		HttpGet get = new HttpGet(url);
+		for (Enumeration<String> names = request.getHeaderNames(); names.hasMoreElements();) {
+			String name = names.nextElement();
+			get.setHeader(name, request.getHeader(name));
+		}
 		try {
-			RasterizingContainer rasterizeContainer = (RasterizingContainer) cacheManagerService.get(null,
-					CacheCategory.RASTER, key);
-			// Prepare the response:
-			CacheFilter.configureNoCaching(response);
-			response.setContentType("image/png");
-			response.getOutputStream().write(rasterizeContainer.getImage());
-		} catch (Throwable e) { // NOSONAR need to log all problems
-			log.error("Could not rasterize image " + key, e);
-			response.sendError(HttpServletResponse.SC_NO_CONTENT);
+			HttpResponse r = httpClient.execute(get);
+			r.getEntity().writeTo(response.getOutputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
