@@ -734,7 +734,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</task:scheduled-tasks>
 
 	<!-- scan the classpath for plugin contexts -->
-	<import resource="classpath*:META-INF/geomajasContext.xml" />
+	<import resource="classpath*:META-INF/geomajasContext*.xml" />
 </beans>
 
 

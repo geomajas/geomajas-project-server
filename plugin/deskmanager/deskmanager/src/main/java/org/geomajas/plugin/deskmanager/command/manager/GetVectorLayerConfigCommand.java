@@ -10,10 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.command.manager;
 
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import org.geomajas.command.Command;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigRequest;
@@ -24,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kristof Heirwegh
@@ -37,9 +36,6 @@ public class GetVectorLayerConfigCommand implements
 	@Autowired
 	private DiscoveryService discoServ;
 
-	@Resource(name = "postGisDatastoreParams")
-	private Map<String, String> postgisDataStoreParams;
-
 	//FIXME: inconsistent with GetRasterLayerConfigCommand (String layer vs RasterCapabilitiesInfo)
 	public void execute(GetVectorLayerConfigRequest request, GetVectorLayerConfigResponse response)
 			throws Exception {
@@ -50,15 +46,17 @@ public class GetVectorLayerConfigCommand implements
 			throw e;
 		} else {
 			String sourceType = request.getConnectionProperties().get(DynamicLayerConfiguration.PARAM_SOURCE_TYPE);
-			Map<String, String> connProps;
-			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
-				connProps = postgisDataStoreParams; // get database properties
-			} else {
+			Map<String, String> connProps = new HashMap<String, String>();
+			if (!DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				connProps = request.getConnectionProperties();
+				response.setVectorLayerConfiguration(discoServ.getVectorLayerConfiguration(connProps,
+						request.getLayerName()));
+			} else {
+				response.setVectorLayerConfiguration(discoServ.getShapeFileInDatabaseConfiguration(connProps,
+						request.getLayerName()));
 			}
 
-			response.setVectorLayerConfiguration(discoServ.getVectorLayerConfiguration(connProps,
-					request.getLayerName()));
+
 
 			if (DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(sourceType)) {
 				// remove connection properties, these are private and should not be sent to the client

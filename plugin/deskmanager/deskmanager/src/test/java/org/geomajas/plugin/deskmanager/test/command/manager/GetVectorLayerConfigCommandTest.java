@@ -79,7 +79,7 @@ public class GetVectorLayerConfigCommandTest {
 
 	@Test
 	@Transactional
-	public void testGetDynamicWmsLayerConfiguration() throws Exception {
+	public void testGetDynamicWfsLayerConfiguration() throws Exception {
 		// Get configuration object.
 		Map<String, String> connection = new HashMap<String, String>();
 		connection.put(GetGeotoolsVectorCapabilitiesRequest.PROPERTY_WFS_CAPABILITIESURL,

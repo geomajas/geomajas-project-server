@@ -357,6 +357,10 @@
 
       <xi:include href="listing/CacheLayerSample.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
+		<para><warning>
+			<para>Currently, it is also necessary to add a gwt module to your gwt.xml file for enabling layer specific cache configuration:</para>
+			<programlisting language="xml">&lt;inherits name="org.geomajas.plugin.caching.ServerSideOnlyCache" /&gt;</programlisting>
+		</warning></para>
     </section>
   </section>
 

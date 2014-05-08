@@ -34,7 +34,7 @@ public class InfinispanCacheService implements CacheService {
 
 	@Override
 	public void put(String key, Object object) {
-		cache.putAsync(key, object);
+		cache.put(key, object);
 	}
 
 	@Override

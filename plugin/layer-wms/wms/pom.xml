@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-layer-wms-parent</artifactId>
-		<version>1.15.0-SNAPSHOT</version>
+		<version>1.16.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -172,14 +172,14 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>META-INF/geomajasContext.xml</include>
+					<include>META-INF/geomajas*.xml</include>
 				</includes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<excludes>
-					<exclude>META-INF/geomajasContext.xml</exclude>
+					<exclude>META-INF/geomajas*.xml</exclude>
 				</excludes>
 			</resource>
 		</resources>

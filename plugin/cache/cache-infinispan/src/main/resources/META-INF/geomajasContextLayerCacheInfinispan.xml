@@ -83,7 +83,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- default cache implementations -->
 	<!-- @extract-start DefaultInfinispanConfiguration, Default Infinispan configuration -->
-	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
+	<bean name="infinispanCacheServiceInfo" class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.infinispan.cache.InfinispanCacheFactory">
 				<property name="defaultConfiguration" ref="defaultInfinispanCacheConfig" />
@@ -116,6 +116,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.RASTER" /></key>
 						<bean class="org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo">
 							<property name="maxEntries" value="64" />
+							<property name="level2MaxEntries" value="5000" />
 							<property name="evictionStrategy">
 								<util:constant static-field="org.infinispan.eviction.EvictionStrategy.LRU" />
 							</property>
@@ -127,6 +128,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.REBUILD" /></key>
 						<bean class="org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo">
 							<property name="maxEntries" value="2048" />
+							<property name="level2MaxEntries" value="100000" />
 							<property name="evictionStrategy">
 								<util:constant static-field="org.infinispan.eviction.EvictionStrategy.LRU" />
 							</property>

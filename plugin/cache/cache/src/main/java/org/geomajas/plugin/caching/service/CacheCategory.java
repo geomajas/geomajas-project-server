@@ -13,14 +13,18 @@ package org.geomajas.plugin.caching.service;
 
 import org.geomajas.annotation.Api;
 
+import java.io.Serializable;
+
 /**
  * Immutable objects which represent cache categories. These a just strings which are made type safe.
+ * Serializable for it's use in {@link org.geomajas.plugin.caching.configuration.CacheInfo}.
  *
  * @author Joachim Van der Auwera
+ * @author Jan Venstermans
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class CacheCategory {
+public class CacheCategory implements Serializable {
 
 	/** Cache for raster images. */
 	public static final CacheCategory RASTER = new CacheCategory("raster");
@@ -34,6 +38,13 @@ public class CacheCategory {
 	public static final CacheCategory BOUNDS = new CacheCategory("bounds");
 
 	private final String name;
+
+	/**
+	 * Protected default constructor for serialization.
+	 */
+	protected CacheCategory() {
+		this("");
+	}
 
 	/**
 	 * Create a cache category for the given name.

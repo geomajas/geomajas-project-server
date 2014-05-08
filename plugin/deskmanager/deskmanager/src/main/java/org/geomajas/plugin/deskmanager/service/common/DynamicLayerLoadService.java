@@ -13,7 +13,7 @@ package org.geomajas.plugin.deskmanager.service.common;
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 
 /**
- * TODO.
+ * Service to (re)load the dynamic configuration from the database, into the spring context.
  * 
  * @author Jan De Moerloose
  *
