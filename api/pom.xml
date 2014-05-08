@@ -87,6 +87,16 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jboss-serialization</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>trove</groupId>
+			<artifactId>trove</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>net.sourceforge.findbugs</groupId>

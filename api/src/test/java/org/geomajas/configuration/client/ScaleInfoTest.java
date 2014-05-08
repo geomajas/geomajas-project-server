@@ -11,12 +11,19 @@
 
 package org.geomajas.configuration.client;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import junit.framework.Assert;
+
+import org.jboss.serial.io.JBossObjectInputStream;
+import org.jboss.serial.io.JBossObjectOutputStream;
 import org.junit.Test;
 
 /**
  * Tests for ScaleInfo.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class ScaleInfoTest {
@@ -39,5 +46,34 @@ public class ScaleInfoTest {
 		Assert.assertEquals(ScaleInfo.MINIMUM_PIXEL_PER_UNIT, scaleInfo.getPixelPerUnit(), DELTA);
 		scaleInfo = new ScaleInfo(1e100);
 		Assert.assertEquals(ScaleInfo.MAXIMUM_PIXEL_PER_UNIT, scaleInfo.getPixelPerUnit(), DELTA);
+	}
+
+	@Test
+	public void testCopyConstructor() throws IOException, ClassNotFoundException {
+		ScaleInfo info = new ScaleInfo(1, 100);
+		Assert.assertEquals(37.7952, info.getPixelPerUnit(), 0.0001);
+		ScaleInfo copy = new ScaleInfo(info);
+		Assert.assertEquals(37.7952, copy.getPixelPerUnit(), 0.0001);
+		Assert.assertEquals(100, copy.getDenominator(), 0.0001);
+		Assert.assertEquals(1, copy.getNumerator(), 0.0001);
+	}
+	
+	@Test
+	public void testSerializeAndBack() throws IOException, ClassNotFoundException {
+		ScaleInfo info = new ScaleInfo(1, 100);
+		Assert.assertEquals(37.7952, info.getPixelPerUnit(), 0.0001);
+		ScaleInfo copy = new ScaleInfo(info);
+		Assert.assertEquals(37.7952, copy.getPixelPerUnit(), 0.0001);
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		JBossObjectOutputStream out = new JBossObjectOutputStream(baos);
+		out.writeObject(info);
+		out.flush();
+		out.close();
+		JBossObjectInputStream in = new JBossObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+		ScaleInfo clone = (ScaleInfo) in.readObject();
+		Assert.assertNotSame(info, clone);
+		Assert.assertEquals(37.7952, clone.getPixelPerUnit(), 0.0001);
+
 	}
 }
