@@ -25,7 +25,6 @@ import org.geomajas.service.TestRecorder;
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
-import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
@@ -128,7 +127,8 @@ public class InfinispanCacheFactory implements CacheFactory {
 		manager.addListener(listener);
 
 		// cache for caching the cache configurations (hmmm, sounds a bit strange)
-		Map<String, Map<CacheCategory, CacheService>> cacheCache = new HashMap<String, Map<CacheCategory, CacheService>>();
+		Map<String, Map<CacheCategory, CacheService>> cacheCache = 
+				new HashMap<String, Map<CacheCategory, CacheService>>();
 
 		// build default configuration
 		if (null != defaultConfiguration) {
@@ -183,7 +183,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 						manager.defineConfiguration(configurationName, infinispan);
 					}
 					recorder.record("infinispan", "configuration name " + configurationName);
-					Cache<String, Object> cache = manager.<String, Object> getCache(configurationName);
+					Cache<String, Object> cache = manager.<String, Object>getCache(configurationName);
 					cache.addListener(listener);
 					cacheService = new InfinispanCacheService(cache);
 				} else {

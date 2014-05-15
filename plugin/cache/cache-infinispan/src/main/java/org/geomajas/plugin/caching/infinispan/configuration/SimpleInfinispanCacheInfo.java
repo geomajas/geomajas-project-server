@@ -12,7 +12,6 @@
 package org.geomajas.plugin.caching.infinispan.configuration;
 
 import java.io.File;
-import java.util.Properties;
 
 import org.geomajas.annotation.Api;
 import org.infinispan.configuration.cache.Configuration;
@@ -78,10 +77,10 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 		if (null != location) {
 			SingleFileStoreConfigurationBuilder sfBuilder = builder.persistence().addSingleFileStore();
 			sfBuilder.location(location);
-			if(level2MaxEntries > 0) {
+			if (level2MaxEntries > 0) {
 				sfBuilder.maxEntries(level2MaxEntries);
 			}
-			builder= sfBuilder;
+			builder = sfBuilder;
 		}
 		if (maxEntries > 0) {
 			builder.eviction().maxEntries(maxEntries);
@@ -189,12 +188,12 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	}
 
 	/**
-	 * Set the maximum number of items which should be kept in memory by the cache. This will be rounded up to the next bigger
-	 * power of two.
+	 * Set the maximum number of items which should be kept in memory by the cache. This will be rounded up to the next
+	 * bigger power of two.
 	 * <p/>
 	 * When there are more items to be stored, they can be moved to the second level cache if
 	 * {@link #setLevel2CacheLocation(String)} is set.
-	 *
+	 * 
 	 * @param maxEntries maximum entries for the in-memory cache
 	 */
 	public void setMaxEntries(int maxEntries) {
@@ -203,8 +202,9 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	
 	/**
 	 * Set the maximum number of items which should be stored in the second level cache (> maxEntries).
-	 *
+	 * 
 	 * @param maxEntries maximum entries for the second level cache
+	 * @since 1.15.0
 	 */
 	public void setLevel2MaxEntries(int level2MaxEntries) {
 		this.level2MaxEntries = level2MaxEntries;

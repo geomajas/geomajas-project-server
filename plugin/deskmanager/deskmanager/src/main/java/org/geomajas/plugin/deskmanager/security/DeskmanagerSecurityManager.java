@@ -34,7 +34,7 @@ public class DeskmanagerSecurityManager extends DefaultSecurityManager {
 	public boolean setSecurityContext(String authenticationToken, List<Authentication> authentications) {
 		if (!authentications.isEmpty()) {
 			// build authorization and build thread local SecurityContext
-			((DeskmanagerSecurityContext) securityContext).setAuthentications(authenticationToken, authentications);
+			((DeskmanagerSecurityContextImpl) securityContext).setAuthentications(authenticationToken, authentications);
 			return true;
 		}
 		return false;
@@ -42,7 +42,7 @@ public class DeskmanagerSecurityManager extends DefaultSecurityManager {
 
 	/** @inheritDoc */
 	public void clearSecurityContext() {
-		((DeskmanagerSecurityContext) securityContext).setAuthentications(null, null);
+		((DeskmanagerSecurityContextImpl) securityContext).setAuthentications(null, null);
 	}
 
 	/** @inheritDoc */
@@ -51,7 +51,7 @@ public class DeskmanagerSecurityManager extends DefaultSecurityManager {
 			clearSecurityContext();
 		} else {
 			// System.out.println(authorizations);
-			((DeskmanagerSecurityContext) securityContext).restoreSecurityContext(authorizations);
+			((DeskmanagerSecurityContextImpl) securityContext).restoreSecurityContext(authorizations);
 		}
 	}
 

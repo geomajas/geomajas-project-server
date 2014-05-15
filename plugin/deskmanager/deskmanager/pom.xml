@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-plugin-deskmanager-parent</artifactId>
-		<version>1.15.0-SNAPSHOT</version>
+		<version>1.16.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>geomajas-plugin-deskmanager</artifactId>
@@ -169,11 +169,6 @@
 		</dependency>
 		
 		<!--  Testing -->
-		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.geotools.jdbc</groupId>
 			<artifactId>gt-jdbc-h2</artifactId>

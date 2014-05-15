@@ -10,13 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.service.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Resource;
-
+import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -30,15 +24,24 @@ import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterService;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterServiceImpl;
 import org.geomajas.plugin.runtimeconfig.service.BeanFactoryService;
 import org.geomajas.plugin.runtimeconfig.service.ContextConfiguratorService;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
+ * Implementation of the dynamiclayerloadservice.
+ *
  * @author Kristof Heirwegh
  */
 @Component
@@ -62,8 +65,13 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 	@Autowired
 	private BeanFactoryService beanFactoryService;
 
-	@Resource(name = "postGisDatastoreParams")
-	private Map<String, String> postgisDataStoreParams;
+	@Autowired(required = false)
+	@Qualifier("dataSourceDbType")
+	private String dataSourceDbType = "postgis";
+
+	@Autowired(required = false)
+	@Qualifier("dataSourceNamespace")
+	private String dataSourceNamespace = "postgis";
 
 	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo applicationInfo;
@@ -86,17 +94,21 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 				try {
 					clientLayerIds.add(lm.getClientLayerId());
 
-					updateLayerProperties(lm.getDynamicLayerConfiguration());
-					objects.addAll(getClientLayerInfoObject(lm.getDynamicLayerConfiguration()));
+					//Clone layer configuration so that it doesn't get overwritten in the database.
+					DynamicLayerConfiguration clonedLayerConfiguration =
+							(DynamicLayerConfiguration) SerializationUtils.clone(lm.getDynamicLayerConfiguration());
+
+					updateLayerProperties(clonedLayerConfiguration);
+					objects.addAll(getClientLayerInfoObject(clonedLayerConfiguration));
 
 					// -- serverside layer bean has to be processed separately --
-					Map<String, Object> params = discoService.createBeanLayerDefinitionParameters(lm
-							.getDynamicLayerConfiguration());
+					Map<String, Object> params = discoService.
+							createBeanLayerDefinitionParameters(clonedLayerConfiguration);
 					holders.addAll(beanFactoryService.createBeans(params));
 
 					// Add layer to the dynamicLayersApplication for dto postprocessing
 					applicationInfo.getMaps().get(0).getLayers()
-							.add(lm.getDynamicLayerConfiguration().getClientLayerInfo());
+							.add(clonedLayerConfiguration.getClientLayerInfo());
 				} catch (Exception e) {
 					log.warn("Error loading dynamic layers: " + e.getMessage());
 				}
@@ -128,15 +140,11 @@ public class DynamicLayerLoadServiceImpl implements DynamicLayerLoadService {
 		if (lc.getParameter(DynamicLayerConfiguration.PARAM_SOURCE_TYPE) != null
 				&& DynamicLayerConfiguration.SOURCE_TYPE_SHAPE.equals(lc.getParameter(
 						DynamicLayerConfiguration.PARAM_SOURCE_TYPE).getValue())) {
-			lc.getParameters().clear();
 
 			// inject private properties for shapelayers
-			for (Entry<String, String> entry : postgisDataStoreParams.entrySet()) {
-				Parameter p = new Parameter();
-				p.setName(entry.getKey());
-				p.setValue(entry.getValue());
-				lc.getParameters().add(p);
-			}
+			// this is only used for dbtype and namespace
+			lc.getParameters().add(new Parameter(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace));
+			lc.getParameters().add(new Parameter(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType));
 		}
 	}
 

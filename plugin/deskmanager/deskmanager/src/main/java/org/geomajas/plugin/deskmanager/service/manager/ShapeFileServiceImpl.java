@@ -10,37 +10,24 @@
  */
 package org.geomajas.plugin.deskmanager.service.manager;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
+import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.client.ClientApplicationInfo;
-import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.geotools.DataStoreFactory;
 import org.geomajas.plugin.deskmanager.DeskmanagerException;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Transaction;
-import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -51,24 +38,35 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Geometry;
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the ShapeFileService.
- * 
+ *
  * @author Kristof Heirwegh
  * @author Frank Wynants
  * @author Oliver May
@@ -87,8 +85,16 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	@Autowired
 	private VectorLayerService layerService;
 
-	@Resource(name = "postGisDatastore")
-	private DataStore dataStore;
+	@Autowired(required = false)
+	@Qualifier("dataSourceDbType")
+	private String dataSourceDbType = "postgis";
+
+	@Autowired(required = false)
+	@Qualifier("dataSourceNamespace")
+	private String dataSourceNamespace = "postgis";
+
+	@Resource(name = "dataSource")
+	private DataSource dataSource;
 
 	@Autowired
 	private GeoService geoService;
@@ -98,53 +104,68 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 
 	public boolean importShapeFile(String shpFileName, String layerName) {
 		log.info("Importing Shapefile using Geotools: " + shpFileName);
-		DataStore sourceStore = null;
-		Transaction tr = null;
+		Transaction tr = new DefaultTransaction("transaction");
+		ShapefileDataStore sourceStore = null;
+
 
 		try {
+			DataStore dataStore = createDataStore();
+
+			//Read shapefile
 			File shpFile = new File(shpFileName);
-			sourceStore = toApplicationCrs((ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile));
-			SimpleFeatureSource featureSource = sourceStore.getFeatureSource(sourceStore.getTypeNames()[0]);
+			sourceStore = (ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile);
+			SimpleFeatureSource featureSource = sourceStore.getFeatureSource(
+					sourceStore.getTypeNames()[0]);
 
-			Set<String> schemes = new HashSet<String>();
-			for (String s : dataStore.getTypeNames()) {
-				schemes.add(s);
-			}
+			//Find math transform
+			CoordinateReferenceSystem sourceCrs = featureSource.getSchema().getCoordinateReferenceSystem();
+			CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultGeodesk.getMaps().get(0).getCrs());
+			boolean lenient = true; // allow for some error due to different datums
+			MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
 
-			String action = "create";
-			if (schemes.contains(layerName)) {
-				action = "update";
-			} else {
+
+			//Create schema if it does not exist.
+			if (!Arrays.asList(dataStore.getTypeNames()).contains(layerName)) {
 				// Build the feature type for the database
 				SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-				builder.init(sourceStore.getSchema(sourceStore.getTypeNames()[0]));
-				// builder.init(SimpleFeatureTypeBuilder.retype(sourceStore.getSchema(),
-				// geoService.getCrs2(defaultCrs)));
+				builder.init(featureSource.getSchema());
 				builder.setName(layerName);
-
 				dataStore.createSchema(builder.buildFeatureType());
 			}
 
-			tr = new DefaultTransaction(action);
-			String typename = layerName;
-			SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(typename); // 2.7.0
-			fs.setTransaction(tr);
-			fs.removeFeatures(Filter.INCLUDE);
-			fs.addFeatures(featureSource.getFeatures());
-			tr.commit();
+			//Create reader and writer
+			FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(layerName, tr);
+			SimpleFeatureIterator reader = featureSource.getFeatures().features();
 
+			try {
+				//Copy all features, and convert geometries.
+				while (reader.hasNext()) {
+					SimpleFeature original = reader.next();
+					SimpleFeature copy = writer.next();
+
+
+					copy.setAttributes(convertAttributes(original.getAttributes(), sourceStore.getStringCharset()));
+					Geometry geometry2 = JTS.transform((Geometry) original.getDefaultGeometry(), transform);
+					copy.setDefaultGeometry(geometry2);
+					writer.write();
+				}
+				tr.commit();
+			} catch (Exception e) {
+				log.warn("Failed adding features from ShapeFile to database", e);
+				tr.rollback();
+				return false;
+			} finally {
+				writer.close();
+				reader.close();
+				tr.close();
+			}
 		} catch (Exception e) {
 			log.warn("Failed adding features from ShapeFile to database", e);
 			return false;
-
 		} finally {
 			try {
 				if (sourceStore != null) {
 					sourceStore.dispose();
-				}
-				if (tr != null) {
-					tr.close();
-					// do not dispose dataStore, it is also used by geoTools layers
 				}
 			} catch (Exception e2) { // ignore
 			}
@@ -152,37 +173,35 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		return true;
 	}
 
-	private DataStore toApplicationCrs(ShapefileDataStore sourceStore) throws LayerException, IOException,
-			FactoryException {
+	private DataStore createDataStore() throws IOException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(JDBCDataStoreFactory.DATASOURCE.key, dataSource);
+		// these are apparently required but not used
+		params.put(JDBCDataStoreFactory.DATABASE.key, "some_database");
+		params.put(JDBCDataStoreFactory.USER.key, "some_user");
+		params.put(JDBCDataStoreFactory.PASSWD.key, "some_password");
+		params.put(JDBCDataStoreFactory.HOST.key, "some host");
+		params.put(JDBCDataStoreFactory.PORT.key, "0");
+		params.put(JDBCDataStoreFactory.NAMESPACE.key, dataSourceNamespace);
+		params.put(JDBCDataStoreFactory.DBTYPE.key, dataSourceDbType);
 
-		CoordinateReferenceSystem sourceCrs = sourceStore.getSchema().getGeometryDescriptor()
-				.getCoordinateReferenceSystem();
-		CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultGeodesk.getMaps().get(0).getCrs());
-		boolean lenient = true; // allow for some error due to different datums
-		MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
-
-		SimpleFeatureType featureType = SimpleFeatureTypeBuilder.retype(sourceStore.getSchema(), targetCrs);
-
-		DataStore datastore = new MemoryDataStore(sourceStore.getFeatureSource().getFeatures());
-
-		SimpleFeatureIterator it = datastore.getFeatureSource(datastore.getTypeNames()[0]).getFeatures().features();
-
-		try {
-			//Reproject geometr
-			while (it.hasNext()) {
-				SimpleFeature feature = it.next();
-				Geometry geometry = (Geometry) feature.getDefaultGeometry();
-				Geometry geometry2 = JTS.transform(geometry, transform);
-				feature.setDefaultGeometry(geometry2);
-			}
-
-		} catch (TransformException e) {
-			log.warn(e.getLocalizedMessage(), e);
-		}
-		return datastore;
+		return DataStoreFactory.create(params);
 	}
 
-	@SuppressWarnings({ "rawtypes", "deprecation" })
+	private List<Object> convertAttributes(List<Object> attributes, Charset stringCharset)
+			throws UnsupportedEncodingException {
+		List<Object> convertedAttributes = new ArrayList<Object>(attributes.size());
+		for (Object attribute : attributes) {
+			if (attribute instanceof String) {
+				convertedAttributes.add(attribute.toString().replaceAll("\\\\", "\\\\\\\\"));
+			} else {
+				convertedAttributes.add(attribute);
+			}
+		}
+		return convertedAttributes;
+	}
+
+	@SuppressWarnings({"rawtypes", "deprecation" })
 	// see GBE-321
 	public void toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception {
 		if (features.size() == 0) {
@@ -230,12 +249,10 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			try {
 				sfs.addFeatures(collection);
 				transaction.commit();
-
 			} catch (Exception e) {
 				e.printStackTrace();
 				transaction.rollback();
 				throw e;
-
 			} finally {
 				transaction.close();
 			}
