@@ -419,12 +419,6 @@ public class ConfigurationDtoPostProcessor {
 			// convert the scales so we have both relative and pix/unit
 			boolean relativeScales = true;
 			for (ScaleInfo scale : map.getScaleConfiguration().getZoomLevels()) {
-				if (scale.getDenominator() == 0) {
-					relativeScales = false;
-				} else if (!relativeScales) {
-					throw new LayerException(ExceptionCode.SCALE_CONVERSION_PROBLEM, map.getId());
-				}
-				completeScale(scale, pixPerUnit);
 				// add the resolution for deprecated api support
 				if (!map.isResolutionsRelative()) {
 					map.getResolutions().add(1. / scale.getPixelPerUnit());
@@ -432,7 +426,6 @@ public class ConfigurationDtoPostProcessor {
 					map.getResolutions().add(scale.getDenominator() / scale.getNumerator());
 				}
 			}
-			completeScale(map.getScaleConfiguration().getMaximumScale(), pixPerUnit);
 			for (ClientLayerInfo layer : map.getLayers()) {
 				String layerId = layer.getServerLayerId();
 				Layer<?> serverLayer = layerMap.get(layerId);
@@ -442,9 +435,6 @@ public class ConfigurationDtoPostProcessor {
 				LayerInfo layerInfo = serverLayer.getLayerInfo();
 				layer.setLayerInfo(layerInfo);
 				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layerInfo.getMaxExtent(), layerId));
-				completeScale(layer.getMaximumScale(), pixPerUnit);
-				completeScale(layer.getMinimumScale(), pixPerUnit);
-				completeScale(layer.getZoomToPointScale(), pixPerUnit);
 				log.debug("Layer {} has scale range : {}, {}", new Object[] {layer.getId(),
 						layer.getMinimumScale().getPixelPerUnit(), layer.getMaximumScale().getPixelPerUnit()});
 				log.debug("Layer {} has zoom-to-point scale : {}", layer.getId(),
@@ -503,32 +493,6 @@ public class ConfigurationDtoPostProcessor {
 			return res;
 		} catch (GeomajasException e) {
 			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
-		}
-	}
-
-	/**
-	 * Convert the scale in pixels per unit or relative values, which ever is missing.
-	 * 
-	 * @param scaleInfo scaleInfo object which needs to be completed
-	 * @param mapUnitInPixels the number of pixels in a map unit
-	 */
-	public void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels) {
-		if (0 == mapUnitInPixels) {
-			throw new IllegalArgumentException("ScaleInfo.completeScale mapUnitInPixels should never be zero.");
-		}
-		double denominator = scaleInfo.getDenominator();
-		double numerator = scaleInfo.getNumerator();
-		if (denominator != 0) {
-			scaleInfo.setPixelPerUnit(numerator / denominator * mapUnitInPixels);
-		} else {
-			double pixelPerUnit = scaleInfo.getPixelPerUnit();
-			if (pixelPerUnit > mapUnitInPixels) {
-				scaleInfo.setNumerator(pixelPerUnit / mapUnitInPixels);
-				scaleInfo.setDenominator(1);
-			} else {
-				scaleInfo.setNumerator(1);
-				scaleInfo.setDenominator(mapUnitInPixels / pixelPerUnit);
-			}
 		}
 	}
 

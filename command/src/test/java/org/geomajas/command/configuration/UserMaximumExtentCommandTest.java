@@ -15,26 +15,33 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
-import org.junit.After;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Test for {@link UserMaximumExtentCommand}.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, ReloadContextTestExecutionListener.class })
+@ReloadContext
 public class UserMaximumExtentCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
+
 	private static final String LAYER_ID = "countries";
+
 	private static final String CRS = "EPSG:4326";
 
 	@Autowired
@@ -44,7 +51,7 @@ public class UserMaximumExtentCommandTest {
 	public void testUserMaximumExtent() throws Exception {
 		UserMaximumExtentRequest request = new UserMaximumExtentRequest();
 		request.setCrs(CRS);
-		request.setLayerIds(new String[] {LAYER_ID});
+		request.setLayerIds(new String[] { LAYER_ID });
 		UserMaximumExtentResponse response = (UserMaximumExtentResponse) dispatcher.execute(
 				UserMaximumExtentRequest.COMMAND, request, null, "en");
 		if (response.isError()) {
