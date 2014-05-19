@@ -10,11 +10,7 @@
  */
 package org.geomajas.plugin.runtimeconfig.service;
 
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.Assert;
-
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.geomajas.plugin.runtimeconfig.dto.bean.BeanDefinitionInfo;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService.NamedObject;
@@ -28,9 +24,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:org/geomajas/spring/geomajasContext.xml",
-		"classpath*:META-INF/geomajasContext.xml",
 		"/org/geomajas/plugin/runtimeconfig/service/converter/ContextA.xml" })
 public class BeanDefinitionDtoConverterTest {
 

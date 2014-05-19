@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = MultiRefreshContextLoader.class, locations = {
-		"classpath:org/geomajas/spring/geomajasContext.xml", "classpath*:META-INF/geomajasContext.xml",
+		"classpath:org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/runtimeconfig/service/ContextA.xml" })
 public class ContextConfiguratorServiceTest {
 

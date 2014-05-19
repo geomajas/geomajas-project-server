@@ -149,7 +149,8 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = LAYER_MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	@RequestMapping(value = LAYER_MAPPING +
+			"{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
 	public void getTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
 			HttpServletResponse response) throws Exception {
@@ -192,7 +193,8 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = LAYER_MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	@RequestMapping(value = LAYER_MAPPING +
+			"{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
 			@PathVariable Integer xIndex, @PathVariable Integer yIndex, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

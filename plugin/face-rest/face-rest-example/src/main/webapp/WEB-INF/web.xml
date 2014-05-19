@@ -35,7 +35,7 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath*:META-INF/geomajasWebContext.xml</param-value>
+			<param-value>classpath:org/geomajas/spring/geomajasWebContext.xml</param-value>
 			<description>Spring Web-MVC specific (additional) context files.</description>
 		</init-param>
 		<load-on-startup>3</load-on-startup>

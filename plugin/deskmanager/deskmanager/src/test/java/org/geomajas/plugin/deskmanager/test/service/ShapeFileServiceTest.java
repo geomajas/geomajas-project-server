@@ -10,11 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.test.service;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.geomajas.layer.LayerException;
-import org.geomajas.plugin.deskmanager.command.manager.dto.GetWmsCapabilitiesRequest;
-import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.geomajas.plugin.deskmanager.service.manager.ShapeFileService;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
@@ -28,12 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**

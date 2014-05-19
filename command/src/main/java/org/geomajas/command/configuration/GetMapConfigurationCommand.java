@@ -22,6 +22,7 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
+import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.ServerSideOnlyInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -41,10 +42,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * This command fetches, and returns the initial application configuration for a specific MapWidget.
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
+ * @author Jan Venstermans
  * @since 1.6.0
  */
 @Api
@@ -125,7 +127,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 
 	/**
 	 * Clone a widget info map considering what may be copied to the client.
-	 * 
+	 *
 	 * @param widgetInfo widget info map
 	 * @return cloned copy including only records which are not {@link ServerSideOnlyInfo}
 	 */
@@ -133,6 +135,23 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		Map<String, ClientWidgetInfo> res = new HashMap<String, ClientWidgetInfo>();
 		for (Map.Entry<String, ClientWidgetInfo> entry : widgetInfo.entrySet()) {
 			ClientWidgetInfo value = entry.getValue();
+			if (!(value instanceof ServerSideOnlyInfo)) {
+				res.put(entry.getKey(), value);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Clone a {@link org.geomajas.configuration.LayerInfo#extraInfo} considering what may be copied to the client.
+	 *
+	 * @param extraInfoMap map of extra info
+	 * @return cloned copy including only records which are not {@link ServerSideOnlyInfo}
+	 */
+	public Map<String, LayerExtraInfo> securityCloneLayerExtraInfo(Map<String, LayerExtraInfo> extraInfoMap) {
+		Map<String, LayerExtraInfo> res = new HashMap<String, LayerExtraInfo>();
+		for (Map.Entry<String, LayerExtraInfo> entry : extraInfoMap.entrySet()) {
+			LayerExtraInfo value = entry.getValue();
 			if (!(value instanceof ServerSideOnlyInfo)) {
 				res.put(entry.getKey(), value);
 			}
@@ -156,6 +175,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		if (securityContext.isLayerVisible(layerId)) {
 			client = (ClientLayerInfo) SerializationUtils.clone(original);
 			client.setWidgetInfo(securityClone(original.getWidgetInfo()));
+			client.getLayerInfo().setExtraInfo(securityCloneLayerExtraInfo(original.getLayerInfo().getExtraInfo()));
 			if (client instanceof ClientVectorLayerInfo) {
 				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) client;
 				// set statuses

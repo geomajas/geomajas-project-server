@@ -10,6 +10,9 @@
  */
 package org.geomajas.plugin.deskmanager.security.role.authorization;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
+
 
 /**
  * Geodesk authorization for the deskmanager plugin. This interface handles the access rights to geodesks.
@@ -17,7 +20,10 @@ package org.geomajas.plugin.deskmanager.security.role.authorization;
  * @author Kristof Heirwegh
  * @author Oliver May
  * 
+ * @since 1.15.0
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface DeskmanagerGeodeskAuthorization {
 
 	/**

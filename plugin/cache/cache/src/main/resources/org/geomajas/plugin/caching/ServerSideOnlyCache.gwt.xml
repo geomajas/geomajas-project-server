@@ -1,0 +1,9 @@
+<!-- files needed to make CacheInfo serializable.
+Ideally interface ServerSideOnlyInfo should prevent it from being serialized anyway in GWT RPC.
+Eventually, this gwt module should be eliminated, when ServerSideOnlyInfo is implemented correctly. -->
+<module>
+	<source path="configuration" />
+	<source path="service">
+		<include name="CacheCategory.java"/>
+	</source>
+</module>
