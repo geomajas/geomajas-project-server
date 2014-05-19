@@ -202,8 +202,10 @@ public class RasterizingController {
 		RasterLayer layer = configurationService.getRasterLayer(layerId);
 		double scale = getScale(layer.getLayerInfo().getTileWidth(), tileLevel, maxExtent.getWidth());
 		Envelope tileBounds = TileUtil.getTileBounds(new TileCode(tileLevel, xIndex, yIndex), maxExtent, scale);
-		// shrink a bit to avoid overlap with other tiles !!!
-		tileBounds.expandBy(-0.25 * tileBounds.getWidth());
+		// take center to avoid overlap with other tiles !!!
+		double centerX = 0.5 * (tileBounds.getMinX() + tileBounds.getMaxX());
+		double centerY = 0.5 * (tileBounds.getMinY() + tileBounds.getMaxY());
+		tileBounds = new Envelope(centerX, centerX, centerY, centerY);
 		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, scale);
 		if (tiles.size() == 1) {
 			writeToResponse(tiles.get(0).getUrl(), request, response);
