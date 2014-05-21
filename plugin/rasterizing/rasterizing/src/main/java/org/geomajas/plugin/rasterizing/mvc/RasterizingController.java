@@ -22,19 +22,18 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
+import org.geomajas.internal.layer.tile.TileMetadataImpl;
 import org.geomajas.internal.rendering.strategy.TileUtil;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.pipeline.GetTileContainer;
-import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
@@ -44,6 +43,7 @@ import org.geomajas.plugin.caching.service.CachingSupportService;
 import org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
+import org.geomajas.plugin.rasterizing.layer.tile.TmsTileMetadata;
 import org.geomajas.plugin.rasterizing.step.RebuildCacheContainer;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
@@ -61,6 +61,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -118,8 +119,9 @@ public class RasterizingController {
 
 	private final HttpClient httpClient;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
-			PipelineCode.TILE_MAX_EXTENT_KEY };
+	private static final String TMS_TILE_RENDERER = "TmsTileRenderer";
+
+	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
 	public RasterizingController() {
 		PoolingClientConnectionManager manager = new PoolingClientConnectionManager();
@@ -131,7 +133,7 @@ public class RasterizingController {
 	@RequestMapping(value = LAYER_MAPPING + "{layerId}/{key}.png", method = RequestMethod.GET)
 	public void getImage(@PathVariable String layerId, @PathVariable String key, HttpServletResponse response)
 			throws Exception {
-		renderImage(layerId, key, null, response);
+		renderImage(layerId, key, response);
 	}
 
 	@RequestMapping(value = IMAGE_MAPPING + "{key}.png", method = RequestMethod.GET)
@@ -149,27 +151,26 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = LAYER_MAPPING +
-			"{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	@RequestMapping(value = LAYER_MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
 	public void getTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
-			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
+			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @RequestParam Double resolution,
+			@RequestParam String tileOrigin, @RequestParam(required = false, defaultValue = "512") int tileWidth,
+			@RequestParam(required = false, defaultValue = "512") int tileHeight, @PathVariable Integer yIndex,
 			HttpServletResponse response) throws Exception {
 		try {
 			Crs tileCrs = geoService.getCrs2(crs);
-			GetVectorTileRequest tileMetadata = new GetVectorTileRequest();
+			TmsTileMetadata tileMetadata = new TmsTileMetadata();
 			tileMetadata.setCode(new TileCode(tileLevel, xIndex, yIndex));
 			tileMetadata.setCrs(geoService.getCodeFromCrs(tileCrs));
 			tileMetadata.setLayerId(layerId);
 			tileMetadata.setPaintGeometries(true);
 			tileMetadata.setPaintLabels(false);
-			tileMetadata.setPanOrigin(new Coordinate(0, 0));
-			tileMetadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
-			// calculate the tile extent
-			Envelope tileExtent = getLayerExtent(tileMetadata);
-			// default tiles are 512 and square !!!
-			double tileMaxWidth = tileExtent.getWidth();
-			double scale = getScale(512, tileLevel, tileMaxWidth);
-			tileMetadata.setScale(scale);
+			tileMetadata.setRenderer(TMS_TILE_RENDERER);
+			// TmsTileMetadata specific
+			tileMetadata.setResolution(resolution);
+			tileMetadata.setTileOrigin(parseOrigin(tileOrigin));
+			tileMetadata.setTileWidth(tileWidth);
+			tileMetadata.setTileHeight(tileHeight);
 			tileMetadata.setStyleInfo(styleService.retrieveStyle(layerId, styleKey));
 
 			RebuildCacheContainer rcc = new RebuildCacheContainer();
@@ -177,15 +178,11 @@ public class RasterizingController {
 			PipelineContext context = pipelineService.createContext();
 			context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
 			context.put(PipelineCode.LAYER_ID_KEY, layerId);
-			Envelope maxTileExtent = new Envelope(tileExtent.getMinX(), tileExtent.getMinX() + tileMaxWidth,
-					tileExtent.getMinY(), tileExtent.getMinY() + tileMaxWidth);
-			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, new Envelope(tileExtent.getMinX(), tileExtent.getMinX()
-					+ tileMaxWidth, tileExtent.getMinY(), tileExtent.getMinY() + tileMaxWidth));
 			// store container to recover the key
 			cachingSupportService.putContainer(context, securityContextAdder, CacheCategory.REBUILD, KEYS,
 					RasterizingPipelineCode.IMAGE_ID_KEY, RasterizingPipelineCode.IMAGE_ID_CONTEXT, rcc, null);
 			String key = context.get(RasterizingPipelineCode.IMAGE_ID_KEY, String.class);
-			renderImage(layerId, key, maxTileExtent, response);
+			renderImage(layerId, key, response);
 		} catch (Throwable e) { // NOSONAR need to log all problems
 			log.error("Could not rasterize tile " + layerId + "/" + styleKey + "/" + tileLevel + "-" + xIndex + "-"
 					+ yIndex + ".png", e);
@@ -193,8 +190,12 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = LAYER_MAPPING +
-			"{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	private Coordinate parseOrigin(String tileOrigin) {
+		String[] xy = tileOrigin.split(",");
+		return new Coordinate(Double.parseDouble(xy[0]), Double.parseDouble(xy[1]));
+	}
+
+	@RequestMapping(value = LAYER_MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
 			@PathVariable Integer xIndex, @PathVariable Integer yIndex, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -210,6 +211,9 @@ public class RasterizingController {
 		tileBounds = new Envelope(centerX, centerX, centerY, centerY);
 		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, scale);
 		if (tiles.size() == 1) {
+			log.debug("Rendering raster layer tile " + layerId + "/" + tileLevel + "-" + xIndex + "-" + yIndex);
+			log.debug("Url = " + tiles.get(0).getUrl());
+			log.debug("Tile = " + tiles.get(0));
 			writeToResponse(tiles.get(0).getUrl(), request, response);
 		}
 	}
@@ -223,8 +227,7 @@ public class RasterizingController {
 	 * @param response
 	 * @throws Exception
 	 */
-	private void renderImage(String layerId, String key, Envelope tileExtent, HttpServletResponse response)
-			throws Exception {
+	private void renderImage(String layerId, String key, HttpServletResponse response) throws Exception {
 
 		try {
 			VectorLayer layer = configurationService.getVectorLayer(layerId);
@@ -250,12 +253,16 @@ public class RasterizingController {
 				recorder.record(CacheCategory.REBUILD, "Got rebuild info from cache");
 				TileMetadata tileMetadata = rebuildCacheContainer.getMetadata();
 				context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-				if (tileExtent == null) {
-					tileExtent = getLayerExtent(tileMetadata);
-				}
-				context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
 				// can't stop here, we have only prepared the context, not built the tile !
-				InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
+				InternalTileImpl tile = null;
+				if (tileMetadata.getRenderer().equals(TMS_TILE_RENDERER)) {
+					tile = new InternalTileImpl(tileMetadata.getCode(), ((TmsTileMetadata) tileMetadata).getTileOrigin(),
+							tileMetadata.getScale(), ((TmsTileMetadata) tileMetadata).getTileWidth(),
+							((TmsTileMetadata) tileMetadata).getTileHeight());
+				} else {
+					tile = new InternalTileImpl(tileMetadata.getCode(), getLayerExtent(tileMetadata),
+							tileMetadata.getScale());
+				}
 				tileContainer.setTile(tile);
 				securityContextAdder.restoreSecurityContext(rebuildCacheContainer.getContext());
 				Crs crs = geoService.getCrs2(tileMetadata.getCrs());
