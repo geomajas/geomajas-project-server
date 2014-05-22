@@ -114,9 +114,14 @@ public class ShapeFileUploadController {
 	}
 
 	private String handleFile(MultipartFile shapeFile, String layerName) {
-		String tmpDir = "/tmp/" + new Date().getTime();
+		String tmpDirRoot = System.getProperty("java.io.tmpdir");
+		if (tmpDirRoot == null | tmpDirRoot.isEmpty()) {
+			tmpDirRoot = "/tmp/";
+		}
+		String tmpDir = tmpDirRoot + new Date().getTime();
 		try {
-			new File(tmpDir).mkdir();
+			File tmDirFile = new File(tmpDir);
+			tmDirFile.mkdir();
 			String tmpName = tmpDir + "/input.zip";
 			File f = new File(tmpName);
 			shapeFile.transferTo(f);
@@ -126,7 +131,9 @@ public class ShapeFileUploadController {
 				// check if shp is available
 				String shpFileName = getShpFileName(tmpDir);
 				if (shpFileName != null) {
+					//this will add the data of the shapefile to the database
 					boolean ok = service.importShapeFile(shpFileName, layerName);
+					// a new layer table is created
 					if (ok) {
 						// upload succeeded; now fill the mapping table
 						return ShapeFileUploadView.RESPONSE_OK;
@@ -206,7 +213,7 @@ public class ShapeFileUploadController {
 	/**
 	 * Get fully qualified .shp filename
 	 * 
-	 * @param tmpDir
+	 * @param dir
 	 * @return The fully qualified name of the .shp file in the given dir, or null if no .shp file is found
 	 */
 	private String getShpFileName(String dir) {
