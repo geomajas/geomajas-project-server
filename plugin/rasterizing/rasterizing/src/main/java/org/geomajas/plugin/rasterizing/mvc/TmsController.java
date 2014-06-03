@@ -25,9 +25,9 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.tile.TileMetadataImpl;
 import org.geomajas.internal.rendering.strategy.TileUtil;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
@@ -130,7 +130,7 @@ public class TmsController {
 	 * @param styleKey style key
 	 * @param crs crs, e.g. "EPSG:4326"
 	 * @param tileLevel tile level, 0 is highest level
-	 * @param xIndex x-index of tile 
+	 * @param xIndex x-index of tile
 	 * @param yIndex y-index of tile
 	 * @param resolution resolution (m/pixel)
 	 * @param tileOrigin origin of the tile configuration "&lt;x-coordinate>,&lt;y-coordinate>"
@@ -139,15 +139,18 @@ public class TmsController {
 	 * @param response servlet response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", 
+			method = RequestMethod.GET)
 	public void getVectorTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
-			@RequestParam Double resolution, @RequestParam String tileOrigin,
+			@RequestParam(required = false) Double resolution,
+			@RequestParam(required = false) String tileOrigin,
 			@RequestParam(required = false, defaultValue = "512") int tileWidth,
 			@RequestParam(required = false, defaultValue = "512") int tileHeight, HttpServletResponse response)
 			throws Exception {
 		try {
 			Crs tileCrs = geoService.getCrs2(crs);
+			VectorLayer layer = configurationService.getVectorLayer(layerId);
 			TmsTileMetadata tileMetadata = new TmsTileMetadata();
 			tileMetadata.setCode(new TileCode(tileLevel, xIndex, yIndex));
 			tileMetadata.setCrs(geoService.getCodeFromCrs(tileCrs));
@@ -156,8 +159,15 @@ public class TmsController {
 			tileMetadata.setPaintLabels(false);
 			tileMetadata.setRenderer(TMS_TILE_RENDERER);
 			// TmsTileMetadata specific
+			if (resolution == null) {
+				resolution = 1 / getScale(tileWidth, tileLevel, layer.getLayerInfo().getMaxExtent().getWidth());
+			}
 			tileMetadata.setResolution(resolution);
-			tileMetadata.setTileOrigin(parseOrigin(tileOrigin));
+			if(tileOrigin == null) {
+				tileMetadata.setTileOrigin(BboxService.getOrigin(layer.getLayerInfo().getMaxExtent()));
+			} else {
+				tileMetadata.setTileOrigin(parseOrigin(tileOrigin));
+			}
 			tileMetadata.setTileWidth(tileWidth);
 			tileMetadata.setTileHeight(tileHeight);
 			tileMetadata.setStyleInfo(styleService.retrieveStyle(layerId, styleKey));
@@ -185,7 +195,7 @@ public class TmsController {
 	 * @param layerId layer id
 	 * @param crs crs, e.g. EPSG:4326
 	 * @param tileLevel tile level, 0 is highest level
-	 * @param xIndex x-index of tile 
+	 * @param xIndex x-index of tile
 	 * @param yIndex y-index of tile
 	 * @param request servlet request
 	 * @param response servlet response
