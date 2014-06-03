@@ -58,5 +58,10 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 		<constructor-arg
 			value="org/geomajas/plugin/rasterizing/images/worldpaintablelayer/${image.profile}"></constructor-arg>
 	</bean>
+	
+	<bean name="MvcTest.path" class="java.lang.String">
+		<constructor-arg
+			value="org/geomajas/plugin/rasterizing/images/mvc/${image.profile}"></constructor-arg>
+	</bean>
 		
 </beans>
