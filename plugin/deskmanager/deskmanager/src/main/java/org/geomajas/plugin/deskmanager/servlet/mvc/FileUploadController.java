@@ -10,14 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.servlet.mvc;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
 import org.geomajas.plugin.deskmanager.service.common.FileService;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
@@ -30,9 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Spring MVC controller for uploading files.
- * 
+ *
  * @author Kristof Heirwegh
  * @author Jan De Moerloose
  */
@@ -48,7 +47,7 @@ public class FileUploadController {
 	 * Uploads a file and persists it with an id. If a targetWidth or targetHeight is passed, the file is assumed to be
 	 * an image and the image will be rescaled to the target size before saving it as png.
 	 * However, if the image is smaller than the target size, it will per saved in its original format.
-	 * 
+	 *
 	 * @param binaryFile
 	 * @param targetWidth
 	 * @param targetHeight
@@ -57,7 +56,10 @@ public class FileUploadController {
 	 */
 	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
 	public ModelAndView handleFileUpload(@RequestParam("uploadFormElement") MultipartFile binaryFile,
-			@RequestParam("targetWidth") Integer targetWidth, @RequestParam("targetHeight") Integer targetHeight)
+			@RequestParam(value = "targetWidth", required = false) Integer targetWidth,
+			@RequestParam(value = "targetHeight",
+			required = false)
+	Integer targetHeight)
 			throws IOException {
 
 		ModelAndView mav = new ModelAndView();
