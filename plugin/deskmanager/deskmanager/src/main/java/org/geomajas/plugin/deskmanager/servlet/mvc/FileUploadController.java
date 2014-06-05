@@ -57,10 +57,7 @@ public class FileUploadController {
 	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
 	public ModelAndView handleFileUpload(@RequestParam("uploadFormElement") MultipartFile binaryFile,
 			@RequestParam(value = "targetWidth", required = false) Integer targetWidth,
-			@RequestParam(value = "targetHeight",
-			required = false)
-	Integer targetHeight)
-			throws IOException {
+			@RequestParam(value = "targetHeight", required = false) Integer targetHeight) throws IOException {
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(FileUploadView.VIEW_NAME);
