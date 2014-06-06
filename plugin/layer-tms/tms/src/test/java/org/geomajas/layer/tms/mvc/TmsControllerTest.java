@@ -24,13 +24,13 @@ public class TmsControllerTest {
 	@Test
 	public void testParseLayerId() {
 		String expected = "BliepBlap";
-		String uri = "http://hierzo.daarzo:8080/mijnApplicatie/d/tms/BliepBlap/123/5/7.jpg";
+		String uri = "http://hierzo.daarzo:8080/mijnApplicatie/d/tms-proxy/BliepBlap/123/5/7.jpg";
 		Assert.assertEquals(expected, TmsController.parseLayerId(uri));
 	}
 	
 	@Test
 	public void testParseRelativeUrl() {
-		String uri = "http://hierzo.daarzo:8080/mijnApplicatie/d/tms/BliepBlap/123/5/7.jpg";
+		String uri = "http://hierzo.daarzo:8080/mijnApplicatie/d/tms-proxy/BliepBlap/123/5/7.jpg";
 		String layerId = "BliepBlap";
 		String expected = "123/5/7.jpg";
 		Assert.assertEquals(expected, TmsController.parseRelativeUrl(uri, layerId));
