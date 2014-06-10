@@ -163,7 +163,7 @@ public class TmsController {
 				resolution = 1 / getScale(tileWidth, tileLevel, layer.getLayerInfo().getMaxExtent().getWidth());
 			}
 			tileMetadata.setResolution(resolution);
-			if(tileOrigin == null) {
+			if (tileOrigin == null) {
 				tileMetadata.setTileOrigin(BboxService.getOrigin(layer.getLayerInfo().getMaxExtent()));
 			} else {
 				tileMetadata.setTileOrigin(parseOrigin(tileOrigin));

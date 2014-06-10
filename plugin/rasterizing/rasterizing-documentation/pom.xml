@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-doc-parent</artifactId>
+		<version>2.0.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas.plugin</groupId>
+	<artifactId>rasterizing-documentation</artifactId>
+	<version>1.16.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Rasterizing documentation</name>
+	<description>Rasterizing documentation</description>
+
+	<properties>
+		<geomajas-client-gwt-version>1.15.0-M3</geomajas-client-gwt-version>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>prepare-gwt</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.geomajas.plugin</groupId>
+									<artifactId>geomajas-plugin-rasterizing-gwt-example-jar</artifactId>
+									<version>${geomajas-client-gwt-version}</version>
+									<outputDirectory>${project.build.directory}/extract/rasterizing-gwt-example-jar</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.geomajas.plugin</groupId>
+									<artifactId>geomajas-plugin-rasterizing-gwt</artifactId>
+									<version>${geomajas-client-gwt-version}</version>
+									<outputDirectory>${project.build.directory}/extract/rasterizing-gwt</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
