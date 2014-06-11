@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.rasterizing.mvc;
 
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -139,7 +141,7 @@ public class TmsController {
 	 * @param response servlet response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png", 
+	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}", 
 			method = RequestMethod.GET)
 	public void getVectorTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
@@ -201,7 +203,7 @@ public class TmsController {
 	 * @param response servlet response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png", method = RequestMethod.GET)
+	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}", method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
 			@PathVariable Integer xIndex, @PathVariable Integer yIndex, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -209,18 +211,25 @@ public class TmsController {
 		// calculate the tile extent
 		Envelope maxExtent = getRasterLayerExtent(layerId, crs);
 		RasterLayer layer = configurationService.getRasterLayer(layerId);
-		double scale = getScale(layer.getLayerInfo().getTileWidth(), tileLevel, maxExtent.getWidth());
-		Envelope tileBounds = TileUtil.getTileBounds(new TileCode(tileLevel, xIndex, yIndex), maxExtent, scale);
-		// take center to avoid overlap with other tiles !!!
-		double centerX = 0.5 * (tileBounds.getMinX() + tileBounds.getMaxX());
-		double centerY = 0.5 * (tileBounds.getMinY() + tileBounds.getMaxY());
-		tileBounds = new Envelope(centerX, centerX, centerY, centerY);
-		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, scale);
+		double resolution = 0;
+		if (layer.getLayerInfo().getResolutions().size() > 0) {
+			// use resolutions of server for raster layer (as yet not reprojectable)
+			resolution = layer.getLayerInfo().getResolutions().get(tileLevel);
+		} else {
+			// if no resolutions, fall back to quad tree numbers
+			resolution = 1 / getScale(layer.getLayerInfo().getTileWidth(), tileLevel, layer.getLayerInfo()
+					.getMaxExtent().getWidth());
+		}
+		double centerX = maxExtent.getMinX() + (xIndex + 0.5) * resolution * layer.getLayerInfo().getTileWidth();
+		double centerY = maxExtent.getMinY() + (yIndex + 0.5) * resolution * layer.getLayerInfo().getTileHeight();
+		Envelope tileBounds = new Envelope(centerX, centerX, centerY, centerY);
+		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, 1/resolution);
 		if (tiles.size() == 1) {
 			log.debug("Rendering raster layer tile " + layerId + "/" + tileLevel + "-" + xIndex + "-" + yIndex);
 			log.debug("Url = " + tiles.get(0).getUrl());
 			log.debug("Tile = " + tiles.get(0));
-			writeToResponse(tiles.get(0).getUrl(), request, response);
+			String url = tiles.get(0).getUrl();
+			writeToResponse(url.replace(".jpeg", ".png"), request, response);
 		}
 	}
 
@@ -325,9 +334,12 @@ public class TmsController {
 
 	private void writeToResponse(String url, HttpServletRequest request, HttpServletResponse response) {
 		HttpGet get = new HttpGet(url);
+		// pass all headers, except for host
 		for (Enumeration<String> names = request.getHeaderNames(); names.hasMoreElements();) {
 			String name = names.nextElement();
-			get.setHeader(name, request.getHeader(name));
+			if(!name.equalsIgnoreCase("Host") && !name.equals("Cookie")) {
+				get.setHeader(name, request.getHeader(name));
+			}
 		}
 		try {
 			HttpResponse r = httpClient.execute(get);
