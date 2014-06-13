@@ -55,7 +55,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Pieter De Graef
  * @author Oliver May
  */
-@Controller("/tms/**")
+@Controller("/tms-proxy/**")
 public class TmsController {
 
 	private static final int ERROR_MESSAGE_X = 10;
@@ -89,7 +89,7 @@ public class TmsController {
 		this.httpService = httpService;
 	}
 
-	@RequestMapping(value = "/tms/**", method = RequestMethod.GET)
+	@RequestMapping(value = "/tms-proxy/**", method = RequestMethod.GET)
 	public void getTms(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// Search for the TMS layer:
 		String layerId = parseLayerId(request.getRequestURI());
@@ -187,12 +187,12 @@ public class TmsController {
 			if (next) {
 				return token;
 			} else {
-				if ("tms".equals(token)) {
+				if ("tms-proxy".equals(token)) {
 					next = true;
 				}
 			}
 		}
-		throw new IllegalArgumentException("Url should contain the keyword: tms.");
+		throw new IllegalArgumentException("Url should contain the keyword: tms-proxy.");
 	}
 
 	static String parseRelativeUrl(String requestUri, String layerId) {
