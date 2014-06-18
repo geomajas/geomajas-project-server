@@ -34,6 +34,16 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 
 	private Bbox viewBoxBounds;
 
+	/**
+	 * Difference between the print and the map viewPort width, in pixels.
+	 */
+	private int printVsMapWidthDifference;
+
+	/**
+	 * Difference between the print and the map viewPort height, in pixels.
+	 */
+	private int printVsMapHeightDifference;
+
 	// default showing
 	private boolean showing = true;
 
@@ -133,4 +143,45 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 		this.viewBoxBounds = viewBoxBounds;
 	}
 
+	/**
+	 * Get the pixel difference between the print viewPort width and the map viewPort width.
+	 * Positive values mean: print viewPort width is larger that map viewPort width.
+	 *
+	 * @return printVsMapWidthDifference
+	 */
+	public int getPrintVsMapWidthDifference() {
+		return printVsMapWidthDifference;
+	}
+
+	/**
+	 * Set the pixel difference between the print viewPort width and the map viewPort width.
+	 * Positive values mean: print viewPort width is larger that map viewPort width.
+	 *
+	 * @see #getPrintVsMapWidthDifference()
+	 * @param printVsMapWidthDifference
+	 */
+	public void setPrintVsMapWidthDifference(int printVsMapWidthDifference) {
+		this.printVsMapWidthDifference = printVsMapWidthDifference;
+	}
+
+	/**
+	 * Get the pixel difference between the print viewPort height and the map viewPort height.
+	 * Positive values mean: print viewPort height is larger that map viewPort height.
+	 *
+	 * @return printVsMapHeightDifference
+	 */
+	public int getPrintVsMapHeightDifference() {
+		return printVsMapHeightDifference;
+	}
+
+	/**
+	 * Set the pixel difference between the print viewPort height and the map viewPort height.
+	 * Positive values mean: print viewPort height is larger that map viewPort height.
+	 *
+	 * @see #getPrintVsMapHeightDifference()
+	 * @param printVsMapHeightDifference
+	 */
+	public void setPrintVsMapHeightDifference(int printVsMapHeightDifference) {
+		this.printVsMapHeightDifference = printVsMapHeightDifference;
+	}
 }
