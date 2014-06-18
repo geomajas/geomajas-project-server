@@ -10,22 +10,6 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
-import java.awt.Rectangle;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.batik.bridge.BridgeContext;
 import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.bridge.GVTBuilder;
@@ -51,6 +35,21 @@ import org.w3c.dom.svg.SVGDocument;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This factory creates a GeoTools layer that is capable of writing geometries.
  * 
@@ -75,7 +74,7 @@ public class SvgLayerFactory implements LayerFactory {
 		SvgDirectLayer layer = new SvgDirectLayer(mapContent);
 		String finalSvg;
 		finalSvg = addAttributesToSvg(layerInfo.getSvgContent(), layerInfo.getViewBoxWidth(),
-				layerInfo.getViewBoxHeight());
+				layerInfo.getViewBoxHeight(), layerInfo.getPrintVsMapWidthDifference(), layerInfo.getPrintVsMapHeightDifference());
 		GraphicsNode graphicsNode = createNode(finalSvg);
 		layer.setGraphicsNode(graphicsNode);
 		layer.setSvgWorldBounds(new ReferencedEnvelope(converterService.toInternal(layerInfo.getViewBoxBounds()),
@@ -103,7 +102,9 @@ public class SvgLayerFactory implements LayerFactory {
 		return builder.build(bridgeContext, document);
 	}
 
-	public String addAttributesToSvg(String svgContent, int viewBoxWidth, int viewBoxHeight) throws GeomajasException {
+	public String addAttributesToSvg(String svgContent, int viewBoxWidth, int viewBoxHeight,
+									 int printVsMapWidthDifference,
+									 int printVsMapHeightDifference) throws GeomajasException {
 		Document document;
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -113,7 +114,8 @@ public class SvgLayerFactory implements LayerFactory {
 			document.getDocumentElement().setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 			document.getDocumentElement().setAttribute("width", viewBoxWidth + "");
 			document.getDocumentElement().setAttribute("height", viewBoxHeight + "");
-			document.getDocumentElement().setAttribute("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
+			document.getDocumentElement().setAttribute("viewBox", -printVsMapWidthDifference/2 + " " +
+					-printVsMapHeightDifference/2 + " " + viewBoxWidth + " " + viewBoxHeight);
 			return getStringFromDocument(document);
 		} catch (DOMException e) {
 			throw new RasterException(e, RasterException.BAD_SVG, "Cannot add namespaces to SVG");

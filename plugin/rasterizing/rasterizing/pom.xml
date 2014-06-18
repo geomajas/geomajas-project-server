@@ -167,6 +167,12 @@
 					<exclude>META-INF/geomajasContext.xml</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/dto/*.java</include>
+				</includes>
+			</resource>
 		</resources>
 	</build>
 
