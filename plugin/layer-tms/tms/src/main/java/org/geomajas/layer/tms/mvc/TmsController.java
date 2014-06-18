@@ -175,7 +175,7 @@ public class TmsController {
 	
 	/** Get the layer ID out of the request URL.
 	 *
-	 * @param request servlet request
+	 * @param requestUri servlet request
 	 * @return layer id
 	 */
 	static String parseLayerId(String requestUri) {

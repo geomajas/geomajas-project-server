@@ -10,9 +10,6 @@
  */
 
 package org.geomajas.plugin.rasterizing.mvc;
-
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -30,7 +27,6 @@ import org.geomajas.geometry.CrsTransform;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.rendering.strategy.TileUtil;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayer;
@@ -203,7 +199,8 @@ public class TmsController {
 	 * @param response servlet response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}", method = RequestMethod.GET)
+	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}",
+			method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
 			@PathVariable Integer xIndex, @PathVariable Integer yIndex, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -223,7 +220,7 @@ public class TmsController {
 		double centerX = maxExtent.getMinX() + (xIndex + 0.5) * resolution * layer.getLayerInfo().getTileWidth();
 		double centerY = maxExtent.getMinY() + (yIndex + 0.5) * resolution * layer.getLayerInfo().getTileHeight();
 		Envelope tileBounds = new Envelope(centerX, centerX, centerY, centerY);
-		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, 1/resolution);
+		List<RasterTile> tiles = rasterLayerService.getTiles(layerId, tileCrs, tileBounds, 1 / resolution);
 		if (tiles.size() == 1) {
 			log.debug("Rendering raster layer tile " + layerId + "/" + tileLevel + "-" + xIndex + "-" + yIndex);
 			log.debug("Url = " + tiles.get(0).getUrl());
@@ -238,7 +235,6 @@ public class TmsController {
 	 * 
 	 * @param layerId
 	 * @param key
-	 * @param tileExtent
 	 * @param response
 	 * @throws Exception
 	 */
@@ -337,7 +333,7 @@ public class TmsController {
 		// pass all headers, except for host
 		for (Enumeration<String> names = request.getHeaderNames(); names.hasMoreElements();) {
 			String name = names.nextElement();
-			if(!name.equalsIgnoreCase("Host") && !name.equals("Cookie")) {
+			if (!"Host".equalsIgnoreCase(name) && !"Cookie".equals(name)) {
 				get.setHeader(name, request.getHeader(name));
 			}
 		}
