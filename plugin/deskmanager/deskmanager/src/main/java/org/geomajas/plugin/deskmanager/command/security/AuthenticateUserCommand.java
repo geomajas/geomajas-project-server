@@ -40,8 +40,10 @@ public class AuthenticateUserCommand implements Command<AuthenticateUserRequest,
 		try {
 			String token = loginService.checkLogin(request.getUserName(), request.getPassword());
 			response.setSecurityToken(token);
+			log.info("Autentication Request for " + request.getUserName() + " successfully executed.");
 		} catch (Exception ex) {
-			// do nothing
+			log.error("Autentication exception for username " + request.getUserName(), ex);
+			throw ex;
 		}
 	}
 }

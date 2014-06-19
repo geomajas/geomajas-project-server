@@ -72,14 +72,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- =========== -->
 	<!-- TODO REMOVE -->
 	<!-- =========== -->
-	
-	
-<!-- 	<bean
-		class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
-		not used, we are using an acmIdm service, but needed not to break
-			geomajas-plugin-springsecurity
-	</bean>
- -->
+
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false" />
 		<property name="securityServices">

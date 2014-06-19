@@ -37,6 +37,11 @@ public class GetConfigurationCommand extends org.geomajas.command.configuration.
 	@Autowired
 	private GeodeskConfigurationService configurationService;
 
+	/**
+	 * Application id of the manager section.
+	 */
+	private static String managerApplicationId = "appDeskManager";
+
 	public GetConfigurationResponse getEmptyCommandResponse() {
 		return new GetConfigurationResponse();
 	}
@@ -45,7 +50,9 @@ public class GetConfigurationCommand extends org.geomajas.command.configuration.
 	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
-		} else if ("appDeskManager".equals(request.getApplicationId())) {
+		} else if (managerApplicationId.equals(request.getApplicationId())) {
+			// if the application is the manager application, then use the default
+			// {@link org.geomajas.command.configuration.GetConfigurationCommand}.
 			super.execute(request, response);
 		} else {
 			// this checks if geodesk is allowed
@@ -60,4 +67,7 @@ public class GetConfigurationCommand extends org.geomajas.command.configuration.
 		}
 	}
 
+	public static void setManagerApplicationId(String managerApplicationId) {
+		GetConfigurationCommand.managerApplicationId = managerApplicationId;
+	}
 }
