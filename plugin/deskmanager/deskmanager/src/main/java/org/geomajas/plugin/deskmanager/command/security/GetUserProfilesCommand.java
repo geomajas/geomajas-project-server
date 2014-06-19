@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Command for finding a user by it's id.
  * 
- * @author Jan Vensterlans
+ * @author Jan Venstermans
  * 
  */
 @Component(GetUserProfilesRequest.COMMAND)

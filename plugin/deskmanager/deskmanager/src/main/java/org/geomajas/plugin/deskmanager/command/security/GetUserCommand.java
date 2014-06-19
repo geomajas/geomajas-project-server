@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 /**
  * Command for finding a user by it's id.
  * 
- * @author Jan Vensterlans
+ * @author Jan Venstermans
  * 
  */
 @Component(GetUserRequest.COMMAND)
