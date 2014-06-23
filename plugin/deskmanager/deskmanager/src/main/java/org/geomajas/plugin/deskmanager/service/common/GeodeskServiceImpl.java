@@ -34,7 +34,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Default implementation of {@link GeodeskService}.
+ *
  * @author Kristof Heirwegh
+ * @author Jan Venstermans
  */
 @Repository
 @Transactional(readOnly = true)
@@ -234,6 +237,15 @@ public class GeodeskServiceImpl implements GeodeskService {
 				return true;
 			case DESK_MANAGER:
 				return geodesk.getOwner().equals(group);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isGeodeskPublic(String geodeskId) {
+		Geodesk geodesk = getGeodeskByPublicIdInternal(geodeskId);
+		if (geodesk != null) {
+			return geodesk.isPublic();
 		}
 		return false;
 	}

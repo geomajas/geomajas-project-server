@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.command.common;
 
-import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
@@ -30,14 +29,19 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kristof Heirwegh
  * 
  */
-public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
+public class GetConfigurationCommand extends org.geomajas.command.configuration.GetConfigurationCommand {
 
 	@Autowired
 	private GeodeskService geodeskService;
 
 	@Autowired
 	private GeodeskConfigurationService configurationService;
-	
+
+	/**
+	 * Application id of the manager section.
+	 */
+	private static String managerApplicationId = "appDeskManager";
+
 	public GetConfigurationResponse getEmptyCommandResponse() {
 		return new GetConfigurationResponse();
 	}
@@ -46,16 +50,24 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
 		if (null == request.getApplicationId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
-		}
-		// this checks if geodesk is allowed
-		Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId());
-
-		if (loket != null) {
-			ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);
-			response.setApplication(loketConfig);
+		} else if (managerApplicationId.equals(request.getApplicationId())) {
+			// if the application is the manager application, then use the default
+			// {@link org.geomajas.command.configuration.GetConfigurationCommand}.
+			super.execute(request, response);
 		} else {
-			throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, request.getApplicationId());
+			// this checks if geodesk is allowed
+			Geodesk loket = geodeskService.getGeodeskByPublicId(request.getApplicationId());
+
+			if (loket != null) {
+				ClientApplicationInfo loketConfig = configurationService.createClonedGeodeskConfiguration(loket, true);
+				response.setApplication(loketConfig);
+			} else {
+				throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, request.getApplicationId());
+			}
 		}
 	}
 
+	public static void setManagerApplicationId(String managerApplicationId) {
+		GetConfigurationCommand.managerApplicationId = managerApplicationId;
+	}
 }

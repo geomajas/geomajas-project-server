@@ -52,17 +52,24 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Implementation of the ShapeFileService.
@@ -106,8 +113,6 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		log.info("Importing Shapefile using Geotools: " + shpFileName);
 		Transaction tr = new DefaultTransaction("transaction");
 		ShapefileDataStore sourceStore = null;
-
-
 		try {
 			DataStore dataStore = createDataStore();
 
@@ -227,10 +232,63 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 		buildShapeFile(shapeFile, layer, collection, type);
 	}
 
+	@Override
+	public String getShpFileName(String dir) {
+		File fDir = new File(dir);
+		File[] filesInDir = fDir.listFiles();
+		for (File file : filesInDir) {
+			if (file.getName().toLowerCase().endsWith(".shp")) {
+				return file.getAbsolutePath();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean unzip(String zipFileName, String tmpDir) {
+		Enumeration<?> entries;
+		ZipFile zipFile = null;
+
+		try {
+			zipFile = new ZipFile(zipFileName);
+			entries = zipFile.entries();
+
+			while (entries.hasMoreElements()) {
+				ZipEntry entry = (ZipEntry) entries.nextElement();
+				copyInputStream(zipFile.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(tmpDir
+						+ "/" + entry.getName())));
+			}
+
+			zipFile.close();
+		} catch (IOException e) {
+			log.warn("Failed unzipping shapefile archive.", e);
+			return false;
+		} finally {
+			try {
+				if (zipFile != null) {
+					zipFile.close();
+				}
+			} catch (Exception e) { // ignore
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public List<Geometry> extractGeometriesFromShapeFile(String parentDir, String toCrs) throws Exception {
+		// check if there is a shp available
+		String shpFileName = getShpFileName(parentDir);
+		List<Geometry> geometries = new ArrayList<Geometry>();
+		if (shpFileName == null) {
+			throw new Exception("No shapeFile available in directory " + parentDir);
+		}
+		return fromShpToGeometries(shpFileName, toCrs);
+	}
+
 	// ----------------------------------------------------------
 
 	private void buildShapeFile(File shapeFile, VectorLayer layer, SimpleFeatureCollection collection,
-			SimpleFeatureType type) throws Exception, DeskmanagerException {
+								SimpleFeatureType type) throws Exception, DeskmanagerException {
 		Map<String, Serializable> params = new HashMap<String, Serializable>();
 		params.put("url", shapeFile.toURI().toURL());
 		params.put("create spatial index", Boolean.FALSE);
@@ -264,7 +322,7 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	@SuppressWarnings("deprecation")
 	// see GBE-321
 	private SimpleFeatureType createFeatureType(String layerName, String geometryName, String geometryType, int srid,
-			List<PrimitiveAttributeInfo> atts) throws Exception {
+												List<PrimitiveAttributeInfo> atts) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		sb.append(geometryName);
 		sb.append(SUBDELIM);
@@ -319,6 +377,76 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 			default:
 				log.warn("Unsupported Shapefile Type: " + type.toString());
 				return "String";
+		}
+	}
+
+	private List<Geometry> fromShpToGeometries(String shpFileName, String toCrs) {
+		log.info("Extracting Geometries from Shapefile using Geotools: " + shpFileName);
+		ShapefileDataStore sourceStore = null;
+		try {
+			//Read shapefile
+			File shpFile = new File(shpFileName);
+			sourceStore = (ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile);
+			SimpleFeatureSource featureSource = sourceStore.getFeatureSource(
+					sourceStore.getTypeNames()[0]);
+
+			//Find math transform
+			CoordinateReferenceSystem sourceCrs = featureSource.getSchema().getCoordinateReferenceSystem();
+			CoordinateReferenceSystem targetCrs = geoService.getCrs2(toCrs);
+			boolean lenient = true; // allow for some error due to different datums
+			MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
+
+			SimpleFeatureIterator reader = featureSource.getFeatures().features();
+
+			List<Geometry> geometries = new ArrayList<Geometry>();
+			try {
+				while (reader.hasNext()) {
+					SimpleFeature original = reader.next();
+					Geometry geometry2 = JTS.transform((Geometry) original.getDefaultGeometry(), transform);
+					geometries.add(geometry2);
+				}
+			} catch (Exception e) {
+				log.warn("Failed reading features from ShapeFile", e);
+			} finally {
+				//writer.close();
+				reader.close();
+			}
+			return geometries;
+		} catch (Exception e) {
+			log.warn("Failed collecting geometries from ShapeFile", e);
+
+		} finally {
+			try {
+				if (sourceStore != null) {
+					sourceStore.dispose();
+				}
+			} catch (Exception e2) { // ignore
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Copys an inputstream to an outputstream
+	 *
+	 * @param in The inputstream to read from
+	 * @param out The outputstream to write to
+	 * @throws IOException
+	 */
+	private static void copyInputStream(InputStream in, OutputStream out) throws IOException {
+		try {
+			byte[] buffer = new byte[1024];
+			int len;
+
+			while ((len = in.read(buffer)) >= 0) {
+				out.write(buffer, 0, len);
+			}
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			// caveat: the method that opens the stream should also close it
+			in.close();
+			out.close();
 		}
 	}
 }
