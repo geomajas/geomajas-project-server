@@ -13,6 +13,7 @@ package org.geomajas.internal.layer.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.internal.rendering.strategy.TileUtil;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
@@ -64,9 +65,18 @@ public class InternalTileImpl implements InternalTile {
 		init(maxExtent, scale);
 	}
 
+	public InternalTileImpl(TileCode code, Coordinate tileOrigin, double scale, int tileWidth, int tileHeight) {
+		this.code = code;
+		this.contentType = VectorTileContentType.URL_CONTENT;
+		this.screenHeight = tileHeight;
+		this.screenWidth = tileWidth;
+		init(tileOrigin, scale);
+	}
+	
 	public InternalTileImpl(int x, int y, int tileLevel, Envelope maxExtent, double scale) {
 		this(new TileCode(tileLevel, x, y), maxExtent, scale);
 	}
+	
 
 	// -------------------------------------------------------------------------
 	// General functions:
@@ -80,6 +90,14 @@ public class InternalTileImpl implements InternalTile {
 		screenWidth = screenSize[0];
 		screenHeight = screenSize[1];
 		bounds = TileUtil.getTileBounds(code, maxExtent, scale);
+	}
+	
+	public void init(Coordinate tileOrigin, double scale) {
+		tileWidth = screenWidth / scale;
+		tileHeight = screenHeight / scale;
+		double x = tileOrigin.getX() + code.getX() * tileWidth;
+		double y = tileOrigin.getY() + code.getY() * tileWidth;
+		bounds = new Envelope(x, x + tileWidth, y, y + tileHeight);
 	}
 
 	public Envelope getBounds() {

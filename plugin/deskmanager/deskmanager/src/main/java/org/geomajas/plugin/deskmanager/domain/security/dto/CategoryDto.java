@@ -51,4 +51,12 @@ public class CategoryDto implements Serializable {
 	public void setCategoryType(String name) {
 		this.name = name;
 	}
+
+	public CategoryDto clone() {
+		CategoryDto clone = new CategoryDto();
+		clone.setId(id);
+		clone.setCategoryType(name);
+		clone.setDescription(description);
+		return clone;
+	}
 }

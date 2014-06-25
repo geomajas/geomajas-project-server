@@ -189,6 +189,8 @@
 		</property>
 		<property name="visibleLayersInclude">
 			<list>
+				<!--OSM layer of TEST_NL / mainMap -->
+				<value>osmLayerModel</value>
 			</list>
 		</property>
 		<property name="visibleLayersExclude">

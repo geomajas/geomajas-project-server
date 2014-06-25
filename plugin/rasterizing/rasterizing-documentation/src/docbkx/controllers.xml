@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-controllers">
+  <title>Controllers</title>
+
+  <para>The rasterizing plug-in exposes 2 Spring MVC controllers for accessing
+  rasterized images.</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para><code>RasterizingController</code>: this controllers returns
+        pre-rendered tiles from the cache, based on the image key. If the
+        image is no longer in the cache, the same key is used to fetch the
+        image from the rebuild cache, re-render the image, put it in the cache
+        and return it.</para>
+      </listitem>
+
+      <listitem>
+        <para><code>TmsController</code>: this controller returns pre-rendered
+        tiles from the cache, based on the tile parameters passed to the url.
+        If the image is not in the cache, the url parameters are used to
+        generate rebuild information, render the image, put it in the cache
+        and return it. The controller is called TmsController because it tries
+        to adhere as much as possible to the URL format prescribed by the TMS
+        standard.</para>
+      </listitem>
+    </itemizedlist></para>
+
+  <section>
+    <title>RasterizingController</title>
+
+    <para>The rasterizing controller supports 2 URL configurations:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><command>/d/rasterizing/layer/{layerId}/{key}.png</command></para>
+
+        <variablelist>
+          <varlistentry>
+            <term>layerId</term>
+
+            <listitem>
+              <para>id of the server layer</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>key</term>
+
+            <listitem>
+              <para>key of the image (as returned in the tile URL of the
+              GetVectorTileResponse)</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </listitem>
+
+      <listitem>
+        <para><code><command>/d/rasterizing/image/{key}.png</command></code></para>
+
+        <variablelist>
+          <varlistentry>
+            <term>key</term>
+
+            <listitem>
+              <para>key of the image (as returned in the legend or map URL's
+              of RasterizeMapResponse)</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </listitem>
+    </itemizedlist>
+
+    <para>This controller is normally not used outside the scope of the
+    GetVectorTileCommand or RasterizeMapCommand. The key itself is a hash of
+    the tile or map information combined with security information that
+    shouldn't and can't be second guessed by the client (it is the equivalent
+    of a session token for the tile). The fact that it requires an extra
+    command makes it less attractive for clients that can't deal with GWT-RPC
+    or that rely on a predetermined tile grid system like TMS. For this case
+    we have developed the TmsController.</para>
+  </section>
+
+  <section>
+    <title>TmsController</title>
+
+    <para>The TMS controller also supports 2 URL configurations:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><command>d/tms/{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.png?resolution={resolution}&amp;tileOrigin={tileOrigin}&amp;tilewidth={tilewidth}&amp;tileHeight={tileHeight}</command></para>
+
+        <variablelist>
+          <varlistentry>
+            <term>layerId</term>
+
+            <listitem>
+              <para>id of the <command>vector</command> server layer</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>crs</term>
+
+            <listitem>
+              <para>projected CRS of the TMS tile: e.g. "EPSG:3875"</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>styleKey</term>
+
+            <listitem>
+              <para>key of the SLD style: this is the id of the NamedStyleInfo
+              bean or the registered key of the style when explicitly
+              registering with the StyleService</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>tileLevel</term>
+
+            <listitem>
+              <para>tile level of the TMS tile: this determines the resolution
+              of the tile in case the resolution is not explicitly passed as a
+              parameter. In this case a quad-pyramid is assumed with top level
+              0 and width/height equal to the maximum width of the layer. It
+              also assumes that the layer has the same CRS as the projected
+              CRS. Reprojection is only supported if the resolution and tile
+              origin are explicitly passed.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>xIndex</term>
+
+            <listitem>
+              <para>index of the x-origin of the tile</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>yIndex</term>
+
+            <listitem>
+              <para>index of the y-origin of the tile</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>resolution</term>
+
+            <listitem>
+              <para>resolution of the tile (map units/pixel)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>tileOrigin</term>
+
+            <listitem>
+              <para>origin of the tile grid. X-coordinate followed by comma
+              and y-coordinate: &lt;x,y&gt;</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>tileWidth</term>
+
+            <listitem>
+              <para>tileWidth in pixels</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>tileHeight</term>
+
+            <listitem>
+              <para>tileHeight in pixels</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </listitem>
+
+      <listitem>
+        <para><command>d/tms/{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.png</command></para>
+
+        <variablelist>
+          <varlistentry>
+            <term>layerId</term>
+
+            <listitem>
+              <para>id of the <command>raster</command> server layer</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>crs</term>
+
+            <listitem>
+              <para>projected CRS of the TMS tile: e.g. "EPSG:3875"</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>tileLevel</term>
+
+            <listitem>
+              <para>tile level of the TMS tile: this determines the resolution
+              of the tile. A quad-pyramid is assumed with top level 0 and
+              width/height equal to the maximum width of the layer. It
+              currently assumes that the layer has the same CRS as the
+              projected CRS. Future implementations may support
+              reprojection.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>xIndex</term>
+
+            <listitem>
+              <para>index of the x-origin of the tile</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>yIndex</term>
+
+            <listitem>
+              <para>index of the y-origin of the tile</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </listitem>
+    </itemizedlist>
+
+    <para>This controller does not require a previously sent GWT-RPC command
+    to obtain any keys. As a consequence, security has to be dealt with at a
+    different level. An allow-all security regime could be used on a selected
+    set of layers or one can pass the userToken as a parameter and rely on the
+    Geomajas security interceptor to prepare a security context.</para>
+  </section>
+</chapter>

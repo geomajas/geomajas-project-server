@@ -10,11 +10,12 @@
  */
 package org.geomajas.plugin.deskmanager.service.manager;
 
-import java.io.File;
-import java.util.List;
-
+import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Service that handles import and export of shapefiles.
@@ -45,4 +46,23 @@ public interface ShapeFileService {
 	 * @throws Exception
 	 */
 	void toShapeFile(File shapeFile, VectorLayer layer, List<InternalFeature> features) throws Exception;
+
+	/**
+	 * Get fully qualified .shp filename.
+	 *
+	 * @param dir
+	 * @return The fully qualified name of the .shp file in the given dir, or null if no .shp file is found
+	 */
+	String getShpFileName(String dir);
+
+	/**
+	 * Unzips a zipfile. This is not necessary a shapeFile method.
+	 *
+	 * @param zipFileName The fully qualified name of the zipfile to unzip
+	 * @param tmpDir The dir to which write the unzipped files
+	 * @return true if all succeeded
+	 */
+	boolean unzip(String zipFileName, String tmpDir);
+
+	List<Geometry> extractGeometriesFromShapeFile(String parentDir, String toCrs) throws Exception;
 }

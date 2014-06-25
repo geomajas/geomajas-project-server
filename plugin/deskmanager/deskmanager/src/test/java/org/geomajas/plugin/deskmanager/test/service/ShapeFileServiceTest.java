@@ -45,7 +45,8 @@ public class ShapeFileServiceTest {
 
 	@Test
 	public void testImportShapeFile() throws Exception {
-		URL url = ClassLoader.getSystemResource("shp/werken2013.shp");
+//		URL url = ClassLoader.getSystemResource("shp/werken2013.shp");
+		URL url = getClass().getResource("/shp/werken2013.shp");
 
 		String path = url.getPath();
 		path = URLDecoder.decode(path, "utf-8");

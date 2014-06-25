@@ -46,6 +46,7 @@ public enum Role {
 	EDITING_USER("Geodesk user with editing permissions", "Editor");
 
 	private final String description;
+
 	private final String key;
 
 	private Role(String description, String key) {
@@ -55,6 +56,7 @@ public enum Role {
 
 	/**
 	 * The description of the role.
+	 * 
 	 * @return
 	 */
 	public String getDescription() {
@@ -63,6 +65,15 @@ public enum Role {
 
 	public String getKey() {
 		return key;
+	}
+
+	public static Role fromKey(String key) {
+		for (Role role : values()) {
+			if (role.getKey().equals(key)) {
+				return role;
+			}
+		}
+		return null;
 	}
 
 }

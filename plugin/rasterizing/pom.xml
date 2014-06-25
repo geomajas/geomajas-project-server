@@ -33,6 +33,9 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<modules>
+				<module>rasterizing-documentation</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>skipDocs</id>

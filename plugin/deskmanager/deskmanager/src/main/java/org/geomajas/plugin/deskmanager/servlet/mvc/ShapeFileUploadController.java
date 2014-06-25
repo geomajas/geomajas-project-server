@@ -10,18 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.servlet.mvc;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
@@ -38,6 +26,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Spring MVC controller for uploading shapefiles.
@@ -114,19 +114,26 @@ public class ShapeFileUploadController {
 	}
 
 	private String handleFile(MultipartFile shapeFile, String layerName) {
-		String tmpDir = "/tmp/" + new Date().getTime();
+		String tmpDirRoot = System.getProperty("java.io.tmpdir");
+		if (tmpDirRoot == null | tmpDirRoot.isEmpty()) {
+			tmpDirRoot = "/tmp/";
+		}
+		String tmpDir = tmpDirRoot + new Date().getTime();
 		try {
-			new File(tmpDir).mkdir();
+			File tmDirFile = new File(tmpDir);
+			tmDirFile.mkdir();
 			String tmpName = tmpDir + "/input.zip";
 			File f = new File(tmpName);
 			shapeFile.transferTo(f);
 
 			// unzip the temporary file
-			if (unzip(tmpName, tmpDir)) {
+			if (service.unzip(tmpName, tmpDir)) {
 				// check if shp is available
-				String shpFileName = getShpFileName(tmpDir);
+				String shpFileName = service.getShpFileName(tmpDir);
 				if (shpFileName != null) {
+					//this will add the data of the shapefile to the database
 					boolean ok = service.importShapeFile(shpFileName, layerName);
+					// a new layer table is created
 					if (ok) {
 						// upload succeeded; now fill the mapping table
 						return ShapeFileUploadView.RESPONSE_OK;
@@ -206,7 +213,7 @@ public class ShapeFileUploadController {
 	/**
 	 * Get fully qualified .shp filename
 	 * 
-	 * @param tmpDir
+	 * @param dir
 	 * @return The fully qualified name of the .shp file in the given dir, or null if no .shp file is found
 	 */
 	private String getShpFileName(String dir) {
