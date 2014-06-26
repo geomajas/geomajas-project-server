@@ -71,7 +71,7 @@ public class BatikSvgRenderingCheck {
 			"</svg>";
 	String svgContentWithPartNegativeValues = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 			"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
-			"width=\"300\" height=\"200\" viewBox=\"0 -100 300 200\">" +
+			"width=\"200\" height=\"200\" viewBox=\"0 0 200 200\">" +
 			"<circle cx=\"0\" cy=\"0\" fill=\"#66CC66\" fill-opacity=\"0.4\" r=\"50\" stroke=\"black\" " +
 			"stroke-opacity=\"1.0\" stroke-width=\"1\"/>" +
 			"</svg>";
@@ -79,16 +79,16 @@ public class BatikSvgRenderingCheck {
 	Rectangle screenArea = new Rectangle(0, 0, 10, 10);
 	ReferencedEnvelope viewBboxOther = new ReferencedEnvelope(0, 0, 10, 10, null);
 
-	private String fileLocationAndName = "C:\\Users\\janv\\temp\\test4.png";
+	private String fileLocationAndName = "target/test4.png";
 
 	public void createSvgBatikRenderedImage() throws Exception {
-		GraphicsNode graphicsNode = createNode(svgContentWithPartNegativeValues, -100, 0);
+		GraphicsNode graphicsNode = createNode(svgContentWithPartNegativeValues, 0, 0);
 		/*AffineTransform affineTransform = new AffineTransform();
 		affineTransform.translate(20, 20);
 		graphicsNode.setTransform(affineTransform);*/
 		GraphicsNode graphicsNodeBackground = createNode(svgContentRect, 0, 0);
 
-		BufferedImage bufferedImage = new BufferedImage(300, 200, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bufferedImage = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2D = bufferedImage.createGraphics();
 		graphics2D.setBackground(Color.BLUE);
 		graphicsNodeBackground.paint(graphics2D);

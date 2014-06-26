@@ -206,7 +206,7 @@ public class RasterDirectLayer extends DirectLayer {
 						log.debug("rendering done, size = " + baos.toByteArray().length);
 						RasterTile mosaicTile = new RasterTile();
 						mosaicTile.setBounds(getWorldBounds(tiles));
-						log.info("application bounds = " + mosaicTile.getBounds());
+						log.debug("application bounds = " + mosaicTile.getBounds());
 						ImageResult mosaicResult = new ImageResult(mosaicTile);
 						mosaicResult.setImage(baos.toByteArray());
 						addImage(graphics, mosaicResult, viewport);

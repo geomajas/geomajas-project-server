@@ -28,21 +28,11 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 
 	private String svgContent;
 
-	private int viewBoxWidth;
+	private int width;
 
-	private int viewBoxHeight;
+	private int height;
 
-	private Bbox viewBoxBounds;
-
-	/**
-	 * Difference between the print and the map viewPort width, in pixels.
-	 */
-	private int printVsMapWidthDifference;
-
-	/**
-	 * Difference between the print and the map viewPort height, in pixels.
-	 */
-	private int printVsMapHeightDifference;
+	private Bbox bounds;
 
 	// default showing
 	private boolean showing = true;
@@ -59,8 +49,7 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 	/**
 	 * Sets the showing status of this layer. If true, the layer will be rendered, if false not.
 	 * 
-	 * @param showing
-	 *            showing status of this layer
+	 * @param showing showing status of this layer
 	 */
 	public void setShowing(boolean showing) {
 		this.showing = showing;
@@ -79,109 +68,64 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 	 * Set the SVG content to render.
 	 * 
 	 * @see #getSvgContent()
-	 * @param svgContent
-	 *            content
+	 * @param svgContent content
 	 */
 	public void setSvgContent(String svgContent) {
 		this.svgContent = svgContent;
 	}
 
 	/**
-	 * Get the view box width of the SVG.
+	 * Get the width in pixels of the SVG element.
 	 * 
-	 * @return width in pixels
+	 * @return
 	 */
-	public int getViewBoxWidth() {
-		return viewBoxWidth;
+	public int getWidth() {
+		return width;
 	}
 
 	/**
-	 * Set the viewbox width.
+	 * Set the width in pixels of the SVG element.
 	 * 
-	 * @see #getViewBoxWidth()
-	 * @param viewBoxWidth
+	 * @param width
 	 */
-	public void setViewBoxWidth(int viewBoxWidth) {
-		this.viewBoxWidth = viewBoxWidth;
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
 	/**
-	 * Get the view box height of the SVG.
+	 * Get the height in pixels of the SVG element.
 	 * 
-	 * @return height in pixels
+	 * @return height
 	 */
-	public int getViewBoxHeight() {
-		return viewBoxHeight;
+	public int getHeight() {
+		return height;
 	}
 
 	/**
-	 * Set the viewbox height.
+	 * Set the height in pixels of the SVG element.
 	 * 
-	 * @see #getViewBoxHeight()
-	 * @param viewBoxHeight
+	 * @param height
 	 */
-	public void setViewBoxHeight(int viewBoxHeight) {
-		this.viewBoxHeight = viewBoxHeight;
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	/**
-	 * Get the bounding box of the view box in world coordinates.
+	 * Get the bounds of the SVG element in world space.
 	 * 
-	 * @return the bounding box.
+	 * @return the bounds
 	 */
-	public Bbox getViewBoxBounds() {
-		return viewBoxBounds;
+	public Bbox getBounds() {
+		return bounds;
 	}
 
 	/**
-	 * Set the bounding box of the view box in world coordinates.
+	 * Set the bounds of the SVG element in world space.
 	 * 
-	 * @see #getViewBoxBounds()
-	 * @param viewBoxBounds
+	 * @param bounds
 	 */
-	public void setViewBoxBounds(Bbox viewBoxBounds) {
-		this.viewBoxBounds = viewBoxBounds;
+	public void setBounds(Bbox bounds) {
+		this.bounds = bounds;
 	}
 
-	/**
-	 * Get the pixel difference between the print viewPort width and the map viewPort width.
-	 * Positive values mean: print viewPort width is larger that map viewPort width.
-	 *
-	 * @return printVsMapWidthDifference
-	 */
-	public int getPrintVsMapWidthDifference() {
-		return printVsMapWidthDifference;
-	}
-
-	/**
-	 * Set the pixel difference between the print viewPort width and the map viewPort width.
-	 * Positive values mean: print viewPort width is larger that map viewPort width.
-	 *
-	 * @see #getPrintVsMapWidthDifference()
-	 * @param printVsMapWidthDifference
-	 */
-	public void setPrintVsMapWidthDifference(int printVsMapWidthDifference) {
-		this.printVsMapWidthDifference = printVsMapWidthDifference;
-	}
-
-	/**
-	 * Get the pixel difference between the print viewPort height and the map viewPort height.
-	 * Positive values mean: print viewPort height is larger that map viewPort height.
-	 *
-	 * @return printVsMapHeightDifference
-	 */
-	public int getPrintVsMapHeightDifference() {
-		return printVsMapHeightDifference;
-	}
-
-	/**
-	 * Set the pixel difference between the print viewPort height and the map viewPort height.
-	 * Positive values mean: print viewPort height is larger that map viewPort height.
-	 *
-	 * @see #getPrintVsMapHeightDifference()
-	 * @param printVsMapHeightDifference
-	 */
-	public void setPrintVsMapHeightDifference(int printVsMapHeightDifference) {
-		this.printVsMapHeightDifference = printVsMapHeightDifference;
-	}
 }
