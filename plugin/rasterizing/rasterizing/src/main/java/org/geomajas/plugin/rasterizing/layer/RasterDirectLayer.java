@@ -309,6 +309,13 @@ public class RasterDirectLayer extends DirectLayer {
 	public ReferencedEnvelope getBounds() {
 		return null;
 	}
+	
+	@Override
+	public void dispose() {
+		super.preDispose();
+		super.dispose();
+	}
+
 
 	private boolean isYIndexUp(List<RasterTile> tiles) {
 		RasterTile first = tiles.iterator().next();

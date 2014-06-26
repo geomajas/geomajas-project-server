@@ -67,5 +67,12 @@ public class SvgDirectLayer extends DirectLayer {
 	public void setGraphicsNode(GraphicsNode graphicsNode) {
 		this.graphicsNode = graphicsNode;
 	}
+	
+	@Override
+	public void dispose() {
+		super.preDispose();
+		super.dispose();
+	}
+
 
 }

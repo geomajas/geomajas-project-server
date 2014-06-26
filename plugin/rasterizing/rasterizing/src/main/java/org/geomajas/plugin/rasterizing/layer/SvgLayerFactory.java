@@ -118,7 +118,8 @@ public class SvgLayerFactory implements LayerFactory {
 			document.getDocumentElement().setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 			document.getDocumentElement().setAttribute("width", viewBox.width + "");
 			document.getDocumentElement().setAttribute("height", viewBox.height + "");
-			if (document.getDocumentElement().getAttribute("viewBox") != null) {
+			if (document.getDocumentElement().getAttribute("viewBox") != null
+					&& !document.getDocumentElement().getAttribute("viewBox").isEmpty()) {
 				log.error("SVG content with arbitrary viewbox will not be printed correctly ! "
 						+ "It is assumed that the SVG has no viewbox transformation.");
 			}
@@ -148,7 +149,7 @@ public class SvgLayerFactory implements LayerFactory {
 			throws NoninvertibleTransformException {
 		ReferencedEnvelope svgWorldBounds = new ReferencedEnvelope(
 				converterService.toInternal(layerInfo.getBounds()), mapContent.getCoordinateReferenceSystem());
-		Rectangle svgUserbounds = new Rectangle(layerInfo.getHeight(), layerInfo.getWidth());
+		Rectangle svgUserbounds = new Rectangle(layerInfo.getWidth(), layerInfo.getHeight());
 		return getScreenTransformation(svgWorldBounds, svgUserbounds, mapContent);
 	}
 
