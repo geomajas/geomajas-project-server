@@ -41,6 +41,10 @@ public class TmsLayerTest {
 	@Autowired
 	@Qualifier("tmsLayer")
 	private TmsLayer layer;
+	
+	@Autowired
+	@Qualifier("tmsLayerProxy")
+	private TmsLayer proxyLayer;
 
 	@Autowired
 	private GeoService geoService;
@@ -86,4 +90,25 @@ public class TmsLayerTest {
 		Assert.assertEquals("http://tms.osgeo.org/1.0.0/landsat2000/" + (int) resolution + "/1/0.png", tiles.get(1)
 				.getUrl());
 	}
+
+	@Test
+	@SuppressWarnings("deprecation")
+	public void testProxy() throws LayerException, GeomajasException {
+		double resolution = 512.0;
+		Envelope maxBounds = new Envelope(18000.0, 259500.250, 152999.75, 244500.0);
+		List<RasterTile> tiles = proxyLayer.paint(geoService.getCrs("EPSG:31370"), maxBounds, 1.0 / resolution);
+		Assert.assertEquals(2, tiles.size());
+		Assert.assertEquals(1, tiles.get(0).getCode().getTileLevel());
+		Assert.assertEquals(0, tiles.get(0).getCode().getX());
+		Assert.assertEquals(0, tiles.get(0).getCode().getY());
+		Assert.assertEquals("./d/tms-proxy/tmsLayerProxy/1/0/0.png", tiles.get(0)
+				.getUrl());
+		Assert.assertEquals(1, tiles.get(1).getCode().getTileLevel());
+		Assert.assertEquals(1, tiles.get(1).getCode().getX());
+		Assert.assertEquals(0, tiles.get(1).getCode().getY());
+		Assert.assertEquals("./d/tms-proxy/tmsLayerProxy/1/1/0.png", tiles.get(1)
+				.getUrl());
+	}
+
+	
 }

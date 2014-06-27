@@ -26,6 +26,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.common.proxy.LayerAuthentication;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tms.mvc.TmsController;
 import org.geomajas.layer.tms.tile.SimpleTmsUrlBuilder;
 import org.geomajas.layer.tms.tile.TileMapUrlBuilder;
 import org.geomajas.layer.tms.tile.TileService;
@@ -68,7 +69,7 @@ public class TmsLayer implements RasterLayer {
 	private TileMap tileMap;
 
 	private RasterLayerInfo layerInfo;
-	
+
 	private LayerAuthentication authentication;
 
 	private boolean useProxy;
@@ -88,10 +89,10 @@ public class TmsLayer implements RasterLayer {
 
 	@Autowired(required = false)
 	private CacheManagerService cacheManagerService;
-	
+
 	@Autowired
 	private SecurityContext securityContext;
-	
+
 	@Autowired
 	private TileService tileService;
 
@@ -239,15 +240,15 @@ public class TmsLayer implements RasterLayer {
 				if (!url.endsWith("/")) {
 					url += "/";
 				}
-				return url + "tms/" + getId() + "/";
+				return url + TmsController.MAPPING_NAME + "/" + getId() + "/";
 			} else {
-				return "./d/tms/" + getId() + "/";
+				return "./d/" + TmsController.MAPPING_NAME + "/" + getId() + "/";
 			}
 		} else {
 			return baseTmsUrl;
 		}
 	}
-	
+
 	/**
 	 * Adds userToken to url if we are proxying or caching (eg. indirect calls)
 	 * 
@@ -282,8 +283,7 @@ public class TmsLayer implements RasterLayer {
 	 * should point to a TMS description file. If no layerInfo object is configured, it will be built using the TMS
 	 * description.
 	 * 
-	 * @param layerInfo
-	 *            The new configuration object.
+	 * @param layerInfo The new configuration object.
 	 */
 	public void setLayerInfo(RasterLayerInfo layerInfo) {
 		this.layerInfo = layerInfo;
@@ -292,8 +292,7 @@ public class TmsLayer implements RasterLayer {
 	/**
 	 * Set the layer identifier.
 	 * 
-	 * @param id
-	 *            layer id
+	 * @param id layer id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -311,8 +310,7 @@ public class TmsLayer implements RasterLayer {
 	/**
 	 * Set the base URL for the TMS layer.
 	 * 
-	 * @param baseTmsUrl
-	 *            The base URL for the TMS layer.
+	 * @param baseTmsUrl The base URL for the TMS layer.
 	 * @since 1.0.0
 	 */
 	@Api
@@ -333,8 +331,7 @@ public class TmsLayer implements RasterLayer {
 	 * The extension of the images/tiles to retrieve. This only needs to be supplied if you're using a
 	 * {@link RasterLayerInfo} as configuration.
 	 * 
-	 * @param extension
-	 *            The extension. Default value is "jpg".
+	 * @param extension The extension. Default value is "jpg".
 	 * @since 1.0.0
 	 */
 	@Api
@@ -354,13 +351,12 @@ public class TmsLayer implements RasterLayer {
 	/**
 	 * The TMS version used. This only needs to be supplied if you're using a {@link RasterLayerInfo} as configuration.
 	 * 
-	 * @param version
-	 *            The TMS version used. Default value is "1.0.0".
+	 * @param version The TMS version used. Default value is "1.0.0".
 	 */
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	
+
 	/**
 	 * Get the authentication object.
 	 * 
@@ -377,12 +373,11 @@ public class TmsLayer implements RasterLayer {
 	 * authentication on the TMS server. If no HTTP authentication is required, leave this empty.
 	 * </p>
 	 * <p>
-	 * Note that there is still the option of adding a user name and password as HTTP parameters.
-	 * To do that, just add {@link #parameters}.
+	 * Note that there is still the option of adding a user name and password as HTTP parameters. To do that, just add
+	 * {@link #parameters}.
 	 * </p>
 	 * 
-	 * @param authentication
-	 *            authentication object
+	 * @param authentication authentication object
 	 * @since 1.1.0
 	 */
 	@Api
@@ -394,8 +389,7 @@ public class TmsLayer implements RasterLayer {
 	 * Set whether the TMS request should use a proxy. This is automatically done when the authentication object is set.
 	 * When the TMS request is proxied, the credentials and TMS base address are hidden from the client.
 	 * 
-	 * @param useProxy
-	 *            true when request needs to use the proxy
+	 * @param useProxy true when request needs to use the proxy
 	 * @since 1.1.0
 	 */
 	@Api
@@ -405,7 +399,7 @@ public class TmsLayer implements RasterLayer {
 
 	/**
 	 * Set whether the TMS tiles should be cached for later use. This implies that the TMS tiles will be proxied.
-	 *
+	 * 
 	 * @param useCache true when request needs to be cached
 	 * @since 1.1.0
 	 */
@@ -420,7 +414,7 @@ public class TmsLayer implements RasterLayer {
 
 	/**
 	 * Set whether the TMS tiles should be cached for later use. This implies that the TMS tiles will be proxied.
-	 *
+	 * 
 	 * @return true when request needs to be cached
 	 * @since 1.1.0
 	 */
