@@ -99,8 +99,11 @@ public class DeskmanagerSecurityContextImpl extends DefaultSecurityContext imple
 		for (Authentication authentication : getSecurityServiceResults()) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof DeskmanagerAuthorization) {
-					return (Territory) session.getCurrentSession().merge(
-							((DeskmanagerAuthorization) authorization).getTerritory());
+					DeskmanagerAuthorization deskmanagerAuthorization = (DeskmanagerAuthorization) authorization;
+					if (deskmanagerAuthorization.getTerritory() != null) {
+						return (Territory) session.getCurrentSession().merge(
+								deskmanagerAuthorization.getTerritory());
+					}
 				}
 			}
 		}

@@ -80,7 +80,7 @@ public class CreateGeodeskCommand implements Command<CreateGeodeskRequest, Geode
 				l.setLimitToCreatorTerritory(bp.isLimitToCreatorTerritory());
 				l.setLimitToUserTerritory(bp.isLimitToUserTerritory());
 				Territory g = ((DeskmanagerSecurityContext) securityContext).getTerritory();
-				if (g.getId() > 0) { // 0 = superuser
+				if (g != null && g.getId() > 0) { // 0 = superuser
 					l.setOwner(groupService.getById(g.getId()));
 
 					// -- add self group if non-public loket

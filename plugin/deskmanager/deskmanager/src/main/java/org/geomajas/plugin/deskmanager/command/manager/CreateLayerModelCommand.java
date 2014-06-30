@@ -78,7 +78,7 @@ public class CreateLayerModelCommand implements Command<CreateLayerModelRequest,
 		lm.setLayerType(request.getConfiguration().getServerLayerInfo().getLayerType());
 
 		Territory g = ((DeskmanagerSecurityContext) securityContext).getTerritory();
-		if (g.getId() > 0) { // 0 = superuser
+		if (g != null && g.getId() > 0) { // 0 = superuser
 			lm.setOwner(groupService.getById(g.getId()));
 		}
 		layerModelService.saveOrUpdateLayerModel(lm);
