@@ -47,4 +47,9 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 		<property name="baseTmsUrl" value="classpath:/org/geomajas/layer/tms/tileMapCapa2.xml" />
 	</bean>
 
+	<bean name="tmsLayerProxy" class="org.geomajas.layer.tms.TmsLayer" >
+		<property name="baseTmsUrl" value="classpath:/org/geomajas/layer/tms/tileMapCapa2.xml" />
+		<property name="useProxy" value="true"/>
+	</bean>
+
 </beans>

@@ -55,8 +55,12 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Pieter De Graef
  * @author Oliver May
  */
-@Controller("/tms-proxy/**")
+@Controller(TmsController.MAPPING + "**")
 public class TmsController {
+
+	public static final String MAPPING_NAME = "tms-proxy";
+
+	public static final String MAPPING = "/" + MAPPING_NAME + "/";
 
 	private static final int ERROR_MESSAGE_X = 10;
 
@@ -89,7 +93,7 @@ public class TmsController {
 		this.httpService = httpService;
 	}
 
-	@RequestMapping(value = "/tms-proxy/**", method = RequestMethod.GET)
+	@RequestMapping(value = MAPPING + "**", method = RequestMethod.GET)
 	public void getTms(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// Search for the TMS layer:
 		String layerId = parseLayerId(request.getRequestURI());
