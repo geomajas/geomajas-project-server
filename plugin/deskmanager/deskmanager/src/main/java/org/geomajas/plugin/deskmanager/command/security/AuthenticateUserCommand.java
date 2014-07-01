@@ -14,6 +14,7 @@ import org.geomajas.command.Command;
 import org.geomajas.plugin.deskmanager.command.security.dto.AuthenticateUserRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.AuthenticateUserResponse;
 import org.geomajas.plugin.deskmanager.security.LoginService;
+import org.geomajas.security.GeomajasSecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,9 @@ public class AuthenticateUserCommand implements Command<AuthenticateUserRequest,
 			String token = loginService.checkLogin(request.getUserName(), request.getPassword());
 			response.setSecurityToken(token);
 			log.info("Autentication Request for " + request.getUserName() + " successfully executed.");
-		} catch (Exception ex) {
+		} catch (GeomajasSecurityException ex) {
 			log.error("Autentication exception for username " + request.getUserName(), ex);
-			throw ex;
+			// return an empty response, in complyance with static security
 		}
 	}
 }
