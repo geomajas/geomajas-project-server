@@ -11,9 +11,7 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 
 import org.apache.batik.gvt.GraphicsNode;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -24,7 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Geotools layer responsible for rendering svg (defined in world space).
+ * Geotools layer responsible for rendering svg. Svg is rendered using batik. A transformation from HTML to screen space
+ * is required.
  * 
  * @author Jan De Moerloose
  * 
@@ -33,41 +32,27 @@ public class SvgDirectLayer extends DirectLayer {
 
 	private GraphicsNode graphicsNode;
 
-	private ReferencedEnvelope svgWorldBounds;
-
-	private Rectangle svgScreenBounds;
-
-	private MapContent mapContent;
+	private AffineTransform htmlToScreen;
 
 	private final Logger log = LoggerFactory.getLogger(SvgDirectLayer.class);
 
-	public SvgDirectLayer(MapContent mapContent) {
-		this.mapContent = mapContent;
-	}
-
 	@Override
 	public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
-		try {
-			AffineTransform svgToScreen = getSvgToScreen();
-			graphics.transform(svgToScreen);
-		} catch (NoninvertibleTransformException e) {
-			log.error("Could not draw svg layer");
-		}
+		graphics.transform(htmlToScreen);
 		graphicsNode.paint(graphics);
 	}
 
-	private AffineTransform getSvgToScreen() throws NoninvertibleTransformException {
-		AffineTransform svgToWorld = getSvgToWorld();
-		AffineTransform worldToScreen = (AffineTransform) mapContent.getViewport().getWorldToScreen().clone();
-		worldToScreen.concatenate(svgToWorld);
-		return worldToScreen;
-	}
-
-	private AffineTransform getSvgToWorld() {
-		MapContent m = new MapContent();
-		m.getViewport().setBounds(svgWorldBounds);
-		m.getViewport().setScreenArea(svgScreenBounds);
-		return m.getViewport().getScreenToWorld();
+	/**
+	 * Sets the transformation between HTML coordinates and screen coordinates. The transformation is applied to the
+	 * coordinates in HTML space, this not the same as SVG user space ! First of all, the x and y attributes of the SVG
+	 * element are ignored, so HTML coordinate space has the upper-left corner of the SVG element as origin and the
+	 * width/height of the SVG element as measure of scale. The y-axis points downward. The viewbox has no influence on
+	 * the HTML coordinate system but determines the transformation between user space and HTML space.
+	 * 
+	 * @param svgToScreen
+	 */
+	public void setHtmlToScreen(AffineTransform htmlToScreen) {
+		this.htmlToScreen = htmlToScreen;
 	}
 
 	@Override
@@ -82,21 +67,12 @@ public class SvgDirectLayer extends DirectLayer {
 	public void setGraphicsNode(GraphicsNode graphicsNode) {
 		this.graphicsNode = graphicsNode;
 	}
-
-	public ReferencedEnvelope getSvgWorldBounds() {
-		return svgWorldBounds;
+	
+	@Override
+	public void dispose() {
+		super.preDispose();
+		super.dispose();
 	}
 
-	public void setSvgWorldBounds(ReferencedEnvelope svgWorldBounds) {
-		this.svgWorldBounds = svgWorldBounds;
-	}
-
-	public Rectangle getSvgScreenBounds() {
-		return svgScreenBounds;
-	}
-
-	public void setSvgScreenBounds(Rectangle svgScreenBounds) {
-		this.svgScreenBounds = svgScreenBounds;
-	}
 
 }

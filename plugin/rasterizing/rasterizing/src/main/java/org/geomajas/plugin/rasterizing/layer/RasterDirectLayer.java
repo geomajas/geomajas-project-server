@@ -206,7 +206,7 @@ public class RasterDirectLayer extends DirectLayer {
 						log.debug("rendering done, size = " + baos.toByteArray().length);
 						RasterTile mosaicTile = new RasterTile();
 						mosaicTile.setBounds(getWorldBounds(tiles));
-						log.info("application bounds = " + mosaicTile.getBounds());
+						log.debug("application bounds = " + mosaicTile.getBounds());
 						ImageResult mosaicResult = new ImageResult(mosaicTile);
 						mosaicResult.setImage(baos.toByteArray());
 						addImage(graphics, mosaicResult, viewport);
@@ -309,6 +309,13 @@ public class RasterDirectLayer extends DirectLayer {
 	public ReferencedEnvelope getBounds() {
 		return null;
 	}
+	
+	@Override
+	public void dispose() {
+		super.preDispose();
+		super.dispose();
+	}
+
 
 	private boolean isYIndexUp(List<RasterTile> tiles) {
 		RasterTile first = tiles.iterator().next();

@@ -112,5 +112,11 @@ public class GeometryDirectLayer extends DirectLayer {
 	public void setStyle(Style style) {
 		this.style = style;
 	}
+	
+	@Override
+	public void dispose() {
+		super.preDispose();
+		super.dispose();
+	}
 
 }
