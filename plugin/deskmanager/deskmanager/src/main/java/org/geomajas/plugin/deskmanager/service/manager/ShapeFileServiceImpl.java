@@ -148,11 +148,16 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 					SimpleFeature original = reader.next();
 					SimpleFeature copy = writer.next();
 
-
 					copy.setAttributes(convertAttributes(original.getAttributes(), sourceStore.getStringCharset()));
-					Geometry geometry2 = JTS.transform((Geometry) original.getDefaultGeometry(), transform);
-					copy.setDefaultGeometry(geometry2);
-					writer.write();
+					try {
+						Geometry geometry2 = JTS.transform((Geometry) original.getDefaultGeometry(), transform);
+						copy.setDefaultGeometry(geometry2);
+						writer.write();
+					} catch (Exception e) {
+						// don't write this geometry.
+						log.warn("Feature " + original.getID() + " could not be transformed to the requested crs. " +
+								"The feature will not be in the resulted upload.");
+					}
 				}
 				tr.commit();
 			} catch (Exception e) {
