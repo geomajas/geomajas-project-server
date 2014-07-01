@@ -35,6 +35,7 @@ import org.geomajas.plugin.deskmanager.configuration.UserApplicationInfo;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
 import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
+import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.runtimeconfig.service.Rewirable;
 import org.geomajas.security.SecurityContext;
@@ -146,12 +147,15 @@ public class GeodeskConfigurationServiceImpl implements GeodeskConfigurationServ
 					}
 				} else if (geodesk.mustFilterByUserTerritory()) {
 					try {
-						Bbox bounds = GeometryService.getBounds(convertorService
-								.toDto(((DeskmanagerSecurityContext) securityContext).getTerritory().getGeometry()));
-						mainMap.setMaxBounds(bounds);
-						mainMap.setInitialBounds(bounds);
-						overviewMap.setMaxBounds(bounds);
-						overviewMap.setInitialBounds(bounds);
+						Territory territory = ((DeskmanagerSecurityContext) securityContext).getTerritory();
+						if (territory != null) {
+							Bbox bounds = GeometryService.getBounds(convertorService
+									.toDto(territory.getGeometry()));
+							mainMap.setMaxBounds(bounds);
+							mainMap.setInitialBounds(bounds);
+							overviewMap.setMaxBounds(bounds);
+							overviewMap.setInitialBounds(bounds);
+						}
 					} catch (GeomajasException e) {
 						log.warn("Unable to apply loket territory bounds, falling back to default. {}",
 								e.getLocalizedMessage());
