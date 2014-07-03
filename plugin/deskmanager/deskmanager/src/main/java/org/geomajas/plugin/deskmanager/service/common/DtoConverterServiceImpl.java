@@ -312,9 +312,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			}
 		}
 
+		lDto.setOwner(toDto(geodesk.getOwner(), false, false));
 		if (includeReferences) {
 			List<TerritoryDto> territories = lDto.getTerritories();
-			lDto.setOwner(toDto(geodesk.getOwner(), false, false));
 			if (geodesk.getTerritories() != null && geodesk.getTerritories().size() > 0) {
 				for (Territory grp : geodesk.getTerritories()) {
 					territories.add(toDto(grp, false, false));

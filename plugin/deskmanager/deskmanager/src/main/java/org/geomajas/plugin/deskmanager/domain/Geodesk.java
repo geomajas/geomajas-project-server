@@ -132,9 +132,8 @@ public class Geodesk implements BaseGeodesk {
 	@JoinTable(name = "gdm_geodesk_mainmapclientwidgetinfo")
 	private Map<String, ClientWidgetInfo> mainMapClientWidgetInfos = new HashMap<String, ClientWidgetInfo>();
 
-	// null == superuser
 	@ManyToOne
-	@JoinColumn(name = "owninggroup_id")
+	@JoinColumn(name = "owninggroup_id", nullable = false)
 	private Territory owner;
 
 	@ManyToMany(targetEntity = Territory.class, fetch = FetchType.LAZY)
