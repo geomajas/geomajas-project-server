@@ -19,12 +19,15 @@ import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.domain.ClientLayer;
 import org.geomajas.plugin.deskmanager.domain.Geodesk;
+import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationService;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryServiceImpl;
 import org.geomajas.plugin.deskmanager.test.TestConst;
 import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.SecurityManager;
@@ -75,6 +78,9 @@ public class GeodeskConfigurationServiceTest {
 	@Autowired
 	private GeodeskConfigurationService geodeskConfigurationService;
 
+	@Autowired
+	private TerritoryService territoryService;
+
 	@Before
 	public void setup() throws Exception {
 		// First profile in list is admin
@@ -93,10 +99,17 @@ public class GeodeskConfigurationServiceTest {
 
 		blueprintService.saveOrUpdateBlueprintInternal(blueprint);
 
+		Territory territory = new Territory();
+		territory.setName("territory1");
+		territory.setCode("TERRITORY_1");
+		territory.setCrs("EPSG:3857");
+		territoryService.saveOrUpdateTerritory(territory);
+
 		Geodesk geodesk = new Geodesk();
 		geodesk.setGeodeskId("42");
 		geodesk.setName("Fourty-two");
 		geodesk.setBlueprint(blueprint);
+		geodesk.setOwner(territory);
 
 		geodeskService.saveOrUpdateGeodesk(geodesk);
 
