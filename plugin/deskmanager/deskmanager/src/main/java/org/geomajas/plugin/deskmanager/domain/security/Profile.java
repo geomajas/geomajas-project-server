@@ -92,8 +92,8 @@ public class Profile implements Serializable {
 	 * @param territory
 	 *            the territory to set
 	 */
-	public void setTerritory(Territory group) {
-		this.territory = group;
+	public void setTerritory(Territory territory) {
+		this.territory = territory;
 	}
 
 	/**
@@ -118,8 +118,8 @@ public class Profile implements Serializable {
 	 * @param geodesks
 	 *            the geodesks to set
 	 */
-	public void setGeodesks(List<String> loketten) {
-		this.geodesks = loketten;
+	public void setGeodesks(List<String> geodesks) {
+		this.geodesks = geodesks;
 	}
 
 	/**

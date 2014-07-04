@@ -93,7 +93,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	private transient LayerModelService layerModelService;
 
-	private transient Map<String, DeskmanagerAuthorizationInfo> magdageoAuthorizationInfos;
+	private transient Map<String, DeskmanagerAuthorizationInfo> deskmanagerAuthorizationInfos;
 
 	private transient GeoService geoService;
 
@@ -119,22 +119,22 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		wire(applicationContext);
 	}
 
-	private synchronized DeskmanagerAuthorizationInfo getMagdageoAuthorizationInfo() {
+	private synchronized DeskmanagerAuthorizationInfo getDeskmanagerAuthorizationInfo() {
 		if (deskmanagerAuthorizationInfo == null) {
-			buildMagdageoAuthorizationInfo();
+			buildDeskmanagerAuthorizationInfo();
 		}
 		return deskmanagerAuthorizationInfo;
 	}
 
-	private void buildMagdageoAuthorizationInfo() {
+	private void buildDeskmanagerAuthorizationInfo() {
 		// Set basic authorization info (from configuration)
-		deskmanagerAuthorizationInfo = (DeskmanagerAuthorizationInfo) magdageoAuthorizationInfos.get(
+		deskmanagerAuthorizationInfo = (DeskmanagerAuthorizationInfo) deskmanagerAuthorizationInfos.get(
 				profile.getRole().toString()).clone();
 
 		// Add geodesk specific authorization
 		if (geodeskId != null && !RetrieveRolesRequest.MANAGER_ID.equals(geodeskId) && isGeodeskUseAllowed(geodeskId)) {
 			try {
-				LOG.debug("building magdageoauthorizationinfo");
+				LOG.debug("building deskmanagerAauthorizationInfo");
 				Geodesk geodesk = geodeskService.getGeodeskByPublicId(geodeskId);
 				ClientApplicationInfo geodeskInfo = applicationContext.getBean(GeodeskConfigurationService.class)
 						.createGeodeskConfiguration(geodesk, true);
@@ -162,7 +162,7 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 	public void wire(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 		this.geodeskService = applicationContext.getBean(GeodeskService.class);
-		this.magdageoAuthorizationInfos = applicationContext.getBean("security.roles", Map.class);
+		this.deskmanagerAuthorizationInfos = applicationContext.getBean("security.roles", Map.class);
 		this.layerModelService = applicationContext.getBean(LayerModelService.class);
 		this.geoService = applicationContext.getBean(GeoService.class);
 	}
@@ -174,38 +174,38 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 
 	@Override
 	public boolean isToolAuthorized(String toolId) {
-		return check(toolId, getMagdageoAuthorizationInfo().getToolsInclude(), getMagdageoAuthorizationInfo()
+		return check(toolId, getDeskmanagerAuthorizationInfo().getToolsInclude(), getDeskmanagerAuthorizationInfo()
 				.getToolsExclude());
 	}
 
 	@Override
 	public boolean isCommandAuthorized(String commandName) {
-		return check(commandName, getMagdageoAuthorizationInfo().getCommandsInclude(), getMagdageoAuthorizationInfo()
-				.getCommandsExclude());
+		return check(commandName, getDeskmanagerAuthorizationInfo().
+				getCommandsInclude(), getDeskmanagerAuthorizationInfo().getCommandsExclude());
 	}
 
 	@Override
 	public boolean isLayerVisible(String layerId) {
-		return check(layerId, getMagdageoAuthorizationInfo().getVisibleLayersInclude(), getMagdageoAuthorizationInfo()
-				.getVisibleLayersExclude());
+		return check(layerId, getDeskmanagerAuthorizationInfo().getVisibleLayersInclude(),
+				getDeskmanagerAuthorizationInfo().getVisibleLayersExclude());
 	}
 
 	@Override
 	public boolean isLayerUpdateAuthorized(String layerId) {
-		return check(layerId, getMagdageoAuthorizationInfo().getUpdateAuthorizedLayersInclude(),
-				getMagdageoAuthorizationInfo().getUpdateAuthorizedLayersExclude());
+		return check(layerId, getDeskmanagerAuthorizationInfo().getUpdateAuthorizedLayersInclude(),
+				getDeskmanagerAuthorizationInfo().getUpdateAuthorizedLayersExclude());
 	}
 
 	@Override
 	public boolean isLayerCreateAuthorized(String layerId) {
-		return check(layerId, getMagdageoAuthorizationInfo().getCreateAuthorizedLayersInclude(),
-				getMagdageoAuthorizationInfo().getCreateAuthorizedLayersExclude());
+		return check(layerId, getDeskmanagerAuthorizationInfo().getCreateAuthorizedLayersInclude(),
+				getDeskmanagerAuthorizationInfo().getCreateAuthorizedLayersExclude());
 	}
 
 	@Override
 	public boolean isLayerDeleteAuthorized(String layerId) {
-		return check(layerId, getMagdageoAuthorizationInfo().getDeleteAuthorizedLayersInclude(),
-				getMagdageoAuthorizationInfo().getDeleteAuthorizedLayersExclude());
+		return check(layerId, getDeskmanagerAuthorizationInfo().getDeleteAuthorizedLayersInclude(),
+				getDeskmanagerAuthorizationInfo().getDeleteAuthorizedLayersExclude());
 	}
 
 	// -- Blueprint --------------------------------------------------------
@@ -374,27 +374,29 @@ public class DeskmanagerAuthorization implements BaseAuthorization, AreaAuthoriz
 		if (!isLayerVisible(layerId)) {
 			return null;
 		}
-		Geometry geometry = null;
-		String crs = null;
+		Territory territory = null;
 		if (getGeodesk().mustFilterByUserTerritory()) {
-			geometry = getProfile().getTerritory().getGeometry();
-			crs = getProfile().getTerritory().getCrs();
+			territory = getProfile().getTerritory();
 		} else if (getGeodesk().mustFilterByCreatorTerritory()) {
-			geometry = getGeodesk().getOwner().getGeometry();
-			crs = getGeodesk().getOwner().getCrs();
-		} else {
-			geometry = all;
+			territory = getGeodesk().getOwner();
 		}
 		Layer<?> layer = (Layer<?>) applicationContext.getBean(layerId);
-		if (crs != null && !layer.getLayerInfo().getCrs().equals(crs)) {
-			try {
-				geometry = geoService.transform(geometry, crs, layer.getLayerInfo().getCrs());
-			} catch (GeomajasException e) {
-				// cannot happen !
-				return null;
+		if (territory != null) {
+			Geometry geometry = territory.getGeometry();
+			String crs = territory.getCrs();
+			// if different crs than from layer: transform the geometry
+			if (crs != null && !layer.getLayerInfo().getCrs().equals(crs)) {
+				try {
+					geometry = geoService.transform(geometry, crs, layer.getLayerInfo().getCrs());
+				} catch (GeomajasException e) {
+					// cannot happen !
+					return null;
+				}
 			}
+			return geometry;
+		} else {
+			return all;
 		}
-		return geometry;
 	}
 
 	@Override

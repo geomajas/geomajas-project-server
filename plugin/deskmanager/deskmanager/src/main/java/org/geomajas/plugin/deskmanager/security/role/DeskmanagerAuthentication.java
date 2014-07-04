@@ -38,7 +38,7 @@ public class DeskmanagerAuthentication extends Authentication {
 		setUserId(profile.getId());
 		setUserName(profile.getFirstName() + " " + profile.getSurname());
 
-		// guest doesn't have a group
+		// guest and admin don't have a group
 		setUserOrganization((profile.getTerritory() == null ? "" : profile.getTerritory().getName()));
 	}
 
