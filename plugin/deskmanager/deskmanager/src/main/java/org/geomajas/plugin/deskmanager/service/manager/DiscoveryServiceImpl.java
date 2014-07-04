@@ -446,8 +446,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		params.put(WmsLayerBeanFactory.ENABLE_FEATURE_INFO, Boolean.parseBoolean(rlc.getParameterValue(
 				WmsLayerBeanFactory.ENABLE_FEATURE_INFO)));
 
-		params.put(WmsLayerBeanFactory.FEATURE_INFO_FORMAT, WmsLayer.WmsFeatureInfoFormat.parseFormat((String) rlc
-				.getParameterValue(WmsLayerBeanFactory.FEATURE_INFO_FORMAT)));
+		WmsLayer.WmsFeatureInfoFormat wmsFeatureInfoFormat = WmsLayer.WmsFeatureInfoFormat.parseFormat(
+				rlc.getParameterValue(WmsLayerBeanFactory.FEATURE_INFO_FORMAT));
+		if (wmsFeatureInfoFormat != null) {
+			params.put(WmsLayerBeanFactory.FEATURE_INFO_FORMAT, wmsFeatureInfoFormat);
+		}
+
 		//TODO: all these parameters should be configurable too
 		params.put("useProxy", true);
 		params.put("useCache", true);
