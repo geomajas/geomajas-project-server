@@ -10,17 +10,7 @@
  */
 package org.geomajas.internal.configuration;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
@@ -70,7 +60,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Envelope;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Post-processes configuration DTOs. Generally responsible for any behaviour that would violate the DTO contract
@@ -197,7 +195,9 @@ public class ConfigurationDtoPostProcessor {
 					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getUserStyle(),
 							featureInfo);
 					namedStyle.setFeatureStyles(sldStyle.getFeatureStyles());
-					namedStyle.setLabelStyle(sldStyle.getLabelStyle());
+					if (namedStyle.getLabelStyle() == null) {
+						namedStyle.setLabelStyle(sldStyle.getLabelStyle());
+					}
 				}
 			}
 			// check for at least 1 style

@@ -41,8 +41,7 @@ public class NamedStyleInfo implements IsInfo, CacheableObject {
 
 	private List<FeatureStyleInfo> featureStyles = new ArrayList<FeatureStyleInfo>();
 	
-	@NotNull
-	private LabelStyleInfo labelStyle = new LabelStyleInfo();
+	private LabelStyleInfo labelStyle;
 
 	@NotNull
 	private String name;

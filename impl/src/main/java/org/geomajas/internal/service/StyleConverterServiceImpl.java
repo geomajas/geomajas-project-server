@@ -10,21 +10,15 @@
  */
 package org.geomajas.internal.service;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTWriter;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.FeatureInfo;
@@ -147,15 +141,19 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTWriter;
+import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of {@link StyleConverterService}. Supports named layers and user styles only.
@@ -206,7 +204,6 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	@Override
 	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) throws LayerException {
 		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
-		LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
 		List<FeatureStyleInfo> featureStyleInfos = new ArrayList<FeatureStyleInfo>();
 		for (FeatureTypeStyleInfo featureTypeStyleInfo : userStyle.getFeatureTypeStyleList()) {
 			int styleIndex = 0;
@@ -228,6 +225,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 						convertStroke(featureStyleInfo, polygonInfo.getStroke());
 					} else if (symbolizerTypeInfo instanceof TextSymbolizerInfo) {
 						TextSymbolizerInfo textInfo = (TextSymbolizerInfo) symbolizerTypeInfo;
+						LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
 						labelStyleInfo.setFontStyle(convertFont(textInfo.getFont()));
 						for (ExpressionInfo expr : textInfo.getLabel().getExpressionList()) {
 							if (expr instanceof LiteralTypeInfo ) {
@@ -243,6 +241,9 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 							convertFill(background, textInfo.getHalo().getFill());
 						}
 						labelStyleInfo.setBackgroundStyle(background);
+						// We create and override the labelstyle for every textsymbolizer. This should be re-iterated.
+						// See GBE-476
+						namedStyleInfo.setLabelStyle(labelStyleInfo);
 					} else {
 						log.warn("Symbolizer type " + symbolizerTypeInfo
 								+ "cannot be converted to feature style info, reverting to default style");
@@ -261,7 +262,6 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 		namedStyleInfo.setName(userStyle.getTitle() != null ? userStyle.getTitle() : userStyle.getName());
 		namedStyleInfo.setFeatureStyles(featureStyleInfos);
-		namedStyleInfo.setLabelStyle(labelStyleInfo);
 		return namedStyleInfo;
 	}
 

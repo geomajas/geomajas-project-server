@@ -81,6 +81,7 @@ public class ScaleInfo implements IsInfo {
 	/**
 	 * Constructs a scale info object with the specified numerator and denominator values. The scale should be
 	 * interpreted as the more familiar pure number scale, i.e. 1 meter on the screen divided by 1 meter on the map.
+	 * Note that if the map crs is in another unit than meters, the denominator value must be converted.
 	 * 
 	 * @param numerator
 	 *            typically value is 1 or > 1 for large scales
