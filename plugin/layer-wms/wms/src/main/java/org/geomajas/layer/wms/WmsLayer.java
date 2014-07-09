@@ -12,6 +12,7 @@ package org.geomajas.layer.wms;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+
 import org.apache.commons.io.IOUtils;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
@@ -27,6 +28,8 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.common.proxy.LayerAuthentication;
 import org.geomajas.layer.common.proxy.LayerAuthenticationMethod;
 import org.geomajas.layer.common.proxy.LayerHttpService;
+import org.geomajas.layer.common.proxy.ProxyAuthentication;
+import org.geomajas.layer.common.proxy.ProxyLayerSupport;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
@@ -54,6 +57,7 @@ import org.xml.sax.SAXException;
 import javax.annotation.PostConstruct;
 import javax.swing.text.html.HTML;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -94,7 +98,7 @@ import java.util.List;
  * @since 1.7.1
  */
 @Api
-public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
+public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLayerSupport {
 
 	/**
 	 * Feature info format for WMS layers.
@@ -309,7 +313,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					layerBox, x, y, featureInfoFormat == WmsFeatureInfoFormat.HTML);
 			log.debug("getFeaturesByLocation: {} {} {} {}", new Object[] { layerCoordinate, layerScale, pixelTolerance,
 					url });
-			stream = httpService.getStream(url, getLayerAuthentication(), getId());
+			stream = httpService.getStream(url, this);
 
 			switch (featureInfoFormat) {
 				case GML2:
@@ -795,11 +799,11 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	/**
-	 * Get the layerAuthentication object.
+	 * Get the authentication info for this layer.
 	 * 
-	 * @return layerAuthentication object
+	 * @return authentication info.
 	 */
-	public LayerAuthentication getLayerAuthentication() {
+	public ProxyAuthentication getProxyAuthentication() {
 		// convert authentication to layerAuthentication so we only use one
 		// TODO Remove when removing deprecated authentication field.
 		if (layerAuthentication == null && authentication != null) {

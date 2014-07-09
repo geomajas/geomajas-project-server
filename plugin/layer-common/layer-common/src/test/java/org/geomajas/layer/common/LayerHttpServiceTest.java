@@ -15,7 +15,6 @@ import junit.framework.Assert;
 
 import org.geomajas.layer.common.proxy.LayerAuthentication;
 import org.geomajas.layer.common.proxy.LayerAuthenticationMethod;
-import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.common.proxy.LayerHttpServiceImpl;
 import org.junit.Test;
 
@@ -28,7 +27,7 @@ public class LayerHttpServiceTest {
 
 	@Test
 	public void testAddCredentialsToUrl() throws Exception {
-		LayerHttpService service = new LayerHttpServiceImpl();
+		LayerHttpServiceImpl service = new LayerHttpServiceImpl();
 		String base;
 		LayerAuthentication auth = new LayerAuthentication();
 		auth.setUser("u");

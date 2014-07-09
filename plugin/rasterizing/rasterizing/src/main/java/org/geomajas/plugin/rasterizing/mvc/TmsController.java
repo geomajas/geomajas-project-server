@@ -10,9 +10,20 @@
  */
 
 package org.geomajas.plugin.rasterizing.mvc;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +32,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
@@ -31,6 +43,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
@@ -106,19 +119,19 @@ public class TmsController {
 	private RasterLayerService rasterLayerService;
 
 	@Autowired
+	private LayerHttpService httpService;
+
+	@Autowired
 	private CachingSupportService cachingSupportService;
 
-	private final HttpClient httpClient;
+	private static final int ERROR_MESSAGE_X = 10;
 
 	private static final String TMS_TILE_RENDERER = "TmsTileRenderer";
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
-
+	
 	public TmsController() {
-		PoolingClientConnectionManager manager = new PoolingClientConnectionManager();
-		manager.setDefaultMaxPerRoute(10);
-		httpClient = new DefaultHttpClient(manager);
-
+		System.out.println("ok");
 	}
 
 	/**
@@ -202,7 +215,7 @@ public class TmsController {
 	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}",
 			method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
-			@PathVariable Integer xIndex, @PathVariable Integer yIndex, HttpServletRequest request,
+			@PathVariable Integer xIndex, @PathVariable Integer yIndex,  @PathVariable String imageFormat, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Crs tileCrs = geoService.getCrs2(crs);
 		// calculate the tile extent
@@ -226,7 +239,7 @@ public class TmsController {
 			log.debug("Url = " + tiles.get(0).getUrl());
 			log.debug("Tile = " + tiles.get(0));
 			String url = tiles.get(0).getUrl();
-			writeToResponse(url.replace(".jpeg", ".png"), request, response);
+			writeToResponse(layer, url.replace(".jpeg", ".png"), request, response);
 		}
 	}
 
@@ -328,21 +341,65 @@ public class TmsController {
 		return tileExtent;
 	}
 
-	private void writeToResponse(String url, HttpServletRequest request, HttpServletResponse response) {
-		HttpGet get = new HttpGet(url);
-		// pass all headers, except for host
-		for (Enumeration<String> names = request.getHeaderNames(); names.hasMoreElements();) {
-			String name = names.nextElement();
-			if (!"Host".equalsIgnoreCase(name) && !"Cookie".equals(name)) {
-				get.setHeader(name, request.getHeader(name));
+	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		InputStream stream = null;
+		try {
+			response.setContentType("image/png");
+			ServletOutputStream out = response.getOutputStream();
+			stream = httpService.getStream(url, layer);
+			int b;
+			while ((b = stream.read()) >= 0 ) {
+				out.write(b);
+			}			
+		} catch (Exception e) { // NOSONAR
+			log.error("Cannot get original TMS image", e);
+			// Create an error image to make the reason for the error visible:
+			RasterLayerInfo layerInfo = layer.getLayerInfo();
+			byte[] b = createErrorImage(layerInfo.getTileWidth(), layerInfo.getTileHeight(), e);
+			response.setContentType("image/png");
+			response.getOutputStream().write(b);
+		} finally {
+			if (null != stream) {
+				try {
+					stream.close();
+				} catch (IOException ioe) {
+					// ignore, closing anyway
+				}
 			}
 		}
-		try {
-			HttpResponse r = httpClient.execute(get);
-			r.getEntity().writeTo(response.getOutputStream());
-		} catch (Exception e) {
-			e.printStackTrace();
+	}
+
+	/**
+	 * Create an error image should an error occur while fetching a TMS map.
+	 *
+	 * @param width image width
+	 * @param height image height
+	 * @param e exception
+	 * @return error image
+	 * @throws java.io.IOException oops
+	 */
+	private byte[] createErrorImage(int width, int height, Exception e) throws IOException {
+		String error = e.getMessage();
+		if (null == error) {
+			Writer result = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(result);
+			e.printStackTrace(printWriter);
+			error = result.toString();
 		}
+
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g = (Graphics2D) image.getGraphics();
+
+		g.setColor(Color.RED);
+		g.drawString(error, ERROR_MESSAGE_X, height / 2);
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ImageIO.write(image, "PNG", out);
+		out.flush();
+		byte[] result = out.toByteArray();
+		out.close();
+
+		return result;
 	}
 
 }

@@ -15,6 +15,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.layer.common.proxy.ProxyAuthentication;
+import org.geomajas.layer.common.proxy.ProxyAuthenticationMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 @Api(allMethods = true)
 @Deprecated
-public class WmsAuthentication implements Serializable {
+public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
@@ -178,4 +180,18 @@ public class WmsAuthentication implements Serializable {
 	public void setAuthenticationMethod(WmsAuthenticationMethod authenticationMethod) {
 		this.authenticationMethod = authenticationMethod;
 	}
+
+	@Override
+	public ProxyAuthenticationMethod getMethod() {
+		switch (authenticationMethod) {
+		case BASIC:
+			return ProxyAuthenticationMethod.BASIC;
+		case URL:
+			return ProxyAuthenticationMethod.URL;
+		default:
+			return null;
+		}
+	}	
+	
+	
 }

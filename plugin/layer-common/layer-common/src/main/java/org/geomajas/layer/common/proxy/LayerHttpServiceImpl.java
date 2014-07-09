@@ -25,23 +25,25 @@ import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.geomajas.layer.RasterLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
- * Implementation of {@link LayerHttpService}.
- *
+ * Implementation of {@link LayerHttpService}. Non-caching implementation, see {@link CachingLayerHttpService} for the
+ * component bean.
+ * 
  * @author Joachim Van der Auwera
  * @author Kristof Heirwegh
+ * @author Jan De Moerloose
  */
-@Component
 public class LayerHttpServiceImpl implements LayerHttpService {
 
 	private final Logger log = LoggerFactory.getLogger(LayerHttpServiceImpl.class);
@@ -56,9 +58,18 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 
 	@Autowired(required = false)
 	private LayerHttpServiceInterceptors interceptors;
+	
+	private AbstractHttpClient client;
+	
+	public LayerHttpServiceImpl() {
+		// Create a HTTP client object, which will initiate the connection:
+		final HttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT);
+		client = new SystemDefaultHttpClient(httpParams);		
+	}
 
-	public String addCredentialsToUrl(final String url, final LayerAuthentication authentication) {
-		if (null != authentication && LayerAuthenticationMethod.URL.equals(authentication.getAuthenticationMethod())) {
+	public String addCredentialsToUrl(final String url, final ProxyAuthentication authentication) {
+		if (null != authentication && ProxyAuthenticationMethod.URL.equals(authentication.getMethod())) {
 			StringBuilder res = new StringBuilder(url);
 			if (res.indexOf(URL_PARAM_START) >= 0) {
 				res.append(URL_PARAM_SEPARATOR);
@@ -77,27 +88,29 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 		return url;
 	}
 
-	public InputStream getStream(final String baseUrl, final LayerAuthentication authentication, final String layerId)
-			throws IOException {
-		// Create a HTTP client object, which will initiate the connection:
-		final HttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT);
-		SystemDefaultHttpClient client = new SystemDefaultHttpClient(httpParams);
+	public InputStream getStream(String baseUrl, RasterLayer layer)
+			throws IOException {		
+		String url = baseUrl;		
+		if (layer instanceof ProxyLayerSupport) {			
+			// handle proxy authentication and interceptors			
+			ProxyLayerSupport proxyLayer = (ProxyLayerSupport) layer;
+			ProxyAuthentication authentication = proxyLayer.getProxyAuthentication();
+			url = addCredentialsToUrl(baseUrl, authentication);
 
-		String url = addCredentialsToUrl(baseUrl, authentication);
+			// -- add basic authentication
+			if (null != authentication 
+					&& (ProxyAuthenticationMethod.BASIC.equals(authentication.getMethod()) || 
+							ProxyAuthenticationMethod.DIGEST.equals(authentication.getMethod()))) {
+				// Set up the credentials:
+				Credentials creds = new UsernamePasswordCredentials(authentication.getUser(), authentication.getPassword());
+				AuthScope scope = new AuthScope(parseDomain(url), parsePort(url), authentication.getRealm());
+				client.getCredentialsProvider().setCredentials(scope, creds);
+			}
 
-		// -- add basic authentication
-		if (null != authentication 
-				&& (LayerAuthenticationMethod.BASIC.equals(authentication.getAuthenticationMethod()) || 
-					LayerAuthenticationMethod.DIGEST.equals(authentication.getAuthenticationMethod()))) {
-			// Set up the credentials:
-			Credentials creds = new UsernamePasswordCredentials(authentication.getUser(), authentication.getPassword());
-			AuthScope scope = new AuthScope(parseDomain(url), parsePort(url), authentication.getRealm());
-			client.getCredentialsProvider().setCredentials(scope, creds);
+			// -- add interceptors if any --
+			addInterceptors(client, baseUrl, proxyLayer.getId());
 		}
-
-		// -- add interceptors if any --
-		addInterceptors(client, baseUrl, layerId);
+		
 		
 		// Create the GET method with the correct URL:
 		HttpGet get = new HttpGet(url);
@@ -107,7 +120,7 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 		log.debug("Response: {} - {}", response.getStatusLine().getStatusCode(), response.getStatusLine()
 				.getReasonPhrase());
 
-		return new LayerHttpServiceStream(response, client);
+		return response.getEntity().getContent();
 	}
 
 	/**
@@ -116,7 +129,7 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 	 * @param client
 	 * @param baseUrl
 	 */
-	private void addInterceptors(DefaultHttpClient client, String baseUrl, String layerId) {
+	private void addInterceptors(AbstractHttpClient client, String baseUrl, String layerId) {
 		try {
 			if (interceptors != null && baseUrl != null) {
 				for (Entry<String, List<HttpRequestInterceptor>> entry : interceptors.getMap().entrySet()) {
@@ -169,66 +182,4 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 		}
 	}
 
-	/**
-	 * Delegating input stream which also closes the HTTP connection when closing the stream.
-	 *
-	 * @author Joachim Van der Auwera
-	 */
-	private static class LayerHttpServiceStream extends InputStream {
-
-		private final HttpClient client;
-		private final InputStream inputStream;
-
-		public LayerHttpServiceStream(HttpResponse response, HttpClient client) throws IOException {
-			super();
-			this.client = client;
-			this.inputStream = response.getEntity().getContent();
-		}
-
-		@Override
-		public int read() throws IOException {
-			return inputStream.read();
-		}
-
-		@Override
-		public int read(byte[] bytes) throws IOException {
-			return inputStream.read(bytes);
-		}
-
-		@Override
-		public int read(byte[] bytes, int i, int i1) throws IOException {
-			return inputStream.read(bytes, i, i1);
-		}
-
-		@Override
-		public long skip(long l) throws IOException {
-			return inputStream.skip(l);
-		}
-
-		@Override
-		public int available() throws IOException {
-			return inputStream.available();
-		}
-
-		@Override
-		public void close() throws IOException {
-			inputStream.close();
-			client.getConnectionManager().shutdown(); // reuse would be better
-		}
-
-		@Override
-		public void mark(int i) {
-			inputStream.mark(i);
-		}
-
-		@Override
-		public void reset() throws IOException {
-			inputStream.reset();
-		}
-
-		@Override
-		public boolean markSupported() {
-			return inputStream.markSupported();
-		}
-	}
 }

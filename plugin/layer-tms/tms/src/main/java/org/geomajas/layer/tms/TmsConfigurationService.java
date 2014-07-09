@@ -88,8 +88,7 @@ public class TmsConfigurationService {
 			}
 
 			// Normal case, find the URL and unmarshal:
-			return (TileMap) um.unmarshal(httpService.getStream(layer.getBaseTmsUrl(), layer.getAuthentication(), 
-					layer.getId()));
+			return (TileMap) um.unmarshal(httpService.getStream(layer.getBaseTmsUrl(), layer));
 		} catch (JAXBException e) {
 			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layer.getBaseTmsUrl());
 		} catch (MalformedURLException e) {
