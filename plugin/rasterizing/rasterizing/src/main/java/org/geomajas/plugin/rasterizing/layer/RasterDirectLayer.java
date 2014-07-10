@@ -23,6 +23,7 @@ import java.awt.image.renderable.ParameterBlock;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,11 +46,9 @@ import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.TranslateDescriptor;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
@@ -90,8 +89,6 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private final HttpClient httpClient;
-
 	private final Logger log = LoggerFactory.getLogger(RasterDirectLayer.class);
 
 	private final int tileWidth;
@@ -102,8 +99,12 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private double tileScale = -1;
 
-	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, double tileScale, String style) {
+	private UrlDownLoader urlDownLoader;
+
+	public RasterDirectLayer(UrlDownLoader urlDownLoader, List<RasterTile> tiles, int tileWidth, int tileHeight,
+			double tileScale, String style) {
 		super();
+		this.urlDownLoader = urlDownLoader;
 		this.tileScale = tileScale;
 		this.tiles = tiles;
 		if (tileWidth < 1) {
@@ -115,13 +116,11 @@ public class RasterDirectLayer extends DirectLayer {
 		}
 		this.tileHeight = tileHeight;
 		this.style = style;
-		ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager();
-		manager.setDefaultMaxPerRoute(10);
-		httpClient = new DefaultHttpClient(manager);
 	}
 
-	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
-		this(tiles, tileWidth, tileHeight, -1.0, style);
+	public RasterDirectLayer(UrlDownLoader urlDownLoader, List<RasterTile> tiles, int tileWidth, int tileHeight,
+			String style) {
+		this(urlDownLoader, tiles, tileWidth, tileHeight, -1.0, style);
 	}
 
 	@Override
@@ -431,6 +430,11 @@ public class RasterDirectLayer extends DirectLayer {
 			return rasterImage;
 		}
 	}
+	
+	public interface UrlDownLoader {
+		
+		InputStream getStream(String url) throws IOException;
+	}
 
 	/**
 	 * Download image with a couple of retries.
@@ -452,11 +456,16 @@ public class RasterDirectLayer extends DirectLayer {
 			log.debug("Fetching image: {}", result.getRasterImage().getUrl());
 			int triesLeft = retries;
 			while (true) {
+				InputStream inputStream = null;
 				try {
-					HttpGet get = new HttpGet(result.getRasterImage().getUrl());
-					HttpResponse response = httpClient.execute(get);
+					inputStream = urlDownLoader.getStream(result.getRasterImage().getUrl());
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(DEFAULT_IMAGE_BUFFER_SIZE);
-					response.getEntity().writeTo(outputStream);
+					byte[] bytes = new byte[1024];
+					int readBytes;
+					while ((readBytes = inputStream.read(bytes)) > 0) {
+						outputStream.write(bytes, 0, readBytes);
+					}
+					outputStream.flush();
 					result.setImage(outputStream.toByteArray());
 					return result;
 				} catch (Exception e) { // NOSONAR
@@ -472,6 +481,13 @@ public class RasterDirectLayer extends DirectLayer {
 							Thread.sleep(RETRY_WAIT); // give server some time to recover
 						} catch (InterruptedException ie) {
 							// NOSONAR just ignore
+						}
+					}
+				} finally {
+					if(inputStream != null) {
+						try {
+							inputStream.close();
+						} catch (IOException e) {
 						}
 					}
 				}

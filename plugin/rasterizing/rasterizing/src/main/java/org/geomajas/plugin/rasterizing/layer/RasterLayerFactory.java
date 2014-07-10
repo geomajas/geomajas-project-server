@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +21,11 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer.UrlDownLoader;
 import org.geomajas.service.ConfigurationService;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
@@ -44,6 +48,9 @@ public class RasterLayerFactory implements LayerFactory {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private LayerHttpService httpService;
+
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientRasterLayerInfo;
 	}
@@ -57,12 +64,18 @@ public class RasterLayerFactory implements LayerFactory {
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
-		RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
+		final RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
 		MapViewport port = mapContext.getViewport();
 		double rasterScale = port.getScreenArea().getWidth() / port.getBounds().getWidth();
 		List<RasterTile> tiles = rasterLayerService.getTiles(clientLayerInfo.getServerLayerId(),
 				areaOfInterest.getCoordinateReferenceSystem(), areaOfInterest, rasterScale);
-		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, layer.getLayerInfo().getTileWidth(), layer
+		RasterDirectLayer rasterLayer = new RasterDirectLayer(new UrlDownLoader() {
+			
+			@Override
+			public InputStream getStream(String url) throws IOException {
+				return httpService.getStream(url, layer);
+			}
+		}, tiles, layer.getLayerInfo().getTileWidth(), layer
 				.getLayerInfo().getTileHeight(), extraInfo.getCssStyle());
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
 		rasterLayer.getUserData().put(USERDATA_KEY_LAYER_ID, layer.getId());

@@ -48,13 +48,16 @@ import javax.media.jai.operator.TranslateDescriptor;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.GeoService;
 import org.slf4j.Logger;
@@ -116,7 +119,11 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	@Autowired
 	@XStreamOmitField
-	private PrintConfigurationService configurationService;
+	private PrintConfigurationService printConfigurationService;
+
+	@Autowired
+	@XStreamOmitField
+	private ConfigurationService configurationService;
 
 	@Autowired
 	@XStreamOmitField
@@ -125,6 +132,10 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	@Autowired
 	@XStreamOmitField
 	private DispatcherUrlService dispatcherUrlService;
+	
+	@Autowired
+	private LayerHttpService layerHttpService;
+
 
 	private float opacity = 1.0f;
 
@@ -152,7 +163,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 				log.debug("rendering" + getLayerId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
 						+ bbox.getWidth() + " " + bbox.getHeight() + "]");
 			}
-			ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
+			ClientMapInfo map = printConfigurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 			try {
 				tiles = rasterLayerService.getTiles(getLayerId(), geoService.getCrs2(map.getCrs()), bbox, rasterScale);
 				if (tiles.size() > 0) {
@@ -171,8 +182,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 							TimeUnit.MILLISECONDS);
 					// determine the pixel bounds of the mosaic
 					Bbox pixelBounds = getPixelBounds(tiles);
-					int imageWidth = configurationService.getRasterLayerInfo(getLayerId()).getTileWidth();
-					int imageHeight = configurationService.getRasterLayerInfo(getLayerId()).getTileHeight();
+					int imageWidth = printConfigurationService.getRasterLayerInfo(getLayerId()).getTileWidth();
+					int imageHeight = printConfigurationService.getRasterLayerInfo(getLayerId()).getTileHeight();
 					// create the images for the mosaic
 					List<RenderedImage> images = new ArrayList<RenderedImage>();
 					for (Future<ImageResult> future : futures) {
@@ -284,8 +295,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	private Bbox getPixelBounds(List<RasterTile> tiles) {
 		Bbox bounds = null;
-		int imageWidth = configurationService.getRasterLayerInfo(getLayerId()).getTileWidth();
-		int imageHeight = configurationService.getRasterLayerInfo(getLayerId()).getTileHeight();
+		int imageWidth = printConfigurationService.getRasterLayerInfo(getLayerId()).getTileWidth();
+		int imageHeight = printConfigurationService.getRasterLayerInfo(getLayerId()).getTileHeight();
 		for (RasterTile tile : tiles) {
 			Bbox tileBounds = new Bbox(tile.getCode().getX() * imageWidth, tile.getCode().getY() * imageHeight,
 					imageWidth, imageHeight);
@@ -508,16 +519,16 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 			log.debug("Fetching image: {}", url);
 			int triesLeft = retries;
 			while (true) {
+				InputStream inputStream = null;
 				try {
-					URL imageUrl = new URL(url);
-					InputStream inputStream = imageUrl.openStream();
+					RasterLayer layer = configurationService.getRasterLayer(getLayerId());
+					inputStream = layerHttpService.getStream(url, layer);
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
 					byte[] bytes = new byte[1024];
 					int readBytes;
 					while ((readBytes = inputStream.read(bytes)) > 0) {
 						outputStream.write(bytes, 0, readBytes);
 					}
-					inputStream.close();
 					outputStream.flush();
 					outputStream.close();
 					result.setImage(outputStream.toByteArray());
@@ -528,6 +539,10 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 						throw new ImageException(result.getRasterImage(), e);
 					} else {
 						log.debug("Fetching image: retrying ", url);
+					}
+				} finally {
+					if(inputStream != null) {
+						inputStream.close();
 					}
 				}
 			}
