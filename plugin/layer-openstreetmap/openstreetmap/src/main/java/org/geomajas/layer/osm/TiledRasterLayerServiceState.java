@@ -208,7 +208,9 @@ public class TiledRasterLayerServiceState {
 		crs = geoService.getCrs2(TiledRasterLayerService.MERCATOR);
 		layerInfo.setTileWidth(tileSize);
 		layerInfo.setTileHeight(tileSize);
-		Bbox bbox = new Bbox(-20026376.393709917, -20026376.393709917, 40052752.787419834, 40052752.787419834);
+		Bbox bbox = new Bbox(-TiledRasterLayerService.HALF_EQUATOR_IN_METERS,
+				-TiledRasterLayerService.HALF_EQUATOR_IN_METERS, TiledRasterLayerService.EQUATOR_IN_METERS,
+				TiledRasterLayerService.EQUATOR_IN_METERS);
 		layerInfo.setMaxExtent(bbox);
 		maxBounds = converterService.toInternal(bbox);
 
