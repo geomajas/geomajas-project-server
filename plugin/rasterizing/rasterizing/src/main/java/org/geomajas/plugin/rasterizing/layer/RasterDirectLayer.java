@@ -8,8 +8,28 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.rasterizing.layer;
 
+import com.sun.media.jai.codec.ByteArraySeekableStream;
+import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.tile.RasterTile;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.DirectLayer;
+import org.geotools.map.MapContent;
+import org.geotools.map.MapViewport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.TranslateDescriptor;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -36,33 +56,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import javax.imageio.ImageIO;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.TranslateDescriptor;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.common.proxy.LayerHttpService;
-import org.geomajas.layer.tile.RasterTile;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DirectLayer;
-import org.geotools.map.MapContent;
-import org.geotools.map.MapViewport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.media.jai.codec.ByteArraySeekableStream;
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * Layer responsible for rendering raster layers. Most of the code is copied from the printing plugin.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class RasterDirectLayer extends DirectLayer {
@@ -369,7 +365,7 @@ public class RasterDirectLayer extends DirectLayer {
 	/**
 	 * Converts an image to a RGBA direct color model using a workaround via buffered image directly calling the
 	 * ColorConvert operation fails for unknown reasons ?!
-	 * 
+	 *
 	 * @param img image to convert
 	 * @return converted image
 	 */
@@ -384,7 +380,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 	/**
 	 * Image result.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	private static class ImageResult {
@@ -412,7 +408,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 	/**
 	 * Image Exception
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	private static class ImageException extends Exception {
@@ -430,15 +426,20 @@ public class RasterDirectLayer extends DirectLayer {
 			return rasterImage;
 		}
 	}
-	
+
+	/**
+	 * Transforms a URL into an inputstream.
+	 *
+	 * @author Jan De Moerloose
+	 */
 	public interface UrlDownLoader {
-		
+
 		InputStream getStream(String url) throws IOException;
 	}
 
 	/**
 	 * Download image with a couple of retries.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	private class RasterImageDownloadCallable implements Callable<ImageResult> {
@@ -484,7 +485,7 @@ public class RasterDirectLayer extends DirectLayer {
 						}
 					}
 				} finally {
-					if(inputStream != null) {
+					if (inputStream != null) {
 						try {
 							inputStream.close();
 						} catch (IOException e) {

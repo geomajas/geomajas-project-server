@@ -11,40 +11,12 @@
 
 package org.geomajas.plugin.printing.component.impl;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
-import java.awt.image.RenderedImage;
-import java.awt.image.WritableRaster;
-import java.awt.image.renderable.ParameterBlock;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
-import javax.imageio.ImageIO;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.TranslateDescriptor;
-
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.sun.media.jai.codec.ByteArraySeekableStream;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
@@ -66,16 +38,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
-import com.sun.media.jai.codec.ByteArraySeekableStream;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
-import com.vividsolutions.jts.geom.Envelope;
+import javax.imageio.ImageIO;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.TranslateDescriptor;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
+import java.awt.image.renderable.ParameterBlock;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sub component of a map responsible for rendering raster layer.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component()
@@ -132,7 +129,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	@Autowired
 	@XStreamOmitField
 	private DispatcherUrlService dispatcherUrlService;
-	
+
 	@Autowired
 	private LayerHttpService layerHttpService;
 
@@ -147,7 +144,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Call back visitor.
-	 * 
+	 *
 	 * @param visitor
 	 *            visitor
 	 */
@@ -335,7 +332,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Get the layer opacity.
-	 * 
+	 *
 	 * @return layer opacity
 	 */
 	public float getOpacity() {
@@ -344,7 +341,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Set the layer opacity.
-	 * 
+	 *
 	 * @param opacity
 	 *            layer opacity
 	 */
@@ -375,7 +372,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Add image in the document.
-	 * 
+	 *
 	 * @param context
 	 *            PDF context
 	 * @param imageResult
@@ -408,7 +405,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Add image with a exception message in the PDF document.
-	 * 
+	 *
 	 * @param context
 	 *            PDF context
 	 * @param e
@@ -475,12 +472,12 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 		/**
 		 * Constructor.
-		 * 
+		 *
 		 * @param rasterImage
 		 *            image for which the exception occurred
 		 * @param cause
 		 *            cause exception
-		 * 
+		 *
 		 * */
 		public ImageException(RasterTile rasterImage, Throwable cause) {
 			super(cause);
@@ -489,7 +486,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 		/**
 		 * Get image for which the exception occurred.
-		 * 
+		 *
 		 * @return image for which the exception occurred
 		 */
 		public RasterTile getRasterImage() {
@@ -541,7 +538,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 						log.debug("Fetching image: retrying ", url);
 					}
 				} finally {
-					if(inputStream != null) {
+					if (inputStream != null) {
 						inputStream.close();
 					}
 				}
@@ -556,7 +553,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	/**
 	 * Converts an image to a RGBA direct color model using a workaround via buffered image directly calling the
 	 * ColorConvert operation fails for unknown reasons ?!
-	 * 
+	 *
 	 * @param img
 	 *            image to convert
 	 * @return converted image
@@ -572,7 +569,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	/**
 	 * Lookup error message for internationalization bundle.
-	 * 
+	 *
 	 * @param key
 	 *            key to lookup
 	 * @return internationalized value

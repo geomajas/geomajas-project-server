@@ -8,17 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.layer.wms;
-
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.common.proxy.ProxyAuthentication;
 import org.geomajas.layer.common.proxy.ProxyAuthenticationMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This object supports both BASIC and DIGEST (HTTP) authentication.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  * @since 1.8.0
  * @deprecated use {@link LayerAuthentication}
@@ -64,7 +64,7 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	/**
 	 * Get the user name.
-	 * 
+	 *
 	 * @return user name
 	 */
 	public String getUser() {
@@ -73,7 +73,7 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	/**
 	 * Set the user name.
-	 * 
+	 *
 	 * @param user
 	 *            user name
 	 */
@@ -83,7 +83,7 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	/**
 	 * Get the password.
-	 * 
+	 *
 	 * @return password.
 	 */
 	public String getPassword() {
@@ -92,7 +92,7 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	/**
 	 * Set the password.
-	 * 
+	 *
 	 * @param password
 	 *            password
 	 */
@@ -102,7 +102,7 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	/**
 	 * Get the HTTP authentication realm. This value is optional.
-	 * 
+	 *
 	 * @return authentication realm or null.
 	 */
 	public String getRealm() {
@@ -111,7 +111,7 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 
 	/**
 	 * Set the HTTP authentication realm. This value is optional.
-	 * 
+	 *
 	 * @param realm
 	 *            authentication realm
 	 */
@@ -181,17 +181,20 @@ public class WmsAuthentication implements Serializable, ProxyAuthentication {
 		this.authenticationMethod = authenticationMethod;
 	}
 
+	/**
+	 * Get the proxy authentication method.
+	 *
+	 * @since 1.16.0
+	 */
 	@Override
 	public ProxyAuthenticationMethod getMethod() {
 		switch (authenticationMethod) {
-		case BASIC:
-			return ProxyAuthenticationMethod.BASIC;
-		case URL:
-			return ProxyAuthenticationMethod.URL;
-		default:
-			return null;
+			case BASIC:
+				return ProxyAuthenticationMethod.BASIC;
+			case URL:
+				return ProxyAuthenticationMethod.URL;
+			default:
+				return null;
 		}
-	}	
-	
-	
+	}
 }

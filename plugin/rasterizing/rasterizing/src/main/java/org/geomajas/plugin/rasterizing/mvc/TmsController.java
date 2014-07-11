@@ -10,28 +10,8 @@
  */
 
 package org.geomajas.plugin.rasterizing.mvc;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Enumeration;
-import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
@@ -74,11 +54,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.vividsolutions.jts.geom.Envelope;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.List;
 
 /**
  * Controller which serves tiles in a TMS-compliant way.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Controller(TmsController.MAPPING + "**")
@@ -129,14 +122,14 @@ public class TmsController {
 	private static final String TMS_TILE_RENDERER = "TmsTileRenderer";
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
-	
+
 	public TmsController() {
 		System.out.println("ok");
 	}
 
 	/**
 	 * Get a vector tile from the TMS server.
-	 * 
+	 *
 	 * @param layerId layer id
 	 * @param styleKey style key
 	 * @param crs crs, e.g. "EPSG:4326"
@@ -150,7 +143,7 @@ public class TmsController {
 	 * @param response servlet response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}", 
+	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}",
 			method = RequestMethod.GET)
 	public void getVectorTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
@@ -202,7 +195,7 @@ public class TmsController {
 
 	/**
 	 * Get a raster layer tile from the TMS server.
-	 * 
+	 *
 	 * @param layerId layer id
 	 * @param crs crs, e.g. EPSG:4326
 	 * @param tileLevel tile level, 0 is highest level
@@ -215,8 +208,8 @@ public class TmsController {
 	@RequestMapping(value = MAPPING + "{layerId}@{crs}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}",
 			method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
-			@PathVariable Integer xIndex, @PathVariable Integer yIndex,  @PathVariable String imageFormat, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			@PathVariable Integer xIndex, @PathVariable Integer yIndex, @PathVariable String imageFormat,
+			HttpServletRequest request,	HttpServletResponse response) throws Exception {
 		Crs tileCrs = geoService.getCrs2(crs);
 		// calculate the tile extent
 		Envelope maxExtent = getRasterLayerExtent(layerId, crs);
@@ -245,7 +238,7 @@ public class TmsController {
 
 	/**
 	 * Renders the image by fetching it from the cache or, if that fails, using the rebuild container.
-	 * 
+	 *
 	 * @param layerId
 	 * @param key
 	 * @param response
@@ -341,16 +334,17 @@ public class TmsController {
 		return tileExtent;
 	}
 
-	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		InputStream stream = null;
 		try {
 			response.setContentType("image/png");
 			ServletOutputStream out = response.getOutputStream();
 			stream = httpService.getStream(url, layer);
 			int b;
-			while ((b = stream.read()) >= 0 ) {
+			while ((b = stream.read()) >= 0) {
 				out.write(b);
-			}			
+			}
 		} catch (Exception e) { // NOSONAR
 			log.error("Cannot get original TMS image", e);
 			// Create an error image to make the reason for the error visible:
@@ -401,5 +395,4 @@ public class TmsController {
 
 		return result;
 	}
-
 }

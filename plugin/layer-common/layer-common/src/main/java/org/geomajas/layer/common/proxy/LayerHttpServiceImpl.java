@@ -100,7 +100,8 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 					&& (ProxyAuthenticationMethod.BASIC.equals(authentication.getMethod()) || 
 							ProxyAuthenticationMethod.DIGEST.equals(authentication.getMethod()))) {
 				// Set up the credentials:
-				Credentials creds = new UsernamePasswordCredentials(authentication.getUser(), authentication.getPassword());
+				Credentials creds = new UsernamePasswordCredentials(authentication.getUser(),
+						authentication.getPassword());
 				AuthScope scope = new AuthScope(parseDomain(url), parsePort(url), authentication.getRealm());
 				client.getCredentialsProvider().setCredentials(scope, creds);
 			}
