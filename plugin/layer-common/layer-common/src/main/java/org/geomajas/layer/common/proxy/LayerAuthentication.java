@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerAuthentication implements Serializable {
+public class LayerAuthentication implements ProxyAuthentication, Serializable {
 
 	private static final long serialVersionUID = 110L;
 
@@ -164,4 +164,24 @@ public class LayerAuthentication implements Serializable {
 	public void setAuthenticationMethod(LayerAuthenticationMethod authenticationMethod) {
 		this.authenticationMethod = authenticationMethod;
 	}
+
+	/**
+	 * Get the authentication method to use.
+	 * 
+	 * @return authentication method
+	 */
+	@Override
+	public ProxyAuthenticationMethod getMethod() {
+		switch (authenticationMethod) {
+		case BASIC:
+			return ProxyAuthenticationMethod.BASIC;
+		case DIGEST:
+			return ProxyAuthenticationMethod.DIGEST;
+		case URL:
+			return ProxyAuthenticationMethod.URL;
+		default:
+			return null;
+		}
+	}	
+	
 }

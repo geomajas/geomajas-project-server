@@ -8,32 +8,33 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.layer.common.proxy;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.RasterLayer;
 
 /**
- * Service which handles the (secured) HTTP communication for raster layer requests.
- *
- * @author Joachim Van der Auwera
+ * Adds support for server-side proxying of any kind of layer. Currently implemented by WMS and TMS layers.
+ * 
+ * @author Jan De Moerloose
  * @since 1.16.0
+ * 
  */
 @Api(allMethods = true)
-public interface LayerHttpService {
+public interface ProxyLayerSupport extends RasterLayer {
 
 	/**
-	 * Get the contents from the request URL.
-	 *
-	 * @param url URL to get the response from
-	 * @param layer the raster layer
-	 * @return {@link InputStream} with the content
-	 * @throws IOException cannot get content
+	 * Get the authentication info for this layer.
+	 * 
+	 * @return authentication info.
 	 */
-	InputStream getStream(String url, RasterLayer layer) throws IOException;
+	ProxyAuthentication getProxyAuthentication();
+
+	/**
+	 * Is use of caching allowed ?
+	 * 
+	 * @return true if cache can be used
+	 */
+	boolean isUseCache();
 
 }

@@ -24,9 +24,11 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.common.proxy.LayerAuthentication;
+import org.geomajas.layer.common.proxy.ProxyAuthentication;
+import org.geomajas.layer.common.proxy.ProxyLayerSupport;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tms.mvc.TmsController;
+import org.geomajas.layer.tms.mvc.TmsProxyController;
 import org.geomajas.layer.tms.tile.SimpleTmsUrlBuilder;
 import org.geomajas.layer.tms.tile.TileMapUrlBuilder;
 import org.geomajas.layer.tms.tile.TileService;
@@ -54,7 +56,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 1.0.0
  */
 @Api
-public class TmsLayer implements RasterLayer {
+public class TmsLayer implements RasterLayer, ProxyLayerSupport {
 
 	private final Logger log = LoggerFactory.getLogger(TmsLayer.class);
 
@@ -240,9 +242,9 @@ public class TmsLayer implements RasterLayer {
 				if (!url.endsWith("/")) {
 					url += "/";
 				}
-				return url + TmsController.MAPPING_NAME + "/" + getId() + "/";
+				return url + TmsProxyController.MAPPING_NAME + "/" + getId() + "/";
 			} else {
-				return "./d/" + TmsController.MAPPING_NAME + "/" + getId() + "/";
+				return "./d/" + TmsProxyController.MAPPING_NAME + "/" + getId() + "/";
 			}
 		} else {
 			return baseTmsUrl;
@@ -410,6 +412,11 @@ public class TmsLayer implements RasterLayer {
 		} else {
 			this.useCache = useCache;
 		}
+	}
+
+	@Override
+	public ProxyAuthentication getProxyAuthentication() {
+		return authentication;
 	}
 
 	/**

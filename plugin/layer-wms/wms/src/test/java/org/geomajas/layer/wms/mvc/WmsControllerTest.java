@@ -20,8 +20,11 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.common.proxy.LayerAuthentication;
 import org.geomajas.layer.common.proxy.LayerHttpService;
+import org.geomajas.layer.common.proxy.ProxyAuthentication;
+import org.geomajas.layer.common.proxy.ProxyLayerSupport;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geomajas.testdata.rule.SecurityRule;
 import org.junit.Rule;
@@ -35,7 +38,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for {@link WmsController}.
+ * Test for {@link WmsProxyController}.
  *
  * @author Joachim Van der Auwera
  */
@@ -51,7 +54,7 @@ public class WmsControllerTest {
 	private static final double DELTA = 1E-6;
 
 	@Autowired
-	private WmsController wmsController;
+	private WmsProxyController wmsController;
 	
 	@Autowired
 	@Rule
@@ -113,11 +116,7 @@ public class WmsControllerTest {
 
 	private class MockHttpService implements LayerHttpService {
 
-		public String addCredentialsToUrl(String url, LayerAuthentication authentication) {
-			return url;
-		}
-
-		public InputStream getStream(String url, LayerAuthentication authentication, String layerId) throws IOException {
+		public InputStream getStream(String url, RasterLayer layer) throws IOException {
 			return new ByteArrayInputStream(TEST_VALUE.getBytes("UTF-8"));
 		}
 	}

@@ -11,6 +11,7 @@
 
 package org.geomajas.layer.wms.mvc;
 
+import org.geomajas.layer.common.proxy.CachingLayerHttpService;
 import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.TestRecorder;
@@ -34,7 +35,7 @@ import java.util.Map;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test for {@link org.geomajas.layer.wms.mvc.WmsController}.
+ * Test for {@link org.geomajas.layer.wms.mvc.WmsProxyController}.
  *
  * @author Joachim Van der Auwera
  */
@@ -48,7 +49,7 @@ public class WmsControllerCacheTest {
 	private static final double DELTA = 1E-6;
 
 	@Autowired
-	private WmsController wmsController;
+	private WmsProxyController wmsController;
 	
 	@Autowired
 	private TestRecorder testRecorder;
@@ -97,14 +98,14 @@ public class WmsControllerCacheTest {
 		testRecorder.clear();
 		wmsController.getWms(request, response);
 		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
-		assertThat(testRecorder.matches(WmsController.TEST_RECORDER_GROUP,
-				WmsController.TEST_RECORDER_PUT_IN_CACHE)).isEmpty();
+		assertThat(testRecorder.matches(CachingLayerHttpService.TEST_RECORDER_GROUP,
+				CachingLayerHttpService.TEST_RECORDER_PUT_IN_CACHE)).isEmpty();
 
 		testRecorder.clear();
 		wmsController.getWms(request, response);
 		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
-		assertThat(testRecorder.matches(WmsController.TEST_RECORDER_GROUP,
-				WmsController.TEST_RECORDER_GET_FROM_CACHE)).isEmpty();
+		assertThat(testRecorder.matches(CachingLayerHttpService.TEST_RECORDER_GROUP,
+				CachingLayerHttpService.TEST_RECORDER_GET_FROM_CACHE)).isEmpty();
 	}
 
 	class ImageAssert extends TestPathBinaryStreamAssert {
