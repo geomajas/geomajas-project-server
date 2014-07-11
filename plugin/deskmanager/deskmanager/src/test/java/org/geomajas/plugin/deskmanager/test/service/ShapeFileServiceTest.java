@@ -52,7 +52,7 @@ public class ShapeFileServiceTest {
 		path = URLDecoder.decode(path, "utf-8");
 		path = new File(path).getPath();
 
-		Assert.assertTrue(shapeFileService.importShapeFile(path, UUID.randomUUID().toString()));
+		Assert.assertTrue(shapeFileService.importShapeFile(new File(path), UUID.randomUUID().toString()));
 	}
 
 	@Test

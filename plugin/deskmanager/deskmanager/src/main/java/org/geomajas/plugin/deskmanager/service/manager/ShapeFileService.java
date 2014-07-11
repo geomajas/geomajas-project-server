@@ -11,6 +11,7 @@
 package org.geomajas.plugin.deskmanager.service.manager;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 
@@ -27,14 +28,12 @@ public interface ShapeFileService {
 
 	/**
 	 * Import a shape file to the deskmanager datastore.
-	 * The shape file will always be converted to the default application CRS.
 	 * 
-	 * @param shpFileName
-	 *            Fully qualified name of the shape file
+	 * @param shpFile shapefile
 	 * @param layerName the target name of the layer created from the shapefile in the target datastore
 	 * @return true if import succeeded
 	 */
-	boolean importShapeFile(String shpFileName, String layerName);
+	boolean importShapeFile(File shpFile, String layerName) throws GeomajasException;
 
 	
 	/**
