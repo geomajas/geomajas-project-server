@@ -24,7 +24,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  */
 @Component
-public class CachingLayerHttpService implements LayerHttpService {
+public class CachingLayerHttpService extends LayerHttpServiceImpl {
 
 	/** Group used for {@link TestRecorder} messages. */
 	public static final String TEST_RECORDER_GROUP = "WMS";
