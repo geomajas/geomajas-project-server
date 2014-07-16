@@ -19,7 +19,7 @@ import org.geomajas.plugin.deskmanager.domain.LayerModel;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.geomajas.plugin.deskmanager.service.manager.GenericFileService;
 import org.geomajas.plugin.deskmanager.service.manager.ShapeFileService;
-import org.geomajas.plugin.deskmanager.servlet.mvc.ShapeFileUploadView;
+import org.geomajas.plugin.deskmanager.servlet.mvc.GenericFileUploadView;
 import org.geomajas.plugin.deskmanager.utility.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public class ProcessShapeFileCommand implements Command<ProcessShapeFileRequest,
 		String layerName = request.getLayerName();
 
 		if (shapeZipFile == null) {
-			Exception e = new IllegalArgumentException(ShapeFileUploadView.RESPONSE_INVALID_FILE);
+			Exception e = new IllegalArgumentException(GenericFileUploadView.RESPONSE_INVALID_FILE);
 			log.warn(e.getLocalizedMessage());
 			throw e;
 		}
@@ -88,7 +88,7 @@ public class ProcessShapeFileCommand implements Command<ProcessShapeFileRequest,
 					//FIXME
 				}
 			} else {
-				throw new Exception(ShapeFileUploadView.RESPONSE_INVALID_LAYER);
+				throw new Exception(GenericFileUploadView.RESPONSE_INVALID_LAYER);
 			}
 		}
 
@@ -103,7 +103,7 @@ public class ProcessShapeFileCommand implements Command<ProcessShapeFileRequest,
 			}
 
 		} else {
-			throw new Exception(ShapeFileUploadView.RESPONSE_INVALID_LAYER);
+			throw new Exception(GenericFileUploadView.RESPONSE_INVALID_LAYER);
 		}
 	}
 

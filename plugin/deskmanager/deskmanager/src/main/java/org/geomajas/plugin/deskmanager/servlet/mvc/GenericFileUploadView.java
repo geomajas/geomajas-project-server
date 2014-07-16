@@ -31,6 +31,8 @@ public class GenericFileUploadView extends AbstractView {
 
 	public static final String RESPONSE_INVALID_FILE = "Invalid file";
 
+	public static final String RESPONSE_INVALID_LAYER = "Invalid ClientLayer";
+
 	public static final String RESPONSE_NO_RIGHTS = "No rights";
 
 	public static final String RESPONSE_OK = "OK";
