@@ -30,7 +30,6 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Crs;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
@@ -50,18 +49,14 @@ import org.geomajas.plugin.runtimeconfig.service.factory.BaseRasterLayerBeanFact
 import org.geomajas.plugin.runtimeconfig.service.factory.BaseVectorLayerBeanFactory;
 import org.geomajas.plugin.runtimeconfig.service.factory.GeoToolsLayerBeanFactory;
 import org.geomajas.plugin.runtimeconfig.service.factory.WmsLayerBeanFactory;
-import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.WMSCapabilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wms.WMSUtils;
 import org.geotools.data.wms.WebMapServer;
-import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.feature.type.GeometryDescriptorImpl;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -116,10 +111,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 	private NamedStyleInfo polygonStyle;
 
 	@Autowired
-	private GeoService geoService;
+	private CloneService cloneService;
 
 	@Autowired
-	private CloneService cloneService;
+	private DtoFactoryService dtoFactoryService;
 
 	@Resource(name = "dataSource")
 	private DataSource dataSource;
@@ -321,11 +316,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 
 		for (org.geotools.data.ows.Layer owsLayer : WMSUtils.getNamedLayers(capabilities)) {
 			if (owsLayer.getSrs().contains(defaultGeodesk.getMaps().get(0).getCrs())) { // Only add default crs
-				layers.add(buildRasterInfo(wms, owsLayer, defaultGeodesk.getMaps().get(0).getCrs()));
+				layers.add(dtoFactoryService.buildRasterCapabilitesInfoFromWms(wms, owsLayer,
+						defaultGeodesk.getMaps().get(0).getCrs()));
 			} else { // Add all available crs-es
 				for (String srs : owsLayer.getSrs()) {
 					try {
-						nonNativeLayers.add(buildRasterInfo(wms, owsLayer, srs));
+						nonNativeLayers.add(dtoFactoryService.buildRasterCapabilitesInfoFromWms(wms, owsLayer, srs));
 					} catch (LayerException e) {
 						log.warn("Got unknown crs from wms server, ignoring: {}", srs);
 					}
@@ -336,31 +332,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
 		return layers;
 	}
 
-	private RasterCapabilitiesInfo buildRasterInfo(WebMapServer wms, org.geotools.data.ows.Layer owsLayer, String srs)
-			throws LayerException {
-		RasterCapabilitiesInfo info = new RasterCapabilitiesInfo();
-		Crs crs = geoService.getCrs2(srs);
-		info.setCrs(geoService.getCodeFromCrs(crs));
-		info.setName(owsLayer.getName());
-		info.setExtent(toBbox(owsLayer.getEnvelope(crs)));
-		info.setDescription(owsLayer.getTitle());
-		info.setGetFeatureInfoFormats(wms.getCapabilities().getRequest().getGetFeatureInfo().getFormats());
-		// create a sample request
-		GetMapRequest request = wms.createGetMapRequest();
-		request.setFormat("image/png");
-		request.setTransparent(true);
-		request.setSRS(info.getCrs());
-		request.setBBox(new CRSEnvelope(owsLayer.getEnvelope(crs)));
-		request.addLayer(owsLayer);
-		info.setPreviewUrl(request.getFinalURL().toExternalForm());
-		GetMapRequest baseRequest = wms.createGetMapRequest();
-		info.setBaseUrl(baseRequest.getFinalURL().toExternalForm().replaceFirst("\\?.*", ""));
-		return info;
-	}
 
-	private Bbox toBbox(GeneralEnvelope envelope) {
-		return new Bbox(envelope.getMinimum(0), envelope.getMinimum(1), envelope.getSpan(0), envelope.getSpan(1));
-	}
 
 	@Override
 	public DynamicRasterLayerConfiguration getRasterLayerConfiguration(Map<String, String> connectionProperties,
