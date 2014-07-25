@@ -21,10 +21,7 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.common.proxy.LayerAuthentication;
-import org.geomajas.layer.common.proxy.LayerHttpService;
-import org.geomajas.layer.common.proxy.ProxyAuthentication;
-import org.geomajas.layer.common.proxy.ProxyLayerSupport;
+import org.geomajas.layer.common.proxy.LayerHttpServiceImpl;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geomajas.testdata.rule.SecurityRule;
 import org.junit.Rule;
@@ -114,11 +111,12 @@ public class WmsControllerTest {
 		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
 	}
 
-	private class MockHttpService implements LayerHttpService {
+	private class MockHttpService extends LayerHttpServiceImpl {
 
 		public InputStream getStream(String url, RasterLayer layer) throws IOException {
 			return new ByteArrayInputStream(TEST_VALUE.getBytes("UTF-8"));
 		}
+
 	}
 
 	class ImageAssert extends TestPathBinaryStreamAssert {
