@@ -14,6 +14,7 @@ package org.geomajas.layer.common.proxy;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.RasterLayer;
 
@@ -35,5 +36,17 @@ public interface LayerHttpService {
 	 * @throws IOException cannot get content
 	 */
 	InputStream getStream(String url, RasterLayer layer) throws IOException;
+	
+	/**
+	 * Sets the HTTP client for this service.
+	 * @param client the common HTTP client
+	 */
+	void setClient(AbstractHttpClient client);
+	
+	/**
+	 * Get the HTTP client for this service.
+	 * @return the common HTTP client
+	 */
+	AbstractHttpClient getClient();
 
 }

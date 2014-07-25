@@ -13,11 +13,12 @@ package org.geomajas.layer.common.proxy;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -29,6 +30,8 @@ import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.geomajas.layer.RasterLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,23 +50,23 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 	private final Logger log = LoggerFactory.getLogger(LayerHttpServiceImpl.class);
 
 	private static final String URL_PARAM_START = "?";
+
 	private static final String URL_PARAM_SEPARATOR = "&";
+
 	private static final String URL_PARAM_IS = "=";
-	private static final String URL_PROTOCOL_SEPARATOR = "://";
+
 	private static final int TIMEOUT = 5000;
-	private static final int URL_DEFAULT_PORT = 80;
-	private static final int URL_DEFAULT_SECURE_PORT = 443;
 
 	@Autowired(required = false)
 	private LayerHttpServiceInterceptors interceptors;
-	
+
 	private AbstractHttpClient client;
-	
+
 	public LayerHttpServiceImpl() {
 		// Create a HTTP client object, which will initiate the connection:
 		final HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT);
-		client = new SystemDefaultHttpClient(httpParams);		
+		setClient(new SystemDefaultHttpClient(httpParams));
 	}
 
 	public String addCredentialsToUrl(final String url, final ProxyAuthentication authentication) {
@@ -86,99 +89,89 @@ public class LayerHttpServiceImpl implements LayerHttpService {
 		return url;
 	}
 
-	public InputStream getStream(String baseUrl, RasterLayer layer)
-			throws IOException {		
-		String url = baseUrl;		
-		if (layer instanceof ProxyLayerSupport) {			
-			// handle proxy authentication and interceptors			
+	public InputStream getStream(String baseUrl, RasterLayer layer) throws IOException {
+		String url = baseUrl;
+		HttpContext context = null;
+		if (layer instanceof ProxyLayerSupport) {
+			context = new BasicHttpContext();
+			// pass url and layer id to the CompositeInterceptor
+			context.setAttribute(CompositeInterceptor.BASE_URL, baseUrl);
+			context.setAttribute(CompositeInterceptor.LAYER_ID, layer.getId());
+			// handle proxy authentication and interceptors
 			ProxyLayerSupport proxyLayer = (ProxyLayerSupport) layer;
 			ProxyAuthentication authentication = proxyLayer.getProxyAuthentication();
 			url = addCredentialsToUrl(baseUrl, authentication);
 
 			// -- add basic authentication
-			if (null != authentication 
-					&& (ProxyAuthenticationMethod.BASIC.equals(authentication.getMethod()) || 
-							ProxyAuthenticationMethod.DIGEST.equals(authentication.getMethod()))) {
+			if (null != authentication
+					&& (ProxyAuthenticationMethod.BASIC.equals(authentication.getMethod()) ||
+						ProxyAuthenticationMethod.DIGEST.equals(authentication.getMethod()))) {
 				// Set up the credentials:
 				Credentials creds = new UsernamePasswordCredentials(authentication.getUser(),
 						authentication.getPassword());
-				AuthScope scope = new AuthScope(parseDomain(url), parsePort(url), authentication.getRealm());
+				URL u = new URL(url);
+				AuthScope scope = new AuthScope(u.getHost(), u.getPort(), authentication.getRealm());
+				// thread-safe, this is ok
 				client.getCredentialsProvider().setCredentials(scope, creds);
 			}
-
-			// -- add interceptors if any --
-			addInterceptors(client, baseUrl, proxyLayer.getId());
 		}
-		
-		
+
 		// Create the GET method with the correct URL:
 		HttpGet get = new HttpGet(url);
 
 		// Execute the GET:
-		HttpResponse response = client.execute(get);
+		HttpResponse response = client.execute(get, context);
 		log.debug("Response: {} - {}", response.getStatusLine().getStatusCode(), response.getStatusLine()
 				.getReasonPhrase());
 
 		return response.getEntity().getContent();
 	}
 
-	/**
-	 * Check if there are interceptors & add to client if any.
-	 * 
-	 * @param client
-	 * @param baseUrl
-	 */
-	private void addInterceptors(AbstractHttpClient client, String baseUrl, String layerId) {
-		try {
-			if (interceptors != null && baseUrl != null) {
-				for (Entry<String, List<HttpRequestInterceptor>> entry : interceptors.getMap().entrySet()) {
-					String key = entry.getKey();
-					if ("".equals(key) || layerId.equals(key) || baseUrl.startsWith(key)) {
-						for (HttpRequestInterceptor inter : entry.getValue()) {
-							client.addRequestInterceptor(inter);
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			log.warn("Error adding interceptors: " + e.getMessage());
-		}
+	@Override
+	public void setClient(AbstractHttpClient client) {
+		this.client = client;
+		// add an interceptor that picks up the autowired interceptors, remove first to avoid doubles
+		client.removeRequestInterceptorByClass(CompositeInterceptor.class);
+		client.addRequestInterceptor(new CompositeInterceptor());
 	}
-	
-	/**
-	 * Get the domain out of a full URL.
-	 *
-	 * @param url base url
-	 * @return domain name
-	 */
-	private String parseDomain(String url) {
-		int index = url.indexOf(URL_PROTOCOL_SEPARATOR);
-		String domain = url.substring(index + URL_PROTOCOL_SEPARATOR.length());
-		domain = domain.substring(0, domain.indexOf('/'));
-		int colonPos = domain.indexOf(':');
-		if (colonPos >= 0) {
-			domain = domain.substring(0, colonPos);
-		}
-		return domain;
+
+	@Override
+	public AbstractHttpClient getClient() {
+		return client;
 	}
 
 	/**
-	 * Get the port out of a full URL.
-	 * <p>
-	 * Note that we only take https & http into account if you are using a non-default port/protocol you will need to
-	 * add the port to your baseUrl.
+	 * This interceptor will call the autowired interceptor(s) that apply to the current layer.
 	 * 
-	 * @param url base url
-	 * @return domain name
+	 * @author Jan De Moerloose
+	 * 
 	 */
-	private int parsePort(String url) {
-		try {
-			URL u = new URL(url);
-			int defaultport = "https".equalsIgnoreCase(u.getProtocol()) ? URL_DEFAULT_SECURE_PORT : URL_DEFAULT_PORT;
-			return (u.getPort() == -1 ? defaultport : u.getPort());
-		} catch (MalformedURLException e) {
-			return URL_DEFAULT_SECURE_PORT;
+	class CompositeInterceptor implements HttpRequestInterceptor {
+
+		private static final String LAYER_ID = "LayerHttpServiceLayerId";
+
+		private static final String BASE_URL = "LayerHttpServiceBaseUrl";
+
+		@Override
+		public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+			String baseUrl = (String) context.getAttribute(BASE_URL);
+			String layerId = (String) context.getAttribute(LAYER_ID);
+			try {
+				if (interceptors != null && baseUrl != null) {
+					for (Entry<String, List<HttpRequestInterceptor>> entry : interceptors.getMap().entrySet()) {
+						String key = entry.getKey();
+						if ("".equals(key) || (layerId != null && layerId.equals(key)) || baseUrl.startsWith(key)) {
+							for (HttpRequestInterceptor inter : entry.getValue()) {
+								inter.process(request, context);
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				log.warn("Error processing interceptors: " + e.getMessage());
+			}
 		}
+
 	}
 
 }
