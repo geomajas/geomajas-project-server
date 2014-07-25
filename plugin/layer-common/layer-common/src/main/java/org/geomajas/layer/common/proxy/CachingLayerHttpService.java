@@ -54,16 +54,9 @@ public class CachingLayerHttpService extends LayerHttpServiceImpl {
 
 	@Autowired
 	private TestRecorder testRecorder;
-
-	private LayerHttpServiceImpl layerHttpService;
-
-	public CachingLayerHttpService() {
-		layerHttpService = new LayerHttpServiceImpl();
-	}
-
-	public String addCredentialsToUrl(String url, ProxyAuthentication authentication) {
-		return layerHttpService.addCredentialsToUrl(url, authentication);
-	}
+	
+	@Autowired(required = false)
+	private LayerHttpServiceInterceptors interceptors;
 
 	/**
 	 * Get the contents from the request URL.
@@ -83,7 +76,7 @@ public class CachingLayerHttpService extends LayerHttpServiceImpl {
 					return new ByteArrayInputStream((byte[]) cachedObject);
 				} else {
 					testRecorder.record(TEST_RECORDER_GROUP, TEST_RECORDER_PUT_IN_CACHE);
-					InputStream stream = layerHttpService.getStream(url, proxyLayer);
+					InputStream stream = super.getStream(url, proxyLayer);
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 					int b;
 					while ((b = stream.read()) >= 0) {
@@ -95,7 +88,7 @@ public class CachingLayerHttpService extends LayerHttpServiceImpl {
 				}
 			}
 		}
-		return layerHttpService.getStream(url, layer);
+		return super.getStream(url, layer);
 	}
 
 	/**
