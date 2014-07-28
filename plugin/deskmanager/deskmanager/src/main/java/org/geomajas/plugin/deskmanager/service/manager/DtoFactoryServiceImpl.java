@@ -18,6 +18,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInf
 import org.geomajas.service.GeoService;
 import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
+import org.geotools.data.ows.OperationType;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.request.GetMapRequest;
 import org.opengis.geometry.Envelope;
@@ -46,7 +47,11 @@ public class DtoFactoryServiceImpl implements DtoFactoryService {
 		info.setCrs(geoService.getCodeFromCrs(crs));
 		info.setName(owsLayer.getName());
 		info.setDescription(owsLayer.getTitle());
-		info.setGetFeatureInfoFormats(wmsMapServer.getCapabilities().getRequest().getGetFeatureInfo().getFormats());
+		OperationType operationTypeFeatureInfo = wmsMapServer.getCapabilities().getRequest().getGetFeatureInfo();
+		// GetFeatureInfo is optional, not part of WMS standard. So it can be null.
+		if (operationTypeFeatureInfo != null) {
+			info.setGetFeatureInfoFormats(operationTypeFeatureInfo.getFormats());
+		}
 
 		//extend
 		Bbox extendBbox;
