@@ -28,6 +28,7 @@ import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
 import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.service.security.UserServiceImpl;
 import org.geomajas.service.DtoConverterService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -296,6 +297,15 @@ public class ExampleDatabaseProvisioningServiceImpl implements DeskmanagerExampl
 		user.setPassword("kaah");
 		session.getCurrentSession().save(user);
 		GroupMember nlMember = user.join(nlGroup, Role.CONSULTING_USER);
+
+		User adminUser = new User();
+		adminUser.setActive(true);
+		adminUser.setEmail("admin@admin.com");
+		adminUser.setName("admin");
+		adminUser.setSurname("admin");
+		adminUser.setPassword(UserServiceImpl.encodePassword(adminUser.getEmail(), "admin"));
+		adminUser.getGroups().add(new GroupMember(adminUser, beGroup, Role.ADMINISTRATOR));
+		session.getCurrentSession().save(adminUser);
 	}
 
 	private static void initMessages() {
