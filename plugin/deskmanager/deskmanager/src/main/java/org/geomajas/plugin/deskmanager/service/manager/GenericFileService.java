@@ -39,4 +39,11 @@ public interface GenericFileService {
 	 * @return file
 	 */
 	File getFile(String key);
+
+	/**
+	 * Deletes the file from a given key.
+	 *
+	 * @param key the key
+	 */
+	void deleteFile(String key);
 }

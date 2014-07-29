@@ -27,8 +27,7 @@ import java.io.IOException;
 /**
  * Spring MVC controller for uploading a file to the memory.
  * It will return an id that enables retrieving the file (content) later on.
- * For now, only Administrators can add a file.
- * 
+ *
  * @author Jan Venstermans
  */
 @Controller("/genericFileUpload")
@@ -46,20 +45,15 @@ public class GenericFileUploadController {
 	public ModelAndView handleUpload(@RequestParam("uploadFormElement") MultipartFile file) throws IOException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(GenericFileUploadView.VIEW_NAME);
+		log.info("Uploading file: " + file);
 		String message;
 
 		if (file.isEmpty()) {
 			message = GenericFileUploadView.RESPONSE_INVALID_FILE;
 		} else {
-
-			// possible security check: is administrator
-			//if (((DeskmanagerSecurityContext) securityContext).getRole().equals(Role.ADMINISTRATOR)) {
-				String uuid = genericFileService.saveFile(file);
-				mav.addObject(GenericFileUploadView.FILE_ID_KEY, uuid);
-				message = GenericFileUploadView.RESPONSE_OK;
-			/*} else {
-				message = GenericFileUploadView.RESPONSE_NO_RIGHTS;
-			} */
+			String uuid = genericFileService.saveFile(file);
+			mav.addObject(GenericFileUploadView.FILE_ID_KEY, uuid);
+			message = GenericFileUploadView.RESPONSE_OK;
 		}
 
 		mav.addObject(GenericFileUploadView.MESSAGE_KEY, message);

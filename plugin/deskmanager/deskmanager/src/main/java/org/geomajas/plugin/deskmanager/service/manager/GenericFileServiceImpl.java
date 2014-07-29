@@ -10,13 +10,13 @@
  */
 package org.geomajas.plugin.deskmanager.service.manager;
 
+import com.google.common.io.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,11 +38,9 @@ public class GenericFileServiceImpl implements GenericFileService {
 	@Override
 	public String saveFile(MultipartFile file) {
 		if (file != null && !file.isEmpty()) {
-			String tmpDir = System.getProperty("java.io.tmpdir") +  "deskmanagerTemp/" + new Date().getTime();
 			try {
-				File dirFile = new File(tmpDir);
-				dirFile.mkdirs();
-				String tmpName = tmpDir + "/" + file.getOriginalFilename();
+				File dirFile = Files.createTempDir();
+				String tmpName = dirFile.getPath() + File.separator + file.getOriginalFilename();
 				File f = new File(tmpName);
 				f.createNewFile();
 				file.transferTo(f);
@@ -62,5 +60,15 @@ public class GenericFileServiceImpl implements GenericFileService {
 			return new File(fileLocations.get(key));
 		}
 		return null;
+	}
+
+	@Override
+	public void deleteFile(String key) {
+		File file = getFile(key);
+		if (file != null) {
+			//Delete file and parent directory
+			file.getParentFile().delete();
+		}
+		fileLocations.remove(key);
 	}
 }

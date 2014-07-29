@@ -15,6 +15,7 @@ import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
@@ -25,8 +26,8 @@ import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStoreFinder;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
@@ -109,71 +110,52 @@ public class ShapeFileServiceImpl implements ShapeFileService {
 	@Resource(name = "dynamicLayersApplication")
 	private ClientApplicationInfo defaultGeodesk;
 
-	public boolean importShapeFile(String shpFileName, String layerName) {
-		log.info("Importing Shapefile using Geotools: " + shpFileName);
+	public boolean importShapeFile(File shpFile, String layerName) throws GeomajasException {
+		log.info("Importing Shapefile using Geotools: " + shpFile.getName());
 		Transaction tr = new DefaultTransaction("transaction");
 		ShapefileDataStore sourceStore = null;
 		try {
 			DataStore dataStore = createDataStore();
 
 			//Read shapefile
-			File shpFile = new File(shpFileName);
 			sourceStore = (ShapefileDataStore) FileDataStoreFinder.getDataStore(shpFile);
 			SimpleFeatureSource featureSource = sourceStore.getFeatureSource(
 					sourceStore.getTypeNames()[0]);
 
 			//Find math transform
 			CoordinateReferenceSystem sourceCrs = featureSource.getSchema().getCoordinateReferenceSystem();
+			if (sourceCrs == null) {
+				throw new GeomajasException(new UnsupportedOperationException("Incorrect or no .prj provided in " +
+						"shapefile."));
+			}
 			CoordinateReferenceSystem targetCrs = geoService.getCrs2(defaultGeodesk.getMaps().get(0).getCrs());
-			boolean lenient = true; // allow for some error due to different datums
-			MathTransform transform = CRS.findMathTransform(sourceCrs, targetCrs, lenient);
 
+			//Read features, reproject _only_ if source CRS is unknown
+			Query query = new Query(sourceStore.getTypeNames()[0]);
+			if (CRS.lookupEpsgCode(sourceCrs, true) == null) {
+				query.setCoordinateSystemReproject(targetCrs);
+			}
+			SimpleFeatureCollection reprojectedCollection = featureSource.getFeatures(query);
 
 			//Create schema if it does not exist.
 			if (!Arrays.asList(dataStore.getTypeNames()).contains(layerName)) {
 				// Build the feature type for the database
 				SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-				builder.init(featureSource.getSchema());
+				builder.init(reprojectedCollection.getSchema());
 				builder.setName(layerName);
 				dataStore.createSchema(builder.buildFeatureType());
 			}
 
-			//Create reader and writer
-			FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(layerName, tr);
-			SimpleFeatureIterator reader = featureSource.getFeatures().features();
+			//Write features
+			SimpleFeatureStore store = (SimpleFeatureStore) dataStore.getFeatureSource(layerName);
+			store.addFeatures(reprojectedCollection);
 
-			try {
-				//Copy all features, and convert geometries.
-				while (reader.hasNext()) {
-					SimpleFeature original = reader.next();
-					SimpleFeature copy = writer.next();
-
-					copy.setAttributes(convertAttributes(original.getAttributes(), sourceStore.getStringCharset()));
-					try {
-						Geometry geometry2 = JTS.transform((Geometry) original.getDefaultGeometry(), transform);
-						copy.setDefaultGeometry(geometry2);
-						writer.write();
-					} catch (Exception e) {
-						// don't write this geometry.
-						log.warn("Feature " + original.getID() + " could not be transformed to the requested crs. " +
-								"The feature will not be in the resulted upload.");
-					}
-				}
-				tr.commit();
-			} catch (Exception e) {
-				log.warn("Failed adding features from ShapeFile to database", e);
-				tr.rollback();
-				return false;
-			} finally {
-				writer.close();
-				reader.close();
-				tr.close();
-			}
 		} catch (Exception e) {
-			log.warn("Failed adding features from ShapeFile to database", e);
-			return false;
+			throw new GeomajasException(e);
 		} finally {
 			try {
+				tr.commit();
+				tr.close();
 				if (sourceStore != null) {
 					sourceStore.dispose();
 				}
