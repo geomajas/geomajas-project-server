@@ -36,7 +36,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Oliver May
+ * Test class for {@link DtoFactoryService}.
+ *
+ * @author Jan Venstermans
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
@@ -155,4 +157,34 @@ public class DtoFactoryServiceTest {
 		Assert.assertEquals(extend.getMaxX(), Double.parseDouble(extendInPreview[2]), 0.1);
 		Assert.assertEquals(extend.getMaxY(), Double.parseDouble(extendInPreview[3]), 0.1);
 	}
+
+	@Test
+	public void testNoGetFeatureInfoFromWms() throws Exception {
+		// mock WebMapServer
+		WebMapServer webMapServerMock = Mockito.mock(WebMapServer.class);
+		GetMapRequest getMapRequestMock = Mockito.mock(GetMapRequest.class);
+		WMSCapabilities wmsCapabilitiesMock = Mockito.mock(WMSCapabilities.class);
+		WMSRequest wmsRequestMock = Mockito.mock(WMSRequest.class);
+		String url = "http://apps.geomajas.org/geoserver/ows?service=WMS&request=GetCapabilities&version=1.3.0";
+		Mockito.stub(webMapServerMock.getCapabilities()).toReturn(wmsCapabilitiesMock);
+		Mockito.stub(wmsCapabilitiesMock.getRequest()).toReturn(wmsRequestMock);
+		Mockito.stub(wmsRequestMock.getGetFeatureInfo()).toReturn(null);
+		Mockito.stub(webMapServerMock.createGetMapRequest()).toReturn(getMapRequestMock);
+		Mockito.stub(getMapRequestMock.getFinalURL()).toReturn(new URL(url));
+
+		// create and fill Layer
+		Layer owsLayer = new Layer();
+		owsLayer.setName("owsLayerName");
+		CRSEnvelope latLonBoundingBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
+		owsLayer.setLatLonBoundingBox(latLonBoundingBox);
+
+		String toCrs = "EPSG:3857";
+
+		RasterCapabilitiesInfo rasterCapabilitiesInfo = dtoFactoryService.buildRasterCapabilitesInfoFromWms(
+				webMapServerMock, owsLayer, toCrs);
+
+		Assert.assertNull(rasterCapabilitiesInfo.getGetFeatureInfoFormats());
+	}
+
+
 }
