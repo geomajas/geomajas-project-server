@@ -204,7 +204,11 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=roadmap&size=640x640", tile.getUrl());
+		if (System.getProperty("java.version").startsWith("1.6")) {
+			Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=roadmap&size=640x640", tile.getUrl());
+		} else {
+			Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003904,16.975000002070733&zoom=4&sensor=false&maptype=roadmap&size=640x640", tile.getUrl());
+		}
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(3, tile.getCode().getX());
 		Assert.assertEquals(3, tile.getCode().getY());
@@ -220,7 +224,11 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=satellite&size=640x640", tile.getUrl());
+		if (System.getProperty("java.version").startsWith("1.6")) {
+			Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=satellite&size=640x640", tile.getUrl());
+		} else {
+			Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003904,16.975000002070733&zoom=4&sensor=false&maptype=satellite&size=640x640", tile.getUrl());
+		}
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(3, tile.getCode().getX());
 		Assert.assertEquals(3, tile.getCode().getY());
@@ -236,7 +244,11 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=terrain&size=640x640", tile.getUrl());
+		if (System.getProperty("java.version").startsWith("1.6")) {
+			Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003893,16.975000002070733&zoom=4&sensor=false&maptype=terrain&size=640x640", tile.getUrl());
+		} else {
+			Assert.assertEquals("http://maps.googleapis.com/maps/api/staticmap?center=16.731982094003904,16.975000002070733&zoom=4&sensor=false&maptype=terrain&size=640x640", tile.getUrl());
+		}
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(3, tile.getCode().getX());
 		Assert.assertEquals(3, tile.getCode().getY());
