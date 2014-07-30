@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-vendorspecificpipeline-documentation</artifactId>
-	<version>1.16.1</version>
+	<version>1.17.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas server: Plugin vendorspecificpipeline - Documentation</name>
 	<description>Geomajas server: Plugin vendorspecificpipeline - Documentation</description>
