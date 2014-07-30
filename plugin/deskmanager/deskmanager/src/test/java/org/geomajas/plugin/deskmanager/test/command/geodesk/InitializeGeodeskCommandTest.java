@@ -13,14 +13,11 @@ package org.geomajas.plugin.deskmanager.test.command.geodesk;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskRequest;
 import org.geomajas.plugin.deskmanager.command.geodesk.dto.InitializeGeodeskResponse;
-import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
 import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
 import org.geomajas.security.GeomajasSecurityException;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,27 +31,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class InitializeGeodeskCommandTest {
-
-	@Autowired
-	private SecurityService securityService;
-
-	@Autowired
-	private SecurityManager securityManager;
+public class InitializeGeodeskCommandTest extends LoginBeforeTestingWithPredefinedProfileBase {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
 
-	private String userToken;
-
-	private String guestToken;
-
-	@Before
-	public void setup() throws Exception {
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				DeskmanagerSecurityService.createGuestProfile());
-		// Log in
-		securityManager.createSecurityContext(userToken);
+	@Override
+	protected Role getRoleToLoginWithBeforeTesting() {
+		return null;
 	}
 
 	@Test
@@ -63,7 +47,7 @@ public class InitializeGeodeskCommandTest {
 		request.setGeodeskId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE);
 
 		InitializeGeodeskResponse response = (InitializeGeodeskResponse) dispatcher.execute(
-				InitializeGeodeskResponse.COMMAND, request, guestToken, "en");
+				InitializeGeodeskResponse.COMMAND, request, getToken(Role.GUEST), "en");
 
 		Assert.assertTrue(response.getErrorMessages().isEmpty());
 
@@ -83,7 +67,7 @@ public class InitializeGeodeskCommandTest {
 		request.setGeodeskId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_DE_PRIVATE);
 
 		InitializeGeodeskResponse response = (InitializeGeodeskResponse) dispatcher.execute(
-				InitializeGeodeskResponse.COMMAND, request, guestToken, "en");
+				InitializeGeodeskResponse.COMMAND, request, getToken(Role.GUEST), "en");
 
 		Assert.assertFalse(response.getErrorMessages().isEmpty());
 		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());

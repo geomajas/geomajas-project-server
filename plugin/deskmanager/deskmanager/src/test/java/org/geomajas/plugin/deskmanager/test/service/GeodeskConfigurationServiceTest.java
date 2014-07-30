@@ -27,7 +27,7 @@ import org.geomajas.plugin.deskmanager.service.common.GeodeskConfigurationServic
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.geomajas.plugin.deskmanager.service.common.LayerModelService;
 import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
-import org.geomajas.plugin.deskmanager.service.common.TerritoryServiceImpl;
+import org.geomajas.plugin.deskmanager.test.SecurityContainingTestBase;
 import org.geomajas.plugin.deskmanager.test.TestConst;
 import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.SecurityManager;
@@ -51,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
 @Transactional
-public class GeodeskConfigurationServiceTest {
+public class GeodeskConfigurationServiceTest extends SecurityContainingTestBase {
 
 	private static final String KWI_KEY = "KWI_KEY";
 
