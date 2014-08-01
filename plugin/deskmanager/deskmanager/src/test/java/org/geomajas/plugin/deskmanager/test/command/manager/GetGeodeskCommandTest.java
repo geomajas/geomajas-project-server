@@ -18,6 +18,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
 import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
+import org.geomajas.plugin.deskmanager.test.security.StubProfileService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.junit.Assert;
 import org.junit.Test;

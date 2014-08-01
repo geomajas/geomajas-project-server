@@ -11,7 +11,7 @@
 package org.geomajas.plugin.deskmanager.command.security;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.deskmanager.command.security.dto.AuthenticateUserRequest;
+import org.geomajas.plugin.deskmanager.command.security.dto.AuthenticateTokenRequest;
 import org.geomajas.plugin.deskmanager.command.security.dto.AuthenticationResponse;
 import org.geomajas.plugin.deskmanager.security.AuthenticationService;
 import org.geomajas.security.GeomajasSecurityException;
@@ -21,14 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Command that will retrieve the profiles of a user for a specific geodesk.
+ * Command that will check whether an authentication token in active.
  *
  * @author Jan Venstermans
  */
-@Component(AuthenticateUserRequest.COMMAND)
-public class AuthenticateUserCommand implements Command<AuthenticateUserRequest, AuthenticationResponse> {
+@Component(AuthenticateTokenRequest.COMMAND)
+public class AuthenticateTokenCommand implements Command<AuthenticateTokenRequest, AuthenticationResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(AuthenticateUserCommand.class);
+	private final Logger log = LoggerFactory.getLogger(AuthenticateTokenCommand.class);
 
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -37,17 +37,17 @@ public class AuthenticateUserCommand implements Command<AuthenticateUserRequest,
 		return new AuthenticationResponse();
 	}
 
-	public void execute(AuthenticateUserRequest request, AuthenticationResponse response) throws Exception {
-		String username = request.getUserName();
+	public void execute(AuthenticateTokenRequest request, AuthenticationResponse response) throws Exception {
+		String authenticationToken = request.getAuthenticationSessionToken();
 		try {
-			String token = authenticationService.authenticateUsernamePassword(
-					username, request.getPassword());
-			response.setAuthenticationToken(token);
-			response.setUsername(username);
-			log.info("Authentication Request (via username and password) for user "
-					+ request.getUserName() + " successful.");
+			String username = authenticationService.getUsernameFromToken(request.getAuthenticationSessionToken());
+			if (username != null) {
+				response.setUsername(username);
+				response.setAuthenticationToken(authenticationToken);
+			}
+			log.info("Authentication Request (via token) for user " + username + " successful.");
 		} catch (GeomajasSecurityException ex) {
-			log.info("Authentication exception for user " + username);
+			log.info("Authentication exception for token " + authenticationToken);
 			// return an empty response, in compliance with static security
 		}
 	}

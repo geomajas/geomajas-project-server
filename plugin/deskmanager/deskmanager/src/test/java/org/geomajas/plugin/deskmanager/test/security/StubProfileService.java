@@ -10,32 +10,30 @@
  */
 package org.geomajas.plugin.deskmanager.test.security;
 
+import org.geomajas.plugin.deskmanager.domain.security.Profile;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
+import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
+import org.geomajas.plugin.deskmanager.service.security.impl.TokenToProfileServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.geomajas.plugin.deskmanager.domain.security.Profile;
-import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
-import org.geomajas.plugin.deskmanager.security.LoginSession;
-import org.geomajas.plugin.deskmanager.security.ProfileService;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.service.common.TerritoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
  * @author Oliver May
  *
  */
-public class StubProfileService implements ProfileService {
+public class StubProfileService extends TokenToProfileServiceImpl {
 
-	
 	@Autowired
 	private TerritoryService groupService;
-	
-	public List<Profile> getProfiles(String token) {
+
+	public List<Profile> getPredefinedProfiles() {
 		ArrayList<Profile> profiles = new ArrayList<Profile>();
-		
 
 		Profile admin = new Profile();
 		admin.setRole(Role.ADMINISTRATOR);
@@ -52,7 +50,7 @@ public class StubProfileService implements ProfileService {
 		deskManager.setSurname("The Deskmanager");
 		deskManager.setTerritory(groupService.getByCode("BE"));
 		profiles.add(deskManager);
-		
+
 		Profile deskConsulter = new Profile();
 		deskConsulter.setRole(Role.CONSULTING_USER);
 		deskConsulter.setId(UUID.randomUUID().toString());
@@ -60,7 +58,7 @@ public class StubProfileService implements ProfileService {
 		deskConsulter.setSurname("The Consulter");
 		deskConsulter.setTerritory(groupService.getByCode("BE"));
 		profiles.add(deskConsulter);
-		
+
 		Profile deskEditor = new Profile();
 		deskEditor.setRole(Role.EDITING_USER);
 		deskEditor.setId(UUID.randomUUID().toString());
@@ -68,20 +66,10 @@ public class StubProfileService implements ProfileService {
 		deskEditor.setSurname("The Editor");
 		deskEditor.setTerritory(groupService.getByCode("BE"));
 		profiles.add(deskEditor);
-		
+
 		profiles.add(DeskmanagerSecurityService.createGuestProfile());
-		
+
 		return profiles;
-	}
-
-	@Override
-	public String registerProfilesForUser(LoginSession session) {
-		return null;
-	}
-
-	@Override
-	public Profile createGuestProfile() {
-		return null;
 	}
 
 	/**
@@ -90,7 +78,7 @@ public class StubProfileService implements ProfileService {
 	 * @return the profile
 	 */
 	public Profile getProfileByRole(Role role) {
-		for (Profile p : getProfiles(null)) {
+		for (Profile p : getPredefinedProfiles()) {
 			if (p.getRole().equals(role)) {
 				return p;
 			}

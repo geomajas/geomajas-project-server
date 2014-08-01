@@ -19,6 +19,7 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.RasterCapabilitiesInf
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
 import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
+import org.geomajas.plugin.deskmanager.test.security.StubProfileService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.junit.Assert;
 import org.junit.Test;

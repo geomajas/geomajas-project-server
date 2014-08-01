@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.deskmanager.domain.security.dto;
 
-import org.geomajas.plugin.deskmanager.service.security.UserServiceImpl;
+import org.geomajas.plugin.deskmanager.service.security.impl.UserServiceImpl;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

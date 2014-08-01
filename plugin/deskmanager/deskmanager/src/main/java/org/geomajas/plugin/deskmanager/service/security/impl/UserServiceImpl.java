@@ -8,16 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.service.security;
+package org.geomajas.plugin.deskmanager.service.security.impl;
 
-import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.domain.security.GroupMember;
-import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.User;
-import org.geomajas.plugin.deskmanager.security.LoginService;
-import org.geomajas.plugin.deskmanager.security.LoginSession;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
+import org.geomajas.plugin.deskmanager.service.security.Base64;
+import org.geomajas.plugin.deskmanager.service.security.UserService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -29,18 +27,17 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default implementation of {@link UserService}.
+ * Default implementation of {@link org.geomajas.plugin.deskmanager.service.security.UserService}.
  * 
  * @author Jan De Moerloose
  * 
  */
 @Repository
 @Transactional(rollbackFor = { Exception.class })
-public class UserServiceImpl implements UserService, LoginService {
+public class UserServiceImpl implements UserService {
 
 	private static final String PREFIX = "Geomajas is a wonderful framework";
 
@@ -181,23 +178,6 @@ public class UserServiceImpl implements UserService, LoginService {
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
-	}
-
-	@Override
-	public String checkLogin(String email, String password) throws GeomajasSecurityException {
-		User user = findByAddress(email);
-		if (user != null && user.getPassword().equals(encodePassword(email, password))) {
-			try {
-				List<Profile> profileList = new ArrayList<Profile>();
-				for (GroupMember member : user.getGroups()) {
-					profileList.add(converterService.toProfile(member));
-				}
-				return profileService.registerProfilesForUser(new LoginSession(profileList));
-			} catch (GeomajasException ex) {
-				throw new GeomajasSecurityException(ex);
-			}
-		}
-		throw new GeomajasSecurityException();
 	}
 
 }

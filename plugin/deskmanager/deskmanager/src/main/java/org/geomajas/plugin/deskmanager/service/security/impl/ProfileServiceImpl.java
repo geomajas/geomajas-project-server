@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.service.security;
+package org.geomajas.plugin.deskmanager.service.security.impl;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
@@ -21,6 +21,7 @@ import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.plugin.deskmanager.service.security.UserService;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

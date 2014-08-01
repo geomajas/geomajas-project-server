@@ -12,8 +12,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<context:component-scan base-package="org.geomajas.plugin.deskmanager" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 
-	<bean class="org.geomajas.plugin.deskmanager.test.security.StubProfileService" />
-	
+	<bean name="TokenToProfileServiceImpl" class="org.geomajas.plugin.deskmanager.test.security.StubProfileService" />
+
 	<import resource="commonBeans.xml"/>
 	<import resource="defaultLoketClientInfo.xml"/>
 	<import resource="mavenInjectedProperties.xml"/>
@@ -25,7 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<import resource="layerBeans2.xml"/>
 	<import resource="layerBeans3.xml"/>
 	<import resource="layerPrivateBeans1.xml"/>
-	
+
 	<!-- Instructs Spring to perform declarative transaction management on annotated classes -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
