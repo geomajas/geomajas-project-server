@@ -10,9 +10,6 @@
  */
 package org.geomajas.plugin.deskmanager.test.service;
 
-import java.util.List;
-import java.util.Map;
-
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.BaseGeodesk;
@@ -20,6 +17,7 @@ import org.geomajas.plugin.deskmanager.domain.Blueprint;
 import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
+import org.geomajas.plugin.deskmanager.test.SecurityContainingTestBase;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
 import org.junit.Assert;
@@ -29,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Oliver May
  * 
@@ -36,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class BlueprintServiceTest {
+public class BlueprintServiceTest extends SecurityContainingTestBase {
 
 	@Autowired
 	private BlueprintService blueprintService;

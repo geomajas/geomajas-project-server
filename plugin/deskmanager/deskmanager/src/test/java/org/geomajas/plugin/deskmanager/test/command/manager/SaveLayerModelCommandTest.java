@@ -11,7 +11,6 @@
 package org.geomajas.plugin.deskmanager.test.command.manager;
 
 import junit.framework.Assert;
-
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -20,15 +19,11 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsRequest
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetLayerModelsResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.LayerModelResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveLayerModelRequest;
-import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerModelDto;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.security.ProfileService;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
 import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.GeomajasSecurityException;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,35 +39,16 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
 @Transactional
-public class SaveLayerModelCommandTest {
-
-	@Autowired
-	private SecurityService securityService;
-
-	@Autowired
-	private ProfileService profileService;
-
-	@Autowired
-	private SecurityManager securityManager;
+public class SaveLayerModelCommandTest extends LoginBeforeTestingWithPredefinedProfileBase {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
 
-	private String userToken;
-
-	private String guestToken;
-
-	@Before
-	public void setup() throws Exception {
-		// First profile in list is admin
-		userToken = ((DeskmanagerSecurityService) securityService).registerRole(
-				RetrieveRolesRequest.MANAGER_ID, profileService.getProfiles(null).get(0));
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(
-				RetrieveRolesRequest.MANAGER_ID, DeskmanagerSecurityService.createGuestProfile());
-
-		// Log in
-		securityManager.createSecurityContext(userToken);
+	@Override
+	protected Role getRoleToLoginWithBeforeTesting() {
+		return Role.ADMINISTRATOR;
 	}
+
 
 	/**
 	 * Test non dynamic layers.
@@ -80,13 +56,13 @@ public class SaveLayerModelCommandTest {
 	@Test
 	public void testSaveSimpleSettings() {
 		GetLayerModelsResponse glmsresponse = (GetLayerModelsResponse) dispatcher.execute(GetLayerModelsRequest.COMMAND,
-				new GetLayerModelsRequest(), userToken, "en");
+				new GetLayerModelsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmsresponse.getExceptions().isEmpty());
 		
 		GetLayerModelRequest glmrequest = new GetLayerModelRequest();
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		LayerModelResponse glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmresponse.getExceptions().isEmpty());
 
 		LayerModelDto layerModel = glmresponse.getLayerModel();
@@ -109,12 +85,12 @@ public class SaveLayerModelCommandTest {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
 		request.setSaveBitmask(SaveLayerModelRequest.SAVE_SETTINGS);
-		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, userToken, "en");
+		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, getTokenOfLoggedInBeforeTesting(), "en");
 		
 		//Load the layermodel again
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		layerModel = glmresponse.getLayerModel();
 		
 		Assert.assertEquals(originalCwi, layerModel.getWidgetInfo().get("TEST"));
@@ -127,13 +103,13 @@ public class SaveLayerModelCommandTest {
 	@Test
 	public void testSaveWidgets() {
 		GetLayerModelsResponse glmsresponse = (GetLayerModelsResponse) dispatcher.execute(GetLayerModelsRequest.COMMAND,
-				new GetLayerModelsRequest(), userToken, "en");
+				new GetLayerModelsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmsresponse.getExceptions().isEmpty());
 		
 		GetLayerModelRequest glmrequest = new GetLayerModelRequest();
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		LayerModelResponse glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmresponse.getExceptions().isEmpty());
 
 		LayerModelDto layerModel = glmresponse.getLayerModel();
@@ -148,12 +124,12 @@ public class SaveLayerModelCommandTest {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
 		request.setSaveBitmask(SaveLayerModelRequest.SAVE_CLIENTWIDGETINFO);
-		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, userToken, "en");
+		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, getTokenOfLoggedInBeforeTesting(), "en");
 		
 		//Load the layermodel again
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		layerModel = glmresponse.getLayerModel();
 		
 		//These are all the settings that can be changed in the frontend.
@@ -163,13 +139,13 @@ public class SaveLayerModelCommandTest {
 	@Test
 	public void testSaveEverything() {
 		GetLayerModelsResponse glmsresponse = (GetLayerModelsResponse) dispatcher.execute(GetLayerModelsRequest.COMMAND,
-				new GetLayerModelsRequest(), userToken, "en");
+				new GetLayerModelsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmsresponse.getExceptions().isEmpty());
 		
 		GetLayerModelRequest glmrequest = new GetLayerModelRequest();
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		LayerModelResponse glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmresponse.getExceptions().isEmpty());
 
 		LayerModelDto layerModel = glmresponse.getLayerModel();
@@ -191,12 +167,12 @@ public class SaveLayerModelCommandTest {
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
 		request.setSaveBitmask(SaveLayerModelRequest.SAVE_CLIENTWIDGETINFO + SaveLayerModelRequest.SAVE_SETTINGS);
-		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, userToken, "en");
+		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, getTokenOfLoggedInBeforeTesting(), "en");
 		
 		//Load the layermodel again
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		layerModel = glmresponse.getLayerModel();
 		
 		Assert.assertEquals(new MyClientWidgetInfo("CWI1"), layerModel.getWidgetInfo().get("TEST"));
@@ -210,13 +186,13 @@ public class SaveLayerModelCommandTest {
 	public void testSaveNothing() {
 
 		GetLayerModelsResponse glmsresponse = (GetLayerModelsResponse) dispatcher.execute(GetLayerModelsRequest.COMMAND,
-				new GetLayerModelsRequest(), userToken, "en");
+				new GetLayerModelsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmsresponse.getExceptions().isEmpty());
 		
 		GetLayerModelRequest glmrequest = new GetLayerModelRequest();
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		LayerModelResponse glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmresponse.getExceptions().isEmpty());
 
 		LayerModelDto layerModel = glmresponse.getLayerModel();
@@ -238,12 +214,12 @@ public class SaveLayerModelCommandTest {
 		//Save the layermodel
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(layerModel);
-		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, userToken, "en");
+		dispatcher.execute(SaveLayerModelRequest.COMMAND, request, getTokenOfLoggedInBeforeTesting(), "en");
 		
 		//Load the layermodel again
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		layerModel = glmresponse.getLayerModel();
 		
 		Assert.assertEquals(originalCwi, layerModel.getWidgetInfo().get("TEST"));
@@ -262,24 +238,23 @@ public class SaveLayerModelCommandTest {
 	@Test
 	public void testNotAllowed() {
 		GetLayerModelsResponse glmsresponse = (GetLayerModelsResponse) dispatcher.execute(GetLayerModelsRequest.COMMAND,
-				new GetLayerModelsRequest(), userToken, "en");
+				new GetLayerModelsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmsresponse.getExceptions().isEmpty());
 		
 		GetLayerModelRequest glmrequest = new GetLayerModelRequest();
 		glmrequest.setId(glmsresponse.getLayerModels().get(0).getId());
 		LayerModelResponse glmresponse = (LayerModelResponse) dispatcher.execute(GetLayerModelRequest.COMMAND,
-				glmrequest, userToken, "en");
+				glmrequest, getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(glmresponse.getExceptions().isEmpty());
 
-		
-		securityManager.createSecurityContext(guestToken);
-
+		login(Role.GUEST);
 
 		SaveLayerModelRequest request = new SaveLayerModelRequest();
 		request.setLayerModel(glmresponse.getLayerModel());
 
-		CommandResponse response = dispatcher.execute(SaveLayerModelRequest.COMMAND, request, guestToken, "en");
-		
+		CommandResponse response = dispatcher.execute(SaveLayerModelRequest.COMMAND, request,
+				getToken(Role.GUEST), "en");
+
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}

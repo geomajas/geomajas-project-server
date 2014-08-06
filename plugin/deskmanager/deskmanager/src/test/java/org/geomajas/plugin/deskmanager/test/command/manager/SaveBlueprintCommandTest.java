@@ -19,17 +19,13 @@ import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintsResponse
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetClientLayersResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.SaveBlueprintRequest;
-import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.dto.BlueprintDto;
 import org.geomajas.plugin.deskmanager.domain.dto.LayerDto;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.security.ProfileService;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
 import org.geomajas.plugin.deskmanager.test.general.MyClientWidgetInfo;
 import org.geomajas.security.GeomajasSecurityException;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,34 +42,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class SaveBlueprintCommandTest {
-
-	@Autowired
-	private SecurityService securityService;
-
-	@Autowired
-	private ProfileService profileService;
-
-	@Autowired
-	private SecurityManager securityManager;
+public class SaveBlueprintCommandTest extends LoginBeforeTestingWithPredefinedProfileBase {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
 
-	private String userToken;
-
-	private String guestToken;
-
-	@Before
-	public void setup() throws Exception {
-		// First profile in list is admin
-		userToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				profileService.getProfiles(null).get(0));
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				DeskmanagerSecurityService.createGuestProfile());
-
-		// Log in
-		securityManager.createSecurityContext(userToken);
+	@Override
+	protected Role getRoleToLoginWithBeforeTesting() {
+		return Role.ADMINISTRATOR;
 	}
 
 	/**
@@ -83,15 +59,15 @@ public class SaveBlueprintCommandTest {
 	@Transactional
 	public void testSaveLayers() {
 		GetClientLayersResponse glsresp = (GetClientLayersResponse) dispatcher.execute(GetClientLayersRequest.COMMAND,
-				new GetClientLayersRequest(), userToken, "en");
+				new GetClientLayersRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 
 		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND,
-				new GetBlueprintsRequest(), userToken, "en");
+				new GetBlueprintsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 
 		GetBlueprintRequest gbpreq = new GetBlueprintRequest();
 		gbpreq.setBlueprintId(gbpsresp.getBlueprints().get(0).getId());
 		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
-				userToken, "en");
+				getTokenOfLoggedInBeforeTesting(), "en");
 
 		BlueprintDto bpDto = gbpresp.getBlueprint();
 
@@ -107,12 +83,14 @@ public class SaveBlueprintCommandTest {
 		request.setBlueprint(bpDto);
 		request.setSaveBitmask(SaveBlueprintRequest.SAVE_LAYERS);
 
-		CommandResponse resp = dispatcher.execute(SaveBlueprintRequest.COMMAND, request, userToken, "en");
+		CommandResponse resp = dispatcher.execute(SaveBlueprintRequest.COMMAND, request,
+				getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(resp.getExceptions().isEmpty());
 
 		gbpreq = new GetBlueprintRequest();
 		gbpreq.setBlueprintId(gbpsresp.getBlueprints().get(0).getId());
-		gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq, userToken, "en");
+		gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
+				getTokenOfLoggedInBeforeTesting(), "en");
 
 		bpDto = gbpresp.getBlueprint();
 
@@ -127,20 +105,21 @@ public class SaveBlueprintCommandTest {
 	@Test
 	public void testNotAllowed() {
 		GetBlueprintsResponse gbpsresp = (GetBlueprintsResponse) dispatcher.execute(GetBlueprintsRequest.COMMAND,
-				new GetBlueprintsRequest(), userToken, "en");
+				new GetBlueprintsRequest(), getTokenOfLoggedInBeforeTesting(), "en");
 
 		GetBlueprintRequest gbpreq = new GetBlueprintRequest();
 		gbpreq.setBlueprintId(gbpsresp.getBlueprints().get(0).getId());
 		BlueprintResponse gbpresp = (BlueprintResponse) dispatcher.execute(GetBlueprintRequest.COMMAND, gbpreq,
-				userToken, "en");
+				getTokenOfLoggedInBeforeTesting(), "en");
 		Assert.assertTrue(gbpresp.getExceptions().isEmpty());
 
-		securityManager.createSecurityContext(guestToken);
+		login(Role.GUEST);
 
 		SaveBlueprintRequest request = new SaveBlueprintRequest();
 		request.setBlueprint(gbpresp.getBlueprint());
 
-		CommandResponse response = dispatcher.execute(SaveBlueprintRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(SaveBlueprintRequest.COMMAND, request,
+				getToken(Role.GUEST), "en");
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 

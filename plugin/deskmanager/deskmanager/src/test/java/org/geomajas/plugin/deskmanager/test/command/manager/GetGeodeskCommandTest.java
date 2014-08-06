@@ -15,15 +15,11 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GeodeskResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetBlueprintRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeodeskRequest;
-import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.security.ProfileService;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.service.common.GeodeskService;
+import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
 import org.geomajas.security.GeomajasSecurityException;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class GetGeodeskCommandTest {
-
-	@Autowired
-	private SecurityService securityService;
-
-	@Autowired
-	private ProfileService profileService;
-
-	@Autowired
-	private SecurityManager securityManager;
+public class GetGeodeskCommandTest extends LoginBeforeTestingWithPredefinedProfileBase {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
@@ -55,20 +42,9 @@ public class GetGeodeskCommandTest {
 	@Autowired
 	private GeodeskService geodeskService;
 
-	private String userToken;
-
-	private String guestToken;
-
-	@Before
-	public void setup() throws Exception {
-		// First profile in list is admin
-		userToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				profileService.getProfiles(null).get(0));
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				DeskmanagerSecurityService.createGuestProfile());
-
-		// Log in
-		securityManager.createSecurityContext(userToken);
+	@Override
+	protected Role getRoleToLoginWithBeforeTesting() {
+		return Role.ADMINISTRATOR;
 	}
 
 	@Test
@@ -80,7 +56,7 @@ public class GetGeodeskCommandTest {
 		request.setGeodeskId(id);
 		
 		GeodeskResponse response = (GeodeskResponse) dispatcher.execute(GetGeodeskRequest.COMMAND,
-				request, userToken, "en");
+				request, getTokenOfLoggedInBeforeTesting(), "en");
 
 		Assert.assertTrue(response.getErrors().isEmpty());
 		Assert.assertNotNull(response.getGeodesk());
@@ -93,7 +69,7 @@ public class GetGeodeskCommandTest {
 	@Test
 	public void testNotAllowed() {
 		CommandResponse response = dispatcher.execute(GetBlueprintRequest.COMMAND,
-				new GetBlueprintRequest(), guestToken, "en");
+				new GetBlueprintRequest(), getToken(Role.GUEST), "en");
 
 
 		Assert.assertFalse(response.getExceptions().isEmpty());

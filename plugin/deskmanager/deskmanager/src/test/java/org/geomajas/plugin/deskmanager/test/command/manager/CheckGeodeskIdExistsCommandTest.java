@@ -14,17 +14,11 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CheckGeodeskIdExistsRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.CheckGeodeskIdExistsResponse;
-import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.security.ProfileService;
-import org.geomajas.plugin.deskmanager.test.security.StubProfileService;
+import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
 import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
 import org.geomajas.security.GeomajasSecurityException;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,34 +32,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class CheckGeodeskIdExistsCommandTest {
-
-	@Autowired
-	private SecurityService securityService;
-
-	@Autowired
-	private SecurityManager securityManager;
+public class CheckGeodeskIdExistsCommandTest extends LoginBeforeTestingWithPredefinedProfileBase {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
 
-	@Autowired
-	private ProfileService profileService;
-
-	private String guestToken;
-
-	private String managerToken;
-
-	@Before
-	public void setup() throws Exception {
-		StubProfileService pService = (StubProfileService) profileService;
-
-		managerToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				pService.getProfileByRole(Role.DESK_MANAGER));
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				DeskmanagerSecurityService.createGuestProfile());
-		// Log in
-		securityManager.createSecurityContext(guestToken);
+	@Override
+	protected Role getRoleToLoginWithBeforeTesting() {
+		return Role.GUEST;
 	}
 
 	@Test
@@ -74,7 +48,7 @@ public class CheckGeodeskIdExistsCommandTest {
 		request.setGeodeskId("thequickbrownfoxjumpsoverthelazydog");
 
 		CheckGeodeskIdExistsResponse response = (CheckGeodeskIdExistsResponse) dispatcher.execute(
-				CheckGeodeskIdExistsRequest.COMMAND, request, managerToken, "en");
+				CheckGeodeskIdExistsRequest.COMMAND, request, getToken(Role.DESK_MANAGER), "en");
 
 		Assert.assertTrue(response.getErrors().isEmpty());
 		Assert.assertEquals(false, response.getExists());
@@ -86,7 +60,7 @@ public class CheckGeodeskIdExistsCommandTest {
 		request.setGeodeskId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE);
 
 		CheckGeodeskIdExistsResponse response = (CheckGeodeskIdExistsResponse) dispatcher.execute(
-				CheckGeodeskIdExistsRequest.COMMAND, request, managerToken, "en");
+				CheckGeodeskIdExistsRequest.COMMAND, request, getToken(Role.DESK_MANAGER), "en");
 
 		Assert.assertTrue(response.getErrors().isEmpty());
 		Assert.assertEquals(true, response.getExists());
@@ -97,10 +71,10 @@ public class CheckGeodeskIdExistsCommandTest {
 		CheckGeodeskIdExistsRequest request = new CheckGeodeskIdExistsRequest();
 		request.setGeodeskId(ExampleDatabaseProvisioningServiceImpl.GEODESK_TEST_BE);
 
-		CommandResponse response = dispatcher.execute(CheckGeodeskIdExistsRequest.COMMAND, request, guestToken, "en");
+		CommandResponse response = dispatcher.execute(CheckGeodeskIdExistsRequest.COMMAND, request,
+				getToken(Role.GUEST), "en");
 
 		Assert.assertFalse(response.getErrors().isEmpty());
 		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
 	}
-
 }

@@ -10,31 +10,27 @@
  */
 package org.geomajas.plugin.deskmanager.test.command.manager;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetGeotoolsVectorCapabilitiesRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigRequest;
 import org.geomajas.plugin.deskmanager.command.manager.dto.GetVectorLayerConfigResponse;
 import org.geomajas.plugin.deskmanager.command.manager.dto.VectorCapabilitiesInfo;
-import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
-import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
-import org.geomajas.plugin.deskmanager.security.ProfileService;
+import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.service.manager.DiscoveryService;
+import org.geomajas.plugin.deskmanager.test.LoginBeforeTestingWithPredefinedProfileBase;
 import org.geomajas.security.GeomajasSecurityException;
-import org.geomajas.security.SecurityManager;
-import org.geomajas.security.SecurityService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Oliver May
@@ -43,16 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
-public class GetVectorLayerConfigCommandTest {
-
-	@Autowired
-	private SecurityService securityService;
-
-	@Autowired
-	private ProfileService profileService;
-
-	@Autowired
-	private SecurityManager securityManager;
+public class GetVectorLayerConfigCommandTest extends LoginBeforeTestingWithPredefinedProfileBase {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
@@ -60,21 +47,9 @@ public class GetVectorLayerConfigCommandTest {
 	@Autowired
 	private DiscoveryService discoveryService;
 
-	private String userToken;
-
-	private String guestToken;
-
-	@Before
-	public void setup() throws Exception {
-		// First profile in list is admin
-		userToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				profileService.getProfiles(null).get(0));
-		guestToken = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
-				DeskmanagerSecurityService.createGuestProfile());
-
-		// Log in
-		securityManager.createSecurityContext(userToken);
-
+	@Override
+	protected Role getRoleToLoginWithBeforeTesting() {
+		return Role.ADMINISTRATOR;
 	}
 
 	@Test
@@ -91,7 +66,7 @@ public class GetVectorLayerConfigCommandTest {
 		request.setLayerName(rci.get(1).getTypeName());
 
 		GetVectorLayerConfigResponse response = (GetVectorLayerConfigResponse) dispatcher
-				.execute(GetVectorLayerConfigRequest.COMMAND, request, userToken, "en");
+				.execute(GetVectorLayerConfigRequest.COMMAND, request, getTokenOfLoggedInBeforeTesting(), "en");
 
 		Assert.assertTrue(response.getErrors().isEmpty());
 		Assert.assertTrue(response.getErrorMessages().isEmpty());
@@ -104,7 +79,7 @@ public class GetVectorLayerConfigCommandTest {
 	@Test
 	public void testNotAllowed() {
 		CommandResponse response = dispatcher.execute(GetVectorLayerConfigRequest.COMMAND,
-				new GetVectorLayerConfigRequest(), guestToken, "en");
+				new GetVectorLayerConfigRequest(), getToken(Role.GUEST), "en");
 
 		Assert.assertFalse(response.getExceptions().isEmpty());
 		Assert.assertEquals(GeomajasSecurityException.class.getName(), response.getExceptions().get(0).getClassName());
