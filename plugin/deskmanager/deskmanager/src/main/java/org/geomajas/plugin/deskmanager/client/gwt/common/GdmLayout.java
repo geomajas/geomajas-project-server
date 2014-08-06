@@ -47,6 +47,11 @@ public final class GdmLayout {
 	 */
 	public static final int EXCEPTIONCODE_GEODESKINACTIVE = 10000001;
 
+	/**
+	 * Exception code for unauthorized actions.
+	 */
+	public static final int EXCEPTIONCODE_UNAUTHORIZED = 100000011;
+
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
 	/**

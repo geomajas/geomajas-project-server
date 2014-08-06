@@ -11,12 +11,16 @@
 package org.geomajas.plugin.deskmanager.service.security;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.deskmanager.client.gwt.common.GdmLayout;
 import org.geomajas.plugin.deskmanager.domain.security.GroupMember;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityContext;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
+import org.geomajas.security.GeomajasSecurityException;
+import org.geomajas.security.SecurityContext;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,9 @@ public class ProfileServiceImpl implements org.geomajas.plugin.deskmanager.servi
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private SecurityContext securityContext;
 
 	@Override
 	public void updateUserProfileList(long userId, List<ProfileDto> addedProfiles,
@@ -176,16 +183,23 @@ public class ProfileServiceImpl implements org.geomajas.plugin.deskmanager.servi
 				}
 			}
 		}
-		//add
-		for (long userId : addedAdminUserIds) {
-			User user = usersMap.get(userId);
-			if (user != null) {
-				GroupMember exisitingAdminMember = getAdminProfileOfUser(user);
-				if (exisitingAdminMember == null) {
-					user.getGroups().add(new GroupMember(user, null, Role.ADMINISTRATOR));
-					factory.getCurrentSession().saveOrUpdate(user);
+		// get the territory of current user: should be an admin user
+		Role roleLoggedIn = ((DeskmanagerSecurityContext) securityContext).getRole();
+		if (roleLoggedIn != null && roleLoggedIn.equals(Role.ADMINISTRATOR)) {
+			Territory defaultAdminTerritory = ((DeskmanagerSecurityContext) securityContext).getTerritory();
+			//add
+			for (long userId : addedAdminUserIds) {
+				User user = usersMap.get(userId);
+				if (user != null) {
+					GroupMember exisitingAdminMember = getAdminProfileOfUser(user);
+					if (exisitingAdminMember == null) {
+						user.getGroups().add(new GroupMember(user, defaultAdminTerritory, Role.ADMINISTRATOR));
+						factory.getCurrentSession().saveOrUpdate(user);
+					}
 				}
 			}
+		} else {
+			throw new GeomajasSecurityException(GdmLayout.EXCEPTIONCODE_UNAUTHORIZED);
 		}
 	}
 

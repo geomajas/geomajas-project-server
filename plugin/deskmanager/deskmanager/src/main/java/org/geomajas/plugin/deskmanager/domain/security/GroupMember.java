@@ -44,7 +44,7 @@ public class GroupMember {
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "group_id")
+	@JoinColumn(name = "group_id", nullable = false)
 	private Territory group;
 
 	@Column(name = "role", nullable = false)
