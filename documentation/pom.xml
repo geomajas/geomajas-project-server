@@ -1,0 +1,161 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-doc-parent</artifactId>
+		<version>2.0.0</version>
+	</parent>
+
+	<groupId>org.geomajas.documentation</groupId>
+	<artifactId>geomajas-server-documenatation</artifactId>
+	<version>1.17.0-SNAPSHOT</version>
+
+	<name>Geomajas Server: Main - Documentation</name>
+	<description>Geomajas Server: Main - Documentation</description>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api-experimental</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-common-servlet</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.9</version>
+						<executions>
+							<execution>
+								<id>timestamp-property</id>
+								<goals>
+									<goal>timestamp-property</goal>
+								</goals>
+								<configuration>
+									<name>copyright.year</name>
+									<pattern>yyyy</pattern>
+									<unit>year</unit>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack-dependencies</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeClassifiers>sources</includeClassifiers>
+									<excludeTransitive>true</excludeTransitive>
+									<outputDirectory>${project.build.directory}/javadoc-src</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>generate-all-javadoc</id>
+								<phase>compile</phase>
+								<configuration>
+									<target>
+										<javadoc packagenames="${geomajas.packages}"
+										         sourcepath="${project.build.directory}/javadoc-src"
+										         defaultexcludes="no"
+										         destdir="${project.build.directory}/apidocs/"
+										         version="true"
+										         use="true">
+											<doctitle>
+												<![CDATA[<h1>${geomajas.javadoc-title} - ${project.version}</h1>]]></doctitle>
+											<bottom>
+												<![CDATA[<i>Copyright &#169; ${copyright.year} Geosparc. All Rights Reserved.</i>]]></bottom>
+											<classpath refid="maven.dependency.classpath"/>
+										</javadoc>
+										<jar destfile="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"
+										     basedir="${project.build.directory}/apidocs/"
+										     includes="**/**" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+
+		<geomajas.packages>org.geomajas.*</geomajas.packages>
+		<geomajas.javadoc-title>Geomajas Server</geomajas.javadoc-title>
+	</properties>
+
+</project>

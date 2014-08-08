@@ -53,6 +53,7 @@
 			</activation>
 			<modules>
 				<module>plugin</module>
+				<module>documentation</module>
 			</modules>
 		</profile>
 		<profile>
