@@ -17,14 +17,15 @@
 		<version>2.0.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.documentation</groupId>
+	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-face-rest-documentation</artifactId>
 	<version>1.17.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas server: REST - Documentation</name>
 	<description>Geomajas server: REST - Documentation</description>
-	
+
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
 </project>

@@ -25,7 +25,20 @@
 
 	<modules>
 		<module>deskmanager</module>
+		<module>deskmanager-documentation</module>
+		<module>deskmanager-javadoc</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
 	<properties>
 		<gdm-sldeditor-version>1.0.0-M1</gdm-sldeditor-version>

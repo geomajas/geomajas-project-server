@@ -45,26 +45,11 @@
 
 	<modules>
 		<module>hibernate</module>
+		<module>hibernate-documentation</module>
+		<module>hibernate-javadoc</module>
 	</modules>
 
 	<profiles>
-		<profile>
-			<id>full-build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>hibernate-documentation</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>skipDocs</id>
-			<activation>
-				<property>
-					<name>skipDocs</name>
-				</property>
-			</activation>
-		</profile>
 		<profile>
 			<id>m2e</id>
 			<activation>

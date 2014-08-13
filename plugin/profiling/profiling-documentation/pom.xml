@@ -23,9 +23,10 @@
 	<packaging>jar</packaging>
 	<name>Geomajas server: Plugin profiling - Documentation</name>
 	<description>Geomajas server: Plugin profiling - Documentation</description>
-	
+
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-	
+
 </project>
+

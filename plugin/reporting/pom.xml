@@ -24,26 +24,11 @@
 
 	<modules>
 		<module>reporting</module>
+		<module>reporting-documentation</module>
+		<module>reporting-javadoc</module>
 	</modules>
 
 	<profiles>
-		<profile>
-			<id>full-build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>reporting-documentation</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>skipDocs</id>
-			<activation>
-				<property>
-					<name>skipDocs</name>
-				</property>
-			</activation>
-		</profile>
 		<profile>
 			<id>m2e</id>
 			<activation>

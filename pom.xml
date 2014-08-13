@@ -43,6 +43,8 @@
 		<module>common-servlet</module>
 		<module>command</module>
 		<module>testdata</module>
+		<module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
 	<profiles>
@@ -53,7 +55,6 @@
 			</activation>
 			<modules>
 				<module>plugin</module>
-				<module>documentation</module>
 			</modules>
 		</profile>
 		<profile>
