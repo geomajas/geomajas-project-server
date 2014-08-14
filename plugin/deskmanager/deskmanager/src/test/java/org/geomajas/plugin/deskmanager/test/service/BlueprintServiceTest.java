@@ -18,6 +18,7 @@ import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.common.BlueprintService;
 import org.geomajas.plugin.deskmanager.test.SecurityContainingTestBase;
+import org.geomajas.plugin.deskmanager.test.security.StubProfileService;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
 import org.junit.Assert;
@@ -55,7 +56,7 @@ public class BlueprintServiceTest extends SecurityContainingTestBase {
 	public void testLoadBlueprints() throws Exception {
 
 		String token = ((DeskmanagerSecurityService) securityService).registerRole(
-				RetrieveRolesRequest.MANAGER_ID, profileService.getProfiles(null).get(1));
+				RetrieveRolesRequest.MANAGER_ID, ((StubProfileService) profileService).getPredefinedProfiles().get(1));
 		securityManager.createSecurityContext(token);
 
 		List<Blueprint> blueprints = blueprintService.getBlueprints();

@@ -5,7 +5,8 @@ import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.security.GroupService;
 import org.geomajas.plugin.deskmanager.service.security.UserService;
-import org.geomajas.plugin.deskmanager.service.security.UserServiceImpl;
+import org.geomajas.plugin.deskmanager.service.security.impl.UserServiceImpl;
+import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
 import org.geomajas.security.GeomajasSecurityException;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
@@ -48,18 +49,18 @@ public class UserServiceTest {
 	@Test
 	public void deleteUser() throws GeomajasSecurityException {
 		// find the user
-		User user = userService.findByAddress("niko.haak@gmail.com");
+		User user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		userService.deleteUser(user.getId());
 		sessionFactory.getCurrentSession().flush();
 		sessionFactory.getCurrentSession().clear();
-		user = userService.findByAddress("niko.haak@gmail.com");
+		user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		Assert.assertNull(user);
 	}
 
 	@Test
 	public void findByAddress() throws GeomajasSecurityException {
 		// find the user
-		User user = userService.findByAddress("niko.haak@gmail.com");
+		User user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		Assert.assertNotNull(user);
 		// check details
 		Assert.assertEquals("niko", user.getName());
@@ -75,14 +76,14 @@ public class UserServiceTest {
 		userService.deleteByAddress("niko.haak@gmail.com");
 		sessionFactory.getCurrentSession().flush();
 		sessionFactory.getCurrentSession().clear();
-		User user = userService.findByAddress("niko.haak@gmail.com");
+		User user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		Assert.assertNull(user);
 	}
 	
 	@Test
 	public void updateUser() throws GeomajasSecurityException {
 		// find the user
-		User user = userService.findByAddress("niko.haak@gmail.com");
+		User user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		user.setName("cale");
 		user.setSurname("jj");
 		user.setEmail("jj.cale@cnn.com");
@@ -94,14 +95,14 @@ public class UserServiceTest {
 		Assert.assertEquals("jj", user.getSurname());
 		Assert.assertEquals("cale", user.getName());
 		// can't update email:
-		Assert.assertEquals("niko.haak@gmail.com", user.getEmail());
+		Assert.assertEquals(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL, user.getEmail());
 		
 	}
 
 	@Test
 	public void setUserActive() throws GeomajasSecurityException {
 		// find the user
-		User user = userService.findByAddress("niko.haak@gmail.com");
+		User user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		userService.setUserActive(user.getId(), false);
 		sessionFactory.getCurrentSession().flush();
 		sessionFactory.getCurrentSession().clear();
@@ -114,7 +115,7 @@ public class UserServiceTest {
 	@Test
 	public void changePassword() throws GeomajasSecurityException {
 		// find the user
-		User user = userService.findByAddress("niko.haak@gmail.com");
+		User user = userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
 		userService.changePassword(user.getId(), "haak");
 		sessionFactory.getCurrentSession().flush();
 		sessionFactory.getCurrentSession().clear();

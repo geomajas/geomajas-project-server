@@ -1,17 +1,22 @@
 package org.geomajas.plugin.deskmanager.test.service.security;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.security.GroupMember;
+import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.security.GroupService;
 import org.geomajas.plugin.deskmanager.service.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.security.UserService;
+import org.geomajas.plugin.deskmanager.test.security.StubProfileService;
 import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
 import org.geomajas.security.GeomajasSecurityException;
+import org.geomajas.security.SecurityService;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,6 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,7 +35,7 @@ import java.util.Map;
 
 /**
  * Test the functions of {@link ProfileService} as implemented by
- * {@link org.geomajas.plugin.deskmanager.service.security.impl.ProfileServiceImpl}.
+ * {@link org.geomajas.plugin.deskmanager.service.security.impl.TokenToProfileServiceImpl}.
  *
  * @author Jan Venstermans
  */
@@ -37,7 +43,7 @@ import java.util.Map;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/deskmanager/spring/**/*.xml", "/applicationContext.xml" })
 @Transactional
-public class ProfileServiceTest {
+public class TokenToProfileServiceImplTest {
 
 	@Autowired
 	UserService userService;
@@ -54,25 +60,44 @@ public class ProfileServiceTest {
 	@Autowired
 	SessionFactory sessionFactory;
 
+	@Autowired
+	private SecurityService securityService;
+
+	@Autowired
+	private org.geomajas.security.SecurityManager securityManager;
+
+	private Profile adminProfileFromDatabase;
+
 	private User findUserNiko() throws GeomajasSecurityException {
 		return userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
+	}
+	private User findUserAdmin() throws GeomajasSecurityException {
+		return userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_ADMIN_EMAIL);
 	}
 
 	private List<GroupMember> getCurrentGroups(Long userId) {
 		return userService.findGroupsOfUser(userId);
 	}
 
+	@PostConstruct
+	public void createProfiles() throws GeomajasException {
+		User adminUserFromDatabase = userService.findByAddress("admin@admin.com");
+		// should have one profile ADMINISTRATOR
+		GroupMember adminGroupMember = userService.findGroupsOfUser(adminUserFromDatabase.getId()).get(0);
+		adminProfileFromDatabase = dtoConverterService.toProfile(adminGroupMember);
+	}
+
 	// ----------------------
 	//  updateUserProfileList
 	//   Before the start of the test, User with address
-	// ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL has one GroupMember:
+	// 	ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL has one GroupMember:
 	// 			Territory with code 'NL' and Role 'CONSULTING_USER'
 	// ----------------------
 
 	@Test(expected = GeomajasException.class)
 	public void updateUserProfileListNullArgumentsTest() throws GeomajasException {
-		User user = findUserNiko();
-		profileService.updateUserProfileList(user.getId(), null, null);
+		// find the user
+		profileService.updateUserProfileList(findUserNiko() .getId(), null, null);
 	}
 
 	@Test(expected = GeomajasException.class)
@@ -92,7 +117,7 @@ public class ProfileServiceTest {
 		addProfile.setTerritory(dtoConverterService.toDto(group, false, false));
 		addProfiles.add(addProfile);
 
-		profileService.updateUserProfileList(user.getId(), addProfiles, new ArrayList<ProfileDto>());
+		profileService.updateUserProfileList(findUserNiko() .getId(), addProfiles, new ArrayList<ProfileDto>());
 
 		List<GroupMember> groupMembers = getCurrentGroups(user.getId());
 		Assert.assertEquals(groupAmountBefore + 1 ,groupMembers.size());
@@ -118,8 +143,7 @@ public class ProfileServiceTest {
 		removeProfiles.add(removeProfile);
 		profileService.updateUserProfileList(user.getId(), new ArrayList<ProfileDto>(), removeProfiles);
 
-		List<GroupMember> groupMembers = getCurrentGroups(user.getId());
-		Assert.assertEquals(groupAmountBefore - 1 , groupMembers.size());
+		Assert.assertEquals(groupAmountBefore - 1 , getCurrentGroups(user.getId()).size());
 	}
 
 	@Test
@@ -134,7 +158,7 @@ public class ProfileServiceTest {
 		addProfile.setTerritory(dtoConverterService.toDto(group, false, false));
 
 		addProfiles.add(addProfile);
-		profileService.updateUserProfileList(user.getId(), addProfiles, new ArrayList<ProfileDto>());
+		profileService.updateUserProfileList(findUserNiko().getId(), addProfiles, new ArrayList<ProfileDto>());
 
 		Assert.assertEquals(groupAmountBefore , getCurrentGroups(user.getId()).size());
 	}
@@ -151,7 +175,7 @@ public class ProfileServiceTest {
 		removeProfile.setTerritory(dtoConverterService.toDto(group, false, false));
 
 		removeProfiles.add(removeProfile);
-		profileService.updateUserProfileList(user.getId(), new ArrayList<ProfileDto>(), removeProfiles);
+		profileService.updateUserProfileList(findUserNiko() .getId(), new ArrayList<ProfileDto>(), removeProfiles);
 
 		Assert.assertEquals(groupAmountBefore , getCurrentGroups(user.getId()).size());
 	}
@@ -249,6 +273,7 @@ public class ProfileServiceTest {
 	public void updateGroupAssignmentAddAdminProfileIsNotRegisteredTest() throws GeomajasException {
 		User user = findUserNiko();
 		Territory groupNL = groupService.findByCode("NL");
+		// groupNl contains one GroupMember: 'niko haak' as 'Role.CONSULTING_USER'
 		int amountProfilesBefore = profileService.getProfilesOfGroup(groupNL).size();
 		Map<Long, List<Role>> addMap = new HashMap<Long, List<Role>>();
 		addMap.put(user.getId(), Arrays.asList(Role.ADMINISTRATOR));
@@ -302,5 +327,70 @@ public class ProfileServiceTest {
 		profileService.updateGroupAssignment(groupNL.getId(), new HashMap<Long, List<Role>>(), removeMap);
 		groupNL = groupService.findByCode("NL");
 		Assert.assertEquals(amountProfilesBefore, profileService.getProfilesOfGroup(groupNL).size());
+	}
+
+	// ----------------------
+	//  updateAdmins
+	//  Before the start of the test, there are no admin users
+	// ----------------------
+
+	@Test(expected = GeomajasException.class)
+	public void updateAdminsNullArgumentsTest() throws GeomajasException {
+		profileService.updateAdmins(null, null);
+	}
+
+	@Test
+	public void updateAdminsAddAdminProfileTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
+		User user = findUserNiko();
+		int amountAdminsBefore = profileService.getAdminUsers().size();
+		// add the admin role of the user
+		profileService.updateAdmins(Arrays.asList(user.getId()), new ArrayList<Long>());
+		Assert.assertEquals(amountAdminsBefore + 1,  profileService.getAdminUsers().size());
+	}
+
+	@Test
+	public void updateAdminsRemoveAdminProfileTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
+		User user = findUserNiko();
+		// add user first
+		profileService.updateAdmins(Arrays.asList(user.getId()), new ArrayList<Long>());
+
+		int amountAdminsBefore = profileService.getAdminUsers().size();
+		// remove the admin role of the user
+		profileService.updateAdmins(new ArrayList<Long>(), Arrays.asList(user.getId()));
+		Assert.assertEquals(amountAdminsBefore - 1,  profileService.getAdminUsers().size());
+	}
+
+	@Test
+	public void updateAdminsAddExistingAdminProfileIsNotRegisteredTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
+		User user = findUserNiko();
+		// add user first
+		profileService.updateAdmins(Arrays.asList(user.getId()), new ArrayList<Long>());
+
+		int amountAdminsBefore = profileService.getAdminUsers().size();
+		// add the admin role of the user again
+		profileService.updateAdmins(Arrays.asList(user.getId()), new ArrayList<Long>());
+		Assert.assertEquals(amountAdminsBefore,  profileService.getAdminUsers().size());
+	}
+
+	@Test
+	public void updateAdminsRemoveExistingAdminProfileIsNotRegisteredTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
+		User user = findUserNiko();
+		int amountAdminsBefore = profileService.getAdminUsers().size();
+		// remove the admin role of the user (although he hasn't got one)
+		profileService.updateAdmins(new ArrayList<Long>(), Arrays.asList(user.getId()));
+		Assert.assertEquals(amountAdminsBefore,  profileService.getAdminUsers().size());
+	}
+
+	/* private methods */
+	private void logIn(Profile profile) {
+		// register user and create token
+		String token = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
+				profile);
+		// log in with token
+		securityManager.createSecurityContext(token);
 	}
 }

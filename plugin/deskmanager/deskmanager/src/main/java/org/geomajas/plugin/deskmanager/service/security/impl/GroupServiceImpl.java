@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.deskmanager.service.security;
+package org.geomajas.plugin.deskmanager.service.security.impl;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
@@ -17,6 +17,7 @@ import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
 import org.geomajas.plugin.deskmanager.service.manager.GenericFileService;
 import org.geomajas.plugin.deskmanager.service.manager.ShapeFileService;
+import org.geomajas.plugin.deskmanager.service.security.GroupService;
 import org.geomajas.plugin.deskmanager.utility.FileUtils;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default implementation of {@link GroupService}.
+ * Default implementation of {@link org.geomajas.plugin.deskmanager.service.security.GroupService}.
  * 
  * @author Jan De Moerloose
  * 
