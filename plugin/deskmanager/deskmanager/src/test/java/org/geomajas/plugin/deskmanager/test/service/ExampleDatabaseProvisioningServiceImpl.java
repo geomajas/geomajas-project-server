@@ -28,7 +28,6 @@ import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.TerritoryCategory;
 import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
-import org.geomajas.plugin.deskmanager.service.security.UserServiceImpl;
 import org.geomajas.plugin.deskmanager.service.security.impl.UserServiceImpl;
 import org.geomajas.service.DtoConverterService;
 import org.hibernate.SessionFactory;
@@ -61,6 +60,9 @@ public class ExampleDatabaseProvisioningServiceImpl implements DeskmanagerExampl
 
 	public static final String USER_NIKO_EMAIL = "niko.haak@gmail.com";
 	public static final String USER_NIKO_PASSWORD = "kaah";
+
+	public static final String USER_ADMIN_EMAIL = "admin@admin.com";
+	public static final String USER_ADMIN_PASSWORD = "admin";
 
 	private static final String BE =
 			"POLYGON((408632.623169 6759429.725585,689708.137665 6701252.358792,631632.574341 " +
@@ -252,10 +254,10 @@ public class ExampleDatabaseProvisioningServiceImpl implements DeskmanagerExampl
 
 		User adminUser = new User();
 		adminUser.setActive(true);
-		adminUser.setEmail("admin@admin.com");
+		adminUser.setEmail(USER_ADMIN_EMAIL);
 		adminUser.setName("admin");
 		adminUser.setSurname("admin");
-		adminUser.setPassword(UserServiceImpl.encodePassword(adminUser.getEmail(), "admin"));
+		adminUser.setPassword(UserServiceImpl.encodePassword(adminUser.getEmail(), USER_ADMIN_PASSWORD));
 		adminUser.getGroups().add(new GroupMember(adminUser, beGroup, Role.ADMINISTRATOR));
 		session.getCurrentSession().save(adminUser);
 	}

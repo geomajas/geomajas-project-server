@@ -1,17 +1,22 @@
 package org.geomajas.plugin.deskmanager.test.service.security;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.deskmanager.command.security.dto.RetrieveRolesRequest;
 import org.geomajas.plugin.deskmanager.domain.security.GroupMember;
+import org.geomajas.plugin.deskmanager.domain.security.Profile;
 import org.geomajas.plugin.deskmanager.domain.security.Territory;
 import org.geomajas.plugin.deskmanager.domain.security.User;
 import org.geomajas.plugin.deskmanager.domain.security.dto.ProfileDto;
 import org.geomajas.plugin.deskmanager.domain.security.dto.Role;
+import org.geomajas.plugin.deskmanager.security.DeskmanagerSecurityService;
 import org.geomajas.plugin.deskmanager.service.common.DtoConverterService;
 import org.geomajas.plugin.deskmanager.service.security.GroupService;
 import org.geomajas.plugin.deskmanager.service.security.ProfileService;
 import org.geomajas.plugin.deskmanager.service.security.UserService;
+import org.geomajas.plugin.deskmanager.test.security.StubProfileService;
 import org.geomajas.plugin.deskmanager.test.service.ExampleDatabaseProvisioningServiceImpl;
 import org.geomajas.security.GeomajasSecurityException;
+import org.geomajas.security.SecurityService;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,6 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,12 +60,31 @@ public class TokenToProfileServiceImplTest {
 	@Autowired
 	SessionFactory sessionFactory;
 
+	@Autowired
+	private SecurityService securityService;
+
+	@Autowired
+	private org.geomajas.security.SecurityManager securityManager;
+
+	private Profile adminProfileFromDatabase;
+
 	private User findUserNiko() throws GeomajasSecurityException {
 		return userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_NIKO_EMAIL);
+	}
+	private User findUserAdmin() throws GeomajasSecurityException {
+		return userService.findByAddress(ExampleDatabaseProvisioningServiceImpl.USER_ADMIN_EMAIL);
 	}
 
 	private List<GroupMember> getCurrentGroups(Long userId) {
 		return userService.findGroupsOfUser(userId);
+	}
+
+	@PostConstruct
+	public void createProfiles() throws GeomajasException {
+		User adminUserFromDatabase = userService.findByAddress("admin@admin.com");
+		// should have one profile ADMINISTRATOR
+		GroupMember adminGroupMember = userService.findGroupsOfUser(adminUserFromDatabase.getId()).get(0);
+		adminProfileFromDatabase = dtoConverterService.toProfile(adminGroupMember);
 	}
 
 	// ----------------------
@@ -316,6 +341,7 @@ public class TokenToProfileServiceImplTest {
 
 	@Test
 	public void updateAdminsAddAdminProfileTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
 		User user = findUserNiko();
 		int amountAdminsBefore = profileService.getAdminUsers().size();
 		// add the admin role of the user
@@ -325,6 +351,7 @@ public class TokenToProfileServiceImplTest {
 
 	@Test
 	public void updateAdminsRemoveAdminProfileTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
 		User user = findUserNiko();
 		// add user first
 		profileService.updateAdmins(Arrays.asList(user.getId()), new ArrayList<Long>());
@@ -337,6 +364,7 @@ public class TokenToProfileServiceImplTest {
 
 	@Test
 	public void updateAdminsAddExistingAdminProfileIsNotRegisteredTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
 		User user = findUserNiko();
 		// add user first
 		profileService.updateAdmins(Arrays.asList(user.getId()), new ArrayList<Long>());
@@ -349,10 +377,20 @@ public class TokenToProfileServiceImplTest {
 
 	@Test
 	public void updateAdminsRemoveExistingAdminProfileIsNotRegisteredTest() throws GeomajasException {
+		logIn(adminProfileFromDatabase);
 		User user = findUserNiko();
 		int amountAdminsBefore = profileService.getAdminUsers().size();
 		// remove the admin role of the user (although he hasn't got one)
 		profileService.updateAdmins(new ArrayList<Long>(), Arrays.asList(user.getId()));
 		Assert.assertEquals(amountAdminsBefore,  profileService.getAdminUsers().size());
+	}
+
+	/* private methods */
+	private void logIn(Profile profile) {
+		// register user and create token
+		String token = ((DeskmanagerSecurityService) securityService).registerRole(RetrieveRolesRequest.MANAGER_ID,
+				profile);
+		// log in with token
+		securityManager.createSecurityContext(token);
 	}
 }
