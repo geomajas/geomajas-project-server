@@ -43,6 +43,10 @@ public class TmsLayerTest {
 	private TmsLayer layer;
 	
 	@Autowired
+	@Qualifier("tmsLayerWithBadUrl")
+	private TmsLayer layerWithBadUrl;
+	
+	@Autowired
 	@Qualifier("tmsLayerProxy")
 	private TmsLayer proxyLayer;
 
@@ -108,6 +112,27 @@ public class TmsLayerTest {
 		Assert.assertEquals(0, tiles.get(1).getCode().getY());
 		Assert.assertEquals("./d/tms-proxy/tmsLayerProxy/1/1/0.png", tiles.get(1)
 				.getUrl());
+	}
+	
+	@Test
+	public void testRetryInit() throws LayerException, GeomajasException, InterruptedException {
+		// context is loaded but layer in unusable state
+		Assert.assertFalse(layerWithBadUrl.isUsable());
+		// check that unusable layer throws at us
+		Envelope maxBounds = new Envelope(18000.0, 259500.250, 152999.75, 244500.0);
+		try {
+			layerWithBadUrl.paint(geoService.getCrs("EPSG:31370"), maxBounds, 1.0 / 1024.0);
+			Assert.fail("Unusable layer should throw exception on painting");
+		} catch (Exception e) {
+		}
+		// set a perfectly good url to simulate server is up again
+		layerWithBadUrl.setBaseTmsUrl("classpath:/org/geomajas/layer/tms/tileMapCapa2.xml");
+		Assert.assertFalse(layerWithBadUrl.isUsable());
+		// wait a second
+		Thread.sleep(1000);
+		// this will now retry init !!!
+		layerWithBadUrl.paint(geoService.getCrs("EPSG:31370"), maxBounds, 1.0 / 1024.0);
+		Assert.assertTrue(layerWithBadUrl.isUsable());				
 	}
 
 	
