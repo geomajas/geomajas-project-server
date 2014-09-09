@@ -58,6 +58,17 @@ import com.vividsolutions.jts.geom.Envelope;
 @Api
 public class TmsLayer implements RasterLayer, ProxyLayerSupport {
 
+	private static final long DEFAULT_COOLDOWN_TIME = 60000; // millis
+	
+	// a dummy layer info in case the service is unavailable !
+	private static final RasterLayerInfo UNUSABLE_LAYER_INFO = new RasterLayerInfo();
+	
+	static {
+		UNUSABLE_LAYER_INFO.setTileWidth(256);
+		UNUSABLE_LAYER_INFO.setTileHeight(256);
+		UNUSABLE_LAYER_INFO.setCrs("EPSG:4326");
+	}
+
 	private final Logger log = LoggerFactory.getLogger(TmsLayer.class);
 
 	private String id;
@@ -77,6 +88,12 @@ public class TmsLayer implements RasterLayer, ProxyLayerSupport {
 	private boolean useProxy;
 
 	private boolean useCache;
+
+	private boolean usable;
+
+	private long lastInitRetry;
+
+	private long cooldownTimeBetweenInitializationRetries = DEFAULT_COOLDOWN_TIME;
 
 	// Spring services:
 
@@ -119,23 +136,33 @@ public class TmsLayer implements RasterLayer, ProxyLayerSupport {
 		}
 
 		// Make sure there is a correct RasterLayerInfo object:
-		if (layerInfo == null) {
-			tileMap = configurationService.getCapabilities(this);
-			version = tileMap.getVersion();
-			extension = tileMap.getTileFormat().getExtension();
-			layerInfo = configurationService.asLayerInfo(tileMap);
+		if (layerInfo == null || layerInfo == UNUSABLE_LAYER_INFO) {
+			try {
+				tileMap = configurationService.getCapabilities(this);
+				version = tileMap.getVersion();
+				extension = tileMap.getTileFormat().getExtension();
+				layerInfo = configurationService.asLayerInfo(tileMap);
+				usable = true;
+			} catch (TmsLayerException e) {
+				// a layer needs an info object to keep the DtoConfigurationPostProcessor happy !
+				layerInfo = UNUSABLE_LAYER_INFO;
+				usable = false;
+				log.warn("The layer could not be correctly initialized: " + getId(), e);
+			}
 		} else if (extension == null) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "extension");
 		}
 
-		// Finally prepare some often needed values:
-		state = new TileServiceState(geoService, layerInfo);
-		// when proxying the real url will be resolved later on, just use a simple one for now
-		boolean proxying = useCache || useProxy || null != authentication;
-		if (tileMap != null && !proxying) {
-			urlBuilder = new TileMapUrlBuilder(tileMap);
-		} else {
-			urlBuilder = new SimpleTmsUrlBuilder(extension);
+		if (layerInfo != null) {
+			// Finally prepare some often needed values:
+			state = new TileServiceState(geoService, layerInfo);
+			// when proxying the real url will be resolved later on, just use a simple one for now
+			boolean proxying = useCache || useProxy || null != authentication;
+			if (tileMap != null && !proxying) {
+				urlBuilder = new TileMapUrlBuilder(tileMap);
+			} else {
+				urlBuilder = new SimpleTmsUrlBuilder(extension);
+			}
 		}
 	}
 
@@ -157,11 +184,25 @@ public class TmsLayer implements RasterLayer, ProxyLayerSupport {
 	public String getId() {
 		return id;
 	}
+	
+	/**
+	 * The time to wait between initialization retries in case the service is unavailable.
+	 * 
+	 * @param cooldownTimeBetweenInitializationRetries cool down time in milliseconds
+	 * @since 1.17.0
+	 */
+	@Api
+	public void setCooldownTimeBetweenInitializationRetries(long cooldownTimeBetweenInitializationRetries) {
+		this.cooldownTimeBetweenInitializationRetries = cooldownTimeBetweenInitializationRetries;
+	}
 
 	@Override
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		log.debug("Fetching TMS tiles for bounds : {}", bounds.toString());
+		if (!usable) {
+			retryInit();
+		}
 		Envelope layerBounds = bounds;
 		double layerScale = scale;
 		CrsTransform layerToMap = null;
@@ -232,8 +273,28 @@ public class TmsLayer implements RasterLayer, ProxyLayerSupport {
 		}
 		return result;
 	}
+	
+	protected boolean isUsable() {
+		return usable;
+	}
 
 	// ---------------------------------------------------
+	private void retryInit() throws GeomajasException {
+		// do not hammer the service
+		long now = System.currentTimeMillis();
+		if (now > lastInitRetry + cooldownTimeBetweenInitializationRetries) {
+			lastInitRetry = now;
+			try {
+				log.debug("Retrying to (re-)initialize layer {}", getId());
+				postConstruct();
+			} catch (Exception e) { // NOSONAR
+				log.warn("Failed initializing layer: ", e.getMessage());
+			}
+		}
+		if (!usable) {
+			throw new GeomajasException(ExceptionCode.LAYER_CONFIGURATION_PROBLEM);
+		}
+	}
 
 	private String getTmsTargetUrl() {
 		if (useProxy || null != authentication || useCache) {

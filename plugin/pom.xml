@@ -41,7 +41,6 @@
 		<module>layer-tms</module>
 		<module>print</module>
 		<module>runtimeconfig</module>
-		<module>deskmanager</module>
 	</modules>
 	
 </project>
