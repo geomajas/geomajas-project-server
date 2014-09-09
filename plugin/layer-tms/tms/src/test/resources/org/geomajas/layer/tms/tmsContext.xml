@@ -46,6 +46,11 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean name="tmsLayer" class="org.geomajas.layer.tms.TmsLayer" >
 		<property name="baseTmsUrl" value="classpath:/org/geomajas/layer/tms/tileMapCapa2.xml" />
 	</bean>
+	
+	<bean name="tmsLayerWithBadUrl" class="org.geomajas.layer.tms.TmsLayer" >
+		<property name="baseTmsUrl" value="classpath:/doesnotexist.xml" />
+		<property name="cooldownTimeBetweenInitializationRetries" value="1000"/>
+	</bean>
 
 	<bean name="tmsLayerProxy" class="org.geomajas.layer.tms.TmsLayer" >
 		<property name="baseTmsUrl" value="classpath:/org/geomajas/layer/tms/tileMapCapa2.xml" />

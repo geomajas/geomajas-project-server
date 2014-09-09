@@ -13,7 +13,6 @@ package org.geomajas.layer.tms;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,8 +90,6 @@ public class TmsConfigurationService {
 			return (TileMap) um.unmarshal(httpService.getStream(layer.getBaseTmsUrl(), layer));
 		} catch (JAXBException e) {
 			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layer.getBaseTmsUrl());
-		} catch (MalformedURLException e) {
-			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_FIND_FILE, layer.getBaseTmsUrl());
 		} catch (IOException e) {
 			throw new TmsLayerException(e, TmsLayerException.COULD_NOT_READ_FILE, layer.getBaseTmsUrl());
 		}
