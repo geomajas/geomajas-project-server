@@ -16,8 +16,6 @@
 		</encoder>
 	</appender>
 	
-	<logger name="org.geomajas.layer" level="DEBUG"/>
-
 	<root level="ERROR">
 		<appender-ref ref="CONSOLE"/>
 	</root>

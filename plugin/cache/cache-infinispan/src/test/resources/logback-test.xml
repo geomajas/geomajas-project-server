@@ -8,15 +8,19 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+
 <configuration>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<charset>UTF-8</charset>
 		</encoder>
 	</appender>
 
-	<root level="ERROR">
+	<logger name="org.geomajas.plugin.caching" level="OFF"/>
+
+	<root level="OFF">
 		<appender-ref ref="CONSOLE"/>
 	</root>
 

@@ -17,7 +17,6 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.geomajas.layer" level="DEBUG"/>
 	<!--
 	<logger name="org.infinispan" level="TRACE"/>
 	-->
