@@ -17,6 +17,7 @@
 		<version>1.17.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-rest</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas server: REST - Implementation</name>

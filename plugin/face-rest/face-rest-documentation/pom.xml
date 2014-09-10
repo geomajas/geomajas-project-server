@@ -17,7 +17,7 @@
 		<version>2.0.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.plugin</groupId>
+	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-face-rest-documentation</artifactId>
 	<version>1.17.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -27,5 +27,4 @@
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-
 </project>
