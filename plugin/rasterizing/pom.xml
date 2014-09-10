@@ -25,26 +25,11 @@
 
 	<modules>
 		<module>rasterizing</module>
+		<module>rasterizing-documentation</module>
+		<module>rasterizing-javadoc</module>
 	</modules>
 
 	<profiles>
-		<profile>
-			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>rasterizing-documentation</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>skipDocs</id>
-			<activation>
-				<property>
-					<name>skipDocs</name>
-				</property>
-			</activation>
-		</profile>
 		<profile>
 			<id>m2e</id>
 			<activation>

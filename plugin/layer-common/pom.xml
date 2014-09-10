@@ -35,17 +35,19 @@
 
 	<modules>
 		<module>layer-common</module>
+		<module>layer-common-documentation</module>
+		<module>layer-common-javadoc</module>
 	</modules>
 
-    <profiles>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>layer-common-documentation</module>
-            </modules>
-        </profile>
-    </profiles>
+	<profiles>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+
 </project>

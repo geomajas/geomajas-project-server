@@ -26,26 +26,11 @@
 	<modules>
 		<module>face-rest</module>
 		<module>face-rest-example</module>
-  </modules>
+		<module>face-rest-documentation</module>
+		<module>face-rest-javadoc</module>
+    </modules>
 
 	<profiles>
-		<profile>
-            <id>full-build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>face-rest-documentation</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>skipDocs</id>
-			<activation>
-				<property>
-					<name>skipDocs</name>
-				</property>
-			</activation>
-		</profile>
 		<profile>
 			<id>m2e</id>
 			<activation>
