@@ -135,6 +135,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -163,6 +164,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -171,6 +173,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -179,6 +182,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -187,6 +191,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -195,6 +200,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -213,6 +219,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -221,6 +228,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -239,6 +247,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	@Test
@@ -247,6 +256,7 @@ public class DependencyCheckPostProcessorTest {
 		TestRecorder recorder = ac.getBean(TestRecorder.class);
 		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
 				DependencyCheckPostProcessor.VALUE));
+		clearTestRecorder(recorder);
 	}
 
 	private ApplicationContext loadApplicationContext(String... locations) throws Exception {
@@ -262,6 +272,11 @@ public class DependencyCheckPostProcessorTest {
 			}
 			throw ex;
 		}
+	}
+
+	public void clearTestRecorder(TestRecorder recorder) {
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 }

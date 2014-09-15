@@ -12,6 +12,8 @@
 package org.geomajas.command.configuration;
 
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,12 @@ public class RefreshTestRecorder {
 
 	@Autowired
 	private TestRecorder recorder;
+
+	@After
+	public void clearTestRecorder() {
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
+	}
 
 	@PostConstruct
 	public void postConstruct() {

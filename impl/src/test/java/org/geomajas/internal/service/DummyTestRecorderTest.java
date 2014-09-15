@@ -14,6 +14,8 @@ package org.geomajas.internal.service;
 import junit.framework.Assert;
 
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,12 @@ public class DummyTestRecorderTest {
 
 	@Autowired
 	private TestRecorder recorder;
+
+	@After
+	public void clearTestRecorder() {
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
+	}
 
 	@Test
 	public void testRecorder() throws Exception {
