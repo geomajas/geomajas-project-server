@@ -16,6 +16,7 @@ import junit.framework.Assert;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +56,12 @@ public class ConfigurationServiceInvalidateTest {
 	@After
 	public void clearSecurityContext() {
 		securityManager.clearSecurityContext();
+	}
+
+	@After
+	public void clearTestRecorder() {
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

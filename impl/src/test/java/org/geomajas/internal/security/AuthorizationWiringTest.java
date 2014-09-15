@@ -17,6 +17,7 @@ import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,6 +56,12 @@ public class AuthorizationWiringTest {
 	public void clearSecurityContext() {
 		// need to clear security context
 		securityManager.clearSecurityContext();
+	}
+
+	@After
+	public void clearTestRecorder() {
+		testRecorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test
