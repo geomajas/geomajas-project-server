@@ -34,13 +34,6 @@ public class LegendComponentInfo extends PrintComponentInfo {
 	public static final String DEFAULT_LEGEND_FONT_FAMILY = "Dialog";
 
 	/**
-	 * Default title for the legend component.
-	 * 
-	 * @since 2.4.0
-	 */
-	public static final String DEFAULT_LEGEND_TITLE = "Legend"; // Default is english
-
-	/**
 	 * Tag used for LegendComponentInfo PrintComponentInfo. See {@link #PrintComponentInfo.setTag(String)} method.
 	 * 
 	 * @since 2.4.0
@@ -65,7 +58,7 @@ public class LegendComponentInfo extends PrintComponentInfo {
 	/**
 	 * Title or Heading text of the legend
 	 */
-	private String title = DEFAULT_LEGEND_TITLE;
+	private String title;
 
 	/**
 	 * Default constructor.
