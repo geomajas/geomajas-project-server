@@ -13,6 +13,7 @@ package org.geomajas.plugin.printing.component.impl;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -55,18 +56,20 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 			LegendComponentInfo.DEFAULT_LEGEND_FONTSIZE); // Default font
 
 	/** Heading text. */
-	private String title = LegendComponentInfo.DEFAULT_LEGEND_TITLE;
+	private String title;
+	private String originalTitle;
 
 	@Autowired
 	@XStreamOmitField
 	private PrintDtoConverterService converterService;
 
 	public LegendComponentImpl() {
-		this("Legend");
+		this(null);
 	}
 
 	public LegendComponentImpl(String title) {
-		this.title = title;
+		this.originalTitle = title;
+		setTitle(title);
 		setConstraint(new LayoutConstraint(LayoutConstraint.RIGHT, LayoutConstraint.BOTTOM, LayoutConstraint.FLOW_Y, 0,
 				0, 20, 20)); /* marginX: 20 ; marginY: 20 */
 		LabelComponentImpl titleLabel = new LabelComponentImpl();
@@ -112,7 +115,12 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		if (title != null) {
+			this.title = title;
+		} else {
+			ResourceBundle resourceBundle = getCurrentResourceBundle();
+			this.title = resourceBundle.getString("LegendTitle");
+		}
 	}
 
 	@Override
@@ -156,6 +164,11 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
+	}
+
+	@Override
+	public void performPostLoadAction() {
+		setTitle(originalTitle);
 	}
 
 	// /**

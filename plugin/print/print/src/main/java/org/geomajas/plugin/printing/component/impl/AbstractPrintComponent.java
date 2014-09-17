@@ -12,8 +12,13 @@
 package org.geomajas.plugin.printing.component.impl;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.plugin.printing.component.ComponentUtil;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
+import org.geomajas.plugin.printing.component.PageComponent;
+import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+
+import java.util.ResourceBundle;
 
 /**
  * Basic container component for printing. Handles the size calculation, layout and rendering of its children.
@@ -28,6 +33,8 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
  */
 @Api(allMethods = true)
 public class AbstractPrintComponent<T extends PrintComponentInfo> extends PrintComponentImpl<T> {
+
+	private static final String BUNDLE_NAME = "org/geomajas/plugin/printing/PrintingMessages"; //$NON-NLS-1$
 
 	/** No-arguments constructor. */
 	public AbstractPrintComponent() {
@@ -47,6 +54,33 @@ public class AbstractPrintComponent<T extends PrintComponentInfo> extends PrintC
 	 */
 	public AbstractPrintComponent(String id, LayoutConstraint constraint) {
 		super(id, constraint);
+	}
+
+	//-----------------------------------
+	//  methods for obtaining internationalised messages
+	//-----------------------------------
+
+	/**
+	 * Returns the resource bundle for current Locale, i.e. locale set in the PageComponent.
+	 * Always create a new instance, this avoids getting the incorrect locale information.
+	 *
+	 * @return resourcebundle for internationalized messages
+	 */
+	protected ResourceBundle getCurrentResourceBundle() {
+		return ComponentUtil.getCurrentResourceBundle(getLocaleString());
+	}
+
+	private String getLocaleString() {
+		PrintComponent<?> ancestor = getParent();
+
+		while (null != ancestor && !(ancestor instanceof PageComponent)) {
+			ancestor = ancestor.getParent();
+		}
+		if (null != ancestor && ancestor instanceof PageComponent) {
+			return ((PageComponent) ancestor).getLocale();
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -42,4 +42,5 @@ public interface LegendComponent extends PrintComponent<LegendComponentInfo> {
 
 	void setApplicationId(String applicationId);
 
+	void performPostLoadAction();
 }

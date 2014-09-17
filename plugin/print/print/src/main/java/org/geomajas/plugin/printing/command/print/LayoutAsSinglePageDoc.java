@@ -65,10 +65,8 @@ public class LayoutAsSinglePageDoc {
 		PrintTemplateInfo template = request.getTemplate();
 		PageComponent page = (PageComponent) converterService.toInternal(template.getPage());
 		
-
 		// Adjust the title text of the legend component if present
 		updateLegendChildren(request, page);
-		
 
 		if (request.getPageSize() != null) {
 			page.setSize(request.getPageSize(), true);
@@ -106,10 +104,10 @@ public class LayoutAsSinglePageDoc {
 	}
 
 	private static void updateTitle(PrintGetTemplateExtRequest request, LegendComponent legendComp) {
-	
+		legendComp.performPostLoadAction();
 		PrintComponent<?> lab = legendComp.getChild(PrintTemplate.TITLE);
 		if (lab != null && lab instanceof LabelComponent) {
-			((LabelComponent) lab).setText(((LegendComponent) legendComp).getTitle());
+			((LabelComponent) lab).setText(legendComp.getTitle());
 			((LabelComponentImpl) lab).setFont(legendComp.getFont().deriveFont(legendComp.getFont().getSize()));
 		}
 		// need to do this before setSizeAndFit

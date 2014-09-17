@@ -11,19 +11,15 @@
 
 package org.geomajas.plugin.printing.component.impl;
 
-import java.awt.Font;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.Utilities;
+import com.lowagie.text.pdf.codec.PngImage;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.LegendViaUrlComponent;
-import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
@@ -37,13 +33,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.Utilities;
-import com.lowagie.text.pdf.codec.PngImage;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import java.awt.Font;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Rendering of the legend for a certain layer in a printed document via an image specified via a URL.
@@ -55,15 +51,9 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaUrlComponentInfo> implements
 LegendViaUrlComponent {
 
-	private static final String BUNDLE_NAME = "org/geomajas/plugin/printing/PrintingMessages"; //$NON-NLS-1$
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(LegendViaUrlComponentImpl.class);
 	
-	// do not make this static, different requests might need different bundles
-	@XStreamOmitField
-	private ResourceBundle resourceBundle;
-
-
 	private static final int DPI_FOR_IMAGE = 288;
 
 	private static final String NOT_VISIBLE_MSG = "INVISIBLE_FOR_SCALE";
@@ -121,17 +111,6 @@ LegendViaUrlComponent {
 			log.error("getLegendImageServiceUrl() returns unexpectedly with NULL");
 			setBounds(new Rectangle(0, 0));
 			return; // Abort
-		}
-		
-		String locale = getLocale();
-		try {
-			if (null != locale && !locale.isEmpty()) {
-				resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(locale));
-			} else {
-				resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
-			}
-		} catch (MissingResourceException e) {
-			resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en'"));
 		}
 		
 		if (getConstraint().getMarginX() <= 0.0f) {
@@ -227,21 +206,6 @@ LegendViaUrlComponent {
 		
 	}
 
-	protected String getLocale() {
-		PrintComponent<?> ancestor = getParent();
-		
-		while (null != ancestor && !(ancestor instanceof PageComponent)) {
-			ancestor = ancestor.getParent();
-		} 
-		if (null != ancestor && ancestor instanceof PageComponent) {
-			return ((PageComponent) ancestor).getLocale();
-		} else {
-			return null;
-		}
-		
-	}
-
-	
 	@Override
 	public boolean isVisible() {
 		return this.visible;
@@ -418,6 +382,7 @@ LegendViaUrlComponent {
 	
 	@SuppressWarnings("deprecation")
 	private void generateWarningMessage(PdfContext context) {
+		ResourceBundle resourceBundle = getCurrentResourceBundle();
 		warning = resourceBundle.getString("ErrorRetrievingLegend");
 		
 		Rectangle textSize = context.getTextSize(warning, getFont());
