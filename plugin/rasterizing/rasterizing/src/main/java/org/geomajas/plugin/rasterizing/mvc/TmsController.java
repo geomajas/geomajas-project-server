@@ -124,7 +124,6 @@ public class TmsController {
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
 	public TmsController() {
-		System.out.println("ok");
 	}
 
 	/**

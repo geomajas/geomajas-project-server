@@ -39,7 +39,6 @@ public class LayerHttpServiceInterceptors {
 	private Map<String, List<HttpRequestInterceptor>> map;
 
 	public LayerHttpServiceInterceptors() {
-		System.out.println();
 	}
 	
 	public Map<String, List<HttpRequestInterceptor>> getMap() {

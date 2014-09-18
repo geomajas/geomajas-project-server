@@ -239,7 +239,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 *             cannot get result
 	 */
 	private InputStream connect(String url) throws IOException {
-		System.out.println(URL_BASE + url);
+		log.debug(URL_BASE + url);
 		URLConnection conn = new URL(URL_BASE + url).openConnection();
 		conn.setConnectTimeout(CONNECT_TIMEOUT);
 		conn.setReadTimeout(READ_TIMEOUT);
@@ -316,7 +316,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 					.get("latitude"));
 			double east = Double.parseDouble((String) northEast
 					.get("longitude"));
-			System.out.println(south + " " + west + " " + north + " " + east);
+			log.debug(south + " " + west + " " + north + " " + east);
 
 			Bbox box = null;
 			if (Math.abs(north - south) > DELTA
