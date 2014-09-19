@@ -15,11 +15,11 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-plugin-vendorspecificpipeline-parent</artifactId>
-		<version>1.16.2</version>
+		<version>1.17.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-server-plugin-vendorspecificpipeline-javadoc</artifactId>
-	<version>1.16.2</version>
+	<version>1.17.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas Server: Plugin Vendorspecificpipeline - Javadoc</name>
 	<description>Geomajas Server: Plugin Vendorspecificpipeline - Javadoc</description>
