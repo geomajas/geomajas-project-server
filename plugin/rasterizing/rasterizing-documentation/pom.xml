@@ -47,13 +47,13 @@
 									<groupId>org.geomajas.plugin</groupId>
 									<artifactId>geomajas-plugin-rasterizing-gwt-example-jar</artifactId>
 									<version>${geomajas-client-gwt-version}</version>
-									<outputDirectory>${project.build.directory}/extract/rasterizing-gwt-example-jar</outputDirectory>
+									<outputDirectory>${project.basedir}/src/main/generated-sources/rasterizing-gwt-example-jar</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.geomajas.plugin</groupId>
 									<artifactId>geomajas-plugin-rasterizing-gwt</artifactId>
 									<version>${geomajas-client-gwt-version}</version>
-									<outputDirectory>${project.build.directory}/extract/rasterizing-gwt</outputDirectory>
+									<outputDirectory>${project.basedir}/src/main/generated-sources/rasterizing-gwt</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
