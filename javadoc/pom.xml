@@ -19,81 +19,67 @@
 	</parent>
 
 	<artifactId>geomajas-project-server-javadoc</artifactId>
-	<version>1.17.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas Server: Javadoc</name>
 	<description>Geomajas Server: Javadoc</description>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api-experimental</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api-experimental</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
-
 	</dependencies>
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>${server-version-maven-javadoc-plugin}</version>
 				<executions>
 					<execution>
 						<id>javadoc-jar</id>
@@ -103,7 +89,6 @@
 						</goals>
 						<configuration>
 							<includeDependencySources>true</includeDependencySources>
-
 							<dependencySourceIncludes>
 								<dependencySourceInclude>org.geomajas:*</dependencySourceInclude>
 							</dependencySourceIncludes>
@@ -111,8 +96,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
 </project>
