@@ -100,8 +100,20 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-impl</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-common-servlet</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-common-servlet</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -117,6 +129,7 @@
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
 				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -376,6 +389,12 @@
 				<artifactId>geomajas-face-rest</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-rest</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 			<dependency>
@@ -396,6 +415,12 @@
 				<version>${project.version}</version>
 				<groupId>org.geomajas.plugin</groupId>
 			</dependency>
+			<dependency>
+				<artifactId>geomajas-plugin-layer-common</artifactId>
+				<version>${project.version}</version>
+				<groupId>org.geomajas.plugin</groupId>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 			<dependency>
@@ -415,6 +440,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -451,6 +482,12 @@
 				<artifactId>geomajas-layer-googlemaps</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-googlemaps</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 
@@ -460,6 +497,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-hibernate</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-hibernate</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -523,6 +566,12 @@
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 
@@ -533,6 +582,12 @@
 				<artifactId>geomajas-layer-tms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-tms</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 
@@ -542,6 +597,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- dependency -->
@@ -560,8 +621,20 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-cache</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-cache-infinispan</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-cache-infinispan</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -660,6 +733,12 @@
 				<artifactId>geomajas-plugin-geocoder</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geocoder</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- provide -->
 			<dependency>
@@ -694,6 +773,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-print</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-print</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -735,6 +820,12 @@
 				<artifactId>geomajas-plugin-profiling</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-profiling</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 			<dependency>
@@ -751,6 +842,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -787,6 +884,12 @@
 				<artifactId>geomajas-plugin-runtimeconfig</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-runtimeconfig</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<!-- depend -->
 			<dependency>
@@ -804,8 +907,20 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-staticsecurity-ldap</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity-ldap</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -821,6 +936,12 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-vendorspecificpipeline</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-vendorspecificpipeline</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<!-- depend -->
@@ -844,6 +965,7 @@
 		<hibernate-spatial-version>1.0</hibernate-spatial-version>
 		<postgis-jdbc-version>1.1.6</postgis-jdbc-version>
 		<geomajas-geometry-version>1.3.0</geomajas-geometry-version>
+		<server-version-maven-javadoc-plugin>2.9.1</server-version-maven-javadoc-plugin>
 	</properties>
 
 </project>
