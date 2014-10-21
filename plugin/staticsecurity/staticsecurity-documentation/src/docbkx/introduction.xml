@@ -14,6 +14,12 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>Geomajas server static security plugin introduction.</para>
+  <para>The staticsecurity plugin allows you to define the policies which
+  apply for certain users. The policies are statically defined in a XML file
+  (hence the name). These policies can be linked to users which can also
+  defined in the XML file or which are obtained through code (for example
+  linking to a user database or LDAP store).</para>
 
+  <para>This plugin also includes an example which adds a custom policy and
+  makes that available in the SecurityContext.</para>
 </chapter>

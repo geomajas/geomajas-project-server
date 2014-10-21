@@ -12,8 +12,8 @@
 
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-<book id="enduser" lang="en">
-	<title>Geomajas Server static security plug-in guide</title>
+<book id="book" lang="en">
+	<title>Geomajas static security plugin</title>
 
 	<bookinfo>
 		<copyright>
@@ -34,6 +34,12 @@
 	<toc></toc>
 
 	<xi:include href="introduction.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+	
+	<xi:include href="configuration.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="howto.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 </book>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-howto">
+  <title>How-to</title>
+
+  <section>
+    <title>Evaluating directly configured users first</title>
+
+    <para>Normal behavior is that the users which a directly configured in the
+    SecurityServiceInfo object users field are searched after the services
+    which are configured in the authenticationServices field. This can be very
+    useful for testing, for example when the remote service is not available
+    (and the system waits for times). This can be changed by using a
+    configuration like</para>
+
+    <example>
+      <title>Evaluating configured users first</title>
+
+      <programlisting>&lt;bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo"&gt;
+    &lt;!-- LDAP authentication AFTER configured users --&gt;
+    &lt;property name="authenticationServices"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.plugin.staticsecurity.security.StaticAuthenticationService" /&gt;
+            &lt;bean class="org.geomajas.plugin.staticsecurity.ldap.LdapAuthenticationService"&gt;
+                &lt;!-- ..... LDAP settings --&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+    </example>
+  </section>
+</chapter>
