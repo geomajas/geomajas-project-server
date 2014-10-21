@@ -537,11 +537,6 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
 		StringBuilder url = formatBaseUrl(getWmsTargetUrl(), width, height, box);
 		url.append("&request=GetMap");
-		String token = securityContext.getToken();
-		if (null != token) {
-			url.append("&userToken=");
-			url.append(token);
-		}
 		return url.toString();
 	}
 
@@ -615,6 +610,10 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 					url.append("=");
 					url.append(URLEncoder.encode(p.getValue(), "UTF8"));
 				}
+			}
+			if (useProxy && null != securityContext.getToken()) {
+				url.append("&userToken=");
+				url.append(securityContext.getToken());
 			}
 			return url;
 		} catch (UnsupportedEncodingException uee) {
