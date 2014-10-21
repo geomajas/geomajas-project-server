@@ -79,7 +79,7 @@ public class WmsProxyController {
 		}
 		RasterLayerInfo layerInfo = layer.getLayerInfo();
 		if (!securityContext.isLayerVisible(layerId)) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 
@@ -89,7 +89,6 @@ public class WmsProxyController {
 		InputStream stream = null;
 
 		try {
-			response.setContentType(layer.getFormat());
 			ServletOutputStream out = response.getOutputStream();
 			stream = httpService.getStream(url, layer);
 			int b;
