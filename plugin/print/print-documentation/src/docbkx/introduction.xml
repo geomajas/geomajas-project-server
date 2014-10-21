@@ -9,11 +9,140 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>Geomajas server print plugin introduction.</para>
+  <para>This printing plugin provides a simple yet compelling example of how
+  platform independent web map printing might be implemented. Our
+  implementation bypasses the browsers native printing functionality by
+  rendering server side to a PDF document, which is then automatically
+  downloaded to the browser. The PDF document can either be saved to the file
+  system or opened in a new browser window from which native PDF printing is
+  possible. As different browsers are allowed to - and will - render identical
+  HTML pages in a slightly different manner, an absolute format like PDF is a
+  necessity for creating reproducible prints.</para>
 
+  <para>Our implementation makes extensive use of the excellent iText
+  library<footnote>
+      <para>"iText is a library that allows you to generate PDF files on the
+      fly", see http://itextpdf.com/</para>
+    </footnote>, which allows direct drawing operations on a graphics context.
+  This has the advantage of preserving the vectorial nature of the features in
+  a layer, allowing crisp vector rendering at any zoom level.</para>
+
+  <section id="backend">
+    <title>Back-end</title>
+
+    <para>The printing plugin consists of a client part (the client GWT) that
+    is responsible for the user interaction and a back-end part that is
+    responsible for the generation of the PDF document. To achieve sufficient
+    flexibility in the layout and composition of the PDF document, the
+    document is conceptually a tree of nested components, each of which is
+    responsible for its own rendering.</para>
+
+    <para>The following set of components have been implemented:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>PageComponent</emphasis>: a container component for
+        the complete PDF page.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>MapComponent</emphasis>: this represents the main map.
+        The layers, scale bar, legend and other components are child members
+        of the map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>LabelComponent</emphasis>: can be used for an
+        arbitrary text label, e.g. a title.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>ImageComponent</emphasis>: represents an arbitrary
+        static image, e.g. a north arrow on a map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>VectorlayerComponent</emphasis>: draws a vector layer
+        on the map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>RasterLayerComponent</emphasis>: draws a raster layer
+        on the map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>ScaleBarComponent</emphasis>: draws a scale bar on the
+        map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>LegendComponent</emphasis>: draws a legend on the
+        map.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>ViewPortComponent</emphasis>: a view port is a smaller
+        map that is an inset of the main map and is used to highlight details
+        of the main map.</para>
+      </listitem>
+    </itemizedlist>
+
+    <figure>
+      <title>Print components</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/components.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The layout is determined by recursively calculating the preferred
+    size of each component first (which can vary according to font sizes,
+    margins, etc...) followed by a second pass in which the layout constraints
+    of each component are used to align the component with respect to its
+    parent. This approach is top-down, starting with the root PageComponent.
+    The following layout constraints are possible:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>width</emphasis>: the preferred width of the
+        component.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>height</emphasis>: the preferred height of the
+        component.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>marginX</emphasis>: the margin in the x-direction or
+        the x-position in case of absolute alignment in the
+        x-direction.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>marginY</emphasis>: the margin in the y-direction or
+        the y-position in case of absolute alignment in the
+        y-direction.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>alignmentX</emphasis>: the alignment type in the
+        x-direction (left, right, justified or absolute).</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>alignmentY</emphasis>: the alignment type in the
+        y-direction (left, right, justified or absolute).</para>
+      </listitem>
+    </itemizedlist>
+  </section>
 </chapter>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <para>Apart from the maven dependency configuration, most of the
+  configuration options of the printing plugin are currently provided by the
+  end user at runtime. To provide access to the plugin's functionality from
+  the client GWT, an action has been provided that pops up a printing
+  preferences window.</para>
+
+	<section id="dependencies">
+		<title>Dependencies</title>
+
+		<para>Make sure sure you include the correct version of the plugin in
+			your project. Use the following excerpt (with the correct version) in the
+			dependencyManagement section of your project:</para>
+
+		<informalexample>
+			<programlisting> &lt;dependency&gt;
+   &lt;groupId&gt;org.geomajas.project&lt;/groupId&gt;
+   &lt;artifactId&gt;geomajas-project-server&lt;/artifactId&gt;
+   &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+   &lt;type&gt;pom&lt;/type&gt;
+   &lt;scope&gt;import&lt;/scope&gt;
+&lt;/dependency&gt;
+			</programlisting>
+		</informalexample>
+
+		<para>If you are using geomajas-dep, this includes the latest released
+			version of the caching plugin (at the time of publishing of that
+			version). If you want to overwrite the caching plugin version, make sure
+			to include this excerpt <emphasis>before</emphasis> the geomajas-dep
+			dependency.</para>
+
+		<para>You can now include the actual dependency without explicit
+			version.</para>
+
+		<example>
+			<title>Plugin dependency</title>
+
+			<programlisting>&lt;dependency&gt;
+   &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+   &lt;artifactId&gt;geomajas-plugin-print&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+		</example>
+
+	</section>
+</chapter>
