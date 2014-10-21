@@ -13,7 +13,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <book id="enduser" lang="en">
-	<title>Geomajas Server geocoder plug-in guide</title>
+	<title>Geomajas Server geocoder plugin guide</title>
 
 	<bookinfo>
 		<copyright>
@@ -34,6 +34,15 @@
 	<toc></toc>
 
 	<xi:include href="introduction.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+	
+	<xi:include href="use.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="configuration.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="howto.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 </book>
