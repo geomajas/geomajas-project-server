@@ -89,6 +89,11 @@ public class WmsProxyController {
 		InputStream stream = null;
 
 		try {
+			if (url.toLowerCase().contains("text/html")) {
+				response.setContentType("text/html");
+			} else {
+				response.setContentType(layer.getFormat());
+			}
 			ServletOutputStream out = response.getOutputStream();
 			stream = httpService.getStream(url, layer);
 			int b;
