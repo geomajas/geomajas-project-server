@@ -15,6 +15,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.PreDestroy;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -51,6 +55,15 @@ public class RasterLayerFactory implements LayerFactory {
 	@Autowired
 	private LayerHttpService httpService;
 
+	private ExecutorService imageThreadPool;
+
+	private static final int THREADS_PER_CORE = 15;
+
+	public RasterLayerFactory() {
+		int cpus = Runtime.getRuntime().availableProcessors();
+		imageThreadPool = Executors.newFixedThreadPool(cpus * THREADS_PER_CORE);
+	}
+
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientRasterLayerInfo;
 	}
@@ -69,14 +82,13 @@ public class RasterLayerFactory implements LayerFactory {
 		double rasterScale = port.getScreenArea().getWidth() / port.getBounds().getWidth();
 		List<RasterTile> tiles = rasterLayerService.getTiles(clientLayerInfo.getServerLayerId(),
 				areaOfInterest.getCoordinateReferenceSystem(), areaOfInterest, rasterScale);
-		RasterDirectLayer rasterLayer = new RasterDirectLayer(new UrlDownLoader() {
-			
+		RasterDirectLayer rasterLayer = new RasterDirectLayer(imageThreadPool, new UrlDownLoader() {
+
 			@Override
 			public InputStream getStream(String url) throws IOException {
 				return httpService.getStream(url, layer);
 			}
-		}, tiles, layer.getLayerInfo().getTileWidth(), layer
-				.getLayerInfo().getTileHeight(), extraInfo.getCssStyle());
+		}, tiles, layer.getLayerInfo().getTileWidth(), layer.getLayerInfo().getTileHeight(), extraInfo.getCssStyle());
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
 		rasterLayer.getUserData().put(USERDATA_KEY_LAYER_ID, layer.getId());
 		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
@@ -89,6 +101,11 @@ public class RasterLayerFactory implements LayerFactory {
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
+	}
+
+	@PreDestroy
+	public void preDestroy() {
+		imageThreadPool.shutdown();
 	}
 
 }
