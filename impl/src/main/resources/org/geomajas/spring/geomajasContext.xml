@@ -394,14 +394,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- default security configuration - should be overwritten to make something 
 		accessible -->
-	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
-		<property name="loopAllServices" value="false" />
-		<property name="securityServices">
-			<list>
-				<!-- ... none by default -->
-			</list>
-		</property>
-	</bean>
+	<bean name="security.securityInfo" class="org.geomajas.internal.security.EmptySecurityInfo"/>
 
 	<!-- default cache configuration - temporary, this needs to be handled properly -->
 	<bean name="configuration.TileCacheConfiguration" class="org.geomajas.configuration.TileCacheConfiguration">
