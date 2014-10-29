@@ -116,6 +116,8 @@ public class TmsController {
 
 	@Autowired
 	private CachingSupportService cachingSupportService;
+	
+	private boolean redirectRasterLayers = true;
 
 	private static final int ERROR_MESSAGE_X = 10;
 
@@ -124,6 +126,14 @@ public class TmsController {
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
 	public TmsController() {
+	}
+	
+	public boolean isRedirectRasterLayers() {
+		return redirectRasterLayers;
+	}
+	
+	public void setRedirectRasterLayers(boolean redirectRasterLayers) {
+		this.redirectRasterLayers = redirectRasterLayers;
 	}
 
 	/**
@@ -231,7 +241,12 @@ public class TmsController {
 			log.debug("Url = " + tiles.get(0).getUrl());
 			log.debug("Tile = " + tiles.get(0));
 			String url = tiles.get(0).getUrl();
-			writeToResponse(layer, url.replace(".jpeg", ".png"), request, response);
+			if (isRedirectRasterLayers()) {
+				response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+				response.setHeader("Location", url);
+			} else {
+				writeToResponse(layer, url.replace(".jpeg", ".png"), request, response);
+			}
 		}
 	}
 
