@@ -60,7 +60,6 @@ public class RasterDirectLayerTest {
 
 	@Test
 	public void testWMS() throws Exception {
-
 		ClientRasterLayerInfo cl1 = new ClientRasterLayerInfo();
 		cl1.setServerLayerId(layerBluemarble.getId());
 		RasterLayerRasterizingInfo rr1 = new RasterLayerRasterizingInfo();

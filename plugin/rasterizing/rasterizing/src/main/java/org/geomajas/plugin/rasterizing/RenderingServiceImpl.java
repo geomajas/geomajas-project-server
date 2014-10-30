@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.swing.JComponent;
 
 import org.geomajas.global.GeomajasException;
@@ -66,10 +68,16 @@ public class RenderingServiceImpl implements RenderingService {
 
 	private ExecutorService threadPool;
 
+	private int threadsPerCore = 30;
+
 	private final Logger log = LoggerFactory.getLogger(RenderingServiceImpl.class);
 
-	public RenderingServiceImpl() {
-		threadPool = Executors.newCachedThreadPool();
+	public int getThreadsPerCore() {
+		return threadsPerCore;
+	}
+	
+	public void setThreadsPerCore(int threadsPerCore) {
+		this.threadsPerCore = threadsPerCore;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -184,6 +192,17 @@ public class RenderingServiceImpl implements RenderingService {
 
 	public void paintMap(MapContext context, Graphics2D graphics) {
 		paintMap(context, graphics, new HashMap<Object, Object>());
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
+		int cpus = Runtime.getRuntime().availableProcessors();
+		threadPool = Executors.newFixedThreadPool(cpus * getThreadsPerCore());
+	}
+
+	@PreDestroy
+	public void preDestroy() {
+		threadPool.shutdown();
 	}
 
 	/**

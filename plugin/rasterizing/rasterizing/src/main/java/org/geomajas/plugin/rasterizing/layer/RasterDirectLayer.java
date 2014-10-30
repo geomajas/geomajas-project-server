@@ -13,23 +13,7 @@ package org.geomajas.plugin.rasterizing.layer;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.tile.RasterTile;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DirectLayer;
-import org.geotools.map.MapContent;
-import org.geotools.map.MapViewport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.TranslateDescriptor;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -52,9 +36,26 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.TranslateDescriptor;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.tile.RasterTile;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.DirectLayer;
+import org.geotools.map.MapContent;
+import org.geotools.map.MapViewport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Layer responsible for rendering raster layers. Most of the code is copied from the printing plugin.
@@ -97,9 +98,16 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private UrlDownLoader urlDownLoader;
 
-	public RasterDirectLayer(UrlDownLoader urlDownLoader, List<RasterTile> tiles, int tileWidth, int tileHeight,
-			double tileScale, String style) {
-		super();
+	private ExecutorService imageThreadPool;
+
+	public RasterDirectLayer(ExecutorService imageThreadPool, UrlDownLoader urlDownLoader, List<RasterTile> tiles,
+			int tileWidth, int tileHeight, String style) {
+		this(imageThreadPool, urlDownLoader, tiles, tileWidth, tileHeight, -1.0, style);
+	}
+
+	public RasterDirectLayer(ExecutorService imageThreadPool, UrlDownLoader urlDownLoader, List<RasterTile> tiles,
+			int tileWidth, int tileHeight, double tileScale, String style) {
+		this.imageThreadPool = imageThreadPool;
 		this.urlDownLoader = urlDownLoader;
 		this.tileScale = tileScale;
 		this.tiles = tiles;
@@ -112,11 +120,6 @@ public class RasterDirectLayer extends DirectLayer {
 		}
 		this.tileHeight = tileHeight;
 		this.style = style;
-	}
-
-	public RasterDirectLayer(UrlDownLoader urlDownLoader, List<RasterTile> tiles, int tileWidth, int tileHeight,
-			String style) {
-		this(urlDownLoader, tiles, tileWidth, tileHeight, -1.0, style);
 	}
 
 	@Override
@@ -133,8 +136,10 @@ public class RasterDirectLayer extends DirectLayer {
 				// Loop until all images are downloaded or timeout is reached
 				long totalTimeout = DOWNLOAD_TIMEOUT + DOWNLOAD_TIMEOUT_ONE_TILE * tiles.size();
 				log.debug("=== total timeout (millis): {}", totalTimeout);
-				ExecutorService service = Executors.newFixedThreadPool(DOWNLOAD_MAX_THREADS);
-				List<Future<ImageResult>> futures = service.invokeAll(callables, totalTimeout, TimeUnit.MILLISECONDS);
+				List<Future<ImageResult>> futures = imageThreadPool.invokeAll(callables, totalTimeout,
+						TimeUnit.MILLISECONDS);
+				log.debug("service.invokeAll() returned for " + tiles.size() + " tiles with tile #0 with URL:  "
+						+ (tiles.isEmpty() ? "" : tiles.get(0).getUrl()));
 				// determine the pixel bounds of the mosaic
 				Bbox pixelBounds = getPixelBounds(tiles);
 				// create the images for the mosaic
