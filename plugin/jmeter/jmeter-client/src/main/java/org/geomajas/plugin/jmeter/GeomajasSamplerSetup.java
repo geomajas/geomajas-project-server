@@ -47,18 +47,27 @@ import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientPreferredPixelsPerTile;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
+import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
 /**
@@ -169,6 +178,19 @@ public class GeomajasSamplerSetup {
 			if (tileUrl.getHost().equals(baseUrl.getHost())) {
 				ok = saveUrlToFile(url, layerId + "-" + code.getCacheId());
 			}
+		}
+		return ok;
+	}
+
+	public boolean consumeTile(RasterizeMapResponse response) throws Exception {
+		boolean ok = false;
+		String url = response.getMapUrl();
+		url = url.contains("?") ? (url + "&userToken=" + userToken) : (url + "?userToken=" + userToken);
+		url = url.replace(", magdageo-test.inside.vlaanderen.be:8000:8180", "");
+		URL mapUrl = new URL(url);
+		// only fetch the tiles from our own server
+		if (mapUrl.getHost().equals(baseUrl.getHost())) {
+			ok = saveUrlToFile(url, response.getMapKey() + ".png");
 		}
 		return ok;
 	}
@@ -284,7 +306,13 @@ public class GeomajasSamplerSetup {
 			int scaleCount = scaleInfo.getZoomLevels().size();
 			int tileCount = context.getIntParameter("tileCount");
 			String runMode = context.getParameter("runMode");
-			if (runMode.equalsIgnoreCase("random")) {
+
+			// print stuff
+			boolean print = context.getParameter("printMap").equalsIgnoreCase("true");
+			int printWidthInPixels = context.getIntParameter("printWidthInPixels");
+			int printHeightInPixels = context.getIntParameter("printHeightInPixels");
+
+			if (runMode.equalsIgnoreCase("random") || print) {
 				for (int i = 0; i < tileCount; i++) {
 					// pick a random scale
 					double scale = scaleInfo.getZoomLevels().get(random.nextInt(scaleCount)).getPixelPerUnit();
@@ -297,39 +325,47 @@ public class GeomajasSamplerSetup {
 						}
 					}
 					if (layers.size() > 0) {
-						// pick a random layer
-						ClientLayerInfo layer = layers.get(random.nextInt(layers.size()));
-						// create the request
-						if (layer instanceof ClientVectorLayerInfo) {
-							GetVectorTileRequest vectorTileRequest = new GetVectorTileRequest();
-							// find best level for scale
-							int level = calculateTileLevel(layer, scale);
-							// pick a random x and y
-							int x = random.nextInt((int) Math.pow(2, level));
-							int y = random.nextInt((int) Math.pow(2, level));
-							vectorTileRequest.setCode(new TileCode(level, x, y));
-							vectorTileRequest.setCrs(mapInfo.getCrs());
-							vectorTileRequest.setLayerId(layer.getServerLayerId());
-							vectorTileRequest.setPaintGeometries(true);
-							vectorTileRequest.setPaintLabels(true);
-							vectorTileRequest.setPanOrigin(new Coordinate(0, 0));
-							vectorTileRequest.setScale(scale);
-							vectorTileRequest.setStyleInfo(((ClientVectorLayerInfo) layer).getNamedStyleInfo());
-							vectorTileRequest.setRenderer("SVG");
-							tileQueue.addRequest(vectorTileRequest);
+						if (print) {
+							ClientMapInfo map = createPrintableMap(printWidthInPixels, printHeightInPixels, scale,
+									layers);
+							RasterizeMapRequest rasterizeMapRequest = new RasterizeMapRequest();
+							rasterizeMapRequest.setClientMapInfo(map);
+							tileQueue.addRequest(rasterizeMapRequest);
 						} else {
-							GetRasterTilesRequest rasterTilesRequest = new GetRasterTilesRequest();
-							// find best level for scale
-							int level = calculateTileLevel(layer, scale);
-							// pick a random x and y
-							int x = random.nextInt((int) Math.pow(2, level));
-							int y = random.nextInt((int) Math.pow(2, level));
-							TileCode tilecode = new TileCode(level, x, y);
-							rasterTilesRequest.setBbox(calcBoundsForTileCode(layer, tilecode, scale));
-							rasterTilesRequest.setCrs(mapInfo.getCrs());
-							rasterTilesRequest.setLayerId(layer.getServerLayerId());
-							rasterTilesRequest.setScale(scale);
-							tileQueue.addRequest(rasterTilesRequest);
+							// pick a random layer
+							ClientLayerInfo layer = layers.get(random.nextInt(layers.size()));
+							// create the request
+							if (layer instanceof ClientVectorLayerInfo) {
+								GetVectorTileRequest vectorTileRequest = new GetVectorTileRequest();
+								// find best level for scale
+								int level = calculateTileLevel(layer, scale);
+								// pick a random x and y
+								int x = random.nextInt((int) Math.pow(2, level));
+								int y = random.nextInt((int) Math.pow(2, level));
+								vectorTileRequest.setCode(new TileCode(level, x, y));
+								vectorTileRequest.setCrs(mapInfo.getCrs());
+								vectorTileRequest.setLayerId(layer.getServerLayerId());
+								vectorTileRequest.setPaintGeometries(true);
+								vectorTileRequest.setPaintLabels(true);
+								vectorTileRequest.setPanOrigin(new Coordinate(0, 0));
+								vectorTileRequest.setScale(scale);
+								vectorTileRequest.setStyleInfo(((ClientVectorLayerInfo) layer).getNamedStyleInfo());
+								vectorTileRequest.setRenderer("SVG");
+								tileQueue.addRequest(vectorTileRequest);
+							} else {
+								GetRasterTilesRequest rasterTilesRequest = new GetRasterTilesRequest();
+								// find best level for scale
+								int level = calculateTileLevel(layer, scale);
+								// pick a random x and y
+								int x = random.nextInt((int) Math.pow(2, level));
+								int y = random.nextInt((int) Math.pow(2, level));
+								TileCode tilecode = new TileCode(level, x, y);
+								rasterTilesRequest.setBbox(calcBoundsForTileCode(layer, tilecode, scale));
+								rasterTilesRequest.setCrs(mapInfo.getCrs());
+								rasterTilesRequest.setLayerId(layer.getServerLayerId());
+								rasterTilesRequest.setScale(scale);
+								tileQueue.addRequest(rasterTilesRequest);
+							}
 						}
 					}
 				}
@@ -402,6 +438,56 @@ public class GeomajasSamplerSetup {
 			}
 		}
 		LOG.info("Prepared " + tileQueue.getSize() + " tiles");
+	}
+
+	private ClientMapInfo createPrintableMap(int printWidthInPixels, int printHeightInPixels, double scale,
+			List<ClientLayerInfo> layers) {
+		ClientMapInfo printMap = new ClientMapInfo();
+		printMap.setBackgroundColor(mapInfo.getBackgroundColor());
+		printMap.setCrs(mapInfo.getCrs());
+		printMap.setDisplayUnitType(mapInfo.getDisplayUnitType());
+		printMap.setId(mapInfo.getId());
+		printMap.setInitialBounds(mapInfo.getInitialBounds());
+		printMap.setLayers(mapInfo.getLayers());
+		printMap.setLineSelectStyle(mapInfo.getLineSelectStyle());
+		printMap.setPointSelectStyle(mapInfo.getPointSelectStyle());
+		printMap.setPolygonSelectStyle(mapInfo.getPolygonSelectStyle());
+		printMap.setScaleConfiguration(mapInfo.getScaleConfiguration());
+		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
+		printMap.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		double width = printWidthInPixels / scale;
+		double height = printHeightInPixels / scale;
+		Coordinate center = BboxService.getCenterPoint(printMap.getInitialBounds());
+		Bbox bounds = new Bbox(center.getX() - 0.5 * width, center.getY() - 0.5 * height, width, height);
+		mapRasterizingInfo.setBounds(bounds);
+		mapRasterizingInfo.setTransparent(true);
+		mapRasterizingInfo.setScale(scale);
+		mapRasterizingInfo.setDpi(96);
+		for (ClientLayerInfo clientLayerInfo : printMap.getLayers()) {
+			if (clientLayerInfo instanceof ClientVectorLayerInfo) {
+				ClientVectorLayerInfo vectorLayerInfo = (ClientVectorLayerInfo) clientLayerInfo;
+				VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();
+				vectorLayerRasterizingInfo.setPaintGeometries(true);
+				vectorLayerRasterizingInfo.setStyle(vectorLayerInfo.getNamedStyleInfo());
+				vectorLayerRasterizingInfo.setShowing(layers.contains(vectorLayerInfo));
+				vectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
+			} else if (clientLayerInfo instanceof ClientRasterLayerInfo) {
+				ClientRasterLayerInfo rasterLayerInfo = (ClientRasterLayerInfo) clientLayerInfo;
+				RasterLayerRasterizingInfo rasterLayerRasterizingInfo = new RasterLayerRasterizingInfo();
+				rasterLayerRasterizingInfo.setCssStyle(rasterLayerInfo.getStyle());
+				rasterLayerRasterizingInfo.setShowing(layers.contains(rasterLayerInfo));
+				rasterLayerInfo.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterLayerRasterizingInfo);
+			}
+		}
+		LegendRasterizingInfo legend = new LegendRasterizingInfo();
+		FontStyleInfo fontStyleInfo = new FontStyleInfo();
+		fontStyleInfo.applyDefaults();
+		legend.setFont(fontStyleInfo);
+		legend.setTitle("Jmeter");
+		legend.setWidth(100);
+		legend.setHeight(500);
+		mapRasterizingInfo.setLegendRasterizingInfo(legend);
+		return printMap;
 	}
 
 	protected int calculateTileLevel(ClientLayerInfo layer, double scale) {

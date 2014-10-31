@@ -25,6 +25,8 @@ import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
 
 /**
  * Geomajas sampler that randomly fetches tiles.
@@ -51,6 +53,9 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 		defaultParameters.addArgument("runMode", "random");
 		defaultParameters.addArgument("tileCount", "100");
 		defaultParameters.addArgument("saveTiles", "false");
+		defaultParameters.addArgument("printMap", "false");
+		defaultParameters.addArgument("printWidthInPixels", "512");
+		defaultParameters.addArgument("printHeightInPixels", "512");
 		defaultParameters.addArgument("username", null);
 		defaultParameters.addArgument("password", null);
 		defaultParameters.addArgument("userToken", null);
@@ -115,6 +120,21 @@ public class GeomajasSamplerClient extends AbstractJavaSamplerClient implements 
 						layerCount.put(layerId, layerCount.get(layerId) + 1);
 					} else {
 						LOG.info("Raster tile not consumed ");
+					}
+					successCount++;
+				} catch (Exception e) {
+					failurecount++;
+				}
+			} else if (request instanceof RasterizeMapRequest) {
+				RasterizeMapRequest rasterizeMapRequest = (RasterizeMapRequest) request;
+				LOG.info("Executing print request");
+				RasterizeMapResponse response = (RasterizeMapResponse) setUp.execute(RasterizeMapRequest.COMMAND,
+						rasterizeMapRequest);
+				try {
+					if (setUp.consumeTile(response)) {
+						LOG.info("Succesfully consumed print ");
+					} else {
+						LOG.info("Print not consumed ");
 					}
 					successCount++;
 				} catch (Exception e) {

@@ -41,6 +41,10 @@
 			<artifactId>geomajas-command</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-rasterizing</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<scope>test</scope>
