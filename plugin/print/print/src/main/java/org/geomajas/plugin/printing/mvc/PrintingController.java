@@ -10,12 +10,21 @@
  */
 package org.geomajas.plugin.printing.mvc;
 
+import java.io.IOException;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
+import org.geomajas.command.CommandDispatcher;
+import org.geomajas.command.CommandRequest;
+import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.printing.PrintingException;
+import org.geomajas.plugin.printing.command.dto.PrintGetTemplateExtResponse;
+import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.service.PrintService;
+import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +32,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 /**
  * Spring MVC controller that maps the pdf request to a document. The document should be available in the print service.
@@ -57,9 +70,18 @@ public class PrintingController {
 
 	@Autowired
 	protected PrintConfigurationService configurationService;
+	
+	@Autowired
+	protected CommandDispatcher commandDispatcher; 
+	
+	@Autowired
+	protected SecurityContext securityContext; 
+	
+	protected ObjectMapper objectMapper;
 
 	@RequestMapping(value = "/printing", method = RequestMethod.GET)
-	public ModelAndView printDocument(@RequestParam("documentId") String documentId,
+	public ModelAndView printGet(
+			@RequestParam("documentId") String documentId,
 			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
 			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName)
 			throws PrintingException {
@@ -71,6 +93,25 @@ public class PrintingController {
 		mav.addObject(FORMAT_KEY, Format.decode(fileName));
 		return mav;
 	}
+	
+	@RequestMapping(value = "/printing", method = RequestMethod.POST)
+	public ModelAndView printPost(
+			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
+			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName,
+			@RequestParam(value = "request") String commandRequest
+			)
+			throws PrintingException, JsonProcessingException, IOException {
+		CommandResponse response = commandDispatcher.execute(PrintGetTemplateRequest.COMMAND, fromJson(commandRequest), securityContext.getToken(), null);
+		PrintGetTemplateExtResponse pr = (PrintGetTemplateExtResponse)response;
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(DOCUMENT_VIEW_NAME);
+		mav.addObject(DOCUMENT_KEY, printService.removeDocument(pr.getDocumentId()));
+		mav.addObject(DOWNLOAD_KEY, download);
+		mav.addObject(FILENAME_KEY, fileName);
+		mav.addObject(FORMAT_KEY, Format.decode(fileName));
+		return mav;
+	}
+
 	
 	@ExceptionHandler
 	public ModelAndView exception(PrintingException exception, HttpServletResponse response) throws Exception {
@@ -85,6 +126,16 @@ public class PrintingController {
 		response.getWriter().println(exception.getLocalizedMessage());
 		return new ModelAndView();
 	}
-
+	
+	private CommandRequest fromJson(String commandRequest) throws JsonProcessingException, IOException {
+		ObjectReader reader = objectMapper.reader(PrintGetTemplateRequest.class);
+		return reader.readValue(commandRequest);
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
+		objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
+	}
 
 }
