@@ -69,5 +69,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="dispatcherUrl" value="http://localhost:8080/d/"/>
 	</bean>
 	
+	<!--  we need a view resolver -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"></bean>
+
+	<!--  scan for controllers and views -->
+	<context:component-scan base-package="org.geomajas.plugin.printing.mvc" />
 
 </beans>
