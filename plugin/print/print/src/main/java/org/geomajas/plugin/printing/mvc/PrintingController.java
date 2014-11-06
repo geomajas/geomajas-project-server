@@ -19,7 +19,12 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.configuration.IsInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.LayerExtraInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientUserDataInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.configuration.validation.ConstraintInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateExtRequest;
@@ -40,6 +45,8 @@ import org.geomajas.sld.filter.LogicOpsTypeInfo;
 import org.geomajas.sld.filter.SpatialOpsTypeInfo;
 import org.geomajas.sld.geometry.AbstractGeometryCollectionInfo;
 import org.geomajas.sld.geometry.AbstractGeometryInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -66,9 +73,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Controller("/printing/**")
 public class PrintingController {
 
-	public static final String DOCUMENT_VIEW_NAME = "plugin.printing.mvc.DocumentView";
+	private final Logger log = LoggerFactory.getLogger(PrintingController.class);
 
-	// public static final String IMAGE_VIEW_NAME = "plugin.printing.mvc.ImageView";
+	public static final String DOCUMENT_VIEW_NAME = "plugin.printing.mvc.DocumentView";
 
 	public static final String DOCUMENT_KEY = "document";
 
@@ -77,8 +84,6 @@ public class PrintingController {
 	public static final String FILENAME_KEY = "name";
 
 	public static final String FORMAT_KEY = "format";
-
-	// public static final String IMAGE_KEY = "image";
 
 	public static final String DOWNLOAD_METHOD_BROWSER = "0";
 
@@ -126,6 +131,13 @@ public class PrintingController {
 		// remove the nulls first, some SLD classes fail when setting null
 		// preferably the client should not sent nulls, but gwt-jackson has no support for this
 		removeNulls(tree);
+		if (log.isTraceEnabled()) {
+			log.trace("");
+			log.trace("start json template :");
+			log.trace(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
+			log.trace("stop json template :");
+			log.trace("");
+		}
 		// reuse the null-safe tree to do the actual parsing
 		PrintTemplateInfo template = fromJson(tree);
 		PrintGetTemplateExtRequest request = new PrintGetTemplateExtRequest();
@@ -181,6 +193,10 @@ public class PrintingController {
 		response.getWriter().println(exception.getLocalizedMessage());
 		return new ModelAndView();
 	}
+	
+	protected ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
 
 	private PrintTemplateInfo fromJson(JsonNode template) throws JsonProcessingException, IOException {
 		ObjectReader reader = objectMapper.reader(PrintTemplateInfo.class);
@@ -192,7 +208,12 @@ public class PrintingController {
 		objectMapper = new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		// abstract info classes
-		objectMapper.addMixInAnnotations(IsInfo.class, TypeInfoMixin.class);
+		objectMapper.addMixInAnnotations(AbstractAttributeInfo.class, TypeInfoMixin.class);
+		objectMapper.addMixInAnnotations(ClientLayerInfo.class, TypeInfoMixin.class);
+		objectMapper.addMixInAnnotations(ClientUserDataInfo.class, TypeInfoMixin.class);
+		objectMapper.addMixInAnnotations(ClientWidgetInfo.class, TypeInfoMixin.class);
+		objectMapper.addMixInAnnotations(ConstraintInfo.class, TypeInfoMixin.class);
+		objectMapper.addMixInAnnotations(LayerExtraInfo.class, TypeInfoMixin.class);
 		objectMapper.addMixInAnnotations(PrintComponentInfo.class, TypeInfoMixin.class);
 		// abstract SLD classes
 		objectMapper.addMixInAnnotations(ExpressionInfo.class, TypeInfoMixin.class);
