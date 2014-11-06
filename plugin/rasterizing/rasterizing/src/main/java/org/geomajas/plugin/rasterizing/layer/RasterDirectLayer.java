@@ -36,6 +36,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -82,6 +83,8 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private static final int DEFAULT_IMAGE_BUFFER_SIZE = 1024;
 
+	private static ExecutorService staticPool;
+
 	private final List<RasterTile> tiles;
 
 	private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
@@ -99,12 +102,72 @@ public class RasterDirectLayer extends DirectLayer {
 	private UrlDownLoader urlDownLoader;
 
 	private ExecutorService imageThreadPool;
+	
+	/**
+	 * Create a layer with a default static thread pool.
+	 * 
+	 * @param urlDownLoader helper class for downloading images
+	 * @param tiles the tiles to be rendered
+	 * @param tileWidth the tile width
+	 * @param tileHeight the tile height
+	 * @param style the image style
+	 * @deprecated use
+	 *     {@link RasterDirectLayer#RasterDirectLayer(ExecutorService, UrlDownLoader, List, int, int, String)}
+	 * 
+	 */
+	@Deprecated
+	public RasterDirectLayer(UrlDownLoader urlDownLoader, List<RasterTile> tiles, int tileWidth, int tileHeight,
+			String style) {
+		this(getStaticPool(), urlDownLoader, tiles, tileWidth, tileHeight, style);
+	}
 
+	/**
+	 * Create a layer with a default static thread pool.
+	 * 
+	 * @param urlDownLoader helper class for downloading images
+	 * @param tiles the tiles to be rendered
+	 * @param tileWidth the tile width
+	 * @param tileHeight the tile height
+	 * @param tileScale the scale at which to render
+	 * @param style the image style
+	 * @deprecated use
+	 *     {@link RasterDirectLayer#RasterDirectLayer(ExecutorService, UrlDownLoader, List, int, int, double, String)}
+	 * 
+	 */
+	@Deprecated
+	public RasterDirectLayer(UrlDownLoader urlDownLoader, List<RasterTile> tiles, int tileWidth, int tileHeight,
+			double tileScale, String style) {
+		this(getStaticPool(), urlDownLoader, tiles, tileWidth, tileHeight, tileScale, style);
+	}
+
+	/**
+	 * Create a layer with the specified thread pool.
+	 * 
+	 * @param imageThreadPool thread pool
+	 * @param urlDownLoader helper class for downloading images
+	 * @param tiles the tiles to be rendered
+	 * @param tileWidth the tile width
+	 * @param tileHeight the tile height
+	 * @param style the image style
+	 * 
+	 */
 	public RasterDirectLayer(ExecutorService imageThreadPool, UrlDownLoader urlDownLoader, List<RasterTile> tiles,
 			int tileWidth, int tileHeight, String style) {
 		this(imageThreadPool, urlDownLoader, tiles, tileWidth, tileHeight, -1.0, style);
 	}
 
+	/**
+	 * Create a layer with the specified thread pool.
+	 * 
+	 * @param imageThreadPool thread pool
+	 * @param urlDownLoader helper class for downloading images
+	 * @param tiles the tiles to be rendered
+	 * @param tileWidth the tile width
+	 * @param tileHeight the tile height
+	 * @param tileScale the scale at which to render
+	 * @param style the image style
+	 * 
+	 */
 	public RasterDirectLayer(ExecutorService imageThreadPool, UrlDownLoader urlDownLoader, List<RasterTile> tiles,
 			int tileWidth, int tileHeight, double tileScale, String style) {
 		this.imageThreadPool = imageThreadPool;
@@ -440,6 +503,14 @@ public class RasterDirectLayer extends DirectLayer {
 	public interface UrlDownLoader {
 
 		InputStream getStream(String url) throws IOException;
+	}
+
+	private static ExecutorService getStaticPool() {
+		if (staticPool == null) {
+			int cpus = Runtime.getRuntime().availableProcessors();
+			staticPool = Executors.newFixedThreadPool(cpus * 30);
+		}
+		return staticPool;
 	}
 
 	/**
