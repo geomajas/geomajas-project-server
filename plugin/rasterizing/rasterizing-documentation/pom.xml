@@ -28,9 +28,21 @@
 		<geomajas-client-gwt-version>1.15.0-M3</geomajas-client-gwt-version>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
-	
+
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/generated-sources</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

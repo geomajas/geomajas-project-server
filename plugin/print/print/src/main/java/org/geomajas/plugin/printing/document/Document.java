@@ -13,7 +13,6 @@ package org.geomajas.plugin.printing.document;
 import java.io.OutputStream;
 
 import org.geomajas.plugin.printing.PrintingException;
-import org.springframework.util.StringUtils;
 
 /**
  * 
@@ -51,7 +50,8 @@ public interface Document {
 		}
 
 		public static Format decode(String path) throws PrintingException {
-			String extension = StringUtils.getFilenameExtension(path).toLowerCase();
+			int dot = path.lastIndexOf(".");
+			String extension = (dot != -1 ? path.substring(dot + 1) : "");
 			if (JPG.getExtension().equals(extension)) {
 				return JPG;
 			} else if (PNG.getExtension().equals(extension)) {
