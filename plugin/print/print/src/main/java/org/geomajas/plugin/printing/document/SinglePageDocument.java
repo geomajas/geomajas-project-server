@@ -54,7 +54,7 @@ public class SinglePageDocument extends AbstractDocument {
 
 	private static final double DPI_FOR_PNG_OUTPUT = 72 * 2;
 
-	private static final double ONE_INCH_IN_CM =  2.54;
+	private static final double ONE_INCH_IN_CM = 2.54;
 
 	/**
 	 * The page to render.
@@ -71,7 +71,7 @@ public class SinglePageDocument extends AbstractDocument {
 	 */
 	private ByteArrayOutputStream baos;
 
-	//private boolean debug = true;
+	// private boolean debug = true;
 
 	/**
 	 * Constructs a document with the specified dimensions.
@@ -129,7 +129,7 @@ public class SinglePageDocument extends AbstractDocument {
 	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
 			PrintingException {
 		// first render or re-render for different layout
-		if (outputStream == null || baos == null || null != format) {
+		if (outputStream == null || baos == null) {
 			if (baos == null) {
 				baos = new ByteArrayOutputStream(); // let it grow as much as needed
 			}
@@ -167,14 +167,14 @@ public class SinglePageDocument extends AbstractDocument {
 				writer = PdfWriter.getInstance(document, baos);
 				// Render in correct colors for transparent rasters
 				writer.setRgbTransparencyBlending(true);
-				
+
 				document.open();
 				baos.reset();
 				context = new PdfContext(writer);
 				context.initSize(page.getBounds());
 			}
-			//int compressionLevel = writer.getCompressionLevel(); // For testing
-			//writer.setCompressionLevel(0); 
+			// int compressionLevel = writer.getCompressionLevel(); // For testing
+			// writer.setCompressionLevel(0);
 
 			// Actual drawing
 			document.addTitle("Geomajas");
@@ -182,92 +182,64 @@ public class SinglePageDocument extends AbstractDocument {
 			page.layout(context);
 			// finally render (uses baos)
 			page.render(context);
-			
+
 			document.add(context.getImage());
 			// Now close the document
 			document.close();
-			
-			// convert to non-pdf format
-			switch (format) {
-				case PDF:
-					break;
-				case PNG:
-				case JPG:
-
-					BufferedImage bufferedImage = null;
-					// Use JPedal lib for converting the PDF to PNG or JPG
-					/** instance of PdfDecoder to convert PDF into image */
-					PdfDecoder decodePdf = new PdfDecoder(true);
-
-					/** set mappings for non-embedded fonts to use */
-					PdfDecoder.setFontReplacements(decodePdf);
-					decodePdf.useHiResScreenDisplay(true);
-					decodePdf.getDPIFactory().setDpi(2 * 72);
-					decodePdf.setPageParameters(1, 1);
-					try {
-						decodePdf.openPdfArray(baos.toByteArray());
-						/** get page 1 as an image */
-						bufferedImage = decodePdf.getPageAsImage(1);
-
-						/** close the pdf file */
-						decodePdf.closePdfFile();
-						
-						
-					} catch (PdfException e) {
-						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
-					}
-					
-					baos.reset();
-					
-					// Update the DPI to  DPI_FOR_PNG_OUTPUT of bufferedImage, output written to baos
-					
-					final String formatName = format.getExtension();
-					boolean convertedDPI = false;
-					
-					for (Iterator<ImageWriter> iw = 
-									ImageIO.getImageWritersByFormatName(formatName); iw.hasNext();) {
-					   ImageWriter writer1 = iw.next();
-					   ImageWriteParam writeParam = writer1.getDefaultWriteParam();
-					   ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.
-									   			createFromBufferedImageType(BufferedImage.TYPE_INT_ARGB);
-					   IIOMetadata metadata = writer1.getDefaultImageMetadata(typeSpecifier, writeParam);
-					   if (metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) {
-						  continue;
-					   }
-
-					   setDPI(metadata);
-					   // Convert bufferedImage to baos
-					   final ImageOutputStream stream = ImageIO.createImageOutputStream(baos/*output*/);
-					   try {
-						  writer1.setOutput(stream);
-						  writer1.write(metadata, new IIOImage(bufferedImage/*input*/, null/* No thumbnails*/,
-										  metadata), writeParam);
-						  convertedDPI = true;
-					   } finally {
-						  stream.flush();
-						  stream.close();
-					   }
-					   break;
-					}
-					if (!convertedDPI) {
-						baos.reset();
-						//ImageIO.setUseCache(false);
-						ImageIO.write(bufferedImage, format.getExtension(), baos);
-					}
-					break;
-				default:
-					throw new IllegalStateException(
-							"Oops, software error, need to support extra format at end of render" + format);
-			}
-			if (outputStream != null) {
-				try {
-					baos.writeTo(outputStream);
-				} catch (IOException e) {
-					throw e;
-				}
-			}
 		} else {
-			baos.writeTo(outputStream);
+			if (format == Format.PDF) {
+				baos.writeTo(outputStream);
+			} else {
+				BufferedImage bufferedImage = null;
+				// Use JPedal lib for converting the PDF to PNG or JPG
+				/** instance of PdfDecoder to convert PDF into image */
+				PdfDecoder decodePdf = new PdfDecoder(true);
+
+				/** set mappings for non-embedded fonts to use */
+				PdfDecoder.setFontReplacements(decodePdf);
+				decodePdf.useHiResScreenDisplay(true);
+				decodePdf.getDPIFactory().setDpi(2 * 72);
+				decodePdf.setPageParameters(1, 1);
+				try {
+					decodePdf.openPdfArray(baos.toByteArray());
+					/** get page 1 as an image */
+					bufferedImage = decodePdf.getPageAsImage(1);
+
+					/** close the pdf file */
+					decodePdf.closePdfFile();
+
+				} catch (PdfException e) {
+					throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+				}
+				if (format == Format.PNG) {
+					final String formatName = format.getExtension();
+					for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName(formatName); iw.hasNext();) {
+						ImageWriter writer1 = iw.next();
+						ImageWriteParam writeParam = writer1.getDefaultWriteParam();
+						ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier
+								.createFromBufferedImageType(BufferedImage.TYPE_INT_ARGB);
+						IIOMetadata metadata = writer1.getDefaultImageMetadata(typeSpecifier, writeParam);
+						if (metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) {
+							continue;
+						}
+
+						setDPI(metadata);
+						// Write bufferedImage to outputStream
+						final ImageOutputStream stream = ImageIO.createImageOutputStream(outputStream);
+						try {
+							writer1.setOutput(stream);
+							writer1.write(metadata, new IIOImage(bufferedImage, null, metadata), writeParam);
+						} finally {
+							stream.flush();
+							stream.close();
+						}
+						break;
+					}
+				} else {
+					ImageIO.write(bufferedImage, format.getExtension(), outputStream);
+				}
+
+			}
 		}
 	}
 
@@ -278,26 +250,26 @@ public class SinglePageDocument extends AbstractDocument {
 	public int getContentLength() {
 		return baos == null ? 0 : baos.size();
 	}
-	
-	 private void setDPI(IIOMetadata metadata) throws IIOInvalidTreeException {
 
-			// for PNG, it's dots per millimeter
-			double dotsPerMilli = DPI_FOR_PNG_OUTPUT / (10.0 * ONE_INCH_IN_CM);
+	private void setDPI(IIOMetadata metadata) throws IIOInvalidTreeException {
 
-			IIOMetadataNode horiz = new IIOMetadataNode("HorizontalPixelSize");
-			horiz.setAttribute("value", Double.toString(dotsPerMilli));
+		// for PNG, it's dots per millimeter
+		double dotsPerMilli = DPI_FOR_PNG_OUTPUT / (10.0 * ONE_INCH_IN_CM);
 
-			IIOMetadataNode vert = new IIOMetadataNode("VerticalPixelSize");
-			vert.setAttribute("value", Double.toString(dotsPerMilli));
+		IIOMetadataNode horiz = new IIOMetadataNode("HorizontalPixelSize");
+		horiz.setAttribute("value", Double.toString(dotsPerMilli));
 
-			IIOMetadataNode dim = new IIOMetadataNode("Dimension");
-			dim.appendChild(horiz);
-			dim.appendChild(vert);
+		IIOMetadataNode vert = new IIOMetadataNode("VerticalPixelSize");
+		vert.setAttribute("value", Double.toString(dotsPerMilli));
 
-			IIOMetadataNode root = new IIOMetadataNode("javax_imageio_1.0");
-			root.appendChild(dim);
+		IIOMetadataNode dim = new IIOMetadataNode("Dimension");
+		dim.appendChild(horiz);
+		dim.appendChild(vert);
 
-			metadata.mergeTree("javax_imageio_1.0", root);
-	 }
+		IIOMetadataNode root = new IIOMetadataNode("javax_imageio_1.0");
+		root.appendChild(dim);
+
+		metadata.mergeTree("javax_imageio_1.0", root);
+	}
 
 }
