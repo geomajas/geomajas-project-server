@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<part id="part-appendix">
+  <title>Appendices</title>
+
+  <appendix id="appendix-migrating">
+    <title>Migrating between Geomajas versions</title>
+
+	  <section id="mig-1150">
+		  <title>Migrating between Geomajas 1.13.0,1.14.0 and Geomajas (back-end core)
+			  1.15.0</title>
+
+		  <itemizedlist>
+			  <listitem>
+				  <para>Restructured GeomajasContext.xml and GeomajasWebContext.xml</para>
+
+				  <itemizedlist>
+					  <listitem>
+						  <para>Because of possible classpath collisions, the geomajasContext.xml and
+							  geomajasWebContext.xml files are renamed to geomajasContext[pluginname].xml and
+							  geomajasWebContext[pluginname].xml. Make sure that your context-param in the web.xml file
+							  points to
+							  classpath:org/geomajas/spring/geomajasContext.xml and
+							  the init-param of the dispatcherservice
+							  to classpath:org/geomajas/spring/geomajasWebContext.xml</para>
+					  </listitem>
+				  </itemizedlist>
+			  </listitem>
+		  </itemizedlist>
+	  </section>
+
+	  <section id="mig-1130">
+      <title>Migrating between Geomajas 1.12.0 and Geomajas (back-end core)
+      1.13.0</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>Backend has been upgraded to Geotools version 9.2.</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>You cannot use previous versions of geomajas-backend if
+              you wish to use Geotools 9.x, you must upgrade to this
+              version.</para>
+            </listitem>
+
+            <listitem>
+              <para>gt-epsg-wkt (which has been deprecated for quite some
+              time) has been removed in favour of gt-epsg-hsql. if you have it
+              in your dependencies it is best to remove them.</para>
+            </listitem>
+
+            <listitem>
+              <para>The axisorder handling default has been changed to reflect
+              the standards.
+              System.setProperty("org.geotools.referencing.forceXY", "true");
+              see: <link
+              linkend="http://docs.geotools.org/latest/userguide/library/referencing/order.html">
+              http://docs.geotools.org/latest/userguide/library/referencing/order.html</link>
+              for a lengthy explanation.</para>
+
+              <para>I did not notice any problems with Geomajas changing this,
+              so as long as you stick to using Geomajas functionality and/or
+              Geotools you should be ok.</para>
+            </listitem>
+
+            <listitem>
+              <para>The Unittests with transformations between epsg:4326 and
+              epsg:31370 (Belgium Lambert) have a discrepancy of about 2
+              meters with the old version. It should be noted that these tests
+              are done with values far outside the Belgian boundaries (world
+              scale). Tests that stay within reasonable bounds have a
+              discrepancy of approx 10cm. I have added a test with a verified
+              point within Belgian boundaries as a sanitycheck.</para>
+            </listitem>
+
+            <listitem>
+              <para>If you get exceptions/weird behaviour check:</para>
+
+              <itemizedlist>
+                <listitem>
+                  <para>Your POM: check if all Geotools libraries are the same
+                  version (mvn dependency:tree | grep gt-) (put older plugins
+                  last so they do not include older versions).</para>
+                </listitem>
+
+                <listitem>
+                  <para>Your POM: upgrade plugins that are not compatible with
+                  Geotools 9.2:</para>
+
+                  <para>geomajas-layer-geotools / geomajas-face-rest /
+                  geomajas-layer-hibernate / geomajas-plugin-rasterizing /
+                  geomajas-plugin-deskmanager.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Your CODE: check the Geotools changes page if you use
+                  Geotools directly in your code: <link
+                  linkend="http://docs.geotools.org/latest/userguide/welcome/upgrade.html">
+                  http://docs.geotools.org/latest/userguide/welcome/upgrade.html</link></para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+
+            <listitem>
+              <para>If your unittests fail you might need to disable asserts on geotools:</para>
+
+              <para><programlisting>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;argLine&gt;-da&lt;/argLine&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt; </programlisting></para>
+
+              <para>Geotools assertions can fail when comparing CRS-objects,
+              as these are possibly wrapped by Geomajas (notably CRS.transform()).</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mig-1120">
+      <title>Migrating between Geomajas 1.11.1 and Geomajas (back-end core)
+      1.12.0</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>No known issues.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mig-1111">
+      <title>Migrating between Geomajas 1.10.0 and Geomajas (back-end core)
+      1.11.1</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>The Geomajas project no longer supports Java5, from now on,
+          all builds allow Java6 source and produce Java6 bytecode.</para>
+        </listitem>
+
+        <listitem>
+          <para>Default zoom behaviour for zooming to a selected point has
+          changed: before it was keeping the current scale, now it zooms to
+          the maximum scale (by default). The zoom scale for zooming to points
+          can be changed on a per-layer level by assigning the
+          <code>zoomToPointScale</code> property in
+          <code>ClientLayerInfo</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>The back-end now strictly adheres to the "editable" capability
+          defined in attribute configuration. When this is false, the
+          attribute cannot be written. As creating features without geometry
+          is not allowed, having this set to false in GeometryAttributeInfo
+          will prohibit the creation of features.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mig-1100">
+      <title>Migrating between Geomajas 1.9.0 and Geomajas (back-end core)
+      1.10.0</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>No known issues.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mig-190">
+      <title>Migrating between Geomajas 1.8.0 and Geomajas (back-end core)
+      1.9.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>Pipelines are now fully checked on application startup, any
+            problems in pipeline configuration will now cause application
+            startup to fail (previously this only failed when the pipeline in
+            question was executed).</para>
+          </listitem>
+
+          <listitem>
+            <para>In the GetVectorTile pipeline the GetTileTransformStep has
+            been split in the GetTileTransformStep and GetTileFillStep. The
+            postTileTransform hook is still after the GetTileTransformStep, so
+            the filtering of features to ensure they are only included in one
+            tile has not yet happened.</para>
+          </listitem>
+
+          <listitem>
+            <para>When defining a pipeline, if you have both an pipeline
+            definition and a delegate reference, an exception will be thrown
+            (previously the pipeline definition had preference - though the
+            javadoc said differently).</para>
+          </listitem>
+
+          <listitem>
+            <para>The GWT client no longer inherits the com.smartgwt.SmartGwt,
+            but com.smartgwt.SmartGwtNoTheme. The reason for this is that the
+            SmartGwt module automatically uses the 'enterprise' theme. This in
+            turn meant that choosing another theme resulted in Geomajas
+            loading both themes at once.</para>
+
+            <para>It is now up to the application definition to specify which
+            SmartGwt theme to use. This must be done by inheriting the
+            specific theme module in your .gwt.xml file like this:</para>
+
+            <programlisting>&lt;module&gt;
+   &lt;inherits name="com.smartclient.theme.enterprise.Enterprise"/&gt;
+&lt;/module&gt;</programlisting>
+          </listitem>
+
+          <listitem>
+            <para>GeoTools has been upgraded to 2.7.1. This causes some
+            incompatibilities. The GeoTools plug-in also needs to be updated
+            to 1.8.0 to avoid problems.</para>
+          </listitem>
+
+          <listitem>
+            <para>Recursive primitive attribute names (<code>a.b.c</code>) are
+            not allowed in this release. They should be replaced by equivalent
+            nested attributes
+            (<code>&lt;a&gt;&lt;b&gt;&lt;c&gt;&lt;/c&gt;&lt;/b&gt;&lt;/a&gt;</code>).
+            A custom form/datasource should be created if one wants to use
+            nested attributes as top level attributes in SmartGWT. For the
+            future, we consider improving widget configurations to allow
+            explicitly mentioning the attributes to be displayed (including
+            linked attributes). We would welcome feedback and contributions
+            for this.</para>
+          </listitem>
+
+          <listitem>
+            <para>While we have updated to GeoTools 2.7.1 we have not changed
+            the definition of the projections. It may be useful to update the
+            gwt-epsg-wkt dependency to 2.7.1 as well (though this could break
+            tests if you have tests which verify (re)projection. This could be
+            done by adding the following in your dependencies section:</para>
+
+            <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+    &lt;artifactId&gt;gt-epsg-wkt&lt;/artifactId&gt;
+    &lt;version&gt;2.7.1&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section id="mig-180">
+      <title>Migrating between Geomajas 1.7.1 and Geomajas (back-end core)
+      1.8.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>Geomajas now automatically limits geometries to the
+            transformable area when doind CRS transformations. This can have
+            the effect that geometries are simplified. For example, a
+            MultiPolygon which contains only one polygon may be converted to a
+            Polygon geometry.</para>
+          </listitem>
+
+          <listitem>
+            <para>The use of the GeomajasContextListener in web.xml is no
+            longer recommended. We recommend you use the normal spring
+            listeners. This does mean that you should add "classpath:" in
+            front of the locations in contextConfigLocation (the default
+            location is the web application context).</para>
+
+            <para>Note that you should add both the ContextLoaderListener and
+            RequestContextListener (this last one is not included in the
+            GeomajasContextListener but is needed for some services like
+            AutomaticDispatcherUrlService to function).<example>
+                <title>Defining spring configuration locations in
+                web.xml</title>
+
+                <programlisting>&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;
+        classpath:org/geomajas/spring/geomajasContext.xml<co
+                    id="co-20101222-1" />
+        WEB-INF/applicationContext.xml<co id="co-20101222-2" />
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
+                    id="co-20101222-3" />
+&lt;/listener&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
+                    id="co-20101222-4" />
+&lt;/listener&gt;
+    .....</programlisting>
+
+                <calloutlist>
+                  <callout arearefs="co-20101222-1">
+                    <para>root context for geomajas</para>
+                  </callout>
+
+                  <callout arearefs="co-20101222-2">
+                    <para>additional context for your application</para>
+                  </callout>
+
+                  <callout arearefs="co-20101222-3">
+                    <para>assures the application context is available</para>
+                  </callout>
+
+                  <callout arearefs="co-20101222-4">
+                    <para>assures the request can be accessed</para>
+                  </callout>
+                </calloutlist>
+              </example></para>
+          </listitem>
+
+          <listitem>
+            <para>The use of the CacheFilter servlet was introduced in 1.8.0.
+            It is strongly recommended that you include it in your web.xml
+            file to assure correct caching and compression on server-side
+            responses. This will greatly decrease loading times.</para>
+
+            <para><programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</programlisting></para>
+          </listitem>
+
+          <listitem>
+            <para>The GWT version has also been updated from 2.0.3 to 2.1.1.
+            This in turn requires that the maven-gwt-plugin used in the
+            pom.xml is also updated from 1.2-CPFIX to 2.1.0-1.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section id="mig-171">
+      <title>Migrating between Geomajas 1.6.0 and Geomajas (back-end core)
+      1.7.1</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para><code>ApplicationContextUtils</code> has been renamed to
+            <code>ApplicationContextUtil</code> and is now included in the api
+            (this was done to adhere to the coding style).</para>
+          </listitem>
+
+          <listitem>
+            <para>When building the dojo face and the dojo-example
+            application, the maven "-Pnoshrink" has been replaced by
+            "-DskipSkhrink".</para>
+          </listitem>
+
+          <listitem>
+            <para>The use of the dispatcher servlet was introduced in 1.7.1.
+            It is strongly recommended that you include it in your web.xml
+            file to assure all plug-ins which expect this can function.</para>
+
+            <para><programlisting>&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:org/geomajas/spring/geomajasWebContext.xml&lt;/param-value&gt;
+        &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting></para>
+          </listitem>
+
+          <listitem>
+            <para>the "springsecurity" module has be renamed "staticsecurity"
+            to more correctly address the nature of the plug-in and and to
+            avoid possible confusion with Spring's security stuff.
+            Additionally the old module has been split in two, one part being
+            the back-end/configuration module, and another the gwt
+            module.</para>
+          </listitem>
+
+          <listitem>
+            <para>Many of the layers contain a bug in the 1.6.0 version
+            assuming that injected services are fully initialised (and thus
+            usable) while building the application context. Because of changes
+            in the implementation of some services, these bugs become visible
+            when using the 1.7 backe-end. You have to update your layers as
+            well to 1.7+ to avoid these problems.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section id="mig-160">
+      <title>Migrating from Geomajas 1.5.4 to Geomajas 1.6.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>The gwt-client module no longer automatically adds the "nl"
+            locale to the application. This should now be done by the
+            application. You can do this by adding the line <programlisting>&lt;extend-property name="locale" values="nl"/&gt;</programlisting>
+            to your gwt.xml file.</para>
+          </listitem>
+
+          <listitem>
+            <para>In the GWT face, you should now use <code>MapContext</code>
+            instead of directly accessing <code>GraphicsContext</code>.</para>
+          </listitem>
+
+          <listitem>
+            <para><code>RasterLayer.paint()</code> now throws
+            <code>GeomajasException</code> instead of
+            <code>RenderException</code>. The <code>RenderException</code>
+            class has been moved to api-experimental.</para>
+          </listitem>
+
+          <listitem>
+            <para><code>LocaleSelect</code> now needs a parameter in the
+            constructor. This parameter is the name of the default
+            language.</para>
+          </listitem>
+
+          <listitem>
+            <para>The OpenStreetMap layer changes changed groupId from
+            "geomajas-layer-opentreetmaps" to
+            "geomajas-layer-opentreetmap".</para>
+          </listitem>
+
+          <listitem>
+            <para><code>GeomajasSecurityException</code> has moved from
+            "<code>org.geomajas.global</code>" to
+            "<code>org.geomajas.security</code>".</para>
+          </listitem>
+
+          <listitem>
+            <para><code>AllowAllSecurityService</code> has moved from
+            "<code>org.geomajas.internal.security</code>" to
+            "<code>org.geomajas.security.allowall</code>".</para>
+          </listitem>
+
+          <listitem>
+            <para><code>VectorLayerService</code> and
+            <code>RasterLayerService</code> have moved from
+            "<code>org.geomajas.service</code>" to
+            "<code>org.geomajas.layer</code>".</para>
+          </listitem>
+
+          <listitem>
+            <para>In <code>LabelStyleInfo</code> the style for the font is now
+            of type <code>FontStyleInfo</code>.</para>
+          </listitem>
+
+          <listitem>
+            <para><code>LayerIdsCommandRequest</code> has been introduced and
+            this is now extended by <code>SearchByLocationRequest</code> (no
+            change) and <code>UserMaximumExtentRequest</code> (changing
+            <code>includeLayers</code> to <code>layerIds</code>).</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section id="mig-154">
+      <title>Migrating from Geomajas 1.5.3 to Geomajas 1.5.4</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>SuccessCommandResponse class contained typos. The methods
+            <code>isSucces()</code> and <code>getSucces()</code> have been
+            renamed to <code>isSuccess()</code> and <code>getSuccess()</code>
+            respectively.</para>
+          </listitem>
+
+          <listitem>
+            <para>Changes in pipeline and promotion to stable API.</para>
+          </listitem>
+
+          <listitem>
+            <para>The method <code>getRasterLayer()</code> has been added in
+            <code>ConfigurationService</code>.</para>
+          </listitem>
+
+          <listitem>
+            <para>The <code>findMathTransform()</code> method in
+            <code>GeoService</code> now throws <code>GeomajasException</code>
+            instead of <code>FactoryException</code>.</para>
+          </listitem>
+
+          <listitem>
+            <para>InternalTile changes (should not affect anybody as these are
+            used internally in the back-end).</para>
+          </listitem>
+
+          <listitem>
+            <para>Many <code>DtoConverterService</code> methods now throw
+            <code>GeomajasException</code>.</para>
+          </listitem>
+
+          <listitem>
+            <para>The method <code>getId()</code> has been added to
+            <code>Layer.</code>All server layers should have a unique id. The
+            id is automatically assigned based on the Spring bean name.</para>
+          </listitem>
+
+          <listitem>
+            <para>Configuration changes: <code>maxTileLevel</code> has been
+            removed as this was not used.</para>
+          </listitem>
+
+          <listitem>
+            <para>Configuration changes: the server-side layers are no longer
+            connected to the client-side layer configurations via the
+            layerInfo objects. Instead, client-side layers refer directly to
+            the server layer's id via a serverLayerId property. The references
+            to the layerinfo objects are injected by a configuration
+            postprocessor, so the layerInfo should no longer be set
+            manually.</para>
+
+            <table>
+              <title>Back end configuration changes</title>
+
+              <tgroup cols="3">
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Property</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>LayerInfo</entry>
+
+                    <entry>id</entry>
+
+                    <entry>Removed, use id property of Layer instead</entry>
+                  </row>
+
+                  <row>
+                    <entry>SnappingRuleInfo</entry>
+
+                    <entry>layerInfo</entry>
+
+                    <entry>Replaced with serverLayerId</entry>
+                  </row>
+
+                  <row>
+                    <entry></entry>
+
+                    <entry>serverLayerId</entry>
+
+                    <entry>String ,should refer to id of Layer bean</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+
+            <para><table>
+                <title>Client configuration changes</title>
+
+                <tgroup cols="3">
+                  <thead>
+                    <row>
+                      <entry>Name</entry>
+
+                      <entry>Property</entry>
+
+                      <entry>Description</entry>
+                    </row>
+                  </thead>
+
+                  <tbody>
+                    <row>
+                      <entry>ClientLayerInfo</entry>
+
+                      <entry>serverLayerId</entry>
+
+                      <entry>String, should refer to id of Layer bean</entry>
+                    </row>
+
+                    <row>
+                      <entry></entry>
+
+                      <entry>layerInfo</entry>
+
+                      <entry>Should no longer be set manually, will be set by
+                      Spring</entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table></para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section id="mig-153">
+      <title>Migrating from Geomajas 1.5.2 to Geomajas 1.5.3</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>The <code>LayerModel</code> class has been integrated in
+          <code>VectorLayer</code>. This modifies the configuration. Where
+          before you would have written <programlisting>&lt;bean name="countriesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer"&gt;
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;
+&lt;bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" &gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="layerModel" ref="countriesModel" /&gt;
+&lt;/bean&gt;</programlisting> into <programlisting>&lt;bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer"&gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;</programlisting>Note that this includes changing "layermodel" to
+          "layer" in all module and package names.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>FeaturePainter</code> interface and related stuff has
+          been removed. These are obsolete with the introduction of the
+          <code>VectorLayerService</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>GeotoolsLayer</code> has been renamed
+          <code>GeoToolsLayer</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>With the change in directory structure, the commands have
+          moved from the <code>org.geomajas.extension.command</code> package
+          to <code>org.geomajas.command</code>. The <code>LogCommand</code>
+          has also been moved into the <code>general</code>
+          sub-package.</para>
+        </listitem>
+
+        <listitem>
+          <para>Security constraints are now applied in Geomajas. By default,
+          nothing is authorized, so you always have to configure at least one
+          security service. To go back to the old (allow-all) behaviour,
+          include the following excerpt in your configuration file.</para>
+
+          <programlisting>&lt;bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo"&gt;
+    &lt;property name="loopAllServices" value="false"/&gt;
+    &lt;property name="securityServices"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.security.allowall.AllowAllSecurityService"/&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Layers are now more sensitive to the attributes which are
+          defined for the layer. Attributes which have not been defined in the
+          feature info are not accessible this is the result of the
+          refactoring where the <code>InternalFeature</code> store attributes
+          as <code>Attribute</code> objects).</para>
+        </listitem>
+      </itemizedlist>
+
+      <section id="mig-153api">
+        <title>General API changes</title>
+
+        <para>The geomajas-API has been split up in a formal (geomajas-API)
+        and experimental API (geomajas-api-experimental). All
+        interfaces/classes from the cache and rendering packages have been
+        moved to experimental. This means that the rendering pipeline is at
+        the moment not a part of the official API, but instead more of a
+        preview of what's to come. Furthermore, some major changes have been
+        made in many other packages:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>The <code>org.geomajas.rendering.tile</code> has been moved
+            to <code>org.geomajas.layer.tile</code></para>
+          </listitem>
+
+          <listitem>
+            <para>Introduction of a DtoConverterService that is able to
+            convert DTO objects from and to back-end internal
+            representations.</para>
+          </listitem>
+
+          <listitem>
+            <para>All the different feature definitions have been cut down.
+            Only 2 versions remain at the moment: a DTO feature
+            (<code>org.geomajas.layer.feature.Feature</code>) and a feature
+            definition used internally in the backed
+            (<code>org.geomajas.layer.feature.InternalFeature</code>).</para>
+          </listitem>
+
+          <listitem>
+            <para>All the different tile definitions have been cut down. Only
+            3 remain. 2 DTO tiles:
+            <code>org.geomajas.layer.tile.VectorTile</code> - used in vector
+            layers and <code>org.geomajas.layer.tile.RasterTile</code> - used
+            in raster layers. The third is the
+            <code>org.geomajas.tile.InternalTile</code>. This tile is used
+            internally on the back-end.</para>
+          </listitem>
+
+          <listitem>
+            <para><code>GeometricAttributeInfo</code> has been renamed to
+            <code>GeometryAttributeInfo</code>.</para>
+          </listitem>
+
+          <listitem>
+            <para><code>ApplicationService</code> has been renamed to
+            <code>ConfigurationService</code>.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section id="mig-153conf">
+        <title>Configuration changes</title>
+
+        <para>The configuration API has been split up in a back-end part and a
+        client (or faces) part. The following general rules have been kept in
+        mind:</para>
+
+        <para><itemizedlist>
+            <listitem>
+              <para>Back-end configuration should be restricted to those
+              properties that are functionally needed on the back-end. We
+              essentially regard the back-end as a container of layers or, in
+              WFS terms, feature types. Higher level concepts like map or
+              application should be dealt with at the client (or faces)
+              level.</para>
+            </listitem>
+
+            <listitem>
+              <para>Client configuration should not impact the back-end state.
+              In the near future, this will make it possible to reconfigure
+              clients without restarting the server.</para>
+            </listitem>
+          </itemizedlist>The configuration API has profoundly changed. Where
+        possible, the back-end classes have retained their original (before
+        the split) names, after pruning them to remove all client related
+        information. The client classes have been mostly created from scratch
+        and have been named <code>ClientXxxInfo.java</code> for consistency.
+        They have been located in a separate package, called
+        <code>org.geomajas.configuration.client.</code>The following table
+        gives a top-down overview of the back-end configuration classes (new
+        classes and properties have been marked in <emphasis
+        role="bold">bold</emphasis>):</para>
+
+        <para><table>
+            <title>Back end configuration changes</title>
+
+            <tgroup cols="3">
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Property</entry>
+
+                  <entry>Action or description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>ApplicationInfo</entry>
+
+                  <entry>*</entry>
+
+                  <entry>removed</entry>
+                </row>
+
+                <row>
+                  <entry>LayerInfo</entry>
+
+                  <entry>label</entry>
+
+                  <entry>moved to ClientLayerInfo</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry>visible</entry>
+
+                  <entry>moved to ClientLayerInfo</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry>viewScaleMin, viewScaleMax</entry>
+
+                  <entry>moved to ClientLayerInfo</entry>
+                </row>
+
+                <row>
+                  <entry>VectorLayerInfo</entry>
+
+                  <entry>labelAttribute</entry>
+
+                  <entry>moved to LabelStyleInfo</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry>snappingRules</entry>
+
+                  <entry>moved to ClientVectorLayerInfo</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry>styleDefinitions</entry>
+
+                  <entry>replaced by namedStyleInfos</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry>creatable, updatable, deletable</entry>
+
+                  <entry>moved to ClientVectorLayerInfo (automatically
+                  assigned)</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry><emphasis
+                  role="bold">namedStyleInfos</emphasis></entry>
+
+                  <entry>list of NamedStyleInfo. Lists the predefined styles
+                  available for this layer. Multiple styles are possible so
+                  clients can choose a style</entry>
+                </row>
+
+                <row>
+                  <entry>RasterLayerInfo</entry>
+
+                  <entry>style</entry>
+
+                  <entry>moved to ClientRasterLayerInfo</entry>
+                </row>
+
+                <row>
+                  <entry><emphasis
+                  role="bold">NamedStyleInfo</emphasis></entry>
+
+                  <entry><emphasis
+                  role="bold">featureStyles</emphasis></entry>
+
+                  <entry>list of FeatureStyleInfo. Ordered list of style
+                  definitions with applicable filters. Together with the label
+                  style they define a single named layer style.</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry><emphasis
+                  role="bold">labelStyleInfo</emphasis></entry>
+
+                  <entry>label attribute name and style</entry>
+                </row>
+
+                <row>
+                  <entry><emphasis
+                  role="bold">FeatureStyleInfo</emphasis></entry>
+
+                  <entry>*</entry>
+
+                  <entry>replaces StyleInfo same properties except for
+                  index</entry>
+                </row>
+
+                <row>
+                  <entry></entry>
+
+                  <entry>index</entry>
+
+                  <entry>replaces id (automatically assigned)</entry>
+                </row>
+
+                <row>
+                  <entry><emphasis
+                  role="bold">LabelStyleInfo</emphasis></entry>
+
+                  <entry>*</entry>
+
+                  <entry>replaces LabelAttribute, same properties</entry>
+                </row>
+
+                <row>
+                  <entry>ValidatorInfo and XxxConstraintInfo</entry>
+
+                  <entry>*</entry>
+
+                  <entry>moved to package
+                  <code>org.geomajas.configuration.validation</code></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>The most important changes are:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>The removal of client-side properties like visible, label,
+            viewScaleMin, viewScaleMax, style and snapping rules. These are
+            moved to the client configuration (see client documentation).</para>
+          </listitem>
+
+          <listitem>
+            <para>The replacement of the single style definition list by a set
+            of named styles. These are styles that are preconfigured in the
+            back end.</para>
+          </listitem>
+
+          <listitem>
+            <para>Inclusion of the label attribute name and style as part of
+            the named style. This is more logical and in line with the SLD
+            (Styled Layer Descriptor) specification.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Apart from these changes in content, some general technical
+        improvements have been made as well:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>The Spring bean name (or id) is used to set the id property
+            of the class if there is one. This makes it unnecessary to define
+            the id separately. The way this is done is by using a Spring
+            <code>BeanPostProcessor</code>. (see
+            <code>org.geomajas.internal.configuration.ConfigurationBeanPostProcessor</code>)</para>
+          </listitem>
+
+          <listitem>
+            <para>Some calculations that were previously done in the
+            <code>GetConfigurationCommand</code> are now done in the
+            <code>ConfigurationBeanPostProcessor.</code></para>
+          </listitem>
+
+          <listitem>
+            <para>Cloning of the client configuration classes can be done with
+            general deep cloning techniques like serialization, bypassing the
+            need for custom cloneable implementations.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>As usual, example configurations can be found in the application
+        projects.</para>
+      </section>
+    </section>
+
+    <section id="mig-152">
+      <title>Migrating from Geomajas 1.5.1 to Geomajas 1.5.2</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>"layerRef" is renamed to "layerIds" in
+          <code>LayerTreeNodeInfo</code>.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mig-151">
+      <title>Migrating from Geomajas 1.5.0 to Geomajas 1.5.1</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>Configuration has changed from the proprietary format to using
+          Spring configuration.</para>
+        </listitem>
+
+        <listitem>
+          <para>There is now a <code>CommandDispatcher</code> service and
+          official command names and defined request and response objects.
+          Deprecated commands have been removed.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mig-150">
+      <title>Migrating from Geomajas 1.4.x to 1.5.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>In your application.xml, you should change "OSMLayerFactory"
+            to "OsmLayerFactory"</para>
+          </listitem>
+
+          <listitem>
+            <para>In your application.xml, you should change "WMSLayerFactory"
+            to "WmsLayerFactory"</para>
+          </listitem>
+
+          <listitem>
+            <para>replace package "layermodels" with "layermodel"</para>
+          </listitem>
+
+          <listitem>
+            <para>replace "org.geomajas.core.application.DefaultLayerFactory"
+            with
+            "org.geomajas.internal.application.DefaultLayerFactory"</para>
+          </listitem>
+
+          <listitem>
+            <para>mapWidget.addController() and mapWidget.removeController()
+            have been removed. They are replaced by mapWidget.setController().
+            You could only add one controller anyway.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+  </appendix>
+</part>
