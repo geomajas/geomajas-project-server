@@ -137,18 +137,6 @@
       annotation.</para>
     </section>
 
-    <section id="apiGwt">
-      <title>GWT face API</title>
-
-      <para>The GWT plug-in also uses the "<code>@Api</code>" annotation to
-      indicate classes and methods which are supported to remain stable
-      between minor versions of the face.</para>
-
-      <para>You can expect to find this annotation on all widgets, though it
-      is likely that not all public methods will be considered part of the
-      API.</para>
-    </section>
-
     <section id="apiVersions">
       <title>API compatibility and Geomajas versions</title>
 

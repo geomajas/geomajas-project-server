@@ -233,24 +233,6 @@
       than once. In that case, the last occurrence will be used.</para>
     </section>
 
-    <section id="conf-gm">
-      <title>Geomajas configuration</title>
-
-      <para>The initial bean which needs to be defined is a bean indicating
-      the <emphasis>client application info</emphasis>.</para>
-
-      <xi:include href="listing/ClientApplicationInfo.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-      <para>As you can see, this defines the list of maps for the application.
-      It may (optionally) also define some additional user info and a screen
-      DPI parameter. The DPI refers to the resolution in pixels per inch of
-      your monitor, for a PC its usually 96 (the default) or 72.</para>
-
-      <para>There needs to be at least one <code>ClientApplicationInfo</code>
-      bean. The bean name is used when requesting the application info.</para>
-    </section>
-
     <section id="sect-rec-appcontext-structure">
       <title>Recommended application context structure</title>
 
@@ -784,8 +766,27 @@
           validation by defining a <code>"validator"</code> property inside
           the attribute:</para>
 
-          <xi:include href="listing/AttributeValidator.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+			<!--In stead of include, copy example code from client-gwt/example-jar file layerMultiCities -->
+			<!--<xi:include href="listing/AttributeValidator.xml"
+						xmlns:xi="http://www.w3.org/2001/XInclude" />-->
+			<example id="RegexMulti">
+				<title>Attribute validator configuration</title>
+				<programlisting language="java"><![CDATA[<property name="validator">
+	<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+		<property name="toolTip" value="Is this city a capital city or not? (Y or N)" />
+		<property name="errorMessage" value="Invalid value: The value must be either Y or N." />
+		<property name="constraints">
+			<list>
+				<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
+				<bean class="org.geomajas.configuration.validation.PatternConstraintInfo">
+					<property name="regexp" value="[YN]$" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+</property>]]>
+				</programlisting>
+			</example>
 
           <para>This property contains some general validator information and
           a set of constraints that should be applied to the attribute. The
@@ -860,321 +861,6 @@
           </table></para>
       </section>
     </section>
-
-    <section id="conf-client">
-      <title>Client configuration</title>
-
-      <para>The Geomajas client configuration is a graph-like structure of
-      pure data objects, also called 'Info' or value objects (each object
-      class ending with xxxInfo). The top-level object is
-      <code>ClientApplicationInfo</code>, which represents an entire client
-      application.</para>
-
-      <para>This object contains a tree-like structure with maps and layers,
-      which is depicted in the figure below:</para>
-
-      <figure>
-        <title>Geomajas client configuration</title>
-
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/clientConfiguration.png" width="50%" />
-          </imageobject>
-        </mediaobject>
-      </figure>
-
-      <para>The most important attributes of each object are shown in the
-      class diagram, as well as the relational structure. The yellow part
-      represents the main components of the application (map, layers, tools)
-      while the blue part shows all objects related with styling of vector
-      layers (see the vector layer configuration <xref
-      linkend="conf-vector" />).</para>
-
-      <section id="conf-map">
-        <title>Map configuration</title>
-
-        <para>A map is a client side object. The Geomajas back-end works
-        almost exclusively on layers.<footnote>
-            <para>The only current exception is the printing command which
-            converts maps to PDF document. Clearly this also uses the map
-            configuration.</para>
-          </footnote>On the client side however, these layers are combined
-        into maps. In general, the back-end never needs to know which map the
-        layer is displayed in when doing its work. However the back-end does
-        need to know the coordinate reference system which is used.</para>
-
-        <xi:include href="listing/ClientMapInfoPart1.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>The crs evidently refers to the map's coordinate reference
-        system. The display unit type determines the unit type of the scale
-        bar (METRIC, ENGLISH or CRS). The initial bounds determine the visible
-        area of the map at startup time. The layers refers to the client layer
-        info objects, not the server layer info or layer instances.</para>
-
-        <para>Additionally, a lot of style information can be included in the
-        map configuration. This includes information like background colour,
-        styles which should be used for selected points, lines and polygons
-        and whether scale bare or pan buttons should be enabled.</para>
-
-        <xi:include href="listing/ClientMapInfoPart2.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>It is possible to configure the pixels per tile that will be
-        used for rendering and retrieving tiles. These can be defined in two
-        ways:</para>
-
-        <para>
-          <itemizedlist>
-            <listitem>
-              <para>The MAP type will base the pixels per tile on the map
-              dimensions.</para>
-            </listitem>
-
-            <listitem>
-              <para>The CONFIGURED type you configure the size of the tiles,
-              this defaults to 256x256 pixels.</para>
-            </listitem>
-          </itemizedlist>
-        </para>
-
-        <para>An other important aspect of the map is the scale configuration.
-        The scale configuration allows to define a maximum scale beyond which
-        the user is not allowed to zoom in. This is not needed for zooming out
-        as there is always a maximum bounds defined for the map (either
-        explicitly or calculated as the union of the layer bounds). Next to
-        that you can define a list of zoom levels. By default, the map will
-        allow zooming to arbitrary scale levels but you may wish to enforce
-        certain scale or zoom levels upon the user (like Google Maps does). By
-        doing so, continuous zooming will no longer be possible and any
-        zooming action will "snap" to the predefined scale levels.</para>
-
-        <xi:include href="listing/ClientMapInfoPart5.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Scales can be defined in 2 possible notations:</para>
-
-        <para>
-          <itemizedlist>
-            <listitem>
-              <para>the 1 : x notation (see the above listing) is most
-              commonly used in geographics and expresses the ratio between 1
-              meter on the screen and 1 meter on the earth's sphere</para>
-            </listitem>
-
-            <listitem>
-              <para>the floating point notation (e.g. 0.0001) is used by us to
-              express the number of pixels on the screen that correspond to 1
-              unit on the map (1 pixel per 10000 map units in our
-              example)</para>
-            </listitem>
-          </itemizedlist>
-        </para>
-
-        <para>Both scale definitions serve a different purpose. The 1 : x
-        scale should give you an idea of what the true scale is at which the
-        map is shown, although in practice this may depend on the DPI
-        (actually PPI) and pixel size of your device. The floating point scale
-        (which has units of pixel/m or pixel/deegree) is used to precisely
-        define the resolution of raster images on the screen. If you use
-        floating point notation, you can make sure that the scales that are
-        being used in an application are the same as those of the raster
-        layer(s) that lies beneath (see raster layer configuration). Otherwise
-        the raster images may get blurry or unreadable when they need to be
-        resized.</para>
-
-        <para>A map typically also contains a tool bar. If you want one, you
-        have to specify the tools it should include.</para>
-
-        <xi:include href="listing/ClientMapInfoPart3.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Obviously the tools themselves need to be defined as well. You
-        can pass some parameters to the tools. An example tool definition look
-        like this.</para>
-
-        <xi:include href="listing/ZoomInToolInfo.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Note that the tool id and the names of the parameters are
-        interpreted by the client, so it is the client face which defines the
-        possible values.</para>
-
-        <para>Last but not least, you can also configure the layer tree
-        component which may be connected to the map.</para>
-
-        <xi:include href="listing/ClientMapInfoPart4.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>This defines the tools which are available in the layer tree
-        widget, and the tree of layers (as a node, which can contain a list of
-        nodes etc).</para>
-
-        <para>Note that the layers are indicated by referring to the client
-        configuration object.</para>
-      </section>
-
-      <section id="conf-clientLayer">
-        <title>Client layer configuration</title>
-
-        <para>Layer configuration is split in two (linked) parts. You have to
-        create the actual layer which is used in the back-end, and this layer
-        needs to know the configuration information which is also used on the
-        client side. Secondly, there is a distinction between raster and
-        vector layers as they each needs a lot of specific information.</para>
-
-        <para>Use this XML header:</para>
-
-        <para><programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-  xsi:schemaLocation="
-http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</programlisting></para>
-
-        <section id="conf-clientRaster">
-          <title>Raster layer</title>
-
-          <para>The body contains one bean, an instance of
-          ClientRasterLayerInfo. An example:</para>
-
-          <programlisting>&lt;bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerRaster" &gt;
-  &lt;property name="serverLayerId" value="layerRaster" /&gt;
-  &lt;property name="label" value="A raster layer" /&gt;
-  &lt;property name="visible" value="true" /&gt;
-  &lt;property name="viewScaleMin" value="0" /&gt;
-  &lt;property name="viewScaleMax" value="100000" /&gt;
-&lt;/bean&gt;</programlisting>
-
-          <para>The following table describes the properties of the
-          <code>ClientRasterLayerInfo</code> object:</para>
-
-          <para><table>
-              <title>ClientRasterLayerInfo configuration</title>
-
-              <tgroup cols="2">
-                <colspec colwidth="1*" />
-
-                <colspec colwidth="2*" />
-
-                <thead>
-                  <row>
-                    <entry>Name</entry>
-
-                    <entry>Description</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>serverLayerId</entry>
-
-                    <entry>This is the name of the bean that corresponds to
-                    this layer at server side. This bean should be a
-                    RasterLayer instance, or on of its subclasses (OsmLayer,
-                    WmsLayer)</entry>
-                  </row>
-
-                  <row>
-                    <entry>visible</entry>
-
-                    <entry>Whether this layer should be visible at
-                    startup</entry>
-                  </row>
-
-                  <row>
-                    <entry>viewScaleMin</entry>
-
-                    <entry>Lowest scale (pixel/(map unit) or absolute if using
-                    '1:xxx' notation) at which the layer is visible</entry>
-                  </row>
-
-                  <row>
-                    <entry>viewScaleMax</entry>
-
-                    <entry>Highest scale (pixel/(map unit) or absolute if
-                    using '1:xxx' notation) at which the layer is
-                    visible</entry>
-                  </row>
-
-                  <row>
-                    <entry>label</entry>
-
-                    <entry>A string that will be the layer's label in a layer
-                    tree.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-        </section>
-
-        <section id="conf-clientVector">
-          <title>Vector layer</title>
-
-          <para>The body contains one bean, an instance of
-          ClientVectorLayerInfo. An example:</para>
-
-          <programlisting>&lt;bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerVector" &gt;
-  &lt;property name="serverLayerId" value="layerVector" /&gt;
-  &lt;property name="label" value="A vector layer" /&gt;
-  &lt;property name="visible" value="true" /&gt;
-  &lt;property name="viewScaleMin" value="0" /&gt;
-  &lt;property name="viewScaleMax" value="100000" /&gt;
-  &lt;property name="namedStyleInfo" ref="vectorStyleInfo" /&gt;
-&lt;/bean&gt;</programlisting>
-
-          <para>The following table describes the properties of the
-          <code>ClientVectorLayerInfo</code> object:</para>
-
-          <para><table>
-              <title>ClientVectorLayerInfo configuration</title>
-
-              <tgroup cols="2">
-                <colspec colwidth="1*" />
-
-                <colspec colwidth="2*" />
-
-                <thead>
-                  <row>
-                    <entry>Name</entry>
-
-                    <entry>Description</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>serverLayerId</entry>
-
-                    <entry>Refers to the bean name that corresponds to this
-                    layer at server side. This bean should be a RasterLayer
-                    instance, or one of its subclasses (OsmLayer,
-                    WmsLayer)</entry>
-                  </row>
-
-                  <row>
-                    <entry>label</entry>
-
-                    <entry>A string that will be the layer's label in a layer
-                    tree.</entry>
-                  </row>
-
-                  <row>
-                    <entry>namedStyleInfo</entry>
-
-                    <entry>Refers to the bean name of a NamedStyleInfo
-                    instance at server side. This bean is normally located
-                    (and also used) in the same xml file as the serverLayerId
-                    bean. This bean contains style info for the features, e.g.
-                    stroke and fill color.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-        </section>
-      </section>
-    </section>
   </chapter>
 
   <chapter id="ch-secConf">
@@ -1191,7 +877,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</progr
     services. For example, when using the staticsecurity plugin, the following
     could be defined.</para>
 
-    <xi:include href="listing/StaticSecurityStart.xml"
+    <xi:include href="listing/StaticSecurityUserSpecific.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>Most notable in this example is the inclusion of two security

@@ -1077,9 +1077,9 @@ private SecurityContext securityContext;</programlisting>
     <para></para>
 
     <section id="arch-auto-reg">
-      <title>Face and plug-in registration</title>
+      <title>Plug-in registration</title>
 
-      <para>Plug-ins (which include faces) are automatically discovered when
+      <para>Plug-ins are automatically discovered when
       available on the classpath. This is done using two files:
       META-INF/geomajasContext[suffix].xml and META-INF/geomajasWebContext[suffix].xml.</para>
 	  <para>The suffix is meant to deal with classpath issues where context files
@@ -1131,11 +1131,6 @@ private SecurityContext securityContext;</programlisting>
             specifically the different Geomajas guides. These are the general
             guides, each of the plug-ins also has a documentation
             module.</para>
-          </listitem>
-
-          <listitem>
-            <para><emphasis>face</emphasis>: faces that present a certain
-            Geomajas client interface to the user.</para>
           </listitem>
 
           <listitem>
@@ -1236,8 +1231,7 @@ private SecurityContext securityContext;</programlisting>
             <row>
               <entry>geomajas-common-servlet</entry>
 
-              <entry>Code which is shared by the different faces which are
-              servlet based.</entry>
+              <entry>Code which is shared by the different clients which are servlet based.</entry>
             </row>
 
             <row>
@@ -1457,40 +1451,6 @@ private SecurityContext securityContext;</programlisting>
               <entry>geomajas-project-sld-editor</entry>
 
               <entry>An SLD editor which used the SLD DTOs.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-
-      <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas face modules</title>
-
-        <tgroup align="left" cols="2">
-          <colspec colnum="1" colwidth="1*" />
-
-          <colspec colnum="2" colwidth="2*" />
-
-          <thead>
-            <row>
-              <entry>Name</entry>
-
-              <entry>Purpose</entry>
-            </row>
-          </thead>
-
-          <tbody>
-            <row>
-              <entry>geomajas-face-dojo</entry>
-
-              <entry>Modules for the dojo face, including
-              documentation.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-face-gwt</entry>
-
-              <entry>Modules for the GWT face, including the
-              documentation.</entry>
             </row>
           </tbody>
         </tgroup>

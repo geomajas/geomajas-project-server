@@ -153,8 +153,28 @@
     assure the sources are available as these are needed for GWT compilation.
     This can easily be done using the Maven source plug-in.</para>
 
-    <xi:include href="listing/MavenSourcePlugin.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+	  <!--In stead of include, copy example code from a pom.xml -->
+    <!--<xi:include href="listing/MavenSourcePlugin.xml"-->
+                <!--xmlns:xi="http://www.w3.org/2001/XInclude" />-->
+	  <example id="MavenSourcePlugin">
+		  <title>Maven source plugin</title>
+		  <programlisting language="java"><![CDATA[<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-source-plugin</artifactId>
+    <version>2.1.2</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>jar</goal>
+            </goals>
+            <configuration>
+                <includePom>true</includePom>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>]]>
+		  </programlisting>
+	  </example>
 
     <para>Actually including the sources can then be done using a dependency
     like the following (this includes the staticsecurity module, both the
@@ -162,9 +182,35 @@
     dependency to exclude it from the war file. However, this may prevent use
     of GWT development mode.</para>
 
-    <xi:include href="listing/StaticSecurityDependency.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
+	  <!--In stead of include, copy example code from a pom.xml -->
+    <!--<xi:include href="listing/StaticSecurityDependency.xml"-->
+                <!--xmlns:xi="http://www.w3.org/2001/XInclude" />-->
+	  <example id="StaticSecurityDependency">
+		  <title>staticsecurity source plugin - including source</title>
+		  <programlisting language="java"><![CDATA[<dependency>
+    <groupId>org.geomajas.plugin</groupId>
+    <artifactId>geomajas-plugin-staticsecurity</artifactId>
+    <version>${geomajas-plugin-staticsecurity-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.geomajas.plugin</groupId>
+    <artifactId>geomajas-plugin-staticsecurity</artifactId>
+    <version>${geomajas-plugin-staticsecurity-version}</version>
+    <classifier>sources</classifier>
+</dependency>
+<dependency>
+    <groupId>org.geomajas.plugin</groupId>
+    <artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
+    <version>${geomajas-plugin-staticsecurity-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.geomajas.plugin</groupId>
+    <artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
+    <version>${geomajas-plugin-staticsecurity-version}</version>
+    <classifier>sources</classifier>
+</dependency>]]>
+		  </programlisting>
+	  </example>
     <para />
   </chapter>
 
