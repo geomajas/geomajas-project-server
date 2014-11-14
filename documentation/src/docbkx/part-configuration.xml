@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<part id="part-configuration">
+  <title>Configuration</title>
+
+  <chapter id="ch-configuration-basics">
+    <title>Configuration basics</title>
+
+    <para>Geomajas leverages the Spring framework for configuration. The
+    initial configuration needs to be done using web.xml. There you need to
+    indicate the files which contain the configuration information.</para>
+
+    <section id="conf-webxml">
+      <title>web.xml</title>
+
+      <para>In your <code>web.xml</code> file, you need to assure the
+      configuration is made available to the application, and you can indicate
+      which files are used to contain the configuration. Though it is possible
+      to put all configuration information in one file, we recommend splitting
+      your configuration in several files (see <xref
+      linkend="sect-rec-appcontext-structure" />).</para>
+
+      <para>The listener class initialises the application context as needed
+      for Geomajas. You have to specify the files which contain the
+      application context in the <code>contextConfigLocation</code> context
+      parameter. You have to add the Geomajas context file as first item in
+      the list. Each entry can start with a location prefix. When no location
+      prefix is specified, the file is searched in the web context. You can
+      also use location prefixes as defined by Spring, e.g. "classpath:" or
+      "classpath*:". Note that whitespace is used as separator which means
+      that the path itself should not contain spaces. It is possible to use
+      wildcards (e.g. "WEB-INF/*.xml").</para>
+
+      <para>These are defined using an excerpt like the following:</para>
+
+      <example>
+        <title>Defining spring configuration locations in web.xml</title>
+
+        <programlisting>&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;
+        classpath:org/geomajas/spring/geomajasContext.xml<co
+            id="co-20101222-5" />
+        WEB-INF/applicationContext.xml<co id="co-20101222-6" />
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
+            id="co-20101222-7" />
+&lt;/listener&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
+            id="co-20101222-8" />
+&lt;/listener&gt;
+    .....</programlisting>
+
+        <calloutlist>
+          <callout arearefs="co-20101222-5">
+            <para>root context for Geomajas</para>
+          </callout>
+
+          <callout arearefs="co-20101222-6">
+            <para>additional context for your application</para>
+          </callout>
+
+          <callout arearefs="co-20101222-7">
+            <para>assures the application context is available</para>
+          </callout>
+
+          <callout arearefs="co-20101222-8">
+            <para>assures the request can be accessed</para>
+          </callout>
+        </calloutlist>
+      </example>
+
+      <para>You also need to define at least the dispatcher servlet and
+      possible an additional servlet for your faces. The dispatcher servlet
+      can be defined as follows.</para>
+
+      <example>
+        <title>Dispatcher servlet declaration in web.xml</title>
+
+        <para><programlisting>&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:org/geomajas/spring/geomajasWebContext.xml&lt;/param-value&gt;
+        &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting></para>
+      </example>
+
+      <para>Another option you have in setting up the web.xml file, is a
+      specially designed filter that improves caching behaviour and compresses
+      some when sending them to the browser. The default configuration of this
+      filter is tuned to be used in combination with the GWT face. All files
+      containing ".nocache." in their name will not be cached, while all files
+      containing ".cache." in their name will be cached. It will cache all
+      graphics files, css, html and js files. The JavaScript, HTML and CSS
+      files will also be gzip compressed if the client supports it. The
+      caching will is not enable for requests to localhost, and all handling
+      is disabled for paths which are handled by the dispatcher
+      servlet.</para>
+
+      <para>To activate this filter (highly recommended!) add the following to
+      the web.xml:</para>
+
+      <example>
+        <title>Cache filter declaration in web.xml</title>
+
+        <para><programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</programlisting></para>
+      </example>
+
+      <para>It is also possible to configure all aspects of this filter. The
+      full (default) configuration is like this:</para>
+
+      <example>
+        <title>Full cache filter declaration in web.xml</title>
+
+        <para><programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;Time that cache stuff should be cached, defaults to 1 year.&lt;/description&gt;
+        &lt;param-name&gt;cacheDurationInSeconds&lt;/param-name&gt;
+        &lt;param-value&gt;31536000&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;All uris which start with one of these prefixes remain untouched.&lt;/description&gt;
+        &lt;param-name&gt;skipPrefixes&lt;/param-name&gt;
+        &lt;param-value&gt;/d/&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri contains one of these, the cache headers are added.&lt;/description&gt;
+        &lt;param-name&gt;cacheIdentifiers&lt;/param-name&gt;
+        &lt;param-value&gt;.cache.&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri ends in one of these, the cache headers are added.&lt;/description&gt;
+        &lt;param-name&gt;cacheSuffixes&lt;/param-name&gt;
+        &lt;param-value&gt;.js .png .jpg .jpeg .gif .css .html&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri contains one of these, the cache headers are removed.&lt;/description&gt;
+        &lt;param-name&gt;noCacheIdentifiers&lt;/param-name&gt;
+        &lt;param-value&gt;.nocache.&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri end in one of these, the cache headers are removed.&lt;/description&gt;
+        &lt;param-name&gt;noCacheSuffixes&lt;/param-name&gt;
+        &lt;param-value&gt;&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri ends in one of these, the response is gzip compressed.&lt;/description&gt;
+        &lt;param-name&gt;zipSuffixes&lt;/param-name&gt;
+        &lt;param-value&gt;.js .css .html&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</programlisting></para>
+      </example>
+    </section>
+
+    <section id="conf-gen">
+      <title>General principles</title>
+
+      <para>Each configuration file needs the following header:</para>
+
+      <xi:include href="listing/SpringConfigurationPreamble.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>This defines the most common schemas which are needed. The
+      configuration is built by populating the configuration classes. The
+      configuration classes are split up between client-side and back-end.
+      Only the back-end classes are necessary to configure the back-end, which
+      behaves as a catalog of layers. The client side classes are used to
+      define applications and maps, which are purely client-side concepts in
+      the Geomajas architecture.</para>
+
+      <para>The back-end classes exist in the have a class name ending in
+      "Info" and are mostly found in the
+      <code>org.geomajas.configuration</code> package. These classes are
+      actually used to represent the DTO part of the back-end layers, thereby
+      allowing to transfer information or metadata of these layers to the
+      client.</para>
+
+      <para>Configuration is done using the Spring Framework. We will give
+      some notions here, but for a full introduction to Spring, please read
+      the reference documentation <ulink
+      url="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/</ulink>.</para>
+
+      <para>Each configuration file can contain one or more bean definitions,
+      which correspond to actual Java bean instances. You can set all the
+      properties of the objects using this configuration file. Primitive types
+      can be set directly using a string representation of the value. When the
+      value is another bean, then it can either be defined in-line, or you can
+      use a reference. You can choose whether the referenced bean is defined
+      in the same file or a different one. As long as the bean name is unique,
+      and the location is added in the <code>contextConfigLocation</code>
+      context parameter in the web.xml file, the reference is resolved.</para>
+
+      <para>It is possible to define a bean with the same name (or id) more
+      than once. In that case, the last occurrence will be used.</para>
+    </section>
+
+    <section id="conf-gm">
+      <title>Geomajas configuration</title>
+
+      <para>The initial bean which needs to be defined is a bean indicating
+      the <emphasis>client application info</emphasis>.</para>
+
+      <xi:include href="listing/ClientApplicationInfo.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>As you can see, this defines the list of maps for the application.
+      It may (optionally) also define some additional user info and a screen
+      DPI parameter. The DPI refers to the resolution in pixels per inch of
+      your monitor, for a PC its usually 96 (the default) or 72.</para>
+
+      <para>There needs to be at least one <code>ClientApplicationInfo</code>
+      bean. The bean name is used when requesting the application info.</para>
+    </section>
+
+    <section id="sect-rec-appcontext-structure">
+      <title>Recommended application context structure</title>
+
+      <para>Geomajas requires some configuration, especially of the maps and
+      layers, and some additional configuration for security, plug-ins etc.
+      This is typically done using the applicationContext.xml file. There can
+      be quite a lot of configuration, pieces can be split off to make that
+      file less overwhelming. You should still be able to know where to find
+      something without inspecting file contents (this particularly means that
+      a bean which is referenced from more than one file needs a predictable
+      file for finding that bean). We recommend using the following
+      scheme.</para>
+
+      <para>The context files are normally put in the WEB-INF directory in the
+      web context (src/main/webapp/WEB-INF in your maven project).</para>
+
+      <para><emphasis>Application/map configuration:</emphasis> the
+      configuration can be split at several levels. You can always put stuff
+      in the parent (# indication is used for cases where this will probably
+      be the default)<footnote>
+          <para>In many configurations, only the applicationContext.xml and
+          server-side layer files will exist.</para>
+        </footnote>.</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>application info: appXxx.xml (# typically inside the
+            applicationContext.xml is there is only one application).</para>
+          </listitem>
+
+          <listitem>
+            <para>map info: mapYyy.xml (#)</para>
+          </listitem>
+
+          <listitem>
+            <para>client layer info: clientLayerZzz.xml (#)</para>
+          </listitem>
+
+          <listitem>
+            <para>server layer info: layerUuu.xml</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>The main object of a file should have the same name or id as the
+      filename. For example the client layer "clientLayerRivers" would be in
+      the file "clientLayerRivers.xml" (if it is in a separate file).</para>
+
+      <para>General configuration (security, pipelines, tools for toolbars
+      etc) will be in applicationContext.xml. Extra files with clear names can
+      be created to store configuration for specific plug-ins. For example,
+      when extensive security configuration is needed, there may be a separate
+      security.xml file.</para>
+    </section>
+  </chapter>
+
+  <chapter id="ch-map-configuration">
+    <title>Map configuration</title>
+
+    <para>The central configuration which needs to be done is the map and the
+    collection of layers which are part of that map.</para>
+
+    <section id="conf-raster">
+      <title>Raster layer configuration</title>
+
+      <para>Raster layers are image-based layers which, depending on the type,
+      may be configured to retrieve their images from WMS, Google Maps or
+      OpenStreetMap (tile) servers. All raster layer implementations implement
+      the <code>org.geomajas.layer.RasterLayer</code> interface, which means
+      they provide an accessor for a <code>RasterLayerInfo</code> metadata
+      object. The info object configuration is normally defined in the Spring
+      configuration as part of the entire layer configuration. Depending on
+      the type of layer, extra properties are needed to provide a full
+      configuration.</para>
+
+      <section id="conf-rasterInfo">
+        <title>Raster layer info</title>
+
+        <para>For all raster layers, you will need to define a raster layer
+        info object to define the back-end configuration for the layer. The
+        exact meaning for some of the fields depend on the actual layer, but
+        most important features include:</para>
+
+        <para><table>
+            <title>Raster Layer info</title>
+
+            <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>dataSourceName</entry>
+
+                  <entry>The name of the data source as used by the
+                  layer.</entry>
+                </row>
+
+                <row>
+                  <entry>crs</entry>
+
+                  <entry>The coordinate reference system, expressed as
+                  "EPSG:&lt;srid&gt;". Caveat: make sure this is the same as
+                  the maps' CRS as full raster image reprojection is not
+                  supported! If the CRS is not the same, an attempt will be
+                  done to rescale and align the center coordinates,
+                  though.</entry>
+                </row>
+
+                <row>
+                  <entry>maxExtent</entry>
+
+                  <entry>The bounds of the layer, specified in layer
+                  coordinates. After transformation to map coordinates, this
+                  determines the locations and absolute size of the
+                  tiles.</entry>
+                </row>
+
+                <row>
+                  <entry>zoomLevels</entry>
+
+                  <entry><para>A list of scale values corresponding to the
+                  zoom levels at which the raster data should be
+                  fetched.</para><para>An image or tile scale is obtained by
+                  dividing the size of the tile in pixels by the size of the
+                  tile in map units. For example, if the tile is 256 x 256
+                  pixels and this corresponds to an area of 100 m x 100 m, the
+                  scale can be calculated as 256/100 = 2,56 pixels per meter.
+                  The inverse value of the scale is more often used and is
+                  sometimes called the<emphasis>resolution</emphasis>. Images
+                  are usually optimized or prerendered for a specific (set of)
+                  resolution(s), so it is important to specify these here if
+                  they are known. On top of that, some servers provide
+                  specific tile caching for these predefined resolutions (for
+                  example WMS-T). </para><para>A word of caution concerning
+                  zoom levels : setting the zoom levels here will only make
+                  sure that tiles will be fetched at predefined levels but
+                  does not impose any restrictions on the zoom levels of the
+                  map itself. If the zoom levels of the map have different
+                  values or are not specified at all (arbitrary zooming),
+                  raster images will be stretched on the client side to
+                  accommodate for these differences. </para></entry>
+                </row>
+
+                <row>
+                  <entry>tileWidth</entry>
+
+                  <entry>Width in pixels of the requested images.</entry>
+                </row>
+
+                <row>
+                  <entry>tileHeight</entry>
+
+                  <entry>Height in pixels of the requested images.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+
+        <para>The location of the images or tiles is defined by calculating
+        the real width and height (based on the resolution) and "paving" the
+        maximum extent with tiles starting at the origin (x,y) of the extent.
+        If no resolutions are predefined, the tiles are calculated by dividing
+        the maximum extent by successive powers of 2. Make sure the
+        width/height ratio of the maximum extent corresponds to the
+        width/height ratio of the tile.</para>
+      </section>
+    </section>
+
+    <section id="conf-vector">
+      <title>Vector layer configuration</title>
+
+      <para>Vector layers contain homogeneous vector based features. All
+      vector layer implementations implement the
+      <code>org.geomajas.layer.VectorLayer</code> interface, which means they
+      provide an accessor for a <code>VectorLayerInfo</code> metadata object.
+      The info object configuration is normally defined in the Spring
+      configuration as part of the entire layer configuration. Depending on
+      the type of layer, extra properties are needed to provide a full
+      configuration.</para>
+
+      <para>The definition of the actual layer is similar to the definition of
+      a raster layer.</para>
+
+      <section id="conf-vectorInfo">
+        <title>Vector layer info</title>
+
+        <para>For the layer configuration, you have to create the layer info
+        object.</para>
+
+        <xi:include href="listing/ShapeInMemAirportInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the details common to both raster and vector
+        layers, like layer id, crs, layer type, max extent (bounding box)
+        etc.</para>
+
+        <para>The following table describes the properties of the
+        <code>VectorLayerInfo</code> object:</para>
+
+        <para>
+          <table>
+            <title>VectorLayer info</title>
+
+            <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
+              <thead>
+                <row>
+                  <entry>Property</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>layerType</entry>
+
+                  <entry>This property determines the type of the default
+                  geometry of the features. The following types are supported:
+                  POINT, LINESTRING, POLYGON, MULTIPOINT, MULTILINESTRING and
+                  MULTIPOLYGON</entry>
+                </row>
+
+                <row>
+                  <entry>crs</entry>
+
+                  <entry>The coordinate reference system, expressed as
+                  "EPSG:&lt;srid&gt;". This is probably determined by the
+                  layer, but has to be specified anyhow as we have no auto
+                  detection in place yet.</entry>
+                </row>
+
+                <row>
+                  <entry>maxExtent</entry>
+
+                  <entry>The bounds of the layer, specified in layer
+                  coordinates. After transformation to map coordinates, this
+                  determines the locations and absolute size of the
+                  tiles.</entry>
+                </row>
+
+                <row>
+                  <entry>featureInfo</entry>
+
+                  <entry>The feature metadata</entry>
+                </row>
+
+                <row>
+                  <entry>namedStyleInfos</entry>
+
+                  <entry>The list of predefined style metadata objects which
+                  define the named styles for this layer</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </para>
+
+        <para>The feature metadata can be found in the
+        <code>FeatureInfo</code> object. This objects contains the complete
+        feature type description (id, attributes and geometry) as well as the
+        validation rules for the attributes. An example definition of this
+        object is given below:</para>
+
+        <xi:include href="listing/ShapeInMemAirportFeatureInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <note>
+          <para>Since 1.9.0, it is possible to use the following 2 properties
+          in the attribute definitions:</para>
+
+          <itemizedlist>
+            <listitem>
+              <para><emphasis>hidden</emphasis>: true/false. By default this
+              value is false, but it can be set to 'true' to hide it from all
+              client side widgets and/or views. This way such an attribute can
+              still be used on the client for hidden calculations or filters,
+              without users actually seeing it.</para>
+            </listitem>
+
+            <listitem>
+              <para><emphasis>formInputType</emphasis>: A text value to
+              indicate that this attribute should be represented in forms by
+              the type represented by the text value. This feature is used in
+              the GWT client from version 1.9.0 and higher when using
+              <code>FeatureForms</code>. This way it is possible to use custom
+              form items in the forms used for editing the attribute
+              values.</para>
+
+              <para>See the GWT face documentation for more information on
+              this.</para>
+            </listitem>
+          </itemizedlist>
+        </note>
+
+        <para>The following table describes the properties of the
+        <code>FeatureInfo</code> object:</para>
+
+        <table>
+          <title>Feature info configuration</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>Name</entry>
+
+                <entry>Description</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>dataSourceName</entry>
+
+                <entry>This name is used by the layer to internally reference
+                the source that provides the data. Depending on the type of
+                layer, this could be a table name (geotools-postgis), a shape
+                file name (geotools-shapeinmem, in this case there is a 1-to-1
+                correspondence withe the geotools datastore), a WFS layer name
+                (geotools-wfs) or a java class name (hibernate).</entry>
+              </row>
+
+              <row>
+                <entry>identifier</entry>
+
+                <entry>Metadata of the primitive attribute that provides a
+                unique identification of the feature.</entry>
+              </row>
+
+              <row>
+                <entry>geometryType</entry>
+
+                <entry>Metadata of the geometrical attribute that provides the
+                default geometry of the feature.</entry>
+              </row>
+
+              <row>
+                <entry>attributes</entry>
+
+                <entry>Metadata of all other attributes</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <para>This defines the identifier, geometry object and attributes for
+        the feature.</para>
+
+        <para>Attributes can be either primitive attributes or association
+        attributes. Primitive attributes represent primitive Java types as
+        well as some common types like Date and String. The following
+        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
+        FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
+        attributes represent non-primitive Java types. There are two types of
+        association attributes defined: MANY_TO_ONE and ONE_TO_MANY. These
+        reflect the many-to-one and one-to-many relationships as defined in an
+        entity-relationship model and can only be used in conjunction with the
+        <code>HibernateLayer</code>.</para>
+
+        <para>Last but not least, you can define one or more named style
+        definitions which should be used for rendering of the layer. The
+        actual style that is being used by the client is determined in the
+        client configuration, but you predefine a number of styles (of type
+        <code>NamedStyleInfo</code>) here for later reference in the client
+        configuration. This is similar to a regular WMS server, where you can
+        also define a set of predefined styles for each feature type.</para>
+
+        <para>Geomajas provides two ways to configure styles:</para>
+
+        <para><itemizedlist>
+            <listitem>
+              <para>simple configuration based on
+              <code>FeatureStyleInfo</code> objects: this configuration is
+              limited to simple stroke and fill styles and a limited number of
+              point symbols (rectangle, circle, image). It uses a single
+              filter for determining the applicable style.</para>
+            </listitem>
+
+            <listitem>
+              <para>OGC standards-based <ulink url="???">SLD</ulink> (Styled
+              Layer Descriptor, version 1.0) configuration: this configuration
+              uses an SLD file for styling and supports all SLD features that
+              are supported by the underlying geotools library. The file can
+              be directly referenced in the configuration, but the backend
+              internally makes use of our own DTO objects. This is needed to
+              allow client-side manipulation of the SLD style and
+              communication across the wire of complete SLD descriptors or SLD
+              excerpts like rules. The geomajas SLD project has been created
+              as a Geomajas independent library for this purpose.</para>
+            </listitem>
+          </itemizedlist>Each style object is itself composed of a number of
+        feature styles (<code>FeatureStyleinfo</code>) and a label style
+        (<code>LabelStyleInfo</code>). You can define formulas to determine
+        which feature style should be used. Formulas are defined as <ulink
+        url="http://docs.codehaus.org/display/GEOTOOLS/ECQL+Parser+Design">ECQL</ulink>
+        strings that are parsed to <ulink
+        url="http://geoapi.sourceforge.net/2.0/javadoc/org/opengis/filter/package-summary.html">OpenGIS
+        Filter Objects</ulink> The first style whose formula passes will be
+        applied for the feature. Note that when applying filters to a style an
+        'other filter' should be defined to prevent null pointer exceptions
+        for features that are not captured by the filter. The following table
+        describes a subset of the ECQL filter types:</para>
+
+        <para><table>
+            <title>OGC ECQL Filter Types</title>
+
+            <tgroup cols="3">
+              <colspec align="left" colwidth="0.6*" />
+
+              <colspec align="left" colwidth="0.6*" />
+
+              <colspec align="left" colwidth="3*" />
+
+              <thead>
+                <row>
+                  <entry>Type</entry>
+
+                  <entry align="left">Operators</entry>
+
+                  <entry align="left">Example</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>Comparison</entry>
+
+                  <entry>=, &lt;, &gt;</entry>
+
+                  <entry>(ATTRIBUTE = 'GEORGE') (ATTRIBUTE &gt; 10 AND
+                  ATTRIBUTE &lt; 20)</entry>
+                </row>
+
+                <row>
+                  <entry>Text</entry>
+
+                  <entry>LIKE, NOT LIKE</entry>
+
+                  <entry>(ATTRIBUTE LIKE 'SAMUEL') (ATTRIBUTE NOT LIKE
+                  'TOM%')</entry>
+                </row>
+
+                <row>
+                  <entry>Null</entry>
+
+                  <entry>IS NULL, IS NOT NULL</entry>
+
+                  <entry>(ATTRIBUTE IS NULL) (ATTRIBUTE IS NOT NULL)</entry>
+                </row>
+
+                <row>
+                  <entry>Exists</entry>
+
+                  <entry>EXISTS, DOES-NOT-EXIST</entry>
+
+                  <entry>(ATTRIBUTE EXISTS) (ATTRIBUTE DOES-NOT-EXIST)</entry>
+                </row>
+
+                <row>
+                  <entry>Between</entry>
+
+                  <entry>BETWEEN</entry>
+
+                  <entry>(ATTRIBUTE BETWEEN 10 AND 20)</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>An example definition of this object is below:</para>
+
+        <xi:include href="listing/ShapeInMemAirportStyleInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>The LabelStyleInfo configuration declares a label value, a font
+        style and a background style. This configuration is used to render the
+        labels in the default tile rendering pipeline of the vector layer
+        service. The result is a rectangular label with the specified font and
+        background color, expressed in SVG or VML. If the style is defined in
+        SLD, a reasonable attempt is made to convert the TextSymbolizer of the
+        SLD file to a LabelStyleInfo instance (extracting the halo color as
+        background color and using the same font style).</para>
+
+        <para>The label value can be specified in two ways in the
+        <code>LabelStyleInfo</code> object:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><code>labelAttributeName</code>: this is the name of the
+            feature attribute value that should be directly used as the label
+            text</para>
+          </listitem>
+
+          <listitem>
+            <para><code>labelValueExpression</code>: this a textual expression
+            that may contain by-name references of feature attribute values as
+            well as any other constructs allowed by the
+            <code>FeatureExpressionService</code> of the current application
+            context.</para>
+          </listitem>
+        </itemizedlist>
+
+        <section id="conf-validation">
+          <title>Validation</title>
+
+          <para>Most feature attributes should be validated before they can be
+          saved to a file or database. Validation is a concern that stretches
+          across many layers of a typical application: there is usually a need
+          for client-side validation (making the application more user
+          friendly) , server-side validation (to protect the server from
+          invalid data) as well as database validation (to preserve data
+          integrity). Preferably validation rules should be defined as much as
+          possible in a single place to avoid conflicts and
+          duplication.</para>
+
+          <para>Our attribute configuration supports several types of
+          validation by defining a <code>"validator"</code> property inside
+          the attribute:</para>
+
+          <xi:include href="listing/AttributeValidator.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>This property contains some general validator information and
+          a set of constraints that should be applied to the attribute. The
+          available constraint types have been based on the new JavaBeans
+          standard: JSR-303.</para>
+        </section>
+      </section>
+
+      <section id="conf-beanLayer">
+        <title>Bean layer configuration</title>
+
+        <para>Bean layer provides an in-memory layer which is not persisted in
+        any way. The features can be defined in the configuration file using
+        some specialised beans. It is particularly useful for testing. A
+        BeanLayer object (a kind of VectorLayer) must be defined. An example
+        for defining two polygons:</para>
+
+        <para><programlisting>&lt;bean name="beans" class="org.geomajas.layer.bean.BeanLayer"&gt;
+  &lt;property name="layerInfo" ref="beansInfo" /&gt;
+  &lt;property name="features"&gt;
+    &lt;list&gt;
+        &lt;bean class="org.geomajas.layer.bean.FeatureBean"&gt;
+        &lt;property name="id" value="1" /&gt;
+        &lt;property name="stringAttr" value="bean1" /&gt;
+        &lt;property name="geometry"
+          value="POLYGON(((0 0,1 0,1 1,0 1,0 0)))" /&gt;
+      &lt;/bean&gt;
+      &lt;bean class="org.geomajas.layer.bean.FeatureBean"&gt;
+        &lt;property name="id" value="2" /&gt;
+        &lt;property name="stringAttr" value="bean2" /&gt;
+        &lt;property name="geometry"
+          value="POLYGON(((4 0,6 0,6 3,4 3,4 0)))" /&gt;
+      &lt;/bean&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</programlisting>The following table describes the properties of
+        the <code>BeanLayer</code> object:</para>
+
+        <para><table>
+            <title>BeanLayer configuration</title>
+
+            <tgroup cols="2">
+              <colspec colwidth="1*" />
+
+              <colspec colwidth="2*" />
+
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>layerInfo</entry>
+
+                  <entry>A VectorLayerInfo instance, comparable to the
+                  layerInfo of a VectorLayer, see above.</entry>
+                </row>
+
+                <row>
+                  <entry>features</entry>
+
+                  <entry>List of features, which should be
+                  <code>org.geomajas.layer.bean.FeatureBean</code>
+                  instances.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+      </section>
+    </section>
+
+    <section id="conf-client">
+      <title>Client configuration</title>
+
+      <para>The Geomajas client configuration is a graph-like structure of
+      pure data objects, also called 'Info' or value objects (each object
+      class ending with xxxInfo). The top-level object is
+      <code>ClientApplicationInfo</code>, which represents an entire client
+      application.</para>
+
+      <para>This object contains a tree-like structure with maps and layers,
+      which is depicted in the figure below:</para>
+
+      <figure>
+        <title>Geomajas client configuration</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/clientConfiguration.png" width="50%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>The most important attributes of each object are shown in the
+      class diagram, as well as the relational structure. The yellow part
+      represents the main components of the application (map, layers, tools)
+      while the blue part shows all objects related with styling of vector
+      layers (see the vector layer configuration <xref
+      linkend="conf-vector" />).</para>
+
+      <section id="conf-map">
+        <title>Map configuration</title>
+
+        <para>A map is a client side object. The Geomajas back-end works
+        almost exclusively on layers.<footnote>
+            <para>The only current exception is the printing command which
+            converts maps to PDF document. Clearly this also uses the map
+            configuration.</para>
+          </footnote>On the client side however, these layers are combined
+        into maps. In general, the back-end never needs to know which map the
+        layer is displayed in when doing its work. However the back-end does
+        need to know the coordinate reference system which is used.</para>
+
+        <xi:include href="listing/ClientMapInfoPart1.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>The crs evidently refers to the map's coordinate reference
+        system. The display unit type determines the unit type of the scale
+        bar (METRIC, ENGLISH or CRS). The initial bounds determine the visible
+        area of the map at startup time. The layers refers to the client layer
+        info objects, not the server layer info or layer instances.</para>
+
+        <para>Additionally, a lot of style information can be included in the
+        map configuration. This includes information like background colour,
+        styles which should be used for selected points, lines and polygons
+        and whether scale bare or pan buttons should be enabled.</para>
+
+        <xi:include href="listing/ClientMapInfoPart2.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>It is possible to configure the pixels per tile that will be
+        used for rendering and retrieving tiles. These can be defined in two
+        ways:</para>
+
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>The MAP type will base the pixels per tile on the map
+              dimensions.</para>
+            </listitem>
+
+            <listitem>
+              <para>The CONFIGURED type you configure the size of the tiles,
+              this defaults to 256x256 pixels.</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+
+        <para>An other important aspect of the map is the scale configuration.
+        The scale configuration allows to define a maximum scale beyond which
+        the user is not allowed to zoom in. This is not needed for zooming out
+        as there is always a maximum bounds defined for the map (either
+        explicitly or calculated as the union of the layer bounds). Next to
+        that you can define a list of zoom levels. By default, the map will
+        allow zooming to arbitrary scale levels but you may wish to enforce
+        certain scale or zoom levels upon the user (like Google Maps does). By
+        doing so, continuous zooming will no longer be possible and any
+        zooming action will "snap" to the predefined scale levels.</para>
+
+        <xi:include href="listing/ClientMapInfoPart5.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Scales can be defined in 2 possible notations:</para>
+
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>the 1 : x notation (see the above listing) is most
+              commonly used in geographics and expresses the ratio between 1
+              meter on the screen and 1 meter on the earth's sphere</para>
+            </listitem>
+
+            <listitem>
+              <para>the floating point notation (e.g. 0.0001) is used by us to
+              express the number of pixels on the screen that correspond to 1
+              unit on the map (1 pixel per 10000 map units in our
+              example)</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+
+        <para>Both scale definitions serve a different purpose. The 1 : x
+        scale should give you an idea of what the true scale is at which the
+        map is shown, although in practice this may depend on the DPI
+        (actually PPI) and pixel size of your device. The floating point scale
+        (which has units of pixel/m or pixel/deegree) is used to precisely
+        define the resolution of raster images on the screen. If you use
+        floating point notation, you can make sure that the scales that are
+        being used in an application are the same as those of the raster
+        layer(s) that lies beneath (see raster layer configuration). Otherwise
+        the raster images may get blurry or unreadable when they need to be
+        resized.</para>
+
+        <para>A map typically also contains a tool bar. If you want one, you
+        have to specify the tools it should include.</para>
+
+        <xi:include href="listing/ClientMapInfoPart3.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Obviously the tools themselves need to be defined as well. You
+        can pass some parameters to the tools. An example tool definition look
+        like this.</para>
+
+        <xi:include href="listing/ZoomInToolInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Note that the tool id and the names of the parameters are
+        interpreted by the client, so it is the client face which defines the
+        possible values.</para>
+
+        <para>Last but not least, you can also configure the layer tree
+        component which may be connected to the map.</para>
+
+        <xi:include href="listing/ClientMapInfoPart4.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the tools which are available in the layer tree
+        widget, and the tree of layers (as a node, which can contain a list of
+        nodes etc).</para>
+
+        <para>Note that the layers are indicated by referring to the client
+        configuration object.</para>
+      </section>
+
+      <section id="conf-clientLayer">
+        <title>Client layer configuration</title>
+
+        <para>Layer configuration is split in two (linked) parts. You have to
+        create the actual layer which is used in the back-end, and this layer
+        needs to know the configuration information which is also used on the
+        client side. Secondly, there is a distinction between raster and
+        vector layers as they each needs a lot of specific information.</para>
+
+        <para>Use this XML header:</para>
+
+        <para><programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</programlisting></para>
+
+        <section id="conf-clientRaster">
+          <title>Raster layer</title>
+
+          <para>The body contains one bean, an instance of
+          ClientRasterLayerInfo. An example:</para>
+
+          <programlisting>&lt;bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerRaster" &gt;
+  &lt;property name="serverLayerId" value="layerRaster" /&gt;
+  &lt;property name="label" value="A raster layer" /&gt;
+  &lt;property name="visible" value="true" /&gt;
+  &lt;property name="viewScaleMin" value="0" /&gt;
+  &lt;property name="viewScaleMax" value="100000" /&gt;
+&lt;/bean&gt;</programlisting>
+
+          <para>The following table describes the properties of the
+          <code>ClientRasterLayerInfo</code> object:</para>
+
+          <para><table>
+              <title>ClientRasterLayerInfo configuration</title>
+
+              <tgroup cols="2">
+                <colspec colwidth="1*" />
+
+                <colspec colwidth="2*" />
+
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>serverLayerId</entry>
+
+                    <entry>This is the name of the bean that corresponds to
+                    this layer at server side. This bean should be a
+                    RasterLayer instance, or on of its subclasses (OsmLayer,
+                    WmsLayer)</entry>
+                  </row>
+
+                  <row>
+                    <entry>visible</entry>
+
+                    <entry>Whether this layer should be visible at
+                    startup</entry>
+                  </row>
+
+                  <row>
+                    <entry>viewScaleMin</entry>
+
+                    <entry>Lowest scale (pixel/(map unit) or absolute if using
+                    '1:xxx' notation) at which the layer is visible</entry>
+                  </row>
+
+                  <row>
+                    <entry>viewScaleMax</entry>
+
+                    <entry>Highest scale (pixel/(map unit) or absolute if
+                    using '1:xxx' notation) at which the layer is
+                    visible</entry>
+                  </row>
+
+                  <row>
+                    <entry>label</entry>
+
+                    <entry>A string that will be the layer's label in a layer
+                    tree.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
+        </section>
+
+        <section id="conf-clientVector">
+          <title>Vector layer</title>
+
+          <para>The body contains one bean, an instance of
+          ClientVectorLayerInfo. An example:</para>
+
+          <programlisting>&lt;bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerVector" &gt;
+  &lt;property name="serverLayerId" value="layerVector" /&gt;
+  &lt;property name="label" value="A vector layer" /&gt;
+  &lt;property name="visible" value="true" /&gt;
+  &lt;property name="viewScaleMin" value="0" /&gt;
+  &lt;property name="viewScaleMax" value="100000" /&gt;
+  &lt;property name="namedStyleInfo" ref="vectorStyleInfo" /&gt;
+&lt;/bean&gt;</programlisting>
+
+          <para>The following table describes the properties of the
+          <code>ClientVectorLayerInfo</code> object:</para>
+
+          <para><table>
+              <title>ClientVectorLayerInfo configuration</title>
+
+              <tgroup cols="2">
+                <colspec colwidth="1*" />
+
+                <colspec colwidth="2*" />
+
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>serverLayerId</entry>
+
+                    <entry>Refers to the bean name that corresponds to this
+                    layer at server side. This bean should be a RasterLayer
+                    instance, or one of its subclasses (OsmLayer,
+                    WmsLayer)</entry>
+                  </row>
+
+                  <row>
+                    <entry>label</entry>
+
+                    <entry>A string that will be the layer's label in a layer
+                    tree.</entry>
+                  </row>
+
+                  <row>
+                    <entry>namedStyleInfo</entry>
+
+                    <entry>Refers to the bean name of a NamedStyleInfo
+                    instance at server side. This bean is normally located
+                    (and also used) in the same xml file as the serverLayerId
+                    bean. This bean contains style info for the features, e.g.
+                    stroke and fill color.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
+        </section>
+      </section>
+    </section>
+  </chapter>
+
+  <chapter id="ch-secConf">
+    <title>Security configuration</title>
+
+    <para>To make sure the system can be used, you have to configure the
+    security to allow access. The easiest configuration is to allow access to
+    everybody.</para>
+
+    <xi:include href="listing/AllowAllSecurity.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>Any other configuration would depend on the available security
+    services. For example, when using the staticsecurity plugin, the following
+    could be defined.</para>
+
+    <xi:include href="listing/StaticSecurityStart.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>Most notable in this example is the inclusion of two security
+    services. The first is provided to allow login and logout
+    (<emphasis>only</emphasis>) for everybody. The second defines users and
+    authorizations (only the beginning of the configuration is displayed
+    here).</para>
+  </chapter>
+
+  <chapter id="ch-transconf">
+    <title>Transaction configuration</title>
+
+    <para>Spring has support declarative transaction management, which
+    relieves us from the burden of writing our own transaction demarcation and
+    exception handling code. Of course, Spring transaction management has to
+    be hooked up with the transaction definition and life cycle of the
+    underlying data platform (hibernate, JTA, JDBC) . Each data access
+    technology should provide its own implementation of the Spring class
+    <code>PlatformTransactionManager</code>. You should check your plug-in
+    documentation for details about configuring the transaction
+    manager.</para>
+
+    <para>Transaction management is typically only needed for editable
+    database layers (although we support and encourage it for read-only layers
+    as well). There is currently no support for having multiple platform
+    transaction managers, although configurations with multiple transaction
+    managers should be possible. This will be investigated and fixed in the
+    future. In practice this means that you currently must not mix editable
+    layers which require a different transaction manager.</para>
+  </chapter>
+
+  <chapter id="ch-dispatcher">
+    <title>Dispatcher servlet configuration</title>
+
+    <para>Additional servlet configuration may be needed for any plug-in that
+    wants to support its own client-server communication protocol. This is
+    typically the case for faces, but in general any plug-in that needs a form
+    of communication that does not match the default command structure should
+    be able to add its own endpoint to the dispatcher servlet. Fortunately,
+    Spring MVC has a very simple architecture to accomplish this. In general,
+    a single MVC dispatcher branch consists of three elements:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>A chandler mapping, whose function it is to map servlet requests
+        to handlers (based on the URL pattern)</para>
+      </listitem>
+
+      <listitem>
+        <para>A handler or controller, whose function it is to handle the
+        actual request and - in most cases - decide which of the views will
+        handle the response</para>
+      </listitem>
+
+      <listitem>
+        <para>A view, whose function it is to prepare the response data and
+        send them to the client</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Our default geomajasWebContext.xml configuration in
+    geomajas-common-servlet looks as follows:</para>
+
+    <programlisting>&lt;beans ...&gt;
+    &lt;!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers --&gt;
+    &lt;bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"&gt;   
+        &lt;!-- need security  --&gt;
+        &lt;property name="interceptors"&gt;
+            &lt;list&gt;
+               &lt;ref bean="securityInterceptor" /&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"&gt;&lt;/bean&gt;
+
+    &lt;!--  we need a view resolver --&gt;
+    &lt;bean class="org.springframework.web.servlet.view.BeanNameViewResolver"&gt;&lt;/bean&gt;
+
+    &lt;context:component-scan base-package="org.geomajas.servlet"/&gt;
+&lt;/beans&gt;
+</programlisting>
+
+    <para>It contains a default handler mapping which maps URLs to controller
+    beans based on the name of the bean. This means that the controller's name
+    should actually be the part of the URL that follows the dispatcher
+    servlet's base path (including wild cards if more than one url has to be
+    mapped).</para>
+
+    <para>The interceptor property is added to make sure that a secure context
+    is set up when accessing the Geomajas server. The interceptor assumes that
+    a parameter <code>userToken</code> will be passed as part of the HTTP
+    request. The value of the parameter should be equal to the user token
+    received from the authentication service.</para>
+
+    <para>The bean name view resolver kicks in when the controller returns a
+    string value or sets the view name in the <code>ModelAndView</code> object
+    (we will come to this later). It will invoke the correct view based on the
+    bean name specified by the controller.</para>
+
+    <para>With the current setup all the wiring between URLs, controllers and
+    views can be done via annotations. Assume the base dispatcher URL is
+    <code>http://localhost:8080/geomajas/d </code>and we want to set up a
+    specific end point for all URLs with follow the pattern
+    <code>http://localhost:8080/geomajas/d/mymodule/**</code>. It is than
+    sufficient to create a controller component with the name<code>
+    /mymodule/**</code> and return the name of the view bean (which itself can
+    be a component) in the controller method:</para>
+
+    <para><programlisting>@Controller("/mymodule/**")
+public class MyController {
+    @RequestMapping(value = "/mymodule/test.html", method = RequestMethod.GET)
+    public String doMyStuff(@RequestParam("test") String test, Model model){
+        return "MyView";
+    }
+}
+</programlisting>Notice that apart from the annotations there is nothing
+    special about this class. Spring MVC auto detects the mapping based on the
+    <code>@Request</code>Mapping annotation (which in this case narrows down
+    the URL to a specific one) and will even map request parameters to method
+    arguments if they are annotated with <code>@RequestParam</code>. The model
+    argument is basically just a hash map to store the result of the operation
+    as needed by the view. There are actually many more advanced
+    possibilities, for which you may want to consult the Spring documentation.
+    If the method returns a string like above, this string will be used to
+    determine the view object, which could be the following bean:</para>
+
+    <para><programlisting>@Component("MyView")
+public class MyView extends AbstractView {
+    @Override
+    protected void renderMergedOutputModel(Map&lt;String, Object&gt; model, HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        // write response using the model
+    }
+}
+</programlisting>Views are generally responsible for encoding the result in a
+    specified format (e.g. JSON, XML,...). The result itself can be retrieved
+    from the model argument, which will have the same contents as the model
+    argument in the controller.</para>
+  </chapter>
+
+  <chapter id="ch-crs">
+    <title>Coordinate Reference Systems</title>
+
+    <para>Geomajas uses GeoTools' gt-epsg-wkt module to define the coordinate
+    reference systems which are available.</para>
+
+    <para>If you want to add extra coordinate reference systems, this can be
+    done by defining them in the configuration. For example, Geomajas itself
+    already defines the "EPSG:900913" crs (which one of the many codes for the
+    Mercator projection used by Google Maps and OpenStreetMap).</para>
+
+    <xi:include href="listing/CrsInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>You can add as many of these beans as needed. The keys
+    transformation which are added this way are tested before the GeoTools
+    library, so you can overwrite definitions if needed.</para>
+
+    <para>If you don't like the dependency on the gt-epsg-wkt library, then
+    you could exclude this dependency in your maven pom and use a different
+    dependency if needed.</para>
+
+    <para>The transformations between coordinate reference systems should be
+    done using GeoService. When this is used for transformations, it avoids
+    throwing transformation exceptions by limiting the geometry to the
+    transformable area<footnote>
+        <para>If an exception does occur, it will be logged as a warning, but
+        the GeoService assures the transform does not fail. Instead, and empty
+        geometry will be returned.</para>
+      </footnote>. The system tries to determine the transformable area
+    automatically, but this is is not always possible and if it is, it can be
+    inaccurate. Therefor, you can also configure the transformable area for a
+    pair of CRSs. You can see an example configuration below.</para>
+
+    <xi:include href="listing/CrsTransformInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </chapter>
+</part>
