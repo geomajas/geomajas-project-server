@@ -37,10 +37,10 @@ public class DefaultDocument extends SinglePageDocument {
 	}
 
 	@Override
-	public void render(OutputStream outputStream, Format format) throws PrintingException {
+	public void render(OutputStream outputStream, Format format, int dpi) throws PrintingException {
 		defaultVisitor.visitTree(getPage());
 		visitor.visitTree(getPage());
-		super.render(outputStream, format);
+		super.render(outputStream, format, dpi);
 	}
 
 }

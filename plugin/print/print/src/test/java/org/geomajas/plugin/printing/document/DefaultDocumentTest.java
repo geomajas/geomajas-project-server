@@ -10,8 +10,12 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
@@ -32,6 +36,7 @@ import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.service.PrintService;
 import org.geomajas.security.SecurityManager;
+import org.jpedal.PdfDecoder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,10 +77,29 @@ public class DefaultDocumentTest {
 		DefaultDocument document = new DefaultDocument(printService.createDefaultTemplate("A4", true), null,
 				getDefaultVisitor(-31.44, -37.43, 80.83f), new MapConfigurationVisitor(configurationService,
 						printDtoService));
-		FileOutputStream fo = new FileOutputStream("target/test.png");
-		document.render(fo, Format.PNG);
+		FileOutputStream fo = new FileOutputStream("target/test.pdf");
+		document.render(fo, Format.PDF, 200);
 		fo.flush();
 		fo.close();
+	}
+
+	@Test
+	public void testToImage() throws Exception {
+		testRender();
+		PdfDecoder decodePdf = new PdfDecoder(true);
+
+		/** set mappings for non-embedded fonts to use */
+		PdfDecoder.setFontReplacements(decodePdf);
+		decodePdf.useHiResScreenDisplay(true);
+		decodePdf.getDPIFactory().setDpi(5);
+		decodePdf.setPageParameters(2, 1);
+		decodePdf.openPdfFile("target/test.pdf");
+		/** get page 1 as an image */
+		BufferedImage bufferedImage = decodePdf.getPageAsImage(1);
+		ImageIO.write(bufferedImage, "PNG", new File("target/test.png"));
+		/** close the pdf file */
+		decodePdf.closePdfFile();
+
 	}
 
 	@Test
@@ -143,7 +167,7 @@ public class DefaultDocumentTest {
 		template.setPage(page);
 		SinglePageDocument pdfDoc = new SinglePageDocument(page, null);
 		FileOutputStream fo = new FileOutputStream("target/legend.png");
-		pdfDoc.render(fo, Format.PNG);
+		pdfDoc.render(fo, Format.PNG, 200);
 		fo.flush();
 		fo.close();
 	}

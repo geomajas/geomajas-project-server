@@ -85,6 +85,8 @@ public class PrintingController {
 
 	public static final String FORMAT_KEY = "format";
 
+	public static final String DPI_KEY = "dpi";
+
 	public static final String DOWNLOAD_METHOD_BROWSER = "0";
 
 	public static final String DOWNLOAD_METHOD_SAVE = "1";
@@ -108,23 +110,26 @@ public class PrintingController {
 
 	@RequestMapping(value = "/printing", method = RequestMethod.GET)
 	public ModelAndView printGet(@RequestParam("documentId") String documentId,
-			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
-			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName) throws PrintingException {
+			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE, required = false) String download,
+			@RequestParam(value = "name", defaultValue = "geomajas.pdf", required = false) String fileName,
+			@RequestParam(value = "dpi", defaultValue = "72", required = false) int dpi) throws PrintingException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(DOCUMENT_VIEW_NAME);
 		mav.addObject(DOCUMENT_KEY, printService.removeDocument(documentId));
 		mav.addObject(DOWNLOAD_KEY, download);
 		mav.addObject(FILENAME_KEY, fileName);
 		mav.addObject(FORMAT_KEY, Format.decode(fileName));
+		mav.addObject(DPI_KEY, dpi);
 		return mav;
 	}
 
 	@RequestMapping(value = "/printing", method = RequestMethod.POST)
 	public ModelAndView printPost(
-			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
-			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName,
+			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE, required = false) String download,
+			@RequestParam(value = "name", defaultValue = "geomajas.pdf", required = false) String fileName,
 			@RequestParam(value = "template") String templateJson,
-			@RequestParam(value = "pageSize", required = false) String pageSize) throws GeomajasException,
+			@RequestParam(value = "pageSize", required = false) String pageSize,
+			@RequestParam(value = "dpi", defaultValue = "72", required = false) int dpi) throws GeomajasException,
 			JsonProcessingException, IOException {
 		// parse as a generic tree, sufficient to remove the nulls first
 		JsonNode tree = objectMapper.readTree(templateJson);
@@ -152,6 +157,7 @@ public class PrintingController {
 		mav.addObject(DOWNLOAD_KEY, download);
 		mav.addObject(FILENAME_KEY, fileName);
 		mav.addObject(FORMAT_KEY, Format.decode(fileName));
+		mav.addObject(DPI_KEY, dpi);
 		return mav;
 	}
 

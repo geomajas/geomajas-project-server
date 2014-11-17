@@ -24,7 +24,6 @@ import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
 import org.geomajas.plugin.printing.component.impl.LegendItemComponentImpl;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
-import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
 import org.geomajas.plugin.printing.service.PrintService;
 
@@ -72,17 +71,7 @@ public class LayoutAsSinglePageDoc {
 			page.setSize(request.getPageSize(), true);
 		}
 		SinglePageDocument pdfDoc = new SinglePageDocument(page, null);
-		
-		Format outputFormat = getFormatForExt(null == request.getOutputFormat() ? 
-						PrintGetTemplateExtRequest.DEFAULT_OUTPUT_FORMAT : request.getOutputFormat());
-		
-		if (null == outputFormat) {
-			// Unsupported format
-			throw new GeomajasException(36, (null == request.getOutputFormat()) ?
-							"{null}" : request.getOutputFormat());
-		}
-		// First pass is to perform the layout of the rendered doc 
-		pdfDoc.layout(outputFormat); // outputFormat: PDF, PNG, ... 
+		pdfDoc.layout();
 		// Add document to container
 		String documentId = printService.putDocument(pdfDoc);
 		response.setDocumentId(documentId);
@@ -112,18 +101,6 @@ public class LayoutAsSinglePageDoc {
 		}
 		// need to do this before setSizeAndFit
 		adjustLegendFontSizeForSmallPageSizes(request, (LegendComponentImpl) legendComp);
-	}
-
-	private static Format getFormatForExt(String extension) {
-		Format format = null;
-		
-		for (Format formatCandidate : Format.values()) {
-			if (formatCandidate.getExtension().equals(extension)) {
-				format = formatCandidate;
-				break; // Stop when found
-			}
-		}
-		return format;
 	}
 
 	private static void adjustLegendFontSizeForSmallPageSizes(PrintGetTemplateExtRequest request,

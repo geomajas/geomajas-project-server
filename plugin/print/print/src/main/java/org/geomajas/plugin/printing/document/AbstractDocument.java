@@ -10,11 +10,8 @@
  */
 package org.geomajas.plugin.printing.document;
 
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
-
-import org.geomajas.plugin.printing.PrintingException;
 
 /**
  * <p>
@@ -44,8 +41,5 @@ public abstract class AbstractDocument implements Document {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-
-
-	public abstract void render(OutputStream os, Format format) throws PrintingException;
 
 }
