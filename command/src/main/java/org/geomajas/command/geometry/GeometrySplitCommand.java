@@ -31,9 +31,11 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
- * Command that splits up a given geometry using a splitting line. This command tries to return Polygons in the result.
+ * Command that splits up a given geometry using a splitting line. This command will return polygons for a polygon-like
+ * geometry and linestrings for line-like in the result.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  * @since 1.11.0
  */
 @Component
