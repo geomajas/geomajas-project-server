@@ -75,7 +75,7 @@ public class PrintingControllerTest {
 				getDefaultVisitor(-31.44, -37.43, 80.83f), new MapConfigurationVisitor(configurationService,
 						printDtoService));
 		String documentId = printService.putDocument(document);
-		ModelAndView mv = printingController.printGet(documentId, PrintingController.DOWNLOAD_METHOD_SAVE, "mydoc.pdf");
+		ModelAndView mv = printingController.printGet(documentId, PrintingController.DOWNLOAD_METHOD_SAVE, "mydoc.pdf", 200);
 		Assert.assertSame(document, mv.getModel().get(PrintingController.DOCUMENT_KEY));
 		Assert.assertEquals("mydoc.pdf", mv.getModel().get(PrintingController.FILENAME_KEY));
 		Assert.assertEquals(Format.PDF, mv.getModel().get(PrintingController.FORMAT_KEY));
@@ -98,11 +98,11 @@ public class PrintingControllerTest {
 		PrintTemplateInfo templateInfo = builder.buildTemplate();
 		ObjectMapper mapper = printingController.getObjectMapper();
 		String json = mapper.writer().writeValueAsString(templateInfo);
-		ModelAndView mv = printingController.printPost(PrintingController.DOWNLOAD_METHOD_SAVE, "mydoc.pdf",json,"A4");
+		ModelAndView mv = printingController.printPost(PrintingController.DOWNLOAD_METHOD_SAVE, "mydoc.pdf",json,"A4", 200);
 		Document document = (Document) mv.getModel().get(PrintingController.DOCUMENT_KEY);
 		Assert.assertNotNull(document);
 		FileOutputStream fo = new FileOutputStream("target/mydoc.pdf");
-		document.render(fo, Format.PDF);
+		document.render(fo, Format.PDF, 200);
 		fo.flush();
 		fo.close();
 		Assert.assertEquals("mydoc.pdf", mv.getModel().get(PrintingController.FILENAME_KEY));

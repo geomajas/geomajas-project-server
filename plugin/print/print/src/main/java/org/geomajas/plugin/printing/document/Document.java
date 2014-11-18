@@ -67,9 +67,10 @@ public interface Document {
 	 * 
 	 * @param os
 	 *            output stream
+	 * @param dpi 
 	 * @throws PrintingException
 	 */
-	void render(OutputStream os, Format format) throws PrintingException;
+	void render(OutputStream os, Format format, int dpi) throws PrintingException;
 
 	/**
 	 * Gets the content length of the document.
