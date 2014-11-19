@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-common-documentation</artifactId>
-	<version>1.17.0-SNAPSHOT</version>
+	<version>1.16.4</version>
 	<packaging>jar</packaging>
 	<name>Geomajas server: Layer common - Documentation</name>
 	<description>Geomajas server: Layer common - Documentation</description>
