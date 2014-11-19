@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-layer-googlemaps-parent</artifactId>
-		<version>1.16.4</version>
+		<version>1.17.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-server-plugin-layer-googlemaps-javadoc</artifactId>
