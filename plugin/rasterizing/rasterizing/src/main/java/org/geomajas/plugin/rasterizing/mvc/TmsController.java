@@ -149,6 +149,7 @@ public class TmsController {
 	 * @param tileOrigin origin of the tile configuration "&lt;x-coordinate>,&lt;y-coordinate>"
 	 * @param tileWidth tile width in pixels
 	 * @param tileHeight tile height in pixels
+	 * @param filter Optional CQL filter on the features shown
 	 * @param response servlet response
 	 * @throws Exception
 	 */
@@ -159,7 +160,8 @@ public class TmsController {
 			@RequestParam(required = false) Double resolution,
 			@RequestParam(required = false) String tileOrigin,
 			@RequestParam(required = false, defaultValue = "512") int tileWidth,
-			@RequestParam(required = false, defaultValue = "512") int tileHeight, HttpServletResponse response)
+			@RequestParam(required = false, defaultValue = "512") int tileHeight,
+			@RequestParam(required = false) String filter, HttpServletResponse response)
 			throws Exception {
 		try {
 			Crs tileCrs = geoService.getCrs2(crs);
@@ -184,6 +186,7 @@ public class TmsController {
 			tileMetadata.setTileWidth(tileWidth);
 			tileMetadata.setTileHeight(tileHeight);
 			tileMetadata.setStyleInfo(styleService.retrieveStyle(layerId, styleKey));
+			tileMetadata.setFilter(filter);
 
 			RebuildCacheContainer rcc = new RebuildCacheContainer();
 			rcc.setMetadata(tileMetadata);
