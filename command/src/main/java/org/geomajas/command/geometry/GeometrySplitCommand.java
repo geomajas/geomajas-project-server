@@ -100,7 +100,9 @@ public class GeometrySplitCommand implements Command<GeometrySplitRequest, Geome
 				for (int i = 0; i < union.getNumGeometries(); i++) {
 					LineString ls = (LineString) union.getGeometryN(i);
 					// collect the linestrings, but not the split line !
-					if (geometry.contains(ls)) {
+					// the overlap check is necessary because the split point may not be exactly on the line !!!
+					// (thanks to Oliver Bienert)
+					if (geometry.contains(ls) || geometry.overlaps(ls)) {
 						lines.add(ls);
 					}
 				}
