@@ -65,6 +65,10 @@ public class GeometrySplitCommand implements Command<GeometrySplitRequest, Geome
 		// Convert geometries to JTS model:
 		Geometry geometry = converter.toInternal(request.getGeometry());
 		Geometry splittingLine = converter.toInternal(request.getSplitLine());
+		if (geometry.contains(splittingLine) || geometry.overlaps(splittingLine)) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_INVALID_VALUE,
+					"splitting line (contained or overlapping)");
+		}
 		// split
 		List<Geometry> splitted = split(geometry, splittingLine);
 		// Convert to Geomajas
