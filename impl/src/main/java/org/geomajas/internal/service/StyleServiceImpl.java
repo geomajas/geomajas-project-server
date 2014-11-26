@@ -10,8 +10,6 @@
  */
 package org.geomajas.internal.service;
 
-import java.util.UUID;
-
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.CacheService;
@@ -19,32 +17,34 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 
 /**
  * Default implementation of the style service.
- * 
+ *
  * @author Oliver May
- * 
+ *
  */
 @Component
 public class StyleServiceImpl implements StyleService {
 	private static final String CACHE_KEY = StyleServiceImpl.class.toString();
-	
+
 	@Autowired
 	private ConfigurationService configurationService;
 
 	@Autowired
 	private CacheService cacheService;
-	
+
 	@Override
 	public String registerStyle(String layerId, NamedStyleInfo style) {
-		String uuid = UUID.randomUUID().toString();
-		cacheService.put(CACHE_KEY, uuid, style);
-		return uuid;
+		String id = DigestUtils.md5DigestAsHex(style.getCacheId().getBytes());
+		cacheService.put(CACHE_KEY, id, style);
+		return id;
 	}
 
 	@Override
 	public NamedStyleInfo retrieveStyle(String layerId, String styleName) {
+
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		if (layer != null) {
 			NamedStyleInfo namedStyle = layer.getLayerInfo().getNamedStyleInfo(styleName);
