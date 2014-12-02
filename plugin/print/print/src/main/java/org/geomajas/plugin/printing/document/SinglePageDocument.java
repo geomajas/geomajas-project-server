@@ -135,7 +135,7 @@ public class SinglePageDocument extends AbstractDocument {
 		}
 		baos.reset();
 		boolean resize = false;
-		if (page.getBounds().getWidth() == 0 || page.getBounds().getHeight() == 0) {
+		if (page.getConstraint().getWidth() == 0 || page.getConstraint().getHeight() == 0) {
 			resize = true;
 		}
 		// Create a document in the requested ISO scale.
