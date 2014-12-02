@@ -89,8 +89,8 @@
 		</dependency>
 		
 		<dependency>
-		    <groupId>jpedal</groupId>
-		    <artifactId>jpedal</artifactId>
+			<groupId>org.apache.pdfbox</groupId>
+		    <artifactId>pdfbox</artifactId>
 		</dependency>
 
 		<dependency>

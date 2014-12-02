@@ -797,9 +797,9 @@
 				<version>2.1.7</version>
 			</dependency>
 			<dependency>
-				<groupId>jpedal</groupId>
-				<artifactId>jpedal</artifactId>
-				<version>4.45-b-105</version>
+				<groupId>org.apache.pdfbox</groupId>
+			    <artifactId>pdfbox</artifactId>
+			    <version>2.0.0-rev1642314</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.media</groupId>

@@ -11,6 +11,7 @@
 package org.geomajas.plugin.printing.document;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,13 +29,13 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -192,26 +193,10 @@ public class SinglePageDocument extends AbstractDocument {
 		if (format == Format.PDF) {
 			baos.writeTo(outputStream);
 		} else {
-			BufferedImage bufferedImage = null;
-			// Use JPedal lib for converting the PDF to PNG or JPG
-			/** instance of PdfDecoder to convert PDF into image */
-			PdfDecoder decodePdf = new PdfDecoder(true);
-
-			/** set mappings for non-embedded fonts to use */
-			PdfDecoder.setFontReplacements(decodePdf);
-			decodePdf.useHiResScreenDisplay(true);
-			decodePdf.setPageParameters(dpi / 72f, 1);
-			try {
-				decodePdf.openPdfArray(baos.toByteArray());
-				/** get page 1 as an image */
-				bufferedImage = decodePdf.getPageAsImage(1);
-
-				/** close the pdf file */
-				decodePdf.closePdfFile();
-
-			} catch (PdfException e) {
-				throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
-			}
+			PDDocument pdf = PDDocument.load(new ByteArrayInputStream(baos.toByteArray()), true);
+			PDFRenderer renderer = new PDFRenderer(pdf);
+			BufferedImage bufferedImage = renderer.renderImageWithDPI(0, dpi);
+			pdf.close();
 			if (format == Format.PNG) {
 				final String formatName = format.getExtension();
 				for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName(formatName); iw.hasNext();) {

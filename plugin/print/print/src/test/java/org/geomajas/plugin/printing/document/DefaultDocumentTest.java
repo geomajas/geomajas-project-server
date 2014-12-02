@@ -17,6 +17,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -36,7 +38,6 @@ import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.service.PrintService;
 import org.geomajas.security.SecurityManager;
-import org.jpedal.PdfDecoder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,20 +87,11 @@ public class DefaultDocumentTest {
 	@Test
 	public void testToImage() throws Exception {
 		testRender();
-		PdfDecoder decodePdf = new PdfDecoder(true);
-
-		/** set mappings for non-embedded fonts to use */
-		PdfDecoder.setFontReplacements(decodePdf);
-		decodePdf.useHiResScreenDisplay(true);
-		decodePdf.getDPIFactory().setDpi(5);
-		decodePdf.setPageParameters(2, 1);
-		decodePdf.openPdfFile("target/test.pdf");
-		/** get page 1 as an image */
-		BufferedImage bufferedImage = decodePdf.getPageAsImage(1);
+		PDDocument pdf = PDDocument.load(new File("target/test.pdf"), true);
+		PDFRenderer renderer = new PDFRenderer(pdf);
+		BufferedImage bufferedImage = renderer.renderImageWithDPI(0, 144);
+		pdf.close();
 		ImageIO.write(bufferedImage, "PNG", new File("target/test.png"));
-		/** close the pdf file */
-		decodePdf.closePdfFile();
-
 	}
 
 	@Test
