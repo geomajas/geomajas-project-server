@@ -445,6 +445,12 @@ public class RasterDirectLayer extends DirectLayer {
 		op.filter(source, dest);
 		return PlanarImage.wrapRenderedImage(dest);
 	}
+	
+	@Override
+	public void dispose() {
+		preDispose();
+		super.dispose();
+	}
 
 	/**
 	 * Image result.
