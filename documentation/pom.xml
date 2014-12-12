@@ -20,7 +20,7 @@
 
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-server-documenatation</artifactId>
-	<version>1.17.0-SNAPSHOT</version>
+	<version>1.17.0</version>
 
 	<name>Geomajas Server: Main - Documentation</name>
 	<description>Geomajas Server: Main - Documentation</description>
