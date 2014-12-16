@@ -1,0 +1,56 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- WMS map sample -->
+	<bean name="mapWms" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180" />
+				<property name="y" value="-90" />
+				<property name="width" value="360" />
+				<property name="height" value="180" />
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="clientLayerWms" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerWms">
+		<property name="serverLayerId" value="layerWmsBluemarble" />
+		<property name="label" value="Blue marble WMS (raster)" />
+		<property name="visible" value="true" />
+		<property name="style" value="0.8" />
+	</bean>
+
+</beans>

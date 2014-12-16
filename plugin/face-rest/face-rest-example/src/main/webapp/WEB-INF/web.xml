@@ -18,8 +18,9 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:org/geomajas/spring/geomajasContext.xml
-            classpath:org/geomajas/rest/shapeinmem/applicationContext.xml
-            classpath:org/geomajas/rest/shapeinmem/layerCountries110m.xml
+            classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml
+            classpath:org/geomajas/rest/context/security.xml
+            classpath:org/geomajas/rest/context/restExampleContext.xml
         </param-value>
     </context-param>
  

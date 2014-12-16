@@ -35,7 +35,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml" })
+		 "/org/geomajas/testdata/beanContext.xml",
+		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/rest/dummySecurity.xml" })
 public class GeotoolsconverterServiceTest {
 
 	@Autowired

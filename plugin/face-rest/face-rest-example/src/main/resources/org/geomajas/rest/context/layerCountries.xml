@@ -1,0 +1,228 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.util.Date">
+					<bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+						<constructor-arg>
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg value="yyyy-MM-dd" />
+								<constructor-arg value="null" />
+							</bean>
+						</constructor-arg>
+						<constructor-arg value="true" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="countriesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTIPOLYGON" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-85.05112877980659" />
+				<property name="y" value="-85.05112877980659" />
+				<property name="width" value="170.102257" />
+				<property name="height" value="170.102257" />
+			</bean>
+		</property>
+		<property name="featureInfo" ref="countriesFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="countriesStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.FeatureInfo" name="countriesFeatureInfo">
+		<property name="dataSourceName" value="org.geomajas.testdata.Country" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="id" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="sortAttributeName" value="name" />
+		<property name="sortType" value="DESC" />
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="geometry" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Name" />
+					<property name="name" value="name" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Label" />
+					<property name="name" value="country" />
+					<property name="editable" value="false" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Region" />
+					<property name="name" value="region" />
+					<property name="editable" value="false" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="OPEC" />
+					<property name="name" value="opec" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="Member of OPEC? (value must be 0 or 1)" />
+							<property name="errorMessage" value="Invalid value: The value must be either 0 or 1." />
+							<property name="constraints">
+								<list>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
+									<bean class="org.geomajas.configuration.validation.MinConstraintInfo">
+										<property name="value" value="0" />
+									</bean>
+									<bean class="org.geomajas.configuration.validation.MaxConstraintInfo">
+										<property name="value" value="1" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="UNESCO" />
+					<property name="name" value="unesco" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="Member of UNESCO? (value must be 0 or 1)" />
+							<property name="errorMessage" value="Invalid value: The value must be either 0 or 1." />
+							<property name="constraints">
+								<list>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
+									<bean class="org.geomajas.configuration.validation.MinConstraintInfo">
+										<property name="value" value="0" />
+									</bean>
+									<bean class="org.geomajas.configuration.validation.MaxConstraintInfo">
+										<property name="value" value="1" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countriesStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="OPEC and UNESCO Member" />
+					<property name="fillColor" value="#995500" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#995500" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="name" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#000000" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean name="countries" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="countriesInfo" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.testdata.Country">
+					<property name="id" value="1" />
+					<property name="country" value="CTRY1" />
+					<property name="name" value="Country 1" />
+					<property name="region" value="Region 1" />
+					<property name="opec" value="0" />
+					<property name="unesco" value="0" />
+					<property name="geometry" value="MULTIPOLYGON(((0 0,1 0,1 1,0 1,0 0)))" />
+				</bean>
+				<bean class="org.geomajas.testdata.Country">
+					<property name="id" value="2" />
+					<property name="country" value="CTRY2" />
+					<property name="name" value="Country 2" />
+					<property name="region" value="Region 1" />
+					<property name="opec" value="1" />
+					<property name="unesco" value="1" />
+					<property name="geometry" value="MULTIPOLYGON(((-1 -1,0 -1,0 0,-1 0,-1 -1)))" />
+				</bean>
+				<bean class="org.geomajas.testdata.Country">
+					<property name="id" value="3" />
+					<property name="country" value="CTRY3" />
+					<property name="name" value="Country 3" />
+					<property name="region" value="Region 2" />
+					<property name="opec" value="0" />
+					<property name="unesco" value="0" />
+					<property name="geometry" value="MULTIPOLYGON(((-1 0,0 0,0 1,-1 1,-1 0)))" />
+				</bean>
+				<bean class="org.geomajas.testdata.Country">
+					<property name="id" value="4" />
+					<property name="country" value="CTRY4" />
+					<property name="name" value="Country 4" />
+					<property name="region" value="Region 2" />
+					<property name="opec" value="1" />
+					<property name="unesco" value="0" />
+					<property name="geometry" value="MULTIPOLYGON(((0 -1,1 -1,1 0,0 0,0 -1)))" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
