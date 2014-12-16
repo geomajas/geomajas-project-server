@@ -10,40 +10,162 @@
 		  ~ by the Geomajas Contributors License Agreement. For full licensing
 		  ~ details, see LICENSE.txt in the project root.
 		  -->
-        <title>OpenLayers Geomajas Example</title>
-        <link rel="stylesheet" href="theme/default/style.css" type="text/css" />
-        <script src="OpenLayers.js"></script>
+        <title>Geomajas JSON Commands API example</title>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
         <script type="text/javascript">
-            var map;
-        
+            var restPath = '';
+
+            var token = ''; //null we allow all
+            var currentJsonString = '';
+
             function init(){
-                map = new OpenLayers.Map('map');
-                var wms = new OpenLayers.Layer.WMS(
-                    "OpenLayers WMS", "http://apps.geomajas.org/geoserver/wms",
-                    {layers: 'bluemarble'}
-                );
-
-                var layer = new OpenLayers.Layer.Vector("GeoJSON", {
-                    strategies: [new OpenLayers.Strategy.Fixed()],
-                    protocol: new OpenLayers.Protocol.HTTP({
-                    	url: "d/rest/countries110m",
-                    	format: new OpenLayers.Format.GeoJSON()
-                    })
+                $(function() {
+                    $( "#tabs" ).tabs();
                 });
+            }
 
-                map.addLayers([wms, layer]);
-                map.zoomToExtent(new OpenLayers.Bounds(
-                    -3.92, 44.34, 4.87, 49.55
-                ));
+            function postJson() {
+
+                if ('' != currentJsonString && '' != restPath) {
+                    var restURI = "d/json/" + restPath + '?token=' + token;
+
+                    var request = $.ajax({
+                        url: restURI,
+                        type: "POST",
+                        data: currentJsonString,
+                        datatype : "json",
+                        contentType: "application/json; charset=utf-8"
+                    });
+                    request.done(function( json ) {
+                        var str = JSON.stringify(json, undefined, 4);
+                        $("#response" ).html(syntaxHighlight(str));
+
+                        // activate tab
+                        $( "#tabs" ).tabs( "option", "active", 1 );
+
+                    });
+                    request.fail(function( jqXHR, textStatus ) {
+
+                        $("response").html("Response failed: "+textStatus);
+                    });
+                }
+            }
+
+            function syntaxHighlight(json) {
+                json = json.replace(/&/g, '&').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            }
+
+            function getJsonRequestObject() {
+                restPath = $( "#restsel" ).val();
+                if (restPath === '') return;
+
+
+                $("#response" ).empty();
+
+                // activate tab
+                $( "#tabs" ).tabs( "option", "active", 0 );
+
+                var restURI = "d/restapi/generaterequest/" + restPath;
+
+                var request = $.ajax({
+                    url: restURI,
+                    type: "GET",
+                    datatype : "json",
+                    contentType: "application/json; charset=utf-8"
+                });
+                request.done(function( json ) {
+                    var str = JSON.stringify(json, undefined, 4);
+
+                    currentJsonString = str;
+
+                    $("#request" ).html(syntaxHighlight(str));
+                });
+                request.fail(function( jqXHR, textStatus ) {
+                    //reset everything
+                    $("#request" ).html(textStatus);
+                    restPath ='';
+                    currentJsonString = '';
+
+                });
             }
         </script>
+
+        <style>
+            pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+            .string { color: green; }
+            .number { color: darkorange; }
+            .boolean { color: blue; }
+            .null { color: magenta; }
+            .key { color: red; }
+
+            .padding {
+                padding: 0.5em 1em;
+            }
+
+        </style>
     </head>
 
     <body onload="init()">
-        <h1 id="title">Geomajas example (GeoJSON REST interface)</h1>
-        <div id="map" class="smallmap"></div>
-        <div id="docs">
-            This sample uses the fixed strategy and HTTP protocol to connect to the Geomajas REST face.
+        <a href="openLayers.html">Open layers map Geo JSON example</a>
+        <h1 id="title">Geomajas JSON API</h1>
+        <p>Geomajs JSON API uses only post requests. When a formatted JSON request object is posted to the server the server will answer with appropriate JSON response object. Try it yourself below.</p>
+
+        <label>Choose a JSON request object to post</label>
+        <select id="restsel" class="padding" onchange="getJsonRequestObject();">
+            <option value=""></option>
+            <option value="login">Login</option>
+            <option value="configuration">Configuration</option>
+            <option value="configuration/map">Configuration Map</option>
+            <option value="configuration/refresh">Configuration refresh</option>
+            <option value="configuration/maximumextend">Configuration maximumextend</option>
+            <option value="geometry/area">Geometry - area</option>
+            <option value="geometry/buffer">Geometry - buffer</option>
+            <option value="geometry/convexhull">Geometry - convexhull</option>
+            <option value="geometry/merge">Geometry - merge</option>
+            <option value="geometry/split">Geometry - split</option>
+            <option value="geometry/transform">Geometry - transform</option>
+            <option value="render/rastertiles">Render - rastertiles</option>
+            <option value="render/vectortiles">Render - vectortiles</option>
+            <option value="render/namedstyle">Render - namedstyle</option>
+        </select>
+
+        <label>Post selected JSON to the server</label>
+        <button class="padding" type="button" title="send json post request" onclick="postJson();">POST</button>
+
+
+        <div id="tabs" style="height: 100%; margin-top:10px;">
+            <ul>
+                <li><a href="#tabs-1">JSON Request</a></li>
+                <li><a href="#tabs-2">JSON Response</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div id="request"></div>
+
+            </div>
+            <div id="tabs-2">
+                <div id="response"></div>
+             </div>
         </div>
     </body>
 </html>
+
+

@@ -11,6 +11,7 @@
 <!-- @extract-start SpringConfigurationPreamble, Spring configuration preamble -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:util="http://www.springframework.org/schema/util"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:tx="http://www.springframework.org/schema/tx"
@@ -30,6 +31,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-
 
 </beans>

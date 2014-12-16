@@ -1,0 +1,26 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<!-- configuration to assure staticsecurity doesn't cause applicationContext construction to fail. -->
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+		>
+
+	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
+		<property name="users">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+</beans>

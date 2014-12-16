@@ -18,8 +18,12 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:org/geomajas/spring/geomajasContext.xml
-            classpath:org/geomajas/rest/shapeinmem/applicationContext.xml
-            classpath:org/geomajas/rest/shapeinmem/layerCountries110m.xml
+            classpath:org/geomajas/rest/context/security.xml
+            classpath:org/geomajas/rest/context/applicationContext.xml
+            classpath:org/geomajas/rest/context/appRestExample.xml
+            classpath:org/geomajas/rest/context/layerWmsBluemarble.xml
+            classpath:org/geomajas/rest/context/mapWms.xml
+            classpath:org/geomajas/rest/context/layerCountries110m.xml
         </param-value>
     </context-param>
  

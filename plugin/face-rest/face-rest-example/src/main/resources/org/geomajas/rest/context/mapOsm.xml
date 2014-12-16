@@ -1,0 +1,89 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- OpenStreetMap sample -->
+	<bean name="mapOsm" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#E0E0E0" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:900913" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-20026376.393709917" />
+				<property name="y" value="-20026376.393709917" />
+				<property name="width" value="40052752.787419834" />
+				<property name="height" value="40052752.787419834" />
+			</bean>
+		</property>
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1000" />
+				<property name="zoomLevels">
+					<list>
+						<value>6.388019798183263E-6</value>
+						<value>1.2776039596366526E-5</value>
+						<value>2.555207919273305E-5</value>
+						<value>5.11041583854661E-5</value>
+						<value>1.022083167709322E-4</value>
+						<value>2.044166335418644E-4</value>
+						<value>4.088332670837288E-4</value>
+						<value>8.176665341674576E-4</value>
+						<value>0.0016353330683349153</value>
+						<value>0.0032706661366698306</value>
+						<value>0.006541332273339661</value>
+						<value>0.013082664546679322</value>
+						<value>0.026165329093358645</value>
+						<value>0.05233065818671729</value>
+						<value>0.10466131637343458</value>
+						<value>0.20932263274686916</value>
+						<value>0.4186452654937383</value>
+						<value>0.8372905309874766</value>
+						<value>1.6745810619749533</value>
+						<!--value>3.3491621239499065</value>
+						<value>6.698324247899813</value-->
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="osmLayer" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
+		<property name="serverLayerId" value="osm" />
+		<property name="label" value="OpenStreetMap (raster)" />
+		<property name="visible" value="true" />
+		<property name="style" value="1" />
+	</bean>
+
+</beans>

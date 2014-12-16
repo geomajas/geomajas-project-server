@@ -108,6 +108,30 @@
 			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geomajas</groupId>
+            <artifactId>geomajas-command</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-staticsecurity</artifactId>
+        </dependency>
+
 	</dependencies>
 
 	<profiles>

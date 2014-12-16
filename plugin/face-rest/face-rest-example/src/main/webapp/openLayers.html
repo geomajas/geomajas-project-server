@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+		<!--
+		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+		  ~
+		  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+		  ~
+		  ~ The program is available in open source according to the GNU Affero
+		  ~ General Public License. All contributions in this program are covered
+		  ~ by the Geomajas Contributors License Agreement. For full licensing
+		  ~ details, see LICENSE.txt in the project root.
+		  -->
+        <title>OpenLayers Geomajas Example</title>
+        <link rel="stylesheet" href="theme/default/style.css" type="text/css" />
+
+        <script src="OpenLayers.js"></script>
+        <script type="text/javascript">
+            var map;
+        
+            function init(){
+                map = new OpenLayers.Map('map');
+                var wms = new OpenLayers.Layer.WMS(
+                    "OpenLayers WMS", "http://apps.geomajas.org/geoserver/wms",
+                    {layers: 'bluemarble'}
+                );
+
+                var layer = new OpenLayers.Layer.Vector("GeoJSON", {
+                    strategies: [new OpenLayers.Strategy.Fixed()],
+                    protocol: new OpenLayers.Protocol.HTTP({
+                    	url: "d/rest/countries110m",
+                    	format: new OpenLayers.Format.GeoJSON()
+                    })
+                });
+
+                map.addLayers([wms, layer]);
+                map.zoomToExtent(new OpenLayers.Bounds(
+                    -3.92, 44.34, 4.87, 49.55
+                ));
+
+
+
+            }
+        </script>
+
+
+    </head>
+
+    <body onload="init()">
+        <h1 id="title">Geomajas example (GeoJSON REST interface)</h1>
+        <div id="map" class="smallmap"></div>
+        <div id="docs">
+            This sample uses the fixed strategy and HTTP protocol to connect to the Geomajas REST face.
+        </div>
+
+    </body>
+</html>
