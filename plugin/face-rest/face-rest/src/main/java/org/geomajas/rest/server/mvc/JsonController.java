@@ -65,7 +65,7 @@ public class JsonController extends RestController {
 	@ResponseBody
 	public CommandResponse execute(@PathVariable String commandId, @RequestBody HashMap commandRequest,
 			HttpServletRequest request, @RequestParam("token") String token) throws JsonProcessingException {
-		return getJsonResponse("command.configuration.Get", commandRequest, token, request);
+		return getJsonResponse(commandId, commandRequest, token, request);
 	}
 
 	//generic command describe method
