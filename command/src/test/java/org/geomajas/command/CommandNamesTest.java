@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class CommandNamesTest {
 
 	@Autowired
-	Map<String,Command> commands;
+	Map<String, Command> commands;
 
 	@Test
 	public void testNames() throws Exception {

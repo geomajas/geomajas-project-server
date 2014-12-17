@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+		<!--
+		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+		  ~
+		  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+		  ~
+		  ~ The program is available in open source according to the GNU Affero
+		  ~ General Public License. All contributions in this program are covered
+		  ~ by the Geomajas Contributors License Agreement. For full licensing
+		  ~ details, see LICENSE.txt in the project root.
+		  -->
+        <title>Geomajas JSON with Leaflet map</title>
+
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+        <script type="text/javascript">
+
+            function initLeaflet() {
+                // create a map in the "map" div, set the view to a given place and zoom
+                var map = L.map('map').setView([51.505, -0.09], 10);
+
+                // add an OpenStreetMap tile layer
+                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+           /*     var nexrad = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+                    layers: 'nexrad-n0r-900913',
+                    format: 'image/png',
+                    transparent: true,
+                    attribution: "Weather data © 2012 IEM Nexrad"
+                });
+*/
+
+                // Add each wms layer using L.tileLayer.wms
+                var geomajasLayer = L.tileLayer.wms('http://apps.geomajas.org/geoserver/wms', {
+                    format: 'img/png',
+                    tileSize: 512,
+                    transparent: false,
+                    layers: 'bluemarble',
+                    opacity: 0.7
+                }).addTo(map)
+
+                /*var options =   {
+                    format: 'img/png',
+                        tileSize: 512,
+                        transparent: false,
+                        layers: 'bluemarble',
+                        opacity: 0.7
+                   };
+
+                //virtual layer
+                var source = L.WMS.source("http://apps.geomajas.org/geoserver/wms", options);
+                source.addSubLayer('bluemarble');
+                source.addTo(map);
+*/
+            }
+
+
+        </script>
+
+        <style>
+            #map { height: 250px; }
+
+        </style>
+
+    </head>
+
+    <body onload="initLeaflet()">
+        <a href="openLayers.html">Open layers map Geo JSON example</a>
+        <br />
+        <a href="index.html">Geomajas JSON API</a>
+        <h1 id="title">Leaflet map</h1>
+
+       <div id="map" />
+    </body>
+</html>
+
+

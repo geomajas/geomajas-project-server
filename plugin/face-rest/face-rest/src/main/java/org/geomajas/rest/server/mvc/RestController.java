@@ -50,7 +50,6 @@ import java.util.Map;
  * @author Oliver May
  * @author Jan De Moerlose
  */
-@Controller("/rest/**")
 public class RestController {
 
 	@Autowired

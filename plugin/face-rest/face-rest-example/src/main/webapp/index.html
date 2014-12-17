@@ -17,7 +17,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
         <script type="text/javascript">
-            var restPath = '';
+            var commandId = '';
 
             var token = ''; //null we allow all
             var currentJsonString = '';
@@ -26,12 +26,37 @@
                 $(function() {
                     $( "#tabs" ).tabs();
                 });
+
+                var request = $.ajax({
+                    url: "d/rest/command/list",
+                    type: "GET",
+                    datatype : "json",
+                    contentType: "application/json; charset=utf-8"
+                });
+
+                request.done(function( json ) {
+                    var options =  $( "#restsel" );
+
+                    for (var i=0; i<json.length; i++){
+                        var obj = json[i];
+
+                        options.append($("<option />").val(obj).text(obj));
+                    }
+
+                });
+                request.fail(function( jqXHR, textStatus ) {
+                    //reset everything
+                    $("#request" ).html(textStatus);
+                    commandId ='';
+                    currentJsonString = '';
+
+                });
             }
 
             function postJson() {
 
-                if ('' != currentJsonString && '' != restPath) {
-                    var restURI = "d/json/" + restPath + '?token=' + token;
+                if ('' != currentJsonString && '' != commandId) {
+                    var restURI = "d/rest/command/" + commandId + '?token=' + token;
 
                     var request = $.ajax({
                         url: restURI,
@@ -75,8 +100,8 @@
             }
 
             function getJsonRequestObject() {
-                restPath = $( "#restsel" ).val();
-                if (restPath === '') return;
+                commandId = $( "#restsel" ).val();
+                if (commandId === '') return;
 
 
                 $("#response" ).empty();
@@ -84,7 +109,7 @@
                 // activate tab
                 $( "#tabs" ).tabs( "option", "active", 0 );
 
-                var restURI = "d/restapi/generaterequest/" + restPath;
+                var restURI = "d/restapi/generaterequest/" + commandId;
 
                 var request = $.ajax({
                     url: restURI,
@@ -102,7 +127,7 @@
                 request.fail(function( jqXHR, textStatus ) {
                     //reset everything
                     $("#request" ).html(textStatus);
-                    restPath ='';
+                    commandId ='';
                     currentJsonString = '';
 
                 });
@@ -126,26 +151,14 @@
 
     <body onload="init()">
         <a href="openLayers.html">Open layers map Geo JSON example</a>
+        <br />
+        <a href="leaflet.html">Leaflet map example</a>
         <h1 id="title">Geomajas JSON API</h1>
         <p>Geomajs JSON API uses only post requests. When a formatted JSON request object is posted to the server the server will answer with appropriate JSON response object. Try it yourself below.</p>
 
         <label>Choose a JSON request object to post</label>
         <select id="restsel" class="padding" onchange="getJsonRequestObject();">
             <option value=""></option>
-            <option value="login">Login</option>
-            <option value="configuration">Configuration</option>
-            <option value="configuration/map">Configuration Map</option>
-            <option value="configuration/refresh">Configuration refresh</option>
-            <option value="configuration/maximumextend">Configuration maximumextend</option>
-            <option value="geometry/area">Geometry - area</option>
-            <option value="geometry/buffer">Geometry - buffer</option>
-            <option value="geometry/convexhull">Geometry - convexhull</option>
-            <option value="geometry/merge">Geometry - merge</option>
-            <option value="geometry/split">Geometry - split</option>
-            <option value="geometry/transform">Geometry - transform</option>
-            <option value="render/rastertiles">Render - rastertiles</option>
-            <option value="render/vectortiles">Render - vectortiles</option>
-            <option value="render/namedstyle">Render - namedstyle</option>
         </select>
 
         <label>Post selected JSON to the server</label>

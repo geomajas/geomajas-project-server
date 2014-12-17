@@ -63,7 +63,10 @@ public class RequestObjectsFactory {
 
 	public UserMaximumExtentRequest generateUserMaximumExtentRequest() {
 		UserMaximumExtentRequest maximumExtentRequest = new UserMaximumExtentRequest();
-
+		String[] layerIds = new String[1];
+		layerIds[0] = "layerWmsBluemarble"; //configured in the backend
+		maximumExtentRequest.setLayerIds(layerIds);
+		maximumExtentRequest.setCrs("EPSG:4326");
 		return maximumExtentRequest;
 	}
 
@@ -83,7 +86,6 @@ public class RequestObjectsFactory {
 	public GeometrySplitRequest generateGeometrySplitRequest() {
 		GeometrySplitRequest request = new GeometrySplitRequest();
 
-		//TODO:
 		request.setGeometry(generateGeometry());
 		request.setSplitLine(generateGeometry());
 

@@ -39,7 +39,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
                 <property name="height" value="360"/>
 			</bean>
 		</property>
-        <property name="resolutions">
+        <property name="zoomLevels">
             <list>
                 <value>0.5</value>
                 <value>0.25</value>
