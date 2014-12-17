@@ -80,6 +80,33 @@
                 }
             }
 
+            function getDescribe() {
+
+                if ('' != currentJsonString && '' != commandId) {
+                    var restURI = "d/rest/command/describe/" + commandId;
+
+                    var request = $.ajax({
+                        url: restURI,
+                        type: "GET",
+                        data: currentJsonString,
+                        datatype : "json",
+                        contentType: "application/json; charset=utf-8"
+                    });
+                    request.done(function( json ) {
+                        var str = JSON.stringify(json, undefined, 4);
+                        $("#response" ).html(syntaxHighlight(str));
+
+                        // activate tab
+                        $( "#tabs" ).tabs( "option", "active", 1 );
+
+                    });
+                    request.fail(function( jqXHR, textStatus ) {
+
+                        $("response").html("Response failed: "+textStatus);
+                    });
+                }
+            }
+
             function syntaxHighlight(json) {
                 json = json.replace(/&/g, '&').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
@@ -163,6 +190,8 @@
 
         <label>Post selected JSON to the server</label>
         <button class="padding" type="button" title="send json post request" onclick="postJson();">POST</button>
+        <label>Get empty JSON request/reponse objects</label>
+        <button class="padding" type="button" title="show empty request and response objects" onclick="getDescribe();">DESCRIBE</button>
 
 
         <div id="tabs" style="height: 100%; margin-top:10px;">
