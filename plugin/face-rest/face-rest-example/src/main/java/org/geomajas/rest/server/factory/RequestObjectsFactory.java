@@ -51,7 +51,7 @@ public class RequestObjectsFactory {
 	public GetMapConfigurationRequest generateMapConfigurationRequest() {
 		GetMapConfigurationRequest configurationRequest = new GetMapConfigurationRequest();
 		configurationRequest.setApplicationId("rest-app");
-		configurationRequest.setMapId("mapWms");
+		configurationRequest.setMapId("mapCountries");
 
 		return configurationRequest;
 	}

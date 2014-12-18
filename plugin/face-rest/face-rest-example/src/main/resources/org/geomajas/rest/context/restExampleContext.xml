@@ -32,4 +32,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
+    <import resource="classpath:org/geomajas/rest/context/layer*.xml"/>
+    <import resource="classpath:org/geomajas/rest/context/map*.xml"/>
+    <import resource="classpath:org/geomajas/rest/context/app*.xml"/>
+
 </beans>

@@ -56,6 +56,11 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
 		</dependency>
+
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-rasterizing</artifactId>
+        </dependency>
 		
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
 		<dependency>

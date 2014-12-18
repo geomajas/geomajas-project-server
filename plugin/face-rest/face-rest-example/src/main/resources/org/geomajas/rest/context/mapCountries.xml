@@ -40,17 +40,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="strokeOpacity" value="0.8" />
 			</bean>
 		</property>
-		<property name="crs" value="EPSG:900913" />
+		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="initialBounds">
-			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-20026376.393709917" />
-				<property name="y" value="-20026376.393709917" />
-				<property name="width" value="40052752.787419834" />
-				<property name="height" value="40052752.787419834" />
-			</bean>
-		</property>
+        <property name="initialBounds">
+            <bean class="org.geomajas.geometry.Bbox">
+                <property name="x" value="-180" />
+                <property name="y" value="-90" />
+                <property name="width" value="360" />
+                <property name="height" value="180" />
+            </bean>
+        </property>
 		<property name="scaleConfiguration">
 			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
 				<property name="maximumScale" value="1000" />
@@ -83,12 +83,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-					<property name="serverLayerId" value="osm" />
-					<property name="label" value="OpenStreetMap" />
-					<property name="visible" value="true" />
-					<property name="style" value="1" />
-				</bean>
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
 					<property name="serverLayerId" value="layerCountries110m" />
 					<property name="label" value="Countries" />

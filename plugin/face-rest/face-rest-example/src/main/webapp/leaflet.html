@@ -18,59 +18,116 @@
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
         <script type="text/javascript">
+            var map, popup, defaultUrlWfsService, urlWfsService, wfsService, bounds, zoomLatLng;
 
-            function initLeaflet() {
-                // create a map in the "map" div, set the view to a given place and zoom
-                var map = L.map('map').setView([51.505, -0.09], 10);
 
-                // add an OpenStreetMap tile layer
-                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
+            $(document).ready(function() {
 
-           /*     var nexrad = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
-                    layers: 'nexrad-n0r-900913',
-                    format: 'image/png',
-                    transparent: true,
-                    attribution: "Weather data © 2012 IEM Nexrad"
+                var map = L.map('map', {
+                    center: [47.505, 42.20],
+                    zoom: 1
                 });
-*/
 
-                // Add each wms layer using L.tileLayer.wms
-                var geomajasLayer = L.tileLayer.wms('http://apps.geomajas.org/geoserver/wms', {
-                    format: 'img/png',
-                    tileSize: 512,
-                    transparent: false,
+              var bluemarble = L.tileLayer.wms("http://apps.geomajas.org/geoserver/wms", {
                     layers: 'bluemarble',
-                    opacity: 0.7
-                }).addTo(map)
+                    format: 'image/png',
+                    version: '1.1.0',
+                    transparent: true,
+                    attribution: "<a href='http://www.geomajas.org'>Geomajas</a> bluemarble layer",
+                    tiled:true,
+                    crs: L.CRS.EPSG4326,
+                    detectRetina : true,
+                    tileSize: 512,
+                    maxZoom : 6,
+                    minZoom : 1
 
-                /*var options =   {
-                    format: 'img/png',
-                        tileSize: 512,
-                        transparent: false,
-                        layers: 'bluemarble',
-                        opacity: 0.7
-                   };
+                });
 
-                //virtual layer
-                var source = L.WMS.source("http://apps.geomajas.org/geoserver/wms", options);
-                source.addSubLayer('bluemarble');
-                source.addTo(map);
-*/
-            }
+                var worlddemo = L.tileLayer.wms("http://apps.geomajas.org/geoserver/wms", {
+                    layers: 'simplified_country_borders',
+                    format: 'image/png',
+                    version: '1.1.0',
+                    transparent: true,
+                    attribution: "<a href='http://www.geomajas.org'>Geomajas</a> demo world layer",
+                    tiled:true,
+                    crs: L.CRS.EPSG4326,
+                    detectRetina : true,
+                    tileSize: 256,
+                    maxZoom : 6,
+                    minZoom : 1
 
+                });
+
+                var geomajasServerLayer = L.tileLayer('/d/tms/layerCountries110m@EPSG:900913/layerCountries110mStyleInfo/{z}/{x}/{y}.png?resolution={resolution}&tileOrigin={tileOrigin}&tileWidth={tileWidth}&tileHeight={tileHeight}',
+                        {resolution: 39135.75848201024,tileOrigin: '-21396567.252405394,-21396567.252405394',
+                            tileWidth:256,
+                            tileHeight: 256,
+                            tms: true,
+                            maxZoom : 7,
+                            minZoom : 0,
+                            attribution: "<a href='http://www.geomajas.org'>Geomajas</a> server layer"
+
+                        }).addTo(map);
+
+                //var tileLayerURL = "/d/tms/layerCountries110m@EPSG:900913/layerCountries110mStyleInfo/2/3/3.png?resolution=39135.75848201024&tileOrigin=-20037508.342789244,-21396567.252405394&tileWidth=256&tileHeight=256";
+
+                var baseLayers = {
+                    "Bluemarble": bluemarble,
+                    "World demo": worlddemo,
+                    "Geomajas server layer": geomajasServerLayer
+                };
+
+
+                L.control.layers(baseLayers, null).addTo(map);
+
+                map.addEventListener('click', onMapClick);
+
+                popup = new L.Popup({
+                    maxWidth: 500,
+                    maxHeight: 600
+                });
+
+                function onMapClick(e) {
+                    zoomLatLng = L.latLng(e.latlng);
+                    var popupDiv = document.createElement("div");
+                    popupDiv.id="popup-container";
+
+                    var line = document.createElement("span");
+                    var alink = $('<a>', {
+                        text: zoomLatLng,
+                        id: 'zoomLatLng',
+                        href:'#',
+                        click:function(e){
+                            e.preventDefault();
+                            var idStr = $.trim(e.currentTarget.id);
+                            console.log("idStr => " + idStr);
+
+                           //do something here
+                        }
+                    }).appendTo(line);
+
+                    popupDiv.appendChild(line);
+
+                    popup.setContent(popupDiv);
+                    popup.setLatLng(zoomLatLng);
+                    map.openPopup(popup)
+
+                }
+
+            });
 
         </script>
 
         <style>
-            #map { height: 250px; }
+            #map {
+                height: 600px;
+            }
 
         </style>
 
     </head>
 
-    <body onload="initLeaflet()">
+    <body>
         <a href="openLayers.html">Open layers map Geo JSON example</a>
         <br />
         <a href="index.html">Geomajas JSON API</a>
