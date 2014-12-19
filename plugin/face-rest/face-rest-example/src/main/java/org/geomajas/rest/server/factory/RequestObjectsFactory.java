@@ -21,12 +21,15 @@ import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
+import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.UserStyleInfo;
@@ -40,6 +43,10 @@ import java.util.List;
  * @author Dosi Bingov
  */
 public class RequestObjectsFactory {
+	private static final String LAYER_ID = "countries";
+	private static final String REGION_ATTRIBUTE = "region";
+	private static final String NAME_ATTRIBUTE = "name";
+	private static final String ID_ATTRIBUTE = "id";
 
 	public GetConfigurationRequest generateConfigurationRequest() {
 		GetConfigurationRequest configurationRequest = new GetConfigurationRequest();
@@ -94,14 +101,10 @@ public class RequestObjectsFactory {
 
 	public GeometryMergeRequest generateGeometryMergeRequest() {
 		GeometryMergeRequest request = new GeometryMergeRequest();
-
-		//TODO:
-		List<Geometry> geometryList = new ArrayList<Geometry>();
-		geometryList.add(generateGeometry());
-		geometryList.add(generateGeometry());
-		request.setGeometries(geometryList);
-		request.setPrecision(220);
+		request.setGeometries(create());
+		request.setPrecision(0);
 		request.setUsePrecisionAsBuffer(true);
+
 
 		return request;
 	}
@@ -180,6 +183,25 @@ public class RequestObjectsFactory {
 		return request;
 	}
 
+	public SearchFeatureRequest generateSearchFeatureRequest() {
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setLayerId(LAYER_ID);
+		request.setCrs("EPSG:4326");
+		SearchCriterion searchCriterion1 = new SearchCriterion();
+		searchCriterion1.setAttributeName(REGION_ATTRIBUTE);
+		searchCriterion1.setOperator("like");
+		searchCriterion1.setValue("'%egion 1'");
+		SearchCriterion searchCriterion2 = new SearchCriterion();
+		searchCriterion2.setAttributeName(REGION_ATTRIBUTE);
+		searchCriterion2.setOperator("like");
+		searchCriterion2.setValue("'%egion 2'");
+
+		request.setCriteria(new SearchCriterion[] {searchCriterion1, searchCriterion2});
+		request.setBooleanOperator("or");
+
+		return request;
+	}
+
 	public Geometry generateGeometry() {
 		Geometry geometry = new Geometry();
 		//todo generate random coordinates
@@ -197,5 +219,28 @@ public class RequestObjectsFactory {
 
 		//todo s random coordinates
 		return bbox;
+	}
+
+	private List<Geometry> create() {
+		List<Geometry> geometries = new ArrayList<Geometry>();
+		Geometry polygon = new Geometry(Geometry.POLYGON, 1, 0);
+		Geometry linearRing = new Geometry(Geometry.LINEAR_RING, 1, 0);
+		linearRing.setCoordinates(new Coordinate[]{
+				new Coordinate(0, 0), new Coordinate(0, 10), new Coordinate(5, 10), new Coordinate(0, 0)
+		});
+		polygon.setGeometries(new Geometry[]{linearRing});
+		geometries.add(polygon);
+		Geometry line = new Geometry(Geometry.LINE_STRING, 2, 0);
+		line.setCoordinates(new Coordinate[]{
+				new Coordinate(200, 200), new Coordinate(400, 400)
+		});
+		geometries.add(line);
+		Geometry point = new Geometry(Geometry.POINT, 3, 0);
+		point.setCoordinates(new Coordinate[]{
+				new Coordinate(5000, 5000)
+		});
+		geometries.add(point);
+
+		return geometries;
 	}
 }

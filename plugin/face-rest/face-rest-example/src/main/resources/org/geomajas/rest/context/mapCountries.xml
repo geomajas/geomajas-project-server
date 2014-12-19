@@ -85,13 +85,24 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<list>
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
 					<property name="serverLayerId" value="layerCountries110m" />
-					<property name="label" value="Countries" />
+					<property name="label" value="Countries 110m" />
 					<property name="visible" value="true" />
 					<property name="maximumScale" value="1:1000" />
 					<property name="minimumScale" value="1:100000000" />
 					<property name="namedStyleInfo" ref="layerCountries110mStyleInfo" />
 				</bean>
-			</list>
+
+                <bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
+                    <property name="serverLayerId" value="countries" />
+                    <property name="label" value="Countries" />
+                    <property name="visible" value="true" />
+                    <property name="maximumScale" value="1:1000" />
+                    <property name="minimumScale" value="1:100000000" />
+                    <property name="namedStyleInfo" ref="countriesStyleInfo" />
+                </bean>
+
+
+            </list>
 		</property>
 	</bean>
 

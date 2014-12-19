@@ -29,12 +29,9 @@ package org.geomajas.rest.server.json.converter;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.geomajas.command.CommandResponse;
-import org.geomajas.rest.server.json.mixin.ResponseMixin;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -71,8 +68,7 @@ public class MappingJackson2HttpMessageConverter extends AbstractHttpMessageConv
 
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
-
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper objectMapper;
 
 	private String jsonPrefix;
 
@@ -86,10 +82,7 @@ public class MappingJackson2HttpMessageConverter extends AbstractHttpMessageConv
 		super(new MediaType("application", "json", DEFAULT_CHARSET), new MediaType("application", "*+json",
 				DEFAULT_CHARSET));
 
-		//add dto's specific annotations here
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		objectMapper.addMixInAnnotations(CommandResponse.class, ResponseMixin.class);
-
+		objectMapper = ObjectMapperFactory.create();
 	}
 
 	/**

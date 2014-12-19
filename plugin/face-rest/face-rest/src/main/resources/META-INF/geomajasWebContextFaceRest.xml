@@ -31,7 +31,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <!--  scan for controllers and views -->
 	<context:component-scan base-package="org.geomajas.rest.server.mvc" />
-    <context:component-scan base-package="org.geomajas.rest.server.command" />
 
 
 </beans>

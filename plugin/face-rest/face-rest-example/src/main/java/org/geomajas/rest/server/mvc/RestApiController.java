@@ -17,6 +17,7 @@ import org.geomajas.command.dto.GeometryBufferRequest;
 import org.geomajas.command.dto.GeometryMergeRequest;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
+import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.rest.server.command.CommandUtils;
@@ -85,12 +86,23 @@ public class RestApiController {
 			return requestObjectsFactory.generateLoginRequest();
 		} else if (request instanceof GeometryMergeRequest) {
 			return requestObjectsFactory.generateGeometryMergeRequest();
+		}  else if (request instanceof SearchFeatureRequest) {
+			return requestObjectsFactory.generateSearchFeatureRequest();
 		} else {
 			CommandRequest emtyRequest = new CommandRequest() {
+				private String content = "Unknown request type in RestApiController.generateCommandRequest()";
 
 				@Override
 				public int hashCode() {
 					return super.hashCode();
+				}
+
+				public String getContent() {
+					return content;
+				}
+
+				public void setContent(String content) {
+					this.content = content;
 				}
 			};
 
