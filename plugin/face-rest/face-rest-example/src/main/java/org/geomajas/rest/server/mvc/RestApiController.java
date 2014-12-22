@@ -13,12 +13,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.geomajas.command.Command;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandRequest;
+import org.geomajas.command.dto.GeometryAreaRequest;
 import org.geomajas.command.dto.GeometryBufferRequest;
+import org.geomajas.command.dto.GeometryConvexHullRequest;
 import org.geomajas.command.dto.GeometryMergeRequest;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
+import org.geomajas.command.dto.SearchAttributesRequest;
+import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchFeatureRequest;
+import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.rest.server.command.CommandUtils;
 import org.geomajas.rest.server.factory.RequestObjectsFactory;
@@ -44,6 +50,30 @@ import javax.annotation.PostConstruct;
 @Controller("/restapi/**")
 public class RestApiController {
 
+	/**
+	 * UnknownCommandRequest type.
+	 *
+	 * @author Dosi Bingov
+	 */
+	class UnknownCommandRequest implements CommandRequest {
+		private String message = "Unknown request type in RestApiController.generateCommandRequest()";
+
+		public UnknownCommandRequest() {
+		}
+
+		public UnknownCommandRequest(String message) {
+			this.message = message;
+		}
+
+		public String getMessage() {
+			return message;
+		}
+
+		public void setMessage(String message) {
+			this.message = message;
+		}
+	}
+
 	private final Logger log = LoggerFactory.getLogger(RestApiController.class);
 
 	public static final String REQUEST_OBJECT_URI = "generaterequest";
@@ -59,7 +89,7 @@ public class RestApiController {
 	//generic command describe method
 	@RequestMapping(value = REQUEST_OBJECT_URI + "/{commandId}", method = RequestMethod.GET)
 	@ResponseBody
-	public CommandRequest getCommandResponse(@PathVariable String commandId) throws JsonProcessingException {
+	public CommandRequest getCommandRequestExample(@PathVariable String commandId) throws JsonProcessingException {
 		Command command = (Command) applicationContext.getBean(commandId);
 		return generateCommandRequest(command);
 	}
@@ -73,40 +103,37 @@ public class RestApiController {
 	private CommandRequest generateCommandRequest(Command command) {
 		CommandRequest request = CommandUtils.createCommandRequest(command);
 
-		//TODO finish this nasty check
-		if (request instanceof GetConfigurationRequest) {
-			return requestObjectsFactory.generateConfigurationRequest();
-		} else if (request instanceof GetMapConfigurationRequest) {
-			return requestObjectsFactory.generateMapConfigurationRequest();
-		} else if (request instanceof GeometryBufferRequest) {
-			return requestObjectsFactory.generateGeometryBufferRequest();
-		} else if (request instanceof UserMaximumExtentRequest) {
-			return requestObjectsFactory.generateUserMaximumExtentRequest();
-		} else if (request instanceof LoginRequest) {
-			return requestObjectsFactory.generateLoginRequest();
-		} else if (request instanceof GeometryMergeRequest) {
-			return requestObjectsFactory.generateGeometryMergeRequest();
-		}  else if (request instanceof SearchFeatureRequest) {
-			return requestObjectsFactory.generateSearchFeatureRequest();
-		} else {
-			CommandRequest emtyRequest = new CommandRequest() {
-				private String content = "Unknown request type in RestApiController.generateCommandRequest()";
-
-				@Override
-				public int hashCode() {
-					return super.hashCode();
-				}
-
-				public String getContent() {
-					return content;
-				}
-
-				public void setContent(String content) {
-					this.content = content;
-				}
-			};
-
-			return emtyRequest;
+		try {
+			//TODO finish this nasty check
+			if (request instanceof GetConfigurationRequest) {
+				return requestObjectsFactory.generateConfigurationRequest();
+			} else if (request instanceof GetMapConfigurationRequest) {
+				return requestObjectsFactory.generateMapConfigurationRequest();
+			} else if (request instanceof GeometryBufferRequest) {
+				return requestObjectsFactory.generateGeometryBufferRequest();
+			} else if (request instanceof UserMaximumExtentRequest) {
+				return requestObjectsFactory.generateUserMaximumExtentRequest();
+			} else if (request instanceof LoginRequest) {
+				return requestObjectsFactory.generateLoginRequest();
+			} else if (request instanceof GeometryMergeRequest) {
+				return requestObjectsFactory.generateGeometryMergeRequest();
+			} else if (request instanceof SearchFeatureRequest) {
+				return requestObjectsFactory.generateSearchFeatureRequest();
+			} else if (request instanceof GeometryConvexHullRequest) {
+				return requestObjectsFactory.generateGeometryConvexHullRequest();
+			} else if (request instanceof TransformGeometryRequest) {
+				return requestObjectsFactory.generateTransformGeometryRequest();
+			} else if (request instanceof GeometryAreaRequest) {
+				return requestObjectsFactory.generateGeometryAreaRequest();
+			} else if (request instanceof SearchAttributesRequest) {
+				return requestObjectsFactory.generateSearchAttributesRequest();
+			} else if (request instanceof SearchByLocationRequest) {
+				return requestObjectsFactory.generateSearchByLocationService();
+			} else {
+				return new UnknownCommandRequest();
+			}
+		} catch (GeomajasException e) {
+			return new UnknownCommandRequest(e.getMessage());
 		}
 	}
 

@@ -101,6 +101,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
                     <property name="namedStyleInfo" ref="countriesStyleInfo" />
                 </bean>
 
+                <bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="businessCentersLayer">
+                    <property name="serverLayerId" value="layerBusinessCenters" />
+                    <property name="label" value="BusinessCenters" />
+                    <property name="visible" value="true" />
+                    <property name="maximumScale" value="1:1000" />
+                    <property name="minimumScale" value="1:100000000" />
+                    <property name="namedStyleInfo" ref="layerBusinessCentersStyleInfo" />
+                </bean>
+
 
             </list>
 		</property>

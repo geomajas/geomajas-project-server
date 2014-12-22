@@ -30,6 +30,6 @@ public abstract class ResponseMixin {
 
 	@JsonIgnore
 	abstract List<ExceptionDto> getExceptions(); //ignore this property because it make our json response
-	// unnesecerrily bigger, error messages list should contain information if exceptions is thrown
+	// unnesecerrily bigger (exceptions object and etc), error messages list should contain information if exceptions is thrown
 
 }

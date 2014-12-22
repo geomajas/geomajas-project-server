@@ -69,14 +69,25 @@
 
                         }).addTo(map);
 
+                var geomajasBusinessCentersLayer = L.tileLayer('/d/tms/layerBusinessCenters@EPSG:4326/layerCountries110mStyleInfo/{z}/{x}/{y}.png?resolution={resolution}&tileOrigin={tileOrigin}&tileWidth={tileWidth}&tileHeight={tileHeight}',
+                        {resolution: 39135.75848201024,tileOrigin: '-21396567.252405394,-21396567.252405394',
+                            tileWidth:256,
+                            tileHeight: 256,
+                            tms: true,
+                            maxZoom : 7,
+                            minZoom : 0,
+                            attribution: "<a href='http://www.geomajas.org'>Geomajas</a> server layer"
+
+                        }).addTo(map);
+
                 //var tileLayerURL = "/d/tms/layerCountries110m@EPSG:900913/layerCountries110mStyleInfo/2/3/3.png?resolution=39135.75848201024&tileOrigin=-20037508.342789244,-21396567.252405394&tileWidth=256&tileHeight=256";
 
                 var baseLayers = {
                     "Bluemarble": bluemarble,
                     "World demo": worlddemo,
-                    "Geomajas server layer": geomajasServerLayer
+                    "Geomajas server layer": geomajasServerLayer,
+                    "Business centers" :geomajasBusinessCentersLayer
                 };
-
 
                 L.control.layers(baseLayers, null).addTo(map);
 
