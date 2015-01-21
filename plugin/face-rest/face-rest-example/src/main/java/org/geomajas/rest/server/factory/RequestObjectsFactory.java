@@ -12,6 +12,8 @@ package org.geomajas.rest.server.factory;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import org.geomajas.command.dto.GeometryAreaRequest;
 import org.geomajas.command.dto.GeometryBufferRequest;
 import org.geomajas.command.dto.GeometryConvexHullRequest;
@@ -156,8 +158,19 @@ public class RequestObjectsFactory {
 
 	public TransformGeometryRequest generateTransformGeometryRequest() {
 		TransformGeometryRequest request = new TransformGeometryRequest();
-		Bbox origin = new Bbox(10, 30, 10, 10);
-		request.setBounds(origin);
+		WKTReader reader = new WKTReader();
+		Geometry origin = null;
+		try {
+			DtoConverterService converterService = new DtoConverterServiceImpl();
+			try {
+				origin = converterService.toDto(reader.read("POLYGON((10 30, 20 30,20 40,10 40,10 30))"));
+			} catch (GeomajasException e) {
+				e.printStackTrace();
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		request.setGeometry(origin);
 		request.setSourceCrs(MERCATOR);
 		request.setTargetCrs(LONLAT);
 		return request;

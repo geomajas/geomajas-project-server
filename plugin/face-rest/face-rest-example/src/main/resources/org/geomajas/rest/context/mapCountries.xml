@@ -92,6 +92,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="namedStyleInfo" ref="layerCountries110mStyleInfo" />
 				</bean>
 
+                <bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer2">
+                    <property name="serverLayerId" value="layerEditingExampleCountries" />
+                    <property name="label" value="Countries" />
+                    <property name="visible" value="true" />
+                    <property name="maximumScale" value="1:1000" />
+                    <property name="minimumScale" value="1:100000000" />
+                    <property name="namedStyleInfo" ref="layerEditingExampleCountriesStyleInfo" />
+                </bean>
+
                 <bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
                     <property name="serverLayerId" value="countries" />
                     <property name="label" value="Countries" />

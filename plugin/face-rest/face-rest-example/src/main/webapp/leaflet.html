@@ -18,14 +18,14 @@
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
         <script type="text/javascript">
-            var map, popup, defaultUrlWfsService, urlWfsService, wfsService, bounds, zoomLatLng;
-
+            var map, popup, defaultUrlWfsService, urlWfsService, wfsService, bounds, latLng;
 
             $(document).ready(function() {
 
                 var map = L.map('map', {
-                    center: [47.505, 42.20],
-                    zoom: 1
+                    center: [47.505, 42.20], //[5288232.410134461, 5190985.714725108],
+                    zoom: 1,
+                    crs:L.CRS.EPSG4326 //google  L.CRS.EPSG3857  //L.CRS.EPSG4326
                 });
 
               var bluemarble = L.tileLayer.wms("http://apps.geomajas.org/geoserver/wms", {
@@ -35,11 +35,11 @@
                     transparent: true,
                     attribution: "<a href='http://www.geomajas.org'>Geomajas</a> bluemarble layer",
                     tiled:true,
-                    crs: L.CRS.EPSG4326,
                     detectRetina : true,
                     tileSize: 512,
                     maxZoom : 6,
-                    minZoom : 1
+                    minZoom : 1,
+                    crs: L.CRS.EPSG4326
 
                 });
 
@@ -50,15 +50,27 @@
                     transparent: true,
                     attribution: "<a href='http://www.geomajas.org'>Geomajas</a> demo world layer",
                     tiled:true,
-                    crs: L.CRS.EPSG4326,
                     detectRetina : true,
                     tileSize: 256,
                     maxZoom : 6,
-                    minZoom : 1
+                    minZoom : 1,
+                    crs: L.CRS.EPSG4326
 
                 });
 
-                var geomajasServerLayer = L.tileLayer('/d/tms/layerCountries110m@EPSG:900913/layerCountries110mStyleInfo/{z}/{x}/{y}.png?resolution={resolution}&tileOrigin={tileOrigin}&tileWidth={tileWidth}&tileHeight={tileHeight}',
+                var geomajasServerLayer = L.tileLayer('/d/tms/layerCountries110m@EPSG:4326/layerCountries110mStyleInfo/{z}/{x}/{y}.png?tileWidth={tileWidth}&tileHeight={tileHeight}',
+                        {
+                            tileWidth:256,
+                            tileHeight: 256,
+                            tms: true,
+                            maxZoom : 7,
+                            minZoom : 0,
+                            crs: L.CRS.EPSG4326,
+                            attribution: "<a href='http://www.geomajas.org'>Geomajas</a> server layer"
+
+                        }).addTo(map);
+
+       /*         var geomajasBusinessCentersLayer = L.tileLayer('/d/tms/layerBusinessCenters@EPSG:31370/layerCountries110mStyleInfo/{z}/{x}/{y}.png?resolution={resolution}&tileOrigin={tileOrigin}&tileWidth={tileWidth}&tileHeight={tileHeight}',
                         {resolution: 39135.75848201024,tileOrigin: '-21396567.252405394,-21396567.252405394',
                             tileWidth:256,
                             tileHeight: 256,
@@ -67,65 +79,243 @@
                             minZoom : 0,
                             attribution: "<a href='http://www.geomajas.org'>Geomajas</a> server layer"
 
-                        }).addTo(map);
-
-                var geomajasBusinessCentersLayer = L.tileLayer('/d/tms/layerBusinessCenters@EPSG:31370/layerCountries110mStyleInfo/{z}/{x}/{y}.png?resolution={resolution}&tileOrigin={tileOrigin}&tileWidth={tileWidth}&tileHeight={tileHeight}',
-                        {resolution: 39135.75848201024,tileOrigin: '-21396567.252405394,-21396567.252405394',
-                            tileWidth:256,
-                            tileHeight: 256,
-                            tms: true,
-                            maxZoom : 7,
-                            minZoom : 0,
-                            attribution: "<a href='http://www.geomajas.org'>Geomajas</a> server layer"
-
-                        }).addTo(map);
+                        }).addTo(map);*/
 
                 //var tileLayerURL = "/d/tms/layerCountries110m@EPSG:900913/layerCountries110mStyleInfo/2/3/3.png?resolution=39135.75848201024&tileOrigin=-20037508.342789244,-21396567.252405394&tileWidth=256&tileHeight=256";
+
+                // a GeoJSON multipolygon
+                var businessCentersLayer = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "MultiPolygon",
+                        "coordinates": [
+                            [
+                                [
+                                    [101.2, 1.2], [101.8, 1.2], [101.8, 1.8], [101.2, 1.8], [101.2, 1.2]
+                                ],
+                                [
+                                    [101.2, 1.2], [101.3, 1.2], [101.3, 1.3], [101.2, 1.3], [101.2, 1.2]
+                                ],
+                                [
+                                    [101.6, 1.4], [101.7, 1.4], [101.7, 1.5], [101.6, 1.5], [101.6, 1.4]
+                                ],
+                                [
+                                    [101.5, 1.6], [101.6, 1.6], [101.6, 1.7], [101.5, 1.7], [101.5, 1.6]
+                                ]
+                            ],
+                            [
+                                [
+                                    [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]
+                                ],
+                                [
+                                    [100.35, 0.35], [100.65, 0.35], [100.65, 0.65], [100.35, 0.65], [100.35, 0.35]
+                                ]
+                            ]
+                        ]
+                    },
+                    "properties": {
+                        "name": "MultiPolygon",
+                        "style": {
+                            color: "black",
+                            opacity: 1,
+                            fillColor: "white",
+                            fillOpacity: 1
+                        }
+                    }
+                };
+
+                new L.GeoJSON(businessCentersLayer, {
+                    style: function(feature) {
+                        return feature.properties.style
+                    },
+
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(feature.properties.name);
+                    }
+                }).addTo(map);
 
                 var baseLayers = {
                     "Bluemarble": bluemarble,
                     "World demo": worlddemo,
-                    "Geomajas server layer": geomajasServerLayer,
-                    "Business centers" :geomajasBusinessCentersLayer
+                    "Geomajas layer (shp file)": geomajasServerLayer
                 };
+
+              /*  var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
+                        denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
+                        aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
+                        golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
+
+
+                var businessCentersMarkers = L.layerGroup([littleton, denver, aurora, golden]);
+
+                var overlayMaps = {
+                    "Business centers (Belgium)": businessCentersMarkers
+                };*/
+
 
                 L.control.layers(baseLayers, null).addTo(map);
 
+
+                //add map click listener
                 map.addEventListener('click', onMapClick);
 
                 popup = new L.Popup({
-                    maxWidth: 500,
+                    maxWidth: 700,
                     maxHeight: 600
                 });
 
                 function onMapClick(e) {
-                    zoomLatLng = L.latLng(e.latlng);
+                    latLng = L.latLng(e.latlng);
+                    var searchDto = '{ "location": { "geometryType": "Point", "srid": 0, "precision": -1, "coordinates": [ { "x":' + latLng.lng + ', "y": ' + latLng.lat +'  }], "geometries": null }, "queryType": 1, "ratio": -1, "searchType": 2, "crs": "EPSG:4326", "filter": null, "layerFilters": { "countries": { "serverLayerId": "layerCountries110m", "filter": null } }, "buffer": -1, "featureIncludes": 25 }';
+
                     var popupDiv = document.createElement("div");
                     popupDiv.id="popup-container";
 
-                    var line = document.createElement("span");
+                    var span = document.createElement("span");
+
+
                     var alink = $('<a>', {
-                        text: zoomLatLng,
-                        id: 'zoomLatLng',
+                        text: 'EPSG:4326 => x:' + latLng.lng + ', y: ' + latLng.lat ,
+                        id: 'latLng',
                         href:'#',
-                        click:function(e){
+                        click:function(e) {
                             e.preventDefault();
                             var idStr = $.trim(e.currentTarget.id);
                             console.log("idStr => " + idStr);
-
-                           //do something here
                         }
-                    }).appendTo(line);
 
-                    popupDiv.appendChild(line);
+                    }).appendTo(span);
+
+                    //transform geometry from  EPSG:4326 to EPSG:900913
+                    transGeometry(latLng.lng, latLng.lat, span);
+
+                    popupDiv.appendChild(span);
 
                     popup.setContent(popupDiv);
-                    popup.setLatLng(zoomLatLng);
-                    map.openPopup(popup)
+                    popup.setLatLng(latLng);
+                    map.openPopup(popup);
+
+
+                    //call search by location rest
+                    postSearchCountries(searchDto, span);
+
+                    //TODO: something with markers and geojson
+                    //getBusinessCentersGeoJson();
 
                 }
 
             });
+
+
+            function transGeometry(lng, lat, span) {
+               var geometryJson = '{ "geometry": { "geometryType": "Point", "srid": 0, "precision": -1, "coordinates": [ { "x":' + lng + ', "y": ' + lat +'  }], "geometries": null }, "geometryCollection": [], "bounds": null, "sourceCrs": "EPSG:4326", "targetCrs": "EPSG:900913" }';
+               var restURI = "d/rest/command/command.geometry.Transform?token=";
+
+               var request = $.ajax({
+                    url: restURI,
+                    type: "POST",
+                    data: geometryJson,
+                    datatype : "json",
+                    contentType: "application/json; charset=utf-8"
+                 });
+
+                request.done(function( json ) {
+                    //var str = JSON.stringify(json, undefined, 4);
+                    var ul = $('<br />', { }).appendTo(span);
+                    var ul = $('<br />', { }).appendTo(span);
+
+                    var alink = $('<a>', {
+                        text: 'EPSG:900913 => x:' + json.geometry.coordinates[0].x + ', y: ' + json.geometry.coordinates[0].y,
+                        id: 'latLng2',
+                        href:'#',
+                        click:function(e) {
+                            e.preventDefault();
+                            // do something
+                        }
+
+                    }).appendTo(span);
+
+                });
+
+                request.fail(function(jqXHR, textStatus) {
+                    alert("transformation failed !");
+                });
+
+            }
+
+            function postSearchCountries(jsonObj, span) {
+                if (null != jsonObj && '' != jsonObj ) {
+                    var restURI = "d/rest/command/command.feature.SearchByLocation?token=";
+
+                    var request = $.ajax({
+                        url: restURI,
+                        type: "POST",
+                        data: jsonObj,
+                        datatype : "json",
+                        contentType: "application/json; charset=utf-8"
+                    });
+
+                    request.done(function( json ) {
+                       var str = JSON.stringify(json, undefined, 4);
+                        if (undefined != json.featureMap.countries) {
+                            //get attributes of a found country
+
+                            var ul = $('<ul>', { }).appendTo(span);
+
+                            var country = $('<li>', {
+                                text: 'Country: ' + json.featureMap.countries[0].attributes['NAME'].value ,
+                                class: 'country_attribute'
+
+
+                            }).appendTo(ul);
+
+                            var Abbreviation = $('<li>', {
+                                text: 'Population: ' + json.featureMap.countries[0].attributes['PEOPLE'].value ,
+                                class: 'country_attribute'
+
+                            }).appendTo(ul);
+
+                            var population = $('<li>', {
+                                text: 'Abbreviation: ' + json.featureMap.countries[0].attributes['ADM0_A3'].value ,
+                                class: 'country_attribute'
+
+                            }).appendTo(ul);
+
+                            var internetDomain = $('<li>', {
+                                text: 'Internet domain: ' + json.featureMap.countries[0].attributes['INTERNET_'].value ,
+                                class: 'country_attribute'
+
+                            }).appendTo(ul);
+
+                        }
+
+                    });
+
+                    request.fail(function(jqXHR, textStatus) {
+                       span.appendChild(document.createTextNode("search by location failed !"));
+                    });
+                }
+            }
+
+
+            function getBusinessCentersGeoJson() {
+                var restURI =  "d/rest/layerBusinessCenters";
+                    var request = $.ajax({
+                        url: restURI,
+                        type: "GET"
+
+                    });
+
+                    request.done(function( json ) {
+                        var str = JSON.stringify(json, undefined, 4);
+                        alert(str);
+
+                    });
+
+                    request.fail(function(jqXHR, textStatus) {
+
+                    });
+            }
 
         </script>
 
@@ -133,6 +323,9 @@
             #map {
                 height: 600px;
             }
+            .country_attribute {
+            }
+
 
         </style>
 
@@ -142,7 +335,7 @@
         <a href="openLayers.html">Open layers map Geo JSON example</a>
         <br />
         <a href="index.html">Geomajas JSON API</a>
-        <h1 id="title">Leaflet map</h1>
+        <h1 id="title">Leaflet map (search by location - shape file)</h1>
 
        <div id="map" />
     </body>

@@ -27,7 +27,7 @@
                 var layer = new OpenLayers.Layer.Vector("GeoJSON", {
                     strategies: [new OpenLayers.Strategy.Fixed()],
                     protocol: new OpenLayers.Protocol.HTTP({
-                    	url: "d/rest/countries110m",
+                    	url: "d/rest/layerCountries110m",
                     	format: new OpenLayers.Format.GeoJSON()
                     })
                 });
@@ -46,6 +46,9 @@
     </head>
 
     <body onload="init()">
+        <a href="leaflet.html">Leaflet map (search by location)</a>
+        <br />
+        <a href="index.html">Geomajas JSON API</a>
         <h1 id="title">Geomajas example (GeoJSON REST interface)</h1>
         <div id="map" class="smallmap"></div>
         <div id="docs">
