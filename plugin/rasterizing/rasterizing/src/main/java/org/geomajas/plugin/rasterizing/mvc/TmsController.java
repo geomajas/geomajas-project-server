@@ -11,12 +11,29 @@
 
 package org.geomajas.plugin.rasterizing.mvc;
 
-import com.vividsolutions.jts.geom.Envelope;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.geometry.service.BboxService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.layer.RasterLayer;
@@ -36,6 +53,11 @@ import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.plugin.rasterizing.layer.tile.TmsTileMetadata;
 import org.geomajas.plugin.rasterizing.step.RebuildCacheContainer;
+import org.geomajas.plugin.rasterizing.tms.GlobalGeodeticProfile;
+import org.geomajas.plugin.rasterizing.tms.GlobalMercatorProfile;
+import org.geomajas.plugin.rasterizing.tms.LocalProfile;
+import org.geomajas.plugin.rasterizing.tms.TmsProfile;
+import org.geomajas.plugin.rasterizing.tms.TmsServiceImpl;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -54,20 +76,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Controller which serves tiles in a TMS-compliant way.
@@ -77,9 +86,13 @@ import java.util.List;
 @Controller(TmsController.MAPPING + "**")
 public class TmsController {
 
+	public static final int PROFILE_TILE_SIZE = 256;
+
 	private final Logger log = LoggerFactory.getLogger(TmsController.class);
 
 	public static final String MAPPING = "/tms/";
+
+	public static final String MAPPING_1_0_0 = "/tms/1.0.0";
 
 	@Autowired
 	private PipelineService<GetTileContainer> pipelineService;
@@ -115,6 +128,9 @@ public class TmsController {
 	private LayerHttpService httpService;
 
 	@Autowired
+	private TmsServiceImpl tmsService;
+
+	@Autowired
 	private CachingSupportService cachingSupportService;
 
 	private boolean redirectRasterLayers = true;
@@ -125,7 +141,12 @@ public class TmsController {
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
+	private Map<String, TmsProfile> profiles = new HashMap<String, TmsProfile>();
+
 	public TmsController() {
+		profiles.put("EPSG:900913", new GlobalMercatorProfile());
+		profiles.put("EPSG:3857", new GlobalMercatorProfile());
+		profiles.put("EPSG:4326", new GlobalGeodeticProfile());
 	}
 
 	public boolean isRedirectRasterLayers() {
@@ -134,6 +155,52 @@ public class TmsController {
 
 	public void setRedirectRasterLayers(boolean redirectRasterLayers) {
 		this.redirectRasterLayers = redirectRasterLayers;
+	}
+
+	/**
+	 * Publishes all vector layers.
+	 * 
+	 * @param response
+	 * @throws GeomajasException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = MAPPING_1_0_0, method = RequestMethod.GET)
+	public void getTileMapService(HttpServletResponse response) throws GeomajasException, IOException {
+		tmsService.writeService(response.getWriter());
+	}
+
+	/**
+	 * Publishes a single vector layer.
+	 * 
+	 * @param response
+	 * @throws GeomajasException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = MAPPING_1_0_0 + "/{layerId}@{crs}/{styleKey}", method = RequestMethod.GET)
+	public void getTileMap(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
+			HttpServletResponse response) throws GeomajasException, IOException {
+		tmsService.writeTileMap(layerId, styleKey, getProfileForLayer(layerId, crs).getProfile(), response.getWriter());
+	}
+
+	/**
+	 * Publishes a single tile.
+	 * 
+	 * @param response
+	 * @throws GeomajasException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = MAPPING_1_0_0 + "/{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}", 
+			method = RequestMethod.GET)
+	public void getTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
+			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
+			@RequestParam(required = false) Double resolution, @RequestParam(required = false) String tileOrigin,
+			@RequestParam(required = false, defaultValue = "256") int tileWidth,
+			@RequestParam(required = false, defaultValue = "256") int tileHeight,
+			@RequestParam(required = false, defaultValue = "true") boolean showGeometries,
+			@RequestParam(required = false, defaultValue = "false") boolean showLabels,
+			@RequestParam(required = false) String filter, HttpServletResponse response) throws Exception {
+		getVectorTile(layerId, styleKey, crs, tileLevel, xIndex, yIndex, resolution, tileOrigin, tileWidth, tileHeight,
+				showGeometries, showLabels, filter, response);
 	}
 
 	/**
@@ -159,17 +226,14 @@ public class TmsController {
 			method = RequestMethod.GET)
 	public void getVectorTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
-			@RequestParam(required = false) Double resolution,
-			@RequestParam(required = false) String tileOrigin,
-			@RequestParam(required = false, defaultValue = "512") int tileWidth,
-			@RequestParam(required = false, defaultValue = "512") int tileHeight,
+			@RequestParam(required = false) Double resolution, @RequestParam(required = false) String tileOrigin,
+			@RequestParam(required = false, defaultValue = "256") int tileWidth,
+			@RequestParam(required = false, defaultValue = "256") int tileHeight,
 			@RequestParam(required = false, defaultValue = "true") boolean showGeometries,
 			@RequestParam(required = false, defaultValue = "false") boolean showLabels,
-			@RequestParam(required = false) String filter, HttpServletResponse response)
-			throws Exception {
+			@RequestParam(required = false) String filter, HttpServletResponse response) throws Exception {
 		try {
 			Crs tileCrs = geoService.getCrs2(crs);
-			VectorLayer layer = configurationService.getVectorLayer(layerId);
 			TmsTileMetadata tileMetadata = new TmsTileMetadata();
 			tileMetadata.setCode(new TileCode(tileLevel, xIndex, yIndex));
 			tileMetadata.setCrs(geoService.getCodeFromCrs(tileCrs));
@@ -177,20 +241,19 @@ public class TmsController {
 			tileMetadata.setPaintGeometries(showGeometries);
 			tileMetadata.setPaintLabels(showLabels);
 			tileMetadata.setRenderer(TMS_TILE_RENDERER);
-			// TmsTileMetadata specific
-			if (resolution == null) {
-				resolution = 1 / getScale(tileWidth, tileLevel, layer.getLayerInfo().getMaxExtent().getWidth());
-			}
-			tileMetadata.setResolution(resolution);
-			if (tileOrigin == null) {
-				tileMetadata.setTileOrigin(BboxService.getOrigin(layer.getLayerInfo().getMaxExtent()));
-			} else {
-				tileMetadata.setTileOrigin(parseOrigin(tileOrigin));
-			}
 			tileMetadata.setTileWidth(tileWidth);
 			tileMetadata.setTileHeight(tileHeight);
+			// TmsTileMetadata specific
 			tileMetadata.setStyleInfo(styleService.retrieveStyle(layerId, styleKey));
 			tileMetadata.setFilter(filter);
+			// if no origin or resolution, try one of the preconfigured profiles or fall back to
+			// the layer bounds
+			if (resolution == null || tileOrigin == null) {
+				getProfileForLayer(layerId, crs).prepareMetadata(tileMetadata);
+			} else {
+				tileMetadata.setResolution(resolution);
+				tileMetadata.setTileOrigin(parseOrigin(tileOrigin));
+			}
 
 			RebuildCacheContainer rcc = new RebuildCacheContainer();
 			rcc.setMetadata(tileMetadata);
@@ -254,6 +317,21 @@ public class TmsController {
 			} else {
 				writeToResponse(layer, url.replace(".jpeg", ".png"), request, response);
 			}
+		}
+	}
+
+	private TmsProfile getProfileForLayer(String layerId, String crs) throws GeomajasException {
+		if (profiles.containsKey(crs)) {
+			return profiles.get(crs);
+		} else {
+			VectorLayer layer = configurationService.getVectorLayer(layerId);
+			Crs layerCrs = layerService.getCrs(layer);
+			Crs tileCrs = geoService.getCrs2(crs);
+			Bbox layerBounds = layer.getLayerInfo().getMaxExtent();
+			if (layerCrs != tileCrs) {
+				layerBounds = geoService.transform(layerBounds, layerCrs, tileCrs);
+			}
+			return new LocalProfile(dtoConverterService.toInternal(layerBounds), PROFILE_TILE_SIZE);
 		}
 	}
 
@@ -355,8 +433,9 @@ public class TmsController {
 		return tileExtent;
 	}
 
-	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request, 
+			HttpServletResponse response)
+			throws Exception {
 		InputStream stream = null;
 		try {
 			response.setContentType("image/png");
@@ -416,4 +495,5 @@ public class TmsController {
 
 		return result;
 	}
+
 }
