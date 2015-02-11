@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -116,7 +116,7 @@ public class TmsController {
 
 	@Autowired
 	private CachingSupportService cachingSupportService;
-	
+
 	private boolean redirectRasterLayers = true;
 
 	private static final int ERROR_MESSAGE_X = 10;
@@ -127,11 +127,11 @@ public class TmsController {
 
 	public TmsController() {
 	}
-	
+
 	public boolean isRedirectRasterLayers() {
 		return redirectRasterLayers;
 	}
-	
+
 	public void setRedirectRasterLayers(boolean redirectRasterLayers) {
 		this.redirectRasterLayers = redirectRasterLayers;
 	}
@@ -149,6 +149,9 @@ public class TmsController {
 	 * @param tileOrigin origin of the tile configuration "&lt;x-coordinate>,&lt;y-coordinate>"
 	 * @param tileWidth tile width in pixels
 	 * @param tileHeight tile height in pixels
+	 * @param showGeometries Should the resulting tile contain the geometries? Default is true.
+	 * @param showLabels Should the resulting tile contain the labels? Default is false.
+	 * @param filter Optional CQL filter on the features shown
 	 * @param response servlet response
 	 * @throws Exception
 	 */
@@ -159,7 +162,10 @@ public class TmsController {
 			@RequestParam(required = false) Double resolution,
 			@RequestParam(required = false) String tileOrigin,
 			@RequestParam(required = false, defaultValue = "512") int tileWidth,
-			@RequestParam(required = false, defaultValue = "512") int tileHeight, HttpServletResponse response)
+			@RequestParam(required = false, defaultValue = "512") int tileHeight,
+			@RequestParam(required = false, defaultValue = "true") boolean showGeometries,
+			@RequestParam(required = false, defaultValue = "false") boolean showLabels,
+			@RequestParam(required = false) String filter, HttpServletResponse response)
 			throws Exception {
 		try {
 			Crs tileCrs = geoService.getCrs2(crs);
@@ -168,8 +174,8 @@ public class TmsController {
 			tileMetadata.setCode(new TileCode(tileLevel, xIndex, yIndex));
 			tileMetadata.setCrs(geoService.getCodeFromCrs(tileCrs));
 			tileMetadata.setLayerId(layerId);
-			tileMetadata.setPaintGeometries(true);
-			tileMetadata.setPaintLabels(false);
+			tileMetadata.setPaintGeometries(showGeometries);
+			tileMetadata.setPaintLabels(showLabels);
 			tileMetadata.setRenderer(TMS_TILE_RENDERER);
 			// TmsTileMetadata specific
 			if (resolution == null) {
@@ -184,6 +190,7 @@ public class TmsController {
 			tileMetadata.setTileWidth(tileWidth);
 			tileMetadata.setTileHeight(tileHeight);
 			tileMetadata.setStyleInfo(styleService.retrieveStyle(layerId, styleKey));
+			tileMetadata.setFilter(filter);
 
 			RebuildCacheContainer rcc = new RebuildCacheContainer();
 			rcc.setMetadata(tileMetadata);
@@ -218,7 +225,7 @@ public class TmsController {
 			method = RequestMethod.GET)
 	public void getRasterTile(@PathVariable String layerId, @PathVariable String crs, @PathVariable Integer tileLevel,
 			@PathVariable Integer xIndex, @PathVariable Integer yIndex, @PathVariable String imageFormat,
-			HttpServletRequest request,	HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Crs tileCrs = geoService.getCrs2(crs);
 		// calculate the tile extent
 		Envelope maxExtent = getRasterLayerExtent(layerId, crs);

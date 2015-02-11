@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -10,9 +10,15 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -72,10 +78,20 @@ public class DefaultDocumentTest {
 		DefaultDocument document = new DefaultDocument(printService.createDefaultTemplate("A4", true), null,
 				getDefaultVisitor(-31.44, -37.43, 80.83f), new MapConfigurationVisitor(configurationService,
 						printDtoService));
-		FileOutputStream fo = new FileOutputStream("target/test.png");
-		document.render(fo, Format.PNG);
+		FileOutputStream fo = new FileOutputStream("target/test.pdf");
+		document.render(fo, Format.PDF, 200);
 		fo.flush();
 		fo.close();
+	}
+
+	@Test
+	public void testToImage() throws Exception {
+		testRender();
+		PDDocument pdf = PDDocument.load(new File("target/test.pdf"), true);
+		PDFRenderer renderer = new PDFRenderer(pdf);
+		BufferedImage bufferedImage = renderer.renderImageWithDPI(0, 144);
+		pdf.close();
+		ImageIO.write(bufferedImage, "PNG", new File("target/test.png"));
 	}
 
 	@Test
@@ -143,7 +159,7 @@ public class DefaultDocumentTest {
 		template.setPage(page);
 		SinglePageDocument pdfDoc = new SinglePageDocument(page, null);
 		FileOutputStream fo = new FileOutputStream("target/legend.png");
-		pdfDoc.render(fo, Format.PNG);
+		pdfDoc.render(fo, Format.PNG, 200);
 		fo.flush();
 		fo.close();
 	}

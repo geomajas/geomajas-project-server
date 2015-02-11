@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -37,7 +37,8 @@ public class DocumentView extends AbstractView {
 		String download = (String) model.get(PrintingController.DOWNLOAD_KEY);
 		String fileName = (String) model.get(PrintingController.FILENAME_KEY);
 		Format format = (Format) model.get(PrintingController.FORMAT_KEY);
-				
+		int dpi = (Integer)	model.get(PrintingController.DPI_KEY);
+		
 		// Write content type and also length (determined via byte array).
 		response.setContentType(format.getMimetype());
 		
@@ -53,7 +54,7 @@ public class DocumentView extends AbstractView {
 
 		// Write the docmuent
 		ServletOutputStream out = response.getOutputStream();
-		doc.render(out, format);
+		doc.render(out, format, dpi);
 		response.setContentLength(doc.getContentLength());
 		out.flush();
 	}

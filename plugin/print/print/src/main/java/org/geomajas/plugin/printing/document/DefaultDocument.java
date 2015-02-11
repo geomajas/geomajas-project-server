@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -37,10 +37,10 @@ public class DefaultDocument extends SinglePageDocument {
 	}
 
 	@Override
-	public void render(OutputStream outputStream, Format format) throws PrintingException {
+	public void render(OutputStream outputStream, Format format, int dpi) throws PrintingException {
 		defaultVisitor.visitTree(getPage());
 		visitor.visitTree(getPage());
-		super.render(outputStream, format);
+		super.render(outputStream, format, dpi);
 	}
 
 }

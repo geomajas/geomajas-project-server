@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -11,6 +11,7 @@
 package org.geomajas.plugin.printing.document;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,13 +29,13 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -94,9 +95,12 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Renders the document to the specified output stream.
 	 */
-	public void render(OutputStream outputStream, Format format) throws PrintingException {
+	public void render(OutputStream outputStream, Format format, int dpi) throws PrintingException {
 		try {
-			doRender(outputStream, format);
+			if (baos == null) {
+				prepare();
+			}
+			writeDocument(outputStream, format, dpi);
 		} catch (Exception e) { // NOSONAR
 			throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
 		}
@@ -106,12 +110,11 @@ public class SinglePageDocument extends AbstractDocument {
 	 * Re-calculates the layout and renders to internal memory stream. Always call this method before calling render()
 	 * to make sure that the latest document changes have been taken into account for rendering.
 	 *
-	 * @param format format
 	 * @throws PrintingException oops
 	 */
-	public void layout(Format format) throws PrintingException {
+	public void layout() throws PrintingException {
 		try {
-			doRender(null, format);
+			prepare();
 		} catch (Exception e) { // NOSONAR
 			throw new PrintingException(e, PrintingException.DOCUMENT_LAYOUT_PROBLEM);
 		}
@@ -126,120 +129,102 @@ public class SinglePageDocument extends AbstractDocument {
 	 * @throws IOException oops
 	 * @throws PrintingException oops
 	 */
-	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
-			PrintingException {
-		// first render or re-render for different layout
-		if (outputStream == null || baos == null) {
-			if (baos == null) {
-				baos = new ByteArrayOutputStream(); // let it grow as much as needed
-			}
-			baos.reset();
-			boolean resize = false;
-			if (page.getBounds().getWidth() == 0 || page.getBounds().getHeight() == 0) {
-				resize = true;
-			}
-			// Create a document in the requested ISO scale.
-			Document document = new Document(page.getBounds(), 0, 0, 0, 0);
-			PdfWriter writer;
-			writer = PdfWriter.getInstance(document, baos);
+	private void prepare() throws IOException, DocumentException, PrintingException {
+		if (baos == null) {
+			baos = new ByteArrayOutputStream(); // let it grow as much as needed
+		}
+		baos.reset();
+		boolean resize = false;
+		if (page.getConstraint().getWidth() == 0 || page.getConstraint().getHeight() == 0) {
+			resize = true;
+		}
+		// Create a document in the requested ISO scale.
+		Document document = new Document(page.getBounds(), 0, 0, 0, 0);
+		PdfWriter writer;
+		writer = PdfWriter.getInstance(document, baos);
 
+		// Render in correct colors for transparent rasters
+		writer.setRgbTransparencyBlending(true);
+
+		// The mapView is not scaled to the document, we assume the mapView
+		// has the right ratio.
+
+		// Write document title and metadata
+		document.open();
+		PdfContext context = new PdfContext(writer);
+		context.initSize(page.getBounds());
+		// first pass of all children to calculate size
+		page.calculateSize(context);
+		if (resize) {
+			// we now know the bounds of the document
+			// round 'm up and restart with a new document
+			int width = (int) Math.ceil(page.getBounds().getWidth());
+			int height = (int) Math.ceil(page.getBounds().getHeight());
+			page.getConstraint().setWidth(width);
+			page.getConstraint().setHeight(height);
+
+			document = new Document(new Rectangle(width, height), 0, 0, 0, 0);
+			writer = PdfWriter.getInstance(document, baos);
 			// Render in correct colors for transparent rasters
 			writer.setRgbTransparencyBlending(true);
 
-			// The mapView is not scaled to the document, we assume the mapView
-			// has the right ratio.
-
-			// Write document title and metadata
 			document.open();
-			PdfContext context = new PdfContext(writer);
+			baos.reset();
+			context = new PdfContext(writer);
 			context.initSize(page.getBounds());
-			// first pass of all children to calculate size
-			page.calculateSize(context);
-			if (resize) {
-				// we now know the bounds of the document
-				// round 'm up and restart with a new document
-				int width = (int) Math.ceil(page.getBounds().getWidth());
-				int height = (int) Math.ceil(page.getBounds().getHeight());
-				page.getConstraint().setWidth(width);
-				page.getConstraint().setHeight(height);
+		}
+		// int compressionLevel = writer.getCompressionLevel(); // For testing
+		// writer.setCompressionLevel(0);
 
-				document = new Document(new Rectangle(width, height), 0, 0, 0, 0);
-				writer = PdfWriter.getInstance(document, baos);
-				// Render in correct colors for transparent rasters
-				writer.setRgbTransparencyBlending(true);
+		// Actual drawing
+		document.addTitle("Geomajas");
+		// second pass to layout
+		page.layout(context);
+		// finally render (uses baos)
+		page.render(context);
 
-				document.open();
-				baos.reset();
-				context = new PdfContext(writer);
-				context.initSize(page.getBounds());
-			}
-			// int compressionLevel = writer.getCompressionLevel(); // For testing
-			// writer.setCompressionLevel(0);
-
-			// Actual drawing
-			document.addTitle("Geomajas");
-			// second pass to layout
-			page.layout(context);
-			// finally render (uses baos)
-			page.render(context);
-
-			document.add(context.getImage());
-			// Now close the document
-			document.close();
+		document.add(context.getImage());
+		// Now close the document
+		document.close();
+	}
+	
+	private void writeDocument(OutputStream outputStream, Format format, int dpi) throws IOException,
+			DocumentException, PrintingException {
+		if (format == Format.PDF) {
+			baos.writeTo(outputStream);
 		} else {
-			if (format == Format.PDF) {
-				baos.writeTo(outputStream);
-			} else {
-				BufferedImage bufferedImage = null;
-				// Use JPedal lib for converting the PDF to PNG or JPG
-				/** instance of PdfDecoder to convert PDF into image */
-				PdfDecoder decodePdf = new PdfDecoder(true);
-
-				/** set mappings for non-embedded fonts to use */
-				PdfDecoder.setFontReplacements(decodePdf);
-				decodePdf.useHiResScreenDisplay(true);
-				decodePdf.getDPIFactory().setDpi(2 * 72);
-				decodePdf.setPageParameters(1, 1);
-				try {
-					decodePdf.openPdfArray(baos.toByteArray());
-					/** get page 1 as an image */
-					bufferedImage = decodePdf.getPageAsImage(1);
-
-					/** close the pdf file */
-					decodePdf.closePdfFile();
-
-				} catch (PdfException e) {
-					throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
-				}
-				if (format == Format.PNG) {
-					final String formatName = format.getExtension();
-					for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName(formatName); iw.hasNext();) {
-						ImageWriter writer1 = iw.next();
-						ImageWriteParam writeParam = writer1.getDefaultWriteParam();
-						ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier
-								.createFromBufferedImageType(BufferedImage.TYPE_INT_ARGB);
-						IIOMetadata metadata = writer1.getDefaultImageMetadata(typeSpecifier, writeParam);
-						if (metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) {
-							continue;
-						}
-
-						setDPI(metadata);
-						// Write bufferedImage to outputStream
-						final ImageOutputStream stream = ImageIO.createImageOutputStream(outputStream);
-						try {
-							writer1.setOutput(stream);
-							writer1.write(metadata, new IIOImage(bufferedImage, null, metadata), writeParam);
-						} finally {
-							stream.flush();
-							stream.close();
-						}
-						break;
+			PDDocument pdf = PDDocument.load(new ByteArrayInputStream(baos.toByteArray()), true);
+			PDFRenderer renderer = new PDFRenderer(pdf);
+			BufferedImage bufferedImage = renderer.renderImageWithDPI(0, dpi);
+			pdf.close();
+			if (format == Format.PNG) {
+				final String formatName = format.getExtension();
+				for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName(formatName); iw.hasNext();) {
+					ImageWriter writer1 = iw.next();
+					ImageWriteParam writeParam = writer1.getDefaultWriteParam();
+					ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier
+							.createFromBufferedImageType(BufferedImage.TYPE_INT_ARGB);
+					IIOMetadata metadata = writer1.getDefaultImageMetadata(typeSpecifier, writeParam);
+					if (metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) {
+						continue;
 					}
-				} else {
-					ImageIO.write(bufferedImage, format.getExtension(), outputStream);
-				}
 
+					setDPI(metadata);
+					// Write bufferedImage to outputStream
+					final ImageOutputStream stream = ImageIO.createImageOutputStream(outputStream);
+					try {
+						writer1.setOutput(stream);
+						writer1.write(metadata, new IIOImage(bufferedImage, null, metadata), writeParam);
+					} finally {
+						stream.flush();
+						stream.close();
+					}
+					break;
+				}
+			} else {
+				ImageIO.write(bufferedImage, format.getExtension(), outputStream);
 			}
+
 		}
 	}
 

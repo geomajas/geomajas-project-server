@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -68,6 +68,22 @@ public class PdfContext {
 	private final Logger log = LoggerFactory.getLogger(PdfContext.class);
 	
 	private Map<String, Color> predefinedColors = new HashMap<String, Color>();
+	
+	/**
+	 * Custom drawable element, see {@link PdfContext#draw(Drawable)}.
+	 * 
+	 */
+	public interface Drawable {
+
+		/**
+		 * Draw whatever you like, taking the current origin into account.
+		 * 
+		 * @param template
+		 * @param origX
+		 * @param origY
+		 */
+		void draw(PdfTemplate template, float origX, float origY);
+	}
 
 	/**
 	 * Constructs a context for the specified writer and application.
@@ -103,6 +119,12 @@ public class PdfContext {
 	public void setOrigin(float x, float y) {
 		this.origX = x;
 		this.origY = y;
+	}
+	
+	public void draw(Drawable drawable) {
+		template.saveState();
+		drawable.draw(template, origX, origY);
+		template.restoreState();
 	}
 
 	/**

@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -10,11 +10,8 @@
  */
 package org.geomajas.plugin.printing.document;
 
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
-
-import org.geomajas.plugin.printing.PrintingException;
 
 /**
  * <p>
@@ -44,8 +41,5 @@ public abstract class AbstractDocument implements Document {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-
-
-	public abstract void render(OutputStream os, Format format) throws PrintingException;
 
 }

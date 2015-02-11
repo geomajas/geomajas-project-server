@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -40,7 +40,6 @@ import org.geomajas.plugin.printing.component.impl.ScaleBarComponentImpl;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.configuration.PrintTemplateDao;
 import org.geomajas.plugin.printing.document.Document;
-import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +126,7 @@ public class PrintServiceImpl implements PrintService {
 		// calculate the sizes (if not already calculated !)
 		SinglePageDocument document = new SinglePageDocument(template.getPage(), null);
 		try {
-			document.layout(Format.PDF);
+			document.layout();
 		} catch (PrintingException e) {
 			// should not happen !
 			log.warn("Unexpected problem while laying out default print template", e);

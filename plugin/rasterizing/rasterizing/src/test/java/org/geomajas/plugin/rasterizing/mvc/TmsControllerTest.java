@@ -55,7 +55,7 @@ public class TmsControllerTest {
 	public void getVectorTile() throws Exception {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		tmsController.getVectorTile("layerBeansMultiPolygon", "layerBeansMultiPolygonStyleInfo", "EPSG:4326", 0, 0, 0,
-				100.0 / 256.0, "-50,-50", 256, 256, response);
+				100.0 / 256.0, "-50,-50", 256, 256, true, false, null, response);
 		response.flushBuffer();
 		new ResponseAssert(response).assertEqualImage("layerBeansMultiPolygon-0-0-0.png", writeImages, DELTA);
 	}
