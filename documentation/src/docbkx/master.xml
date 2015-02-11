@@ -9,35 +9,47 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-<book id="book" lang="en">
-  <title>Geomajas Server<?eval ${project.version}?></title>
+		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<book id="developer" lang="en">
+	<title>Geomajas user guide for developers</title>
 
-  <bookinfo>
-    <copyright>
-      <year>2011-2014</year>
+	<bookinfo>
+		<copyright>
+			<year>2010-2014</year>
 
-      <holder>Geosparc nv</holder>
-    </copyright>
+			<holder>Geosparc nv</holder>
+		</copyright>
 
-    <releaseinfo>Version <?eval ${project.version}?></releaseinfo>
+		<releaseinfo><?eval ${project.version}?></releaseinfo>
 
-    <productname>Geomajas</productname>
+		<productname>Geomajas</productname>
 
-    <authorgroup>
-      <corpauthor>Geomajas Developers and Geosparc</corpauthor>
-    </authorgroup>
-  </bookinfo>
+		<authorgroup>
+			<corpauthor>Geomajas Developers and Geosparc</corpauthor>
+		</authorgroup>
+	</bookinfo>
 
-  <toc></toc>
+	<toc/>
+	<lot/>
 
-  <lot></lot>
+	<xi:include href="part-introduction.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-  <xi:include href="introduction.xml"
-              xmlns:xi="http://www.w3.org/2001/XInclude" />
+	<xi:include href="part-architecture.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-  <xi:include href="architecture.xml"
-              xmlns:xi="http://www.w3.org/2001/XInclude" />
+	<xi:include href="part-api.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
+	<xi:include href="part-configuration.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="part-howto.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="part-appendix.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+	
 </book>
