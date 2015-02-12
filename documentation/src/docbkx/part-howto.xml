@@ -126,10 +126,14 @@
     above, this could be done by including the following XML fragment in one
     of your Spring configuration files.</para>
 
-    <xi:include href="listing/ExampleCommandScan.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+	  <example id="ExampleCommandScan">
+		  <title>Scan to assure command is available</title>
+		  <programlisting language="xml"><![CDATA[<context:component-scan base-package="com.my.program" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />]]>
+		  </programlisting>
+	  </example>
 
-    <para>The command will be executed using a singleton. The use of object
+
+	  <para>The command will be executed using a singleton. The use of object
     variables is not recommended. Any object variables will be shared amongst
     all command invocation, which can be coming from multiple threads at the
     same time.</para>
