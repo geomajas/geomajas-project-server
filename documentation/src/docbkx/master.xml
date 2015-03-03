@@ -13,11 +13,11 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <book id="developer" lang="en">
-	<title>Geomajas user guide for developers</title>
+	<title>Geomajas server documentation</title>
 
 	<bookinfo>
 		<copyright>
-			<year>2010-2014</year>
+			<year>2010-2015</year>
 
 			<holder>Geosparc nv</holder>
 		</copyright>
