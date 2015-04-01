@@ -35,6 +35,7 @@ import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.RasterException;
@@ -74,13 +75,17 @@ public class SvgLayerFactory implements LayerFactory {
 		ClientSvgLayerInfo layerInfo = (ClientSvgLayerInfo) clientLayerInfo;
 		SvgDirectLayer layer = new SvgDirectLayer(mapContent);
 		String finalSvg;
-		finalSvg = addAttributesToSvg(layerInfo.getSvgContent(), layerInfo.getViewBoxWidth(),
-				layerInfo.getViewBoxHeight());
+		finalSvg = addAttributesToSvg(layerInfo.getSvgContent(), layerInfo.getViewBoxScreenBounds());
 		GraphicsNode graphicsNode = createNode(finalSvg);
 		layer.setGraphicsNode(graphicsNode);
-		layer.setSvgWorldBounds(new ReferencedEnvelope(converterService.toInternal(layerInfo.getViewBoxBounds()),
+		layer.setSvgWorldBounds(new ReferencedEnvelope(converterService.toInternal(layerInfo.getViewBoxWorldBounds()),
 				mapContent.getCoordinateReferenceSystem()));
-		layer.setSvgScreenBounds(new Rectangle(layerInfo.getViewBoxWidth(), layerInfo.getViewBoxHeight()));
+		Bbox viewBox = layerInfo.getViewBoxScreenBounds();
+		int w = (int) viewBox.getWidth();
+		int h = (int) viewBox.getHeight();
+		int x = (int) viewBox.getX();
+		int y = (int) viewBox.getY();
+		layer.setSvgScreenBounds(new Rectangle(x, y, w, h));
 		layer.getUserData().put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
 		return layer;
 	}
@@ -103,7 +108,7 @@ public class SvgLayerFactory implements LayerFactory {
 		return builder.build(bridgeContext, document);
 	}
 
-	public String addAttributesToSvg(String svgContent, int viewBoxWidth, int viewBoxHeight) throws GeomajasException {
+	public String addAttributesToSvg(String svgContent, Bbox viewBox) throws GeomajasException {
 		Document document;
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -111,9 +116,13 @@ public class SvgLayerFactory implements LayerFactory {
 			document = dBuilder.parse(new InputSource(new StringReader(svgContent)));
 			document.getDocumentElement().setAttribute("xmlns", "http://www.w3.org/2000/svg");
 			document.getDocumentElement().setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-			document.getDocumentElement().setAttribute("width", viewBoxWidth + "");
-			document.getDocumentElement().setAttribute("height", viewBoxHeight + "");
-			document.getDocumentElement().setAttribute("viewBox", "0 0 " + viewBoxWidth + " " + viewBoxHeight);
+			int w = (int) viewBox.getWidth();
+			int h = (int) viewBox.getHeight();
+			int x = (int) viewBox.getX();
+			int y = (int) viewBox.getY();
+			document.getDocumentElement().setAttribute("width", w + "");
+			document.getDocumentElement().setAttribute("height", h + "");
+			document.getDocumentElement().setAttribute("viewBox", x + " " + y + " " + w + " " + h);
 			return getStringFromDocument(document);
 		} catch (DOMException e) {
 			throw new RasterException(e, RasterException.BAD_SVG, "Cannot add namespaces to SVG");
