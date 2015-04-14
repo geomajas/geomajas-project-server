@@ -10,6 +10,10 @@
  */
 package org.geomajas.command.feature;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
@@ -19,21 +23,17 @@ import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
-import org.geotools.filter.FidFilter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Test for the SearchFeatureCommand class.
@@ -295,7 +295,7 @@ public class SearchFeatureCommandTest {
 		searchCriterion.setValue("'1'");
 		request.setCriteria(new SearchCriterion[] {searchCriterion});
 		filter = searchFeatureCommand.createFilter(request, LAYER_ID);
-		Assert.assertTrue(filter instanceof FidFilter);
+		Assert.assertTrue(filter instanceof Id);
 
 		// but *not* when other test
 		searchCriterion.setAttributeName(ID_ATTRIBUTE);
@@ -303,6 +303,6 @@ public class SearchFeatureCommandTest {
 		searchCriterion.setValue("'%a%'");
 		request.setCriteria(new SearchCriterion[] {searchCriterion});
 		filter = searchFeatureCommand.createFilter(request, LAYER_ID);
-		Assert.assertFalse(filter instanceof FidFilter);
+		Assert.assertFalse(filter instanceof Id);
 	}
 }
