@@ -30,7 +30,7 @@ public class HsqlGeometryUserType extends AbstractDBGeometryType {
 
 	private static final int SRID_LENGTH = 4;
 
-	private static final int[] GEOMETRY_TYPES = new int[] { Types.VARCHAR };
+	private static final int[] GEOMETRY_TYPES = new int[] { Types.CLOB };
 
 	public int[] sqlTypes() {
 		return GEOMETRY_TYPES;

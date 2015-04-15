@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.geomajas.global.Json;
@@ -37,6 +38,7 @@ public class PrintTemplate {
 	private String name;
 
 	@Column(name = "page_xml")
+	@Lob
 	private String pageXml;
 
 	@Column(name = "template")

@@ -515,8 +515,8 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements Proper
 			LikeFilterImpl lFilter = (LikeFilterImpl) obj;
 
 			// REVISIT: check for nulls.
-			return ((Filters.getFilterType(lFilter) == Filters.getFilterType(this)) && lFilter.getExpression().equals(this.attribute) && lFilter
-					.getPattern().equals(this.pattern));
+			return ((Filters.getFilterType(lFilter) == Filters.getFilterType(this))
+					&& lFilter.getExpression().equals(this.attribute) && lFilter.getPattern().equals(this.pattern));
 		}
 		return false;
 	}
