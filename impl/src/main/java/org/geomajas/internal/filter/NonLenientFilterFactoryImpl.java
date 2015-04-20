@@ -12,12 +12,8 @@
 package org.geomajas.internal.filter;
 
 import org.geotools.factory.Hints;
-import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.IllegalFilterException;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -43,34 +39,6 @@ public class NonLenientFilterFactoryImpl extends FilterFactoryImpl {
 
 	public NonLenientFilterFactoryImpl(Hints hints) {
 		super(hints);
-	}
-
-	@Override
-	public AttributeExpression createAttributeExpression(String xpath) {
-		AttributeExpressionImpl expression = (AttributeExpressionImpl) super.createAttributeExpression(xpath);
-		expression.setLenient(false);
-		return expression;
-	}
-
-	@Override
-	public AttributeExpression createAttributeExpression(SimpleFeatureType schema) {
-		AttributeExpressionImpl expression = (AttributeExpressionImpl) super.createAttributeExpression(schema);
-		expression.setLenient(false);
-		return expression;
-	}
-
-	@Override
-	public AttributeExpression createAttributeExpression(SimpleFeatureType schema, String path) {
-		AttributeExpressionImpl expression = (AttributeExpressionImpl) super.createAttributeExpression(schema, path);
-		expression.setLenient(false);
-		return expression;
-	}
-
-	@Override
-	public AttributeExpression createAttributeExpression(AttributeDescriptor at) throws IllegalFilterException {
-		AttributeExpressionImpl expression = (AttributeExpressionImpl) super.createAttributeExpression(at);
-		expression.setLenient(false);
-		return expression;
 	}
 
 	@Override

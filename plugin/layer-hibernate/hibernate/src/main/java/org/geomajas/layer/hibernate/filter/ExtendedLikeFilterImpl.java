@@ -15,13 +15,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.geotools.filter.AbstractFilterImpl;
-import org.geotools.filter.Expression;
 import org.geotools.filter.ExpressionType;
-import org.geotools.filter.FilterFactoryFinder;
+import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.LikeFilter;
 import org.geotools.filter.LikeFilterImpl;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
 
 /**
  * ???
@@ -30,7 +31,7 @@ import org.opengis.filter.FilterVisitor;
  * @author Pieter De Graef
  */
 @Deprecated
-public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
+public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements PropertyIsLike {
 
 	/** The attribute value, which must be an attribute expression. */
 	private Expression attribute;
@@ -235,8 +236,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 	 * Constructor which flags the operator as like.
 	 */
 	protected ExtendedLikeFilterImpl() {
-		super(FilterFactoryFinder.createFilterFactory());
-		filterType = LIKE;
+		super();
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 			throw new IllegalArgumentException("Expression " + e + " should be an Expression.");
 		}
 		Expression exprAttribute = (Expression) e;
-		if ((exprAttribute.getType() != ExpressionType.ATTRIBUTE_STRING) || permissiveConstruction) {
+		if ((Filters.getExpressionType(exprAttribute) != ExpressionType.ATTRIBUTE_STRING)) {
 			this.attribute = exprAttribute;
 		} else {
 			throw new IllegalFilterException("Attempted to add something other than a string attribute "
@@ -515,8 +515,8 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 			LikeFilterImpl lFilter = (LikeFilterImpl) obj;
 
 			// REVISIT: check for nulls.
-			return ((lFilter.getFilterType() == this.filterType) && lFilter.getValue().equals(this.attribute) && lFilter
-					.getPattern().equals(this.pattern));
+			return ((Filters.getFilterType(lFilter) == Filters.getFilterType(this))
+					&& lFilter.getExpression().equals(this.attribute) && lFilter.getPattern().equals(this.pattern));
 		}
 		return false;
 	}
