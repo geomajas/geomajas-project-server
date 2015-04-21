@@ -11,7 +11,7 @@
 package org.geomajas.layer.wms.command.wms;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.geomajas.geometry.Bbox;
@@ -61,7 +61,7 @@ import java.util.Map.Entry;
 @Api
 @Component()
 public class SearchByPointCommand
-		implements Command<SearchByPointRequest, SearchByPointResponse> {
+		implements CommandHasRequest<SearchByPointRequest, SearchByPointResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SearchByPointCommand.class);
 
@@ -78,6 +78,17 @@ public class SearchByPointCommand
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Override
+	public SearchByPointRequest getEmptyCommandRequest() {
+		return new SearchByPointRequest();
+	}
+
+	@Override
+	public SearchByPointResponse getEmptyCommandResponse() {
+		return new SearchByPointResponse();
+	}
+
+	@Override
 	public void execute(SearchByPointRequest request, SearchByPointResponse response)
 			throws Exception {
 		if (null == request.getLayerMapping()) {
@@ -136,10 +147,6 @@ public class SearchByPointCommand
 				}
 			}
 		}
-	}
-
-	public SearchByPointResponse getEmptyCommandResponse() {
-		return new SearchByPointResponse();
 	}
 
 	private double calculateLayerScale(Crs mapCrs, Crs layerCrs, Bbox mapBounds, double mapScale)

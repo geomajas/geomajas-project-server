@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GeometryAreaRequest;
 import org.geomajas.command.dto.GeometryAreaResponse;
 import org.geomajas.service.DtoConverterService;
@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.Polygonal;
  */
 @Component
 @Api
-public class GeometryAreaCommand implements Command<GeometryAreaRequest, GeometryAreaResponse> {
+public class GeometryAreaCommand implements CommandHasRequest<GeometryAreaRequest, GeometryAreaResponse> {
 
 	private static final String EPSG_4326 = "EPSG:4326";
 
@@ -48,6 +48,11 @@ public class GeometryAreaCommand implements Command<GeometryAreaRequest, Geometr
 
 	@Autowired
 	private GeoService geoService;
+
+	@Override
+	public GeometryAreaRequest getEmptyCommandRequest() {
+		return new GeometryAreaRequest();
+	}
 
 	@Override
 	public GeometryAreaResponse getEmptyCommandResponse() {
@@ -64,6 +69,7 @@ public class GeometryAreaCommand implements Command<GeometryAreaRequest, Geometr
 	 * @param response response object
 	 * @throws Exception in case of problems
 	 */
+	@Override
 	public void execute(GeometryAreaRequest request, GeometryAreaResponse response) throws Exception {
 		List<Double> areas = new ArrayList<Double>(request.getGeometries().size());
 		for (org.geomajas.geometry.Geometry g : request.getGeometries()) {
@@ -94,5 +100,4 @@ public class GeometryAreaCommand implements Command<GeometryAreaRequest, Geometr
 		}
 		response.setAreas(areas);
 	}
-
 }

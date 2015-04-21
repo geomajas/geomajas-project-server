@@ -11,7 +11,7 @@
 package org.geomajas.command.render;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.service.StyleService;
@@ -28,10 +28,15 @@ import org.springframework.stereotype.Component;
 @Api
 @Component
 public class RegisterNamedStyleInfoCommand implements
-		Command<RegisterNamedStyleInfoRequest, RegisterNamedStyleInfoResponse> {
+		CommandHasRequest<RegisterNamedStyleInfoRequest, RegisterNamedStyleInfoResponse> {
 
 	@Autowired
 	private StyleService styleService;
+
+	@Override
+	public RegisterNamedStyleInfoRequest getEmptyCommandRequest() {
+		return new RegisterNamedStyleInfoRequest();
+	}
 
 	@Override
 	public RegisterNamedStyleInfoResponse getEmptyCommandResponse() {
@@ -43,5 +48,4 @@ public class RegisterNamedStyleInfoCommand implements
 			throws Exception {
 		response.setStyleName(styleService.registerStyle(request.getLayerId(), request.getNamedStyleInfo()));
 	}
-
 }

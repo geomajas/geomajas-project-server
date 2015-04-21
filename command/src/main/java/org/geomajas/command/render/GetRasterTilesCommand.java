@@ -14,7 +14,7 @@ package org.geomajas.command.render;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.global.ExceptionCode;
@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
  */
 @Api
 @Component()
-public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, GetRasterTilesResponse> {
+public class GetRasterTilesCommand implements CommandHasRequest<GetRasterTilesRequest, GetRasterTilesResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetRasterTilesCommand.class);
 
@@ -58,6 +58,11 @@ public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, Get
 
 	@Autowired
 	private GeoService geoService;
+
+	@Override
+	public GetRasterTilesRequest getEmptyCommandRequest() {
+		return new GetRasterTilesRequest();
+	}
 
 	@Override
 	public GetRasterTilesResponse getEmptyCommandResponse() {
@@ -88,5 +93,4 @@ public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, Get
 			response.setNodeId(layerId + "." + images.get(0).getCode().getTileLevel());
 		}
 	}
-
 }

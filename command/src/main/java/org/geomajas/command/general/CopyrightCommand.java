@@ -17,7 +17,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.dto.CopyrightResponse;
 import org.geomajas.global.CopyrightInfo;
@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Api
 @Component()
-public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightResponse> {
+public class CopyrightCommand implements CommandHasRequest<EmptyCommandRequest, CopyrightResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(CopyrightCommand.class);
 
@@ -72,6 +72,11 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 	}
 
 	@Override
+	public EmptyCommandRequest getEmptyCommandRequest() {
+		return new EmptyCommandRequest();
+	}
+
+	@Override
 	public CopyrightResponse getEmptyCommandResponse() {
 		return new CopyrightResponse();
 	}
@@ -80,5 +85,4 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 	public void execute(EmptyCommandRequest request, CopyrightResponse response) throws Exception {
 		response.setCopyrights(new ArrayList<CopyrightInfo>(copyrightMap.values()));
 	}
-
 }

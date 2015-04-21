@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.AttributeInfo;
@@ -51,13 +51,19 @@ import org.springframework.stereotype.Component;
  */
 @Api
 @Component()
-public class GetMapConfigurationCommand implements Command<GetMapConfigurationRequest, GetMapConfigurationResponse> {
+public class GetMapConfigurationCommand
+		implements CommandHasRequest<GetMapConfigurationRequest, GetMapConfigurationResponse> {
 
 	@Autowired
 	private ApplicationContext context;
 
 	@Autowired
 	private SecurityContext securityContext;
+
+	@Override
+	public GetMapConfigurationRequest getEmptyCommandRequest() {
+		return new GetMapConfigurationRequest();
+	}
 
 	@Override
 	public GetMapConfigurationResponse getEmptyCommandResponse() {

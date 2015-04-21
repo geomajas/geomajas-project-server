@@ -1,6 +1,6 @@
 package org.geomajas.internal.security;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
 
@@ -10,14 +10,22 @@ import org.geomajas.command.CommandResponse;
  * @author Jan De Moerloose
  * 
  */
-public class SecurityTestCommand implements Command {
+public class SecurityTestCommand implements CommandHasRequest {
 
 	private Runnable test;
 
+	@Override
+	public CommandRequest getEmptyCommandRequest() {
+		// empty interface anonymous instantiation
+		return new CommandRequest() {};
+	}
+
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}
 
+	@Override
 	public void execute(CommandRequest request, CommandResponse response) throws Exception {
 		if (test != null) {
 			test.run();
@@ -27,5 +35,4 @@ public class SecurityTestCommand implements Command {
 	public void setTest(Runnable test) {
 		this.test = test;
 	}
-
 }

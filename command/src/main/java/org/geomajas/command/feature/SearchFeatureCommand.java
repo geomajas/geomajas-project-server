@@ -13,7 +13,7 @@ package org.geomajas.command.feature;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.global.ExceptionCode;
@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {
+public class SearchFeatureCommand implements CommandHasRequest<SearchFeatureRequest, SearchFeatureResponse> {
 
 	private final Logger log  = LoggerFactory.getLogger(SearchFeatureCommand.class);
 
@@ -61,6 +61,11 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 	@Autowired
 	private VectorLayerService layerService;
+
+	@Override
+	public SearchFeatureRequest getEmptyCommandRequest() {
+		return new SearchFeatureRequest();
+	}
 
 	@Override
 	public SearchFeatureResponse getEmptyCommandResponse() {

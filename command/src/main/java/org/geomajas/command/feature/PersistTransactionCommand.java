@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;
 import org.geomajas.global.ExceptionCode;
@@ -40,7 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Api
 @Component()
 @Transactional(rollbackFor = { Exception.class })
-public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
+public class PersistTransactionCommand
+		implements CommandHasRequest<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired
 	private GeoService geoService;
@@ -50,6 +51,11 @@ public class PersistTransactionCommand implements Command<PersistTransactionRequ
 
 	@Autowired
 	private VectorLayerService layerService;
+
+	@Override
+	public PersistTransactionRequest getEmptyCommandRequest() {
+		return new PersistTransactionRequest();
+	}
 
 	@Override
 	public PersistTransactionResponse getEmptyCommandResponse() {

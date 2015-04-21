@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.command.staticsecurity;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.SuccessCommandResponse;
 import org.geomajas.plugin.staticsecurity.security.AuthenticationTokenService;
@@ -27,13 +27,18 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component
-public class LogoutCommand implements Command<EmptyCommandRequest, SuccessCommandResponse> {
+public class LogoutCommand implements CommandHasRequest<EmptyCommandRequest, SuccessCommandResponse> {
 
 	@Autowired
 	private SecurityContext securityContext;
 
 	@Autowired
 	private AuthenticationTokenService tokenService;
+
+	@Override
+	public EmptyCommandRequest getEmptyCommandRequest() {
+		return new EmptyCommandRequest();
+	}
 
 	@Override
 	public SuccessCommandResponse getEmptyCommandResponse() {

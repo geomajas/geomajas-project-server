@@ -12,7 +12,7 @@
 package org.geomajas.command.render;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
 import org.geomajas.global.ExceptionCode;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVectorTileResponse> {
+public class GetVectorTileCommand implements CommandHasRequest<GetVectorTileRequest, GetVectorTileResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetVectorTileCommand.class);
 
@@ -43,6 +43,11 @@ public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVe
 
 	@Autowired
 	private VectorLayerService layerService;
+
+	@Override
+	public GetVectorTileRequest getEmptyCommandRequest() {
+		return new GetVectorTileRequest();
+	}
 
 	@Override
 	public GetVectorTileResponse getEmptyCommandResponse() {

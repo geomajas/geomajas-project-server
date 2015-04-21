@@ -13,7 +13,7 @@ package org.geomajas.command.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.ServerSideOnlyInfo;
@@ -32,13 +32,18 @@ import org.springframework.stereotype.Component;
  * @author Pieter De Graef
  */
 @Component()
-public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
+public class GetConfigurationCommand implements CommandHasRequest<GetConfigurationRequest, GetConfigurationResponse> {
 
 	@Autowired
 	private ApplicationContext context;
 
 	@Autowired
 	private GetMapConfigurationCommand mapConfigurationCommand;
+
+	@Override
+	public GetConfigurationRequest getEmptyCommandRequest() {
+		return new GetConfigurationRequest();
+	}
 
 	@Override
 	public GetConfigurationResponse getEmptyCommandResponse() {

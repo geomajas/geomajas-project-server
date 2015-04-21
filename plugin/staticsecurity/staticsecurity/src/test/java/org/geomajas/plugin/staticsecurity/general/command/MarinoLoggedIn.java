@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.general.command;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.global.ExceptionCode;
@@ -26,15 +26,22 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component
-public class MarinoLoggedIn implements Command<EmptyCommandRequest, CommandResponse> {
+public class MarinoLoggedIn implements CommandHasRequest<EmptyCommandRequest, CommandResponse> {
 
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Override
+	public EmptyCommandRequest getEmptyCommandRequest() {
+		return new EmptyCommandRequest();
+	}
+
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}
 
+	@Override
 	public void execute(EmptyCommandRequest emptyCommandRequest, CommandResponse commandResponse) throws Exception {
 		if(securityContext.getToken() == null){
 			throw new GeomajasSecurityException(ExceptionCode.TEST);
