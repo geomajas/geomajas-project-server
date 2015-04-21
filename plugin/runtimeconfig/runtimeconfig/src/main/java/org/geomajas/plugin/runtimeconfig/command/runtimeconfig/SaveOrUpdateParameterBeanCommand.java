@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanRequest;
 import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateParameterBeanResponse;
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(SaveOrUpdateParameterBeanRequest.COMMAND)
 public class SaveOrUpdateParameterBeanCommand implements
-		Command<SaveOrUpdateParameterBeanRequest, SaveOrUpdateParameterBeanResponse> {
+		CommandHasRequest<SaveOrUpdateParameterBeanRequest, SaveOrUpdateParameterBeanResponse> {
 
 	@Autowired
 	private BeanFactoryService beanFactoryService;
@@ -45,6 +45,17 @@ public class SaveOrUpdateParameterBeanCommand implements
 	@Autowired
 	private ContextConfiguratorService configuratorService;
 
+	@Override
+	public SaveOrUpdateParameterBeanRequest getEmptyCommandRequest() {
+		return new SaveOrUpdateParameterBeanRequest();
+	}
+
+	@Override
+	public SaveOrUpdateParameterBeanResponse getEmptyCommandResponse() {
+		return new SaveOrUpdateParameterBeanResponse();
+	}
+
+	@Override
 	public void execute(SaveOrUpdateParameterBeanRequest request, SaveOrUpdateParameterBeanResponse response)
 			throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -55,10 +66,6 @@ public class SaveOrUpdateParameterBeanCommand implements
 		saveOrUpdateBean(holders);
 	}
 
-	public SaveOrUpdateParameterBeanResponse getEmptyCommandResponse() {
-		return new SaveOrUpdateParameterBeanResponse();
-	}
-
 	private void saveOrUpdateBean(List<BeanDefinitionHolder> holders) throws RuntimeConfigException {
 		if (holders.size() > 0) {
 			configuratorService.configureBeanDefinitions(holders);
@@ -66,5 +73,4 @@ public class SaveOrUpdateParameterBeanCommand implements
 			writerService.persist(holders.get(0).getBeanName(), holders);
 		}
 	}
-
 }

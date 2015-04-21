@@ -12,7 +12,7 @@ package org.geomajas.plugin.runtimeconfig.command.runtimeconfig;
 
 import java.util.Map;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.plugin.runtimeconfig.command.dto.ListBeansOfTypeRequest;
 import org.geomajas.plugin.runtimeconfig.command.dto.ListBeansOfTypeResponse;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionDtoConverterService;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  * @author Pieter De Graef
  */
 @Component
-public class ListBeansOfTypeCommand implements Command<ListBeansOfTypeRequest, ListBeansOfTypeResponse> {
+public class ListBeansOfTypeCommand implements CommandHasRequest<ListBeansOfTypeRequest, ListBeansOfTypeResponse> {
 
 	@Autowired
 	private ConfigurableApplicationContext context;
@@ -36,6 +36,17 @@ public class ListBeansOfTypeCommand implements Command<ListBeansOfTypeRequest, L
 	@Autowired
 	private BeanDefinitionDtoConverterService service;
 
+	@Override
+	public ListBeansOfTypeRequest getEmptyCommandRequest() {
+		return new ListBeansOfTypeRequest();
+	}
+
+	@Override
+	public ListBeansOfTypeResponse getEmptyCommandResponse() {
+		return new ListBeansOfTypeResponse();
+	}
+
+	@Override
 	public void execute(ListBeansOfTypeRequest request, ListBeansOfTypeResponse response) throws Exception {
 		if (request.getType() != null) {
 			String className = request.getType().getClassName();
@@ -45,9 +56,5 @@ public class ListBeansOfTypeCommand implements Command<ListBeansOfTypeRequest, L
 				response.getBeanDefinitionMap().put(key, service.toDto(definition));
 			}
 		}
-	}
-
-	public ListBeansOfTypeResponse getEmptyCommandResponse() {
-		return new ListBeansOfTypeResponse();
 	}
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GeometryConvexHullRequest;
 import org.geomajas.command.dto.GeometryConvexHullResponse;
 import org.geomajas.geometry.Geometry;
@@ -36,10 +36,16 @@ import com.vividsolutions.jts.algorithm.ConvexHull;
  */
 @Component
 @Api
-public class GeometryConvexHullCommand implements Command<GeometryConvexHullRequest, GeometryConvexHullResponse> {
+public class GeometryConvexHullCommand
+		implements CommandHasRequest<GeometryConvexHullRequest, GeometryConvexHullResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
+
+	@Override
+	public GeometryConvexHullRequest getEmptyCommandRequest() {
+		return new GeometryConvexHullRequest();
+	}
 
 	@Override
 	public GeometryConvexHullResponse getEmptyCommandResponse() {

@@ -14,7 +14,7 @@ package org.geomajas.command.configuration;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
 import org.geomajas.command.dto.RefreshConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
@@ -33,12 +33,23 @@ import org.springframework.stereotype.Component;
  * @author Jan De Moerloose
  */
 @Component()
-public class RefreshConfigurationCommand implements Command<RefreshConfigurationRequest, RefreshConfigurationResponse> {
+public class RefreshConfigurationCommand
+		implements CommandHasRequest<RefreshConfigurationRequest, RefreshConfigurationResponse> {
 
 	@Autowired
 	private ApplicationContext context;
 
 	private final Logger log = LoggerFactory.getLogger(RefreshConfigurationCommand.class);
+
+	@Override
+	public RefreshConfigurationRequest getEmptyCommandRequest() {
+		return new RefreshConfigurationRequest();
+	}
+
+	@Override
+	public RefreshConfigurationResponse getEmptyCommandResponse() {
+		return new RefreshConfigurationResponse();
+	}
 
 	@Override
 	public void execute(RefreshConfigurationRequest request, RefreshConfigurationResponse response) throws Exception {
@@ -63,10 +74,5 @@ public class RefreshConfigurationCommand implements Command<RefreshConfiguration
 			response.setApplicationNames(context.getBeanNamesForType(ClientApplicationInfo.class));
 			throw new GeomajasException(ExceptionCode.REFRESH_CONFIGURATION_FAILED);
 		}
-	}
-
-	@Override
-	public RefreshConfigurationResponse getEmptyCommandResponse() {
-		return new RefreshConfigurationResponse();
 	}
 }

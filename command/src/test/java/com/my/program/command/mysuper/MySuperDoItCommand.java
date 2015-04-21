@@ -15,7 +15,7 @@ package com.my.program.command.mysuper;
 import com.my.program.command.dto.MySuperDoItRequest;
 import com.my.program.command.dto.MySuperDoItResponse;
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,18 +27,24 @@ import org.springframework.stereotype.Component;
  */
 @Api
 @Component()
-public class MySuperDoItCommand implements Command<MySuperDoItRequest, MySuperDoItResponse> {
+public class MySuperDoItCommand implements CommandHasRequest<MySuperDoItRequest, MySuperDoItResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(MySuperDoItCommand.class);
 
+	@Override
+	public MySuperDoItRequest getEmptyCommandRequest() {
+		return new MySuperDoItRequest();
+	}
+
+	@Override
 	public MySuperDoItResponse getEmptyCommandResponse() {
 		return new MySuperDoItResponse();
 	}
 
+	@Override
 	public void execute(MySuperDoItRequest request, MySuperDoItResponse response) throws Exception {
 		log.debug("called");
 		// ..... perform the actual command
 	}
-
 }
 // @extract-end

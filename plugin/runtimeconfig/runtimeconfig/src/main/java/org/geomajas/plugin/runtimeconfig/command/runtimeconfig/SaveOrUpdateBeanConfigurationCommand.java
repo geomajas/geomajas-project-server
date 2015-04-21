@@ -13,7 +13,7 @@ package org.geomajas.plugin.runtimeconfig.command.runtimeconfig;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.plugin.runtimeconfig.RuntimeConfigException;
 import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateBeanConfigurationRequest;
 import org.geomajas.plugin.runtimeconfig.command.dto.SaveOrUpdateBeanConfigurationResponse;
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SaveOrUpdateBeanConfigurationCommand implements
-		Command<SaveOrUpdateBeanConfigurationRequest, SaveOrUpdateBeanConfigurationResponse> {
+		CommandHasRequest<SaveOrUpdateBeanConfigurationRequest, SaveOrUpdateBeanConfigurationResponse> {
 
 	@Autowired
 	private ContextConfiguratorService configuratorService;
@@ -51,6 +51,17 @@ public class SaveOrUpdateBeanConfigurationCommand implements
 	@Autowired
 	private BeanDefinitionWriterService writerService;
 
+	@Override
+	public SaveOrUpdateBeanConfigurationRequest getEmptyCommandRequest() {
+		return new SaveOrUpdateBeanConfigurationRequest();
+	}
+
+	@Override
+	public SaveOrUpdateBeanConfigurationResponse getEmptyCommandResponse() {
+		return new SaveOrUpdateBeanConfigurationResponse();
+	}
+
+	@Override
 	public void execute(SaveOrUpdateBeanConfigurationRequest request, SaveOrUpdateBeanConfigurationResponse response)
 			throws Exception {
 		BeanConfigurationInfo info = request.getBeanConfiguration();
@@ -78,10 +89,6 @@ public class SaveOrUpdateBeanConfigurationCommand implements
 		writerService.persist(beanName, new BeanDefinitionHolder(beanDefinition, beanName));
 	}
 
-	public SaveOrUpdateBeanConfigurationResponse getEmptyCommandResponse() {
-		return new SaveOrUpdateBeanConfigurationResponse();
-	}
-
 	/**
 	 * Named object based on ObjectBeanDefinitionInfo.
 	 * 
@@ -99,10 +106,12 @@ public class SaveOrUpdateBeanConfigurationCommand implements
 			this.name = name;
 		}
 
+		@Override
 		public String getName() {
 			return name;
 		}
 
+		@Override
 		public Object getObject() {
 			return info.getObject();
 		}

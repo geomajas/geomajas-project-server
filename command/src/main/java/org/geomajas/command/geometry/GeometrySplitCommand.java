@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GeometrySplitRequest;
 import org.geomajas.command.dto.GeometrySplitResponse;
 import org.geomajas.global.ExceptionCode;
@@ -35,12 +35,17 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 @Component
 @Api
-public class GeometrySplitCommand implements Command<GeometrySplitRequest, GeometrySplitResponse> {
+public class GeometrySplitCommand implements CommandHasRequest<GeometrySplitRequest, GeometrySplitResponse> {
 
 	public static final double DELTA = 0.00001;
 
 	@Autowired
 	private DtoConverterService converter;
+
+	@Override
+	public GeometrySplitRequest getEmptyCommandRequest() {
+		return new GeometrySplitRequest();
+	}
 
 	@Override
 	public GeometrySplitResponse getEmptyCommandResponse() {

@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.runtimeconfig.command.runtimeconfig;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.plugin.runtimeconfig.command.dto.DestroyBeanConfigurationRequest;
 import org.geomajas.plugin.runtimeconfig.command.dto.DestroyBeanConfigurationResponse;
 import org.geomajas.plugin.runtimeconfig.service.BeanDefinitionWriterService;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DestroyBeanConfigurationCommand implements
-		Command<DestroyBeanConfigurationRequest, DestroyBeanConfigurationResponse> {
+		CommandHasRequest<DestroyBeanConfigurationRequest, DestroyBeanConfigurationResponse> {
 
 	@Autowired
 	private ContextConfiguratorService configuratorService;
@@ -33,6 +33,17 @@ public class DestroyBeanConfigurationCommand implements
 	@Autowired
 	private BeanDefinitionWriterService writerService;
 
+	@Override
+	public DestroyBeanConfigurationRequest getEmptyCommandRequest() {
+		return new DestroyBeanConfigurationRequest();
+	}
+
+	@Override
+	public DestroyBeanConfigurationResponse getEmptyCommandResponse() {
+		return new DestroyBeanConfigurationResponse();
+	}
+
+	@Override
 	public void execute(DestroyBeanConfigurationRequest request, DestroyBeanConfigurationResponse response)
 			throws Exception {
 		for (String name : request.getBeanNames()) {
@@ -40,9 +51,4 @@ public class DestroyBeanConfigurationCommand implements
 			writerService.delete(name);
 		}
 	}
-
-	public DestroyBeanConfigurationResponse getEmptyCommandResponse() {
-		return new DestroyBeanConfigurationResponse();
-	}
-
 }

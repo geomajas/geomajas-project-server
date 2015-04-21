@@ -12,7 +12,7 @@
 package org.geomajas.plugin.reporting.command.reporting;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -53,7 +53,7 @@ import java.util.UUID;
 @Component
 //@Api don't know about api, all this caching stuff causes problems cfr lazy loading etc
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class PrepareReportingCommand implements Command<PrepareReportingRequest, PrepareReportingResponse> {
+public class PrepareReportingCommand implements CommandHasRequest<PrepareReportingRequest, PrepareReportingResponse> {
 
 	private static final int MAP_BUFFER_SIZE = 1024 * 10; // 10 kB buffer // NOSONAR
 
@@ -74,6 +74,11 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 
 	@Autowired
 	private GeoService geoService;
+
+	@Override
+	public PrepareReportingRequest getEmptyCommandRequest() {
+		return new PrepareReportingRequest();
+	}
 
 	@Override
 	public PrepareReportingResponse getEmptyCommandResponse() {
@@ -197,5 +202,4 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 		}
 		return filter;
 	}
-
 }

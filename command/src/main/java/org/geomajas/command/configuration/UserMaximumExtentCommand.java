@@ -12,7 +12,7 @@ package org.geomajas.command.configuration;
 
 import java.util.ArrayList;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
@@ -42,7 +42,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Joachim Van der Auwera
  */
 @Component()
-public class UserMaximumExtentCommand implements Command<UserMaximumExtentRequest, UserMaximumExtentResponse> {
+public class UserMaximumExtentCommand
+		implements CommandHasRequest<UserMaximumExtentRequest, UserMaximumExtentResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(UserMaximumExtentCommand.class);
 
@@ -60,6 +61,11 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 
 	@Autowired
 	private SecurityContext securityContext;
+
+	@Override
+	public UserMaximumExtentRequest getEmptyCommandRequest() {
+		return new UserMaximumExtentRequest();
+	}
 
 	@Override
 	public UserMaximumExtentResponse getEmptyCommandResponse() {

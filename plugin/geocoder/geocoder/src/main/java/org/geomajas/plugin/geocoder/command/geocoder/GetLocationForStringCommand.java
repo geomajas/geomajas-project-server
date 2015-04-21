@@ -13,7 +13,7 @@ package org.geomajas.plugin.geocoder.command.geocoder;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
@@ -49,7 +49,8 @@ import java.util.regex.Pattern;
  */
 @Api
 @Component
-public class GetLocationForStringCommand implements Command<GetLocationForStringRequest, GetLocationForStringResponse> {
+public class GetLocationForStringCommand
+		implements CommandHasRequest<GetLocationForStringRequest, GetLocationForStringResponse> {
 
 	@Autowired
 	private GeocoderInfo geocoderInfo;
@@ -68,6 +69,11 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 
 	@Autowired
 	private GeoService geoService;
+
+	@Override
+	public GetLocationForStringRequest getEmptyCommandRequest() {
+		return new GetLocationForStringRequest();
+	}
 
 	@Override
 	public GetLocationForStringResponse getEmptyCommandResponse() {

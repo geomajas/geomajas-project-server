@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GeometryBufferRequest;
 import org.geomajas.command.dto.GeometryBufferResponse;
 import org.geomajas.geometry.Geometry;
@@ -34,10 +34,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Api
-public class GeometryBufferCommand implements Command<GeometryBufferRequest, GeometryBufferResponse> {
+public class GeometryBufferCommand implements CommandHasRequest<GeometryBufferRequest, GeometryBufferResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
+
+	@Override
+	public GeometryBufferRequest getEmptyCommandRequest() {
+		return new GeometryBufferRequest();
+	}
 
 	@Override
 	public GeometryBufferResponse getEmptyCommandResponse() {

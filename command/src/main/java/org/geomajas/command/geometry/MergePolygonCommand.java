@@ -11,7 +11,7 @@
 
 package org.geomajas.command.geometry;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.MergePolygonRequest;
 import org.geomajas.command.dto.MergePolygonResponse;
 import org.geomajas.global.ExceptionCode;
@@ -36,10 +36,15 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 @Deprecated
 @Component()
-public class MergePolygonCommand implements Command<MergePolygonRequest, MergePolygonResponse> {
+public class MergePolygonCommand implements CommandHasRequest<MergePolygonRequest, MergePolygonResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
+
+	@Override
+	public MergePolygonRequest getEmptyCommandRequest() {
+		return new MergePolygonRequest();
+	}
 
 	@Override
 	public MergePolygonResponse getEmptyCommandResponse() {

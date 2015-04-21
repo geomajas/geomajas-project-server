@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.GetUsersResponse;
 import org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo;
@@ -38,10 +38,15 @@ import org.springframework.stereotype.Component;
  */
 @Api
 @Component
-public class GetUsersCommand implements Command<GetUsersRequest, GetUsersResponse> {
+public class GetUsersCommand implements CommandHasRequest<GetUsersRequest, GetUsersResponse> {
 
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
+
+	@Override
+	public GetUsersRequest getEmptyCommandRequest() {
+		return new GetUsersRequest();
+	}
 
 	@Override
 	public GetUsersResponse getEmptyCommandResponse() {
@@ -63,5 +68,4 @@ public class GetUsersCommand implements Command<GetUsersRequest, GetUsersRespons
 		}
 		response.setUsers(users);
 	}
-
 }

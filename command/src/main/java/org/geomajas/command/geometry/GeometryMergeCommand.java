@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.GeometryMergeRequest;
 import org.geomajas.command.dto.GeometryMergeResponse;
 import org.geomajas.global.ExceptionCode;
@@ -38,10 +38,15 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 @Component
 @Api
-public class GeometryMergeCommand implements Command<GeometryMergeRequest, GeometryMergeResponse> {
+public class GeometryMergeCommand implements CommandHasRequest<GeometryMergeRequest, GeometryMergeResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
+
+	@Override
+	public GeometryMergeRequest getEmptyCommandRequest() {
+		return new GeometryMergeRequest();
+	}
 
 	@Override
 	public GeometryMergeResponse getEmptyCommandResponse() {

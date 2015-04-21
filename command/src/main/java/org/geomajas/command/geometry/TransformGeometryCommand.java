@@ -11,7 +11,7 @@
 package org.geomajas.command.geometry;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Crs;
@@ -32,13 +32,19 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Api
 @Component()
-public class TransformGeometryCommand implements Command<TransformGeometryRequest, TransformGeometryResponse> {
+public class TransformGeometryCommand
+		implements CommandHasRequest<TransformGeometryRequest, TransformGeometryResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
 
 	@Autowired
 	private GeoService geoService;
+
+	@Override
+	public TransformGeometryRequest getEmptyCommandRequest() {
+		return new TransformGeometryRequest();
+	}
 
 	@Override
 	public TransformGeometryResponse getEmptyCommandResponse() {

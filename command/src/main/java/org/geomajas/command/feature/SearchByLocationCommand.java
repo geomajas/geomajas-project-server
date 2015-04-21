@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Crs;
@@ -71,7 +71,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
+public class SearchByLocationCommand implements CommandHasRequest<SearchByLocationRequest, SearchByLocationResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SearchByLocationCommand.class);
 
@@ -97,12 +97,23 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	// Command implementation:
 	// -------------------------------------------------------------------------
 
+	@Override
+	public SearchByLocationRequest getEmptyCommandRequest() {
+		return new SearchByLocationRequest();
+	}
+
+	@Override
+	public SearchByLocationResponse getEmptyCommandResponse() {
+		return new SearchByLocationResponse();
+	}
+
 	/**
 	 * The command's execution method. It will go over all given layers (provided they're vector layers), and fetch the
 	 * features, using the location geometry and the query type. In case the query type is "intersects", the overlapping
 	 * ratio is also checked. The resulting list of features is added to the command result so it can be send back to
 	 * the client.
 	 */
+	@Override
 	public void execute(SearchByLocationRequest request, SearchByLocationResponse response) throws Exception {
 		if (null == request.getLayerIds()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerIds");
@@ -217,11 +228,5 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 				}
 			}
 		}
-		
-	}
-
-	@Override
-	public SearchByLocationResponse getEmptyCommandResponse() {
-		return new SearchByLocationResponse();
 	}
 }

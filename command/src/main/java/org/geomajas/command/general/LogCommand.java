@@ -10,7 +10,7 @@
  */
 package org.geomajas.command.general;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.LogRequest;
 import org.slf4j.Logger;
@@ -24,9 +24,14 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component()
-public class LogCommand implements Command<LogRequest, CommandResponse> {
+public class LogCommand implements CommandHasRequest<LogRequest, CommandResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(LogCommand.class);
+
+	@Override
+	public LogRequest getEmptyCommandRequest() {
+		return new LogRequest();
+	}
 
 	@Override
 	public CommandResponse getEmptyCommandResponse() {
@@ -52,5 +57,4 @@ public class LogCommand implements Command<LogRequest, CommandResponse> {
 				throw new IllegalArgumentException("Unknown log level " + request.getLevel());
 		}
 	}
-
 }

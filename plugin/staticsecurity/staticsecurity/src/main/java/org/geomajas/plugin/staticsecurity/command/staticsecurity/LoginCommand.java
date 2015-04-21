@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.command.staticsecurity;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
@@ -38,13 +38,18 @@ import java.util.List;
  */
 @Api
 @Component
-public class LoginCommand implements Command<LoginRequest, LoginResponse> {
+public class LoginCommand implements CommandHasRequest<LoginRequest, LoginResponse> {
 
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
 
 	@Autowired
 	private AuthenticationTokenService tokenService;
+
+	@Override
+	public LoginRequest getEmptyCommandRequest() {
+		return new LoginRequest();
+	}
 
 	@Override
 	public LoginResponse getEmptyCommandResponse() {

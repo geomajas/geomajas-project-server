@@ -10,7 +10,7 @@
  */
 package org.geomajas.command.geometry;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.dto.SplitPolygonRequest;
 import org.geomajas.command.dto.SplitPolygonResponse;
 import org.geomajas.geometry.Geometry;
@@ -35,10 +35,15 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 @Deprecated
 @Component()
-public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPolygonResponse> {
+public class SplitPolygonCommand implements CommandHasRequest<SplitPolygonRequest, SplitPolygonResponse> {
 
 	@Autowired
 	private DtoConverterService converter;
+
+	@Override
+	public SplitPolygonRequest getEmptyCommandRequest() {
+		return new SplitPolygonRequest();
+	}
 
 	@Override
 	public SplitPolygonResponse getEmptyCommandResponse() {

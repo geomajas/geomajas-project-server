@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.printing.command.print;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateExtRequest;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateExtResponse;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  * @author An Buyle
  */
 @Component()
-public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest, PrintGetTemplateResponse> {
+public class PrintGetTemplateCommand implements CommandHasRequest<PrintGetTemplateRequest, PrintGetTemplateResponse> {
 
 	@Autowired
 	private PrintDtoConverterService converterService;
@@ -37,11 +37,17 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 	@Autowired
 	private PrintService printService;
 
-	
+	@Override
+	public PrintGetTemplateRequest getEmptyCommandRequest() {
+		return new PrintGetTemplateExtRequest();
+	}
+
+	@Override
 	public PrintGetTemplateResponse getEmptyCommandResponse() {
 		return new PrintGetTemplateResponse();
 	}
 
+	@Override
 	public void execute(PrintGetTemplateRequest request, PrintGetTemplateResponse response) throws Exception {
 		PrintGetTemplateExtRequest extRequest = new PrintGetTemplateExtRequest(request); 
 		PrintGetTemplateExtResponse extResponse = new PrintGetTemplateExtResponse(); 
@@ -50,5 +56,4 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		
 		response.setDocumentId(extResponse.getDocumentId());
 	}
-	
 }

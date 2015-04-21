@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -46,7 +46,7 @@ import org.springframework.stereotype.Component;
  */
 @Api
 @Component
-public class RasterizeMapCommand implements Command<RasterizeMapRequest, RasterizeMapResponse> {
+public class RasterizeMapCommand implements CommandHasRequest<RasterizeMapRequest, RasterizeMapResponse> {
 
 	private static final int MAP_BUFFER_SIZE = 1024 * 10;
 
@@ -64,6 +64,17 @@ public class RasterizeMapCommand implements Command<RasterizeMapRequest, Rasteri
 	@Autowired
 	private DispatcherUrlService dispatcherUrlService;
 
+	@Override
+	public RasterizeMapRequest getEmptyCommandRequest() {
+		return new RasterizeMapRequest();
+	}
+
+	@Override
+	public RasterizeMapResponse getEmptyCommandResponse() {
+		return new RasterizeMapResponse();
+	}
+
+	@Override
 	public void execute(RasterizeMapRequest request, RasterizeMapResponse response) throws Exception {
 		ClientMapInfo mapInfo = request.getClientMapInfo();
 		if (null == mapInfo) {
@@ -109,9 +120,4 @@ public class RasterizeMapCommand implements Command<RasterizeMapRequest, Rasteri
 		cacheManagerService.put(null, CacheCategory.RASTER, key, container, dtoConverterService.toInternal(bounds));
 		return key;
 	}
-
-	public RasterizeMapResponse getEmptyCommandResponse() {
-		return new RasterizeMapResponse();
-	}
-
 }
