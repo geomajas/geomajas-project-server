@@ -267,7 +267,7 @@ public abstract class ClientLayerInfo implements IsInfo {
 	}
 
 	/**
-	 * Get the layer information of this layer.
+	 * Get the layer information of this layer (optional, auto-copied from Spring context).
 	 * 
 	 * @return layer information
 	 */
@@ -276,7 +276,7 @@ public abstract class ClientLayerInfo implements IsInfo {
 	}
 
 	/**
-	 * Set the layer information of this layer (auto-copied from Spring context).
+	 * Set the layer information of this layer (optional, auto-copied from Spring context).
 	 * 
 	 * @param layerInfo
 	 *            information
@@ -291,7 +291,7 @@ public abstract class ClientLayerInfo implements IsInfo {
 	 * @return layer type
 	 */
 	public LayerType getLayerType() {
-		return layerInfo.getLayerType();
+		return layerInfo != null ? layerInfo.getLayerType() : null;
 	}
 
 	/**
@@ -300,7 +300,7 @@ public abstract class ClientLayerInfo implements IsInfo {
 	 * @return crs
 	 */
 	public String getCrs() {
-		return layerInfo.getCrs();
+		return layerInfo != null ? layerInfo.getCrs() : null;
 	}
 
 	/**
