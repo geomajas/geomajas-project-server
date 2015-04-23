@@ -28,11 +28,9 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 
 	private String svgContent;
 
-	private int viewBoxWidth;
+	private Bbox viewBoxWorldBounds;
 
-	private int viewBoxHeight;
-
-	private Bbox viewBoxBounds;
+	private Bbox viewBoxScreenBounds;
 
 	// default showing
 	private boolean showing = true;
@@ -77,60 +75,41 @@ public class ClientSvgLayerInfo extends ClientLayerInfo {
 	}
 
 	/**
-	 * Get the view box width of the SVG.
+	 * Get the world bounds corresponding to the view box of the SVG.
 	 * 
-	 * @return width in pixels
+	 * @return the world bounds
 	 */
-	public int getViewBoxWidth() {
-		return viewBoxWidth;
+	public Bbox getViewBoxWorldBounds() {
+		return viewBoxWorldBounds;
 	}
 
+	
 	/**
-	 * Set the viewbox width.
-	 * 
-	 * @see #getViewBoxWidth()
-	 * @param viewBoxWidth
+	 * Set the world bounds corresponding to the view box of the SVG.
+	 * @param viewBoxWorldBounds
 	 */
-	public void setViewBoxWidth(int viewBoxWidth) {
-		this.viewBoxWidth = viewBoxWidth;
+	public void setViewBoxWorldBounds(Bbox viewBoxWorldBounds) {
+		this.viewBoxWorldBounds = viewBoxWorldBounds;
 	}
 
+	
 	/**
-	 * Get the view box height of the SVG.
+	 * Get the bounds of the view box of the SVG (world bounds converted to screen space).
 	 * 
-	 * @return height in pixels
+	 * @return the world bounds
 	 */
-	public int getViewBoxHeight() {
-		return viewBoxHeight;
+	public Bbox getViewBoxScreenBounds() {
+		return viewBoxScreenBounds;
 	}
 
+	
 	/**
-	 * Set the viewbox height.
-	 * 
-	 * @see #getViewBoxHeight()
-	 * @param viewBoxHeight
+	 * Set the bounds of the view box of the SVG (world bounds converted to screen space).
+	 * @param viewBoxWorldBounds
 	 */
-	public void setViewBoxHeight(int viewBoxHeight) {
-		this.viewBoxHeight = viewBoxHeight;
+	public void setViewBoxScreenBounds(Bbox viewBoxScreenBounds) {
+		this.viewBoxScreenBounds = viewBoxScreenBounds;
 	}
 
-	/**
-	 * Get the bounding box of the view box in world coordinates.
-	 * 
-	 * @return the bounding box.
-	 */
-	public Bbox getViewBoxBounds() {
-		return viewBoxBounds;
-	}
-
-	/**
-	 * Set the bounding box of the view box in world coordinates.
-	 * 
-	 * @see #getViewBoxBounds()
-	 * @param viewBoxBounds
-	 */
-	public void setViewBoxBounds(Bbox viewBoxBounds) {
-		this.viewBoxBounds = viewBoxBounds;
-	}
 
 }

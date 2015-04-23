@@ -48,9 +48,8 @@ public class SvgDirectLayerTest {
 		geo.setSvgContent("<svg>\n"
 				+ "  <path d=\"M10 10 L90 10 L90 90 L10 90 Z\" style=\"fill:lime;stroke:purple;stroke-width:3px\"/>\n"
 				+ "</svg>");
-		geo.setViewBoxBounds(new Bbox(0, 0, 10, 10));
-		geo.setViewBoxHeight(100);
-		geo.setViewBoxWidth(100);
+		geo.setViewBoxWorldBounds(new Bbox(0, 0, 10, 10));
+		geo.setViewBoxScreenBounds(new Bbox(0,0,100,100));
 
 		ClientMapInfo mapInfo = new ClientMapInfo();
 		mapInfo.setCrs("EPSG:4326");
