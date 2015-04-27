@@ -10,9 +10,6 @@
  */
 package org.geomajas.plugin.rasterizing.tms;
 
-import com.sun.xml.bind.v2.runtime.IllegalAnnotationException;
-import com.sun.xml.bind.v2.runtime.IllegalAnnotationsException;
-
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,10 +95,6 @@ public class TmsServiceImpl implements TmsService {
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			m.marshal(tileMapService, writer);
-		} catch (IllegalAnnotationsException ie) {
-			for (IllegalAnnotationException error : ie.getErrors()) {
-				log.error("Could not instantiate jaxb", error);
-			}
 		} catch (JAXBException e) {
 			log.error("Could not instantiate jaxb", e);
 			// can't happen
