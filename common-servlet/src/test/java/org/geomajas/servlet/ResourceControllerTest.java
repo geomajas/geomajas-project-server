@@ -33,6 +33,20 @@ public class ResourceControllerTest {
 	}
 
 	@Test
+	public void testNotAllowed() throws ServletException, IOException {
+		// create a default mock context (will load from classpath)
+		MockServletContext context = new TestServletContext();
+		MockHttpServletRequest request = new MockHttpServletRequest(context);
+		request.setPathInfo("/org/geomajas/servlet/geomajas_logo.doc");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ResourceController resourceController = new ResourceController();
+		resourceController.setServletContext(context);
+		resourceController.getResource(request, response);
+		Assert.assertEquals(404, response.getStatus());
+	}
+
+	@Test
 	public void testResourceInClassPath() throws ServletException, IOException {
 		// create an empty mock context
 		MockServletContext context = new TestServletContext(true);

@@ -70,9 +70,15 @@ public class ResourceController implements LastModified, ServletContextAware {
 	private static final String[] ALLOWED_RESOURCE_PATHS = new String[]{
 			"/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
 			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png",
+			"/**/*.otf", "/**/*.eot", "/**/*.ttf", "/**/*.woff",
+			"/**/*.woff2", "/**/*.svg",
 			"META-INF/**/*.css", "META-INF/**/*.gif", "META-INF/**/*.ico", "META-INF/**/*.jpeg",
 			"META-INF/**/*.jpg", "META-INF/**/*.js", "META-INF/**/*.html", "META-INF/**/*.png",
+			"META-INF/**/*.otf", "META-INF/**/*.eot", "META-INF/**/*.ttf", "META-INF/**/*.woff",
+			"META-INF/**/*.woff2", "META-INF/**/*.svg",
 	};
+	
+	private String[] allowedResourcePaths;
 
 	private File fileLocation;
 
@@ -106,6 +112,14 @@ public class ResourceController implements LastModified, ServletContextAware {
 		}
 	}
 	
+	public String[] getAllowedResourcePaths() {
+		return allowedResourcePaths;
+	}
+	
+	public void setAllowedResourcePaths(String[] allowedResourcePaths) {
+		this.allowedResourcePaths = allowedResourcePaths;
+	}
+
 	/**
 	 * Returns whether the controller should allow compression of resources. Compression will only be applied if accept
 	 * headers are present, however.
@@ -366,7 +380,7 @@ public class ResourceController implements LastModified, ServletContextAware {
 			return false;
 		}
 		PathMatcher pathMatcher = new AntPathMatcher();
-		for (String pattern : ALLOWED_RESOURCE_PATHS) {
+		for (String pattern : (allowedResourcePaths == null ? ALLOWED_RESOURCE_PATHS : allowedResourcePaths)) {
 			if (pathMatcher.match(pattern, resourcePath)) {
 				return true;
 			}
