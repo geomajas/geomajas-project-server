@@ -16,6 +16,8 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.Country;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +26,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -37,6 +41,9 @@ import static org.fest.assertions.Assertions.assertThat;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/org/geomajas/internal/service/countriesNotAllEditable.xml"})
+@TestExecutionListeners(listeners = {ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class})
+@ReloadContext
 public class AttributeServiceEditableCapabilityTest {
 
 	private static final long TEST_ID = 17;
