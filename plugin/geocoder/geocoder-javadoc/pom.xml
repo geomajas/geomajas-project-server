@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-plugin-geocoder-parent</artifactId>
-		<version>1.18.0</version>
+		<version>1.18.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-server-plugin-geocoder-javadoc</artifactId>
