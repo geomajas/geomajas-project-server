@@ -318,6 +318,11 @@
 				<version>${geotools-version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.geotools.xsd</groupId>
+				<artifactId>gt-xsd-wfs</artifactId>
+				<version>${geotools-wfs-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-geojson</artifactId>
 				<version>${geotools-version}</version>
@@ -688,7 +693,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-wfs-ng</artifactId>
-				<version>${geotools-version}</version>
+				<version>${geotools-wfs-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>
@@ -960,6 +965,7 @@
 
 	<properties>
 		<geotools-version>13.0</geotools-version>
+		<geotools-wfs-version>13.0.GM1</geotools-wfs-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<geodb-version>0.7</geodb-version>
 		<geomajas-build-tools-version>2.5.0</geomajas-build-tools-version>
