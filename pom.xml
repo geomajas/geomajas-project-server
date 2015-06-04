@@ -155,7 +155,7 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-geometry-all</artifactId>
-				<version>${geomajas-geometry-version}</version>
+				<version>${geomajas-server-version-geomajas-geometry}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -213,7 +213,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
-				<version>4.0.2.GA</version>
+				<version>${geomajas-server-version-hibernate-validator}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>javax.activation</groupId>
@@ -514,32 +514,28 @@
 			<dependency>
 				<groupId>org.hibernatespatial</groupId>
 				<artifactId>hibernate-spatial</artifactId>
-				<version>${hibernate-spatial-version}</version>
+				<version>${geomajas-server-version-hibernate-spatial}</version>
 			</dependency>
+			<!--this next dependency is absent from version 4.x onwards-->
 			<dependency>
 				<groupId>org.hibernatespatial</groupId>
 				<artifactId>hibernate-spatial-postgis</artifactId>
-				<version>1.0</version>
+				<version>${geomajas-server-version-hibernate-spatial}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>3.5.3-Final</version>
+				<version>${geomajas-server-version-hibernate}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-annotations</artifactId>
-				<version>3.5.3-Final</version>
+				<version>${geomajas-server-version-hibernate}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-cglib-repack</artifactId>
-				<version>2.1_3</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>4.0.2.GA</version>
+				<version>${geomajas-server-version-hibernate-cglib-repack}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.postgis</groupId>
@@ -560,7 +556,7 @@
 			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
-				<version>2.2.8</version>
+				<version>${geomajas-server-version-hsqldb}</version>
 			</dependency>
 
 
@@ -651,12 +647,12 @@
 			<dependency>
 				<groupId>org.infinispan</groupId>
 				<artifactId>infinispan-core</artifactId>
-				<version>6.0.1.Final</version>
+				<version>${geomajas-server-version-infinispan}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.infinispan</groupId>
 				<artifactId>infinispan-cachestore-leveldb</artifactId>
-				<version>6.0.1.Final</version>
+				<version>${geomajas-server-version-infinispan}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.rhq.helpers</groupId>
@@ -723,12 +719,12 @@
 			<dependency>
 				<groupId>javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.11.0.GA</version>
+				<version>${geomajas-server-version-javassist}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>3.5.3-Final</version>
+				<version>${geomajas-server-version-hibernate}</version>
 			</dependency>
 
 			<!-- === geomajas-server-plugin-geocoder === -->
@@ -764,17 +760,17 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>2.3.3</version>
+				<version>${geomajas-server-version-jackson}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>2.3.3</version>
+				<version>${geomajas-server-version-jackson}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.3.3</version>
+				<version>${geomajas-server-version-jackson}</version>
 			</dependency>
 			<!-- === geomajas-server-plugin-print === -->
 			<!-- provide -->
@@ -840,7 +836,7 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-profiling-all</artifactId>
-				<version>1.0.0</version>
+				<version>${geomajas-server-version-geomajas-profiling}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -883,7 +879,7 @@
 			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
-				<version>4.1.2</version>
+				<version>${geomajas-server-version-jasperreports}</version>
 			</dependency>
 
 			<!-- === geomajas-server-plugin-runtimeconfig === -->
@@ -964,16 +960,29 @@
 	</dependencyManagement>
 
 	<properties>
+		<!--general important dependencies-->
 		<geotools-version>13.0</geotools-version>
 		<geotools-wfs-version>13.0.GM2</geotools-wfs-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
+		<!--geomajas dependencies-->
+		<geomajas-server-version-geomajas-geometry>1.3.0</geomajas-server-version-geomajas-geometry>
+		<geomajas-server-version-geomajas-profiling>1.0.0</geomajas-server-version-geomajas-profiling>
+		<!--hibernate dependencies-->
+		<geomajas-server-version-hibernate>3.5.3-Final</geomajas-server-version-hibernate>
+		<geomajas-server-version-hibernate-validator>4.0.2.GA</geomajas-server-version-hibernate-validator>
+		<geomajas-server-version-hibernate-spatial>1.0</geomajas-server-version-hibernate-spatial>
+		<geomajas-server-version-hibernate-cglib-repack>2.1_3</geomajas-server-version-hibernate-cglib-repack>
+		<!-- db dependencies-->
 		<geodb-version>0.7</geodb-version>
-		<geomajas-build-tools-version>2.5.0</geomajas-build-tools-version>
-		<geomajas-parents-version>2.0.0</geomajas-parents-version>
 		<postgresql-version>8.4-701.jdbc3</postgresql-version>
-		<hibernate-spatial-version>1.0</hibernate-spatial-version>
 		<postgis-jdbc-version>1.1.6</postgis-jdbc-version>
-		<geomajas-geometry-version>1.3.0</geomajas-geometry-version>
+		<geomajas-server-version-hsqldb>2.2.8</geomajas-server-version-hsqldb>
+		<geomajas-server-version-infinispan>6.0.1.Final</geomajas-server-version-infinispan>
+		<!--other dependencies-->
+		<geomajas-server-version-jackson>2.3.3</geomajas-server-version-jackson>
+		<geomajas-server-version-jasperreports>4.1.2</geomajas-server-version-jasperreports>
+		<geomajas-server-version-javassist>3.11.0.GA</geomajas-server-version-javassist>
+		<!--plugin dependencies-->
 		<server-version-maven-javadoc-plugin>2.9.1</server-version-maven-javadoc-plugin>
 	</properties>
 
