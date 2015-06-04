@@ -479,6 +479,17 @@
 				<artifactId>guava</artifactId>
 				<version>14.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.aggregate</groupId>
+				<artifactId>jetty-all</artifactId>
+				<version>7.2.0.v20101020</version>
+				<exclusions>
+					<exclusion>
+						<groupId>asm</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 
 			<!-- geomajas-layer-server-googlemaps -->
 			<!-- provide -->
