@@ -84,6 +84,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
+			<artifactId>gt-wfs-ng</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
 			<artifactId>gt-xml</artifactId>
 		</dependency>
 		<dependency>
@@ -144,6 +148,12 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+			<version>7.2.0.v20101020</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

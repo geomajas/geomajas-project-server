@@ -965,7 +965,7 @@
 
 	<properties>
 		<geotools-version>13.0</geotools-version>
-		<geotools-wfs-version>13.0.GM1</geotools-wfs-version>
+		<geotools-wfs-version>13.0.GM2</geotools-wfs-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<geodb-version>0.7</geodb-version>
 		<geomajas-build-tools-version>2.5.0</geomajas-build-tools-version>
