@@ -22,54 +22,47 @@
     high level overview, drilling down to discover more details.</para>
 
     <para>At the highest level, Geomajas makes a distinction between the
-    <glossterm>back-end</glossterm> and <glossterm>faces</glossterm>.</para>
+    <glossterm>server</glossterm> and <glossterm>clients</glossterm>.</para>
 
     <figure>
-      <title>Geomajas back-end and faces</title>
+      <title>Geomajas server and clients</title>
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/backend-faces.png" width="100%" />
+          <imagedata fileref="images/geomajas-server-client.svg" width="100%" />
         </imageobject>
       </mediaobject>
     </figure>
 
-    <para>The back-end is where you configure your maps, layers and
-    attributes/features. It is always server side. The back-end has an API for
+    <para>The server is where you configure your maps, layers and
+    attributes/features. It is always server side. The server has an API for
     interaction with the outside world and for extension using plug-ins. While
-    one of the main purposes of the back-end is to provide bitmaps and vector
+    one of the main purposes of the server is to provide bitmaps and vector
     graphics for the maps and provide data about features to be rendered and
     edited, it contains no display code.</para>
 
-    <para>The actual display and editing is done in the faces. The back-end is
-    agnostic of web (or other) display frameworks. Faces are often split in
-    two modules, a sever-side module (which directly talks to the back-end
-    using java calls) and serializes data to the client, and a client-side
-    module which only talks to the server side module. The communication
-    between the two modules is private to the face. The face itself provides a
+    <para>The actual display and editing is done in the clients. The server is
+    agnostic of web (or other) display frameworks. Often, clients will consist of
+        multiple modules. The actual client module(s), that could run standalone without a server,
+        will not contact the server directly. Rather, an extra module in the client, the server-extension module,
+        will act as an intermediate: the client's server-extension talks directly to the server
+    using java calls, while the actual client modules only talks to the client's server-extension module. The communication
+    between the two modules is private to the client. The client itself provides a
     additional client API. This will typically provide details about available
     widgets, parameters for these widgets and other possible interactions
     (like message queues or topics you can subscribe to).</para>
 
     <para>The purpose of Geomajas is to provide rich editing of GIS data in
-    the browser, but the faces also make other applications possible. You
-    could unlock the maps which are configured in Geomajas using a face which
-    makes data available as web services (this would result in a face with
-    only a server-side module). You could also build a java swing application
-    using the Geomajas back-end by writing a swing face. This would result in
+    the browser, but the clients also make other applications possible. You
+    could unlock the maps which are configured in Geomajas using a client which
+    makes data available as web services (this would result in a client with
+    only a server-extension module). You could also build a java swing application
+    using the Geomajas server by writing a swing client. This would result in
     a thick client application (possibly accessible using Java Web
     Start).</para>
 
-    <para>Geomajas contains two faces out-of-the-box.</para>
-
-    <para>The a dojo face, which uses the dojo toolkit JavaScript widget
-    library in the browser, is mainly provided for backward compatibility. Up
-    until Geomajas 1.4 this was the only face which existed. It integrates
-    well with dojo but has the disadvantage that you need to develop in both
-    java (for the server side) and JavaScript (for the client side) and that
-    debugging can be a challenge.</para>
-
-    <para>Since 1.5 we also provide a GWT face. This allows all development to
+    <para>Geomajas contains two GWT based clients. The GWT2 client (from 2.x on) uses GWT libraries only.
+    The older GWT client (1.x versions) also uses SmartGwt widgets. They both allow all development to
     be done in Java and GWT will handle conversion to Javascript for code
     which needs to run in the browser. Obviously this integrates best with GWT
     based applications, but it can be combined with other web frameworks as
@@ -80,15 +73,15 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/services.png" width="100%" />
+          <imagedata fileref="images/services_logo.png" width="100%" />
         </imageobject>
       </mediaobject>
     </figure>
 
-    <para>The Geomajas back-end is built from many services which are wired
+    <para>The Geomajas server is built from many services which are wired
     together using dependency injection (DI). This wiring is partly done
     automatically, and partly through the configuration files. Thanks to the
-    inversion of control (IoC) the back-end is very flexible and can be
+    inversion of control (IoC) the server is very flexible and can be
     customized at will.</para>
 
     <para>The client-server communication is done through the command
@@ -112,7 +105,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/mashup.png" width="100%" />
+          <imagedata fileref="images/mashup_logo.png" width="100%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -129,7 +122,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/dependencies.png" width="100%" />
+          <imagedata fileref="images/geomajas-dependencies.svg" width="100%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -139,29 +132,29 @@
     framework (and we integrate with a lot more).</para>
 
     <figure>
-      <title>Geomajas back-end modules</title>
+      <title>Geomajas server modules</title>
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/backend.png" width="100%" />
+          <imagedata fileref="images/geomajas-server.svg" width="100%" />
         </imageobject>
       </mediaobject>
     </figure>
 
-    <para>The Geomajas back-end is itself built from several modules which are
+    <para>The Geomajas server is itself built from several modules which are
     tied together using the Spring framework (<ulink
     url="http://springframework.org/">http://springframework.org/</ulink>).
     The Geomajas-api module is a set of interfaces which shields
     implementation details between the different modules. The base plumbing
     and some generic features are provided by the Geomajas-impl module.</para>
 
-    <para>There are four possible ways to extend the back-end.</para>
+    <para>There are four possible ways to extend the server.</para>
 
-    <para><itemizedlist>
+    <para><orderedlist>
         <listitem>
           <para><emphasis>command</emphasis>: commands are used as main
-          interaction point between the face (client side) and the Geomajas
-          back-end. The retrieval of maps and features, calculations, updates
+          interaction point between the client and the Geomajas
+          server. The retrieval of maps and features, calculations, updates
           on the features and all all other functionalities which are
           available client-side are done using commands.</para>
         </listitem>
@@ -181,7 +174,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>pipeline</emphasis>: all Geomajas back-end services
+          <para><emphasis>pipeline</emphasis>: all Geomajas server services
           which deal with layers are implemented using pipelines. A pipeline
           is a list of steps (actions) executed in order. Each pipeline can be
           overwritten for a layer, or you can change the default which is used
@@ -200,22 +193,22 @@
           objects can read the security policies from your (secure) policy
           store.</para>
         </listitem>
-      </itemizedlist></para>
+      </orderedlist></para>
 
     <section id="architecture-command">
       <title>Command</title>
 
       <figure>
-        <title>Geomajas face and commands</title>
+        <title>Geomajas client and commands</title>
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/face-command.png" width="100%" />
+            <imagedata fileref="images/server-command_logo.png" width="100%" />
           </imageobject>
         </mediaobject>
       </figure>
 
-      <para>The interaction of the client faces with the Geomajas back-end is
+      <para>The interaction of the client with the Geomajas server is
       handled using commands.</para>
 
       <orderedlist>
@@ -229,13 +222,13 @@
         </listitem>
 
         <listitem>
-          <para>This object is transferred to the face server. For web
+          <para>This object is transferred to the client's server-extension. For web
           applications, this will typically be done using an AJAX
           request.</para>
         </listitem>
 
         <listitem>
-          <para>The face server will use this <code>CommandRequest</code> to
+          <para>The client's server-extension will use this <code>CommandRequest</code> to
           invoke the <code>CommandDispatcher</code> service, which can be
           obtained using the Spring context.</para>
         </listitem>
@@ -267,13 +260,13 @@
         </listitem>
 
         <listitem>
-          <para>The <code>CommandResponse</code> is returned to the face
-          server.</para>
+          <para>The <code>CommandResponse</code> is returned to the client's
+          server-extension.</para>
         </listitem>
 
         <listitem>
-          <para>The face server serializes the <code>CommandResponse</code>
-          back to the face client.</para>
+          <para>The client's server-extension serializes the <code>CommandResponse</code>
+          back to the client.</para>
         </listitem>
       </orderedlist>
 
@@ -287,7 +280,7 @@
       <para>Pipelines are used in Geomajas to allow extreme configurability of
       the services which choose to use them.</para>
 
-      <para>They are comparable with BPM processes. At first sight pipelines
+      <para>They are comparable with Business Process Modeling (BPM) processes. At first sight pipelines
       are much more limited as the steps are always sequential, only allowing
       each step to either continue to the next stop or stop the pipeline.
       Nesting pipelines gives back the expressive power of general BPM
@@ -308,7 +301,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/pipeline.png" width="100%" />
+            <imagedata fileref="images/pipeline_logo.png" width="100%" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -316,7 +309,7 @@
       <section id="arch-plarch">
         <title>Pipeline architecture</title>
 
-        <para>All the layer access services provided by the Geomajas back-end
+        <para>All the layer access services provided by the Geomajas server
         are implemented by invoking a pipeline. Using
         <code>PipelineService</code>, blocks of functionality become reusable
         and highly configurable with limited coupling between the
@@ -393,7 +386,7 @@
       </section>
 
       <section id="arch-pl-app">
-        <title>Application in the back-end</title>
+        <title>Application in the server</title>
 
         <para>All the methods in both RasterLayerService and
         VectorLayerService are implemented using pipelines.</para>
@@ -461,7 +454,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/security.png" width="100%" />
+              <imagedata fileref="images/security_logo.png" width="100%" />
             </imageobject>
           </mediaobject>
         </figure>
@@ -475,7 +468,7 @@
         <para>A list of <emphasis>security services</emphasis> can be defined
         (using Spring bean <code>security.SecurityInfo</code>). This list can
         be overwritten in configuration. By default the list is empty, which
-        prohibits all access to everyone. The back-end does however include a
+        prohibits all access to everyone. The server does however include a
         security service which can be used to allow all access to
         everyone.</para>
 
@@ -499,7 +492,7 @@
           same.</para>
         </note>
 
-        <para>In many systems (including RBAC systems) an authorization object
+        <para>In many systems (including Role-Based Access Control (RBAC) systems) an authorization object
         matches a roles for the authenticated user.</para>
 
         <para>Note that, as the actual authentication mechanisms are handled
@@ -512,7 +505,7 @@
         <code>SecurityContext</code>. The security context is thread specific.
         When threads are reused between different users, the security context
         needs to be cleared at the end of a request (group). This is normally
-        handled by the faces.</para>
+        handled by the clients.</para>
 
         <para>The following general authorization checks exist:</para>
 
@@ -660,7 +653,7 @@
           </note><note>
             <para>Entering credentials is never handled by Geomajas. When the
             authentication token cannot be verified, a security exception is
-            thrown. It is up to the client application (the face probably) to
+            thrown. It is up to the client application to
             assure that a new authentication token is created.</para>
           </note></para>
 
@@ -676,7 +669,7 @@
       </section>
 
       <section id="arch-sec-comm">
-        <title>Interaction between client and back-end</title>
+        <title>Interaction between client and server</title>
 
         <para>When a user wants to access a secured Geomajas application, she
         will normally surf to the URL for the application.</para>
@@ -698,10 +691,10 @@
         to the original application with a security token.</para>
 
         <para>This token is then used by the client to pass authentication
-        information to the back-end.</para>
+        information to the server.</para>
 
         <para>As seen from this example, the Geomajas client does not handle
-        the authentication and does not need to know he credentials for the
+        the authentication and does not need to know the credentials for the
         user.</para>
 
         <figure>
@@ -722,7 +715,7 @@
           developing.</para>
         </note>
 
-        <para>At the back-end, the programmer has a reasonably simple job. At
+        <para>At the server, the programmer has a reasonably simple job. At
         each policy enforcement point, you need an injected security context
         which can be used for the policy decisions. This can be included using
         the following piece of code.</para>
@@ -771,7 +764,7 @@ private SecurityContext securityContext;</programlisting>
         (which is not necessarily complete) and some additional ideas for
         application follow.</para>
 
-        <para>Back-end services:</para>
+        <para>Server services:</para>
 
         <itemizedlist>
           <listitem>
@@ -897,12 +890,12 @@ private SecurityContext securityContext;</programlisting>
           </listitem>
         </itemizedlist>
 
-        <para>Face:</para>
+        <para>Client:</para>
 
         <itemizedlist>
           <listitem>
-            <para>The face is responsible for assuring a authentication token
-            is included in all access to the back-end.</para>
+            <para>The client is responsible for assuring a authentication token
+            is included in all access to the server.</para>
           </listitem>
 
           <listitem>
@@ -918,7 +911,7 @@ private SecurityContext securityContext;</programlisting>
           </listitem>
 
           <listitem>
-            <para>The face should ask for credentials again when the token was
+            <para>The client should ask for credentials again when the token was
             not available or is no longer valid. Specifically when a
             <code>GeomajasSecurityException</code> is received which code
             <code>ExceptionCode.CREDENTIALS_MISSING_OR_INVALID</code>.</para>
@@ -959,120 +952,13 @@ private SecurityContext securityContext;</programlisting>
     </section>
   </chapter>
 
-  <chapter id="backend-ch-plugins">
-    <title>Plug-ins</title>
-
-    <para>Geomajas provides a basic set of functionality as part of the
-    back-end core. This can be extended and made available using plug-ins. One
-    of the functions of the back-end core is to act as a plug-in container.
-    Plug-ins are optional libraries that extend the core functionality by
-    taking advantage of the public API. There are three special types of
-    plug-ins, faces, layers and security plug-ins. which provide extra
-    features, faces, layers and other plu</para>
-
-    <para>Faces provide external interfaces for Geomajas. These give access to
-    users or external systems to the configured data. The faces which are
-    included in the Geomajas project are</para>
-
-    <para><itemizedlist>
-        <listitem>
-          <para>GWT face : our recommended face for displaying and editing GIS
-          data in the browser. This allows you to build your web user
-          interface in Java.</para>
-        </listitem>
-
-        <listitem>
-          <para>dojo face : a face which allows web display and editing using
-          dojo toolkit. The user interface needs to be developed using
-          JavaScript.</para>
-        </listitem>
-      </itemizedlist>The layer plug-ins provide access to the actual data
-    which needs to be displayed as part of a maps. There are basically two
-    types of layers, providing either raster data (bitmaps) or vector data.
-    The layers which are provided as part of the normal distribution
-    include</para>
-
-    <para><itemizedlist>
-        <listitem>
-          <para><emphasis>geomajas-layer-hibernate</emphasis> (vector): allow
-          access to any kind of features which are stored in a spatial
-          (relational) database. The data is accessed using the hibernate and
-          hibernate-spatial open source libraries.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-layer-geotools</emphasis> (vector): access
-          data from any vector data source which has a GeoTools data store
-          defined for it (<ulink
-          url="http://geotools.org/javadocs/org/geotools/data/DataStore.html">http://geotools.org/javadocs/org/geotools/data/DataStore.html</ulink>).</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-layer-google</emphasis> (raster): include
-          Google rasters. This allows access to the normal and satellite views
-          provided by Google. You still have to make sure you comply with
-          Google terms of use (<ulink
-          url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-layer-openstreetmap</emphasis> (raster):
-          support for raster data coming from the OpenStreetMap project
-          (<ulink
-          url="http://www.openstreetmap.org/">http://www.openstreetmap.org/</ulink>).</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-layer-wms</emphasis> (raster): access data
-          from a WMS server (<ulink
-          url="http://www.opengeospatial.org/standards/wms">http://www.opengeospatial.org/standards/wms</ulink>).</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-layer-shapeinmem</emphasis> (vector):
-          access data from an ESRI shape file which handled in memory. The
-          actual data access if done using GeoTools (<ulink
-          url="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf</ulink>).</para>
-        </listitem>
-      </itemizedlist></para>
-
-    <para>Other plug-ins allow extensions in functionality, either by
-    providing additional commands or extending the rendering pipelines, or
-    they provide additional security services.</para>
-
-    <para><itemizedlist>
-        <listitem>
-          <para><emphasis>geomajas-command</emphasis>: set of commands which
-          are provided as part of the standard distribution. This is so
-          fundamental to using Geomajas that it is provided as a back-end
-          module.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-plugin-printing</emphasis>: printing
-          extensions for the framework</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>geomajas-plugin-staticsecurity</emphasis>: a basic
-          security service which can be configured as part of the Spring
-          configuration and does not use an external source for users or
-          policies, making the security configuration entirely static.</para>
-        </listitem>
-      </itemizedlist></para>
-
-    <para>The back-end also contains a set of spatial services. These include
-    services for accessing raster and vector services and a set of utility
-    services.</para>
-  </chapter>
-
   <chapter id="ch-projstruct">
     <title>Project structure</title>
 
     <para>The project is built from a large set of modules. A specific
     application can choose which modules are used or not. In principle, the
-    back-end module are always required and at least one face and at least one
-    layer plug-in. More plug-ins or faces can be added as needed.</para>
+    server module are always required and at least one client and at least one
+    layer plug-in. More plug-ins or clients can be added as needed.</para>
 
     <para></para>
 
@@ -1082,115 +968,51 @@ private SecurityContext securityContext;</programlisting>
       <para>Plug-ins are automatically discovered when
       available on the classpath. This is done using two files:
       META-INF/geomajasContext[suffix].xml and META-INF/geomajasWebContext[suffix].xml.</para>
+
 	  <para>The suffix is meant to deal with classpath issues where context files
 	  overwrite each other. Each plug-in can therefore define it's own geomajas(Web)Context.xml
 	  file, the classpath is scanned for META-INF/geomajas(Web)Context*.xml</para>
 
-      <para>The geomajasContext.xml file contains information about the
+      <para><itemizedlist>
+          <listitem><para>The geomajasContext.xml file contains information about the
       plug-in, the dependencies for the plug-in (which are checked when the
       application context is built, assuring that the set of plug-ins is
       complete and can be combined) and contains copyright and license
       information for the plug-in and its dependencies. Additional beans and
-      services can also be defined.</para>
+      services can also be defined.</para></listitem>
 
-      <para>The geomajasWebContext.xml file is provided to allow additional
+          <listitem><para>The geomajasWebContext.xml file is provided to allow additional
       endpoints to be added in the web tier. Geomajas normally installs a
       <code>DispatcherServlet</code> in the web.xml file to allow additional
-      web endpoints to be added using Spring MVC.</para>
+      web endpoints to be added using Spring MVC.</para></listitem></itemizedlist></para>
     </section>
 
     <section id="arch-module">
       <title>Module Overview</title>
 
       <para>Different modules have different impacts and different purposes.
-      Therefore different categories of modules are required. Geomajas has
-      defined the following set of module categories (matching the directories
-      in the source):</para>
+      Therefore different categories of modules are required.
+          In Geomajas server, modules can be categorizes as:</para>
 
       <para><itemizedlist>
           <listitem>
-            <para><emphasis role="">application</emphasis>: working examples
-            of applications using the Geomajas GIS framework.</para>
-          </listitem>
-
-          <listitem>
-            <para><emphasis>backend</emphasis>: these are essential Geomajas
+            <para><emphasis>core modules</emphasis>: these are essential Geomajas
             modules. Each Geomajas application needs these modules. However,
-            you also need some a face and some plug-ins (like layers) or you
+            you also need some a client and some plug-ins (like layers) or you
             won't be able to do much.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>build-tools</emphasis>: some modules which are
-            useful for starting or building Geomajas or a Geomajas
-            project.</para>
-          </listitem>
-
-          <listitem>
-            <para><emphasis>documentation</emphasis>: documentation modules,
-            specifically the different Geomajas guides. These are the general
-            guides, each of the plug-ins also has a documentation
-            module.</para>
-          </listitem>
-
-          <listitem>
-            <para><emphasis>plugin</emphasis>: modules that extend Geomajas.
+            <para><emphasis>plug-in modules</emphasis>: modules that extend the Geomajas Server core function.
             This can either add new functionality, add support for a certain
             type of data source, provide a security service or a
             combination.</para>
           </listitem>
 
-          <listitem>
-            <para><emphasis>project</emphasis>: these are projects which can
-            be used independently of the Geomajas back-end.</para>
-          </listitem>
-
-          <listitem>
-            <para><emphasis>test</emphasis>: modules which are used for
-            (integration) testing of Geomajas.</para>
-          </listitem>
-        </itemizedlist> Full list of Geomajas modules:</para>
+        </itemizedlist> Full list of Geomajas Server modules:</para>
 
       <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas application modules</title>
-
-        <tgroup align="left" cols="2">
-          <colspec colnum="1" colwidth="1*" />
-
-          <colspec colnum="2" colwidth="2*" />
-
-          <thead>
-            <row>
-              <entry>Name</entry>
-
-              <entry>Purpose</entry>
-            </row>
-          </thead>
-
-          <tbody>
-            <row>
-              <entry>geomajas-gwt-example</entry>
-
-              <entry>Example application using the GWT face which serves both
-              as showcase and test application. This is currently an oldish
-              application, replaced by the geomajas-gwt-showcase
-              module.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-gwt-showcase</entry>
-
-              <entry>Example application using the GWT face which serves as
-              showcase for various aspects of the framework. This aggregates
-              the example/test modules which are included in the GWT face and
-              the various plug-ins.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-
-      <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas back-end modules</title>
+        <title>List of Geomajas Server core modules</title>
 
         <tgroup align="left" cols="2">
           <colspec colnum="1" colwidth="1*" />
@@ -1251,213 +1073,7 @@ private SecurityContext securityContext;</programlisting>
       </table>
 
       <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas build-tools modules</title>
-
-        <tgroup align="left" cols="2">
-          <colspec colnum="1" colwidth="1*" />
-
-          <colspec colnum="2" colwidth="2*" />
-
-          <thead>
-            <row>
-              <entry>Name</entry>
-
-              <entry>Purpose</entry>
-            </row>
-          </thead>
-
-          <tbody>
-            <row>
-              <entry>geomajas-checkstyle</entry>
-
-              <entry>Module which contains the checkstyle definitions which
-              should be adhered to for all code in the Geomajas source
-              tree.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-dep</entry>
-
-              <entry>This module can be included in your
-              "dependencyManagement" section to set default versions for many
-              possible dependencies. This includes the current release
-              versions of all Geomajas project modules and their major
-              dependencies. The versions can always be overwritten in your
-              pom. It does not indicate that module versions play well
-              together (though they should if the API contract is adhered).
-              This module should never contain snapshot builds.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-maven-dojo</entry>
-
-              <entry>Maven plugin which helps to combine all the JavaScript
-              code for dojo, Geomajas and the project itself. This is usually
-              referred to as the "shrink" or "shrinksafe" step.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-maven-plugin</entry>
-
-              <entry>Maven plugin which is used for generating the
-              documentation. It extracts excerpts from the code to allow
-              inclusion in the docbook guides.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-parent</entry>
-
-              <entry>Parent pom which includes some Geomajas specific settings
-              like copyright, java version, checkstyle etc.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-al-parent</entry>
-
-              <entry>Parent pom which should be used for Apache licensed
-              modules (extends the normal geomajas-parent).</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-doc-parent</entry>
-
-              <entry>Parent pom which should be used for documentation
-              modules. This has all the details to enable building the
-              documentation in HTML and PDF format from the docbook
-              sources.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-gwt-archetype</entry>
-
-              <entry>Archetype to build a skeleton application which uses the
-              GWT face.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-plugin-archetype</entry>
-
-              <entry>Archetype to build a skeleton for a new plugin.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-jetty-runner</entry>
-
-              <entry>Jetty runner which can be used in Eclipse IDE to easy
-              running Geomajas applications.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-
-      <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas documentation modules</title>
-
-        <tgroup align="left" cols="2">
-          <colspec colnum="1" colwidth="1*" />
-
-          <colspec colnum="2" colwidth="2*" />
-
-          <thead>
-            <row>
-              <entry>Name</entry>
-
-              <entry>Purpose</entry>
-            </row>
-          </thead>
-
-          <tbody>
-            <row>
-              <entry>contributorguide</entry>
-
-              <entry>Guide for contributors to the project. Includes
-              information about compilation of the project, coding style, how
-              to contribute to the documentation, JIRA guidelines etc.</entry>
-            </row>
-
-            <row>
-              <entry>devuserguide</entry>
-
-              <entry>Guide for developers who want to use Geomajas in their
-              applications.</entry>
-            </row>
-
-            <row>
-              <entry>enduserguide</entry>
-
-              <entry>Guide for end-users who use the Geomajas widgets. This
-              guide should probably be included in the application
-              documentation.</entry>
-            </row>
-
-            <row>
-              <entry>style</entry>
-
-              <entry>Style module for conversion of the docbook files to
-              usable output.</entry>
-            </row>
-
-            <row>
-              <entry>xslt</entry>
-
-              <entry>Transformation module for conversion of the docbook files
-              to usable output.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-
-      <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas project modules</title>
-
-        <tgroup align="left" cols="2">
-          <colspec colnum="1" colwidth="1*" />
-
-          <colspec colnum="2" colwidth="2*" />
-
-          <thead>
-            <row>
-              <entry>Name</entry>
-
-              <entry>Purpose</entry>
-            </row>
-          </thead>
-
-          <tbody>
-            <row>
-              <entry>geomajas-project-api</entry>
-
-              <entry>Project to make the API annotations reusable.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-project-geometry</entry>
-
-              <entry>Project which contains a set of geometry DTOs and
-              services with minimal dependencies. There are services to
-              manipulate the geometries and to convert to JTS
-              geometries.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-project-sld</entry>
-
-              <entry>Project which contains a set of DTOs for handling SLD.
-              There are also services to convert between the DTO and
-              XML.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-project-sld-editor</entry>
-
-              <entry>An SLD editor which used the SLD DTOs.</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-
-      <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas plug-in modules</title>
+        <title>List of Geomajas Server plug-in modules</title>
 
         <tgroup align="left" cols="2">
           <colspec colnum="1" colwidth="1*" />
@@ -1476,44 +1092,50 @@ private SecurityContext securityContext;</programlisting>
             <row>
               <entry>geomajas-layer-geotools</entry>
 
-              <entry>Support for any data format GeoTools supports.</entry>
+              <entry>Support for any data format GeoTools supports and which has a GeoTools data store
+                  defined for it (<ulink
+                          url="http://geotools.org/javadocs/org/geotools/data/DataStore.html">http://geotools.org/javadocs/org/geotools/data/DataStore.html</ulink>).
+                  This also allows access data from an ESRI shape file, handled in memory, using the <code>ShapeInMemLayer</code>.</entry>
             </row>
 
             <row>
-              <entry>geomajas-layer-google</entry>
+              <entry>geomajas-layer-googlemaps</entry>
 
-              <entry>Support for GoogleMaps raster format.</entry>
+              <entry>Support for GoogleMaps raster format. This allows access to the normal and satellite views
+                  provided by Google. You still have to make sure you comply with
+                  Google terms of use (<ulink
+                          url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>)</entry>
             </row>
 
             <row>
               <entry>geomajas-layer-hibernate</entry>
 
-              <entry>Support for database formats through Hibernate.</entry>
+              <entry>Support for database formats through Hibernate. Allow
+                  access to any kind of features which are stored in a spatial
+                  (relational) database. The data is accessed using the hibernate and
+                  hibernate-spatial open source libraries.</entry>
             </row>
 
             <row>
               <entry>geomajas-layer-openstreetmap</entry>
 
-              <entry>Support for OpenStreetMap raster format.</entry>
+              <entry>Support for raster data coming from the OpenStreetMap project
+                  (<ulink
+                          url="http://www.openstreetmap.org/">http://www.openstreetmap.org/</ulink>).</entry>
             </row>
 
             <row>
               <entry>geomajas-layer-wms</entry>
 
-              <entry>Support for the WMS raster format.</entry>
+              <entry>Support for the WMS raster format. Access data from a WMS server (<ulink
+                          url="http://www.opengeospatial.org/standards/wms">http://www.opengeospatial.org/standards/wms</ulink>).</entry>
             </row>
 
             <row>
-              <entry>geomajas-plugin-caching</entry>
+              <entry>geomajas-plugin-cache</entry>
 
               <entry>Caching plug-in which allows improved speed by
               calculating data only once.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-plugin-editing</entry>
-
-              <entry>Powerful editing of geometries.</entry>
             </row>
 
             <row>
@@ -1524,14 +1146,7 @@ private SecurityContext securityContext;</programlisting>
             </row>
 
             <row>
-              <entry>geomajas-plugin-javascript-api</entry>
-
-              <entry>Standard JavaScript API for communicating with a Geomajas
-              map in the browser.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-plugin-printing</entry>
+              <entry>geomajas-plugin-print</entry>
 
               <entry>Adds printing capabilities beyond printing in the
               browser, by delivering the map as PDF.</entry>
@@ -1554,63 +1169,9 @@ private SecurityContext securityContext;</programlisting>
               <entry>geomajas-plugin-staticsecurity</entry>
 
               <entry>Simple security service which allows including the entire
-              security configuration in the Spring configuration files, making
-              the configuration static.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-widget-advancedviews</entry>
-
-              <entry>Support for advanced views and theming the map in the GWT
-              face.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-widget-featureinfo</entry>
-
-              <entry>Extra widgets for displaying feature information in the
-              GWT face.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-widget-searchandfilter</entry>
-
-              <entry>Advanced search and filter widgets for the GWT
-              face.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-widget-utility</entry>
-
-              <entry>Extra widgets for the GWT face. Includes Ribbon (advanced
-              toolbar), Wizard,...</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-
-      <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas test modules</title>
-
-        <tgroup align="left" cols="2">
-          <colspec colnum="1" colwidth="1*" />
-
-          <colspec colnum="2" colwidth="2*" />
-
-          <thead>
-            <row>
-              <entry>Name</entry>
-
-              <entry>Purpose</entry>
-            </row>
-          </thead>
-
-          <tbody>
-            <row>
-              <entry>geomajas-test-plainhtml</entry>
-
-              <entry>Test/showcase for integrating a Geomajas map in a plain
-              HTML page.</entry>
+              security configuration in the Spring configuration files.
+                  It does not use an external source for users or policies,
+                  making the configuration static.</entry>
             </row>
           </tbody>
         </tgroup>
