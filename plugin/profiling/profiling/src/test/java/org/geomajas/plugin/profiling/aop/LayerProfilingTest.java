@@ -12,20 +12,27 @@
 package org.geomajas.plugin.profiling.aop;
 
 import junit.framework.Assert;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.LogRequest;
 import org.geomajas.command.dto.SearchAttributesRequest;
 import org.geomajas.command.dto.SearchAttributesResponse;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.project.profiling.service.OneContainer;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
+import org.geomajas.testdata.ReloadContext.ClassMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+
 import java.util.List;
 
 /**
@@ -34,9 +41,12 @@ import java.util.List;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
+		DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/org/geomajas/testdata/allowAll.xml" })
+@ReloadContext(classMode=ClassMode.BEFORE_EACH_TEST_METHOD)
 public class LayerProfilingTest {
 
 	private static final String LAYER_ID = "beans";

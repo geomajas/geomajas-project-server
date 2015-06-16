@@ -318,6 +318,11 @@
 				<version>${geotools-version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.geotools.xsd</groupId>
+				<artifactId>gt-xsd-wfs</artifactId>
+				<version>${geotools-wfs-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-geojson</artifactId>
 				<version>${geotools-version}</version>
@@ -473,6 +478,17 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>14.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.aggregate</groupId>
+				<artifactId>jetty-all</artifactId>
+				<version>7.2.0.v20101020</version>
+				<exclusions>
+					<exclusion>
+						<groupId>asm</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- geomajas-layer-server-googlemaps -->
@@ -684,7 +700,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-wfs-ng</artifactId>
-				<version>${geotools-version}</version>
+				<version>${geotools-wfs-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>
@@ -957,6 +973,7 @@
 	<properties>
 		<!--general important dependencies-->
 		<geotools-version>13.0</geotools-version>
+		<geotools-wfs-version>13.0.GM2</geotools-wfs-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<!--geomajas dependencies-->
 		<geomajas-server-version-geomajas-geometry>1.3.0</geomajas-server-version-geomajas-geometry>
