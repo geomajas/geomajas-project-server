@@ -58,18 +58,18 @@
         </note></para>
     </section>
 
-    <section id="apiBackend">
-      <title>Back-end API</title>
+    <section id="apiServer">
+      <title>Server API</title>
 
       <para>The full details about the API can be found in the published
       javadoc, available on the Geomajas site at <ulink
-      url="http://www.geomajas.org/gis-documentation">http://www.geomajas.org/gis-documentation</ulink>.
-      There you can find the links for the different versions.</para>
+      url="http://files.geomajas.org/javadoc/geomajas-project-server/1.18.0/geomajas-project-server-javadoc/">
+              http://files.geomajas.org/javadoc/geomajas-project-server/1.18.0/geomajas-project-server-javadoc/</ulink>.</para>
 
-      <para>The API for the Geomajas back-end is contained in the geomajas-api
+      <para>The API for the Geomajas server is contained in the geomajas-api
       module. This contains only interfaces, exceptions and data transfer
       objects. The data transfer objects are classes which only contain
-      getters and setters. The back-end API is divided in the following
+      getters and setters. The server API is divided in the following
       packages:</para>
 
       <itemizedlist>
@@ -113,7 +113,7 @@
         </listitem>
       </itemizedlist>
 
-      <para>The back-end also contains a module geomajas-api-experimental.
+      <para>The server also contains a module geomajas-api-experimental.
       This contains some experimental stuff which may be promoted to the
       supported API when useful, or may be changed or dumped. As this is
       <emphasis>not</emphasis> part of the API, it may change between
@@ -124,7 +124,7 @@
       <title>Command and plug-in API</title>
 
       <para>For commands and plug-ins, the same rule applies as for the
-      back-end API. That means that the "<code>@Api</code>" annotation
+      server API. That means that the "<code>@Api</code>" annotation
       indicates the stability of the interfaces, classes and methods.</para>
 
       <para>These classes can typically be found in packages containing
@@ -209,14 +209,14 @@
       <para>The command dispatcher is the main command execution service. It
       accepts commands serializable data for executing a command and returns a
       response which can again be serialized. It is the main entry point into
-      the back-end for use by the faces.</para>
+      the server for use by the clients.</para>
 
       <figure>
-        <title>Geomajas face and commands</title>
+        <title>Geomajas client and commands</title>
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/face-command.png" width="100%" />
+            <imagedata fileref="images/server-command_logo.png" width="100%" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -812,7 +812,7 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>Persist a single transaction on the backend (create,
+                <entry>Persist a single transaction on the server (create,
                 update, delete of features).</entry>
               </row>
 
@@ -1498,7 +1498,7 @@ public interface Entity {
 
       <para>Examples of how to implement a <code>FeatureModel</code> using the
       <code>EntityAttributeService</code> can be found in the
-      <code>BeanFeatureModel</code> (backend) and
+      <code>BeanFeatureModel</code> (server) and
       <code>HibernateFeatureModel</code> (Hibernate layer plugin)
       implementations.</para>
     </section>
@@ -1509,7 +1509,9 @@ public interface Entity {
 
     <para>Geomajas has security built-in. If you don't provide a security
     configuration, nothing will be authorized. For unsecured access, you can
-    use the AllowAllSecurityService security service.</para>
+    use the AllowAllSecurityService security service.
+        Example for the configuration can be found in the <link
+                  linkend="ch-secConf">security configuration</link> chapter.</para>
 
     <para>which will allow all access to everybody, including full access to
     features which are only partly within configured bounds.</para>
@@ -1544,7 +1546,7 @@ public interface Entity {
       about what is allowed or authorized (no policies). These can however be
       accessed using the token.</para>
 
-      <para>The Geomajas back-end core does not do authentication, though it
+      <para>The Geomajas server core does not do authentication, though it
       is likely that your security plug-in either provide commands to allow
       creation of a token (by supplying user credentials) and invalidating the
       token (logout), or the plug-in will stipulate where this can be done
@@ -1612,7 +1614,7 @@ public interface Entity {
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/security.png" width="100%" />
+            <imagedata fileref="images/security_logo.png" width="100%" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -1638,9 +1640,9 @@ public interface Entity {
 
       <para>The security context allows access to the currently valid user's
       policies and some limited information (user id, name and organization).
-      In your code, you just have to inject the security context. The face is
+      In your code, you just have to inject the security context. The client is
       responsible for assuring the current thread has the correct security
-      context based on the credentials used when accessing the back-end (it
+      context based on the credentials used when accessing the server (it
       will use the SecurityManager service to do that).</para>
 
       <para>The security context contains all methods from the UserInfo and
@@ -1661,7 +1663,7 @@ public interface Entity {
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/pipeline.png" width="100%" />
+          <imagedata fileref="images/pipeline_logo.png" width="100%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -1910,7 +1912,7 @@ public interface Entity {
   <chapter id="ch-core-services">
     <title>Utility Services</title>
 
-    <para>The Geomajas back-end core also contains a set of utility
+    <para>The Geomajas server core also contains a set of utility
     services.</para>
 
     <section id="ConfigurationService">
@@ -2102,7 +2104,7 @@ public interface Entity {
       <para>This service allows conversion between objects which are used
       internally (which may contain JTS or GeoTools objects) and data transfer
       objects which can be used for communication with the outside world
-      (including the faces).</para>
+      (including the clients).</para>
 
       <para>There are two methods which are provided, toInternal() and toDto()
       and these are overloaded for many different types of objects.</para>
