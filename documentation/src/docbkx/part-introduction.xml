@@ -21,8 +21,8 @@
     <section id="section-about-this-document">
       <title>About this document</title>
 
-      <para>Documentation for developer who want to use and extend the
-      Geomajas GIS framework.</para>
+      <para>Documentation of the Geomajas Server Project.
+          It also includes some aspects of client-server communication.</para>
     </section>
 
     <section id="section-about-this-project">
@@ -77,7 +77,7 @@
     <section id="section-license">
       <title>License information</title>
 
-      <para>Copyright © 2009-2010 Geosparc nv.</para>
+      <para>Copyright © 2009-2015 Geosparc nv.</para>
 
       <para>Licensed under the GNU Affero General Public License. You may
       obtain a copy of the License at <ulink
@@ -96,8 +96,8 @@
       dependencies can be displayed using the "<code>mvn
       dependency:tree</code>" command.</para>
 
-      <para>For the dependencies of the Geomajas back-end, we only allow
-      dependencies which are freely distributable for commercial puposes (this
+      <para>For the dependencies of the Geomajas server, we only allow
+      dependencies which are freely distributable for commercial purposes (this
       for example excludes GPL and AGPL licensed dependencies).</para>
     </section>
 
@@ -126,6 +126,10 @@
 
           <listitem>
             <para>Frank Wynants</para>
+          </listitem>
+
+          <listitem>
+            <para>Jan Venstermans</para>
           </listitem>
         </itemizedlist></para>
     </section>

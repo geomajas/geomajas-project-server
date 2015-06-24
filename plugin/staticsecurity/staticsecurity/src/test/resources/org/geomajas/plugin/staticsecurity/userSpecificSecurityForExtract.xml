@@ -19,9 +19,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		>
 
 	<!-- @extract-start StaticSecurityUserSpecific, Partial staticsecurity configuration -->
-	<bean name="SecurityService" class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
+	<bean name="SecurityService"
+          class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
 	
-	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+	<bean name="security.securityInfo"
+          class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="true"/>
 		<property name="securityServices">
 			<list>
