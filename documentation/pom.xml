@@ -48,4 +48,16 @@
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <configuration>
+                    <calloutGraphics>0</calloutGraphics>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

@@ -48,23 +48,22 @@
         <title>Defining spring configuration locations in web.xml</title>
 
         <programlisting>&lt;context-param&gt;
-    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-    &lt;param-value&gt;
-        classpath:org/geomajas/spring/geomajasContext.xml<co
-            id="co-20101222-5" />
-        WEB-INF/applicationContext.xml<co id="co-20101222-6" />
-    &lt;/param-value&gt;
+  &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+  &lt;param-value&gt;
+    classpath:org/geomajas/spring/geomajasContext.xml  <co id="co-20101222-5" />
+    WEB-INF/applicationContext.xml  <co id="co-20101222-6" />
+  &lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;listener&gt;
-    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
-            id="co-20101222-7" />
+  &lt;listener-class&gt;org.springframework.web.context.
+            ContextLoaderListener&lt;/listener-class&gt;  <co id="co-20101222-7" />
 &lt;/listener&gt;
 &lt;listener&gt;
-    &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
-            id="co-20101222-8" />
+  &lt;listener-class&gt;org.springframework.web.context.request.
+            RequestContextListener&lt;/listener-class&gt;  <co id="co-20101222-8" />
 &lt;/listener&gt;
-    .....</programlisting>
+.....</programlisting>
 
         <calloutlist>
           <callout arearefs="co-20101222-5">
@@ -86,7 +85,7 @@
       </example>
 
       <para>You also need to define at least the dispatcher servlet and
-      possible an additional servlet for your faces. The dispatcher servlet
+      possibly an additional servlet for your client. The dispatcher servlet
       can be defined as follows.</para>
 
       <example>
@@ -112,7 +111,7 @@
       <para>Another option you have in setting up the web.xml file, is a
       specially designed filter that improves caching behaviour and compresses
       some when sending them to the browser. The default configuration of this
-      filter is tuned to be used in combination with the GWT face. All files
+      filter is tuned to be used in combination with the GWT client. All files
       containing ".nocache." in their name will not be cached, while all files
       containing ".cache." in their name will be cached. It will cache all
       graphics files, css, html and js files. The JavaScript, HTML and CSS
@@ -144,50 +143,50 @@
       <example>
         <title>Full cache filter declaration in web.xml</title>
 
-        <para><programlisting>&lt;filter&gt;
-    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
-    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;Time that cache stuff should be cached, defaults to 1 year.&lt;/description&gt;
-        &lt;param-name&gt;cacheDurationInSeconds&lt;/param-name&gt;
-        &lt;param-value&gt;31536000&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;All uris which start with one of these prefixes remain untouched.&lt;/description&gt;
-        &lt;param-name&gt;skipPrefixes&lt;/param-name&gt;
-        &lt;param-value&gt;/d/&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;When the uri contains one of these, the cache headers are added.&lt;/description&gt;
-        &lt;param-name&gt;cacheIdentifiers&lt;/param-name&gt;
-        &lt;param-value&gt;.cache.&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;When the uri ends in one of these, the cache headers are added.&lt;/description&gt;
-        &lt;param-name&gt;cacheSuffixes&lt;/param-name&gt;
-        &lt;param-value&gt;.js .png .jpg .jpeg .gif .css .html&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;When the uri contains one of these, the cache headers are removed.&lt;/description&gt;
-        &lt;param-name&gt;noCacheIdentifiers&lt;/param-name&gt;
-        &lt;param-value&gt;.nocache.&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;When the uri end in one of these, the cache headers are removed.&lt;/description&gt;
-        &lt;param-name&gt;noCacheSuffixes&lt;/param-name&gt;
-        &lt;param-value&gt;&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;init-param&gt;
-        &lt;description&gt;When the uri ends in one of these, the response is gzip compressed.&lt;/description&gt;
-        &lt;param-name&gt;zipSuffixes&lt;/param-name&gt;
-        &lt;param-value&gt;.js .css .html&lt;/param-value&gt;
-    &lt;/init-param&gt;
-&lt;/filter&gt;
+        <para><programlisting language="xml"><![CDATA[<filter>
+  <filter-name>CacheFilter</filter-name>
+  <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
+  <init-param>
+    <description>Time that cache stuff should be cached, defaults to 1 year.</description>
+    <param-name>cacheDurationInSeconds</param-name>
+    <param-value>31536000</param-value>
+  </init-param>
+  <init-param>
+    <description>All uris which start with one of these prefixes remain untouched.</description>
+    <param-name>skipPrefixes</param-name>
+    <param-value>/d/</param-value>
+  </init-param>
+  <init-param>
+    <description>When the uri contains one of these, the cache headers are added.</description>
+    <param-name>cacheIdentifiers</param-name>
+    <param-value>.cache.</param-value>
+  </init-param>
+  <init-param>
+    <description>When the uri ends in one of these, the cache headers are added.</description>
+    <param-name>cacheSuffixes</param-name>
+    <param-value>.js .png .jpg .jpeg .gif .css .html</param-value>
+  </init-param>
+  <init-param>
+    <description>When the uri contains one of these, the cache headers are removed.</description>
+    <param-name>noCacheIdentifiers</param-name>
+    <param-value>.nocache.</param-value>
+  </init-param>
+  <init-param>
+    <description>When the uri end in one of these, the cache headers are removed.</description>
+    <param-name>noCacheSuffixes</param-name>
+    <param-value></param-value>
+  </init-param>
+  <init-param>
+    <description>When the uri ends in one of these, the response is gzip compressed.</description>
+    <param-name>zipSuffixes</param-name>
+    <param-value>.js .css .html</param-value>
+  </init-param>
+</filter>
 
-&lt;filter-mapping&gt;
-    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
-    &lt;url-pattern&gt;*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;</programlisting></para>
+<filter-mapping>
+  <filter-name>CacheFilter</filter-name>
+  <url-pattern>*</url-pattern>
+</filter-mapping>]]></programlisting></para>
       </example>
     </section>
 
@@ -201,16 +200,16 @@
 
       <para>This defines the most common schemas which are needed. The
       configuration is built by populating the configuration classes. The
-      configuration classes are split up between client-side and back-end.
-      Only the back-end classes are necessary to configure the back-end, which
+      configuration classes are split up between client-side and server.
+      Only the server classes are necessary to configure the server, which
       behaves as a catalog of layers. The client side classes are used to
       define applications and maps, which are purely client-side concepts in
       the Geomajas architecture.</para>
 
-      <para>The back-end classes exist in the have a class name ending in
+      <para>The server classes have a class name ending in
       "Info" and are mostly found in the
       <code>org.geomajas.configuration</code> package. These classes are
-      actually used to represent the DTO part of the back-end layers, thereby
+      actually used to represent the DTO part of the server layers, thereby
       allowing to transfer information or metadata of these layers to the
       client.</para>
 
@@ -289,7 +288,7 @@
   </chapter>
 
   <chapter id="ch-map-configuration">
-    <title>Map configuration</title>
+    <title>Layer configuration</title>
 
     <para>The central configuration which needs to be done is the map and the
     collection of layers which are part of that map.</para>
@@ -311,7 +310,7 @@
         <title>Raster layer info</title>
 
         <para>For all raster layers, you will need to define a raster layer
-        info object to define the back-end configuration for the layer. The
+        info object to define the server configuration for the layer. The
         exact meaning for some of the fields depend on the actual layer, but
         most important features include:</para>
 
@@ -534,7 +533,7 @@
               form items in the forms used for editing the attribute
               values.</para>
 
-              <para>See the GWT face documentation for more information on
+              <para>See the GWT client documentation for more information on
               this.</para>
             </listitem>
           </itemizedlist>
@@ -567,7 +566,7 @@
                 the source that provides the data. Depending on the type of
                 layer, this could be a table name (geotools-postgis), a shape
                 file name (geotools-shapeinmem, in this case there is a 1-to-1
-                correspondence withe the geotools datastore), a WFS layer name
+                correspondence with the geotools datastore), a WFS layer name
                 (geotools-wfs) or a java class name (hibernate).</entry>
               </row>
 
@@ -628,11 +627,11 @@
             </listitem>
 
             <listitem>
-              <para>OGC standards-based <ulink url="???">SLD</ulink> (Styled
+              <para>OGC standards-based <ulink url="http://docs.geoserver.org/latest/en/user/styling/index.html">SLD</ulink> (Styled
               Layer Descriptor, version 1.0) configuration: this configuration
               uses an SLD file for styling and supports all SLD features that
               are supported by the underlying geotools library. The file can
-              be directly referenced in the configuration, but the backend
+              be directly referenced in the configuration, but the server
               internally makes use of our own DTO objects. This is needed to
               allow client-side manipulation of the SLD style and
               communication across the wire of complete SLD descriptors or SLD
@@ -771,21 +770,22 @@
 						xmlns:xi="http://www.w3.org/2001/XInclude" />-->
 			<example id="RegexMulti">
 				<title>Attribute validator configuration</title>
-				<programlisting language="java"><![CDATA[<property name="validator">
-	<bean class="org.geomajas.configuration.validation.ValidatorInfo">
-		<property name="toolTip" value="Is this city a capital city or not? (Y or N)" />
-		<property name="errorMessage" value="Invalid value: The value must be either Y or N." />
-		<property name="constraints">
-			<list>
-				<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
-				<bean class="org.geomajas.configuration.validation.PatternConstraintInfo">
-					<property name="regexp" value="[YN]$" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-</property>]]>
-				</programlisting>
+				<programlisting language="xml"><![CDATA[<property name="validator">
+  <bean class="org.geomajas.configuration.validation.ValidatorInfo">
+    <property name="toolTip"
+		    value="Is this city a capital city or not? (Y or N)" />
+    <property name="errorMessage"
+		    value="Invalid value: The value must be either Y or N." />
+    <property name="constraints">
+      <list>
+        <bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
+        <bean class="org.geomajas.configuration.validation.PatternConstraintInfo">
+          <property name="regexp" value="[YN]$" />
+        </bean>
+      </list>
+    </property>
+  </bean>
+</property>]]></programlisting>
 			</example>
 
           <para>This property contains some general validator information and
@@ -881,8 +881,8 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>Most notable in this example is the inclusion of two security
-    services. The first is provided to allow login and logout
-    (<emphasis>only</emphasis>) for everybody. The second defines users and
+    services. The second is provided to allow login and logout
+    (<emphasis>only</emphasis>) for everybody. The first defines users and
     authorizations (only the beginning of the configuration is displayed
     here).</para>
   </chapter>
@@ -914,7 +914,7 @@
 
     <para>Additional servlet configuration may be needed for any plug-in that
     wants to support its own client-server communication protocol. This is
-    typically the case for faces, but in general any plug-in that needs a form
+    typically the case for clients, but in general any plug-in that needs a form
     of communication that does not match the default command structure should
     be able to add its own endpoint to the dispatcher servlet. Fortunately,
     Spring MVC has a very simple architecture to accomplish this. In general,
@@ -922,7 +922,7 @@
 
     <itemizedlist>
       <listitem>
-        <para>A chandler mapping, whose function it is to map servlet requests
+        <para>A handler mapping, whose function it is to map servlet requests
         to handlers (based on the URL pattern)</para>
       </listitem>
 
@@ -941,25 +941,27 @@
     <para>Our default geomajasWebContext.xml configuration in
     geomajas-common-servlet looks as follows:</para>
 
-    <programlisting>&lt;beans ...&gt;
-    &lt;!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers --&gt;
-    &lt;bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"&gt;   
-        &lt;!-- need security  --&gt;
-        &lt;property name="interceptors"&gt;
-            &lt;list&gt;
-               &lt;ref bean="securityInterceptor" /&gt;
-            &lt;/list&gt;
-        &lt;/property&gt;
-    &lt;/bean&gt;
+    <programlisting language="xml"><![CDATA[<beans ...>
+    <!-- we use the default BeanNameUrlHandlerMapping
+        for mapping to controllers -->
+    <bean id="defaultHandlerMapping"
+      class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <!-- need security  -->
+        <property name="interceptors">
+            <list>
+                <ref bean="securityInterceptor" />
+            </list>
+        </property>
+    </bean>
 
-    &lt;bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"&gt;&lt;/bean&gt;
+    <bean id="securityInterceptor"
+       class="org.geomajas.servlet.mvc.SecurityInterceptor"></bean>
 
-    &lt;!--  we need a view resolver --&gt;
-    &lt;bean class="org.springframework.web.servlet.view.BeanNameViewResolver"&gt;&lt;/bean&gt;
+    <!--  we need a view resolver -->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
 
-    &lt;context:component-scan base-package="org.geomajas.servlet"/&gt;
-&lt;/beans&gt;
-</programlisting>
+    <context:component-scan base-package="org.geomajas.servlet"/>
+</beans>]]></programlisting>
 
     <para>It contains a default handler mapping which maps URLs to controller
     beans based on the name of the bean. This means that the controller's name
@@ -1042,7 +1044,7 @@ public class MyView extends AbstractView {
     dependency if needed.</para>
 
     <para>The transformations between coordinate reference systems should be
-    done using GeoService. When this is used for transformations, it avoids
+    done using <code>GeoService</code>. When this is used for transformations, it avoids
     throwing transformation exceptions by limiting the geometry to the
     transformable area<footnote>
         <para>If an exception does occur, it will be logged as a warning, but
