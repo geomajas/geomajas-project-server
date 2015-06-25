@@ -28,8 +28,6 @@ public class HsqlGeometryUserType extends AbstractDBGeometryType {
 
 	private static final long serialVersionUID = 180L;
 
-	private static final int SRID_LENGTH = 4;
-
 	private static final int[] GEOMETRY_TYPES = new int[] { Types.CLOB };
 
 	public int[] sqlTypes() {
@@ -49,11 +47,11 @@ public class HsqlGeometryUserType extends AbstractDBGeometryType {
 			return null;
 		}
 		String data = (String) object;
-		int srid = Integer.parseInt(data.substring(0, SRID_LENGTH - 1));
+		int srid = Integer.parseInt(data.substring(0, data.indexOf("|")));
 		Geometry geom;
 		try {
 			WKTReader reader = new WKTReader();
-			geom = reader.read(data.substring(SRID_LENGTH + 1));
+			geom = reader.read(data.substring(data.indexOf("|") + 1));
 		} catch (Exception e) { // NOSONAR
 			throw new RuntimeException("Couldn't parse incoming wkt geometry.", e);
 		}
