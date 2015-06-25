@@ -10,15 +10,10 @@
  */
 package org.geomajas.plugin.printing.component.service;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.VectorLayer;
+import org.geomajas.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,40 +21,27 @@ import org.springframework.stereotype.Component;
  * Trimmed down configuration service for printing.
  * 
  * @author Jan De Moerloose
+ * @author Jan Venstermans
  */
 @Component()
 public class PrintConfigurationServiceImpl implements PrintConfigurationService {
 
-	@Autowired(required = false)
-	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
-
-	@Autowired(required = false)
-	protected Map<String, VectorLayer> vectorLayerMap = new LinkedHashMap<String, VectorLayer>();
-
-	@Autowired(required = false)
-	protected Map<String, RasterLayer> rasterLayerMap = new LinkedHashMap<String, RasterLayer>();
+	@Autowired
+	private ConfigurationService configurationService;
 
 	public ClientMapInfo getMapInfo(String mapId, String applicationId) {
-		if (null == mapId || null == applicationId) {
-			return null;
-		}
-		ClientApplicationInfo application = applicationMap.get(applicationId);
-		if (application != null) {
-			for (ClientMapInfo map : application.getMaps()) {
-				if (mapId.equals(map.getId())) {
-					return map;
-				}
-			}
+		if (null != mapId && null != applicationId) {
+			return configurationService.getMap(mapId, applicationId);
 		}
 		return null;
 	}
 
 	public RasterLayerInfo getRasterLayerInfo(String layerId) {
-		return layerId == null ? null : rasterLayerMap.get(layerId).getLayerInfo();
+		return layerId == null ? null : configurationService.getRasterLayer(layerId).getLayerInfo();
 	}
 
 	public VectorLayerInfo getVectorLayerInfo(String layerId) {
-		return layerId == null ? null : vectorLayerMap.get(layerId).getLayerInfo();
+		return layerId == null ? null : configurationService.getVectorLayer(layerId).getLayerInfo();
 	}
 
 }
