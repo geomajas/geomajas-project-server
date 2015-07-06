@@ -15,9 +15,12 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.testdata.ReloadContext;
@@ -202,6 +205,31 @@ public class SearchByLocationCommandTest {
 			actual.add(feature.getLabel());
 		}
 		Assert.assertTrue(actual.contains("Country 4"));
+	}
+	
+	@Test
+	public void firstLayer() throws Exception {
+		// prepare command
+		SearchByLocationRequest request = new SearchByLocationRequest();
+		request.setCrs("EPSG:4326");
+		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
+		request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
+		
+		final String region1ResultTag = "countries layer region 1";
+		final String region2ResultTag = "countries layer region 2";
+		request.addLayerWithFilter(region1ResultTag, LAYER_ID, "region='Region 1'");
+		request.addLayerWithFilter(region2ResultTag, LAYER_ID, "region='Region 2'");
+		
+		request.setLocation(GeometryService.toPolygon(new Bbox(-180, -90, 360, 180)));
+
+		// execute
+		SearchByLocationResponse response = (SearchByLocationResponse) dispatcher.execute(
+				SearchByLocationRequest.COMMAND, request, null, "en");
+
+		// test
+		Assert.assertFalse(response.isError());
+		Assert.assertEquals(1, response.getFeatureMap().size());
+		Assert.assertNotNull(response.getFeatureMap().get(region1ResultTag));
 	}
 
 	@Test
