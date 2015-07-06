@@ -973,7 +973,7 @@
 	<properties>
 		<!--general important dependencies-->
 		<geotools-version>13.0</geotools-version>
-		<geotools-wfs-version>13.0.GM2</geotools-wfs-version>
+		<geotools-wfs-version>13.0.GM4</geotools-wfs-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<!--geomajas dependencies-->
 		<geomajas-server-version-geomajas-geometry>1.3.0</geomajas-server-version-geomajas-geometry>
