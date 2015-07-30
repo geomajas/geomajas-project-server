@@ -175,25 +175,7 @@ public class ConfigurationDtoPostProcessor {
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				// check sld location
 				if (namedStyle.getSldLocation() != null) {
-					Resource resource = applicationContext.getResource(namedStyle.getSldLocation());
-					IBindingFactory bindingFactory;
-					try {
-						bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
-						IUnmarshallingContext unmarshallingContext = bindingFactory.createUnmarshallingContext();
-						StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) unmarshallingContext
-								.unmarshalDocument(new InputStreamReader(resource.getInputStream()));
-						String layerName = (namedStyle.getSldLayerName() != null ? namedStyle.getSldLayerName() : layer
-								.getId());
-						String styleName = (namedStyle.getSldStyleName() != null ? namedStyle.getSldStyleName() : layer
-								.getId());
-						namedStyle.setUserStyle(extractStyle(sld, layerName, styleName));
-					} catch (JiBXException e) {
-						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
-								layer.getId());
-					} catch (IOException e) {
-						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
-								layer.getId());
-					}
+					applyUserStyleFromSldLocation(namedStyle, layer);
 					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getUserStyle(),
 							featureInfo);
 					namedStyle.setFeatureStyles(sldStyle.getFeatureStyles());
@@ -528,4 +510,38 @@ public class ConfigurationDtoPostProcessor {
 		return res;
 	}
 
+	/**
+	 * Looks for resource of {@link NamedStyleInfo#sldLocation} and copies values to {@link NamedStyleInfo#userStyle}.
+	 * Throws a {@link LayerException} is resource is not found or when resource cannot be parsed.
+	 *
+	 * @param namedStyle a named style info of a layer
+	 * @param layer the layer
+	 * @throws LayerException
+	 */
+	private void applyUserStyleFromSldLocation(NamedStyleInfo namedStyle, VectorLayer layer) throws LayerException {
+		Resource resource = applicationContext.getResource(namedStyle.getSldLocation());
+		//check if resource is found
+		if (!resource.exists()) {
+			if (applicationContext.getParent() != null) {
+				resource = applicationContext.getParent().getResource(namedStyle.getSldLocation());
+			} else {
+				// will throw correct error below
+				// alternatively: throw LayerException here
+			}
+		}
+		IBindingFactory bindingFactory;
+		try {
+			bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+			IUnmarshallingContext unmarshallingContext = bindingFactory.createUnmarshallingContext();
+			StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) unmarshallingContext
+					.unmarshalDocument(new InputStreamReader(resource.getInputStream()));
+			String layerName = (namedStyle.getSldLayerName() != null ? namedStyle.getSldLayerName() : layer.getId());
+			String styleName = (namedStyle.getSldStyleName() != null ? namedStyle.getSldStyleName() : layer.getId());
+			namedStyle.setUserStyle(extractStyle(sld, layerName, styleName));
+		} catch (JiBXException e) {
+			throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(), layer.getId());
+		} catch (IOException e) {
+			throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(), layer.getId());
+		}
+	}
 }
