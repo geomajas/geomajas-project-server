@@ -967,6 +967,13 @@
 				<version>0.7.1-rc3</version>
 			</dependency>
 
+            <!-- test-->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${server-version-mockito}</version>
+                <scope>test</scope>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -995,6 +1002,8 @@
 		<geomajas-server-version-javassist>3.11.0.GA</geomajas-server-version-javassist>
 		<!--plugin dependencies-->
 		<server-version-maven-javadoc-plugin>2.9.1</server-version-maven-javadoc-plugin>
+		<!--test dependencies-->
+		<server-version-mockito>1.9.5</server-version-mockito>
 	</properties>
 
 </project>
