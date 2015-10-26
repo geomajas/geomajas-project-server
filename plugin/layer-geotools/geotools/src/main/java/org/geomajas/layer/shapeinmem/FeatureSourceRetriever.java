@@ -22,6 +22,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.wfs.WFSDataStore;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -31,7 +32,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Both the {@link org.geomajas.layer.geotools.GeoToolsFeatureModel} and the
  * {@link org.geomajas.layer.geotools.GeoToolsLayer} use the same FeatureSource a their way of dealing with GeoTools
  * persistence. So instead of each of these classes having the same functions, we created this little class.
- * 
+ *
  * @author Pieter De Graef
  */
 public class FeatureSourceRetriever {
@@ -79,7 +80,7 @@ public class FeatureSourceRetriever {
 
 	/**
 	 * Retrieve the GeoTools feature type for the 'featureSourceName'.
-	 * 
+	 *
 	 * @return feature type
 	 * @throws LayerException problem when retrieving feature source
 	 */
@@ -89,26 +90,30 @@ public class FeatureSourceRetriever {
 
 	/**
 	 * Retrieve the FeatureSource object from the data store.
-	 * 
+	 *
 	 * @return An OpenGIS FeatureSource object;
 	 * @throws LayerException
 	 *             oops
 	 */
 	public SimpleFeatureSource getFeatureSource() throws LayerException {
 		try {
-			return dataStore.getFeatureSource(featureSourceName);
+			if (dataStore instanceof WFSDataStore) {
+				return dataStore.getFeatureSource(featureSourceName.replace(":", "_"));
+			} else {
+				return dataStore.getFeatureSource(featureSourceName);
+			}
 		} catch (IOException e) {
-			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Cannot find feature source "
-					+ featureSourceName);
+			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM,
+					"Cannot find feature source " + featureSourceName);
 		} catch (NullPointerException e) {
-			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM, "Cannot find feature source "
-					+ featureSourceName);
+			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM,
+					"Cannot find feature source " + featureSourceName);
 		}
 	}
-	
+
 	/**
 	 * Get the name of the feature source.
-	 * 
+	 *
 	 * @return name of feature source
 	 */
 	public String getFeatureSourceName() {
@@ -186,5 +191,5 @@ public class FeatureSourceRetriever {
 	protected Map<String, AbstractAttributeInfo> getAttributeInfoMap() {
 		return featureInfo.getAttributesMap();
 	}
-	
+
 }

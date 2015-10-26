@@ -35,6 +35,7 @@ import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -57,7 +58,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * GeoTools layer model.
- * 
+ *
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
@@ -116,7 +117,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set the id for this layer.
-	 * 
+	 *
 	 * @param id layer id
 	 * @since 1.8.0
 	 */
@@ -132,7 +133,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * <p/>
 	 * Important note: the shape file data store (specifically the indexing code) is not thread safe, so it should not
 	 * be used for writing.
-	 * 
+	 *
 	 * @param url shape file url
 	 * @since 1.8.0
 	 */
@@ -143,7 +144,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set database type. Useful when the data store is a database.
-	 * 
+	 *
 	 * @param dbtype database type
 	 * @since 1.8.0
 	 */
@@ -155,7 +156,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	/**
 	 * Get the data source used by this layer (optional and only for database layers). This is the data source that is
 	 * passed to the GeoTools data store.
-	 * 
+	 *
 	 * @return the data source or null if not set
 	 * @since 1.10.0
 	 */
@@ -167,7 +168,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	/**
 	 * Set the data source used by this layer. This optional property can be used to bind a layers to an external data
 	 * source. Alternatively, one can pass the JNDI name of a data source as a normal parameter.
-	 * 
+	 *
 	 * @param dataSource the data source
 	 * @since 1.10.0
 	 */
@@ -178,7 +179,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set additional parameters for the GeoTools data store.
-	 * 
+	 *
 	 * @param parameters parameter list
 	 * @since 1.8.0
 	 */
@@ -189,7 +190,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * The time to wait between initialization retries in case the service is unavailable.
-	 * 
+	 *
 	 * @param cooldownTimeBetweenInitializationRetries cool down time in milliseconds
 	 * @since 1.8.0
 	 */
@@ -205,7 +206,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set the layer configuration.
-	 * 
+	 *
 	 * @param layerInfo layer information
 	 * @throws LayerException oops
 	 * @since 1.7.1
@@ -238,7 +239,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @deprecated set the data store parameters on the parameter object instead
 	 */
 	@Override
@@ -249,7 +250,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Finish initializing the layer.
-	 * 
+	 *
 	 * @throws LayerException oops
 	 */
 	@PostConstruct
@@ -339,7 +340,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Update an existing feature. Made package private for testing purposes.
-	 * 
+	 *
 	 * @param feature feature to update
 	 * @throws LayerException oops
 	 */
@@ -452,8 +453,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
+	 *
 	 */
 	@Transactional(readOnly = true)
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
@@ -463,7 +463,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				SimpleFeatureStore store = (SimpleFeatureStore) source;
 				transactionSynchronization.synchTransaction(store);
 			}
-			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
+			Query query = new Query();
+			query.setFilter(filter);
+			query.setMaxFeatures(maxResultSize > 0 ? maxResultSize : Integer.MAX_VALUE);
+			query.setStartIndex(offset);
+			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(query);
 			FeatureIterator<SimpleFeature> it = fc.features();
 			transactionSynchronization.addIterator(it);
 			return new JavaIterator(it);
@@ -488,7 +492,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Adapter to java iterator.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	private static class JavaIterator implements Iterator<SimpleFeature> {

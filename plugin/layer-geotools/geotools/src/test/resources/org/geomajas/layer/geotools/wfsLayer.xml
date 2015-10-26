@@ -1,0 +1,113 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<bean name="wfsLayer" class="org.geomajas.layer.geotools.GeoToolsLayer">
+	   <property name="parameters">
+	      <list>
+	         <bean class="org.geomajas.configuration.Parameter">
+	            <property name="name" value="WFSDataStoreFactory:GET_CAPABILITIES_URL" />
+	            <property name="value" value="http://sla.niedersachsen.de/agrarfoerderung/agrar-d3/services/wfs?request=GetCapabilities&amp;service=wfs&amp;version=1.0.0" />
+	         </bean>
+	         <bean class="org.geomajas.configuration.Parameter">
+	            <property name="name" value="WFSDataStoreFactory:TIMEOUT" />
+	            <property name="value" value="5000" />
+	         </bean>
+	      </list>
+	   </property>
+	   <property name="layerInfo" ref="wfsLayerInfo" />
+	</bean>
+
+	<bean name="wfsLayerInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTIPOLYGON" />
+		<property name="crs" value="EPSG:25832" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="333416.1875"/>
+				<property name="y" value="5681146.5"/>
+				<property name="width" value="348842.3125"/>
+				<property name="height" value="291952.0"/>
+			</bean>
+		</property>
+		<property name="featureInfo" ref="wfsLayerFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="wfsLayerStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="wfsLayerStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo"/>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="flek" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="998811" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.FeatureInfo" name="wfsLayerFeatureInfo">
+		<property name="dataSourceName" value="app:landschaftselemente" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="flek" />
+				<property name="name" value="flek" />
+				<property name="type" value="STRING" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="geom" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="flek" />
+					<property name="name" value="flek" />
+					<property name="type" value="STRING" />
+					<property name="editable" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
