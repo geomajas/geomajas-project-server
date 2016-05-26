@@ -179,14 +179,14 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/geomajasContext.xml</include>
+					<include>**/geomajasContext*.xml</include>
 				</includes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<excludes>
-					<exclude>**/geomajasContext.xml</exclude>
+					<exclude>**/geomajasContext*.xml</exclude>
 				</excludes>
 			</resource>
 			<resource>
