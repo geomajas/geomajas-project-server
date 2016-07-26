@@ -1,7 +1,7 @@
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
-  ~ Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~ Copyright 2008-2016 Geosparc nv, http://www.geosparc.com/, Belgium.
   ~
   ~ The program is available in open source according to the GNU Affero
   ~ General Public License. All contributions in this program are covered
@@ -40,13 +40,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geomajas"/>
-					<property name="copyright" value="(c) 2008-2011 Geosparc nv"/>
+					<property name="copyright" value="(c) 2008-2016 Geosparc nv"/>
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="UnboundID"/>
-					<property name="copyright" value="(c) 2008-2011 UnboundID Corp."/>
+					<property name="copyright" value="(c) 2008-2016 UnboundID Corp."/>
 					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
