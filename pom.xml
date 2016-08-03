@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-server</artifactId>
-	<version>1.18.5-SNAPSHOT</version>
+	<version>1.18.5-RC1</version>
 	<packaging>pom</packaging>
 	<name>Geomajas server project</name>
 	<description>
