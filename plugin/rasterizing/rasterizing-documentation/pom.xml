@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>rasterizing-documentation</artifactId>
-	<version>1.18.5-RC1</version>
+	<version>1.18.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas server: Plugin rasterizing - Documentation</name>
 	<description>Geomajas server: Plugin rasterizing - Documentation</description>
