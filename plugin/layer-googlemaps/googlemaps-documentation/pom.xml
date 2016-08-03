@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-googlemaps-documentation</artifactId>
-	<version>1.18.5</version>
+	<version>1.18.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas server: Layer googlemaps - Documentation</name>
 	<description>Geomajas server: Layer googlemaps - Documentation</description>
