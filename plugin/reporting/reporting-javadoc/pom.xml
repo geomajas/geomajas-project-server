@@ -15,11 +15,11 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-plugin-reporting-parent</artifactId>
-		<version>1.18.5-SNAPSHOT</version>
+		<version>1.18.5-RC2</version>
 	</parent>
 
 	<artifactId>geomajas-server-plugin-reporting-javadoc</artifactId>
-	<version>1.18.5-SNAPSHOT</version>
+	<version>1.18.5-RC2</version>
 	<packaging>jar</packaging>
 	<name>Geomajas Server: Plugin Reporting - Javadoc</name>
 	<description>Geomajas Server: Plugin Reporting - Javadoc</description>
