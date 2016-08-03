@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-layer-tms-parent</artifactId>
-		<version>1.18.5-SNAPSHOT</version>
+		<version>1.18.5</version>
 	</parent>
 
 	<artifactId>geomajas-server-plugin-layer-tms-javadoc</artifactId>
