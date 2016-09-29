@@ -52,6 +52,7 @@ import java.util.Set;
  * <code>ApplicationContext</code>.
  * 
  * @author Jan De Moerloose
+ * @author Jan Venstermans (createGenericApplicationContext)
  * 
  */
 @Component
@@ -269,9 +270,7 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 	}
 
 	private void rewireAll() throws BeanDefinitionStoreException, BeansException {
-		GenericApplicationContext identityContext = new GenericApplicationContext(applicationContext);
-		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(identityContext);
-		xmlReader.loadBeanDefinitions(getRewireContextLocations());
+		GenericApplicationContext identityContext = createGenericApplicationContext();
 		Set<String> allNames = new HashSet<String>();
 		for (Class<?> clazz : rewireClasses) {
 			allNames.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, clazz).keySet());
@@ -291,6 +290,19 @@ public class ContextConfiguratorServiceImpl implements ContextConfiguratorServic
 			identityContext.getBean(name + PROTOTYPE_PREFIX);
 		}
 		identityContext.destroy();
+	}
+
+	/**
+	 * Create a {@link GenericApplicationContext}, wrapping the normal applicationContext.
+	 * Public, hence testable method, not part of interface.
+	 * @return a configured {@link GenericApplicationContext}, wrapping the normal applicationContext
+	 */
+	public GenericApplicationContext createGenericApplicationContext() {
+		GenericApplicationContext identityContext = new GenericApplicationContext(applicationContext);
+		identityContext.setResourceLoader(applicationContext);
+		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(identityContext);
+		xmlReader.loadBeanDefinitions(getRewireContextLocations());
+		return identityContext;
 	}
 
 }
