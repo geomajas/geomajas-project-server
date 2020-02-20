@@ -11,9 +11,7 @@
 
 package org.geomajas.layer.shapeinmem;
 
-import java.io.IOException;
-import java.util.Map;
-
+import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -26,7 +24,8 @@ import org.geotools.data.wfs.WFSDataStore;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Both the {@link org.geomajas.layer.geotools.GeoToolsFeatureModel} and the
@@ -36,6 +35,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Pieter De Graef
  */
 public class FeatureSourceRetriever {
+
+	public static boolean replaceColonWithUnderscore = true;
 
 	/**
 	 * Reference to a GeoTools data store.
@@ -97,7 +98,7 @@ public class FeatureSourceRetriever {
 	 */
 	public SimpleFeatureSource getFeatureSource() throws LayerException {
 		try {
-			if (dataStore instanceof WFSDataStore) {
+			if (replaceColonWithUnderscore && dataStore instanceof WFSDataStore) {
 				return dataStore.getFeatureSource(featureSourceName.replace(":", "_"));
 			} else {
 				return dataStore.getFeatureSource(featureSourceName);
